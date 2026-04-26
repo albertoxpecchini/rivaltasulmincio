@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nuova Password — Pro Loco Rivalta sul Mincio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;
+  --surface:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);
+  --text:#e8eaf6;
+  --muted:#8892b0;
+  --accent:#6c63ff;
+  --accent2:#a78bfa;
+  --grad:linear-gradient(135deg,#6c63ff,#a78bfa,#38bdf8);
+  --green:#22c55e;
+  --red:#f87171;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* ── Aurora background ── */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
+.orb-1{width:700px;height:700px;background:radial-gradient(circle,#6c63ff 0%,transparent 70%);top:-200px;left:-200px;animation:drift1 18s ease-in-out infinite}
+.orb-2{width:500px;height:500px;background:radial-gradient(circle,#a78bfa 0%,transparent 70%);bottom:-100px;right:-100px;animation:drift2 22s ease-in-out infinite}
+.orb-3{width:400px;height:400px;background:radial-gradient(circle,#38bdf8 0%,transparent 70%);top:40%;left:40%;animation:drift3 16s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,60px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-80px)}}
+@keyframes drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
+.grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(108,99,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,.04) 1px,transparent 1px);background-size:40px 40px}
+#particles{position:absolute;inset:0;pointer-events:none}
+
+/* ── Layout ── */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+/* ── Card ── */
+.card{
+  width:100%;max-width:440px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:24px;
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  padding:48px 44px 44px;
+  box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);
+  animation:cardIn .6s cubic-bezier(.22,1,.36,1) both
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
+
+/* ── Brand ── */
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.brand-icon{width:40px;height:40px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 8px 24px rgba(108,99,255,.4)}
+.brand-name{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* ── Headings ── */
+.card-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;line-height:1.2;margin-bottom:8px}
+.card-sub{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:32px}
+
+/* ── Form ── */
+.field{margin-bottom:20px}
+label{display:block;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.input-wrap{position:relative}
+input[type=password],input[type=text]{
+  width:100%;padding:14px 48px 14px 16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--text);font-size:.95rem;font-family:inherit;
+  transition:border-color .2s,box-shadow .2s;outline:none
+}
+input:focus{border-color:rgba(108,99,255,.6);box-shadow:0 0 0 3px rgba(108,99,255,.15)}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.1rem;padding:2px;transition:color .2s}
+.eye-btn:hover{color:var(--text)}
+
+/* ── Strength meter ── */
+.strength-bar{display:flex;gap:4px;margin-top:8px}
+.seg{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.1);transition:background .3s}
+.seg.s1{background:#f87171}
+.seg.s2{background:#fb923c}
+.seg.s3{background:#facc15}
+.seg.s4{background:#22c55e}
+.strength-label{font-size:.72rem;color:var(--muted);margin-top:5px;height:14px}
+
+/* ── Button ── */
+.btn-main{
+  width:100%;padding:15px;margin-top:8px;
+  background:var(--grad);background-size:200% 200%;
+  animation:grad 4s ease infinite;
+  border:none;border-radius:12px;
+  color:#fff;font-size:1rem;font-weight:700;font-family:inherit;
+  cursor:pointer;letter-spacing:.03em;
+  box-shadow:0 8px 28px rgba(108,99,255,.35);
+  transition:opacity .2s,transform .15s,box-shadow .2s;
+  position:relative;overflow:hidden
+}
+.btn-main:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 12px 36px rgba(108,99,255,.45)}
+.btn-main:active{transform:translateY(0)}
+.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;animation:none}
+@keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.btn-main .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+.btn-main.loading .btn-text{display:none}
+.btn-main.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── States ── */
+.state{display:none}
+.state.active{display:block;animation:fadeIn .4s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── Success / Error ── */
+.big-icon{font-size:3.5rem;margin-bottom:16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+.success-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;margin-bottom:10px}
+.success-sub{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:28px}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:10px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text);font-size:.9rem;font-family:inherit;cursor:pointer;
+  transition:background .2s,border-color .2s
+}
+.btn-outline:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+
+/* ── Error banner ── */
+.err-banner{
+  display:none;
+  background:rgba(248,113,113,.12);
+  border:1px solid rgba(248,113,113,.3);
+  border-radius:10px;padding:12px 14px;
+  font-size:.85rem;color:#fca5a5;margin-bottom:20px;
+  animation:fadeIn .3s ease
+}
+.err-banner.show{display:flex;gap:10px;align-items:flex-start}
+
+/* ── Back link ── */
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.82rem;color:var(--muted);text-decoration:none;
+  margin-top:24px;transition:color .2s
+}
+.back-link:hover{color:var(--text)}
+
+/* ── Invalid token ── */
+.token-err{text-align:center;padding:8px 0}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+  <canvas id="particles"></canvas>
+</div>
+
+<div class="page">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">🏰</div>
+      <span class="brand-name">Pro Loco Rivalta sul Mincio</span>
+    </div>
+
+    <!-- State: loading -->
+    <div class="state active" id="s-loading">
+      <div style="text-align:center;padding:20px 0">
+        <div style="width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px"></div>
+        <p style="color:var(--muted);font-size:.9rem">Verifica del link in corso…</p>
+      </div>
+    </div>
+
+    <!-- State: invalid token -->
+    <div class="state" id="s-invalid">
+      <div class="token-err">
+        <div class="big-icon">🔗</div>
+        <div class="success-title" style="color:var(--red)">Link non valido</div>
+        <p class="success-sub">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
+        <a href="login.html" class="btn-outline">← Torna al login</a>
+      </div>
+    </div>
+
+    <!-- State: reset form -->
+    <div class="state" id="s-form">
+      <h1 class="card-title">Nuova password</h1>
+      <p class="card-sub">Scegli una password sicura per il tuo account.</p>
+
+      <div class="err-banner" id="err-banner">
+        <span>⚠️</span><span id="err-text"></span>
+      </div>
+
+      <div class="field">
+        <label>Nuova password</label>
+        <div class="input-wrap">
+          <input type="password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password">
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1">👁</button>
+        </div>
+        <div class="strength-bar">
+          <div class="seg" id="seg0"></div>
+          <div class="seg" id="seg1"></div>
+          <div class="seg" id="seg2"></div>
+          <div class="seg" id="seg3"></div>
+        </div>
+        <div class="strength-label" id="str-label"></div>
+      </div>
+
+      <div class="field">
+        <label>Conferma password</label>
+        <div class="input-wrap">
+          <input type="password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password">
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-main" id="reset-btn" onclick="doReset()">
+        <span class="btn-text">Imposta nuova password</span>
+        <div class="spinner"></div>
+      </button>
+
+      <a href="login.html" class="back-link">← Torna al login</a>
+    </div>
+
+    <!-- State: success -->
+    <div class="state" id="s-success">
+      <div style="text-align:center;padding:8px 0">
+        <div class="big-icon">✅</div>
+        <div class="success-title">Password aggiornata!</div>
+        <p class="success-sub">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
+        <a href="login.html" class="btn-outline" style="margin:0 auto">Vai al login →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ── Particles ──
+(function(){
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let W, H, pts = [];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<22;i++) pts.push({x:Math.random()*1e4,y:Math.random()*1e4,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.6,a:Math.random()*.6+.2});
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x%W,p.y%H,p.r,0,6.28);
+      ctx.fillStyle=`rgba(167,139,250,${p.a})`;ctx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+// ── Eye toggle ──
+function toggleEye(id, btn){
+  const el = document.getElementById(id);
+  el.type = el.type==='password' ? 'text' : 'password';
+  btn.textContent = el.type==='password' ? '👁' : '🙈';
+}
+
+// ── Strength meter ──
+document.getElementById('pwd1').addEventListener('input', function(){
+  const v = this.value;
+  let s = 0;
+  if(v.length>=8) s++;
+  if(/[A-Z]/.test(v)) s++;
+  if(/[0-9]/.test(v)) s++;
+  if(/[^A-Za-z0-9]/.test(v)) s++;
+  const labels=['','Debole','Discreta','Buona','Ottima'];
+  const cls=['','s1','s2','s3','s4'];
+  for(let i=0;i<4;i++){
+    const seg=document.getElementById('seg'+i);
+    seg.className='seg'+(i<s?' '+cls[s]:'');
+  }
+  document.getElementById('str-label').textContent = v.length ? labels[s] : '';
+});
+
+// ── Show state ──
+function showState(id){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── Error ──
+function showErr(msg){
+  const b=document.getElementById('err-banner');
+  document.getElementById('err-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),5000);
+}
+
+// ── Auth state listener ──
+let _session = null;
+let _ready = false;
+
+sb.auth.onAuthStateChange((event, session) => {
+  if(event === 'PASSWORD_RECOVERY'){
+    _session = session;
+    showState('s-form');
+    _ready = true;
+  } else if(event === 'SIGNED_IN' && session) {
+    // already signed in (token in hash), treat as recovery ready
+    _session = session;
+    if(!_ready) {
+      showState('s-form');
+      _ready = true;
+    }
+  }
+});
+
+// Check for hash params from Supabase email link
+// Supabase puts access_token in the URL hash; the SDK handles it automatically.
+// If after a short delay no recovery event fired, the token is invalid.
+setTimeout(()=>{
+  if(!_ready){
+    // also check if there's any session at all via getSession
+    sb.auth.getSession().then(({data:{session}})=>{
+      if(session){
+        _session = session;
+        showState('s-form');
+        _ready = true;
+      } else {
+        // check URL hash manually — Supabase may have already consumed it
+        const hash = window.location.hash;
+        if(hash && hash.includes('access_token')){
+          // still waiting, give more time
+          setTimeout(()=>{
+            if(!_ready) showState('s-invalid');
+          }, 2000);
+        } else if(!hash || (!hash.includes('type=recovery') && !hash.includes('access_token'))){
+          showState('s-invalid');
+        }
+      }
+    });
+  }
+}, 1500);
+
+// ── Submit ──
+async function doReset(){
+  const p1 = document.getElementById('pwd1').value;
+  const p2 = document.getElementById('pwd2').value;
+  if(!p1 || p1.length < 8){ showErr('La password deve essere di almeno 8 caratteri.'); return; }
+  if(p1 !== p2){ showErr('Le password non coincidono.'); return; }
+
+  const btn = document.getElementById('reset-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const {error} = await sb.auth.updateUser({password: p1});
+
+  btn.classList.remove('loading');
+  btn.disabled = false;
+
+  if(error){
+    showErr(error.message || 'Errore durante l\'aggiornamento della password.');
+    return;
+  }
+
+  showState('s-success');
+  // Auto-redirect after 3s
+  setTimeout(()=>{ window.location.href='login.html'; }, 3000);
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('s-form').classList.contains('active')) doReset();
+});
+</script>
+</body>
+</html>

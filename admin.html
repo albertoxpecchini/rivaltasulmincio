@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Pro Loco Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1F6F8B; --primary-d: #155a72;
+      --accent: #2E7D32; --accent-d: #1b5e20;
+      --danger: #c0392b; --danger-d: #922b21;
+      --text: #143B43; --text-muted: #5F6B6D;
+      --bg: #f0f5f6; --surface: #fff; --border: #d4e2e5;
+      --dark: #0F2A30; --secondary: #3a8c8a;
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: .92rem; }
+    a { color: var(--primary); text-decoration: none; }
+
+    /* ── Login ────────────────────────────────────────────────────── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-card {
+      background: var(--surface); border-radius: 16px; padding: 40px;
+      width: 100%; max-width: 380px;
+      box-shadow: 0 8px 40px rgba(15,42,48,.12);
+    }
+    .login-card h1 {
+      font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; margin-bottom: 6px;
+    }
+    .login-card p { color: var(--text-muted); margin-bottom: 28px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .84rem; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: .9rem; font-family: inherit;
+      outline: none; transition: border-color .2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: 8px; border: none;
+      font-size: .88rem; font-weight: 600; cursor: pointer;
+      transition: background .2s, opacity .2s;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-d); }
+    .btn-success { background: var(--accent); color: #fff; }
+    .btn-success:hover:not(:disabled) { background: var(--accent-d); }
+    .btn-danger  { background: var(--danger); color: #fff; }
+    .btn-danger:hover:not(:disabled) { background: var(--danger-d); }
+    .btn-ghost {
+      background: transparent; color: var(--text-muted);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+    .btn-sm { padding: 6px 12px; font-size: .8rem; }
+    .btn-full { width: 100%; justify-content: center; }
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: .85rem; margin-bottom: 14px; }
+    .msg-error { background: #fdecea; color: var(--danger); }
+    .msg-ok    { background: #e8f5e9; color: var(--accent-d); }
+
+    /* ── App shell ────────────────────────────────────────────────── */
+    #app-screen { display: none; min-height: 100vh; }
+    .topbar {
+      background: var(--dark); color: #EAF4F4;
+      padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-brand { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .user-email { font-size: .8rem; color: rgba(234,244,244,.6); }
+    .btn-logout { background: transparent; border: 1px solid rgba(234,244,244,.3); color: #EAF4F4; padding: 5px 12px; border-radius: 6px; font-size: .8rem; cursor: pointer; }
+    .btn-logout:hover { background: rgba(234,244,244,.1); }
+
+    .app-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+    .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .app-header h2 { font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; }
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; background: var(--bg); border-radius: 10px; padding: 4px; border: 1px solid var(--border); width: fit-content; }
+    .tab-bar button { padding: 8px 20px; border-radius: 7px; border: none; font-size: .85rem; font-weight: 600; cursor: pointer; font-family: inherit; background: transparent; color: var(--text-muted); transition: all .2s; }
+    .tab-bar button.on { background: var(--surface); color: var(--primary); box-shadow: 0 1px 4px rgba(15,42,48,.1); }
+    .admin-panel { display: none; }
+    .admin-panel.on { display: block; }
+    .users-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(15,42,48,.07); }
+    .users-table th { background: var(--bg); text-align: left; padding: 11px 16px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1.5px solid var(--border); }
+    .users-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .users-table tr:last-child td { border-bottom: none; }
+    .users-table tr:hover td { background: #f8fbfc; }
+    .user-av { width: 32px; height: 32px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .role-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
+    .role-admin { background: #fff3e0; color: #e65100; }
+    .role-user  { background: #e3f0f5; color: var(--primary); }
+
+    /* ── Post table ───────────────────────────────────────────────── */
+    .posts-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(15,42,48,.07); }
+    .posts-table th { background: var(--bg); text-align: left; padding: 11px 16px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1.5px solid var(--border); }
+    .posts-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .posts-table tr:last-child td { border-bottom: none; }
+    .posts-table tr:hover td { background: #f8fbfc; }
+    .post-title-cell { font-weight: 600; max-width: 300px; }
+    .post-title-cell a { color: var(--text); }
+    .post-title-cell a:hover { color: var(--primary); }
+    .status-pill {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: .75rem; font-weight: 700;
+    }
+    .status-pill.pub  { background: #e8f5e9; color: var(--accent-d); }
+    .status-pill.draft { background: #fff3e0; color: #e65100; }
+    .actions { display: flex; gap: 6px; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state p { margin-top: 8px; font-size: .88rem; }
+
+    /* ── Drawer / Form ────────────────────────────────────────────── */
+    .drawer-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(15,42,48,.4); z-index: 100;
+    }
+    .drawer-overlay.open { display: block; }
+    .drawer {
+      position: fixed; top: 0; right: -700px; width: min(680px, 100vw);
+      height: 100vh; background: var(--surface); z-index: 101;
+      overflow-y: auto; transition: right .3s ease;
+      display: flex; flex-direction: column;
+    }
+    .drawer.open { right: 0; }
+    .drawer-head {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .drawer-head h3 { font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; }
+    .drawer-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
+    .drawer-body { padding: 24px; flex: 1; }
+    .drawer-footer {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+      position: sticky; bottom: 0; background: var(--surface);
+    }
+    .field textarea { min-height: 320px; resize: vertical; line-height: 1.6; font-size: .88rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .img-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px; }
+    .img-type-opt { position: relative; }
+    .img-type-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .img-type-opt label {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 8px 4px; border: 2px solid var(--border); border-radius: 8px;
+      cursor: pointer; font-size: .72rem; text-align: center;
+      transition: border-color .15s;
+    }
+    .img-type-opt label span { font-size: 1.4rem; }
+    .img-type-opt input:checked + label { border-color: var(--primary); background: #eaf4f8; }
+    .md-hint { font-size: .75rem; color: var(--text-muted); margin-top: 5px; }
+
+    /* ── Loader ───────────────────────────────────────────────────── */
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+      .img-type-grid { grid-template-columns: repeat(3, 1fr); }
+      .posts-table thead { display: none; }
+      .posts-table td { display: block; border-bottom: none; }
+      .posts-table tr { border-bottom: 1px solid var(--border); display: block; padding: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>Pro Loco Admin</h1>
+    <p>Accedi per gestire i post del sito.</p>
+    <div id="login-msg"></div>
+    <form id="login-form">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" required placeholder="admin@esempio.it" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="login-btn">Accedi</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════════════════ -->
+<div id="app-screen">
+  <div class="topbar">
+    <span class="topbar-brand">Pro Loco Rivalta – Admin</span>
+    <div class="topbar-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="btn-logout" id="logout-btn">Esci</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="app-header"><h2>Dashboard Admin</h2></div>
+    <div class="tab-bar">
+      <button class="on" id="atab-posts" onclick="atab('posts')">Post</button>
+      <button id="atab-users" onclick="atab('users')">Utenti</button>
+    </div>
+    <div id="app-msg"></div>
+
+    <!-- Posts panel -->
+    <div class="admin-panel on" id="ap-posts">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-success" id="new-post-btn">+ Nuovo articolo</button>
+      </div>
+      <div id="posts-wrap"><div class="empty-state"><span>⏳</span><p>Caricamento…</p></div></div>
+    </div>
+
+    <!-- Users panel -->
+    <div class="admin-panel" id="ap-users">
+      <div id="users-wrap"><div class="empty-state"><span>⏳</span><p>Caricamento…</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DRAWER (create / edit) ════════════════════════════════════════ -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3 id="drawer-title">Nuovo articolo</h3>
+    <button class="drawer-close" id="drawer-close" aria-label="Chiudi">×</button>
+  </div>
+  <div class="drawer-body">
+    <div id="drawer-msg"></div>
+    <form id="post-form">
+      <input type="hidden" id="f-id" />
+      <div class="field">
+        <label for="f-title">Titolo *</label>
+        <input type="text" id="f-title" required placeholder="Es. Sagra del Luccio 2026: programma completo" />
+      </div>
+      <div class="field">
+        <label for="f-excerpt">Sommario <small style="font-weight:400;color:var(--text-muted)">(mostrato in anteprima)</small></label>
+        <input type="text" id="f-excerpt" placeholder="Breve descrizione dell'articolo…" />
+      </div>
+      <div class="field">
+        <label for="f-content">Contenuto <small style="font-weight:400;color:var(--text-muted)">(Markdown)</small></label>
+        <textarea id="f-content" placeholder="Scrivi il testo dell'articolo…&#10;&#10;## Titolo sezione&#10;&#10;Paragrafo…"></textarea>
+        <div class="md-hint">Supporta: **grassetto**, *corsivo*, ## Titolo, ### Sottotitolo</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-category">Categoria</label>
+          <select id="f-category">
+            <option>Territorio</option>
+            <option>Il Luccio</option>
+            <option>Fauna</option>
+            <option>Ambiente</option>
+            <option>Ecoturismo</option>
+            <option>Storia</option>
+            <option>Eventi</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-badge">Badge etichetta</label>
+          <input type="text" id="f-badge" placeholder="Es. Natura" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Colore badge</label>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
+            <input type="radio" name="badge_color" value="default" checked /> Blu
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
+            <input type="radio" name="badge_color" value="green" /> Verde
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Illustrazione</label>
+        <div class="img-type-grid">
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-festival" value="festival" checked />
+            <label for="it-festival"><span>🎪</span>Sagra</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-heron" value="heron" />
+            <label for="it-heron"><span>🦢</span>Aironi</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-cycling" value="cycling" />
+            <label for="it-cycling"><span>🚴</span>Ciclabile</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-village" value="village" />
+            <label for="it-village"><span>🌙</span>Borgo</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-reeds" value="reeds" />
+            <label for="it-reeds"><span>🌾</span>Canneti</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-fishing" value="fishing" />
+            <label for="it-fishing"><span>🎣</span>Pesca</label>
+          </div>
+          <div class="img-type-opt">
+            <input type="radio" name="image_type" id="it-nature" value="nature" />
+            <label for="it-nature"><span>🌸</span>Natura</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="drawer-footer">
+    <button class="btn btn-ghost" id="save-draft-btn">Salva bozza</button>
+    <button class="btn btn-success" id="publish-btn">Pubblica</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   Admin panel – Pro Loco Rivalta sul Mincio
+   Requires: supabase.config.js with SUPABASE_URL + SUPABASE_ANON_KEY
+   Supabase table: posts (see schema comment at bottom)
+══════════════════════════════════════════════════════════════════ */
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ── Helpers ──────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
+
+function showMsg(elId, text, type = 'error') {
+  const el = $(elId);
+  el.innerHTML = `<div class="msg msg-${type === 'ok' ? 'ok' : 'error'}">${text}</div>`;
+  if (type === 'ok') setTimeout(() => el.innerHTML = '', 3000);
+}
+
+/* ── Auth ─────────────────────────────────────────────────────────── */
+$('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('login-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Accesso…';
+
+  const { error } = await sb.auth.signInWithPassword({
+    email: $('email').value.trim(),
+    password: $('password').value,
+  });
+
+  if (error) {
+    showMsg('login-msg', 'Credenziali non valide. Verifica email e password.');
+    btn.disabled = false;
+    btn.textContent = 'Accedi';
+  }
+});
+
+$('logout-btn').addEventListener('click', () => sb.auth.signOut());
+
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (session) {
+    $('login-screen').style.display = 'none';
+    $('app-screen').style.display = 'block';
+    $('user-email').textContent = session.user.email;
+    await loadPosts();
+  } else {
+    $('login-screen').style.display = 'flex';
+    $('app-screen').style.display = 'none';
+  }
+});
+
+/* ── Posts list ───────────────────────────────────────────────────── */
+let posts = [];
+
+async function loadPosts() {
+  const { data, error } = await sb
+    .from('posts')
+    .select('id, title, category, published, published_at, created_at')
+    .order('created_at', { ascending: false });
+
+  if (error) { showMsg('app-msg', 'Errore nel caricamento dei post: ' + error.message); return; }
+  posts = data || [];
+  renderTable();
+}
+
+function renderTable() {
+  const wrap = $('posts-wrap');
+  if (posts.length === 0) {
+    wrap.innerHTML = '<div class="empty-state"><span>📝</span><p>Nessun articolo ancora. Creane uno!</p></div>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <table class="posts-table">
+      <thead>
+        <tr>
+          <th>Titolo</th>
+          <th>Categoria</th>
+          <th>Stato</th>
+          <th>Data</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${posts.map(p => `
+          <tr data-id="${p.id}">
+            <td class="post-title-cell">
+              ${p.published ? `<a href="post.html?id=${p.id}" target="_blank">${p.title}</a>` : p.title}
+            </td>
+            <td>${p.category || '—'}</td>
+            <td><span class="status-pill ${p.published ? 'pub' : 'draft'}">${p.published ? 'Pubblicato' : 'Bozza'}</span></td>
+            <td>${fmt(p.published_at || p.created_at)}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-ghost btn-sm" onclick="editPost('${p.id}')">Modifica</button>
+                ${p.published
+                  ? `<button class="btn btn-ghost btn-sm" onclick="togglePublish('${p.id}', false)">Nascondi</button>`
+                  : `<button class="btn btn-success btn-sm" onclick="togglePublish('${p.id}', true)">Pubblica</button>`}
+                <button class="btn btn-danger btn-sm" onclick="deletePost('${p.id}')">Elimina</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+/* ── Toggle publish ───────────────────────────────────────────────── */
+async function togglePublish(id, publish) {
+  const { error } = await sb.from('posts').update({
+    published: publish,
+    published_at: publish ? new Date().toISOString() : null,
+  }).eq('id', id);
+  if (error) { showMsg('app-msg', 'Errore: ' + error.message); return; }
+  await loadPosts();
+}
+
+/* ── Delete ───────────────────────────────────────────────────────── */
+async function deletePost(id) {
+  const post = posts.find(p => p.id === id);
+  if (!confirm(`Eliminare definitivamente "${post?.title}"?`)) return;
+  const { error } = await sb.from('posts').delete().eq('id', id);
+  if (error) { showMsg('app-msg', 'Errore: ' + error.message); return; }
+  await loadPosts();
+}
+
+/* ── Drawer ───────────────────────────────────────────────────────── */
+function openDrawer(title = 'Nuovo articolo') {
+  $('drawer-title').textContent = title;
+  $('drawer-msg').innerHTML = '';
+  $('drawer-overlay').classList.add('open');
+  $('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  $('drawer-overlay').classList.remove('open');
+  $('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+  $('post-form').reset();
+  $('f-id').value = '';
+}
+
+$('drawer-overlay').addEventListener('click', closeDrawer);
+$('drawer-close').addEventListener('click', closeDrawer);
+$('new-post-btn').addEventListener('click', () => { closeDrawer(); openDrawer('Nuovo articolo'); });
+
+/* ── Edit ─────────────────────────────────────────────────────────── */
+async function editPost(id) {
+  const { data: p, error } = await sb.from('posts').select('*').eq('id', id).single();
+  if (error || !p) { showMsg('app-msg', 'Errore nel caricamento.'); return; }
+
+  $('f-id').value = p.id;
+  $('f-title').value = p.title || '';
+  $('f-excerpt').value = p.excerpt || '';
+  $('f-content').value = p.content || '';
+  $('f-category').value = p.category || 'Territorio';
+  $('f-badge').value = p.badge || '';
+  document.querySelector(`input[name="badge_color"][value="${p.badge_color || 'default'}"]`).checked = true;
+  const it = document.querySelector(`input[name="image_type"][value="${p.image_type || 'nature'}"]`);
+  if (it) it.checked = true;
+
+  openDrawer('Modifica articolo');
+}
+
+/* ── Save (draft or publish) ──────────────────────────────────────── */
+async function savePost(publish) {
+  const id = $('f-id').value;
+  const title = $('f-title').value.trim();
+  if (!title) { showMsg('drawer-msg', 'Il titolo è obbligatorio.'); return; }
+
+  const payload = {
+    title,
+    excerpt:     $('f-excerpt').value.trim() || null,
+    content:     $('f-content').value.trim() || null,
+    category:    $('f-category').value,
+    badge:       $('f-badge').value.trim() || null,
+    badge_color: document.querySelector('input[name="badge_color"]:checked').value,
+    image_type:  document.querySelector('input[name="image_type"]:checked').value,
+    published:   publish,
+    published_at: publish ? new Date().toISOString() : null,
+  };
+
+  let error;
+  if (id) {
+    ({ error } = await sb.from('posts').update(payload).eq('id', id));
+  } else {
+    ({ error } = await sb.from('posts').insert(payload));
+  }
+
+  if (error) { showMsg('drawer-msg', 'Errore: ' + error.message); return; }
+  closeDrawer();
+  showMsg('app-msg', publish ? '✅ Articolo pubblicato.' : '💾 Bozza salvata.', 'ok');
+  await loadPosts();
+}
+
+$('save-draft-btn').addEventListener('click', () => savePost(false));
+$('publish-btn').addEventListener('click', () => savePost(true));
+
+/* Expose globals for inline onclick */
+window.editPost = editPost;
+window.togglePublish = togglePublish;
+window.deletePost = deletePost;
+
+/* ── Admin tabs ───────────────────────────────────────────────────── */
+function atab(name) {
+  ['posts','users'].forEach(n => {
+    document.getElementById('ap-'+n)?.classList.toggle('on', n===name);
+    document.getElementById('atab-'+n)?.classList.toggle('on', n===name);
+  });
+  if(name === 'users') loadUsers();
+}
+
+/* ── Users management ─────────────────────────────────────────────── */
+async function loadUsers() {
+  const wrap = $('users-wrap');
+  const {data:users, error} = await sb.from('profiles')
+    .select('id,username,display_name,avatar_emoji,avatar_color,role,created_at')
+    .order('created_at',{ascending:false});
+  if(error) { wrap.innerHTML = `<p style="color:var(--danger)">Errore: ${error.message}</p>`; return; }
+  if(!users||!users.length) { wrap.innerHTML = '<div class="empty-state"><span>👥</span><p>Nessun utente.</p></div>'; return; }
+  wrap.innerHTML = `<table class="users-table"><thead><tr>
+    <th>Utente</th><th>Username</th><th>Ruolo</th><th>Iscritto il</th><th></th>
+  </tr></thead><tbody>${users.map(u=>`<tr>
+    <td style="display:flex;align-items:center;gap:10px">
+      <span class="user-av" style="background:${u.avatar_color||'#1F6F8B'}">${u.avatar_emoji||'🌿'}</span>
+      <span style="font-weight:600">${u.display_name||u.username}</span>
+    </td>
+    <td><a href="profile.html?u=${u.username}" target="_blank" style="color:var(--primary)">@${u.username}</a></td>
+    <td><span class="role-badge role-${u.role||'user'}">${u.role||'user'}</span></td>
+    <td style="color:var(--text-muted);font-size:.82rem">${new Date(u.created_at).toLocaleDateString('it-IT')}</td>
+    <td><div class="actions">
+      ${u.role!=='admin'
+        ? `<button class="btn btn-ghost btn-sm" onclick="setRole('${u.id}','admin')">Promuovi admin</button>`
+        : `<button class="btn btn-ghost btn-sm" onclick="setRole('${u.id}','user')">Rimuovi admin</button>`}
+    </div></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+async function setRole(uid, role) {
+  const {error} = await sb.from('profiles').update({role}).eq('id',uid);
+  if(error) { showMsg('app-msg', error.message); return; }
+  loadUsers();
+}
+window.setRole = setRole;
+</script>
+
+<!--
+  ══ SCHEMA SUPABASE (esegui in SQL Editor) ═══════════════════════════
+
+  create table posts (
+    id           uuid default gen_random_uuid() primary key,
+    title        text not null,
+    excerpt      text,
+    content      text,
+    category     text default 'Territorio',
+    badge        text,
+    badge_color  text default 'default',
+    image_type   text default 'nature',
+    published    boolean default false,
+    published_at timestamptz,
+    created_at   timestamptz default now()
+  );
+
+  alter table posts enable row level security;
+
+  -- Chiunque può leggere i post pubblicati
+  create policy "Public read published"
+    on posts for select
+    using (published = true);
+
+  -- Solo utenti autenticati possono scrivere
+  create policy "Auth full access"
+    on posts for all
+    using (auth.role() = 'authenticated');
+
+  ════════════════════════════════════════════════════════════════════ -->
+</body>
+</html>

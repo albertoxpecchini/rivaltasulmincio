@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Accedi – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#020c10;--bg2:#061520;--sb:rgba(10,28,38,.55);--border:rgba(255,255,255,.08);
+      --text:#EAF4F4;--muted:rgba(234,244,244,.42);--faint:rgba(234,244,244,.15);
+      --p:#1F6F8B;--a:#3a8c8a;--g:#2E7D32;--gold:#F9A825;--err:#ef5350;
+      --ease:cubic-bezier(.4,0,.2,1);
+    }
+    html{height:100%}
+    body{
+      min-height:100%;background:var(--bg);color:var(--text);
+      font-family:'Inter',system-ui,sans-serif;
+      display:grid;grid-template-columns:55fr 45fr;
+    }
+    a{color:var(--a);text-decoration:none}
+    a:hover{color:var(--text)}
+
+    /* ═══ LEFT PANEL ═══════════════════════════════════════════════ */
+    .left{
+      position:sticky;top:0;height:100vh;
+      background:var(--bg);overflow:hidden;
+      display:flex;flex-direction:column;justify-content:space-between;padding:48px;
+    }
+
+    /* aurora */
+    .aurora{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .orb{position:absolute;border-radius:50%;filter:blur(110px)}
+    .o1{width:700px;height:700px;background:radial-gradient(circle,#1F6F8B 0%,transparent 60%);top:-200px;left:-150px;opacity:.14;animation:oa 22s ease-in-out infinite alternate}
+    .o2{width:450px;height:450px;background:radial-gradient(circle,#2E7D32 0%,transparent 60%);bottom:-100px;right:0;opacity:.1;animation:ob 18s ease-in-out infinite alternate}
+    .o3{width:300px;height:300px;background:radial-gradient(circle,#3a8c8a 0%,transparent 60%);top:50%;left:55%;opacity:.09;animation:oc 14s ease-in-out infinite alternate}
+    @keyframes oa{to{transform:translate(80px,60px) scale(1.1)}}
+    @keyframes ob{to{transform:translate(-50px,-40px) scale(1.2)}}
+    @keyframes oc{to{transform:translate(-40%,-60%) scale(1.1)}}
+    .gridlines{position:absolute;inset:0;
+      background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);
+      background-size:56px 56px;pointer-events:none}
+    .particles{position:absolute;inset:0;pointer-events:none}
+    .ptl{position:absolute;border-radius:50%;background:rgba(58,140,138,.45);animation:ptlFloat linear infinite}
+    @keyframes ptlFloat{0%{opacity:0;transform:translateY(0) scale(0)}10%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translateY(-110vh) scale(.5)}}
+
+    /* left content */
+    .left-content{position:relative;z-index:1;display:flex;flex-direction:column;gap:40px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand-logo{
+      width:48px;height:48px;border-radius:14px;flex-shrink:0;
+      background:linear-gradient(135deg,#1F6F8B,#3a8c8a);
+      display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+      box-shadow:0 0 0 1px rgba(255,255,255,.08),0 8px 28px rgba(31,111,139,.4);
+    }
+    .brand-text{}
+    .brand-name{
+      font-family:'Fraunces',Georgia,serif;font-size:1.1rem;font-weight:600;
+      background:linear-gradient(135deg,#EAF4F4 40%,#3a8c8a);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .brand-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+
+    .hero-text{}
+    .hero-text h1{
+      font-family:'Fraunces',Georgia,serif;font-size:clamp(1.8rem,3vw,2.6rem);
+      font-weight:700;line-height:1.2;margin-bottom:14px;
+      background:linear-gradient(135deg,#EAF4F4 0%,rgba(234,244,244,.7) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .hero-text p{font-size:.92rem;color:var(--muted);line-height:1.65;max-width:380px}
+
+    /* Mincio SVG scene */
+    .scene{border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px var(--border)}
+
+    /* features */
+    .features{display:flex;flex-direction:column;gap:14px}
+    .feat{display:flex;align-items:flex-start;gap:14px}
+    .feat-ico{
+      width:36px;height:36px;border-radius:10px;flex-shrink:0;
+      background:rgba(255,255,255,.05);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;font-size:1rem;
+    }
+    .feat-text{}
+    .feat-title{font-size:.88rem;font-weight:600;margin-bottom:2px}
+    .feat-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+    /* quote */
+    .left-quote{position:relative;z-index:1}
+    .quote-text{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:.92rem;color:var(--muted);line-height:1.6}
+    .quote-text::before{content:'"';color:var(--a);font-size:1.4rem;font-style:normal;vertical-align:-.15em;margin-right:2px}
+    .quote-text::after{content:'"';color:var(--a);font-size:1.4rem;font-style:normal;vertical-align:-.15em;margin-left:2px}
+
+    /* ═══ RIGHT PANEL ══════════════════════════════════════════════ */
+    .right{
+      background:rgba(6,18,28,.55);backdrop-filter:blur(2px);
+      border-left:1px solid var(--border);
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      padding:48px 40px;
+    }
+    .form-wrap{width:100%;max-width:400px}
+
+    /* mode transitions */
+    .mode{display:none;animation:modeIn .32s var(--ease)}
+    .mode.on{display:block}
+    @keyframes modeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @keyframes modeBack{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+    .mode.back{animation:modeBack .28s var(--ease)}
+
+    /* form header */
+    .fh{margin-bottom:28px}
+    .fh-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-bottom:8px}
+    .fh h2{font-family:'Fraunces',Georgia,serif;font-size:1.7rem;font-weight:700;line-height:1.2;margin-bottom:8px}
+    .fh p{font-size:.85rem;color:var(--muted);line-height:1.55}
+
+    /* progress dots */
+    .dots{display:flex;gap:6px;margin-bottom:24px}
+    .dot{height:4px;border-radius:2px;background:var(--border);transition:all .3s}
+    .dot.on{width:28px;background:var(--a)}
+    .dot:not(.on){width:14px}
+
+    /* fields */
+    .fg{margin-bottom:16px}
+    .fg label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
+    .fg input,.fg textarea,.fg select{
+      width:100%;padding:13px 15px;
+      background:rgba(255,255,255,.04);
+      border:1.5px solid var(--border);
+      border-radius:11px;color:var(--text);
+      font-size:.9rem;font-family:inherit;
+      transition:border-color .2s,box-shadow .2s,background .2s;
+    }
+    .fg textarea{resize:none;min-height:74px;line-height:1.55}
+    .fg input:focus,.fg textarea:focus,.fg select:focus{
+      outline:none;border-color:var(--a);background:rgba(255,255,255,.07);
+      box-shadow:0 0 0 3px rgba(58,140,138,.17);
+    }
+    .fg input::placeholder,.fg textarea::placeholder{color:rgba(234,244,244,.2)}
+    .fg input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(239,83,80,.15)}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    /* password toggle */
+    .pwd-wrap{position:relative}
+    .pwd-wrap input{padding-right:44px}
+    .pwd-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.95rem;padding:4px;line-height:1}
+    .pwd-eye:hover{color:var(--text)}
+
+    /* strength */
+    .strength{display:flex;gap:4px;margin-top:8px}
+    .str-seg{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+
+    /* btn */
+    .btn{
+      width:100%;padding:14px;border:none;border-radius:12px;
+      font-size:.93rem;font-weight:700;font-family:inherit;cursor:pointer;
+      position:relative;overflow:hidden;transition:all .2s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+    .btn-grad{
+      background:linear-gradient(135deg,#1F6F8B 0%,#3a8c8a 50%,#2E7D32 100%);
+      background-size:200% 200%;animation:grad 4s ease infinite;
+      color:#fff;box-shadow:0 6px 24px rgba(31,111,139,.38);
+    }
+    .btn-grad:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(31,111,139,.55)}
+    @keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    .btn-ghost{
+      background:rgba(255,255,255,.05);color:var(--muted);
+      border:1.5px solid var(--border);margin-top:10px;
+    }
+    .btn-ghost:hover:not(:disabled){color:var(--text);background:rgba(255,255,255,.08)}
+
+    /* links */
+    .links-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:8px}
+    .link-btn{background:none;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;color:var(--muted);padding:0;transition:color .2s}
+    .link-btn:hover{color:var(--a)}
+    .link-btn.highlight{color:var(--a);font-weight:600}
+    .link-btn.highlight:hover{color:var(--text)}
+
+    /* msg */
+    .msg{padding:11px 14px;border-radius:10px;font-size:.83rem;margin-bottom:14px;animation:modeIn .2s ease;line-height:1.5}
+    .err{background:rgba(239,83,80,.1);color:#ef9a9a;border:1px solid rgba(239,83,80,.2)}
+    .ok {background:rgba(46,125,50,.12);color:#a5d6a7;border:1px solid rgba(46,125,50,.25)}
+    .info{background:rgba(31,111,139,.12);color:#80cbc4;border:1px solid rgba(31,111,139,.25)}
+
+    /* pickers */
+    .pick-lbl{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px;margin-top:18px}
+    .eg{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-bottom:4px}
+    .eg input{display:none}
+    .eg label{display:flex;align-items:center;justify-content:center;aspect-ratio:1;font-size:1.1rem;border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:all .14s}
+    .eg label:hover{background:rgba(255,255,255,.07);transform:scale(1.18)}
+    .eg input:checked+label{background:rgba(58,140,138,.2);border-color:var(--a);transform:scale(1.08)}
+    .cg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+    .cg input{display:none}
+    .cg label{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .14s;border:2.5px solid transparent}
+    .cg label:hover{transform:scale(1.15)}
+    .cg input:checked+label{border-color:#fff;box-shadow:0 0 0 2.5px rgba(255,255,255,.18);transform:scale(1.1)}
+
+    /* avatar preview card */
+    .av-card{
+      display:flex;align-items:center;gap:14px;
+      padding:16px;border-radius:14px;margin-bottom:8px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+    }
+    .av-ico{width:52px;height:52px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:all .25s;box-shadow:0 4px 16px rgba(0,0,0,.4);flex-shrink:0}
+    .av-info{}
+    .av-name{font-weight:600;font-size:.9rem;margin-bottom:2px}
+    .av-role{font-size:.73rem;color:var(--muted)}
+
+    /* success icon */
+    .success-ico{text-align:center;font-size:3.5rem;margin-bottom:20px;animation:pop .5s var(--ease)}
+    @keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+    /* spinner */
+    .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .5s linear infinite;display:inline-block;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ═══ RESPONSIVE ══════════════════════════════════════════════ */
+    @media(max-width:860px){
+      body{grid-template-columns:1fr}
+      .left{position:static;height:auto;padding:32px 24px 24px;min-height:auto}
+      .scene{display:none}
+      .features{display:none}
+      .hero-text p{display:none}
+      .left-content{gap:0}
+      .hero-text{display:none}
+      .right{border-left:none;border-top:1px solid var(--border);padding:36px 24px 48px}
+    }
+    @media(max-width:480px){
+      .frow{grid-template-columns:1fr}
+      .eg{grid-template-columns:repeat(8,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ LEFT ═══════════════════════════════════════════════ -->
+<div class="left">
+  <div class="aurora">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  </div>
+  <div class="gridlines"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="left-content">
+    <div class="brand">
+      <div class="brand-logo">🌊</div>
+      <div class="brand-text">
+        <div class="brand-name">Rivalta sul Mincio</div>
+        <div class="brand-sub">La comunità del Mincio</div>
+      </div>
+    </div>
+
+    <div class="hero-text">
+      <h1>Entra nella<br/>comunità del Mincio</h1>
+      <p>Pubblica articoli, racconta storie, esplora il territorio. Un luogo digitale per chi ama il Mincio e le sue Valli.</p>
+    </div>
+
+    <!-- Mincio scene SVG -->
+    <div class="scene">
+      <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:220px">
+        <defs>
+          <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#020c10"/><stop offset="100%" stop-color="#0a1f2a"/></linearGradient>
+          <linearGradient id="lwat" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1F6F8B" stop-opacity=".5"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
+          <radialGradient id="lmoon" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#EAF4F4" stop-opacity=".9"/><stop offset="100%" stop-color="#EAF4F4" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="560" height="300" fill="url(#lsky)"/>
+        <!-- moon glow -->
+        <circle cx="460" cy="62" r="44" fill="url(#lmoon)" opacity=".06"/>
+        <circle cx="460" cy="62" r="28" fill="#EAF4F4" opacity=".07"/>
+        <circle cx="454" cy="56" r="24" fill="#020c10"/>
+        <!-- stars -->
+        <g fill="#EAF4F4">
+          <circle cx="40" cy="38" r="1.2" opacity=".5"/><circle cx="110" cy="22" r="1" opacity=".4"/>
+          <circle cx="190" cy="48" r="1.4" opacity=".55"/><circle cx="300" cy="28" r="1" opacity=".5"/>
+          <circle cx="380" cy="45" r="1.2" opacity=".4"/><circle cx="520" cy="32" r="1" opacity=".5"/>
+          <circle cx="70" cy="75" r="1" opacity=".3"/><circle cx="248" cy="65" r="1.2" opacity=".4"/>
+        </g>
+        <!-- hills silhouette -->
+        <path d="M0,185 Q80,145 160,165 Q240,182 300,148 Q360,114 420,138 Q480,162 540,132 L560,132 L560,190 L0,190Z" fill="#0a1f2a" opacity=".85"/>
+        <path d="M0,215 Q100,195 210,208 Q320,220 420,202 Q500,186 560,212 L560,220 L0,220Z" fill="#0F2A30"/>
+        <!-- water -->
+        <rect x="0" y="235" width="560" height="65" fill="url(#lwat)"/>
+        <!-- ripples anim -->
+        <g stroke="#3a8c8a" stroke-width=".7" fill="none" opacity=".22">
+          <path d="M0,248 Q140,243 280,248 T560,246"><animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,248 Q140,243 280,248 T560,246;M0,250 Q140,255 280,250 T560,252;M0,248 Q140,243 280,248 T560,246"/></path>
+          <path d="M0,265 Q200,260 400,265 T560,263"><animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,265 Q200,260 400,265 T560,263;M0,268 Q200,273 400,268 T560,270;M0,265 Q200,260 400,265 T560,263"/></path>
+        </g>
+        <!-- reeds left -->
+        <g stroke="#143B43" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
+          <path d="M18,300 L18,268"/><path d="M32,300 L32,255"/><path d="M46,300 L46,272"/>
+          <path d="M60,300 L60,260"/><path d="M74,300 L74,275"/>
+        </g>
+        <g fill="#5b3a1f" opacity=".8">
+          <ellipse cx="18" cy="265" rx="2.5" ry="10"/><ellipse cx="32" cy="252" rx="2.5" ry="10"/>
+          <ellipse cx="46" cy="269" rx="2.5" ry="10"/><ellipse cx="60" cy="257" rx="2.5" ry="10"/>
+        </g>
+        <!-- reeds right -->
+        <g stroke="#143B43" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
+          <path d="M490,300 L490,270"/><path d="M506,300 L506,255"/><path d="M522,300 L522,268"/>
+          <path d="M538,300 L538,258"/><path d="M552,300 L552,272"/>
+        </g>
+        <g fill="#5b3a1f" opacity=".8">
+          <ellipse cx="490" cy="267" rx="2.5" ry="10"/><ellipse cx="506" cy="252" rx="2.5" ry="10"/>
+          <ellipse cx="522" cy="265" rx="2.5" ry="10"/>
+        </g>
+        <!-- lily pads -->
+        <g fill="#2E7D32" opacity=".75">
+          <ellipse cx="145" cy="250" rx="28" ry="6.5"/><ellipse cx="200" cy="263" rx="22" ry="5.5"/>
+          <ellipse cx="285" cy="254" rx="32" ry="7.5"/><ellipse cx="360" cy="248" rx="26" ry="6"/>
+          <ellipse cx="425" cy="260" rx="28" ry="6.5"/>
+        </g>
+        <!-- flowers -->
+        <g fill="#fff" opacity=".72">
+          <circle cx="145" cy="248" r="5.5"/><circle cx="285" cy="252" r="6.5"/><circle cx="425" cy="258" r="5"/>
+        </g>
+        <g fill="#F9A825" opacity=".85">
+          <circle cx="145" cy="248" r="2.5"/><circle cx="285" cy="252" r="3"/><circle cx="425" cy="258" r="2.2"/>
+        </g>
+        <!-- heron silhouette -->
+        <g transform="translate(220 148)" opacity=".55">
+          <path d="M0 82 L-2 145" stroke="#EAF4F4" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M5 82 L7 145" stroke="#EAF4F4" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M-20 58 Q2 44 38 54 Q58 62 66 74 Q58 82 40 80 L8 82 Q-16 78 -20 58Z" fill="#EAF4F4"/>
+          <path d="M34 58 Q26 34 30 12" stroke="#EAF4F4" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+          <ellipse cx="32" cy="9" rx="7.5" ry="5.5" fill="#EAF4F4" transform="rotate(-18 32 9)"/>
+          <line x1="38" y1="7" x2="56" y2="3" stroke="#F9A825" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="features">
+      <div class="feat"><div class="feat-ico">✍️</div><div class="feat-text"><div class="feat-title">Pubblica articoli</div><div class="feat-desc">Scrivi e condividi storie sul territorio con la comunità</div></div></div>
+      <div class="feat"><div class="feat-ico">👤</div><div class="feat-text"><div class="feat-title">Profilo personale</div><div class="feat-desc">Il tuo spazio con avatar, bio e tutti i tuoi articoli</div></div></div>
+      <div class="feat"><div class="feat-ico">🌿</div><div class="feat-text"><div class="feat-title">Esplora la comunità</div><div class="feat-desc">Scopri i contenuti di chi ama il Mincio come te</div></div></div>
+    </div>
+  </div>
+
+  <div class="left-quote">
+    <p class="quote-text">Il Mincio non è solo un fiume. È una storia, una cultura, una comunità.</p>
+  </div>
+</div>
+
+<!-- ════════════ RIGHT ══════════════════════════════════════════════ -->
+<div class="right">
+  <div class="form-wrap">
+
+    <!-- ── LOGIN ───────────────────────────────────────────────────── -->
+    <div class="mode on" id="m-login">
+      <div class="fh">
+        <div class="fh-eyebrow">Bentornato</div>
+        <h2>Accedi al tuo account</h2>
+        <p>Non hai un account? <button class="link-btn highlight" onclick="go('reg1')">Registrati gratis →</button></p>
+      </div>
+      <div id="msg-login"></div>
+      <div class="fg"><label>Email</label><input type="email" id="l-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
+      <div class="fg"><label>Password</label>
+        <div class="pwd-wrap">
+          <input type="password" id="l-p" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="pwd-eye" type="button" onclick="togglePwd('l-p',this)" title="Mostra password">👁</button>
+        </div>
+      </div>
+      <button class="btn btn-grad" id="btn-login" onclick="doLogin()">Accedi</button>
+      <div class="links-row">
+        <button class="link-btn" onclick="go('forgot')">🔑 Recupera password</button>
+        <button class="link-btn" onclick="location.href='index.html'">← Home</button>
+      </div>
+    </div>
+
+    <!-- ── REGISTER step 1 ─────────────────────────────────────────── -->
+    <div class="mode" id="m-reg1">
+      <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
+      <div class="fh">
+        <div class="fh-eyebrow">Nuovo account · 1 di 2</div>
+        <h2>Crea il tuo account</h2>
+        <p>Hai già un account? <button class="link-btn highlight" onclick="go('login')">Accedi →</button></p>
+      </div>
+      <div id="msg-reg1"></div>
+      <div class="fg"><label>Email</label><input type="email" id="r-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
+      <div class="fg"><label>Password</label>
+        <div class="pwd-wrap">
+          <input type="password" id="r-p" placeholder="Minimo 6 caratteri" oninput="strength(this)" autocomplete="new-password"/>
+          <button class="pwd-eye" type="button" onclick="togglePwd('r-p',this)" title="Mostra password">👁</button>
+        </div>
+        <div class="strength"><div class="str-seg" id="s1"></div><div class="str-seg" id="s2"></div><div class="str-seg" id="s3"></div><div class="str-seg" id="s4"></div></div>
+      </div>
+      <div class="fg"><label>Conferma password</label>
+        <input type="password" id="r-p2" placeholder="Ripeti la password" autocomplete="new-password"/>
+      </div>
+      <button class="btn btn-grad" onclick="doReg1()">Continua →</button>
+      <button class="btn btn-ghost" onclick="go('login',true)">← Torna al login</button>
+    </div>
+
+    <!-- ── REGISTER step 2 ─────────────────────────────────────────── -->
+    <div class="mode" id="m-reg2">
+      <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
+      <div class="fh">
+        <div class="fh-eyebrow">Personalizza · 2 di 2</div>
+        <h2>Il tuo profilo</h2>
+        <p>Scegli avatar e username. Puoi cambiarlo in seguito.</p>
+      </div>
+      <div id="msg-reg2"></div>
+
+      <!-- live preview card -->
+      <div class="av-card">
+        <div class="av-ico" id="av-ico" style="background:#1F6F8B">🌿</div>
+        <div class="av-info">
+          <div class="av-name" id="av-name">@username</div>
+          <div class="av-role">Nuovo membro della comunità</div>
+        </div>
+      </div>
+
+      <div class="pick-lbl">Avatar</div>
+      <div class="eg" id="eg-reg"></div>
+      <div class="pick-lbl">Colore</div>
+      <div class="cg" id="cg-reg"></div>
+
+      <div class="frow">
+        <div class="fg"><label>Username *</label><input type="text" id="r-un" placeholder="mario_r" maxlength="32" oninput="syncPreview()"/></div>
+        <div class="fg"><label>Nome visualizzato</label><input type="text" id="r-dn" placeholder="Mario Rossi" oninput="syncPreview()"/></div>
+      </div>
+      <div class="fg"><label>Bio <small style="font-weight:400;text-transform:none;color:rgba(234,244,244,.3)">(opzionale)</small></label>
+        <textarea id="r-bio" placeholder="Raccontami qualcosa…" rows="2"></textarea>
+      </div>
+      <button class="btn btn-grad" id="btn-reg2" onclick="doReg2()">Crea il mio profilo 🚀</button>
+      <button class="btn btn-ghost" onclick="go('reg1',true)">← Indietro</button>
+    </div>
+
+    <!-- ── FORGOT PASSWORD ─────────────────────────────────────────── -->
+    <div class="mode" id="m-forgot">
+      <div class="fh">
+        <div class="fh-eyebrow">Accesso</div>
+        <h2>Recupera password</h2>
+        <p>Ti inviamo un link per reimpostare la password al tuo indirizzo email.</p>
+      </div>
+      <div id="msg-forgot"></div>
+      <div class="fg"><label>Email</label><input type="email" id="f-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
+      <button class="btn btn-grad" id="btn-forgot" onclick="doForgot()">Invia link di recupero</button>
+      <button class="btn btn-ghost" onclick="go('login',true)">← Torna al login</button>
+    </div>
+
+    <!-- ── EMAIL SENT ──────────────────────────────────────────────── -->
+    <div class="mode" id="m-sent">
+      <div class="success-ico">📬</div>
+      <div class="fh" style="text-align:center">
+        <div class="fh-eyebrow">Email inviata</div>
+        <h2>Controlla la posta</h2>
+        <p>Abbiamo inviato un link di recupero a <strong id="sent-email" style="color:var(--a)"></strong>.<br/>Controlla anche la cartella spam.</p>
+      </div>
+      <button class="btn btn-grad" onclick="go('login')">← Torna al login</button>
+      <div style="text-align:center;margin-top:16px">
+        <button class="link-btn" onclick="doForgot(true)">Non hai ricevuto l'email? Reinvia</button>
+      </div>
+    </div>
+
+    <!-- ── RESET PASSWORD (token URL) ────────────────────────────── -->
+    <div class="mode" id="m-reset">
+      <div class="fh">
+        <div class="fh-eyebrow">Sicurezza</div>
+        <h2>Nuova password</h2>
+        <p>Scegli una nuova password sicura per il tuo account.</p>
+      </div>
+      <div id="msg-reset"></div>
+      <div class="fg"><label>Nuova password</label>
+        <div class="pwd-wrap">
+          <input type="password" id="np-1" placeholder="Minimo 6 caratteri" oninput="strength(this,'np')" autocomplete="new-password"/>
+          <button class="pwd-eye" type="button" onclick="togglePwd('np-1',this)">👁</button>
+        </div>
+        <div class="strength"><div class="str-seg" id="np-s1"></div><div class="str-seg" id="np-s2"></div><div class="str-seg" id="np-s3"></div><div class="str-seg" id="np-s4"></div></div>
+      </div>
+      <div class="fg"><label>Conferma password</label>
+        <input type="password" id="np-2" placeholder="Ripeti la password" autocomplete="new-password"/>
+      </div>
+      <button class="btn btn-grad" id="btn-reset" onclick="doReset()">Imposta nuova password</button>
+    </div>
+
+  </div><!-- /form-wrap -->
+</div><!-- /right -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $  = id => document.getElementById(id);
+const EMOJIS = ['🌿','🦢','🌊','🎣','🌸','🦋','🌾','🌻','🦜','🐠','🌺','🦆','🌲','🦅','💧','🍃','🌙','⭐','🐞','🌼'];
+const COLORS  = ['#1F6F8B','#2E7D32','#3a8c8a','#5E35B1','#C62828','#F57F17','#0F2A30','#4a6fa5'];
+
+/* ── Particles ───────────────────────────────────────────────────── */
+;(function(){
+  const wrap = $('particles');
+  for(let i=0;i<28;i++){
+    const p = document.createElement('div');
+    p.className='ptl';
+    const sz = 1.5+Math.random()*3.5;
+    p.style.cssText=`left:${Math.random()*100}%;top:${60+Math.random()*40}%;width:${sz}px;height:${sz}px;animation-delay:${Math.random()*14}s;animation-duration:${12+Math.random()*16}s`;
+    wrap.appendChild(p);
+  }
+})();
+
+/* ── Session check ───────────────────────────────────────────────── */
+sb.auth.getSession().then(({data:{session}})=>{
+  if(session) location.href='me.html';
+});
+
+/* ── Handle password recovery hash ──────────────────────────────── */
+sb.auth.onAuthStateChange((event)=>{
+  if(event==='PASSWORD_RECOVERY') go('reset');
+});
+
+/* ── Pickers ─────────────────────────────────────────────────────── */
+;(function(){
+  const eg=$('eg-reg'), cg=$('cg-reg');
+  EMOJIS.forEach((e,i)=>{
+    eg.innerHTML+=`<input type="radio" name="em" id="em${i}" value="${e}" ${i===0?'checked':''} onchange="syncPreview()"><label for="em${i}">${e}</label>`;
+  });
+  COLORS.forEach((c,i)=>{
+    cg.innerHTML+=`<input type="radio" name="col" id="c${i}" value="${c}" ${i===0?'checked':''} onchange="syncPreview()"><label for="c${i}" style="background:${c}"></label>`;
+  });
+})();
+
+function syncPreview(){
+  const e=document.querySelector('input[name="em"]:checked')?.value||'🌿';
+  const c=document.querySelector('input[name="col"]:checked')?.value||'#1F6F8B';
+  const un=($('r-un').value||'').toLowerCase().replace(/[^a-z0-9_]/g,'')||'username';
+  const av=$('av-ico');
+  av.textContent=e; av.style.background=c;
+  $('av-name').textContent='@'+un;
+  $('r-un').value=un;
+}
+
+/* ── Mode switching ──────────────────────────────────────────────── */
+let currentMode='login';
+function go(name, back=false){
+  document.getElementById('m-'+currentMode)?.classList.remove('on','back');
+  currentMode=name;
+  const el=document.getElementById('m-'+name);
+  el.classList.remove('on','back');
+  void el.offsetWidth; // reflow
+  if(back) el.classList.add('back');
+  el.classList.add('on');
+  // focus first input
+  setTimeout(()=>el.querySelector('input')?.focus(),80);
+}
+
+/* ── Helpers ─────────────────────────────────────────────────────── */
+function msg(id,txt,type='err'){
+  $(id).innerHTML=txt?`<div class="msg ${type}">${txt}</div>`:'';
+}
+function setBtn(id,loading,label){
+  const b=$(id); b.disabled=loading;
+  b.innerHTML=loading?'<span class="sp"></span>':label;
+}
+
+function togglePwd(inputId,btn){
+  const inp=$(inputId);
+  const show=inp.type==='password';
+  inp.type=show?'text':'password';
+  btn.textContent=show?'🙈':'👁';
+}
+
+function strength(inp,prefix='s'){
+  const v=inp.value;
+  const score=(v.length>=8?1:0)+/[A-Z]/.test(v)+/[0-9]/.test(v)+/[^A-Za-z0-9]/.test(v);
+  const cols=['#ef5350','#ff7043','#ffa726','#66bb6a'];
+  for(let i=1;i<=4;i++){
+    const seg=document.getElementById(prefix+i);
+    if(!seg) continue;
+    seg.style.background=i<=score?(cols[score-1]||cols[0]):'var(--border)';
+  }
+}
+
+/* ── Login ───────────────────────────────────────────────────────── */
+async function doLogin(){
+  const e=$('l-e').value.trim(), p=$('l-p').value;
+  if(!e||!p){msg('msg-login','Compila tutti i campi.');return;}
+  setBtn('btn-login',true,'');
+  const {error}=await sb.auth.signInWithPassword({email:e,password:p});
+  setBtn('btn-login',false,'Accedi');
+  if(error){msg('msg-login','Email o password non corretti.');return;}
+  location.href='me.html';
+}
+$('l-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+/* ── Register step 1 ─────────────────────────────────────────────── */
+function doReg1(){
+  const e=$('r-e').value.trim(),p=$('r-p').value,p2=$('r-p2').value;
+  msg('msg-reg1','');
+  if(!e){msg('msg-reg1','Inserisci l\'email.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){msg('msg-reg1','Email non valida.');return;}
+  if(p.length<6){msg('msg-reg1','Password di almeno 6 caratteri.');return;}
+  if(p!==p2){msg('msg-reg1','Le password non coincidono.');return;}
+  go('reg2');
+}
+
+/* ── Register step 2 ─────────────────────────────────────────────── */
+async function doReg2(){
+  const un=$('r-un').value.toLowerCase().replace(/[^a-z0-9_]/g,'').trim();
+  if(un.length<3){msg('msg-reg2','Username di almeno 3 caratteri (lettere, numeri, _).');return;}
+  const dn=$('r-dn').value.trim()||un;
+  const bio=$('r-bio').value.trim()||null;
+  const emoji=document.querySelector('input[name="em"]:checked')?.value||'🌿';
+  const color=document.querySelector('input[name="col"]:checked')?.value||'#1F6F8B';
+  setBtn('btn-reg2',true,'');
+  const {data,error}=await sb.auth.signUp({email:$('r-e').value.trim(),password:$('r-p').value});
+  if(error){setBtn('btn-reg2',false,'Crea il mio profilo 🚀');msg('msg-reg2',error.message==='User already registered'?'Email già registrata. <button class="link-btn highlight" onclick="go(\'login\')">Accedi →</button>':error.message);return;}
+  const {error:pe}=await sb.from('profiles').insert({id:data.user.id,username:un,display_name:dn,bio,avatar_emoji:emoji,avatar_color:color});
+  setBtn('btn-reg2',false,'Crea il mio profilo 🚀');
+  if(pe){msg('msg-reg2',pe.code==='23505'?'Username già in uso. Scegline un altro.':pe.message);return;}
+  location.href='me.html';
+}
+
+/* ── Forgot password ─────────────────────────────────────────────── */
+async function doForgot(resend=false){
+  const email=resend?$('sent-email').textContent:$('f-e').value.trim();
+  if(!email){msg('msg-forgot','Inserisci il tuo indirizzo email.');return;}
+  setBtn('btn-forgot',true,'');
+  const {error}=await sb.auth.resetPasswordForEmail(email,{
+    redirectTo: location.origin+'/reset.html'
+  });
+  setBtn('btn-forgot',false,'Invia link di recupero');
+  if(error){msg('msg-forgot',error.message);return;}
+  $('sent-email').textContent=email;
+  if(!resend) go('sent');
+  else msg('msg-forgot','',''); // clear
+}
+
+/* ── Reset password ──────────────────────────────────────────────── */
+async function doReset(){
+  const p=$('np-1').value, p2=$('np-2').value;
+  if(p.length<6){msg('msg-reset','Password di almeno 6 caratteri.');return;}
+  if(p!==p2){msg('msg-reset','Le password non coincidono.');return;}
+  setBtn('btn-reset',true,'');
+  const {error}=await sb.auth.updateUser({password:p});
+  setBtn('btn-reset',false,'Imposta nuova password');
+  if(error){msg('msg-reset',error.message);return;}
+  msg('msg-reset','Password aggiornata! Reindirizzo…','ok');
+  setTimeout(()=>location.href='me.html',1600);
+}
+</script>
+</body>
+</html>

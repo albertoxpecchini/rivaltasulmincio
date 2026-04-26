@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articolo – Pro Loco Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1F6F8B; --text: #143B43; --text-muted: #5F6B6D;
+      --bg: #F8FAFA; --surface: #fff; --border: #e2ecee;
+      --accent: #2E7D32; --secondary: #3a8c8a;
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    a { color: var(--primary); }
+    .topbar { background: var(--text); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+    .topbar a { color: #EAF4F4; text-decoration: none; font-size: .88rem; }
+    .topbar a:hover { color: #fff; }
+    .container { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    .post-wrap { padding: 60px 0 80px; }
+    .post-meta { display: flex; gap: 12px; align-items: center; font-size: .82rem; color: var(--text-muted); margin-bottom: 20px; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .74rem; font-weight: 600; background: #e3f0f5; color: var(--primary); }
+    .badge.green { background: #e8f5e9; color: var(--accent); }
+    h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.25; margin-bottom: 24px; }
+    .lead { font-size: 1.1rem; color: var(--text-muted); border-left: 3px solid var(--secondary); padding-left: 16px; margin-bottom: 36px; }
+    .content { font-size: 1rem; }
+    .content p { margin-bottom: 1.2em; }
+    .content h2 { font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; margin: 2em 0 .6em; }
+    .content h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5em 0 .4em; }
+    .content ul, .content ol { padding-left: 1.4em; margin-bottom: 1.2em; }
+    .content li { margin-bottom: .4em; }
+    #skeleton { animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .skel-line { height: 16px; background: #dde8ea; border-radius: 4px; margin-bottom: 10px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; font-size: .85rem; color: var(--text-muted); text-decoration: none; }
+    .back-link:hover { color: var(--primary); }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← Pro Loco Rivalta sul Mincio</a>
+</div>
+
+<div class="container">
+  <div class="post-wrap">
+    <a class="back-link" href="index.html#news">← Torna alle notizie</a>
+
+    <div id="post-content">
+      <div id="skeleton">
+        <div class="skel-line" style="width:30%;height:12px;"></div>
+        <div class="skel-line" style="width:80%;height:32px;margin:16px 0 8px;"></div>
+        <div class="skel-line" style="width:60%;height:32px;margin-bottom:28px;"></div>
+        <div class="skel-line"></div>
+        <div class="skel-line" style="width:92%;"></div>
+        <div class="skel-line" style="width:85%;"></div>
+        <div class="skel-line" style="width:78%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(async function() {
+  const id = new URLSearchParams(location.search).get('id');
+  const wrap = document.getElementById('post-content');
+
+  if (!id || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
+    wrap.innerHTML = '<p>Articolo non trovato.</p>';
+    return;
+  }
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const { data: post, error } = await sb.from('posts').select('*').eq('id', id).eq('published', true).single();
+
+  if (error || !post) {
+    wrap.innerHTML = '<p>Articolo non trovato o non pubblicato.</p>';
+    return;
+  }
+
+  document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
+  const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+  const badgeCls = c => c === 'green' ? 'badge green' : 'badge';
+
+  // Render markdown-ish content (no external lib — basic paragraphs + headings)
+  function renderContent(text) {
+    if (!text) return '';
+    return text
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n\n+/g, '</p><p>')
+      .replace(/^/, '<p>') + '</p>';
+  }
+
+  wrap.innerHTML = `
+    <div class="post-meta">
+      <time>${fmt(post.published_at)}</time>
+      <span>·</span>
+      <span>${post.category || ''}</span>
+      <span class="${badgeCls(post.badge_color)}">${post.badge || post.category || ''}</span>
+    </div>
+    <h1>${post.title}</h1>
+    ${post.excerpt ? `<p class="lead">${post.excerpt}</p>` : ''}
+    <div class="content">${renderContent(post.content)}</div>
+  `;
+})();
+</script>
+</body>
+</html>

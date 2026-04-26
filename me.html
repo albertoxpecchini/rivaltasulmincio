@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Il mio spazio – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #020c10; --sb: #0a1a22; --glass: rgba(10,30,38,.7); --surface: rgba(255,255,255,.04);
+      --border: rgba(255,255,255,.08); --text: #EAF4F4; --muted: rgba(234,244,244,.45);
+      --p: #1F6F8B; --a: #3a8c8a; --g: #2E7D32; --gold: #F9A825;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif;
+           display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* ── Aurora ─────────────────────────────────────────────────── */
+    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(130px); }
+    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, #1F6F8B 0%, transparent 55%); top:-200px; left:-150px; opacity:.1; animation: oa 22s ease-in-out infinite alternate; }
+    .orb-2 { width: 450px; height: 450px; background: radial-gradient(circle, #2E7D32 0%, transparent 60%); bottom:-100px; right:200px; opacity:.08; animation: ob 18s ease-in-out infinite alternate; }
+    @keyframes oa { to { transform: translate(60px,50px) scale(1.1); } }
+    @keyframes ob { to { transform: translate(-50px,-30px) scale(1.2); } }
+
+    /* ── Sidebar ─────────────────────────────────────────────────── */
+    .sb-wrap { position: fixed; top:0; left:0; bottom:0; width: 240px; z-index: 50;
+               background: var(--sb); border-right: 1px solid var(--border);
+               display: flex; flex-direction: column; padding: 0 0 20px; }
+    .sb-brand { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .sb-brand-logo { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg,#1F6F8B,#3a8c8a); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .sb-brand-name { font-family: 'Fraunces', Georgia, serif; font-size: .88rem; line-height: 1.2;
+                     background: linear-gradient(135deg,#EAF4F4,#3a8c8a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    /* Avatar in sidebar */
+    .sb-user { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .sb-av { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .sb-info { min-width: 0; }
+    .sb-dname { font-weight: 600; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-uname { font-size: .76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-badge { font-size: .64rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; background: rgba(249,168,37,.15); color: var(--gold); border: 1px solid rgba(249,168,37,.25); display: inline-block; margin-top: 2px; }
+
+    /* Nav */
+    .sb-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+    .sb-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px;
+               font-size: .87rem; font-weight: 500; color: var(--muted); cursor: pointer;
+               transition: all .2s; border: none; background: none; font-family: inherit; text-align: left; width: 100%; }
+    .sb-item:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .sb-item.on { color: var(--text); background: rgba(58,140,138,.15); border: 1px solid rgba(58,140,138,.2); }
+    .sb-item .ico { font-size: 1rem; width: 20px; text-align: center; }
+    .sb-sep { height: 1px; background: var(--border); margin: 8px 0; }
+
+    .sb-footer { padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+
+    /* ── Main content ─────────────────────────────────────────────── */
+    .main { margin-left: 240px; flex: 1; position: relative; z-index: 1; padding: 32px; min-height: 100vh; }
+    .panel { display: none; animation: fadeIn .3s ease; }
+    .panel.on { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+    .panel-head { margin-bottom: 28px; }
+    .panel-head h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.6rem; margin-bottom: 5px; }
+    .panel-head p { color: var(--muted); font-size: .88rem; }
+
+    /* ── Profile panel ────────────────────────────────────────────── */
+    .profile-grid { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; }
+    .profile-av-col { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .big-av { width: 110px; height: 110px; border-radius: 28px; display: flex; align-items: center;
+               justify-content: center; font-size: 3rem; transition: all .3s;
+               box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08); }
+    .av-role { font-size: .72rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-align: center; }
+
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
+    .form-card h3 { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; margin-bottom: 20px; color: rgba(234,244,244,.8); }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: .75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 7px; }
+    .fg input, .fg textarea, .fg select {
+      width: 100%; padding: 11px 14px; background: rgba(255,255,255,.04);
+      border: 1.5px solid var(--border); border-radius: 10px;
+      color: var(--text); font-size: .9rem; font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .fg textarea { min-height: 80px; resize: vertical; line-height: 1.55; }
+    .fg select option { background: #0a1a22; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { outline: none; border-color: var(--a); box-shadow: 0 0 0 3px rgba(58,140,138,.18); background: rgba(255,255,255,.06); }
+    .fg input::placeholder, .fg textarea::placeholder { color: rgba(234,244,244,.2); }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Emoji grid */
+    .pick-label { font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 9px; margin-top: 16px; }
+    .eg { display: grid; grid-template-columns: repeat(10,1fr); gap: 5px; margin-bottom: 14px; }
+    .eg input { display: none; }
+    .eg label { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; font-size: 1.1rem;
+                border-radius: 8px; cursor: pointer; border: 1.5px solid transparent; transition: all .15s; }
+    .eg label:hover { background: rgba(255,255,255,.07); transform: scale(1.15); }
+    .eg input:checked + label { background: rgba(58,140,138,.2); border-color: var(--a); transform: scale(1.1); }
+    .cg { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .cg input { display: none; }
+    .cg label { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; transition: all .15s; border: 2.5px solid transparent; }
+    .cg label:hover { transform: scale(1.15); }
+    .cg input:checked + label { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,.2); transform: scale(1.1); }
+
+    /* ── Posts panel ──────────────────────────────────────────────── */
+    .posts-table { width: 100%; border-collapse: collapse; }
+    .posts-table th { text-align: left; padding: 10px 14px; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .posts-table td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .88rem; vertical-align: middle; }
+    .posts-table tr:hover td { background: rgba(255,255,255,.02); }
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
+    .pill-pub { background: rgba(46,125,50,.15); color: #a5d6a7; border: 1px solid rgba(46,125,50,.3); }
+    .pill-draft { background: rgba(249,168,37,.1); color: #ffd54f; border: 1px solid rgba(249,168,37,.2); }
+    .act-row { display: flex; gap: 6px; }
+    .post-title-link { color: var(--text); text-decoration: none; font-weight: 600; transition: color .2s; }
+    .post-title-link:hover { color: var(--a); }
+
+    /* ── Write panel ──────────────────────────────────────────────── */
+    .write-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .write-title-input {
+      width: 100%; padding: 16px; background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 14px; color: var(--text); font-size: 1.4rem; font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600; transition: border-color .2s;
+    }
+    .write-title-input:focus { outline: none; border-color: var(--a); }
+    .write-title-input::placeholder { color: rgba(234,244,244,.2); }
+    .write-content {
+      width: 100%; min-height: 380px; padding: 16px; background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 14px; color: var(--text);
+      font-size: .95rem; font-family: inherit; line-height: 1.75; resize: vertical;
+      transition: border-color .2s;
+    }
+    .write-content:focus { outline: none; border-color: var(--a); }
+    .write-content::placeholder { color: rgba(234,244,244,.18); }
+    .md-hint { font-size: .73rem; color: var(--muted); margin-top: 6px; }
+
+    /* Image type selector */
+    .img-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 4px; }
+    .ig input { display: none; }
+    .ig label { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px;
+                border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer;
+                font-size: .65rem; color: var(--muted); text-align: center; transition: all .15s; }
+    .ig label span { font-size: 1.3rem; }
+    .ig label:hover { border-color: var(--a); background: rgba(58,140,138,.08); color: var(--text); }
+    .ig input:checked + label { border-color: var(--a); background: rgba(58,140,138,.15); color: var(--text); }
+
+    /* ── Buttons ──────────────────────────────────────────────────── */
+    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 10px;
+           font-size: .87rem; font-weight: 600; font-family: inherit; cursor: pointer; border: none; transition: all .2s; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: linear-gradient(135deg,#1F6F8B,#3a8c8a); color: #fff; box-shadow: 0 4px 18px rgba(31,111,139,.3); }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 24px rgba(31,111,139,.5); }
+    .btn-success { background: linear-gradient(135deg,#2E7D32,#43A047); color: #fff; box-shadow: 0 4px 18px rgba(46,125,50,.3); }
+    .btn-success:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-ghost { background: rgba(255,255,255,.05); color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover:not(:disabled) { color: var(--text); background: rgba(255,255,255,.09); }
+    .btn-danger { background: rgba(239,83,80,.12); color: #ef9a9a; border: 1px solid rgba(239,83,80,.2); }
+    .btn-danger:hover:not(:disabled) { background: rgba(239,83,80,.2); }
+    .btn-sm { padding: 6px 12px; font-size: .78rem; }
+
+    /* ── Toast ────────────────────────────────────────────────────── */
+    #toast { position: fixed; bottom: 32px; right: 32px; z-index: 999;
+             padding: 12px 20px; border-radius: 12px; font-size: .88rem; font-weight: 600;
+             backdrop-filter: blur(20px); border: 1px solid var(--border);
+             transform: translateY(20px); opacity: 0; transition: all .3s;
+             pointer-events: none; }
+    #toast.show { transform: none; opacity: 1; }
+    #toast.ok  { background: rgba(46,125,50,.3); color: #a5d6a7; }
+    #toast.err { background: rgba(239,83,80,.25); color: #ef9a9a; }
+
+    /* ── Spinner ──────────────────────────────────────────────────── */
+    .sp { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .5s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Empty ────────────────────────────────────────────────────── */
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty span { font-size: 2.5rem; display: block; margin-bottom: 14px; }
+
+    /* ── Mobile ───────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .sb-wrap { display: none; }
+      .main { margin-left: 0; padding: 20px 16px 80px; }
+      .mob-tabs { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+                  background: var(--sb); border-top: 1px solid var(--border);
+                  padding: 8px 0 12px; }
+      .mob-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+                 font-size: .65rem; color: var(--muted); cursor: pointer; border: none; background: none; font-family: inherit; }
+      .mob-tab.on { color: var(--a); }
+      .mob-tab span:first-child { font-size: 1.2rem; }
+      .profile-grid { grid-template-columns: 1fr; }
+      .frow { grid-template-columns: 1fr; }
+      .img-grid { grid-template-columns: repeat(4,1fr); }
+    }
+    @media (min-width: 769px) { .mob-tabs { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+<!-- ── Sidebar ──────────────────────────────────────────────────── -->
+<div class="sb-wrap">
+  <div class="sb-brand">
+    <div class="sb-brand-logo">🌊</div>
+    <div class="sb-brand-name">Rivalta sul Mincio</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av" id="sb-av">🌿</div>
+    <div class="sb-info">
+      <div class="sb-dname" id="sb-dn">…</div>
+      <div class="sb-uname" id="sb-un">@…</div>
+      <div class="sb-badge" id="sb-role" style="display:none">Admin</div>
+    </div>
+  </div>
+  <nav class="sb-nav">
+    <button class="sb-item on" id="n-profile" onclick="go('profile')"><span class="ico">👤</span>Profilo</button>
+    <button class="sb-item" id="n-posts" onclick="go('posts')"><span class="ico">📝</span>I miei post</button>
+    <button class="sb-item" id="n-write" onclick="go('write')"><span class="ico">✍️</span>Scrivi</button>
+    <div class="sb-sep"></div>
+    <button class="sb-item" onclick="location.href='index.html'"><span class="ico">🏠</span>Home</button>
+    <button class="sb-item" id="n-prof-link" onclick="viewProfile()" style="display:none"><span class="ico">🔗</span>Il mio profilo</button>
+    <button class="sb-item" id="n-admin" onclick="location.href='admin.html'" style="display:none"><span class="ico">⚙️</span>Admin</button>
+  </nav>
+  <div class="sb-footer">
+    <button class="sb-item" onclick="logout()"><span class="ico">🚪</span>Esci</button>
+  </div>
+</div>
+
+<!-- ── Mobile tabs ───────────────────────────────────────────────── -->
+<div class="mob-tabs">
+  <button class="mob-tab on" id="mt-profile" onclick="go('profile')"><span>👤</span><span>Profilo</span></button>
+  <button class="mob-tab" id="mt-posts" onclick="go('posts')"><span>📝</span><span>Post</span></button>
+  <button class="mob-tab" id="mt-write" onclick="go('write')"><span>✍️</span><span>Scrivi</span></button>
+  <button class="mob-tab" onclick="location.href='index.html'"><span>🏠</span><span>Home</span></button>
+</div>
+
+<!-- ── Main ─────────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Profile panel -->
+  <div class="panel on" id="p-profile">
+    <div class="panel-head">
+      <h1>Il mio profilo</h1>
+      <p>Personalizza il tuo spazio nella comunità.</p>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-av-col">
+        <div class="big-av" id="big-av">🌿</div>
+        <div id="role-badge"></div>
+        <a id="view-profile-btn" href="#" class="btn btn-ghost btn-sm" style="display:none">Vedi profilo →</a>
+      </div>
+      <div>
+        <div class="form-card" style="margin-bottom:20px">
+          <h3>Informazioni</h3>
+          <div id="prof-msg"></div>
+          <div class="frow">
+            <div class="fg"><label>Username</label><input type="text" id="f-un" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')" /></div>
+            <div class="fg"><label>Nome visualizzato</label><input type="text" id="f-dn" /></div>
+          </div>
+          <div class="fg"><label>Bio</label><textarea id="f-bio" placeholder="Racconta qualcosa di te…"></textarea></div>
+          <button class="btn btn-primary" id="save-prof-btn" onclick="saveProfile()">Salva modifiche</button>
+        </div>
+        <div class="form-card">
+          <h3>Avatar</h3>
+          <div class="pick-label">Emoji</div>
+          <div class="eg" id="p-eg"></div>
+          <div class="pick-label">Colore</div>
+          <div class="cg" id="p-cg"></div>
+          <button class="btn btn-primary btn-sm" onclick="saveAvatar()">Aggiorna avatar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts panel -->
+  <div class="panel" id="p-posts">
+    <div class="panel-head">
+      <h1>I miei articoli</h1>
+      <p>Gestisci i tuoi contenuti pubblicati e le bozze.</p>
+    </div>
+    <div style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-success" onclick="go('write')">+ Nuovo articolo</button>
+    </div>
+    <div id="my-posts-wrap">
+      <div class="empty"><span>⏳</span><p>Caricamento…</p></div>
+    </div>
+  </div>
+
+  <!-- Write panel -->
+  <div class="panel" id="p-write">
+    <div class="write-header">
+      <div>
+        <h1 style="font-family:'Fraunces',Georgia,serif;font-size:1.6rem">✍️ <span id="write-mode-label">Nuovo articolo</span></h1>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:4px" id="write-sub">Scrivi, salva come bozza o pubblica direttamente.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="write-cancel-btn" onclick="cancelWrite()" style="display:none">Annulla</button>
+        <button class="btn btn-ghost" onclick="savePost(false)">Salva bozza</button>
+        <button class="btn btn-success" onclick="savePost(true)">Pubblica</button>
+      </div>
+    </div>
+    <div id="write-msg" style="margin-bottom:12px"></div>
+    <input type="hidden" id="w-id" />
+    <div class="fg" style="margin-bottom:16px">
+      <textarea class="write-title-input" id="w-title" placeholder="Il titolo dell'articolo…" rows="2" style="min-height:auto;font-size:1.4rem;resize:none;line-height:1.3"></textarea>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label>Sommario <small style="font-weight:400;color:var(--muted)">(anteprima)</small></label>
+      <input type="text" id="w-exc" placeholder="Breve descrizione…" />
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label>Contenuto</label>
+      <textarea class="write-content" id="w-content" placeholder="Scrivi il tuo articolo qui…&#10;&#10;## Titolo sezione&#10;&#10;Paragrafo di testo…&#10;&#10;**Grassetto**, *corsivo*"></textarea>
+      <div class="md-hint">Markdown: **grassetto** · *corsivo* · ## Titolo · ### Sottotitolo</div>
+    </div>
+    <div class="frow" style="margin-bottom:16px">
+      <div class="fg">
+        <label>Categoria</label>
+        <select id="w-cat">
+          <option>Territorio</option><option>Il Luccio</option><option>Fauna</option>
+          <option>Ambiente</option><option>Ecoturismo</option><option>Storia</option><option>Eventi</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Etichetta badge</label>
+        <input type="text" id="w-badge" placeholder="Es. Natura" />
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:24px">
+      <label>Illustrazione</label>
+      <div class="img-grid">
+        <div class="ig"><input type="radio" name="wimg" id="wi0" value="festival" checked><label for="wi0"><span>🎪</span>Sagra</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi1" value="heron"><label for="wi1"><span>🦢</span>Aironi</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi2" value="cycling"><label for="wi2"><span>🚴</span>Ciclabile</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi3" value="village"><label for="wi3"><span>🌙</span>Borgo</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi4" value="reeds"><label for="wi4"><span>🌾</span>Canneti</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi5" value="fishing"><label for="wi5"><span>🎣</span>Pesca</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi6" value="nature"><label for="wi6"><span>🌸</span>Natura</label></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+const fmt = iso => new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+
+let ME = null, MY_POSTS = [];
+
+/* ── Init ─────────────────────────────────────────────────────────── */
+(async function() {
+  const {data:{session}} = await sb.auth.getSession();
+  if(!session) { location.href = 'login.html'; return; }
+
+  const {data:profile} = await sb.from('profiles').select('*').eq('id',session.user.id).single();
+  if(!profile) { location.href = 'login.html'; return; }
+  ME = profile;
+
+  // Sidebar
+  const sb_av = $('sb-av');
+  sb_av.textContent = profile.avatar_emoji || '🌿';
+  sb_av.style.background = profile.avatar_color || '#1F6F8B';
+  $('sb-dn').textContent = profile.display_name || profile.username;
+  $('sb-un').textContent = '@' + profile.username;
+  if(profile.role === 'admin') { $('sb-role').style.display = 'inline-block'; $('n-admin').style.display = 'flex'; }
+
+  $('n-prof-link').style.display = 'flex';
+  $('view-profile-btn').href = `profile.html?u=${profile.username}`;
+  $('view-profile-btn').style.display = 'inline-flex';
+
+  // Big avatar
+  const bigAv = $('big-av');
+  bigAv.textContent = profile.avatar_emoji || '🌿';
+  bigAv.style.background = profile.avatar_color || '#1F6F8B';
+
+  // Role badge
+  if(profile.role === 'admin') {
+    $('role-badge').innerHTML = '<span style="background:rgba(249,168,37,.12);color:#ffd54f;border:1px solid rgba(249,168,37,.25);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700">⚙️ Admin</span>';
+  }
+
+  // Fill profile form
+  $('f-un').value = profile.username || '';
+  $('f-dn').value = profile.display_name || '';
+  $('f-bio').value = profile.bio || '';
+
+  // Build pickers
+  buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
+
+  // Hash routing
+  const hash = location.hash.replace('#','');
+  if(hash === 'write') go('write');
+  else if(hash === 'posts') go('posts');
+
+  await loadMyPosts();
+})();
+
+/* ── Panel switching ──────────────────────────────────────────────── */
+function go(name) {
+  ['profile','posts','write'].forEach(n => {
+    document.getElementById('p-'+n)?.classList.toggle('on', n===name);
+    document.getElementById('n-'+n)?.classList.toggle('on', n===name);
+    document.getElementById('mt-'+n)?.classList.toggle('on', n===name);
+  });
+  history.replaceState(null,'','#'+name);
+  if(name === 'posts') loadMyPosts();
+}
+function viewProfile() { if(ME) location.href = `profile.html?u=${ME.username}`; }
+
+/* ── Toast ────────────────────────────────────────────────────────── */
+let toastTimer;
+function toast(txt, type='ok') {
+  const el = $('toast'); el.textContent = txt; el.className = 'show ' + type;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+/* ── Build avatar pickers ─────────────────────────────────────────── */
+const EMOJIS = ['🌿','🦢','🌊','🎣','🌸','🦋','🌾','🌻','🦜','🐠','🌺','🦆','🌲','🦅','💧','🍃','🌙','⭐','🐞','🌼'];
+const COLORS  = ['#1F6F8B','#2E7D32','#3a8c8a','#5E35B1','#C62828','#F57F17','#0F2A30','#4a6fa5'];
+
+function buildPickers(selEmoji, selColor) {
+  const eg = $('p-eg'), cg = $('p-cg');
+  EMOJIS.forEach((e,i) => {
+    eg.innerHTML += `<input type="radio" name="pem" id="pe${i}" value="${e}" ${e===selEmoji?'checked':''}
+      onchange="updateBigAv()"><label for="pe${i}">${e}</label>`;
+  });
+  COLORS.forEach((c,i) => {
+    cg.innerHTML += `<input type="radio" name="pcol" id="pc${i}" value="${c}" ${c===selColor?'checked':''}
+      onchange="updateBigAv()"><label for="pc${i}" style="background:${c}"></label>`;
+  });
+}
+
+function updateBigAv() {
+  const e = document.querySelector('input[name="pem"]:checked')?.value || '🌿';
+  const c = document.querySelector('input[name="pcol"]:checked')?.value || '#1F6F8B';
+  const av = $('big-av'); av.textContent = e; av.style.background = c;
+  const sbAv = $('sb-av'); sbAv.textContent = e; sbAv.style.background = c;
+}
+
+/* ── Save profile ─────────────────────────────────────────────────── */
+async function saveProfile() {
+  const un = $('f-un').value.trim();
+  if(un.length < 3) { $('prof-msg').innerHTML = '<p style="color:#ef9a9a;font-size:.83rem;margin-bottom:10px">Username di almeno 3 caratteri.</p>'; return; }
+  $('prof-msg').innerHTML = '';
+  const btn = $('save-prof-btn'); btn.disabled = true; btn.innerHTML = '<span class="sp"></span>';
+  const {error} = await sb.from('profiles').update({
+    username: un, display_name: $('f-dn').value.trim(), bio: $('f-bio').value.trim() || null
+  }).eq('id', ME.id);
+  btn.disabled = false; btn.textContent = 'Salva modifiche';
+  if(error) { toast(error.code==='23505' ? 'Username già in uso.' : error.message, 'err'); return; }
+  ME.username = un; $('sb-un').textContent = '@'+un;
+  $('view-profile-btn').href = `profile.html?u=${un}`;
+  toast('Profilo aggiornato ✓');
+}
+
+async function saveAvatar() {
+  const emoji = document.querySelector('input[name="pem"]:checked')?.value || '🌿';
+  const color = document.querySelector('input[name="pcol"]:checked')?.value || '#1F6F8B';
+  const {error} = await sb.from('profiles').update({avatar_emoji:emoji, avatar_color:color}).eq('id',ME.id);
+  if(error) { toast(error.message,'err'); return; }
+  ME.avatar_emoji = emoji; ME.avatar_color = color;
+  toast('Avatar aggiornato ✓');
+}
+
+/* ── Load my posts ────────────────────────────────────────────────── */
+async function loadMyPosts() {
+  const {data} = await sb.from('posts').select('id,title,category,published,published_at,created_at')
+    .eq('user_id',ME.id).order('created_at',{ascending:false});
+  MY_POSTS = data || [];
+  renderMyPosts();
+}
+
+function renderMyPosts() {
+  const wrap = $('my-posts-wrap');
+  if(!MY_POSTS.length) {
+    wrap.innerHTML = '<div class="empty"><span>📝</span><p>Nessun articolo ancora.<br/>Inizia a scrivere!</p></div>';
+    return;
+  }
+  wrap.innerHTML = `<table class="posts-table"><thead><tr>
+    <th>Titolo</th><th>Categoria</th><th>Stato</th><th>Data</th><th></th>
+  </tr></thead><tbody>${MY_POSTS.map(p=>`
+    <tr>
+      <td>${p.published?`<a class="post-title-link" href="post.html?id=${p.id}" target="_blank">${p.title}</a>`:p.title}</td>
+      <td style="color:var(--muted)">${p.category||'—'}</td>
+      <td><span class="pill ${p.published?'pill-pub':'pill-draft'}">${p.published?'Pubblicato':'Bozza'}</span></td>
+      <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at||p.created_at)}</td>
+      <td><div class="act-row">
+        <button class="btn btn-ghost btn-sm" onclick="editPost('${p.id}')">✏️</button>
+        ${p.published
+          ? `<button class="btn btn-ghost btn-sm" onclick="toggleP('${p.id}',false)">Nascondi</button>`
+          : `<button class="btn btn-success btn-sm" onclick="toggleP('${p.id}',true)">Pubblica</button>`}
+        <button class="btn btn-danger btn-sm" onclick="delPost('${p.id}')">🗑</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+/* ── Toggle publish ───────────────────────────────────────────────── */
+async function toggleP(id, pub) {
+  await sb.from('posts').update({published:pub, published_at:pub?new Date().toISOString():null}).eq('id',id);
+  await loadMyPosts();
+  toast(pub ? 'Articolo pubblicato ✓' : 'Articolo nascosto');
+}
+
+/* ── Delete ───────────────────────────────────────────────────────── */
+async function delPost(id) {
+  const p = MY_POSTS.find(x=>x.id===id);
+  if(!confirm(`Eliminare "${p?.title}"?`)) return;
+  await sb.from('posts').delete().eq('id',id);
+  await loadMyPosts();
+  toast('Articolo eliminato');
+}
+
+/* ── Edit ─────────────────────────────────────────────────────────── */
+async function editPost(id) {
+  const {data:p} = await sb.from('posts').select('*').eq('id',id).single();
+  if(!p) return;
+  $('w-id').value = p.id;
+  $('w-title').value = p.title||'';
+  $('w-exc').value = p.excerpt||'';
+  $('w-content').value = p.content||'';
+  $('w-cat').value = p.category||'Territorio';
+  $('w-badge').value = p.badge||'';
+  const wr = document.querySelector(`input[name="wimg"][value="${p.image_type||'nature'}"]`);
+  if(wr) wr.checked = true;
+  $('write-mode-label').textContent = 'Modifica articolo';
+  $('write-cancel-btn').style.display = 'inline-flex';
+  go('write');
+}
+function cancelWrite() {
+  $('w-id').value=''; $('w-title').value=''; $('w-exc').value='';
+  $('w-content').value=''; $('write-mode-label').textContent='Nuovo articolo';
+  $('write-cancel-btn').style.display='none';
+  go('posts');
+}
+
+/* ── Save post ────────────────────────────────────────────────────── */
+async function savePost(publish) {
+  const title = $('w-title').value.trim();
+  if(!title) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il titolo è obbligatorio.</p>'; return; }
+  $('write-msg').innerHTML='';
+  const id = $('w-id').value;
+  const payload = {
+    title, excerpt: $('w-exc').value.trim()||null, content: $('w-content').value.trim()||null,
+    category: $('w-cat').value, badge: $('w-badge').value.trim()||null, badge_color:'default',
+    image_type: document.querySelector('input[name="wimg"]:checked')?.value||'nature',
+    published: publish, published_at: publish ? new Date().toISOString() : null,
+    user_id: ME.id, author_username: ME.username,
+  };
+  let err;
+  if(id) { ({error:err} = await sb.from('posts').update(payload).eq('id',id)); }
+  else   { ({error:err} = await sb.from('posts').insert(payload)); }
+  if(err) { toast(err.message,'err'); return; }
+  if(!id) { $('w-id').value=''; $('w-title').value=''; $('w-exc').value=''; $('w-content').value=''; }
+  $('write-cancel-btn').style.display='none';
+  $('write-mode-label').textContent='Nuovo articolo';
+  toast(publish ? 'Articolo pubblicato ✓' : 'Bozza salvata ✓');
+  go('posts');
+}
+
+async function logout() { await sb.auth.signOut(); location.href = 'index.html'; }
+</script>
+</body>
+</html>
