@@ -358,7 +358,12 @@ let ME = null, MY_POSTS = [];
   if(!session) { location.href = 'login.html'; return; }
 
   const {data:profile} = await sb.from('profiles').select('*').eq('id',session.user.id).single();
-  if(!profile) { location.href = 'login.html'; return; }
+
+  // Profile missing — show inline creation form instead of looping back to login
+  if(!profile) {
+    showSetupScreen(session);
+    return;
+  }
   ME = profile;
 
   // Sidebar
@@ -562,6 +567,118 @@ async function savePost(publish) {
 }
 
 async function logout() { await sb.auth.signOut(); location.href = 'index.html'; }
+
+/* ── First-time profile setup (no profile row yet) ──────────────────── */
+function showSetupScreen(session) {
+  document.querySelector('.sb-wrap').style.display = 'none';
+  document.querySelector('.mob-tabs').style.display = 'none';
+  document.querySelector('.main').style.marginLeft = '0';
+  document.querySelector('.main').style.padding = '40px 20px 80px';
+
+  document.querySelector('.main').innerHTML = `
+    <div style="max-width:480px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:36px">
+        <div style="font-size:2.8rem;margin-bottom:12px">👋</div>
+        <h1 style="font-family:'Fraunces',Georgia,serif;font-size:1.8rem;margin-bottom:8px">Benvenuto!</h1>
+        <p style="color:var(--muted);font-size:.9rem">Sei quasi pronto. Completa il tuo profilo per iniziare.</p>
+        <p style="color:var(--muted);font-size:.8rem;margin-top:6px">Account: <strong style="color:rgba(234,244,244,.7)">${session.user.email}</strong></p>
+      </div>
+
+      <div class="form-card" style="margin-bottom:16px">
+        <h3>Il tuo profilo pubblico</h3>
+        <div id="setup-msg"></div>
+        <div class="frow">
+          <div class="fg">
+            <label>Username *</label>
+            <input type="text" id="su-un" placeholder="es. mario_rossi" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')" maxlength="30" />
+            <div style="font-size:.72rem;color:var(--muted);margin-top:4px">Solo lettere, numeri e _</div>
+          </div>
+          <div class="fg">
+            <label>Nome visualizzato</label>
+            <input type="text" id="su-dn" placeholder="es. Mario Rossi" maxlength="50" />
+          </div>
+        </div>
+        <div class="fg"><label>Bio <small style="font-weight:400">(opzionale)</small></label>
+          <textarea id="su-bio" placeholder="Racconta qualcosa di te…" style="min-height:70px"></textarea>
+        </div>
+      </div>
+
+      <div class="form-card" style="margin-bottom:24px">
+        <h3>Scegli il tuo avatar</h3>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px">
+          <div id="su-av" style="width:54px;height:54px;border-radius:14px;background:#1F6F8B;display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0;transition:all .25s">🌿</div>
+          <div>
+            <div id="su-av-name" style="font-weight:600;font-size:.9rem">@username</div>
+            <div style="font-size:.76rem;color:var(--muted)">Anteprima profilo</div>
+          </div>
+        </div>
+        <div class="pick-label">Emoji</div>
+        <div class="eg" id="su-eg"></div>
+        <div class="pick-label">Colore</div>
+        <div class="cg" id="su-cg"></div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:.95rem" id="su-btn" onclick="doSetup('${session.user.id}')">
+        Crea il mio profilo 🚀
+      </button>
+      <button onclick="logout()" style="width:100%;margin-top:12px;background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;font-family:inherit">Esci dall'account</button>
+    </div>`;
+
+  // Build pickers
+  const EMOJIS = ['🌿','🦢','🌊','🎣','🌸','🦋','🌾','🌻','🦜','🐠','🌺','🦆','🌲','🦅','💧','🍃','🌙','⭐','🐞','🌼'];
+  const COLORS  = ['#1F6F8B','#2E7D32','#3a8c8a','#5E35B1','#C62828','#F57F17','#0F2A30','#4a6fa5'];
+  const eg = document.getElementById('su-eg'), cg = document.getElementById('su-cg');
+  EMOJIS.forEach((e,i) => {
+    eg.innerHTML += `<input type="radio" name="suem" id="sue${i}" value="${e}" ${i===0?'checked':''} onchange="syncSuAv()">
+      <label for="sue${i}">${e}</label>`;
+  });
+  COLORS.forEach((c,i) => {
+    cg.innerHTML += `<input type="radio" name="sucol" id="suc${i}" value="${c}" ${i===0?'checked':''} onchange="syncSuAv()">
+      <label for="suc${i}" style="background:${c}"></label>`;
+  });
+  document.getElementById('su-un').addEventListener('input', syncSuAv);
+}
+
+function syncSuAv() {
+  const emoji = document.querySelector('input[name="suem"]:checked')?.value || '🌿';
+  const color = document.querySelector('input[name="sucol"]:checked')?.value || '#1F6F8B';
+  const un    = document.getElementById('su-un')?.value || 'username';
+  const av = document.getElementById('su-av');
+  if(av) { av.textContent = emoji; av.style.background = color; }
+  const nm = document.getElementById('su-av-name');
+  if(nm) nm.textContent = '@' + (un || 'username');
+}
+
+async function doSetup(uid) {
+  const un   = document.getElementById('su-un')?.value.trim();
+  const dn   = document.getElementById('su-dn')?.value.trim();
+  const bio  = document.getElementById('su-bio')?.value.trim();
+  const emoji = document.querySelector('input[name="suem"]:checked')?.value || '🌿';
+  const color = document.querySelector('input[name="sucol"]:checked')?.value || '#1F6F8B';
+  const msg = document.getElementById('setup-msg');
+
+  if(!un || un.length < 3) {
+    msg.innerHTML = '<p style="color:#ef9a9a;font-size:.83rem;margin-bottom:10px">⚠ Username di almeno 3 caratteri.</p>';
+    return;
+  }
+
+  const btn = document.getElementById('su-btn');
+  btn.disabled = true; btn.textContent = '…';
+
+  const {error} = await sb.from('profiles').insert({
+    id: uid, username: un,
+    display_name: dn || null, bio: bio || null,
+    avatar_emoji: emoji, avatar_color: color, role: 'user'
+  });
+
+  btn.disabled = false; btn.textContent = 'Crea il mio profilo 🚀';
+
+  if(error) {
+    msg.innerHTML = `<p style="color:#ef9a9a;font-size:.83rem;margin-bottom:10px">⚠ ${error.code==='23505'?'Username già in uso. Scegline un altro.':error.message}</p>`;
+    return;
+  }
+  location.reload();
+}
 </script>
 </body>
 </html>
