@@ -14,8 +14,8 @@
       --border: rgba(255,255,255,.08); --text: #EAF4F4; --muted: rgba(234,244,244,.45);
       --p: #1F6F8B; --a: #3a8c8a; --g: #2E7D32; --gold: #F9A825;
     }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif;
-           display: flex; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif;
+          min-height: 100vh; overflow-x: hidden; }
 
     /* ── Aurora ─────────────────────────────────────────────────── */
     .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -54,9 +54,48 @@
 
     .sb-footer { padding: 12px; display: flex; flex-direction: column; gap: 2px; }
 
+    .sb-wrap, .mob-tabs { display: none !important; }
+
     /* ── Main content ─────────────────────────────────────────────── */
-    .main { margin-left: 240px; flex: 1; position: relative; z-index: 1; padding: 32px; min-height: 100vh; }
-    .panel { display: none; animation: fadeIn .3s ease; }
+    .main { width: min(1200px, 100%); margin: 0 auto; position: relative; z-index: 1; padding: 24px 20px 44px; min-height: 100vh; }
+    .top-nav {
+      position: sticky; top: 10px; z-index: 30; margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 12px 14px; border-radius: 16px;
+      background: rgba(10,26,34,.88); border: 1px solid var(--border); backdrop-filter: blur(12px);
+    }
+    .top-nav-brand {
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      color: var(--text); font-family: 'Fraunces', Georgia, serif; font-size: .95rem;
+    }
+    .top-nav-logo {
+      width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg,#1F6F8B,#3a8c8a);
+      display: inline-flex; align-items: center; justify-content: center; font-size: .95rem;
+    }
+    .top-nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; height: 36px; padding: 0 12px;
+      border-radius: 10px; text-decoration: none; color: var(--muted);
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+      font-size: .82rem; font-weight: 600; transition: all .2s;
+    }
+    .top-link:hover { color: var(--text); border-color: rgba(58,140,138,.35); background: rgba(58,140,138,.08); }
+    .top-link.on { color: var(--text); border-color: rgba(58,140,138,.45); background: rgba(58,140,138,.16); }
+    .top-user-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 8px 4px 4px; border-radius: 999px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      font-size: .78rem; color: rgba(234,244,244,.75); font-weight: 600;
+    }
+    .top-chip-av {
+      width: 28px; height: 28px; border-radius: 8px; display: inline-flex;
+      align-items: center; justify-content: center; background: #1F6F8B;
+    }
+    .section-stack { display: grid; gap: 18px; }
+    .panel {
+      display: block; animation: fadeIn .3s ease; scroll-margin-top: 88px;
+      padding: 22px; border-radius: 18px; background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.07);
+    }
     .panel.on { display: block; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
@@ -264,23 +303,19 @@
 
     /* ── Mobile ───────────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .sb-wrap { display: none; }
-      .main { margin-left: 0; padding: 20px 16px 80px; }
-      .mob-tabs { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-                  background: var(--sb); border-top: 1px solid var(--border);
-                  padding: 8px 0 12px; }
-      .mob-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-                 font-size: .65rem; color: var(--muted); cursor: pointer; border: none; background: none; font-family: inherit; }
-      .mob-tab.on { color: var(--a); }
-      .mob-tab span:first-child { font-size: 1.2rem; }
+      .main { padding: 16px 14px 30px; }
+      .top-nav { top: 6px; padding: 10px; gap: 10px; }
+      .top-nav-brand { font-size: .88rem; }
+      .top-nav-links { width: 100%; }
+      .top-user-chip { display: none; }
       .profile-grid { grid-template-columns: 1fr; }
       .frow { grid-template-columns: 1fr; }
       .img-grid { grid-template-columns: repeat(4,1fr); }
+      .panel { padding: 16px; }
       .setup-left { display: none; }
       .setup-right { padding: 32px 20px 60px; align-items: flex-start; padding-top: 48px; }
       .comune-grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (min-width: 769px) { .mob-tabs { display: none; } }
   </style>
 </head>
 <body>
@@ -326,6 +361,26 @@
 <!-- ── Main ─────────────────────────────────────────────────────── -->
 <div class="main">
 
+  <header class="top-nav">
+    <a class="top-nav-brand" href="index.html">
+      <span class="top-nav-logo">🌊</span>
+      <span>Rivalta sul Mincio</span>
+    </a>
+    <nav class="top-nav-links">
+      <a class="top-link" href="index.html">Home</a>
+      <a class="top-link on" href="me.html#profile">Account</a>
+      <a class="top-link" id="top-public-profile-link" href="#">Profilo pubblico</a>
+      <a class="top-link" id="top-admin-link" href="admin.html" style="display:none">Admin</a>
+      <button class="btn btn-ghost btn-sm" type="button" onclick="logout()">Esci</button>
+    </nav>
+    <div class="top-user-chip" id="top-user-chip">
+      <span class="top-chip-av" id="top-chip-av">🌿</span>
+      <span id="top-chip-un">@…</span>
+    </div>
+  </header>
+
+  <div class="section-stack">
+
   <!-- Profile panel -->
   <div class="panel on" id="p-profile">
     <div class="panel-head">
@@ -368,7 +423,7 @@
       <p>Gestisci i tuoi contenuti pubblicati e le bozze.</p>
     </div>
     <div style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-success" onclick="go('write')">+ Nuovo articolo</button>
+      <button class="btn btn-success" type="button" onclick="scrollToWrite()">+ Nuovo articolo</button>
     </div>
     <div id="my-posts-wrap">
       <div class="empty"><span>⏳</span><p>Caricamento…</p></div>
@@ -429,6 +484,8 @@
     </div>
   </div>
 
+  </div>
+
 </div>
 
 <div id="toast"></div>
@@ -456,17 +513,36 @@ let ME = null, MY_POSTS = [];
   }
   ME = profile;
 
-  // Sidebar
-  const sb_av = $('sb-av');
-  sb_av.textContent = profile.avatar_emoji || '🌿';
-  sb_av.style.background = profile.avatar_color || '#1F6F8B';
-  $('sb-dn').textContent = profile.display_name || profile.username;
-  $('sb-un').textContent = '@' + profile.username;
-  if(profile.role === 'admin') { $('sb-role').style.display = 'inline-block'; $('n-admin').style.display = 'flex'; }
+  // Header profile data
+  const publicProfileHref = `profile.html?u=${profile.username}`;
 
-  $('n-prof-link').style.display = 'flex';
-  $('view-profile-btn').href = `profile.html?u=${profile.username}`;
-  $('view-profile-btn').style.display = 'inline-flex';
+  const sbAv = $('sb-av');
+  if(sbAv) {
+    sbAv.textContent = profile.avatar_emoji || '🌿';
+    sbAv.style.background = profile.avatar_color || '#1F6F8B';
+  }
+  if($('sb-dn')) $('sb-dn').textContent = profile.display_name || profile.username;
+  if($('sb-un')) $('sb-un').textContent = '@' + profile.username;
+
+  const topChipAv = $('top-chip-av');
+  if(topChipAv) {
+    topChipAv.textContent = profile.avatar_emoji || '🌿';
+    topChipAv.style.background = profile.avatar_color || '#1F6F8B';
+  }
+  if($('top-chip-un')) $('top-chip-un').textContent = '@' + profile.username;
+
+  if($('top-public-profile-link')) $('top-public-profile-link').href = publicProfileHref;
+  if($('view-profile-btn')) {
+    $('view-profile-btn').href = publicProfileHref;
+    $('view-profile-btn').style.display = 'inline-flex';
+  }
+
+  if(profile.role === 'admin') {
+    if($('sb-role')) $('sb-role').style.display = 'inline-block';
+    if($('n-admin')) $('n-admin').style.display = 'flex';
+    if($('top-admin-link')) $('top-admin-link').style.display = 'inline-flex';
+  }
+  if($('n-prof-link')) $('n-prof-link').style.display = 'flex';
 
   // Big avatar
   const bigAv = $('big-av');
@@ -488,22 +564,22 @@ let ME = null, MY_POSTS = [];
 
   // Hash routing
   const hash = location.hash.replace('#','');
-  if(hash === 'write') go('write');
-  else if(hash === 'posts') go('posts');
+  if(hash === 'write' || hash === 'posts' || hash === 'profile') go(hash);
+  else history.replaceState(null,'','#profile');
 
   await loadMyPosts();
 })();
 
 /* ── Panel switching ──────────────────────────────────────────────── */
 function go(name) {
-  ['profile','posts','write'].forEach(n => {
-    document.getElementById('p-'+n)?.classList.toggle('on', n===name);
-    document.getElementById('n-'+n)?.classList.toggle('on', n===name);
-    document.getElementById('mt-'+n)?.classList.toggle('on', n===name);
-  });
-  history.replaceState(null,'','#'+name);
-  if(name === 'posts') loadMyPosts();
+  const sectionMap = { profile: 'p-profile', posts: 'p-posts', write: 'p-write' };
+  const key = sectionMap[name] ? name : 'profile';
+  const target = document.getElementById(sectionMap[key]);
+  if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  history.replaceState(null,'','#'+key);
+  if(key === 'posts') loadMyPosts();
 }
+function scrollToWrite() { go('write'); }
 function viewProfile() { if(ME) location.href = `profile.html?u=${ME.username}`; }
 
 /* ── Toast ────────────────────────────────────────────────────────── */
@@ -533,7 +609,10 @@ function updateBigAv() {
   const e = document.querySelector('input[name="pem"]:checked')?.value || '🌿';
   const c = document.querySelector('input[name="pcol"]:checked')?.value || '#1F6F8B';
   const av = $('big-av'); av.textContent = e; av.style.background = c;
-  const sbAv = $('sb-av'); sbAv.textContent = e; sbAv.style.background = c;
+  const sbAv = $('sb-av');
+  if(sbAv) { sbAv.textContent = e; sbAv.style.background = c; }
+  const topChipAv = $('top-chip-av');
+  if(topChipAv) { topChipAv.textContent = e; topChipAv.style.background = c; }
 }
 
 /* ── Save profile ─────────────────────────────────────────────────── */
@@ -547,8 +626,12 @@ async function saveProfile() {
   }).eq('id', ME.id);
   btn.disabled = false; btn.textContent = 'Salva modifiche';
   if(error) { toast(error.code==='23505' ? 'Username già in uso.' : error.message, 'err'); return; }
-  ME.username = un; $('sb-un').textContent = '@'+un;
-  $('view-profile-btn').href = `profile.html?u=${un}`;
+  ME.username = un;
+  if($('sb-un')) $('sb-un').textContent = '@'+un;
+  if($('top-chip-un')) $('top-chip-un').textContent = '@'+un;
+  const publicProfileHref = `profile.html?u=${un}`;
+  if($('view-profile-btn')) $('view-profile-btn').href = publicProfileHref;
+  if($('top-public-profile-link')) $('top-public-profile-link').href = publicProfileHref;
   toast('Profilo aggiornato ✓');
 }
 
@@ -558,6 +641,12 @@ async function saveAvatar() {
   const {error} = await sb.from('profiles').update({avatar_emoji:emoji, avatar_color:color}).eq('id',ME.id);
   if(error) { toast(error.message,'err'); return; }
   ME.avatar_emoji = emoji; ME.avatar_color = color;
+  const sbAv = $('sb-av');
+  if(sbAv) { sbAv.textContent = emoji; sbAv.style.background = color; }
+  const topChipAv = $('top-chip-av');
+  if(topChipAv) { topChipAv.textContent = emoji; topChipAv.style.background = color; }
+  const bigAv = $('big-av');
+  if(bigAv) { bigAv.textContent = emoji; bigAv.style.background = color; }
   toast('Avatar aggiornato ✓');
 }
 
