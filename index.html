@@ -356,25 +356,47 @@
       border-radius: 14px;
       box-shadow: 0 12px 40px rgba(0,0,0,.18);
       border: 1px solid rgba(0,0,0,.07);
-      min-width: 210px;
-      overflow: hidden;
+      min-width: 320px;
+      max-height: min(76vh, 620px);
+      overflow-y: auto;
       z-index: 200;
+      padding: 6px;
     }
     .profile-dropdown.open { display: block; }
+    .profile-dropdown__section-title {
+      padding: 8px 10px 6px;
+      font-size: .67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #72808a;
+    }
     .profile-dropdown a,
     .profile-dropdown button {
       display: flex; align-items: center; gap: 10px;
-      padding: 11px 16px; width: 100%;
+      padding: 11px 12px; width: 100%;
       font-size: .87rem; font-weight: 500; color: var(--text);
       background: none; border: none; cursor: pointer;
       text-decoration: none;
       transition: background .15s;
       text-align: left;
+      border-radius: 10px;
     }
     .profile-dropdown a:hover,
     .profile-dropdown button:hover { background: var(--bg); }
-    .profile-dropdown__sep { height: 1px; background: var(--border); margin: 4px 0; }
+    .profile-dropdown__sep { height: 1px; background: var(--border); margin: 8px 4px; }
+    .profile-dropdown__full,
+    .profile-dropdown__compact { display: block; }
+    .profile-dropdown__compact { display: none; }
     .profile-dropdown .danger { color: #c0392b; }
+
+    @media (max-width: 900px) {
+      .profile-dropdown {
+        min-width: 240px;
+      }
+      .profile-dropdown__full { display: none; }
+      .profile-dropdown__compact { display: block; }
+    }
 
     /* Hamburger */
     .site-nav__toggle {
@@ -3224,6 +3246,109 @@
   const nav = document.getElementById('nav-auth');
   if(!nav) return;
 
+  let outsideCloseBound = false;
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function closeDropdown() {
+    document.getElementById('profileDropdown')?.classList.remove('open');
+    document.getElementById('profileBtn')?.setAttribute('aria-expanded', 'false');
+  }
+
+  function buildUserMenu(username, emoji, color) {
+    const safeUsername = escapeHtml(username);
+    const profileHref = 'profile.html?u=' + encodeURIComponent(username);
+
+    return `
+      <div class="profile-menu" id="profileMenu">
+        <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+          <span class="profile-avatar" style="background:${color}">${emoji}</span>
+          @${safeUsername}
+        </button>
+
+        <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu account">
+          <div class="profile-dropdown__full">
+            <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
+            <a href="me.html#posts" role="menuitem">📂&nbsp; Dashboard / I tuoi contenuti</a>
+            <a href="me.html#write" role="menuitem">✍️&nbsp; Crea nuovo (post, progetto, ecc.)</a>
+
+            <div class="profile-dropdown__sep"></div>
+
+            <a href="me.html#profile" role="menuitem">⚙️&nbsp; Impostazioni</a>
+            <a href="me.html#profile" role="menuitem">🎛️&nbsp; Preferenze (tema, lingua, UI)</a>
+            <a href="me.html#profile" role="menuitem">🔒&nbsp; Sicurezza (password, 2FA)</a>
+
+            <div class="profile-dropdown__sep"></div>
+
+            <a href="index.html#contatti" role="menuitem">🛟&nbsp; Aiuto / Supporto</a>
+            <a href="index.html#contatti" role="menuitem">💬&nbsp; Feedback</a>
+
+            <div class="profile-dropdown__sep"></div>
+
+            <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
+          </div>
+
+          <div class="profile-dropdown__compact">
+            <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
+            <a href="me.html#write" role="menuitem">✍️&nbsp; Crea post</a>
+            <a href="me.html#profile" role="menuitem">⚙️&nbsp; Impostazioni</a>
+
+            <div class="profile-dropdown__sep"></div>
+
+            <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function bindMenuActions() {
+    const menu = document.getElementById('profileMenu');
+    const btn = document.getElementById('profileBtn');
+    const dd = document.getElementById('profileDropdown');
+    if(!menu || !btn || !dd) return;
+
+    btn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const open = dd.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    dd.querySelectorAll('[data-action="logout"]').forEach((logoutBtn) => {
+      logoutBtn.addEventListener('click', async () => {
+        await _sb.auth.signOut();
+        window.location.reload();
+      });
+    });
+
+    dd.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeDropdown();
+      });
+    });
+
+    if(!outsideCloseBound) {
+      document.addEventListener('click', (event) => {
+        const activeMenu = document.getElementById('profileMenu');
+        if(!activeMenu) return;
+        if(activeMenu.contains(event.target)) return;
+        closeDropdown();
+      }, { capture: true });
+
+      document.addEventListener('keydown', (event) => {
+        if(event.key === 'Escape') closeDropdown();
+      });
+
+      outsideCloseBound = true;
+    }
+  }
+
   async function renderAuth(session) {
     if(session) {
       const {data:p} = await _sb.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single();
@@ -3231,37 +3356,8 @@
       const color = p?.avatar_color || '#1F6F8B';
       const username = p?.username || session.user.email?.split('@')[0] || 'profilo';
 
-      nav.innerHTML = `
-        <div class="profile-menu" id="profileMenu">
-          <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-            <span class="profile-avatar" style="background:${color}">${emoji}</span>
-            @${username}
-          </button>
-          <div class="profile-dropdown" id="profileDropdown" role="menu">
-            <a href="post-editor.html" role="menuitem">✏️&nbsp; Crea un post</a>
-            <a href="me.html" role="menuitem">🎨&nbsp; Personalizza</a>
-            <a href="me.html#password" role="menuitem">🔑&nbsp; Reimposta password</a>
-            <div class="profile-dropdown__sep"></div>
-            <button id="logoutBtn" class="danger" role="menuitem">🚪&nbsp; Esci</button>
-          </div>
-        </div>`;
-
-      document.getElementById('profileBtn').addEventListener('click', e => {
-        e.stopPropagation();
-        const dd = document.getElementById('profileDropdown');
-        const open = dd.classList.toggle('open');
-        document.getElementById('profileBtn').setAttribute('aria-expanded', String(open));
-      });
-
-      document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await _sb.auth.signOut();
-        window.location.reload();
-      });
-
-      document.addEventListener('click', () => {
-        document.getElementById('profileDropdown')?.classList.remove('open');
-        document.getElementById('profileBtn')?.setAttribute('aria-expanded', 'false');
-      }, { capture: true });
+      nav.innerHTML = buildUserMenu(username, emoji, color);
+      bindMenuActions();
 
     } else {
       nav.innerHTML = `<a href="login.html" class="nav-accedi-btn">Accedi</a>`;
