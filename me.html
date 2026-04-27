@@ -636,6 +636,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="security.client.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
@@ -643,6 +644,7 @@ const fmt = iso => new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month
 
 let ME = null, MY_POSTS = [];
 const DAILY_SOFT_PUBLISH_LIMIT = 2;
+const POST_WRITE_RATE_CFG = { maxAttempts: 14, windowMs: 60 * 60 * 1000, lockMs: 60 * 60 * 1000 };
 const POST_MEDIA_LABELS = {
   festival: '🎪 Sagra',
   heron: '🦢 Aironi',
@@ -723,7 +725,7 @@ const POST_MEDIA_LABELS = {
 
   // Build pickers
   buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
-  buildPrefsUI(session.user.email || '');
+  await buildPrefsUI(session.user.email || '');
   ensureComposerOnTop();
   bindWriteComposerInputs();
   syncWritePreview();
@@ -768,6 +770,23 @@ function autoTitleFromContent(content) {
   if(!clean) return 'Post senza titolo';
   if(clean.length <= 62) return clean;
   return clean.slice(0, 62).trim() + '…';
+}
+
+function evaluatePostSafety(title, excerpt, content) {
+  if(!window.RSM_SECURITY) return { ok: true, message: '' };
+  const payload = [title || '', excerpt || '', content || ''].join('\n');
+  return window.RSM_SECURITY.evaluateTextSafety(payload, {
+    minChars: 10,
+    maxChars: 14000,
+    maxLinks: 8,
+    maxRepeatedChar: 8,
+    maxRepeatedLine: 5,
+  });
+}
+
+function writeRateLimitMessage(retryAfterMs) {
+  if(!window.RSM_SECURITY) return 'Stai salvando troppo velocemente. Riprova tra poco.';
+  return 'Stai salvando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(retryAfterMs) + '.';
 }
 
 function syncWritePreview() {
@@ -1009,13 +1028,32 @@ async function savePost(publish) {
 
   try {
   const id = $('w-id').value;
+  const writerIdentity = ME?.id || 'anonymous';
   const content = $('w-content').value.trim();
   const category = $('w-cat').value;
   const manualTitle = $('w-title').value.trim();
+  const excerpt = $('w-exc').value.trim();
   const selectedImage = document.querySelector('input[name="wimg"]:checked')?.value || '';
 
   if(!content) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il testo del post è obbligatorio.</p>'; return; }
   if(!category) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Seleziona una categoria prima di salvare.</p>'; return; }
+
+  if(window.RSM_SECURITY) {
+    const limitCheck = window.RSM_SECURITY.checkRateLimit('post_write', writerIdentity, POST_WRITE_RATE_CFG);
+    if(!limitCheck.ok) {
+      $('write-msg').innerHTML = '<p style="color:#ef9a9a;font-size:.83rem">' + writeRateLimitMessage(limitCheck.retryAfterMs) + '</p>';
+      return;
+    }
+  }
+
+  const safety = evaluatePostSafety(manualTitle, excerpt, content);
+  if(!safety.ok) {
+    if(window.RSM_SECURITY) {
+      window.RSM_SECURITY.recordRateFailure('post_write', writerIdentity, POST_WRITE_RATE_CFG);
+    }
+    $('write-msg').innerHTML = '<p style="color:#ef9a9a;font-size:.83rem">' + safety.message + '</p>';
+    return;
+  }
 
   let existing = id ? MY_POSTS.find(x => x.id === id) : null;
   if(id && !existing) {
@@ -1041,7 +1079,7 @@ async function savePost(publish) {
 
   const payload = {
     title: resolvedTitle,
-    excerpt: $('w-exc').value.trim()||null,
+    excerpt: excerpt||null,
     content,
     category,
     badge: $('w-badge').value.trim()||null,
@@ -1070,7 +1108,16 @@ async function savePost(publish) {
     };
     ({error:err} = await sb.from('posts').insert(insertPayload));
   }
-  if(err) { toast(err.message,'err'); return; }
+  if(err) {
+    if(window.RSM_SECURITY) {
+      window.RSM_SECURITY.recordRateFailure('post_write', writerIdentity, POST_WRITE_RATE_CFG);
+    }
+    toast(err.message,'err');
+    return;
+  }
+  if(window.RSM_SECURITY) {
+    window.RSM_SECURITY.clearRateFailures('post_write', writerIdentity);
+  }
   if(!id) {
     $('w-id').value='';
     $('w-title').value='';
@@ -1141,8 +1188,39 @@ function applyAccessibility(prefs) {
   else root.style.filter = '';
 }
 
-function buildPrefsUI(accountEmail = '') {
-  const prefs = loadPrefs();
+async function buildPrefsUI(accountEmail = '') {
+  let prefs = loadPrefs();
+  if(ME?.id) {
+    const { data: remotePrefs, error: remoteErr } = await sb
+      .from('user_settings')
+      .select('comment_privacy,notif_frequency,notif_email,preferred_categories,accessibility_fontsize,accessibility_high_contrast')
+      .eq('user_id', ME.id)
+      .maybeSingle();
+
+    const remoteErrMsg = String(remoteErr?.message || '').toLowerCase();
+    const missingRemoteTable = !!remoteErr && (
+      remoteErr.code === '42P01'
+      || remoteErr.code === 'PGRST205'
+      || remoteErrMsg.includes('does not exist')
+      || remoteErrMsg.includes('could not find the table')
+    );
+
+    if(remotePrefs && !remoteErr) {
+      prefs = {
+        ...prefs,
+        commentPrivacy: remotePrefs.comment_privacy || prefs.commentPrivacy,
+        notif: remotePrefs.notif_frequency || prefs.notif,
+        notifEmail: !!remotePrefs.notif_email,
+        categories: Array.isArray(remotePrefs.preferred_categories) ? remotePrefs.preferred_categories : prefs.categories,
+        fontsize: remotePrefs.accessibility_fontsize || prefs.fontsize,
+        contrast: !!remotePrefs.accessibility_high_contrast,
+      };
+      localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+    } else if(remoteErr && !missingRemoteTable) {
+      console.warn('[settings] remote load error:', remoteErr.message);
+    }
+  }
+
   const cats = new Set(prefs.categories || []);
   const wrap = $('pref-cats');
   if(wrap) {
@@ -1214,6 +1292,30 @@ async function saveSettings() {
       return;
     }
 
+    const remotePayload = {
+      user_id: authData.user.id,
+      comment_privacy: prefs.commentPrivacy,
+      notif_frequency: prefs.notif,
+      notif_email: prefs.notifEmail,
+      preferred_categories: prefs.categories,
+      accessibility_fontsize: prefs.fontsize,
+      accessibility_high_contrast: prefs.contrast,
+      updated_at: new Date().toISOString(),
+    };
+    const { error: remoteSettingsErr } = await sb.from('user_settings').upsert(remotePayload, { onConflict: 'user_id' });
+
+    const remoteErrMsg = String(remoteSettingsErr?.message || '').toLowerCase();
+    const missingRemoteTable = !!remoteSettingsErr && (
+      remoteSettingsErr.code === '42P01'
+      || remoteSettingsErr.code === 'PGRST205'
+      || remoteErrMsg.includes('does not exist')
+      || remoteErrMsg.includes('could not find the table')
+    );
+    if(remoteSettingsErr && !missingRemoteTable) {
+      setSettingsMsg('Salvataggio impostazioni server non riuscito: ' + remoteSettingsErr.message, 'err');
+      return;
+    }
+
     const currentEmail = authData.user.email || '';
     if(nextEmail && nextEmail !== currentEmail) {
       const { error } = await sb.auth.updateUser({ email: nextEmail });
@@ -1233,6 +1335,10 @@ async function saveSettings() {
       updates.push('Password aggiornata.');
       if($('set-new-pass')) $('set-new-pass').value = '';
       if($('set-new-pass2')) $('set-new-pass2').value = '';
+    }
+
+    if(missingRemoteTable) {
+      updates.push('Sincronizzazione server disattiva: applica supabase-security.sql su Supabase.');
     }
 
     if(!updates.length) updates.push('Impostazioni salvate.');

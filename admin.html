@@ -151,6 +151,10 @@
     .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
     .pill-pub  { background: rgba(46,125,50,.15); color: #a5d6a7; border: 1px solid rgba(46,125,50,.3); }
     .pill-draft { background: rgba(249,168,37,.1); color: #ffd54f; border: 1px solid rgba(249,168,37,.2); }
+    .pill-report-pending { background: rgba(249,168,37,.12); color: #ffd54f; border: 1px solid rgba(249,168,37,.25); }
+    .pill-report-reviewing { background: rgba(31,111,139,.15); color: #80cbc4; border: 1px solid rgba(31,111,139,.3); }
+    .pill-report-resolved { background: rgba(46,125,50,.15); color: #a5d6a7; border: 1px solid rgba(46,125,50,.3); }
+    .pill-report-rejected { background: rgba(239,83,80,.16); color: #ef9a9a; border: 1px solid rgba(239,83,80,.25); }
     .role-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
     .role-admin { background: rgba(249,168,37,.12); color: var(--gold); border: 1px solid rgba(249,168,37,.2); }
     .role-user  { background: rgba(31,111,139,.12); color: #80cbc4; border: 1px solid rgba(31,111,139,.2); }
@@ -299,6 +303,7 @@
     <div class="tab-bar">
       <button class="on" id="atab-posts" onclick="atab('posts')">📝 Post</button>
       <button id="atab-users" onclick="atab('users')">👥 Utenti</button>
+      <button id="atab-reports" onclick="atab('reports')">🚩 Moderazione</button>
     </div>
     <div id="app-msg"></div>
 
@@ -313,6 +318,11 @@
     <!-- Users panel -->
     <div class="admin-panel" id="ap-users">
       <div id="users-wrap"><div class="empty-state"><span>⏳</span><p>Caricamento…</p></div></div>
+    </div>
+
+    <!-- Reports / moderation panel -->
+    <div class="admin-panel" id="ap-reports">
+      <div id="reports-wrap"><div class="empty-state"><span>🚩</span><p>Nessuna segnalazione da mostrare.</p></div></div>
     </div>
   </div>
 </div>
@@ -390,12 +400,30 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="security.client.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
 let currentAdminUserId = null;
 let currentAdminUsername = null;
+let pendingAuthMessage = '';
+const ADMIN_LOGIN_RATE_CFG = { maxAttempts: 5, windowMs: 10 * 60 * 1000, lockMs: 20 * 60 * 1000 };
+const ADMIN_POST_RATE_CFG = { maxAttempts: 20, windowMs: 60 * 60 * 1000, lockMs: 60 * 60 * 1000 };
+
+function isEmailConfirmed(user) {
+  return Boolean(user && (user.email_confirmed_at || user.confirmed_at));
+}
+
+function isMissingRelationError(error) {
+  const msg = String(error?.message || '').toLowerCase();
+  return !!error && (
+    error.code === '42P01'
+    || error.code === 'PGRST205'
+    || msg.includes('does not exist')
+    || msg.includes('could not find the table')
+  );
+}
 
 /* ── Toast ──────────────────────────────────────────────────────────── */
 let _tt;
@@ -406,20 +434,40 @@ function toast(txt, type = 'ok') {
 
 function showMsg(elId, text, type = 'error') {
   const el = $(elId);
-  el.innerHTML = `<div class="msg msg-${type === 'ok' ? 'ok' : 'error'}">${text}</div>`;
+  el.innerHTML = `<div class="msg msg-${type === 'ok' ? 'ok' : 'error'}">${escapeHtml(text)}</div>`;
   if (type === 'ok') setTimeout(() => el.innerHTML = '', 3000);
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 /* ── Auth ─────────────────────────────────────────────────────────── */
 $('login-form').addEventListener('submit', async e => {
   e.preventDefault();
+
+  const email = $('email').value.trim().toLowerCase();
+  const loginRate = window.RSM_SECURITY
+    ? window.RSM_SECURITY.checkRateLimit('admin_login', email, ADMIN_LOGIN_RATE_CFG)
+    : { ok: true, retryAfterMs: 0 };
+  if (!loginRate.ok) {
+    const wait = window.RSM_SECURITY ? window.RSM_SECURITY.formatRetry(loginRate.retryAfterMs) : 'qualche minuto';
+    showMsg('login-msg', 'Troppi tentativi. Riprova tra ' + wait + '.');
+    return;
+  }
+
   const btn = $('login-btn');
   btn.disabled = true;
   btn.querySelector('.btn-text').style.display = 'none';
   $('login-sp').style.display = 'inline-block';
 
   const { error } = await sb.auth.signInWithPassword({
-    email: $('email').value.trim(),
+    email: email,
     password: $('password').value,
   });
 
@@ -427,7 +475,17 @@ $('login-form').addEventListener('submit', async e => {
   btn.querySelector('.btn-text').style.display = '';
   $('login-sp').style.display = 'none';
 
-  if (error) showMsg('login-msg', 'Credenziali non valide. Verifica email e password.');
+  if (error) {
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.recordRateFailure('admin_login', email, ADMIN_LOGIN_RATE_CFG);
+    }
+    showMsg('login-msg', 'Credenziali non valide. Verifica email e password.');
+    return;
+  }
+
+  if (window.RSM_SECURITY) {
+    window.RSM_SECURITY.clearRateFailures('admin_login', email);
+  }
 });
 
 $('logout-btn').addEventListener('click', async () => {
@@ -435,33 +493,62 @@ $('logout-btn').addEventListener('click', async () => {
   location.href = 'index.html';
 });
 
+async function handleAuthenticatedSession(session) {
+  if (!session || !session.user) return;
+
+  if (!isEmailConfirmed(session.user)) {
+    pendingAuthMessage = 'Email non verificata: accesso admin bloccato.';
+    await sb.auth.signOut();
+    return;
+  }
+
+  currentAdminUserId = session.user.id;
+
+  const { data: prof, error: profErr } = await sb.from('profiles')
+    .select('username, display_name, avatar_emoji, avatar_color, role')
+    .eq('id', session.user.id)
+    .single();
+
+  if (profErr || !prof || prof.role !== 'admin') {
+    pendingAuthMessage = 'Accesso negato: servono privilegi admin.';
+    await sb.auth.signOut();
+    return;
+  }
+
+  currentAdminUsername = prof.username || null;
+  $('login-screen').style.display = 'none';
+  $('app-screen').style.display = 'block';
+
+  const tp = $('topbar-profile');
+  if (tp) {
+    tp.innerHTML = `<a href="me.html" style="display:flex;align-items:center;gap:7px;padding:4px 12px 4px 6px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:20px;font-size:.78rem;font-weight:600;color:var(--text);text-decoration:none">
+      <span style="width:24px;height:24px;border-radius:7px;background:${prof.avatar_color || '#1F6F8B'};display:inline-flex;align-items:center;justify-content:center;font-size:.9rem">${prof.avatar_emoji || '🌿'}</span>
+      @${prof.username}</a>`;
+  }
+
+  await loadPosts();
+}
+
 sb.auth.onAuthStateChange(async (event, session) => {
   if (session) {
-    $('login-screen').style.display = 'none';
-    $('app-screen').style.display = 'block';
-    currentAdminUserId = session.user.id;
+    await handleAuthenticatedSession(session);
+    return;
+  }
 
-    // Load profile for topbar avatar
-    const { data: prof } = await sb.from('profiles')
-      .select('username, display_name, avatar_emoji, avatar_color')
-      .eq('id', session.user.id).single();
-    currentAdminUsername = prof?.username || null;
-
-    const tp = $('topbar-profile');
-    if (prof && tp) {
-      tp.innerHTML = `<a href="me.html" style="display:flex;align-items:center;gap:7px;padding:4px 12px 4px 6px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:20px;font-size:.78rem;font-weight:600;color:var(--text);text-decoration:none">
-        <span style="width:24px;height:24px;border-radius:7px;background:${prof.avatar_color||'#1F6F8B'};display:inline-flex;align-items:center;justify-content:center;font-size:.9rem">${prof.avatar_emoji||'🌿'}</span>
-        @${prof.username}</a>`;
-    } else if (tp) {
-      tp.innerHTML = `<span style="font-size:.78rem;color:var(--muted)">${session.user.email}</span>`;
-    }
-
-    await loadPosts();
-  } else {
-    $('login-screen').style.display = 'flex';
-    $('app-screen').style.display = 'none';
+  $('login-screen').style.display = 'flex';
+  $('app-screen').style.display = 'none';
+  if (pendingAuthMessage) {
+    showMsg('login-msg', pendingAuthMessage);
+    pendingAuthMessage = '';
   }
 });
+
+(async function bootstrapAdminSession() {
+  const { data: sessionData } = await sb.auth.getSession();
+  if (sessionData?.session) {
+    await handleAuthenticatedSession(sessionData.session);
+  }
+})();
 
 /* ── Posts list ───────────────────────────────────────────────────── */
 let posts = [];
@@ -493,10 +580,10 @@ function renderTable() {
         ${posts.map(p => `
           <tr data-id="${p.id}">
             <td class="post-title-cell">
-              ${p.published ? `<a href="post.html?id=${p.id}" target="_blank">${p.title}</a>` : p.title}
+              ${p.published ? `<a href="post.html?id=${p.id}" target="_blank">${escapeHtml(p.title || '(Senza titolo)')}</a>` : escapeHtml(p.title || '(Senza titolo)')}
             </td>
-            <td style="color:var(--muted);font-size:.82rem">${p.author_username ? '@' + p.author_username : '—'}</td>
-            <td style="color:var(--muted)">${p.category || '—'}</td>
+            <td style="color:var(--muted);font-size:.82rem">${p.author_username ? '@' + escapeHtml(p.author_username) : '—'}</td>
+            <td style="color:var(--muted)">${escapeHtml(p.category || '—')}</td>
             <td><span class="pill ${p.published ? 'pill-pub' : 'pill-draft'}">${p.published ? 'Pubblicato' : 'Bozza'}</span></td>
             <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at || p.created_at)}</td>
             <td>
@@ -580,13 +667,37 @@ async function savePost(publish) {
 
   try {
   const id = $('f-id').value;
+  const writerIdentity = currentAdminUserId || 'admin';
   const title = $('f-title').value.trim();
+  const excerpt = $('f-excerpt').value.trim();
+  const content = $('f-content').value.trim();
   if (!title) { showMsg('drawer-msg', 'Il titolo è obbligatorio.'); return; }
+
+  if (window.RSM_SECURITY) {
+    const rateCheck = window.RSM_SECURITY.checkRateLimit('admin_post_write', writerIdentity, ADMIN_POST_RATE_CFG);
+    if (!rateCheck.ok) {
+      showMsg('drawer-msg', 'Stai salvando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(rateCheck.retryAfterMs) + '.');
+      return;
+    }
+
+    const safety = window.RSM_SECURITY.evaluateTextSafety([title, excerpt, content].join('\n'), {
+      minChars: 10,
+      maxChars: 16000,
+      maxLinks: 10,
+      maxRepeatedChar: 8,
+      maxRepeatedLine: 5,
+    });
+    if (!safety.ok) {
+      window.RSM_SECURITY.recordRateFailure('admin_post_write', writerIdentity, ADMIN_POST_RATE_CFG);
+      showMsg('drawer-msg', safety.message);
+      return;
+    }
+  }
 
   const payload = {
     title,
-    excerpt:     $('f-excerpt').value.trim() || null,
-    content:     $('f-content').value.trim() || null,
+    excerpt:     excerpt || null,
+    content:     content || null,
     category:    $('f-category').value,
     badge:       $('f-badge').value.trim() || null,
     badge_color: document.querySelector('input[name="badge_color"]:checked').value,
@@ -623,7 +734,18 @@ async function savePost(publish) {
     ({ error } = await sb.from('posts').insert(insertPayload));
   }
 
-  if (error) { showMsg('drawer-msg', 'Errore: ' + error.message); return; }
+  if (error) {
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.recordRateFailure('admin_post_write', writerIdentity, ADMIN_POST_RATE_CFG);
+    }
+    showMsg('drawer-msg', 'Errore: ' + error.message);
+    return;
+  }
+
+  if (window.RSM_SECURITY) {
+    window.RSM_SECURITY.clearRateFailures('admin_post_write', writerIdentity);
+  }
+
   closeDrawer();
   toast(publish ? '✅ Articolo pubblicato' : '💾 Bozza salvata');
   await loadPosts();
@@ -644,11 +766,12 @@ window.deletePost = deletePost;
 
 /* ── Tabs ─────────────────────────────────────────────────────────── */
 function atab(name) {
-  ['posts', 'users'].forEach(n => {
+  ['posts', 'users', 'reports'].forEach(n => {
     document.getElementById('ap-' + n)?.classList.toggle('on', n === name);
     document.getElementById('atab-' + n)?.classList.toggle('on', n === name);
   });
   if (name === 'users') loadUsers();
+  if (name === 'reports') loadReports();
 }
 
 /* ── Users management ─────────────────────────────────────────────── */
@@ -672,10 +795,10 @@ async function loadUsers() {
             <td>
               <div style="display:flex;align-items:center;gap:10px">
                 <span class="user-av" style="background:${u.avatar_color || '#1F6F8B'}">${u.avatar_emoji || '🌿'}</span>
-                <span style="font-weight:600">${u.display_name || u.username}</span>
+                <span style="font-weight:600">${escapeHtml(u.display_name || u.username)}</span>
               </div>
             </td>
-            <td><a href="profile.html?u=${u.username}" target="_blank">@${u.username}</a></td>
+            <td><a href="profile.html?u=${u.username}" target="_blank">@${escapeHtml(u.username)}</a></td>
             <td><span class="role-badge role-${u.role || 'user'}">${u.role || 'user'}</span></td>
             <td style="color:var(--muted);font-size:.82rem">${new Date(u.created_at).toLocaleDateString('it-IT')}</td>
             <td>
@@ -697,6 +820,105 @@ async function setRole(uid, role) {
   loadUsers();
 }
 window.setRole = setRole;
+
+/* ── Reports moderation queue ─────────────────────────────────────── */
+let reports = [];
+
+function reportStatusLabel(status) {
+  if (status === 'reviewing') return 'In revisione';
+  if (status === 'resolved') return 'Risolta';
+  if (status === 'rejected') return 'Respinta';
+  return 'In attesa';
+}
+
+function reportStatusClass(status) {
+  if (status === 'reviewing') return 'pill-report-reviewing';
+  if (status === 'resolved') return 'pill-report-resolved';
+  if (status === 'rejected') return 'pill-report-rejected';
+  return 'pill-report-pending';
+}
+
+async function loadReports() {
+  const wrap = $('reports-wrap');
+  if (!wrap) return;
+
+  const { data, error } = await sb.from('reports')
+    .select('id,post_id,comment_id,reporter_id,reason,details,status,created_at,reviewed_at')
+    .order('created_at', { ascending: false })
+    .limit(200);
+
+  if (error) {
+    if (isMissingRelationError(error)) {
+      wrap.innerHTML = '<div class="empty-state"><span>🧩</span><p>Tabella reports non trovata. Applica supabase-security.sql su Supabase.</p></div>';
+      return;
+    }
+    wrap.innerHTML = `<div class="empty-state"><span>⚠️</span><p>${error.message}</p></div>`;
+    return;
+  }
+
+  reports = data || [];
+  if (!reports.length) {
+    wrap.innerHTML = '<div class="empty-state"><span>✅</span><p>Nessuna segnalazione in coda.</p></div>';
+    return;
+  }
+
+  const reporterIds = [...new Set(reports.map(r => r.reporter_id).filter(Boolean))];
+  let reporterMap = {};
+  if (reporterIds.length) {
+    const { data: reporterRows } = await sb.from('profiles').select('id,username').in('id', reporterIds);
+    if (reporterRows) {
+      reporterMap = reporterRows.reduce((acc, row) => {
+        acc[row.id] = row.username;
+        return acc;
+      }, {});
+    }
+  }
+
+  wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr>
+        <th>Segnalazione</th><th>Reporter</th><th>Stato</th><th>Data</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${reports.map(r => `
+          <tr>
+            <td>
+              <div style="display:grid;gap:4px">
+                <strong>${escapeHtml(r.reason || 'Segnalazione')}</strong>
+                <span style="color:var(--muted);font-size:.79rem">${escapeHtml(r.details || 'Nessun dettaglio aggiuntivo.')}</span>
+                <span style="color:var(--muted);font-size:.76rem">
+                  Target: ${r.post_id ? `Post ${r.post_id}` : ''}${r.comment_id ? ` Commento ${r.comment_id}` : ''}
+                </span>
+              </div>
+            </td>
+            <td style="color:var(--muted);font-size:.82rem">${reporterMap[r.reporter_id] ? '@' + reporterMap[r.reporter_id] : '—'}</td>
+            <td><span class="pill ${reportStatusClass(r.status)}">${reportStatusLabel(r.status)}</span></td>
+            <td style="color:var(--muted);font-size:.82rem">${fmt(r.created_at)}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-ghost btn-sm" onclick="setReportStatus('${r.id}','reviewing')">In revisione</button>
+                <button class="btn btn-success btn-sm" onclick="setReportStatus('${r.id}','resolved')">Risolta</button>
+                <button class="btn btn-danger btn-sm" onclick="setReportStatus('${r.id}','rejected')">Respingi</button>
+              </div>
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function setReportStatus(reportId, status) {
+  const payload = {
+    status,
+    reviewed_by: currentAdminUserId,
+    reviewed_at: new Date().toISOString(),
+  };
+  const { error } = await sb.from('reports').update(payload).eq('id', reportId);
+  if (error) { toast(error.message, 'err'); return; }
+  toast('Segnalazione aggiornata');
+  loadReports();
+}
+
+window.setReportStatus = setReportStatus;
 </script>
 </body>
 </html>

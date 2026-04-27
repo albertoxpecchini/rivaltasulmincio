@@ -116,6 +116,117 @@
     .author-name { font-size: .9rem; font-weight: 600; }
     .author-label { font-size: .76rem; color: var(--muted); }
 
+    /* Discussion */
+    .discussion {
+      margin-top: 48px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: grid;
+      gap: 16px;
+    }
+    .discussion-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .discussion-head h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.25rem;
+    }
+    .discussion-note {
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.5;
+    }
+    .discussion-msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: .82rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .discussion-msg.err {
+      border-color: rgba(239,83,80,.3);
+      color: #ef9a9a;
+      background: rgba(239,83,80,.12);
+    }
+    .discussion-msg.ok {
+      border-color: rgba(46,125,50,.3);
+      color: #a5d6a7;
+      background: rgba(46,125,50,.12);
+    }
+    .comment-form {
+      display: grid;
+      gap: 10px;
+    }
+    .comment-form textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 12px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+    .comment-form textarea:focus {
+      outline: none;
+      border-color: rgba(31,111,139,.6);
+      box-shadow: 0 0 0 3px rgba(31,111,139,.12);
+    }
+    .comments-list {
+      display: grid;
+      gap: 10px;
+    }
+    .comment-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .comment-body {
+      font-size: .9rem;
+      color: rgba(232,234,246,.88);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .comment-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mini-btn {
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 18px;
+      padding: 4px 10px;
+      font-size: .73rem;
+      cursor: pointer;
+    }
+    .mini-btn:hover {
+      color: var(--text);
+      border-color: var(--border2);
+    }
+
     /* ── Skeleton ─────────────────────────────────────────────────── */
     .skel {
       background: linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.04) 75%);
@@ -175,26 +286,419 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="security.client.js"></script>
 <script>
 (async function() {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const id = new URLSearchParams(location.search).get('id');
   const wrap = document.getElementById('post-content');
+  const nav = document.getElementById('nav-auth');
 
-  /* Nav auth */
-  (async () => {
-    const {data:{session}} = await sb.auth.getSession();
-    const nav = document.getElementById('nav-auth');
-    if(!nav) return;
-    if(session) {
-      const {data:p} = await sb.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single();
-      if(p) nav.innerHTML = `<a href="me.html" class="btn btn-ghost btn-sm" style="gap:7px">
-        <span style="width:22px;height:22px;border-radius:6px;background:${p.avatar_color};display:inline-flex;align-items:center;justify-content:center;font-size:.85rem">${p.avatar_emoji}</span>
-        @${p.username}</a>`;
-    } else {
-      nav.innerHTML = `<a href="login.html" class="btn btn-primary btn-sm">Accedi</a>`;
+  let viewerSession = null;
+  let viewerProfile = null;
+  let activePost = null;
+  let commentsCache = [];
+  let commentPrivacy = 'all';
+
+  const COMMENT_RATE_CFG = { maxAttempts: 6, windowMs: 10 * 60 * 1000, lockMs: 30 * 60 * 1000 };
+  const REPORT_RATE_CFG = { maxAttempts: 4, windowMs: 24 * 60 * 60 * 1000, lockMs: 24 * 60 * 60 * 1000 };
+
+  function isMissingRelationError(error) {
+    const msg = String(error?.message || '').toLowerCase();
+    return !!error && (
+      error.code === '42P01'
+      || error.code === 'PGRST205'
+      || msg.includes('does not exist')
+      || msg.includes('could not find the table')
+    );
+  }
+
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function showDiscussionMessage(message, type) {
+    const box = document.getElementById('discussion-msg');
+    if (!box) return;
+    if (!message) {
+      box.style.display = 'none';
+      box.className = 'discussion-msg';
+      box.textContent = '';
+      return;
     }
-  })();
+    box.style.display = '';
+    box.className = 'discussion-msg ' + (type || '');
+    box.textContent = message;
+  }
+
+  async function loadViewerContext() {
+    const { data: sessionData } = await sb.auth.getSession();
+    viewerSession = sessionData?.session || null;
+
+    if (!viewerSession) {
+      viewerProfile = null;
+      return;
+    }
+
+    const { data: profile } = await sb.from('profiles')
+      .select('id,username,role,avatar_emoji,avatar_color')
+      .eq('id', viewerSession.user.id)
+      .single();
+
+    viewerProfile = profile || null;
+  }
+
+  function renderNavAuth() {
+    if (!nav) return;
+
+    if (viewerSession && viewerProfile) {
+      nav.innerHTML = `<a href="me.html" class="btn btn-ghost btn-sm" style="gap:7px">
+        <span style="width:22px;height:22px;border-radius:6px;background:${viewerProfile.avatar_color || '#1F6F8B'};display:inline-flex;align-items:center;justify-content:center;font-size:.85rem">${viewerProfile.avatar_emoji || '🌿'}</span>
+        @${viewerProfile.username}</a>`;
+      return;
+    }
+
+    nav.innerHTML = `<a href="login.html" class="btn btn-primary btn-sm">Accedi</a>`;
+  }
+
+  function renderContent(text) {
+    if (!text) return '';
+    var safe = escapeHtml(text);
+    return safe
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n\n+/g, '</p><p>')
+      .replace(/^/, '<p>') + '</p>';
+  }
+
+  function canViewerComment() {
+    if (commentPrivacy === 'none') {
+      return { ok: false, reason: 'I commenti per questo autore sono disattivati.' };
+    }
+    if (!viewerSession || !viewerProfile) {
+      return { ok: false, reason: 'Accedi per poter commentare.' };
+    }
+    if (commentPrivacy === 'members' && !['user', 'admin'].includes(viewerProfile.role || '')) {
+      return { ok: false, reason: 'Solo i membri verificati possono commentare questo post.' };
+    }
+    return { ok: true, reason: '' };
+  }
+
+  function syncCommentComposerState() {
+    const status = canViewerComment();
+    const textarea = document.getElementById('comment-text');
+    const submitBtn = document.getElementById('comment-submit');
+    if (!textarea || !submitBtn) return;
+
+    textarea.disabled = !status.ok;
+    submitBtn.disabled = !status.ok;
+
+    if (!status.ok) {
+      textarea.placeholder = status.reason;
+      showDiscussionMessage(status.reason, '');
+    } else {
+      textarea.placeholder = 'Scrivi un commento rispettoso e costruttivo...';
+      showDiscussionMessage('', '');
+    }
+  }
+
+  async function resolveCommentPrivacy() {
+    if (!activePost?.user_id) {
+      commentPrivacy = 'all';
+      return;
+    }
+
+    const { data, error } = await sb.from('user_settings')
+      .select('comment_privacy')
+      .eq('user_id', activePost.user_id)
+      .maybeSingle();
+
+    if (error) {
+      commentPrivacy = 'all';
+      return;
+    }
+
+    commentPrivacy = data?.comment_privacy || 'all';
+  }
+
+  function renderComments() {
+    const list = document.getElementById('comments-list');
+    if (!list) return;
+
+    if (!commentsCache.length) {
+      list.innerHTML = '<p class="discussion-note">Nessun commento ancora. Inizia tu la discussione.</p>';
+      return;
+    }
+
+    const nowTs = Date.now();
+    list.innerHTML = commentsCache.map((comment) => {
+      const author = comment.author_username ? '@' + escapeHtml(comment.author_username) : 'Utente';
+      const ownComment = !!viewerSession && comment.user_id === viewerSession.user.id;
+      const createdAt = new Date(comment.created_at).getTime();
+      const canEdit = ownComment && (nowTs - createdAt) <= (10 * 60 * 1000);
+
+      return `
+        <article class="comment-card">
+          <div class="comment-meta">
+            <span>${author}</span>
+            <time>${new Date(comment.created_at).toLocaleString('it-IT')}</time>
+          </div>
+          <div class="comment-body">${escapeHtml(comment.content)}</div>
+          <div class="comment-actions">
+            ${canEdit ? `<button class="mini-btn" type="button" onclick="editComment('${comment.id}')">Modifica</button>` : ''}
+            ${ownComment ? `<button class="mini-btn" type="button" onclick="deleteComment('${comment.id}')">Elimina</button>` : ''}
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  async function loadComments() {
+    const list = document.getElementById('comments-list');
+    if (!list || !activePost?.id) return;
+
+    const { data, error } = await sb.from('comments')
+      .select('id,post_id,user_id,author_username,content,created_at,is_hidden')
+      .eq('post_id', activePost.id)
+      .eq('is_hidden', false)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      if (isMissingRelationError(error)) {
+        list.innerHTML = '<p class="discussion-note">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>';
+        return;
+      }
+      list.innerHTML = `<p class="discussion-note">Errore caricamento commenti: ${escapeHtml(error.message)}</p>`;
+      return;
+    }
+
+    commentsCache = data || [];
+    renderComments();
+  }
+
+  async function submitComment(event) {
+    event.preventDefault();
+    const textarea = document.getElementById('comment-text');
+    if (!textarea || !viewerSession || !viewerProfile || !activePost?.id) {
+      showDiscussionMessage('Accedi per poter commentare.', 'err');
+      return;
+    }
+
+    const access = canViewerComment();
+    if (!access.ok) {
+      showDiscussionMessage(access.reason, 'err');
+      return;
+    }
+
+    const content = textarea.value.trim();
+    if (!content) {
+      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const commentLimit = window.RSM_SECURITY.checkRateLimit('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      if (!commentLimit.ok) {
+        showDiscussionMessage('Stai commentando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(commentLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+
+      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
+        minChars: 3,
+        maxChars: 1200,
+        maxLinks: 2,
+        maxRepeatedChar: 6,
+        maxRepeatedLine: 3,
+      });
+      if (!safety.ok) {
+        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+        showDiscussionMessage(safety.message, 'err');
+        return;
+      }
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      user_id: viewerSession.user.id,
+      author_username: viewerProfile.username || null,
+      content: content,
+      is_hidden: false,
+    };
+    const { error } = await sb.from('comments').insert(payload);
+
+    if (error) {
+      if (window.RSM_SECURITY) {
+        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      }
+      if (isMissingRelationError(error)) {
+        showDiscussionMessage('Commenti non attivi nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Commento non salvato: ' + error.message, 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.clearRateFailures('comment_write', viewerSession.user.id);
+    }
+
+    textarea.value = '';
+    showDiscussionMessage('Commento pubblicato.', 'ok');
+    await loadComments();
+  }
+
+  async function editComment(commentId) {
+    if (!viewerSession) return;
+    const comment = commentsCache.find((item) => item.id === commentId);
+    if (!comment || comment.user_id !== viewerSession.user.id) return;
+
+    const ageMs = Date.now() - new Date(comment.created_at).getTime();
+    if (ageMs > 10 * 60 * 1000) {
+      showDiscussionMessage('Puoi modificare un commento solo entro 10 minuti.', 'err');
+      return;
+    }
+
+    const next = prompt('Modifica commento:', comment.content || '');
+    if (next === null) return;
+    const content = String(next).trim();
+    if (!content) {
+      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
+        minChars: 3,
+        maxChars: 1200,
+        maxLinks: 2,
+        maxRepeatedChar: 6,
+        maxRepeatedLine: 3,
+      });
+      if (!safety.ok) {
+        showDiscussionMessage(safety.message, 'err');
+        return;
+      }
+    }
+
+    const { error } = await sb.from('comments').update({ content: content }).eq('id', commentId);
+    if (error) {
+      showDiscussionMessage('Modifica non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    showDiscussionMessage('Commento aggiornato.', 'ok');
+    await loadComments();
+  }
+
+  async function deleteComment(commentId) {
+    if (!viewerSession) return;
+    const comment = commentsCache.find((item) => item.id === commentId);
+    if (!comment || comment.user_id !== viewerSession.user.id) return;
+    if (!confirm('Eliminare questo commento?')) return;
+
+    const { error } = await sb.from('comments').delete().eq('id', commentId);
+    if (error) {
+      showDiscussionMessage('Eliminazione non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    showDiscussionMessage('Commento eliminato.', 'ok');
+    await loadComments();
+  }
+
+  async function reportPost() {
+    if (!viewerSession || !activePost?.id) {
+      showDiscussionMessage('Accedi per inviare una segnalazione.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const reportLimit = window.RSM_SECURITY.checkRateLimit('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      if (!reportLimit.ok) {
+        showDiscussionMessage('Hai inviato troppe segnalazioni. Riprova tra ' + window.RSM_SECURITY.formatRetry(reportLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+    }
+
+    const reason = prompt('Motivo segnalazione (es: spam, offese, disinformazione):', 'spam');
+    if (reason === null) return;
+    const reasonText = String(reason || '').trim();
+    if (!reasonText) {
+      showDiscussionMessage('Inserisci un motivo valido per la segnalazione.', 'err');
+      return;
+    }
+
+    const details = prompt('Dettagli (opzionale):', '') || '';
+    const detailsText = String(details).trim();
+
+    if (reasonText.length < 3) {
+      showDiscussionMessage('Motivo troppo breve.', 'err');
+      return;
+    }
+    if (reasonText.length > 120) {
+      showDiscussionMessage('Motivo troppo lungo.', 'err');
+      return;
+    }
+    if (detailsText.length > 1000) {
+      showDiscussionMessage('Dettagli troppo lunghi.', 'err');
+      return;
+    }
+
+    const reportLinks = (reasonText + '\n' + detailsText).match(/https?:\/\/|www\./gi);
+    if (reportLinks && reportLinks.length > 1) {
+      showDiscussionMessage('Segnalazione bloccata: troppi link.', 'err');
+      return;
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      reporter_id: viewerSession.user.id,
+      reason: reasonText,
+      details: detailsText || null,
+      status: 'pending',
+    };
+
+    const { error } = await sb.from('reports').insert(payload);
+    if (error) {
+      if (window.RSM_SECURITY) {
+        window.RSM_SECURITY.recordRateFailure('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      }
+
+      const errMsg = String(error.message || '').toLowerCase();
+      if (errMsg.includes('duplicate key')) {
+        showDiscussionMessage('Hai gia segnalato questo contenuto.', 'err');
+        return;
+      }
+      if (isMissingRelationError(error)) {
+        showDiscussionMessage('Segnalazioni non attive nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Segnalazione non inviata: ' + error.message, 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.clearRateFailures('report_write', viewerSession.user.id);
+    }
+    showDiscussionMessage('Segnalazione inviata alla moderazione. Grazie.', 'ok');
+  }
+
+  function bindDiscussionHandlers() {
+    const form = document.getElementById('comment-form');
+    if (form) form.addEventListener('submit', submitComment);
+
+    const reportBtn = document.getElementById('report-post-btn');
+    if (reportBtn) reportBtn.addEventListener('click', reportPost);
+  }
+
+  await loadViewerContext();
+  renderNavAuth();
 
   if (!id || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
     wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>Nessun ID specificato.</p><a href="index.html#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
@@ -211,39 +715,61 @@
   document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
   const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  function renderContent(text) {
-    if (!text) return '';
-    return text
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/\n\n+/g, '</p><p>')
-      .replace(/^/, '<p>') + '</p>';
-  }
-
   const badgeCls = c => c === 'green' ? 'badge badge-green' : 'badge badge-default';
+
+  activePost = post;
+  const safeTitle = escapeHtml(post.title || 'Articolo');
+  const safeExcerpt = escapeHtml(post.excerpt || '');
+  const safeCategory = escapeHtml(post.category || '');
+  const safeBadge = escapeHtml(post.badge || post.category || '');
+  const safeAuthor = escapeHtml(post.author_username || '');
+  const authorHref = post.author_username ? `profile.html?u=${encodeURIComponent(post.author_username)}` : '';
 
   wrap.innerHTML = `
     <div class="post-badges">
-      <span class="${badgeCls(post.badge_color)}">${post.badge || post.category || ''}</span>
-      ${post.category && post.badge && post.category !== post.badge ? `<span class="badge badge-default">${post.category}</span>` : ''}
+      <span class="${badgeCls(post.badge_color)}">${safeBadge}</span>
+      ${post.category && post.badge && post.category !== post.badge ? `<span class="badge badge-default">${safeCategory}</span>` : ''}
     </div>
     <div class="post-meta">
       <time>${fmt(post.published_at)}</time>
       <span class="meta-dot"></span>
-      <span>${post.category || ''}</span>
-      ${post.author_username ? `<span class="meta-dot"></span><a href="profile.html?u=${post.author_username}" style="color:var(--a)">@${post.author_username}</a>` : ''}
+      <span>${safeCategory}</span>
+      ${post.author_username ? `<span class="meta-dot"></span><a href="${authorHref}" style="color:var(--a)">@${safeAuthor}</a>` : ''}
     </div>
-    <h1 class="post-title">${post.title}</h1>
-    ${post.excerpt ? `<p class="post-lead">${post.excerpt}</p>` : ''}
+    <h1 class="post-title">${safeTitle}</h1>
+    ${post.excerpt ? `<p class="post-lead">${safeExcerpt}</p>` : ''}
     <div class="content-divider"></div>
     <div class="content">${renderContent(post.content)}</div>
     <div class="post-footer">
       <a href="index.html#news" class="btn btn-primary">← Tutte le notizie</a>
-      ${post.author_username ? `<a href="profile.html?u=${post.author_username}" class="btn btn-ghost">Autore: @${post.author_username} →</a>` : ''}
+      ${post.author_username ? `<a href="${authorHref}" class="btn btn-ghost">Autore: @${safeAuthor} →</a>` : ''}
     </div>
+    <section class="discussion" id="discussion">
+      <div class="discussion-head">
+        <h2>Discussione</h2>
+      </div>
+      <p class="discussion-note">Commenti con filtro anti-spam e moderazione. Modifica consentita entro 10 minuti.</p>
+      <div id="discussion-msg" class="discussion-msg" style="display:none"></div>
+      <form class="comment-form" id="comment-form">
+        <textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" id="comment-submit" type="submit">Pubblica commento</button>
+          <button class="btn btn-ghost btn-sm" id="report-post-btn" type="button">Segnala post</button>
+        </div>
+      </form>
+      <div id="comments-list" class="comments-list">
+        <p class="discussion-note">Caricamento commenti...</p>
+      </div>
+    </section>
   `;
+
+  await resolveCommentPrivacy();
+  bindDiscussionHandlers();
+  syncCommentComposerState();
+  await loadComments();
+
+  window.editComment = editComment;
+  window.deleteComment = deleteComment;
 })();
 </script>
 </body>

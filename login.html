@@ -822,6 +822,7 @@
               </label>
 
               <button class="btn btn-primary" id="btn-login" type="submit">Accedi</button>
+              <button class="btn btn-ghost" id="btn-magic" type="button">Invia link magico via email</button>
             </form>
 
             <div class="inline-actions">
@@ -1002,6 +1003,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase.config.js"></script>
+  <script src="security.client.js"></script>
   <script>
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const byId = (id) => document.getElementById(id);
@@ -1014,6 +1016,12 @@
       view: 'login',
       regAccount: { email: '', password: '' },
       verifyEmail: ''
+    };
+
+    const RATE_LIMITS = {
+      login: { maxAttempts: 5, windowMs: 10 * 60 * 1000, lockMs: 15 * 60 * 1000 },
+      magic: { maxAttempts: 4, windowMs: 15 * 60 * 1000, lockMs: 20 * 60 * 1000 },
+      forgot: { maxAttempts: 4, windowMs: 30 * 60 * 1000, lockMs: 30 * 60 * 1000 }
     };
 
     function sanitizeUsername(value) {
@@ -1084,6 +1092,26 @@
       if (raw.includes('rate limit')) return 'Troppi tentativi. Riprova tra poco.';
 
       return fallbackText;
+    }
+
+    function checkRateLimit(action, identity, cfg) {
+      if (!window.RSM_SECURITY) return { ok: true, retryAfterMs: 0 };
+      return window.RSM_SECURITY.checkRateLimit(action, identity, cfg);
+    }
+
+    function rememberRateFailure(action, identity, cfg) {
+      if (!window.RSM_SECURITY) return;
+      window.RSM_SECURITY.recordRateFailure(action, identity, cfg);
+    }
+
+    function clearRateFailures(action, identity) {
+      if (!window.RSM_SECURITY) return;
+      window.RSM_SECURITY.clearRateFailures(action, identity);
+    }
+
+    function rateLimitMessage(base, retryAfterMs) {
+      if (!window.RSM_SECURITY) return base;
+      return base + ' Riprova tra ' + window.RSM_SECURITY.formatRetry(retryAfterMs) + '.';
     }
 
     function togglePasswordVisibility(inputId, trigger) {
@@ -1212,6 +1240,41 @@
       return { ok: true, created: true };
     }
 
+    async function submitMagicLink() {
+      showMessage('msg-login', 'info', '');
+      const email = byId('login-email').value.trim();
+      if (!email || !validEmail(email)) {
+        showMessage('msg-login', 'error', 'Inserisci una email valida per ricevere il link magico.');
+        return;
+      }
+
+      const magicLimit = checkRateLimit('magic_link', email, RATE_LIMITS.magic);
+      if (!magicLimit.ok) {
+        showMessage('msg-login', 'error', rateLimitMessage('Troppi tentativi di invio link magico.', magicLimit.retryAfterMs));
+        return;
+      }
+
+      setButtonLoading('btn-magic', true, 'Invia link magico via email', 'Invio in corso...');
+
+      const redirectUrl = new URL('me.html#profile', window.location.href).toString();
+      const { error } = await sb.auth.signInWithOtp({
+        email: email,
+        options: { emailRedirectTo: redirectUrl, shouldCreateUser: false }
+      });
+
+      setButtonLoading('btn-magic', false, 'Invia link magico via email', 'Invio in corso...');
+
+      if (error) {
+        rememberRateFailure('magic_link', email, RATE_LIMITS.magic);
+        showMessage('msg-login', 'error', humanizeAuthError(error, 'Invio link magico non riuscito.'));
+        return;
+      }
+
+      clearRateFailures('magic_link', email);
+
+      showMessage('msg-login', 'success', 'Link magico inviato. Apri la mail e clicca il link per accedere.');
+    }
+
     async function submitLogin(event) {
       event.preventDefault();
       showMessage('msg-login', 'info', '');
@@ -1224,6 +1287,12 @@
         return;
       }
 
+      const loginLimit = checkRateLimit('login_password', email, RATE_LIMITS.login);
+      if (!loginLimit.ok) {
+        showMessage('msg-login', 'error', rateLimitMessage('Troppi tentativi di accesso.', loginLimit.retryAfterMs));
+        return;
+      }
+
       setButtonLoading('btn-login', true, 'Accedi', 'Accesso in corso...');
 
       const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
@@ -1231,9 +1300,12 @@
       setButtonLoading('btn-login', false, 'Accedi', 'Accesso in corso...');
 
       if (error) {
+        rememberRateFailure('login_password', email, RATE_LIMITS.login);
         showMessage('msg-login', 'error', humanizeAuthError(error, 'Non siamo riusciti ad accedere.'));
         return;
       }
+
+      clearRateFailures('login_password', email);
 
       const user = data && data.user ? data.user : null;
       if (!user) {
@@ -1413,6 +1485,12 @@
         return;
       }
 
+      const forgotLimit = checkRateLimit('forgot_password', email, RATE_LIMITS.forgot);
+      if (!forgotLimit.ok) {
+        showMessage('msg-forgot', 'error', rateLimitMessage('Hai richiesto troppi reset password in poco tempo.', forgotLimit.retryAfterMs));
+        return;
+      }
+
       const resetRedirect = new URL('reset.html', window.location.href).toString();
       setButtonLoading('btn-forgot', true, 'Invia email reset', 'Invio in corso...');
 
@@ -1423,9 +1501,12 @@
       setButtonLoading('btn-forgot', false, 'Invia email reset', 'Invio in corso...');
 
       if (error) {
+        rememberRateFailure('forgot_password', email, RATE_LIMITS.forgot);
         showMessage('msg-forgot', 'error', humanizeAuthError(error, 'Invio email di reset non riuscito.'));
         return;
       }
+
+      clearRateFailures('forgot_password', email);
 
       showMessage('msg-forgot', 'success', 'Email inviata. Controlla la posta e anche la cartella spam.');
     }
@@ -1469,6 +1550,7 @@
 
     function bindEvents() {
       byId('form-login').addEventListener('submit', submitLogin);
+      byId('btn-magic').addEventListener('click', submitMagicLink);
       byId('form-reg1').addEventListener('submit', submitRegisterStep1);
       byId('form-reg2').addEventListener('submit', submitRegisterStep2);
       byId('form-forgot').addEventListener('submit', submitForgot);
