@@ -107,7 +107,16 @@
     .pcard-title { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; line-height: 1.4; margin-bottom: 8px; }
     .pcard-title a { color: var(--text); transition: color .2s; }
     .pcard-title a:hover { color: var(--a); }
-    .pcard-exc { font-size: .83rem; color: var(--muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pcard-exc { font-size: .83rem; color: var(--muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 14px; }
+    .pcard-foot { padding-top: 12px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .btn-read {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 20px; font-size: .8rem; font-weight: 600;
+      background: linear-gradient(135deg,#1F6F8B,#3a8c8a); color: #fff;
+      box-shadow: 0 3px 12px rgba(31,111,139,.3); text-decoration: none;
+      transition: transform .2s, box-shadow .2s, gap .2s; border: none;
+    }
+    .btn-read:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(31,111,139,.45); gap: 10px; color: #fff; }
 
     /* ── Empty state ──────────────────────────────────────────────── */
     .empty { text-align: center; padding: 80px 20px; color: var(--muted); }
@@ -250,6 +259,9 @@ document.body.insertAdjacentHTML('afterbegin', DEFS);
         <div class="pcard-meta">${fmt(p.published_at)}</div>
         <div class="pcard-title"><a href="post.html?id=${p.id}">${p.title}</a></div>
         ${p.excerpt ? `<div class="pcard-exc">${p.excerpt}</div>` : ''}
+        <div class="pcard-foot">
+          <a href="post.html?id=${p.id}" class="btn-read">Leggi →</a>
+        </div>
       </div>
     </article>`).join('');
 })();

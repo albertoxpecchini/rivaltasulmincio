@@ -1018,11 +1018,14 @@
       gap: 16px; flex-wrap: wrap;
     }
     .btn-read {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: .88rem; font-weight: 600; color: var(--primary);
-      transition: gap var(--transition), color var(--transition);
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: 20px;
+      font-size: .84rem; font-weight: 600; color: #fff;
+      background: var(--primary);
+      box-shadow: 0 3px 12px rgba(31,111,139,.35);
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition), gap var(--transition);
     }
-    .btn-read:hover { gap: 12px; color: var(--primary-dark); }
+    .btn-read:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(31,111,139,.5); gap: 11px; color: #fff; }
     .btn-read svg { width: 14px; height: 14px; }
     .post-cats { display: flex; gap: 6px; flex-wrap: wrap; }
 
