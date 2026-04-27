@@ -1,645 +1,1549 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Accedi – Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accedi | Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#020c10;--bg2:#061520;--sb:rgba(10,28,38,.55);--border:rgba(255,255,255,.08);
-      --text:#EAF4F4;--muted:rgba(234,244,244,.42);--faint:rgba(234,244,244,.15);
-      --p:#1F6F8B;--a:#3a8c8a;--g:#2E7D32;--gold:#F9A825;--err:#ef5350;
-      --ease:cubic-bezier(.4,0,.2,1);
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1F6F8B;
+      --primary-dark: #174E63;
+      --primary-soft: rgba(31, 111, 139, 0.09);
+      --secondary: #4CAF50;
+      --accent: #2E7D32;
+      --bg: #F5F7F6;
+      --bg-alt: #ECF1EE;
+      --surface: #FFFFFF;
+      --dark-bg: #0F2A30;
+      --dark-bg-2: #143B43;
+      --text: #1A1A1A;
+      --text-muted: #5F6B6D;
+      --text-light: #EAF4F4;
+      --border: #E0E6E6;
+      --ok: #2E7D32;
+      --warn: #B06D00;
+      --err: #B53838;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 2px 6px rgba(15, 42, 48, 0.08);
+      --shadow: 0 12px 30px rgba(15, 42, 48, 0.12);
+      --transition: 0.24s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    html{height:100%}
-    body{
-      min-height:100%;background:var(--bg);color:var(--text);
-      font-family:'Inter',system-ui,sans-serif;
-      display:grid;grid-template-columns:55fr 45fr;
+
+    html, body { min-height: 100%; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(1300px 460px at -5% -10%, rgba(31, 111, 139, 0.12), transparent 60%),
+        radial-gradient(900px 420px at 110% 8%, rgba(46, 125, 50, 0.12), transparent 56%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    a{color:var(--a);text-decoration:none}
-    a:hover{color:var(--text)}
 
-    /* ═══ LEFT PANEL ═══════════════════════════════════════════════ */
-    .left{
-      position:sticky;top:0;height:100vh;
-      background:var(--bg);overflow:hidden;
-      display:flex;flex-direction:column;justify-content:space-between;padding:48px;
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { color: var(--primary-dark); }
+
+    .container { width: min(1120px, 100% - 36px); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: var(--dark-bg);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: box-shadow var(--transition);
     }
 
-    /* aurora */
-    .aurora{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-    .orb{position:absolute;border-radius:50%;filter:blur(110px)}
-    .o1{width:700px;height:700px;background:radial-gradient(circle,#1F6F8B 0%,transparent 60%);top:-200px;left:-150px;opacity:.14;animation:oa 22s ease-in-out infinite alternate}
-    .o2{width:450px;height:450px;background:radial-gradient(circle,#2E7D32 0%,transparent 60%);bottom:-100px;right:0;opacity:.1;animation:ob 18s ease-in-out infinite alternate}
-    .o3{width:300px;height:300px;background:radial-gradient(circle,#3a8c8a 0%,transparent 60%);top:50%;left:55%;opacity:.09;animation:oc 14s ease-in-out infinite alternate}
-    @keyframes oa{to{transform:translate(80px,60px) scale(1.1)}}
-    @keyframes ob{to{transform:translate(-50px,-40px) scale(1.2)}}
-    @keyframes oc{to{transform:translate(-40%,-60%) scale(1.1)}}
-    .gridlines{position:absolute;inset:0;
-      background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);
-      background-size:56px 56px;pointer-events:none}
-    .particles{position:absolute;inset:0;pointer-events:none}
-    .ptl{position:absolute;border-radius:50%;background:rgba(58,140,138,.45);animation:ptlFloat linear infinite}
-    @keyframes ptlFloat{0%{opacity:0;transform:translateY(0) scale(0)}10%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translateY(-110vh) scale(.5)}}
-
-    /* left content */
-    .left-content{position:relative;z-index:1;display:flex;flex-direction:column;gap:40px}
-    .brand{display:flex;align-items:center;gap:14px}
-    .brand-logo{
-      width:48px;height:48px;border-radius:14px;flex-shrink:0;
-      background:linear-gradient(135deg,#1F6F8B,#3a8c8a);
-      display:flex;align-items:center;justify-content:center;font-size:1.4rem;
-      box-shadow:0 0 0 1px rgba(255,255,255,.08),0 8px 28px rgba(31,111,139,.4);
+    .site-header.scrolled {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
-    .brand-text{}
-    .brand-name{
-      font-family:'Fraunces',Georgia,serif;font-size:1.1rem;font-weight:600;
-      background:linear-gradient(135deg,#EAF4F4 40%,#3a8c8a);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+
+    .header-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-block: 10px;
     }
-    .brand-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
 
-    .hero-text{}
-    .hero-text h1{
-      font-family:'Fraunces',Georgia,serif;font-size:clamp(1.8rem,3vw,2.6rem);
-      font-weight:700;line-height:1.2;margin-bottom:14px;
-      background:linear-gradient(135deg,#EAF4F4 0%,rgba(234,244,244,.7) 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    .site-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      flex-shrink: 0;
     }
-    .hero-text p{font-size:.92rem;color:var(--muted);line-height:1.65;max-width:380px}
 
-    /* Mincio SVG scene */
-    .scene{border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px var(--border)}
-
-    /* features */
-    .features{display:flex;flex-direction:column;gap:14px}
-    .feat{display:flex;align-items:flex-start;gap:14px}
-    .feat-ico{
-      width:36px;height:36px;border-radius:10px;flex-shrink:0;
-      background:rgba(255,255,255,.05);border:1px solid var(--border);
-      display:flex;align-items:center;justify-content:center;font-size:1rem;
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(31, 111, 139, 0.5), rgba(46, 125, 50, 0.45));
+      font-size: 1.05rem;
     }
-    .feat-text{}
-    .feat-title{font-size:.88rem;font-weight:600;margin-bottom:2px}
-    .feat-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
 
-    /* quote */
-    .left-quote{position:relative;z-index:1}
-    .quote-text{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:.92rem;color:var(--muted);line-height:1.6}
-    .quote-text::before{content:'"';color:var(--a);font-size:1.4rem;font-style:normal;vertical-align:-.15em;margin-right:2px}
-    .quote-text::after{content:'"';color:var(--a);font-size:1.4rem;font-style:normal;vertical-align:-.15em;margin-left:2px}
-
-    /* ═══ RIGHT PANEL ══════════════════════════════════════════════ */
-    .right{
-      background:rgba(6,18,28,.55);backdrop-filter:blur(2px);
-      border-left:1px solid var(--border);
-      min-height:100vh;display:flex;align-items:center;justify-content:center;
-      padding:48px 40px;
+    .brand-copy { line-height: 1.1; }
+    .brand-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.1rem;
+      color: #fff;
+      letter-spacing: -0.01em;
     }
-    .form-wrap{width:100%;max-width:400px}
-
-    /* mode transitions */
-    .mode{display:none;animation:modeIn .32s var(--ease)}
-    .mode.on{display:block}
-    @keyframes modeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    @keyframes modeBack{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
-    .mode.back{animation:modeBack .28s var(--ease)}
-
-    /* form header */
-    .fh{margin-bottom:28px}
-    .fh-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-bottom:8px}
-    .fh h2{font-family:'Fraunces',Georgia,serif;font-size:1.7rem;font-weight:700;line-height:1.2;margin-bottom:8px}
-    .fh p{font-size:.85rem;color:var(--muted);line-height:1.55}
-
-    /* progress dots */
-    .dots{display:flex;gap:6px;margin-bottom:24px}
-    .dot{height:4px;border-radius:2px;background:var(--border);transition:all .3s}
-    .dot.on{width:28px;background:var(--a)}
-    .dot:not(.on){width:14px}
-
-    /* fields */
-    .fg{margin-bottom:16px}
-    .fg label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
-    .fg input,.fg textarea,.fg select{
-      width:100%;padding:13px 15px;
-      background:rgba(255,255,255,.04);
-      border:1.5px solid var(--border);
-      border-radius:11px;color:var(--text);
-      font-size:.9rem;font-family:inherit;
-      transition:border-color .2s,box-shadow .2s,background .2s;
+    .brand-sub {
+      margin-top: 2px;
+      font-size: 0.72rem;
+      color: rgba(234, 244, 244, 0.54);
+      font-style: italic;
     }
-    .fg textarea{resize:none;min-height:74px;line-height:1.55}
-    .fg input:focus,.fg textarea:focus,.fg select:focus{
-      outline:none;border-color:var(--a);background:rgba(255,255,255,.07);
-      box-shadow:0 0 0 3px rgba(58,140,138,.17);
+
+    .header-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    .fg input::placeholder,.fg textarea::placeholder{color:rgba(234,244,244,.2)}
-    .fg input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(239,83,80,.15)}
-    .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-    /* password toggle */
-    .pwd-wrap{position:relative}
-    .pwd-wrap input{padding-right:44px}
-    .pwd-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.95rem;padding:4px;line-height:1}
-    .pwd-eye:hover{color:var(--text)}
-
-    /* strength */
-    .strength{display:flex;gap:4px;margin-top:8px}
-    .str-seg{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
-
-    /* btn */
-    .btn{
-      width:100%;padding:14px;border:none;border-radius:12px;
-      font-size:.93rem;font-weight:700;font-family:inherit;cursor:pointer;
-      position:relative;overflow:hidden;transition:all .2s;
-      display:flex;align-items:center;justify-content:center;gap:8px;
+    .header-nav a {
+      color: rgba(234, 244, 244, 0.72);
+      font-size: 0.83rem;
+      font-weight: 600;
+      border-radius: 9px;
+      padding: 7px 11px;
+      transition: background var(--transition), color var(--transition);
     }
-    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
-    .btn-grad{
-      background:linear-gradient(135deg,#1F6F8B 0%,#3a8c8a 50%,#2E7D32 100%);
-      background-size:200% 200%;animation:grad 4s ease infinite;
-      color:#fff;box-shadow:0 6px 24px rgba(31,111,139,.38);
+
+    .header-nav a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.11);
     }
-    .btn-grad:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(31,111,139,.55)}
-    @keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-    .btn-ghost{
-      background:rgba(255,255,255,.05);color:var(--muted);
-      border:1.5px solid var(--border);margin-top:10px;
+
+    .header-nav a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.14);
     }
-    .btn-ghost:hover:not(:disabled){color:var(--text);background:rgba(255,255,255,.08)}
 
-    /* links */
-    .links-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:8px}
-    .link-btn{background:none;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;color:var(--muted);padding:0;transition:color .2s}
-    .link-btn:hover{color:var(--a)}
-    .link-btn.highlight{color:var(--a);font-weight:600}
-    .link-btn.highlight:hover{color:var(--text)}
-
-    /* msg */
-    .msg{padding:11px 14px;border-radius:10px;font-size:.83rem;margin-bottom:14px;animation:modeIn .2s ease;line-height:1.5}
-    .err{background:rgba(239,83,80,.1);color:#ef9a9a;border:1px solid rgba(239,83,80,.2)}
-    .ok {background:rgba(46,125,50,.12);color:#a5d6a7;border:1px solid rgba(46,125,50,.25)}
-    .info{background:rgba(31,111,139,.12);color:#80cbc4;border:1px solid rgba(31,111,139,.25)}
-
-    /* pickers */
-    .pick-lbl{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px;margin-top:18px}
-    .eg{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-bottom:4px}
-    .eg input{display:none}
-    .eg label{display:flex;align-items:center;justify-content:center;aspect-ratio:1;font-size:1.1rem;border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:all .14s}
-    .eg label:hover{background:rgba(255,255,255,.07);transform:scale(1.18)}
-    .eg input:checked+label{background:rgba(58,140,138,.2);border-color:var(--a);transform:scale(1.08)}
-    .cg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-    .cg input{display:none}
-    .cg label{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .14s;border:2.5px solid transparent}
-    .cg label:hover{transform:scale(1.15)}
-    .cg input:checked+label{border-color:#fff;box-shadow:0 0 0 2.5px rgba(255,255,255,.18);transform:scale(1.1)}
-
-    /* avatar preview card */
-    .av-card{
-      display:flex;align-items:center;gap:14px;
-      padding:16px;border-radius:14px;margin-bottom:8px;
-      background:rgba(255,255,255,.04);border:1px solid var(--border);
+    .page {
+      padding-block: 34px 56px;
     }
-    .av-ico{width:52px;height:52px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:all .25s;box-shadow:0 4px 16px rgba(0,0,0,.4);flex-shrink:0}
-    .av-info{}
-    .av-name{font-weight:600;font-size:.9rem;margin-bottom:2px}
-    .av-role{font-size:.73rem;color:var(--muted)}
 
-    /* success icon */
-    .success-ico{text-align:center;font-size:3.5rem;margin-bottom:20px;animation:pop .5s var(--ease)}
-    @keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
-
-    /* spinner */
-    .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .5s linear infinite;display:inline-block;flex-shrink:0}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* ═══ RESPONSIVE ══════════════════════════════════════════════ */
-    @media(max-width:860px){
-      body{grid-template-columns:1fr}
-      .left{position:static;height:auto;padding:32px 24px 24px;min-height:auto}
-      .scene{display:none}
-      .features{display:none}
-      .hero-text p{display:none}
-      .left-content{gap:0}
-      .hero-text{display:none}
-      .right{border-left:none;border-top:1px solid var(--border);padding:36px 24px 48px}
+    .auth-layout {
+      display: grid;
+      grid-template-columns: 1.04fr minmax(360px, 0.96fr);
+      gap: 24px;
+      align-items: start;
     }
-    @media(max-width:480px){
-      .frow{grid-template-columns:1fr}
-      .eg{grid-template-columns:repeat(8,1fr)}
+
+    .welcome-panel {
+      position: sticky;
+      top: 94px;
+      border-radius: 22px;
+      border: 1px solid rgba(31, 111, 139, 0.18);
+      background:
+        linear-gradient(165deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.98)),
+        var(--surface);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .welcome-panel::before {
+      content: '';
+      position: absolute;
+      inset: -30% 12% auto auto;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(31, 111, 139, 0.14), transparent 68%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .welcome-panel::after {
+      content: '';
+      position: absolute;
+      inset: auto auto -36% -15%;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76, 175, 80, 0.14), transparent 67%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .welcome-panel h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .welcome-lead {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      max-width: 56ch;
+      margin-bottom: 20px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .mini-card {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 13px 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mini-card h3 {
+      font-size: 0.86rem;
+      margin-bottom: 4px;
+      color: var(--dark-bg);
+    }
+
+    .mini-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .rules-note {
+      border-radius: 12px;
+      border: 1px dashed rgba(31, 111, 139, 0.35);
+      background: var(--primary-soft);
+      padding: 12px 13px;
+      font-size: 0.82rem;
+      color: #2A515F;
+    }
+
+    .rules-note strong {
+      color: #174E63;
+    }
+
+    .auth-panel {
+      min-width: 0;
+    }
+
+    .auth-card {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn 0.26s var(--transition);
+    }
+
+    .view.is-active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .view-head { margin-bottom: 18px; }
+
+    .view-step {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .view-head h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.8rem;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .view-head p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .link-btn {
+      appearance: none;
+      border: none;
+      background: none;
+      font: inherit;
+      font-size: 0.86rem;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .link-btn:hover { color: var(--primary-dark); }
+
+    .msg-slot { min-height: 6px; margin-bottom: 11px; }
+
+    .notice {
+      border-radius: 10px;
+      border: 1px solid transparent;
+      padding: 10px 12px;
+      font-size: 0.83rem;
+      line-height: 1.45;
+    }
+
+    .notice.info {
+      background: rgba(31, 111, 139, 0.1);
+      border-color: rgba(31, 111, 139, 0.22);
+      color: #1B5568;
+    }
+
+    .notice.success {
+      background: rgba(46, 125, 50, 0.11);
+      border-color: rgba(46, 125, 50, 0.26);
+      color: #245D27;
+    }
+
+    .notice.error {
+      background: rgba(181, 56, 56, 0.12);
+      border-color: rgba(181, 56, 56, 0.25);
+      color: #872A2A;
+    }
+
+    form { display: grid; gap: 12px; }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field > span,
+    .group-label {
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      padding: 11px 12px;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 84px;
+      line-height: 1.5;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 111, 139, 0.14);
+      background: #fff;
+    }
+
+    .field small {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .input-with-action {
+      position: relative;
+    }
+
+    .input-with-action input { padding-right: 84px; }
+
+    .input-action {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: rgba(31, 111, 139, 0.1);
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .input-action:hover { background: rgba(31, 111, 139, 0.17); }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 11px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #2E7D8A 54%, var(--accent));
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(31, 111, 139, 0.28);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 11px 24px rgba(31, 111, 139, 0.35);
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      border-color: rgba(31, 111, 139, 0.4);
+      background: var(--primary-soft);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn-row .btn { flex: 1 1 0; }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .steps span {
+      width: 14px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      display: inline-block;
+      transition: width var(--transition), background var(--transition);
+    }
+
+    .steps span.active {
+      width: 30px;
+      background: var(--primary);
+    }
+
+    .email-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(31, 111, 139, 0.25);
+      background: var(--primary-soft);
+      color: #1C5466;
+      padding: 6px 10px;
+      font-size: 0.77rem;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .identity-preview {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(170deg, #fff, #F9FBFB);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 10px;
+    }
+
+    .preview-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #1F6F8B;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 6px 16px rgba(15, 42, 48, 0.2);
+      flex-shrink: 0;
+    }
+
+    .preview-name {
+      font-weight: 700;
+      font-size: 0.94rem;
+      color: var(--dark-bg);
+    }
+
+    .preview-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .emoji-grid input,
+    .color-grid input {
+      display: none;
+    }
+
+    .emoji-grid label {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+      font-size: 1.04rem;
+    }
+
+    .emoji-grid label:hover {
+      transform: translateY(-1px);
+      background: #F4F8F9;
+    }
+
+    .emoji-grid input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      transform: scale(1.05);
+    }
+
+    .color-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .color-grid label {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .color-grid label:hover { transform: scale(1.1); }
+
+    .color-grid input:checked + label {
+      border-color: #fff;
+      box-shadow: 0 0 0 2px rgba(15, 42, 48, 0.22);
+      transform: scale(1.08);
+    }
+
+    .check-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px 10px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #FCFDFD;
+    }
+
+    .check-wrap input {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .check-wrap span {
+      color: #335A67;
+      font-size: 0.79rem;
+      line-height: 1.45;
+    }
+
+    .check-wrap strong { color: #174E63; }
+
+    .verify-box {
+      border-radius: 14px;
+      border: 1px solid rgba(31, 111, 139, 0.2);
+      background: linear-gradient(160deg, rgba(31, 111, 139, 0.08), rgba(76, 175, 80, 0.08));
+      padding: 18px;
+      margin-bottom: 10px;
+    }
+
+    .verify-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(31, 111, 139, 0.2);
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .verify-box h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+    }
+
+    .verify-box p {
+      color: #2F606E;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+    }
+
+    .verify-email {
+      font-weight: 700;
+      color: #174E63;
+      word-break: break-word;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .inline-actions .link-btn {
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(31, 111, 139, 0.45);
+      line-height: 1.35;
+    }
+
+    .inline-actions .link-btn:hover {
+      border-bottom-color: rgba(23, 78, 99, 0.7);
+    }
+
+    @media (max-width: 980px) {
+      .auth-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(1120px, 100% - 26px);
+      }
+
+      .auth-card {
+        padding: 18px;
+      }
+
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .emoji-grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .header-inner {
+        min-height: 56px;
+      }
+
+      .brand-sub {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-
-<!-- ════════════ LEFT ═══════════════════════════════════════════════ -->
-<div class="left">
-  <div class="aurora">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-  </div>
-  <div class="gridlines"></div>
-  <div class="particles" id="particles"></div>
-
-  <div class="left-content">
-    <div class="brand">
-      <div class="brand-logo">🌊</div>
-      <div class="brand-text">
-        <div class="brand-name">Rivalta sul Mincio</div>
-        <div class="brand-sub">La comunità del Mincio</div>
-      </div>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="site-brand" href="index.html" aria-label="Torna alla home">
+        <span class="brand-mark" aria-hidden="true">ðŸŒŠ</span>
+        <span class="brand-copy">
+          <span class="brand-title">Rivalta sul Mincio</span>
+          <span class="brand-sub">Comunita e territorio</span>
+        </span>
+      </a>
+      <nav class="header-nav" aria-label="Navigazione">
+        <a href="index.html">Home</a>
+        <a href="login.html" class="active" aria-current="page">Accedi</a>
+        <a href="me.html#profile">Area utente</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="hero-text">
-      <h1>Entra nella<br/>comunità del Mincio</h1>
-      <p>Pubblica articoli, racconta storie, esplora il territorio. Un luogo digitale per chi ama il Mincio e le sue Valli.</p>
-    </div>
+  <main class="page">
+    <div class="container auth-layout">
+      <section class="welcome-panel" aria-label="Informazioni accesso">
+        <p class="eyebrow">Area comunita</p>
+        <h1>Accedi o crea il tuo account locale.</h1>
+        <p class="welcome-lead">
+          Per pubblicare contenuti servono profilo completo, regole della comunita accettate e verifica email.
+          Se sei Fuori comune puoi comunque partecipare come lettore.
+        </p>
 
-    <!-- Mincio scene SVG -->
-    <div class="scene">
-      <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:220px">
-        <defs>
-          <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#020c10"/><stop offset="100%" stop-color="#0a1f2a"/></linearGradient>
-          <linearGradient id="lwat" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1F6F8B" stop-opacity=".5"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
-          <radialGradient id="lmoon" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#EAF4F4" stop-opacity=".9"/><stop offset="100%" stop-color="#EAF4F4" stop-opacity="0"/></radialGradient>
-        </defs>
-        <rect width="560" height="300" fill="url(#lsky)"/>
-        <!-- moon glow -->
-        <circle cx="460" cy="62" r="44" fill="url(#lmoon)" opacity=".06"/>
-        <circle cx="460" cy="62" r="28" fill="#EAF4F4" opacity=".07"/>
-        <circle cx="454" cy="56" r="24" fill="#020c10"/>
-        <!-- stars -->
-        <g fill="#EAF4F4">
-          <circle cx="40" cy="38" r="1.2" opacity=".5"/><circle cx="110" cy="22" r="1" opacity=".4"/>
-          <circle cx="190" cy="48" r="1.4" opacity=".55"/><circle cx="300" cy="28" r="1" opacity=".5"/>
-          <circle cx="380" cy="45" r="1.2" opacity=".4"/><circle cx="520" cy="32" r="1" opacity=".5"/>
-          <circle cx="70" cy="75" r="1" opacity=".3"/><circle cx="248" cy="65" r="1.2" opacity=".4"/>
-        </g>
-        <!-- hills silhouette -->
-        <path d="M0,185 Q80,145 160,165 Q240,182 300,148 Q360,114 420,138 Q480,162 540,132 L560,132 L560,190 L0,190Z" fill="#0a1f2a" opacity=".85"/>
-        <path d="M0,215 Q100,195 210,208 Q320,220 420,202 Q500,186 560,212 L560,220 L0,220Z" fill="#0F2A30"/>
-        <!-- water -->
-        <rect x="0" y="235" width="560" height="65" fill="url(#lwat)"/>
-        <!-- ripples anim -->
-        <g stroke="#3a8c8a" stroke-width=".7" fill="none" opacity=".22">
-          <path d="M0,248 Q140,243 280,248 T560,246"><animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,248 Q140,243 280,248 T560,246;M0,250 Q140,255 280,250 T560,252;M0,248 Q140,243 280,248 T560,246"/></path>
-          <path d="M0,265 Q200,260 400,265 T560,263"><animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,265 Q200,260 400,265 T560,263;M0,268 Q200,273 400,268 T560,270;M0,265 Q200,260 400,265 T560,263"/></path>
-        </g>
-        <!-- reeds left -->
-        <g stroke="#143B43" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
-          <path d="M18,300 L18,268"/><path d="M32,300 L32,255"/><path d="M46,300 L46,272"/>
-          <path d="M60,300 L60,260"/><path d="M74,300 L74,275"/>
-        </g>
-        <g fill="#5b3a1f" opacity=".8">
-          <ellipse cx="18" cy="265" rx="2.5" ry="10"/><ellipse cx="32" cy="252" rx="2.5" ry="10"/>
-          <ellipse cx="46" cy="269" rx="2.5" ry="10"/><ellipse cx="60" cy="257" rx="2.5" ry="10"/>
-        </g>
-        <!-- reeds right -->
-        <g stroke="#143B43" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
-          <path d="M490,300 L490,270"/><path d="M506,300 L506,255"/><path d="M522,300 L522,268"/>
-          <path d="M538,300 L538,258"/><path d="M552,300 L552,272"/>
-        </g>
-        <g fill="#5b3a1f" opacity=".8">
-          <ellipse cx="490" cy="267" rx="2.5" ry="10"/><ellipse cx="506" cy="252" rx="2.5" ry="10"/>
-          <ellipse cx="522" cy="265" rx="2.5" ry="10"/>
-        </g>
-        <!-- lily pads -->
-        <g fill="#2E7D32" opacity=".75">
-          <ellipse cx="145" cy="250" rx="28" ry="6.5"/><ellipse cx="200" cy="263" rx="22" ry="5.5"/>
-          <ellipse cx="285" cy="254" rx="32" ry="7.5"/><ellipse cx="360" cy="248" rx="26" ry="6"/>
-          <ellipse cx="425" cy="260" rx="28" ry="6.5"/>
-        </g>
-        <!-- flowers -->
-        <g fill="#fff" opacity=".72">
-          <circle cx="145" cy="248" r="5.5"/><circle cx="285" cy="252" r="6.5"/><circle cx="425" cy="258" r="5"/>
-        </g>
-        <g fill="#F9A825" opacity=".85">
-          <circle cx="145" cy="248" r="2.5"/><circle cx="285" cy="252" r="3"/><circle cx="425" cy="258" r="2.2"/>
-        </g>
-        <!-- heron silhouette -->
-        <g transform="translate(220 148)" opacity=".55">
-          <path d="M0 82 L-2 145" stroke="#EAF4F4" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M5 82 L7 145" stroke="#EAF4F4" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M-20 58 Q2 44 38 54 Q58 62 66 74 Q58 82 40 80 L8 82 Q-16 78 -20 58Z" fill="#EAF4F4"/>
-          <path d="M34 58 Q26 34 30 12" stroke="#EAF4F4" stroke-width="5.5" stroke-linecap="round" fill="none"/>
-          <ellipse cx="32" cy="9" rx="7.5" ry="5.5" fill="#EAF4F4" transform="rotate(-18 32 9)"/>
-          <line x1="38" y1="7" x2="56" y2="3" stroke="#F9A825" stroke-width="2" stroke-linecap="round"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="features">
-      <div class="feat"><div class="feat-ico">✍️</div><div class="feat-text"><div class="feat-title">Pubblica articoli</div><div class="feat-desc">Scrivi e condividi storie sul territorio con la comunità</div></div></div>
-      <div class="feat"><div class="feat-ico">👤</div><div class="feat-text"><div class="feat-title">Profilo personale</div><div class="feat-desc">Il tuo spazio con avatar, bio e tutti i tuoi articoli</div></div></div>
-      <div class="feat"><div class="feat-ico">🌿</div><div class="feat-text"><div class="feat-title">Esplora la comunità</div><div class="feat-desc">Scopri i contenuti di chi ama il Mincio come te</div></div></div>
-    </div>
-  </div>
-
-  <div class="left-quote">
-    <p class="quote-text">Il Mincio non è solo un fiume. È una storia, una cultura, una comunità.</p>
-  </div>
-</div>
-
-<!-- ════════════ RIGHT ══════════════════════════════════════════════ -->
-<div class="right">
-  <div class="form-wrap">
-
-    <!-- ── LOGIN ───────────────────────────────────────────────────── -->
-    <div class="mode on" id="m-login">
-      <div class="fh">
-        <div class="fh-eyebrow">Bentornato</div>
-        <h2>Accedi al tuo account</h2>
-        <p>Non hai un account? <button class="link-btn highlight" onclick="go('reg1')">Registrati gratis →</button></p>
-      </div>
-      <div id="msg-login"></div>
-      <div class="fg"><label>Email</label><input type="email" id="l-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
-      <div class="fg"><label>Password</label>
-        <div class="pwd-wrap">
-          <input type="password" id="l-p" placeholder="••••••••" autocomplete="current-password"/>
-          <button class="pwd-eye" type="button" onclick="togglePwd('l-p',this)" title="Mostra password">👁</button>
+        <div class="mini-grid">
+          <article class="mini-card">
+            <h3>Login rapido</h3>
+            <p>Entra con email e password, poi vai subito nella tua area profilo.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Registrazione guidata</h3>
+            <p>Prima account, poi identita locale: username, comune, bio e avatar.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Verifica obbligatoria</h3>
+            <p>Finche non confermi l'indirizzo email non puoi accedere e pubblicare.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Password dimenticata</h3>
+            <p>Richiedi il link di reset in un solo passaggio.</p>
+          </article>
         </div>
-      </div>
-      <button class="btn btn-grad" id="btn-login" onclick="doLogin()">Accedi</button>
-      <div class="links-row">
-        <button class="link-btn" onclick="go('forgot')">🔑 Recupera password</button>
-        <button class="link-btn" onclick="location.href='index.html'">← Home</button>
-      </div>
+
+        <p class="rules-note">
+          <strong>Regole comunita:</strong> in registrazione viene salvata l'accettazione versione 2026-04 con timestamp.
+        </p>
+      </section>
+
+      <section class="auth-panel">
+        <article class="auth-card">
+
+          <section class="view is-active" id="view-login" aria-label="Login">
+            <div class="view-head">
+              <p class="view-step">Bentornato</p>
+              <h2>Accedi al tuo account</h2>
+              <p>
+                Non hai ancora un account?
+                <button class="link-btn" type="button" id="login-to-register">Registrati ora</button>
+              </p>
+            </div>
+
+            <div class="msg-slot" id="msg-login"></div>
+
+            <form id="form-login" novalidate>
+              <label class="field">
+                <span>Email</span>
+                <input type="email" id="login-email" autocomplete="email" placeholder="tu@email.it" required />
+              </label>
+
+              <label class="field">
+                <span>Password</span>
+                <div class="input-with-action">
+                  <input type="password" id="login-password" autocomplete="current-password" placeholder="Inserisci la password" required />
+                  <button class="input-action" type="button" data-toggle="login-password">Mostra</button>
+                </div>
+              </label>
+
+              <button class="btn btn-primary" id="btn-login" type="submit">Accedi</button>
+            </form>
+
+            <div class="inline-actions">
+              <button class="link-btn" type="button" id="login-to-forgot">Password dimenticata?</button>
+              <a href="index.html" class="link-btn">Torna alla home</a>
+            </div>
+          </section>
+
+          <section class="view" id="view-register1" aria-label="Registrazione passo 1">
+            <div class="steps" aria-hidden="true">
+              <span class="active"></span><span></span>
+            </div>
+
+            <div class="view-head">
+              <p class="view-step">Registrazione 1 di 2</p>
+              <h2>Crea il tuo account</h2>
+              <p>
+                Hai gia un profilo?
+                <button class="link-btn" type="button" id="reg1-to-login">Vai al login</button>
+              </p>
+            </div>
+
+            <div class="msg-slot" id="msg-reg1"></div>
+
+            <form id="form-reg1" novalidate>
+              <label class="field">
+                <span>Email</span>
+                <input type="email" id="reg1-email" autocomplete="email" placeholder="nome@email.it" required />
+              </label>
+
+              <label class="field">
+                <span>Password</span>
+                <div class="input-with-action">
+                  <input type="password" id="reg1-password" autocomplete="new-password" placeholder="Almeno 6 caratteri" minlength="6" required />
+                  <button class="input-action" type="button" data-toggle="reg1-password">Mostra</button>
+                </div>
+              </label>
+
+              <label class="field">
+                <span>Conferma password</span>
+                <div class="input-with-action">
+                  <input type="password" id="reg1-password2" autocomplete="new-password" placeholder="Ripeti la password" minlength="6" required />
+                  <button class="input-action" type="button" data-toggle="reg1-password2">Mostra</button>
+                </div>
+              </label>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btn-reg1-next" type="submit">Continua</button>
+                <button class="btn btn-ghost" type="button" id="reg1-back-home">Annulla</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="view" id="view-register2" aria-label="Registrazione passo 2">
+            <div class="steps" aria-hidden="true">
+              <span></span><span class="active"></span>
+            </div>
+
+            <div class="view-head">
+              <p class="view-step">Registrazione 2 di 2</p>
+              <h2>Completa l'identita locale</h2>
+              <p>Username unico e regole accettate sono obbligatori.</p>
+            </div>
+
+            <p class="email-pill" id="reg2-email-pill">Account: -</p>
+            <div class="msg-slot" id="msg-reg2"></div>
+
+            <div class="identity-preview">
+              <div class="preview-avatar" id="preview-avatar" aria-hidden="true">ðŸŒ¿</div>
+              <div>
+                <div class="preview-name" id="preview-name">@username</div>
+                <div class="preview-meta" id="preview-comune">Comune non impostato</div>
+              </div>
+            </div>
+
+            <form id="form-reg2" novalidate>
+              <div class="row-2">
+                <label class="field">
+                  <span>Username unico</span>
+                  <input type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
+                  <small>Solo lettere minuscole, numeri e underscore, minimo 3.</small>
+                </label>
+
+                <label class="field">
+                  <span>Nome visualizzato</span>
+                  <input type="text" id="reg2-display" maxlength="60" placeholder="Come vuoi comparire" required />
+                </label>
+              </div>
+
+              <label class="field">
+                <span>Comune</span>
+                <select id="reg2-comune" required>
+                  <option value="">Seleziona...</option>
+                  <option value="Rivalta sul Mincio">Rivalta sul Mincio</option>
+                  <option value="Rodigo">Rodigo</option>
+                  <option value="Fossato">Fossato</option>
+                  <option value="Fuori comune">Fuori comune</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Bio breve</span>
+                <textarea id="reg2-bio" maxlength="240" placeholder="Racconta in poche righe chi sei e perche sei qui" required></textarea>
+                <small>Massimo 240 caratteri.</small>
+              </label>
+
+              <div>
+                <p class="group-label">Avatar emoji</p>
+                <div class="emoji-grid" id="avatar-emoji-grid"></div>
+              </div>
+
+              <div>
+                <p class="group-label">Colore avatar</p>
+                <div class="color-grid" id="avatar-color-grid"></div>
+              </div>
+
+              <label class="check-wrap" for="reg2-rules">
+                <input type="checkbox" id="reg2-rules" />
+                <span>
+                  Dichiaro di accettare le <strong>regole della comunita</strong> (obbligatorio) versione 2026-04.
+                </span>
+              </label>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btn-signup" type="submit">Crea account e invia verifica</button>
+                <button class="btn btn-ghost" id="reg2-back" type="button">Indietro</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="view" id="view-forgot" aria-label="Password dimenticata">
+            <div class="view-head">
+              <p class="view-step">Recupero account</p>
+              <h2>Reimposta la password</h2>
+              <p>Ti inviamo una email con il link di reset.</p>
+            </div>
+
+            <div class="msg-slot" id="msg-forgot"></div>
+
+            <form id="form-forgot" novalidate>
+              <label class="field">
+                <span>Email</span>
+                <input type="email" id="forgot-email" autocomplete="email" placeholder="tu@email.it" required />
+              </label>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btn-forgot" type="submit">Invia email reset</button>
+                <button class="btn btn-ghost" id="forgot-back-login" type="button">Torna al login</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="view" id="view-verify" aria-label="Verifica email">
+            <div class="verify-box">
+              <div class="verify-icon" aria-hidden="true">âœ‰ï¸</div>
+              <h3>Controlla la tua email</h3>
+              <p>
+                Abbiamo inviato un link di conferma a:
+                <span class="verify-email" id="verify-email-target">la tua email</span>
+              </p>
+              <p>
+                Finche l'email non e verificata non puoi usare l'account in modo operativo ne pubblicare contenuti.
+              </p>
+            </div>
+
+            <div class="msg-slot" id="msg-verify"></div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="verify-to-login" type="button">Ho verificato, torno al login</button>
+              <button class="btn btn-ghost" id="verify-to-register" type="button">Usa un'altra email</button>
+            </div>
+          </section>
+
+        </article>
+      </section>
     </div>
+  </main>
 
-    <!-- ── REGISTER step 1 ─────────────────────────────────────────── -->
-    <div class="mode" id="m-reg1">
-      <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
-      <div class="fh">
-        <div class="fh-eyebrow">Nuovo account · 1 di 2</div>
-        <h2>Crea il tuo account</h2>
-        <p>Hai già un account? <button class="link-btn highlight" onclick="go('login')">Accedi →</button></p>
-      </div>
-      <div id="msg-reg1"></div>
-      <div class="fg"><label>Email</label><input type="email" id="r-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
-      <div class="fg"><label>Password</label>
-        <div class="pwd-wrap">
-          <input type="password" id="r-p" placeholder="Minimo 6 caratteri" oninput="strength(this)" autocomplete="new-password"/>
-          <button class="pwd-eye" type="button" onclick="togglePwd('r-p',this)" title="Mostra password">👁</button>
-        </div>
-        <div class="strength"><div class="str-seg" id="s1"></div><div class="str-seg" id="s2"></div><div class="str-seg" id="s3"></div><div class="str-seg" id="s4"></div></div>
-      </div>
-      <div class="fg"><label>Conferma password</label>
-        <input type="password" id="r-p2" placeholder="Ripeti la password" autocomplete="new-password"/>
-      </div>
-      <button class="btn btn-grad" onclick="doReg1()">Continua →</button>
-      <button class="btn btn-ghost" onclick="go('login',true)">← Torna al login</button>
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.config.js"></script>
+  <script>
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const byId = (id) => document.getElementById(id);
 
-    <!-- ── REGISTER step 2 ─────────────────────────────────────────── -->
-    <div class="mode" id="m-reg2">
-      <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
-      <div class="fh">
-        <div class="fh-eyebrow">Personalizza · 2 di 2</div>
-        <h2>Il tuo profilo</h2>
-        <p>Scegli avatar e username. Puoi cambiarlo in seguito.</p>
-      </div>
-      <div id="msg-reg2"></div>
+    const COMMUNITY_RULES_VERSION = '2026-04';
+    const EMOJIS = ['ðŸŒ¿', 'ðŸ¦¢', 'ðŸŒŠ', 'ðŸŽ£', 'ðŸŒ¸', 'ðŸ¦‹', 'ðŸŒ¾', 'ðŸŒ»', 'ðŸ¦œ', 'ðŸ ', 'ðŸƒ', 'ðŸŒ¼', 'ðŸ¦†', 'ðŸ’§', 'â­', 'ðŸŒ™'];
+    const COLORS = ['#1F6F8B', '#2E7D32', '#3A8C8A', '#4A6FA5', '#C62828', '#F57F17', '#0F2A30', '#6D4C41'];
 
-      <!-- live preview card -->
-      <div class="av-card">
-        <div class="av-ico" id="av-ico" style="background:#1F6F8B">🌿</div>
-        <div class="av-info">
-          <div class="av-name" id="av-name">@username</div>
-          <div class="av-role">Nuovo membro della comunità</div>
-        </div>
-      </div>
+    const state = {
+      view: 'login',
+      regAccount: { email: '', password: '' },
+      verifyEmail: ''
+    };
 
-      <div class="pick-lbl">Avatar</div>
-      <div class="eg" id="eg-reg"></div>
-      <div class="pick-lbl">Colore</div>
-      <div class="cg" id="cg-reg"></div>
+    function sanitizeUsername(value) {
+      return String(value || '').toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
+    }
 
-      <div class="frow">
-        <div class="fg"><label>Username *</label><input type="text" id="r-un" placeholder="mario_r" maxlength="32" oninput="syncPreview()"/></div>
-        <div class="fg"><label>Nome visualizzato</label><input type="text" id="r-dn" placeholder="Mario Rossi" oninput="syncPreview()"/></div>
-      </div>
-      <div class="fg"><label>Bio <small style="font-weight:400;text-transform:none;color:rgba(234,244,244,.3)">(opzionale)</small></label>
-        <textarea id="r-bio" placeholder="Raccontami qualcosa…" rows="2"></textarea>
-      </div>
-      <button class="btn btn-grad" id="btn-reg2" onclick="doReg2()">Crea il mio profilo 🚀</button>
-      <button class="btn btn-ghost" onclick="go('reg1',true)">← Indietro</button>
-    </div>
+    function isEmailConfirmed(user) {
+      return Boolean(user && (user.email_confirmed_at || user.confirmed_at));
+    }
 
-    <!-- ── FORGOT PASSWORD ─────────────────────────────────────────── -->
-    <div class="mode" id="m-forgot">
-      <div class="fh">
-        <div class="fh-eyebrow">Accesso</div>
-        <h2>Recupera password</h2>
-        <p>Ti inviamo un link per reimpostare la password al tuo indirizzo email.</p>
-      </div>
-      <div id="msg-forgot"></div>
-      <div class="fg"><label>Email</label><input type="email" id="f-e" placeholder="tu@esempio.it" autocomplete="email"/></div>
-      <button class="btn btn-grad" id="btn-forgot" onclick="doForgot()">Invia link di recupero</button>
-      <button class="btn btn-ghost" onclick="go('login',true)">← Torna al login</button>
-    </div>
+    function normalizeBio(value) {
+      return String(value || '').trim().replace(/\s+/g, ' ');
+    }
 
-    <!-- ── EMAIL SENT ──────────────────────────────────────────────── -->
-    <div class="mode" id="m-sent">
-      <div class="success-ico">📬</div>
-      <div class="fh" style="text-align:center">
-        <div class="fh-eyebrow">Email inviata</div>
-        <h2>Controlla la posta</h2>
-        <p>Abbiamo inviato un link di recupero a <strong id="sent-email" style="color:var(--a)"></strong>.<br/>Controlla anche la cartella spam.</p>
-      </div>
-      <button class="btn btn-grad" onclick="go('login')">← Torna al login</button>
-      <div style="text-align:center;margin-top:16px">
-        <button class="link-btn" onclick="doForgot(true)">Non hai ricevuto l'email? Reinvia</button>
-      </div>
-    </div>
+    function setView(viewName) {
+      const views = document.querySelectorAll('.view');
+      views.forEach((view) => view.classList.remove('is-active'));
+      const target = byId('view-' + viewName);
+      if (target) {
+        target.classList.add('is-active');
+        state.view = viewName;
+      }
+    }
 
-    <!-- ── RESET PASSWORD (token URL) ────────────────────────────── -->
-    <div class="mode" id="m-reset">
-      <div class="fh">
-        <div class="fh-eyebrow">Sicurezza</div>
-        <h2>Nuova password</h2>
-        <p>Scegli una nuova password sicura per il tuo account.</p>
-      </div>
-      <div id="msg-reset"></div>
-      <div class="fg"><label>Nuova password</label>
-        <div class="pwd-wrap">
-          <input type="password" id="np-1" placeholder="Minimo 6 caratteri" oninput="strength(this,'np')" autocomplete="new-password"/>
-          <button class="pwd-eye" type="button" onclick="togglePwd('np-1',this)">👁</button>
-        </div>
-        <div class="strength"><div class="str-seg" id="np-s1"></div><div class="str-seg" id="np-s2"></div><div class="str-seg" id="np-s3"></div><div class="str-seg" id="np-s4"></div></div>
-      </div>
-      <div class="fg"><label>Conferma password</label>
-        <input type="password" id="np-2" placeholder="Ripeti la password" autocomplete="new-password"/>
-      </div>
-      <button class="btn btn-grad" id="btn-reset" onclick="doReset()">Imposta nuova password</button>
-    </div>
+    function showMessage(targetId, type, text) {
+      const slot = byId(targetId);
+      if (!slot) return;
+      slot.innerHTML = '';
+      if (!text) return;
 
-  </div><!-- /form-wrap -->
-</div><!-- /right -->
+      const box = document.createElement('div');
+      box.className = 'notice ' + type;
+      box.textContent = text;
+      slot.appendChild(box);
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script>
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const $  = id => document.getElementById(id);
-const EMOJIS = ['🌿','🦢','🌊','🎣','🌸','🦋','🌾','🌻','🦜','🐠','🌺','🦆','🌲','🦅','💧','🍃','🌙','⭐','🐞','🌼'];
-const COLORS  = ['#1F6F8B','#2E7D32','#3a8c8a','#5E35B1','#C62828','#F57F17','#0F2A30','#4a6fa5'];
+    function clearMessages() {
+      showMessage('msg-login', 'info', '');
+      showMessage('msg-reg1', 'info', '');
+      showMessage('msg-reg2', 'info', '');
+      showMessage('msg-forgot', 'info', '');
+      showMessage('msg-verify', 'info', '');
+    }
 
-/* ── Particles ───────────────────────────────────────────────────── */
-;(function(){
-  const wrap = $('particles');
-  for(let i=0;i<28;i++){
-    const p = document.createElement('div');
-    p.className='ptl';
-    const sz = 1.5+Math.random()*3.5;
-    p.style.cssText=`left:${Math.random()*100}%;top:${60+Math.random()*40}%;width:${sz}px;height:${sz}px;animation-delay:${Math.random()*14}s;animation-duration:${12+Math.random()*16}s`;
-    wrap.appendChild(p);
-  }
-})();
+    function setButtonLoading(buttonId, loading, defaultLabel, loadingLabel) {
+      const button = byId(buttonId);
+      if (!button) return;
 
-/* ── Session check ───────────────────────────────────────────────── */
-sb.auth.getSession().then(({data:{session}})=>{
-  if(session) location.href='me.html';
-});
+      if (loading) {
+        button.disabled = true;
+        button.textContent = loadingLabel || 'Attendere...';
+        return;
+      }
 
-/* ── Handle password recovery hash ──────────────────────────────── */
-sb.auth.onAuthStateChange((event)=>{
-  if(event==='PASSWORD_RECOVERY') go('reset');
-});
+      button.disabled = false;
+      button.textContent = defaultLabel;
+    }
 
-/* ── Pickers ─────────────────────────────────────────────────────── */
-;(function(){
-  const eg=$('eg-reg'), cg=$('cg-reg');
-  EMOJIS.forEach((e,i)=>{
-    eg.innerHTML+=`<input type="radio" name="em" id="em${i}" value="${e}" ${i===0?'checked':''} onchange="syncPreview()"><label for="em${i}">${e}</label>`;
-  });
-  COLORS.forEach((c,i)=>{
-    cg.innerHTML+=`<input type="radio" name="col" id="c${i}" value="${c}" ${i===0?'checked':''} onchange="syncPreview()"><label for="c${i}" style="background:${c}"></label>`;
-  });
-})();
+    function humanizeAuthError(error, fallback) {
+      const fallbackText = fallback || 'Operazione non riuscita. Riprova.';
+      if (!error || !error.message) return fallbackText;
+      const raw = String(error.message).toLowerCase();
 
-function syncPreview(){
-  const e=document.querySelector('input[name="em"]:checked')?.value||'🌿';
-  const c=document.querySelector('input[name="col"]:checked')?.value||'#1F6F8B';
-  const un=($('r-un').value||'').toLowerCase().replace(/[^a-z0-9_]/g,'')||'username';
-  const av=$('av-ico');
-  av.textContent=e; av.style.background=c;
-  $('av-name').textContent='@'+un;
-  $('r-un').value=un;
-}
+      if (raw.includes('invalid login credentials')) return 'Email o password non corrette.';
+      if (raw.includes('email not confirmed')) return 'Email non ancora verificata.';
+      if (raw.includes('already registered') || raw.includes('already exists')) return 'Questa email risulta gia registrata.';
+      if (raw.includes('password should be at least')) return 'La password deve avere almeno 6 caratteri.';
+      if (raw.includes('rate limit')) return 'Troppi tentativi. Riprova tra poco.';
 
-/* ── Mode switching ──────────────────────────────────────────────── */
-let currentMode='login';
-function go(name, back=false){
-  document.getElementById('m-'+currentMode)?.classList.remove('on','back');
-  currentMode=name;
-  const el=document.getElementById('m-'+name);
-  el.classList.remove('on','back');
-  void el.offsetWidth; // reflow
-  if(back) el.classList.add('back');
-  el.classList.add('on');
-  // focus first input
-  setTimeout(()=>el.querySelector('input')?.focus(),80);
-}
+      return fallbackText;
+    }
 
-/* ── Helpers ─────────────────────────────────────────────────────── */
-function msg(id,txt,type='err'){
-  $(id).innerHTML=txt?`<div class="msg ${type}">${txt}</div>`:'';
-}
-function setBtn(id,loading,label){
-  const b=$(id); b.disabled=loading;
-  b.innerHTML=loading?'<span class="sp"></span>':label;
-}
+    function togglePasswordVisibility(inputId, trigger) {
+      const input = byId(inputId);
+      if (!input || !trigger) return;
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      trigger.textContent = show ? 'Nascondi' : 'Mostra';
+    }
 
-function togglePwd(inputId,btn){
-  const inp=$(inputId);
-  const show=inp.type==='password';
-  inp.type=show?'text':'password';
-  btn.textContent=show?'🙈':'👁';
-}
+    function buildAvatarPickers() {
+      const emojiGrid = byId('avatar-emoji-grid');
+      const colorGrid = byId('avatar-color-grid');
+      if (!emojiGrid || !colorGrid) return;
 
-function strength(inp,prefix='s'){
-  const v=inp.value;
-  const score=(v.length>=8?1:0)+/[A-Z]/.test(v)+/[0-9]/.test(v)+/[^A-Za-z0-9]/.test(v);
-  const cols=['#ef5350','#ff7043','#ffa726','#66bb6a'];
-  for(let i=1;i<=4;i++){
-    const seg=document.getElementById(prefix+i);
-    if(!seg) continue;
-    seg.style.background=i<=score?(cols[score-1]||cols[0]):'var(--border)';
-  }
-}
+      emojiGrid.innerHTML = '';
+      colorGrid.innerHTML = '';
 
-/* ── Login ───────────────────────────────────────────────────────── */
-async function doLogin(){
-  const e=$('l-e').value.trim(), p=$('l-p').value;
-  if(!e||!p){msg('msg-login','Compila tutti i campi.');return;}
-  setBtn('btn-login',true,'');
-  const {error}=await sb.auth.signInWithPassword({email:e,password:p});
-  setBtn('btn-login',false,'Accedi');
-  if(error){msg('msg-login','Email o password non corretti.');return;}
-  location.href='me.html';
-}
-$('l-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+      EMOJIS.forEach((emoji, idx) => {
+        const id = 'reg-emoji-' + idx;
+        const checked = idx === 0 ? 'checked' : '';
+        emojiGrid.insertAdjacentHTML(
+          'beforeend',
+          '<input type="radio" name="reg-emoji" id="' + id + '" value="' + emoji + '" ' + checked + '>' +
+          '<label for="' + id + '">' + emoji + '</label>'
+        );
+      });
 
-/* ── Register step 1 ─────────────────────────────────────────────── */
-function doReg1(){
-  const e=$('r-e').value.trim(),p=$('r-p').value,p2=$('r-p2').value;
-  msg('msg-reg1','');
-  if(!e){msg('msg-reg1','Inserisci l\'email.');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){msg('msg-reg1','Email non valida.');return;}
-  if(p.length<6){msg('msg-reg1','Password di almeno 6 caratteri.');return;}
-  if(p!==p2){msg('msg-reg1','Le password non coincidono.');return;}
-  go('reg2');
-}
+      COLORS.forEach((color, idx) => {
+        const id = 'reg-color-' + idx;
+        const checked = idx === 0 ? 'checked' : '';
+        colorGrid.insertAdjacentHTML(
+          'beforeend',
+          '<input type="radio" name="reg-color" id="' + id + '" value="' + color + '" ' + checked + '>' +
+          '<label for="' + id + '" style="background:' + color + '"></label>'
+        );
+      });
 
-/* ── Register step 2 ─────────────────────────────────────────────── */
-async function doReg2(){
-  const un=$('r-un').value.toLowerCase().replace(/[^a-z0-9_]/g,'').trim();
-  if(un.length<3){msg('msg-reg2','Username di almeno 3 caratteri (lettere, numeri, _).');return;}
-  const dn=$('r-dn').value.trim()||un;
-  const bio=$('r-bio').value.trim()||null;
-  const emoji=document.querySelector('input[name="em"]:checked')?.value||'🌿';
-  const color=document.querySelector('input[name="col"]:checked')?.value||'#1F6F8B';
-  setBtn('btn-reg2',true,'');
-  const {data,error}=await sb.auth.signUp({email:$('r-e').value.trim(),password:$('r-p').value});
-  if(error){setBtn('btn-reg2',false,'Crea il mio profilo 🚀');msg('msg-reg2',error.message==='User already registered'?'Email già registrata. <button class="link-btn highlight" onclick="go(\'login\')">Accedi →</button>':error.message);return;}
-  const {error:pe}=await sb.from('profiles').insert({id:data.user.id,username:un,display_name:dn,bio,avatar_emoji:emoji,avatar_color:color});
-  setBtn('btn-reg2',false,'Crea il mio profilo 🚀');
-  if(pe){msg('msg-reg2',pe.code==='23505'?'Username già in uso. Scegline un altro.':pe.message);return;}
-  location.href='me.html';
-}
+      document.querySelectorAll('input[name="reg-emoji"], input[name="reg-color"]').forEach((el) => {
+        el.addEventListener('change', updateIdentityPreview);
+      });
+    }
 
-/* ── Forgot password ─────────────────────────────────────────────── */
-async function doForgot(resend=false){
-  const email=resend?$('sent-email').textContent:$('f-e').value.trim();
-  if(!email){msg('msg-forgot','Inserisci il tuo indirizzo email.');return;}
-  setBtn('btn-forgot',true,'');
-  const {error}=await sb.auth.resetPasswordForEmail(email,{
-    redirectTo: location.origin+'/reset.html'
-  });
-  setBtn('btn-forgot',false,'Invia link di recupero');
-  if(error){msg('msg-forgot',error.message);return;}
-  $('sent-email').textContent=email;
-  if(!resend) go('sent');
-  else msg('msg-forgot','',''); // clear
-}
+    function getSelectedAvatar() {
+      const selectedEmoji = document.querySelector('input[name="reg-emoji"]:checked');
+      const selectedColor = document.querySelector('input[name="reg-color"]:checked');
+      return {
+        emoji: selectedEmoji ? selectedEmoji.value : 'ðŸŒ¿',
+        color: selectedColor ? selectedColor.value : '#1F6F8B'
+      };
+    }
 
-/* ── Reset password ──────────────────────────────────────────────── */
-async function doReset(){
-  const p=$('np-1').value, p2=$('np-2').value;
-  if(p.length<6){msg('msg-reset','Password di almeno 6 caratteri.');return;}
-  if(p!==p2){msg('msg-reset','Le password non coincidono.');return;}
-  setBtn('btn-reset',true,'');
-  const {error}=await sb.auth.updateUser({password:p});
-  setBtn('btn-reset',false,'Imposta nuova password');
-  if(error){msg('msg-reset',error.message);return;}
-  msg('msg-reset','Password aggiornata! Reindirizzo…','ok');
-  setTimeout(()=>location.href='me.html',1600);
-}
-</script>
+    function updateIdentityPreview() {
+      const usernameInput = byId('reg2-username');
+      const displayInput = byId('reg2-display');
+      const comuneInput = byId('reg2-comune');
+      const previewAvatar = byId('preview-avatar');
+      const previewName = byId('preview-name');
+      const previewComune = byId('preview-comune');
+
+      if (!usernameInput || !displayInput || !comuneInput || !previewAvatar || !previewName || !previewComune) return;
+
+      const sanitized = sanitizeUsername(usernameInput.value);
+      if (usernameInput.value !== sanitized) {
+        usernameInput.value = sanitized;
+      }
+
+      const displayName = displayInput.value.trim();
+      const comune = comuneInput.value || 'Comune non impostato';
+      const avatar = getSelectedAvatar();
+
+      previewAvatar.textContent = avatar.emoji;
+      previewAvatar.style.background = avatar.color;
+      previewName.textContent = displayName || (sanitized ? '@' + sanitized : '@username');
+      previewComune.textContent = comune;
+    }
+
+    async function ensureProfileForUser(user) {
+      const { data: existing, error: existingError } = await sb
+        .from('profiles')
+        .select('id, username')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (existingError) {
+        return { ok: false, message: 'Accesso riuscito, ma il controllo profilo ha dato errore.' };
+      }
+
+      if (existing) {
+        return { ok: true, created: false };
+      }
+
+      const metadata = user.user_metadata || {};
+      const username = sanitizeUsername(metadata.username || '');
+      const displayName = String(metadata.display_name || '').trim();
+      const comune = String(metadata.comune || '').trim();
+      const bio = normalizeBio(metadata.bio || '');
+      const avatarEmoji = String(metadata.avatar_emoji || '').trim();
+      const avatarColor = String(metadata.avatar_color || '').trim();
+
+      const metadataComplete = username.length >= 3 && displayName && comune && avatarEmoji && avatarColor;
+      if (!metadataComplete) {
+        return { ok: true, created: false, incompleteMetadata: true };
+      }
+
+      const payload = {
+        id: user.id,
+        username: username,
+        display_name: displayName,
+        bio: bio || null,
+        comune: comune,
+        avatar_emoji: avatarEmoji,
+        avatar_color: avatarColor,
+        role: comune === 'Fuori comune' ? 'reader' : 'user'
+      };
+
+      const { error: insertError } = await sb.from('profiles').insert(payload);
+
+      if (insertError) {
+        if (insertError.code === '23505') {
+          return { ok: true, created: false, incompleteMetadata: true };
+        }
+        return { ok: false, message: 'Accesso riuscito, ma non siamo riusciti a creare il profilo.' };
+      }
+
+      return { ok: true, created: true };
+    }
+
+    async function submitLogin(event) {
+      event.preventDefault();
+      showMessage('msg-login', 'info', '');
+
+      const email = byId('login-email').value.trim();
+      const password = byId('login-password').value;
+
+      if (!email || !password) {
+        showMessage('msg-login', 'error', 'Compila email e password.');
+        return;
+      }
+
+      setButtonLoading('btn-login', true, 'Accedi', 'Accesso in corso...');
+
+      const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
+
+      setButtonLoading('btn-login', false, 'Accedi', 'Accesso in corso...');
+
+      if (error) {
+        showMessage('msg-login', 'error', humanizeAuthError(error, 'Non siamo riusciti ad accedere.'));
+        return;
+      }
+
+      const user = data && data.user ? data.user : null;
+      if (!user) {
+        showMessage('msg-login', 'error', 'Sessione non valida. Riprova.');
+        return;
+      }
+
+      if (!isEmailConfirmed(user)) {
+        await sb.auth.signOut();
+        state.verifyEmail = user.email || email;
+        byId('verify-email-target').textContent = state.verifyEmail || 'la tua email';
+        showMessage('msg-verify', 'info', 'Prima verifica la tua email. Senza conferma non puoi accedere o pubblicare.');
+        setView('verify');
+        return;
+      }
+
+      const ensured = await ensureProfileForUser(user);
+      if (!ensured.ok) {
+        showMessage('msg-login', 'error', ensured.message || 'Errore durante il controllo profilo.');
+        return;
+      }
+
+      window.location.href = 'me.html#profile';
+    }
+
+    function validEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function submitRegisterStep1(event) {
+      event.preventDefault();
+      showMessage('msg-reg1', 'info', '');
+
+      const email = byId('reg1-email').value.trim();
+      const password = byId('reg1-password').value;
+      const confirmPassword = byId('reg1-password2').value;
+
+      if (!email || !password || !confirmPassword) {
+        showMessage('msg-reg1', 'error', 'Compila tutti i campi richiesti.');
+        return;
+      }
+
+      if (!validEmail(email)) {
+        showMessage('msg-reg1', 'error', 'Inserisci una email valida.');
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage('msg-reg1', 'error', 'La password deve avere almeno 6 caratteri.');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage('msg-reg1', 'error', 'Le password non coincidono.');
+        return;
+      }
+
+      state.regAccount.email = email;
+      state.regAccount.password = password;
+
+      byId('reg2-email-pill').textContent = 'Account: ' + email;
+      byId('forgot-email').value = email;
+      setView('register2');
+    }
+
+    async function submitRegisterStep2(event) {
+      event.preventDefault();
+      showMessage('msg-reg2', 'info', '');
+
+      const usernameRaw = byId('reg2-username').value;
+      const username = sanitizeUsername(usernameRaw);
+      byId('reg2-username').value = username;
+
+      const displayName = byId('reg2-display').value.trim();
+      const comune = byId('reg2-comune').value;
+      const bio = normalizeBio(byId('reg2-bio').value);
+      const rulesAccepted = byId('reg2-rules').checked;
+      const avatar = getSelectedAvatar();
+
+      if (!state.regAccount.email || !state.regAccount.password) {
+        showMessage('msg-reg2', 'error', 'Dati account mancanti. Riparti dal passo 1.');
+        setView('register1');
+        return;
+      }
+
+      if (username.length < 3) {
+        showMessage('msg-reg2', 'error', 'Username non valido: minimo 3 caratteri con lettere, numeri o underscore.');
+        return;
+      }
+
+      if (!displayName) {
+        showMessage('msg-reg2', 'error', 'Inserisci il nome visualizzato.');
+        return;
+      }
+
+      if (!comune) {
+        showMessage('msg-reg2', 'error', 'Seleziona il comune di riferimento.');
+        return;
+      }
+
+      if (!bio || bio.length < 8) {
+        showMessage('msg-reg2', 'error', 'Inserisci una bio breve di almeno 8 caratteri.');
+        return;
+      }
+
+      if (!rulesAccepted) {
+        showMessage('msg-reg2', 'error', 'Per registrarti devi accettare le regole della comunita.');
+        return;
+      }
+
+      setButtonLoading('btn-signup', true, 'Crea account e invia verifica', 'Registrazione in corso...');
+
+      const { data: usernameRows, error: usernameCheckError } = await sb
+        .from('profiles')
+        .select('id')
+        .eq('username', username)
+        .limit(1);
+
+      if (usernameCheckError) {
+        setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+        showMessage('msg-reg2', 'error', 'Impossibile verificare ora l\'username. Riprova tra poco.');
+        return;
+      }
+
+      if (Array.isArray(usernameRows) && usernameRows.length > 0) {
+        setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+        showMessage('msg-reg2', 'error', 'Username gia in uso. Scegline uno diverso.');
+        return;
+      }
+
+      const acceptedAt = new Date().toISOString();
+      const redirectUrl = new URL('login.html?verified=1', window.location.href).toString();
+
+      const metadata = {
+        username: username,
+        display_name: displayName,
+        comune: comune,
+        bio: bio,
+        avatar_emoji: avatar.emoji,
+        avatar_color: avatar.color,
+        community_rules_accepted: true,
+        community_rules_accepted_at: acceptedAt,
+        community_rules_version: COMMUNITY_RULES_VERSION
+      };
+
+      const { error: signUpError } = await sb.auth.signUp({
+        email: state.regAccount.email,
+        password: state.regAccount.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: metadata
+        }
+      });
+
+      setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+
+      if (signUpError) {
+        showMessage('msg-reg2', 'error', humanizeAuthError(signUpError, 'Registrazione non riuscita.'));
+        return;
+      }
+
+      await sb.auth.signOut();
+
+      state.verifyEmail = state.regAccount.email;
+      byId('verify-email-target').textContent = state.verifyEmail || 'la tua email';
+      showMessage('msg-verify', 'success', 'Registrazione completata. Apri la tua email e conferma l\'account prima del login.');
+      setView('verify');
+    }
+
+    async function submitForgot(event) {
+      event.preventDefault();
+      showMessage('msg-forgot', 'info', '');
+
+      const email = byId('forgot-email').value.trim();
+      if (!email || !validEmail(email)) {
+        showMessage('msg-forgot', 'error', 'Inserisci una email valida.');
+        return;
+      }
+
+      const resetRedirect = new URL('reset.html', window.location.href).toString();
+      setButtonLoading('btn-forgot', true, 'Invia email reset', 'Invio in corso...');
+
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: resetRedirect
+      });
+
+      setButtonLoading('btn-forgot', false, 'Invia email reset', 'Invio in corso...');
+
+      if (error) {
+        showMessage('msg-forgot', 'error', humanizeAuthError(error, 'Invio email di reset non riuscito.'));
+        return;
+      }
+
+      showMessage('msg-forgot', 'success', 'Email inviata. Controlla la posta e anche la cartella spam.');
+    }
+
+    function applyVerifiedQueryMessage() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('verified') === '1') {
+        setView('login');
+        showMessage('msg-login', 'success', 'Email verificata con successo. Ora puoi accedere.');
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+
+    async function restoreActiveSession() {
+      const { data, error } = await sb.auth.getSession();
+      if (error || !data || !data.session || !data.session.user) {
+        return;
+      }
+
+      const user = data.session.user;
+
+      if (!isEmailConfirmed(user)) {
+        await sb.auth.signOut();
+        state.verifyEmail = user.email || '';
+        byId('verify-email-target').textContent = state.verifyEmail || 'la tua email';
+        showMessage('msg-verify', 'info', 'Sessione trovata ma email non confermata. Verifica prima di accedere.');
+        setView('verify');
+        return;
+      }
+
+      const ensured = await ensureProfileForUser(user);
+      if (!ensured.ok) {
+        setView('login');
+        showMessage('msg-login', 'error', ensured.message || 'Errore nel controllo profilo.');
+        return;
+      }
+
+      window.location.href = 'me.html#profile';
+    }
+
+    function bindEvents() {
+      byId('form-login').addEventListener('submit', submitLogin);
+      byId('form-reg1').addEventListener('submit', submitRegisterStep1);
+      byId('form-reg2').addEventListener('submit', submitRegisterStep2);
+      byId('form-forgot').addEventListener('submit', submitForgot);
+
+      byId('login-to-register').addEventListener('click', () => {
+        clearMessages();
+        setView('register1');
+      });
+
+      byId('reg1-to-login').addEventListener('click', () => {
+        clearMessages();
+        setView('login');
+      });
+
+      byId('login-to-forgot').addEventListener('click', () => {
+        clearMessages();
+        byId('forgot-email').value = byId('login-email').value.trim();
+        setView('forgot');
+      });
+
+      byId('forgot-back-login').addEventListener('click', () => {
+        clearMessages();
+        setView('login');
+      });
+
+      byId('verify-to-login').addEventListener('click', () => {
+        clearMessages();
+        setView('login');
+        if (state.verifyEmail) {
+          byId('login-email').value = state.verifyEmail;
+        }
+      });
+
+      byId('verify-to-register').addEventListener('click', () => {
+        clearMessages();
+        setView('register1');
+      });
+
+      byId('reg2-back').addEventListener('click', () => {
+        clearMessages();
+        setView('register1');
+      });
+
+      byId('reg1-back-home').addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
+
+      byId('reg2-username').addEventListener('input', updateIdentityPreview);
+      byId('reg2-display').addEventListener('input', updateIdentityPreview);
+      byId('reg2-comune').addEventListener('change', updateIdentityPreview);
+
+      document.querySelectorAll('[data-toggle]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const inputId = trigger.getAttribute('data-toggle');
+          togglePasswordVisibility(inputId, trigger);
+        });
+      });
+
+      const header = byId('site-header');
+      window.addEventListener('scroll', () => {
+        if (!header) return;
+        if (window.scrollY > 8) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+      });
+    }
+
+    function init() {
+      bindEvents();
+      buildAvatarPickers();
+      updateIdentityPreview();
+      applyVerifiedQueryMessage();
+      restoreActiveSession();
+    }
+
+    init();
+  </script>
 </body>
 </html>
