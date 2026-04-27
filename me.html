@@ -32,7 +32,7 @@
     .sb-brand { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
     .sb-brand-logo { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg,#1F6F8B,#3a8c8a); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
     .sb-brand-name { font-family: 'Fraunces', Georgia, serif; font-size: .88rem; line-height: 1.2;
-                     background: linear-gradient(135deg,#EAF4F4,#3a8c8a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+                     background: linear-gradient(135deg,#EAF4F4,#3a8c8a); background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
 
     /* Avatar in sidebar */
     .sb-user { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
@@ -102,6 +102,31 @@
     .panel-head { margin-bottom: 28px; }
     .panel-head h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.6rem; margin-bottom: 5px; }
     .panel-head p { color: var(--muted); font-size: .88rem; }
+
+    .profile-separate-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .profile-separate-card h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.12rem;
+      color: rgba(234,244,244,.92);
+    }
+    .profile-separate-card p {
+      color: rgba(234,244,244,.68);
+      font-size: .86rem;
+      line-height: 1.55;
+    }
+    .profile-separate-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     /* ── Profile panel ────────────────────────────────────────────── */
     .profile-grid { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; }
@@ -467,7 +492,7 @@
     </div>
   </div>
   <nav class="sb-nav">
-    <button class="sb-item on" id="n-profile" onclick="go('profile')"><span class="ico">👤</span>Profilo</button>
+    <button class="sb-item" id="n-preferences" onclick="location.href='preferenze.html'"><span class="ico">🎛️</span>Preferenze</button>
     <button class="sb-item" id="n-posts" onclick="go('posts')"><span class="ico">📝</span>I miei post</button>
     <button class="sb-item" id="n-write" onclick="go('write')"><span class="ico">✍️</span>Scrivi</button>
     <div class="sb-sep"></div>
@@ -482,7 +507,7 @@
 
 <!-- ── Mobile tabs ───────────────────────────────────────────────── -->
 <div class="mob-tabs">
-  <button class="mob-tab on" id="mt-profile" onclick="go('profile')"><span>👤</span><span>Profilo</span></button>
+  <button class="mob-tab" id="mt-preferences" onclick="location.href='preferenze.html'"><span>🎛️</span><span>Pref.</span></button>
   <button class="mob-tab" id="mt-posts" onclick="go('posts')"><span>📝</span><span>Post</span></button>
   <button class="mob-tab" id="mt-write" onclick="go('write')"><span>✍️</span><span>Scrivi</span></button>
   <button class="mob-tab" onclick="location.href='index.html'"><span>🏠</span><span>Home</span></button>
@@ -499,6 +524,7 @@
     <nav class="top-nav-links">
       <a class="top-link" href="index.html">Home</a>
       <a class="top-link on" href="me.html#write">Account</a>
+      <a class="top-link" href="preferenze.html">Preferenze</a>
       <a class="top-link" id="top-public-profile-link" href="#">Profilo pubblico</a>
       <a class="top-link" id="top-admin-link" href="admin.html" style="display:none">Admin</a>
       <button class="btn btn-ghost btn-sm" type="button" onclick="logout()">Esci</button>
@@ -514,10 +540,19 @@
   <!-- Profile panel -->
   <div class="panel on" id="p-profile">
     <div class="panel-head">
-      <h1>Il mio profilo</h1>
-      <p>Personalizza il tuo spazio nella comunità.</p>
+      <h1>Personalizzazione profilo</h1>
+      <p>Editor spostato in una pagina separata, nello stesso stile ma piu discreto.</p>
     </div>
-    <div class="profile-grid">
+    <div class="profile-separate-card">
+      <h2>Apri Preferenze</h2>
+      <p>Da qui puoi modificare profilo, avatar e preferenze UI (tema, lingua e interfaccia) in una pagina dedicata.</p>
+      <div class="profile-separate-actions">
+        <a class="btn btn-primary" href="preferenze.html">Apri pagina Preferenze</a>
+        <a class="btn btn-ghost" href="profile.html" id="profile-public-shortcut">Vedi profilo pubblico</a>
+      </div>
+    </div>
+
+    <div class="profile-grid" id="legacy-profile-grid" style="display:none" aria-hidden="true">
       <div class="profile-av-col">
         <div class="big-av" id="big-av">🌿</div>
         <div id="role-badge"></div>
@@ -812,6 +847,7 @@ function relativeTime(iso) {
   if($('top-chip-un')) $('top-chip-un').textContent = '@' + profile.username;
 
   if($('top-public-profile-link')) $('top-public-profile-link').href = publicProfileHref;
+  if($('profile-public-shortcut')) $('profile-public-shortcut').href = publicProfileHref;
   if($('view-profile-btn')) {
     $('view-profile-btn').href = publicProfileHref;
     $('view-profile-btn').style.display = 'inline-flex';
