@@ -318,6 +318,64 @@
       display: flex; align-items: center; gap: 8px; flex-shrink: 0;
     }
 
+    /* Auth: accedi button */
+    .nav-accedi-btn {
+      padding: 7px 16px;
+      background: linear-gradient(135deg,#1F6F8B,#3a8c8a);
+      color: #fff; border-radius: 20px;
+      font-size: .82rem; font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(31,111,139,.3);
+      white-space: nowrap;
+    }
+
+    /* Auth: profile dropdown */
+    .profile-menu { position: relative; }
+    .profile-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 12px 5px 6px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      font-size: .82rem; font-weight: 600;
+      color: rgba(234,244,244,.9);
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+    .profile-btn:hover { background: rgba(255,255,255,.13); border-color: rgba(255,255,255,.2); }
+    .profile-avatar {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .profile-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.18);
+      border: 1px solid rgba(0,0,0,.07);
+      min-width: 210px;
+      overflow: hidden;
+      z-index: 200;
+    }
+    .profile-dropdown.open { display: block; }
+    .profile-dropdown a,
+    .profile-dropdown button {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px; width: 100%;
+      font-size: .87rem; font-weight: 500; color: var(--text);
+      background: none; border: none; cursor: pointer;
+      text-decoration: none;
+      transition: background .15s;
+      text-align: left;
+    }
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover { background: var(--bg); }
+    .profile-dropdown__sep { height: 1px; background: var(--border); margin: 4px 0; }
+    .profile-dropdown .danger { color: #c0392b; }
+
     /* Hamburger */
     .site-nav__toggle {
       display: none; flex-direction: column; gap: 5px;
@@ -1949,7 +2007,9 @@
 
       <!-- Actions -->
       <div class="site-header__actions">
-        <div id="nav-auth" style="display:flex;align-items:center;gap:8px"></div>
+        <div id="nav-auth" style="display:flex;align-items:center;gap:8px">
+          <a href="login.html" class="nav-accedi-btn">Accedi</a>
+        </div>
         <button class="site-nav__toggle" id="navToggle" aria-label="Apri menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -3124,20 +3184,58 @@
 <script src="supabase.config.js"></script>
 <script>
 /* ── Nav auth state ───────────────────────────────────────────────── */
-(async function() {
+(function() {
   if(typeof SUPABASE_URL==='undefined'||SUPABASE_URL.includes('your-project')) return;
   const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const {data:{session}} = await _sb.auth.getSession();
   const nav = document.getElementById('nav-auth');
   if(!nav) return;
-  if(session) {
-    const {data:p} = await _sb.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single();
-    if(p) nav.innerHTML = `<a href="me.html" style="display:flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;background:rgba(31,111,139,.1);border:1px solid rgba(31,111,139,.25);border-radius:20px;font-size:.82rem;font-weight:600;color:#143B43;text-decoration:none">
-      <span style="width:26px;height:26px;border-radius:8px;background:${p.avatar_color};display:flex;align-items:center;justify-content:center;font-size:1rem">${p.avatar_emoji}</span>
-      @${p.username}</a>`;
-  } else {
-    nav.innerHTML = `<a href="login.html" style="padding:7px 16px;background:linear-gradient(135deg,#1F6F8B,#3a8c8a);color:#fff;border-radius:20px;font-size:.82rem;font-weight:600;text-decoration:none;box-shadow:0 2px 10px rgba(31,111,139,.3)">Accedi</a>`;
+
+  async function renderAuth(session) {
+    if(session) {
+      const {data:p} = await _sb.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single();
+      const emoji = p?.avatar_emoji || '👤';
+      const color = p?.avatar_color || '#1F6F8B';
+      const username = p?.username || session.user.email?.split('@')[0] || 'profilo';
+
+      nav.innerHTML = `
+        <div class="profile-menu" id="profileMenu">
+          <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="profile-avatar" style="background:${color}">${emoji}</span>
+            @${username}
+          </button>
+          <div class="profile-dropdown" id="profileDropdown" role="menu">
+            <a href="post-editor.html" role="menuitem">✏️&nbsp; Crea un post</a>
+            <a href="me.html" role="menuitem">🎨&nbsp; Personalizza</a>
+            <a href="me.html#password" role="menuitem">🔑&nbsp; Reimposta password</a>
+            <div class="profile-dropdown__sep"></div>
+            <button id="logoutBtn" class="danger" role="menuitem">🚪&nbsp; Esci</button>
+          </div>
+        </div>`;
+
+      document.getElementById('profileBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        const dd = document.getElementById('profileDropdown');
+        const open = dd.classList.toggle('open');
+        document.getElementById('profileBtn').setAttribute('aria-expanded', String(open));
+      });
+
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await _sb.auth.signOut();
+        window.location.reload();
+      });
+
+      document.addEventListener('click', () => {
+        document.getElementById('profileDropdown')?.classList.remove('open');
+        document.getElementById('profileBtn')?.setAttribute('aria-expanded', 'false');
+      }, { capture: true });
+
+    } else {
+      nav.innerHTML = `<a href="login.html" class="nav-accedi-btn">Accedi</a>`;
+    }
   }
+
+  _sb.auth.onAuthStateChange((_event, session) => { renderAuth(session); });
+  _sb.auth.getSession().then(({data:{session}}) => renderAuth(session));
 })();
 
 /* ── Posts loader ──────────────────────────────────────────────────── */
