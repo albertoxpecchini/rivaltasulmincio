@@ -4,213 +4,303 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin – Pro Loco Rivalta sul Mincio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --primary: #1F6F8B; --primary-d: #155a72;
-      --accent: #2E7D32; --accent-d: #1b5e20;
-      --danger: #c0392b; --danger-d: #922b21;
-      --text: #143B43; --text-muted: #5F6B6D;
-      --bg: #f0f5f6; --surface: #fff; --border: #d4e2e5;
-      --dark: #0F2A30; --secondary: #3a8c8a;
+      --bg: #07090f; --surface: rgba(255,255,255,.04); --surface2: rgba(255,255,255,.07);
+      --border: rgba(255,255,255,.08); --border2: rgba(255,255,255,.14);
+      --text: #e8eaf6; --muted: rgba(232,234,246,.45); --faint: rgba(232,234,246,.15);
+      --accent: #1F6F8B; --accent2: #3a8c8a; --green: #2E7D32; --green2: #43A047;
+      --red: rgba(239,83,80,.18); --red-text: #ef9a9a; --red-border: rgba(239,83,80,.25);
+      --gold: #F9A825;
+      --grad: linear-gradient(135deg,#1F6F8B,#3a8c8a);
+      --grad-g: linear-gradient(135deg,#2E7D32,#43A047);
     }
-    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: .92rem; }
-    a { color: var(--primary); text-decoration: none; }
+    html, body { height: 100%; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: .92rem; overflow-x: hidden; }
+    a { color: var(--accent2); text-decoration: none; }
 
-    /* ── Login ────────────────────────────────────────────────────── */
-    #login-screen {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    }
+    /* ── Aurora ──────────────────────────────────────────────────── */
+    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
+    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle,#1F6F8B 0%,transparent 60%); top: -200px; left: -150px; opacity: .1; animation: oa 22s ease-in-out infinite alternate; }
+    .orb-2 { width: 450px; height: 450px; background: radial-gradient(circle,#2E7D32 0%,transparent 60%); bottom: -100px; right: 0; opacity: .07; animation: ob 18s ease-in-out infinite alternate; }
+    .orb-3 { width: 320px; height: 320px; background: radial-gradient(circle,#3a8c8a 0%,transparent 60%); top: 40%; left: 55%; opacity: .06; animation: oc 14s ease-in-out infinite alternate; }
+    @keyframes oa { to { transform: translate(80px, 60px) scale(1.1); } }
+    @keyframes ob { to { transform: translate(-50px, -40px) scale(1.2); } }
+    @keyframes oc { to { transform: translate(-40%, -60%) scale(1.1); } }
+    .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px); background-size: 44px 44px; }
+
+    /* ── Login screen ─────────────────────────────────────────────── */
+    #login-screen { position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
     .login-card {
-      background: var(--surface); border-radius: 16px; padding: 40px;
-      width: 100%; max-width: 380px;
-      box-shadow: 0 8px 40px rgba(15,42,48,.12);
+      width: 100%; max-width: 400px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 44px 40px 40px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+      animation: cardIn .5s cubic-bezier(.22,1,.36,1) both;
     }
-    .login-card h1 {
-      font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; margin-bottom: 6px;
-    }
-    .login-card p { color: var(--text-muted); margin-bottom: 28px; }
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .84rem; }
-    .field input, .field select, .field textarea {
-      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: .9rem; font-family: inherit;
-      outline: none; transition: border-color .2s;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary); }
-    .btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 10px 20px; border-radius: 8px; border: none;
-      font-size: .88rem; font-weight: 600; cursor: pointer;
-      transition: background .2s, opacity .2s;
-    }
-    .btn:disabled { opacity: .5; cursor: not-allowed; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-d); }
-    .btn-success { background: var(--accent); color: #fff; }
-    .btn-success:hover:not(:disabled) { background: var(--accent-d); }
-    .btn-danger  { background: var(--danger); color: #fff; }
-    .btn-danger:hover:not(:disabled) { background: var(--danger-d); }
-    .btn-ghost {
-      background: transparent; color: var(--text-muted);
-      border: 1.5px solid var(--border);
-    }
-    .btn-ghost:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
-    .btn-sm { padding: 6px 12px; font-size: .8rem; }
-    .btn-full { width: 100%; justify-content: center; }
-    .msg { padding: 10px 14px; border-radius: 8px; font-size: .85rem; margin-bottom: 14px; }
-    .msg-error { background: #fdecea; color: var(--danger); }
-    .msg-ok    { background: #e8f5e9; color: var(--accent-d); }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(28px) scale(.97); } to { opacity: 1; transform: none; } }
+    .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+    .login-brand-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 6px 20px rgba(31,111,139,.35); }
+    .login-brand-name { font-family: 'Fraunces', Georgia, serif; font-size: .88rem; font-weight: 600; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+    .login-card h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.7rem; font-weight: 700; margin-bottom: 6px; }
+    .login-card > p { color: var(--muted); font-size: .88rem; margin-bottom: 28px; }
 
     /* ── App shell ────────────────────────────────────────────────── */
-    #app-screen { display: none; min-height: 100vh; }
+    #app-screen { display: none; position: relative; z-index: 1; min-height: 100vh; }
     .topbar {
-      background: var(--dark); color: #EAF4F4;
-      padding: 0 24px; height: 52px;
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(7,9,15,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px; height: 56px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .topbar-brand { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .user-email { font-size: .8rem; color: rgba(234,244,244,.6); }
-    .btn-logout { background: transparent; border: 1px solid rgba(234,244,244,.3); color: #EAF4F4; padding: 5px 12px; border-radius: 6px; font-size: .8rem; cursor: pointer; }
-    .btn-logout:hover { background: rgba(234,244,244,.1); }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+    .topbar-brand { font-family: 'Fraunces', Georgia, serif; font-size: .95rem; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .user-email { font-size: .78rem; color: var(--muted); }
+    .btn-topbar { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 5px 14px; border-radius: 8px; font-size: .78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .2s; }
+    .btn-topbar:hover { background: var(--surface2); border-color: var(--border2); }
 
-    .app-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
-    .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-    .app-header h2 { font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; }
-    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; background: var(--bg); border-radius: 10px; padding: 4px; border: 1px solid var(--border); width: fit-content; }
-    .tab-bar button { padding: 8px 20px; border-radius: 7px; border: none; font-size: .85rem; font-weight: 600; cursor: pointer; font-family: inherit; background: transparent; color: var(--text-muted); transition: all .2s; }
-    .tab-bar button.on { background: var(--surface); color: var(--primary); box-shadow: 0 1px 4px rgba(15,42,48,.1); }
+    .app-body { max-width: 980px; margin: 0 auto; padding: 36px 24px 80px; }
+    .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+    .app-header h2 { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-weight: 700; }
+
+    /* ── Tab bar ──────────────────────────────────────────────────── */
+    .tab-bar { display: flex; gap: 3px; margin-bottom: 30px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px; width: fit-content; }
+    .tab-bar button {
+      padding: 8px 22px; border-radius: 9px; border: none; font-size: .84rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; background: transparent; color: var(--muted); transition: all .2s;
+    }
+    .tab-bar button.on { background: rgba(31,111,139,.18); color: var(--text); border: 1px solid rgba(31,111,139,.25); }
     .admin-panel { display: none; }
     .admin-panel.on { display: block; }
-    .users-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(15,42,48,.07); }
-    .users-table th { background: var(--bg); text-align: left; padding: 11px 16px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1.5px solid var(--border); }
-    .users-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .users-table tr:last-child td { border-bottom: none; }
-    .users-table tr:hover td { background: #f8fbfc; }
-    .user-av { width: 32px; height: 32px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+
+    /* ── Buttons ──────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 18px; border-radius: 10px; border: none;
+      font-size: .86rem; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all .2s; white-space: nowrap;
+    }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; }
+    .btn-primary {
+      background: var(--grad); color: #fff;
+      box-shadow: 0 4px 16px rgba(31,111,139,.3);
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 22px rgba(31,111,139,.45); }
+    .btn-success {
+      background: var(--grad-g); color: #fff;
+      box-shadow: 0 4px 16px rgba(46,125,50,.25);
+    }
+    .btn-success:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 22px rgba(46,125,50,.4); }
+    .btn-danger { background: var(--red); color: var(--red-text); border: 1px solid var(--red-border); }
+    .btn-danger:hover:not(:disabled) { background: rgba(239,83,80,.28); }
+    .btn-ghost { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover:not(:disabled) { color: var(--text); background: var(--surface2); border-color: var(--border2); }
+    .btn-sm { padding: 6px 12px; font-size: .79rem; border-radius: 8px; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ── Form fields ──────────────────────────────────────────────── */
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 7px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 11px 14px;
+      background: rgba(255,255,255,.05); border: 1.5px solid var(--border);
+      border-radius: 10px; color: var(--text); font-size: .9rem; font-family: inherit;
+      outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--faint); }
+    .field select option { background: #0d1a24; }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: rgba(31,111,139,.6); box-shadow: 0 0 0 3px rgba(31,111,139,.12);
+      background: rgba(255,255,255,.07);
+    }
+    .field textarea { min-height: 320px; resize: vertical; line-height: 1.6; font-size: .88rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── Tables ───────────────────────────────────────────────────── */
+    .data-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .data-table th {
+      text-align: left; padding: 11px 16px;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .data-table td { padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,255,255,.025); }
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    /* ── Status pills ─────────────────────────────────────────────── */
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
+    .pill-pub  { background: rgba(46,125,50,.15); color: #a5d6a7; border: 1px solid rgba(46,125,50,.3); }
+    .pill-draft { background: rgba(249,168,37,.1); color: #ffd54f; border: 1px solid rgba(249,168,37,.2); }
     .role-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
-    .role-admin { background: #fff3e0; color: #e65100; }
-    .role-user  { background: #e3f0f5; color: var(--primary); }
+    .role-admin { background: rgba(249,168,37,.12); color: var(--gold); border: 1px solid rgba(249,168,37,.2); }
+    .role-user  { background: rgba(31,111,139,.12); color: #80cbc4; border: 1px solid rgba(31,111,139,.2); }
 
-    /* ── Post table ───────────────────────────────────────────────── */
-    .posts-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(15,42,48,.07); }
-    .posts-table th { background: var(--bg); text-align: left; padding: 11px 16px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1.5px solid var(--border); }
-    .posts-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .posts-table tr:last-child td { border-bottom: none; }
-    .posts-table tr:hover td { background: #f8fbfc; }
-    .post-title-cell { font-weight: 600; max-width: 300px; }
-    .post-title-cell a { color: var(--text); }
-    .post-title-cell a:hover { color: var(--primary); }
-    .status-pill {
-      display: inline-block; padding: 3px 10px; border-radius: 20px;
-      font-size: .75rem; font-weight: 700;
-    }
-    .status-pill.pub  { background: #e8f5e9; color: var(--accent-d); }
-    .status-pill.draft { background: #fff3e0; color: #e65100; }
-    .actions { display: flex; gap: 6px; }
-    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-    .empty-state p { margin-top: 8px; font-size: .88rem; }
+    .user-av { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .post-title-cell { font-weight: 600; max-width: 280px; }
+    .post-title-cell a { color: var(--text); transition: color .2s; }
+    .post-title-cell a:hover { color: var(--accent2); }
 
-    /* ── Drawer / Form ────────────────────────────────────────────── */
-    .drawer-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(15,42,48,.4); z-index: 100;
+    /* ── Notifications ────────────────────────────────────────────── */
+    .msg { padding: 11px 14px; border-radius: 10px; font-size: .84rem; margin-bottom: 14px; }
+    .msg-error { background: rgba(239,83,80,.12); color: var(--red-text); border: 1px solid var(--red-border); }
+    .msg-ok    { background: rgba(46,125,50,.12); color: #a5d6a7; border: 1px solid rgba(46,125,50,.25); }
+    #toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      padding: 12px 20px; border-radius: 12px; font-size: .86rem; font-weight: 600;
+      backdrop-filter: blur(20px); border: 1px solid var(--border);
+      transform: translateY(16px); opacity: 0; transition: all .3s; pointer-events: none;
     }
+    #toast.show { transform: none; opacity: 1; }
+    #toast.ok  { background: rgba(46,125,50,.3); color: #a5d6a7; }
+    #toast.err { background: rgba(239,83,80,.25); color: var(--red-text); }
+
+    /* ── Drawer ───────────────────────────────────────────────────── */
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 100; }
     .drawer-overlay.open { display: block; }
     .drawer {
       position: fixed; top: 0; right: -700px; width: min(680px, 100vw);
-      height: 100vh; background: var(--surface); z-index: 101;
-      overflow-y: auto; transition: right .3s ease;
+      height: 100vh; background: #0a1520; z-index: 101;
+      overflow-y: auto; transition: right .3s cubic-bezier(.22,1,.36,1);
       display: flex; flex-direction: column;
+      border-left: 1px solid var(--border);
     }
     .drawer.open { right: 0; }
     .drawer-head {
       padding: 20px 24px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; background: var(--surface); z-index: 1;
+      position: sticky; top: 0; background: #0a1520; z-index: 1;
     }
     .drawer-head h3 { font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; }
-    .drawer-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
+    .drawer-close { background: var(--surface); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; font-size: 1.1rem; cursor: pointer; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .drawer-close:hover { background: var(--surface2); color: var(--text); }
     .drawer-body { padding: 24px; flex: 1; }
     .drawer-footer {
       padding: 16px 24px; border-top: 1px solid var(--border);
       display: flex; gap: 10px; justify-content: flex-end;
-      position: sticky; bottom: 0; background: var(--surface);
+      position: sticky; bottom: 0; background: #0a1520;
     }
-    .field textarea { min-height: 320px; resize: vertical; line-height: 1.6; font-size: .88rem; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── Image type selector ──────────────────────────────────────── */
     .img-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px; }
     .img-type-opt { position: relative; }
     .img-type-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
     .img-type-opt label {
       display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 8px 4px; border: 2px solid var(--border); border-radius: 8px;
-      cursor: pointer; font-size: .72rem; text-align: center;
-      transition: border-color .15s;
+      padding: 10px 4px; border: 1.5px solid var(--border); border-radius: 10px;
+      cursor: pointer; font-size: .72rem; text-align: center; color: var(--muted);
+      transition: all .15s;
     }
     .img-type-opt label span { font-size: 1.4rem; }
-    .img-type-opt input:checked + label { border-color: var(--primary); background: #eaf4f8; }
-    .md-hint { font-size: .75rem; color: var(--text-muted); margin-top: 5px; }
+    .img-type-opt label:hover { border-color: rgba(31,111,139,.5); color: var(--text); background: rgba(31,111,139,.07); }
+    .img-type-opt input:checked + label { border-color: var(--accent2); background: rgba(58,140,138,.12); color: var(--text); }
 
-    /* ── Loader ───────────────────────────────────────────────────── */
-    .spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+    .badge-color-row { display: flex; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
+    .badge-color-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--muted); font-size: .85rem; transition: color .15s; }
+    .badge-color-row label:hover { color: var(--text); }
+    .md-hint { font-size: .73rem; color: var(--muted); margin-top: 5px; }
+
+    /* ── Empty state ──────────────────────────────────────────────── */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state > span { font-size: 2.5rem; display: block; margin-bottom: 14px; }
+    .empty-state p { font-size: .88rem; }
+
+    /* ── Spinner ──────────────────────────────────────────────────── */
+    .sp { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.25); border-top-color: #fff; border-radius: 50%; animation: spin .55s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .field-row { grid-template-columns: 1fr; }
       .img-type-grid { grid-template-columns: repeat(3, 1fr); }
-      .posts-table thead { display: none; }
-      .posts-table td { display: block; border-bottom: none; }
-      .posts-table tr { border-bottom: 1px solid var(--border); display: block; padding: 8px 0; }
+      .app-body { padding: 24px 16px 60px; }
+      .data-table thead { display: none; }
+      .data-table td { display: block; }
+      .data-table tr { border-bottom: 1px solid var(--border); display: block; padding: 8px 0; }
     }
   </style>
 </head>
 <body>
 
+<div class="aurora">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+</div>
+
 <!-- ══ LOGIN ══════════════════════════════════════════════════════════ -->
 <div id="login-screen">
   <div class="login-card">
-    <h1>Pro Loco Admin</h1>
-    <p>Accedi per gestire i post del sito.</p>
+    <div class="login-brand">
+      <div class="login-brand-icon">⚙️</div>
+      <span class="login-brand-name">Pro Loco Admin</span>
+    </div>
+    <h1>Pannello Admin</h1>
+    <p>Accedi per gestire post e utenti del sito.</p>
     <div id="login-msg"></div>
     <form id="login-form">
       <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" required placeholder="admin@esempio.it" />
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="admin@esempio.it" autocomplete="email" />
       </div>
       <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" required placeholder="••••••••" />
+        <label>Password</label>
+        <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password" />
       </div>
-      <button type="submit" class="btn btn-primary btn-full" id="login-btn">Accedi</button>
+      <button type="submit" class="btn btn-primary btn-full" id="login-btn" style="margin-top:4px">
+        <span class="btn-text">Accedi</span>
+        <span class="sp" style="display:none" id="login-sp"></span>
+      </button>
     </form>
+    <p style="margin-top:20px;font-size:.8rem;color:var(--muted);text-align:center">
+      <a href="index.html" style="color:var(--muted)">← Torna al sito</a>
+    </p>
   </div>
 </div>
 
 <!-- ══ APP ════════════════════════════════════════════════════════════ -->
 <div id="app-screen">
   <div class="topbar">
-    <span class="topbar-brand">Pro Loco Rivalta – Admin</span>
+    <div class="topbar-left">
+      <div class="topbar-icon">⚙️</div>
+      <span class="topbar-brand">Pro Loco Rivalta – Admin</span>
+    </div>
     <div class="topbar-right">
       <span class="user-email" id="user-email"></span>
-      <button class="btn-logout" id="logout-btn">Esci</button>
+      <button class="btn-topbar" id="logout-btn">Esci</button>
+      <a href="index.html" class="btn-topbar">← Sito</a>
     </div>
   </div>
 
   <div class="app-body">
-    <div class="app-header"><h2>Dashboard Admin</h2></div>
+    <div class="app-header">
+      <h2>Dashboard</h2>
+    </div>
     <div class="tab-bar">
-      <button class="on" id="atab-posts" onclick="atab('posts')">Post</button>
-      <button id="atab-users" onclick="atab('users')">Utenti</button>
+      <button class="on" id="atab-posts" onclick="atab('posts')">📝 Post</button>
+      <button id="atab-users" onclick="atab('users')">👥 Utenti</button>
     </div>
     <div id="app-msg"></div>
 
     <!-- Posts panel -->
     <div class="admin-panel on" id="ap-posts">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:18px">
         <button class="btn btn-success" id="new-post-btn">+ Nuovo articolo</button>
       </div>
       <div id="posts-wrap"><div class="empty-state"><span>⏳</span><p>Caricamento…</p></div></div>
@@ -223,7 +313,7 @@
   </div>
 </div>
 
-<!-- ══ DRAWER (create / edit) ════════════════════════════════════════ -->
+<!-- ══ DRAWER ════════════════════════════════════════════════════════ -->
 <div class="drawer-overlay" id="drawer-overlay"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-head">
@@ -235,21 +325,21 @@
     <form id="post-form">
       <input type="hidden" id="f-id" />
       <div class="field">
-        <label for="f-title">Titolo *</label>
+        <label>Titolo *</label>
         <input type="text" id="f-title" required placeholder="Es. Sagra del Luccio 2026: programma completo" />
       </div>
       <div class="field">
-        <label for="f-excerpt">Sommario <small style="font-weight:400;color:var(--text-muted)">(mostrato in anteprima)</small></label>
+        <label>Sommario <small style="font-weight:400;color:var(--muted)">(mostrato in anteprima)</small></label>
         <input type="text" id="f-excerpt" placeholder="Breve descrizione dell'articolo…" />
       </div>
       <div class="field">
-        <label for="f-content">Contenuto <small style="font-weight:400;color:var(--text-muted)">(Markdown)</small></label>
+        <label>Contenuto <small style="font-weight:400;color:var(--muted)">(Markdown)</small></label>
         <textarea id="f-content" placeholder="Scrivi il testo dell'articolo…&#10;&#10;## Titolo sezione&#10;&#10;Paragrafo…"></textarea>
         <div class="md-hint">Supporta: **grassetto**, *corsivo*, ## Titolo, ### Sottotitolo</div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="f-category">Categoria</label>
+          <label>Categoria</label>
           <select id="f-category">
             <option>Territorio</option>
             <option>Il Luccio</option>
@@ -261,52 +351,27 @@
           </select>
         </div>
         <div class="field">
-          <label for="f-badge">Badge etichetta</label>
+          <label>Badge etichetta</label>
           <input type="text" id="f-badge" placeholder="Es. Natura" />
         </div>
       </div>
       <div class="field">
         <label>Colore badge</label>
-        <div style="display:flex;gap:10px;margin-top:6px;">
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
-            <input type="radio" name="badge_color" value="default" checked /> Blu
-          </label>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
-            <input type="radio" name="badge_color" value="green" /> Verde
-          </label>
+        <div class="badge-color-row">
+          <label><input type="radio" name="badge_color" value="default" checked /> Blu</label>
+          <label><input type="radio" name="badge_color" value="green" /> Verde</label>
         </div>
       </div>
       <div class="field">
         <label>Illustrazione</label>
         <div class="img-type-grid">
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-festival" value="festival" checked />
-            <label for="it-festival"><span>🎪</span>Sagra</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-heron" value="heron" />
-            <label for="it-heron"><span>🦢</span>Aironi</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-cycling" value="cycling" />
-            <label for="it-cycling"><span>🚴</span>Ciclabile</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-village" value="village" />
-            <label for="it-village"><span>🌙</span>Borgo</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-reeds" value="reeds" />
-            <label for="it-reeds"><span>🌾</span>Canneti</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-fishing" value="fishing" />
-            <label for="it-fishing"><span>🎣</span>Pesca</label>
-          </div>
-          <div class="img-type-opt">
-            <input type="radio" name="image_type" id="it-nature" value="nature" />
-            <label for="it-nature"><span>🌸</span>Natura</label>
-          </div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-festival" value="festival" checked /><label for="it-festival"><span>🎪</span>Sagra</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-heron" value="heron" /><label for="it-heron"><span>🦢</span>Aironi</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-cycling" value="cycling" /><label for="it-cycling"><span>🚴</span>Ciclabile</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-village" value="village" /><label for="it-village"><span>🌙</span>Borgo</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-reeds" value="reeds" /><label for="it-reeds"><span>🌾</span>Canneti</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-fishing" value="fishing" /><label for="it-fishing"><span>🎣</span>Pesca</label></div>
+          <div class="img-type-opt"><input type="radio" name="image_type" id="it-nature" value="nature" /><label for="it-nature"><span>🌸</span>Natura</label></div>
         </div>
       </div>
     </form>
@@ -317,20 +382,21 @@
   </div>
 </div>
 
+<div id="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
 <script>
-/* ══════════════════════════════════════════════════════════════════
-   Admin panel – Pro Loco Rivalta sul Mincio
-   Requires: supabase.config.js with SUPABASE_URL + SUPABASE_ANON_KEY
-   Supabase table: posts (see schema comment at bottom)
-══════════════════════════════════════════════════════════════════ */
-
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* ── Helpers ──────────────────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
 const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
+
+/* ── Toast ──────────────────────────────────────────────────────────── */
+let _tt;
+function toast(txt, type = 'ok') {
+  const el = $('toast'); el.textContent = txt; el.className = 'show ' + type;
+  clearTimeout(_tt); _tt = setTimeout(() => el.classList.remove('show'), 3200);
+}
 
 function showMsg(elId, text, type = 'error') {
   const el = $(elId);
@@ -343,18 +409,19 @@ $('login-form').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = $('login-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Accesso…';
+  btn.querySelector('.btn-text').style.display = 'none';
+  $('login-sp').style.display = 'inline-block';
 
   const { error } = await sb.auth.signInWithPassword({
     email: $('email').value.trim(),
     password: $('password').value,
   });
 
-  if (error) {
-    showMsg('login-msg', 'Credenziali non valide. Verifica email e password.');
-    btn.disabled = false;
-    btn.textContent = 'Accedi';
-  }
+  btn.disabled = false;
+  btn.querySelector('.btn-text').style.display = '';
+  $('login-sp').style.display = 'none';
+
+  if (error) showMsg('login-msg', 'Credenziali non valide. Verifica email e password.');
 });
 
 $('logout-btn').addEventListener('click', () => sb.auth.signOut());
@@ -377,7 +444,7 @@ let posts = [];
 async function loadPosts() {
   const { data, error } = await sb
     .from('posts')
-    .select('id, title, category, published, published_at, created_at')
+    .select('id, title, category, published, published_at, created_at, author_username')
     .order('created_at', { ascending: false });
 
   if (error) { showMsg('app-msg', 'Errore nel caricamento dei post: ' + error.message); return; }
@@ -387,45 +454,38 @@ async function loadPosts() {
 
 function renderTable() {
   const wrap = $('posts-wrap');
-  if (posts.length === 0) {
+  if (!posts.length) {
     wrap.innerHTML = '<div class="empty-state"><span>📝</span><p>Nessun articolo ancora. Creane uno!</p></div>';
     return;
   }
 
   wrap.innerHTML = `
-    <table class="posts-table">
-      <thead>
-        <tr>
-          <th>Titolo</th>
-          <th>Categoria</th>
-          <th>Stato</th>
-          <th>Data</th>
-          <th></th>
-        </tr>
-      </thead>
+    <table class="data-table">
+      <thead><tr>
+        <th>Titolo</th><th>Autore</th><th>Categoria</th><th>Stato</th><th>Data</th><th></th>
+      </tr></thead>
       <tbody>
         ${posts.map(p => `
           <tr data-id="${p.id}">
             <td class="post-title-cell">
               ${p.published ? `<a href="post.html?id=${p.id}" target="_blank">${p.title}</a>` : p.title}
             </td>
-            <td>${p.category || '—'}</td>
-            <td><span class="status-pill ${p.published ? 'pub' : 'draft'}">${p.published ? 'Pubblicato' : 'Bozza'}</span></td>
-            <td>${fmt(p.published_at || p.created_at)}</td>
+            <td style="color:var(--muted);font-size:.82rem">${p.author_username ? '@' + p.author_username : '—'}</td>
+            <td style="color:var(--muted)">${p.category || '—'}</td>
+            <td><span class="pill ${p.published ? 'pill-pub' : 'pill-draft'}">${p.published ? 'Pubblicato' : 'Bozza'}</span></td>
+            <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at || p.created_at)}</td>
             <td>
               <div class="actions">
-                <button class="btn btn-ghost btn-sm" onclick="editPost('${p.id}')">Modifica</button>
+                <button class="btn btn-ghost btn-sm" onclick="editPost('${p.id}')">✏️ Modifica</button>
                 ${p.published
                   ? `<button class="btn btn-ghost btn-sm" onclick="togglePublish('${p.id}', false)">Nascondi</button>`
                   : `<button class="btn btn-success btn-sm" onclick="togglePublish('${p.id}', true)">Pubblica</button>`}
-                <button class="btn btn-danger btn-sm" onclick="deletePost('${p.id}')">Elimina</button>
+                <button class="btn btn-danger btn-sm" onclick="deletePost('${p.id}')">🗑</button>
               </div>
             </td>
-          </tr>
-        `).join('')}
+          </tr>`).join('')}
       </tbody>
-    </table>
-  `;
+    </table>`;
 }
 
 /* ── Toggle publish ───────────────────────────────────────────────── */
@@ -434,7 +494,8 @@ async function togglePublish(id, publish) {
     published: publish,
     published_at: publish ? new Date().toISOString() : null,
   }).eq('id', id);
-  if (error) { showMsg('app-msg', 'Errore: ' + error.message); return; }
+  if (error) { toast(error.message, 'err'); return; }
+  toast(publish ? '✅ Pubblicato' : 'Nascosto');
   await loadPosts();
 }
 
@@ -443,7 +504,8 @@ async function deletePost(id) {
   const post = posts.find(p => p.id === id);
   if (!confirm(`Eliminare definitivamente "${post?.title}"?`)) return;
   const { error } = await sb.from('posts').delete().eq('id', id);
-  if (error) { showMsg('app-msg', 'Errore: ' + error.message); return; }
+  if (error) { toast(error.message, 'err'); return; }
+  toast('Articolo eliminato');
   await loadPosts();
 }
 
@@ -455,7 +517,6 @@ function openDrawer(title = 'Nuovo articolo') {
   $('drawer').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeDrawer() {
   $('drawer-overlay').classList.remove('open');
   $('drawer').classList.remove('open');
@@ -471,22 +532,21 @@ $('new-post-btn').addEventListener('click', () => { closeDrawer(); openDrawer('N
 /* ── Edit ─────────────────────────────────────────────────────────── */
 async function editPost(id) {
   const { data: p, error } = await sb.from('posts').select('*').eq('id', id).single();
-  if (error || !p) { showMsg('app-msg', 'Errore nel caricamento.'); return; }
-
+  if (error || !p) { toast('Errore nel caricamento.', 'err'); return; }
   $('f-id').value = p.id;
   $('f-title').value = p.title || '';
   $('f-excerpt').value = p.excerpt || '';
   $('f-content').value = p.content || '';
   $('f-category').value = p.category || 'Territorio';
   $('f-badge').value = p.badge || '';
-  document.querySelector(`input[name="badge_color"][value="${p.badge_color || 'default'}"]`).checked = true;
+  const bcr = document.querySelector(`input[name="badge_color"][value="${p.badge_color || 'default'}"]`);
+  if (bcr) bcr.checked = true;
   const it = document.querySelector(`input[name="image_type"][value="${p.image_type || 'nature'}"]`);
   if (it) it.checked = true;
-
   openDrawer('Modifica articolo');
 }
 
-/* ── Save (draft or publish) ──────────────────────────────────────── */
+/* ── Save ─────────────────────────────────────────────────────────── */
 async function savePost(publish) {
   const id = $('f-id').value;
   const title = $('f-title').value.trim();
@@ -505,98 +565,77 @@ async function savePost(publish) {
   };
 
   let error;
-  if (id) {
-    ({ error } = await sb.from('posts').update(payload).eq('id', id));
-  } else {
-    ({ error } = await sb.from('posts').insert(payload));
-  }
+  if (id) ({ error } = await sb.from('posts').update(payload).eq('id', id));
+  else    ({ error } = await sb.from('posts').insert(payload));
 
   if (error) { showMsg('drawer-msg', 'Errore: ' + error.message); return; }
   closeDrawer();
-  showMsg('app-msg', publish ? '✅ Articolo pubblicato.' : '💾 Bozza salvata.', 'ok');
+  toast(publish ? '✅ Articolo pubblicato' : '💾 Bozza salvata');
   await loadPosts();
 }
 
 $('save-draft-btn').addEventListener('click', () => savePost(false));
 $('publish-btn').addEventListener('click', () => savePost(true));
 
-/* Expose globals for inline onclick */
 window.editPost = editPost;
 window.togglePublish = togglePublish;
 window.deletePost = deletePost;
 
-/* ── Admin tabs ───────────────────────────────────────────────────── */
+/* ── Tabs ─────────────────────────────────────────────────────────── */
 function atab(name) {
-  ['posts','users'].forEach(n => {
-    document.getElementById('ap-'+n)?.classList.toggle('on', n===name);
-    document.getElementById('atab-'+n)?.classList.toggle('on', n===name);
+  ['posts', 'users'].forEach(n => {
+    document.getElementById('ap-' + n)?.classList.toggle('on', n === name);
+    document.getElementById('atab-' + n)?.classList.toggle('on', n === name);
   });
-  if(name === 'users') loadUsers();
+  if (name === 'users') loadUsers();
 }
 
 /* ── Users management ─────────────────────────────────────────────── */
 async function loadUsers() {
   const wrap = $('users-wrap');
-  const {data:users, error} = await sb.from('profiles')
+  const { data: users, error } = await sb.from('profiles')
     .select('id,username,display_name,avatar_emoji,avatar_color,role,created_at')
-    .order('created_at',{ascending:false});
-  if(error) { wrap.innerHTML = `<p style="color:var(--danger)">Errore: ${error.message}</p>`; return; }
-  if(!users||!users.length) { wrap.innerHTML = '<div class="empty-state"><span>👥</span><p>Nessun utente.</p></div>'; return; }
-  wrap.innerHTML = `<table class="users-table"><thead><tr>
-    <th>Utente</th><th>Username</th><th>Ruolo</th><th>Iscritto il</th><th></th>
-  </tr></thead><tbody>${users.map(u=>`<tr>
-    <td style="display:flex;align-items:center;gap:10px">
-      <span class="user-av" style="background:${u.avatar_color||'#1F6F8B'}">${u.avatar_emoji||'🌿'}</span>
-      <span style="font-weight:600">${u.display_name||u.username}</span>
-    </td>
-    <td><a href="profile.html?u=${u.username}" target="_blank" style="color:var(--primary)">@${u.username}</a></td>
-    <td><span class="role-badge role-${u.role||'user'}">${u.role||'user'}</span></td>
-    <td style="color:var(--text-muted);font-size:.82rem">${new Date(u.created_at).toLocaleDateString('it-IT')}</td>
-    <td><div class="actions">
-      ${u.role!=='admin'
-        ? `<button class="btn btn-ghost btn-sm" onclick="setRole('${u.id}','admin')">Promuovi admin</button>`
-        : `<button class="btn btn-ghost btn-sm" onclick="setRole('${u.id}','user')">Rimuovi admin</button>`}
-    </div></td>
-  </tr>`).join('')}</tbody></table>`;
+    .order('created_at', { ascending: false });
+
+  if (error) { wrap.innerHTML = `<div class="empty-state"><span>⚠️</span><p>${error.message}</p></div>`; return; }
+  if (!users || !users.length) { wrap.innerHTML = '<div class="empty-state"><span>👥</span><p>Nessun utente registrato.</p></div>'; return; }
+
+  wrap.innerHTML = `
+    <table class="data-table">
+      <thead><tr>
+        <th>Utente</th><th>Username</th><th>Ruolo</th><th>Iscritto il</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${users.map(u => `
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="user-av" style="background:${u.avatar_color || '#1F6F8B'}">${u.avatar_emoji || '🌿'}</span>
+                <span style="font-weight:600">${u.display_name || u.username}</span>
+              </div>
+            </td>
+            <td><a href="profile.html?u=${u.username}" target="_blank">@${u.username}</a></td>
+            <td><span class="role-badge role-${u.role || 'user'}">${u.role || 'user'}</span></td>
+            <td style="color:var(--muted);font-size:.82rem">${new Date(u.created_at).toLocaleDateString('it-IT')}</td>
+            <td>
+              <div class="actions">
+                ${u.role !== 'admin'
+                  ? `<button class="btn btn-ghost btn-sm" onclick="setRole('${u.id}','admin')">⬆ Admin</button>`
+                  : `<button class="btn btn-danger btn-sm" onclick="setRole('${u.id}','user')">↓ Rimuovi admin</button>`}
+              </div>
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
 }
 
 async function setRole(uid, role) {
-  const {error} = await sb.from('profiles').update({role}).eq('id',uid);
-  if(error) { showMsg('app-msg', error.message); return; }
+  const { error } = await sb.from('profiles').update({ role }).eq('id', uid);
+  if (error) { toast(error.message, 'err'); return; }
+  toast(role === 'admin' ? '⭐ Promosso admin' : 'Ruolo rimosso');
   loadUsers();
 }
 window.setRole = setRole;
 </script>
-
-<!--
-  ══ SCHEMA SUPABASE (esegui in SQL Editor) ═══════════════════════════
-
-  create table posts (
-    id           uuid default gen_random_uuid() primary key,
-    title        text not null,
-    excerpt      text,
-    content      text,
-    category     text default 'Territorio',
-    badge        text,
-    badge_color  text default 'default',
-    image_type   text default 'nature',
-    published    boolean default false,
-    published_at timestamptz,
-    created_at   timestamptz default now()
-  );
-
-  alter table posts enable row level security;
-
-  -- Chiunque può leggere i post pubblicati
-  create policy "Public read published"
-    on posts for select
-    using (published = true);
-
-  -- Solo utenti autenticati possono scrivere
-  create policy "Auth full access"
-    on posts for all
-    using (auth.role() = 'authenticated');
-
-  ════════════════════════════════════════════════════════════════════ -->
 </body>
 </html>

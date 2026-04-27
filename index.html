@@ -3665,7 +3665,8 @@
     .order('published_at', { ascending: false })
     .limit(7);
 
-  if (error || !posts || posts.length === 0) return;
+  if (error) { console.warn('[Posts] Supabase error:', error.message); return; }
+  if (!posts || posts.length === 0) return;
 
   const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
   const badgeCls = c => c === 'green' ? 'badge green' : 'badge';
@@ -3684,40 +3685,49 @@
   const ill = type => ILL[type] || ILL.nature;
 
   /* ── Featured post ─────────────────────────────────────────────── */
-  if (posts[0]) {
-    const p = posts[0];
-    const featured = document.getElementById('post-featured');
-    if (featured) {
-      featured.querySelector('.post-featured__img').innerHTML = ill(p.image_type) + '<span class="featured-label">In evidenza</span>';
-      featured.querySelector('.post-featured__title').innerHTML = `<a href="post.html?id=${p.id}">${p.title}</a>`;
-      featured.querySelector('.post-featured__excerpt').textContent = p.excerpt || '';
-      featured.querySelector('time').textContent = fmt(p.published_at);
-      featured.querySelector('.post-meta span:last-child').textContent = p.category || '';
-      featured.querySelector('.btn-read').href = `post.html?id=${p.id}`;
-      const cats = featured.querySelector('.post-cats');
-      if (cats) cats.innerHTML = `<span class="${badgeCls(p.badge_color)}">${p.badge || p.category}</span>`;
-    }
+  const p0 = posts[0];
+  const featured = document.getElementById('post-featured');
+  if (featured) {
+    featured.querySelector('.post-featured__img').innerHTML = ill(p0.image_type) + '<span class="featured-label">In evidenza</span>';
+    featured.querySelector('.post-featured__title').innerHTML = `<a href="post.html?id=${p0.id}">${p0.title}</a>`;
+    featured.querySelector('.post-featured__excerpt').textContent = p0.excerpt || '';
+    const ft = featured.querySelector('time');
+    if (ft) ft.textContent = fmt(p0.published_at);
+    const fcat = featured.querySelector('.post-meta span:last-child');
+    if (fcat) fcat.textContent = p0.category || '';
+    const fbtn = featured.querySelector('.btn-read');
+    if (fbtn) fbtn.href = `post.html?id=${p0.id}`;
+    const fcats = featured.querySelector('.post-cats');
+    if (fcats) fcats.innerHTML = `<span class="${badgeCls(p0.badge_color)}">${p0.badge || p0.category}</span>`;
   }
 
-  /* ── Grid cards ────────────────────────────────────────────────── */
+  /* ── Grid cards — replace entire grid with dynamic cards ────────── */
   const grid = document.getElementById('posts-grid');
-  if (grid && posts.length > 1) {
-    const gridPosts = posts.slice(1, 7);
-    const cards = grid.querySelectorAll('.post-card');
-    gridPosts.forEach((p, i) => {
-      if (!cards[i]) return;
-      const card = cards[i];
-      card.querySelector('.post-card__img').innerHTML = ill(p.image_type) + '<div class="post-card__img-overlay"></div><span class="post-card__cat">' + (p.category || '') + '</span>';
-      card.querySelector('.post-card__title').innerHTML = `<a href="post.html?id=${p.id}">${p.title}</a>`;
-      card.querySelector('.post-card__excerpt').textContent = p.excerpt || '';
-      card.querySelector('time').textContent = fmt(p.published_at);
-      const metaSpan = card.querySelectorAll('.post-card__meta span');
-      if (metaSpan[2]) metaSpan[2].textContent = p.category || '';
-      card.querySelector('.btn-read').href = `post.html?id=${p.id}`;
-      const badge = card.querySelector('.badge');
-      if (badge) { badge.className = badgeCls(p.badge_color); badge.textContent = p.badge || p.category; }
-    });
-  }
+  if (!grid || posts.length < 2) return;
+
+  const makeCard = p => `
+    <article class="post-card">
+      <div class="post-card__img">
+        ${ill(p.image_type)}
+        <div class="post-card__img-overlay"></div>
+        <span class="post-card__cat">${p.category || ''}</span>
+      </div>
+      <div class="post-card__body">
+        <div class="post-card__meta">
+          <time>${fmt(p.published_at)}</time>
+          <span>·</span>
+          <span>${p.category || ''}</span>
+        </div>
+        <h3 class="post-card__title"><a href="post.html?id=${p.id}">${p.title}</a></h3>
+        <p class="post-card__excerpt">${p.excerpt || ''}</p>
+        <div class="post-card__footer">
+          <a href="post.html?id=${p.id}" class="btn-read">Leggi <svg><use href="#i-arrow-r"/></svg></a>
+          <span class="${badgeCls(p.badge_color)}">${p.badge || p.category || ''}</span>
+        </div>
+      </div>
+    </article>`;
+
+  grid.innerHTML = posts.slice(1, 7).map(makeCard).join('');
 })();
 </script>
 
