@@ -171,6 +171,55 @@
     .write-content:focus { outline: none; border-color: var(--a); }
     .write-content::placeholder { color: rgba(234,244,244,.18); }
     .md-hint { font-size: .73rem; color: var(--muted); margin-top: 6px; }
+    .write-limit-hint {
+      margin-bottom: 12px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(249,168,37,.25);
+      background: rgba(249,168,37,.07);
+      color: #ffd54f;
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+    .write-preview {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+    }
+    .write-preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .write-preview-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .72rem;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 20px;
+      padding: 4px 10px;
+      background: rgba(255,255,255,.03);
+    }
+    .write-preview h4 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .write-preview p {
+      color: rgba(234,244,244,.78);
+      font-size: .86rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
 
     /* Image type selector */
     .img-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 4px; }
@@ -368,7 +417,7 @@
     </a>
     <nav class="top-nav-links">
       <a class="top-link" href="index.html">Home</a>
-      <a class="top-link on" href="me.html#profile">Account</a>
+      <a class="top-link on" href="me.html#write">Account</a>
       <a class="top-link" id="top-public-profile-link" href="#">Profilo pubblico</a>
       <a class="top-link" id="top-admin-link" href="admin.html" style="display:none">Admin</a>
       <button class="btn btn-ghost btn-sm" type="button" onclick="logout()">Esci</button>
@@ -391,7 +440,17 @@
       <div class="profile-av-col">
         <div class="big-av" id="big-av">🌿</div>
         <div id="role-badge"></div>
-        <a id="view-profile-btn" href="#" class="btn btn-ghost btn-sm" style="display:none">Vedi profilo →</a>
+        <div id="ov-name" style="font-family:'Fraunces',Georgia,serif;font-size:1.15rem;font-weight:600;margin-top:12px">—</div>
+        <div id="ov-username" style="color:var(--muted);font-size:.85rem;margin-top:2px">@—</div>
+        <div id="ov-comune" style="color:var(--muted);font-size:.82rem;margin-top:8px">📍 —</div>
+        <div id="ov-role" style="color:var(--muted);font-size:.82rem;margin-top:4px">👤 —</div>
+        <div id="ov-bio" style="font-size:.85rem;color:rgba(234,244,244,.78);margin-top:10px;line-height:1.5;max-width:240px"></div>
+        <div id="ov-stats" style="display:flex;gap:14px;margin-top:14px;flex-wrap:wrap">
+          <div style="text-align:center"><div id="ov-pub" style="font-weight:700;font-size:1.05rem">0</div><div style="color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em">Pubblicati</div></div>
+          <div style="text-align:center"><div id="ov-draft" style="font-weight:700;font-size:1.05rem">0</div><div style="color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em">Bozze</div></div>
+          <div style="text-align:center"><div id="ov-total" style="font-weight:700;font-size:1.05rem">0</div><div style="color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em">Totale</div></div>
+        </div>
+        <a id="view-profile-btn" href="#" class="btn btn-ghost btn-sm" style="display:none;margin-top:14px">Vedi profilo pubblico →</a>
       </div>
       <div>
         <div class="form-card" style="margin-bottom:20px">
@@ -411,6 +470,80 @@
           <div class="pick-label">Colore</div>
           <div class="cg" id="p-cg"></div>
           <button class="btn btn-primary btn-sm" onclick="saveAvatar()">Aggiorna avatar</button>
+        </div>
+        <div class="form-card" style="margin-top:20px">
+          <h3>Impostazioni</h3>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">
+            Sezione unica per account, privacy, notifiche, preferenze contenuti, export e chiusura account.
+          </p>
+          <div id="settings-msg" style="margin-bottom:12px"></div>
+
+          <div class="pick-label">Account (email/password)</div>
+          <div class="frow" style="margin-bottom:12px">
+            <div class="fg" style="margin-bottom:0">
+              <label>Email account</label>
+              <input type="email" id="set-email" placeholder="nome@email.it" />
+              <div style="font-size:.72rem;color:var(--muted);margin-top:4px">Se cambi email, riceverai un link di conferma.</div>
+            </div>
+            <div class="fg" style="margin-bottom:0">
+              <label>Nuova password</label>
+              <input type="password" id="set-new-pass" placeholder="Minimo 6 caratteri" />
+            </div>
+          </div>
+          <div class="fg" style="margin-bottom:12px">
+            <label>Conferma nuova password</label>
+            <input type="password" id="set-new-pass2" placeholder="Ripeti la nuova password" />
+          </div>
+
+          <div class="pick-label">Privacy</div>
+          <div class="fg" style="margin-bottom:12px">
+            <label>Chi può commentare i tuoi post</label>
+            <select id="set-comment-privacy">
+              <option value="all">Tutti gli utenti registrati</option>
+              <option value="members">Solo membri verificati</option>
+              <option value="none">Nessuno</option>
+            </select>
+          </div>
+
+          <div class="pick-label">Notifiche</div>
+          <div class="fg" style="margin-bottom:12px">
+            <label>Frequenza notifiche</label>
+            <select id="pref-notif">
+              <option value="instant">Ogni evento</option>
+              <option value="daily">Riepilogo giornaliero</option>
+              <option value="weekly">Riepilogo settimanale</option>
+              <option value="off">Disattivate</option>
+            </select>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:.86rem;margin-bottom:14px;cursor:pointer">
+            <input type="checkbox" id="set-notif-email" /> Ricevi anche email di notifica
+          </label>
+
+          <div class="pick-label">Preferenze contenuti</div>
+          <div id="pref-cats" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
+
+          <div class="pick-label">Accessibilità</div>
+          <div class="fg" style="margin-bottom:12px">
+            <label>Dimensione testo</label>
+            <select id="pref-fontsize">
+              <option value="sm">Piccolo</option>
+              <option value="md" selected>Normale</option>
+              <option value="lg">Grande</option>
+              <option value="xl">Molto grande</option>
+            </select>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:.88rem;margin-bottom:16px;cursor:pointer">
+            <input type="checkbox" id="pref-contrast" /> Contrasto elevato
+          </label>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+            <button class="btn btn-primary btn-sm" type="button" id="save-settings-btn" onclick="saveSettings()">Salva impostazioni</button>
+            <button class="btn btn-ghost btn-sm" type="button" onclick="exportMyData()">Esporta i miei dati</button>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-ghost btn-sm" type="button" onclick="logoutAll()">Esci da tutti i dispositivi</button>
+            <button class="btn btn-danger btn-sm" type="button" id="close-account-btn" onclick="closeAccount()">Chiudi account</button>
+          </div>
         </div>
       </div>
     </div>
@@ -435,7 +568,7 @@
     <div class="write-header">
       <div>
         <h1 style="font-family:'Fraunces',Georgia,serif;font-size:1.6rem">✍️ <span id="write-mode-label">Nuovo articolo</span></h1>
-        <p style="color:var(--muted);font-size:.88rem;margin-top:4px" id="write-sub">Scrivi, salva come bozza o pubblica direttamente.</p>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:4px" id="write-sub">Composer rapido: titolo facoltativo, testo e categoria obbligatori, media opzionale.</p>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-ghost" id="write-cancel-btn" onclick="cancelWrite()" style="display:none" type="button">Annulla</button>
@@ -444,9 +577,10 @@
       </div>
     </div>
     <div id="write-msg" style="margin-bottom:12px"></div>
+    <div id="write-limit-hint" class="write-limit-hint">Social lento: consigliati massimo 1-2 post principali al giorno per utente.</div>
     <input type="hidden" id="w-id" />
     <div class="fg" style="margin-bottom:16px">
-      <textarea class="write-title-input" id="w-title" placeholder="Il titolo dell'articolo…" rows="2" style="min-height:auto;font-size:1.4rem;resize:none;line-height:1.3"></textarea>
+      <textarea class="write-title-input" id="w-title" placeholder="Titolo (facoltativo)…" rows="2" style="min-height:auto;font-size:1.4rem;resize:none;line-height:1.3"></textarea>
     </div>
     <div class="fg" style="margin-bottom:16px">
       <label>Sommario <small style="font-weight:400;color:var(--muted)">(anteprima)</small></label>
@@ -459,8 +593,9 @@
     </div>
     <div class="frow" style="margin-bottom:16px">
       <div class="fg">
-        <label>Categoria</label>
+        <label>Categoria *</label>
         <select id="w-cat">
+          <option value="" selected>Seleziona categoria…</option>
           <option>Territorio</option><option>Il Luccio</option><option>Fauna</option>
           <option>Ambiente</option><option>Ecoturismo</option><option>Storia</option><option>Eventi</option>
         </select>
@@ -471,9 +606,10 @@
       </div>
     </div>
     <div class="fg" style="margin-bottom:24px">
-      <label>Illustrazione</label>
+      <label>Media <small style="font-weight:400;color:var(--muted)">(opzionale)</small></label>
       <div class="img-grid">
-        <div class="ig"><input type="radio" name="wimg" id="wi0" value="festival" checked><label for="wi0"><span>🎪</span>Sagra</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi-none" value="" checked><label for="wi-none"><span>⛔</span>Nessuna</label></div>
+        <div class="ig"><input type="radio" name="wimg" id="wi0" value="festival"><label for="wi0"><span>🎪</span>Sagra</label></div>
         <div class="ig"><input type="radio" name="wimg" id="wi1" value="heron"><label for="wi1"><span>🦢</span>Aironi</label></div>
         <div class="ig"><input type="radio" name="wimg" id="wi2" value="cycling"><label for="wi2"><span>🚴</span>Ciclabile</label></div>
         <div class="ig"><input type="radio" name="wimg" id="wi3" value="village"><label for="wi3"><span>🌙</span>Borgo</label></div>
@@ -481,6 +617,14 @@
         <div class="ig"><input type="radio" name="wimg" id="wi5" value="fishing"><label for="wi5"><span>🎣</span>Pesca</label></div>
         <div class="ig"><input type="radio" name="wimg" id="wi6" value="nature"><label for="wi6"><span>🌸</span>Natura</label></div>
       </div>
+    </div>
+    <div class="write-preview" id="write-preview">
+      <div class="write-preview-top">
+        <span class="write-preview-pill" id="pv-cat">Categoria non selezionata</span>
+        <span class="write-preview-pill" id="pv-media">Nessuna media</span>
+      </div>
+      <h4 id="pv-title">Anteprima del post</h4>
+      <p id="pv-body">Scrivi il testo per vedere l'anteprima...</p>
     </div>
   </div>
 
@@ -498,6 +642,16 @@ const $ = id => document.getElementById(id);
 const fmt = iso => new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
 
 let ME = null, MY_POSTS = [];
+const DAILY_SOFT_PUBLISH_LIMIT = 2;
+const POST_MEDIA_LABELS = {
+  festival: '🎪 Sagra',
+  heron: '🦢 Aironi',
+  cycling: '🚴 Ciclabile',
+  village: '🌙 Borgo',
+  reeds: '🌾 Canneti',
+  fishing: '🎣 Pesca',
+  nature: '🌸 Natura',
+};
 
 /* ── Init ─────────────────────────────────────────────────────────── */
 (async function() {
@@ -554,6 +708,14 @@ let ME = null, MY_POSTS = [];
     $('role-badge').innerHTML = '<span style="background:rgba(249,168,37,.12);color:#ffd54f;border:1px solid rgba(249,168,37,.25);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700">⚙️ Admin</span>';
   }
 
+  // Overview panel
+  const roleLabels = { admin: 'Admin', user: 'Utente', reader: 'Lettore' };
+  if($('ov-name')) $('ov-name').textContent = profile.display_name || profile.username;
+  if($('ov-username')) $('ov-username').textContent = '@' + profile.username;
+  if($('ov-comune')) $('ov-comune').textContent = '📍 ' + (profile.comune || 'Comune non impostato');
+  if($('ov-role')) $('ov-role').textContent = '👤 ' + (roleLabels[profile.role] || profile.role || 'Utente');
+  if($('ov-bio')) $('ov-bio').textContent = profile.bio || '';
+
   // Fill profile form
   $('f-un').value = profile.username || '';
   $('f-dn').value = profile.display_name || '';
@@ -561,11 +723,15 @@ let ME = null, MY_POSTS = [];
 
   // Build pickers
   buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
+  buildPrefsUI(session.user.email || '');
+  ensureComposerOnTop();
+  bindWriteComposerInputs();
+  syncWritePreview();
 
   // Hash routing
   const hash = location.hash.replace('#','');
   if(hash === 'write' || hash === 'posts' || hash === 'profile') go(hash);
-  else history.replaceState(null,'','#profile');
+  else history.replaceState(null,'','#write');
 
   await loadMyPosts();
 })();
@@ -581,6 +747,95 @@ function go(name) {
 }
 function scrollToWrite() { go('write'); }
 function viewProfile() { if(ME) location.href = `profile.html?u=${ME.username}`; }
+
+function ensureComposerOnTop() {
+  const stack = document.querySelector('.section-stack');
+  const composer = $('p-write');
+  if(stack && composer && stack.firstElementChild !== composer) {
+    stack.insertBefore(composer, stack.firstElementChild);
+  }
+}
+
+function plainExcerpt(txt, max = 220) {
+  const clean = (txt || '').replace(/\s+/g, ' ').trim();
+  if(!clean) return '';
+  if(clean.length <= max) return clean;
+  return clean.slice(0, max).trim() + '…';
+}
+
+function autoTitleFromContent(content) {
+  const clean = (content || '').replace(/\s+/g, ' ').trim();
+  if(!clean) return 'Post senza titolo';
+  if(clean.length <= 62) return clean;
+  return clean.slice(0, 62).trim() + '…';
+}
+
+function syncWritePreview() {
+  const title = $('w-title')?.value.trim() || '';
+  const excerpt = $('w-exc')?.value.trim() || '';
+  const content = $('w-content')?.value.trim() || '';
+  const category = $('w-cat')?.value || '';
+  const media = document.querySelector('input[name="wimg"]:checked')?.value || '';
+
+  if($('pv-title')) $('pv-title').textContent = title || autoTitleFromContent(content) || 'Anteprima del post';
+  if($('pv-cat')) $('pv-cat').textContent = category || 'Categoria non selezionata';
+  if($('pv-media')) $('pv-media').textContent = media ? (POST_MEDIA_LABELS[media] || '🖼️ Media') : 'Nessuna media';
+  if($('pv-body')) $('pv-body').textContent = excerpt || plainExcerpt(content, 260) || "Scrivi il testo per vedere l'anteprima...";
+}
+
+function bindWriteComposerInputs() {
+  ['w-title','w-exc','w-content','w-badge'].forEach(id => {
+    const el = $(id);
+    if(el) el.addEventListener('input', syncWritePreview);
+  });
+  const cat = $('w-cat');
+  if(cat) cat.addEventListener('change', syncWritePreview);
+  document.querySelectorAll('input[name="wimg"]').forEach(el => el.addEventListener('change', syncWritePreview));
+}
+
+function getTodayWindowISO() {
+  const start = new Date();
+  start.setHours(0,0,0,0);
+  const end = new Date();
+  end.setHours(23,59,59,999);
+  return { start: start.toISOString(), end: end.toISOString() };
+}
+
+async function getTodayPublishedCount() {
+  if(!ME?.id) return 0;
+  const { start, end } = getTodayWindowISO();
+  const { count, error } = await sb.from('posts')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', ME.id)
+    .eq('published', true)
+    .gte('published_at', start)
+    .lte('published_at', end);
+  if(error) return 0;
+  return count || 0;
+}
+
+async function refreshWriteLimitHint() {
+  const hint = $('write-limit-hint');
+  if(!hint) return;
+  const count = await getTodayPublishedCount();
+  if(count <= 0) {
+    hint.textContent = 'Social lento: consigliati massimo 1-2 post principali al giorno per utente.';
+    return;
+  }
+  if(count < DAILY_SOFT_PUBLISH_LIMIT) {
+    hint.textContent = `Oggi hai pubblicato ${count} post principale/i. Sei ancora dentro il ritmo social lento.`;
+    return;
+  }
+  hint.textContent = `Oggi hai gia pubblicato ${count} post principali. Puoi pubblicare ancora, ma ti consigliamo di rallentare.`;
+}
+
+async function confirmSoftPublishLimit() {
+  const todayCount = await getTodayPublishedCount();
+  if(todayCount >= DAILY_SOFT_PUBLISH_LIMIT) {
+    return confirm(`Oggi hai gia pubblicato ${todayCount} post principali. Vuoi pubblicare comunque?`);
+  }
+  return true;
+}
 
 /* ── Toast ────────────────────────────────────────────────────────── */
 let toastTimer;
@@ -627,8 +882,13 @@ async function saveProfile() {
   btn.disabled = false; btn.textContent = 'Salva modifiche';
   if(error) { toast(error.code==='23505' ? 'Username già in uso.' : error.message, 'err'); return; }
   ME.username = un;
+  ME.display_name = $('f-dn').value.trim();
+  ME.bio = $('f-bio').value.trim() || null;
   if($('sb-un')) $('sb-un').textContent = '@'+un;
   if($('top-chip-un')) $('top-chip-un').textContent = '@'+un;
+  if($('ov-name')) $('ov-name').textContent = ME.display_name || ME.username;
+  if($('ov-username')) $('ov-username').textContent = '@'+un;
+  if($('ov-bio')) $('ov-bio').textContent = ME.bio || '';
   const publicProfileHref = `profile.html?u=${un}`;
   if($('view-profile-btn')) $('view-profile-btn').href = publicProfileHref;
   if($('top-public-profile-link')) $('top-public-profile-link').href = publicProfileHref;
@@ -656,6 +916,17 @@ async function loadMyPosts() {
     .eq('user_id',ME.id).order('created_at',{ascending:false});
   MY_POSTS = data || [];
   renderMyPosts();
+  updateOverviewCounters();
+  await refreshWriteLimitHint();
+}
+
+function updateOverviewCounters() {
+  const total = MY_POSTS.length;
+  const pub = MY_POSTS.filter(p => p.published).length;
+  const draft = total - pub;
+  if($('ov-pub')) $('ov-pub').textContent = pub;
+  if($('ov-draft')) $('ov-draft').textContent = draft;
+  if($('ov-total')) $('ov-total').textContent = total;
 }
 
 function renderMyPosts() {
@@ -668,7 +939,7 @@ function renderMyPosts() {
     <th>Titolo</th><th>Categoria</th><th>Stato</th><th>Data</th><th></th>
   </tr></thead><tbody>${MY_POSTS.map(p=>`
     <tr>
-      <td>${p.published?`<a class="post-title-link" href="post.html?id=${p.id}" target="_blank">${p.title}</a>`:p.title}</td>
+      <td>${p.published?`<a class="post-title-link" href="post.html?id=${p.id}" target="_blank">${p.title||'(Senza titolo)'}</a>`:(p.title||'(Senza titolo)')}</td>
       <td style="color:var(--muted)">${p.category||'—'}</td>
       <td><span class="pill ${p.published?'pill-pub':'pill-draft'}">${p.published?'Pubblicato':'Bozza'}</span></td>
       <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at||p.created_at)}</td>
@@ -684,6 +955,10 @@ function renderMyPosts() {
 
 /* ── Toggle publish ───────────────────────────────────────────────── */
 async function toggleP(id, pub) {
+  if(pub) {
+    const allowed = await confirmSoftPublishLimit();
+    if(!allowed) return;
+  }
   await sb.from('posts').update({published:pub, published_at:pub?new Date().toISOString():null}).eq('id',id);
   await loadMyPosts();
   toast(pub ? 'Articolo pubblicato ✓' : 'Articolo nascosto');
@@ -706,18 +981,22 @@ async function editPost(id) {
   $('w-title').value = p.title||'';
   $('w-exc').value = p.excerpt||'';
   $('w-content').value = p.content||'';
-  $('w-cat').value = p.category||'Territorio';
+  $('w-cat').value = p.category||'';
   $('w-badge').value = p.badge||'';
-  const wr = document.querySelector(`input[name="wimg"][value="${p.image_type||'nature'}"]`);
+  const wr = document.querySelector(`input[name="wimg"][value="${p.image_type||''}"]`) || $('wi-none');
   if(wr) wr.checked = true;
   $('write-mode-label').textContent = 'Modifica articolo';
   $('write-cancel-btn').style.display = 'inline-flex';
+  syncWritePreview();
   go('write');
 }
 function cancelWrite() {
   $('w-id').value=''; $('w-title').value=''; $('w-exc').value='';
-  $('w-content').value=''; $('write-mode-label').textContent='Nuovo articolo';
+  $('w-content').value=''; $('w-cat').value=''; $('w-badge').value='';
+  const none = $('wi-none'); if(none) none.checked = true;
+  $('write-mode-label').textContent='Nuovo articolo';
   $('write-cancel-btn').style.display='none';
+  syncWritePreview();
   go('posts');
 }
 
@@ -729,15 +1008,47 @@ async function savePost(publish) {
   if(publishBtn) publishBtn.disabled = true;
 
   try {
-  const title = $('w-title').value.trim();
-  if(!title) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il titolo è obbligatorio.</p>'; return; }
-  $('write-msg').innerHTML='';
   const id = $('w-id').value;
+  const content = $('w-content').value.trim();
+  const category = $('w-cat').value;
+  const manualTitle = $('w-title').value.trim();
+  const selectedImage = document.querySelector('input[name="wimg"]:checked')?.value || '';
+
+  if(!content) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il testo del post è obbligatorio.</p>'; return; }
+  if(!category) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Seleziona una categoria prima di salvare.</p>'; return; }
+
+  let existing = id ? MY_POSTS.find(x => x.id === id) : null;
+  if(id && !existing) {
+    const {data:p} = await sb.from('posts').select('id,published,published_at').eq('id',id).single();
+    existing = p || null;
+  }
+
+  const consumesDailyPublish = publish && (!existing || !existing.published);
+  if(consumesDailyPublish) {
+    const allowed = await confirmSoftPublishLimit();
+    if(!allowed) {
+      $('write-msg').innerHTML = '<p style="color:#ffd54f;font-size:.83rem">Pubblicazione annullata: hai scelto di rispettare il ritmo social lento.</p>';
+      return;
+    }
+  }
+
+  $('write-msg').innerHTML='';
+
+  const resolvedTitle = manualTitle || autoTitleFromContent(content);
+  const nextPublishedAt = publish
+    ? (existing?.published && existing?.published_at ? existing.published_at : new Date().toISOString())
+    : null;
+
   const payload = {
-    title, excerpt: $('w-exc').value.trim()||null, content: $('w-content').value.trim()||null,
-    category: $('w-cat').value, badge: $('w-badge').value.trim()||null, badge_color:'default',
-    image_type: document.querySelector('input[name="wimg"]:checked')?.value||'nature',
-    published: publish, published_at: publish ? new Date().toISOString() : null,
+    title: resolvedTitle,
+    excerpt: $('w-exc').value.trim()||null,
+    content,
+    category,
+    badge: $('w-badge').value.trim()||null,
+    badge_color:'default',
+    image_type: selectedImage || null,
+    published: publish,
+    published_at: nextPublishedAt,
   };
   let err;
   if(id) {
@@ -760,9 +1071,20 @@ async function savePost(publish) {
     ({error:err} = await sb.from('posts').insert(insertPayload));
   }
   if(err) { toast(err.message,'err'); return; }
-  if(!id) { $('w-id').value=''; $('w-title').value=''; $('w-exc').value=''; $('w-content').value=''; }
+  if(!id) {
+    $('w-id').value='';
+    $('w-title').value='';
+    $('w-exc').value='';
+    $('w-content').value='';
+    $('w-cat').value='';
+    $('w-badge').value='';
+    const none = $('wi-none');
+    if(none) none.checked = true;
+  }
   $('write-cancel-btn').style.display='none';
   $('write-mode-label').textContent='Nuovo articolo';
+  syncWritePreview();
+  await loadMyPosts();
   toast(publish ? 'Articolo pubblicato ✓' : 'Bozza salvata ✓');
   go('posts');
   } catch (err) {
@@ -773,7 +1095,251 @@ async function savePost(publish) {
   }
 }
 
+/* ── Impostazioni (account, privacy, notifiche, preferenze) ───────── */
+const PREF_CATEGORIES = ['Eventi','Territorio','Vita locale','Avvisi','Richieste','Storie'];
+const PREF_KEY = 'rsm_prefs_v1';
+const SETTINGS_DEFAULTS = {
+  categories: [],
+  notif: 'daily',
+  notifEmail: false,
+  commentPrivacy: 'all',
+  fontsize: 'md',
+  contrast: false,
+};
+
+function loadPrefs() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(PREF_KEY)) || {};
+    return { ...SETTINGS_DEFAULTS, ...parsed };
+  } catch {
+    return { ...SETTINGS_DEFAULTS };
+  }
+}
+
+function setSettingsMsg(text = '', type = 'info') {
+  const box = $('settings-msg');
+  if(!box) return;
+  if(!text) {
+    box.innerHTML = '';
+    return;
+  }
+  const palette = {
+    info: '#7fc6dd',
+    ok: '#81c784',
+    err: '#ef9a9a',
+  };
+  box.innerHTML = `<p style="color:${palette[type] || palette.info};font-size:.83rem">${text}</p>`;
+}
+
+function applyAccessibility(prefs) {
+  const root = document.documentElement;
+  root.dataset.fontsize = prefs.fontsize || 'md';
+  root.dataset.contrast = prefs.contrast ? 'high' : 'normal';
+  const sizeMap = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
+  root.style.fontSize = sizeMap[prefs.fontsize || 'md'];
+  if(prefs.contrast) root.style.filter = 'contrast(1.18)';
+  else root.style.filter = '';
+}
+
+function buildPrefsUI(accountEmail = '') {
+  const prefs = loadPrefs();
+  const cats = new Set(prefs.categories || []);
+  const wrap = $('pref-cats');
+  if(wrap) {
+    wrap.innerHTML = PREF_CATEGORIES.map(c => `
+      <label style="cursor:pointer">
+        <input type="checkbox" name="pref-cat" value="${c}" ${cats.has(c)?'checked':''} style="display:none">
+        <span class="pref-chip" style="display:inline-block;padding:6px 14px;border-radius:18px;font-size:.78rem;border:1px solid var(--border);background:${cats.has(c)?'rgba(31,111,139,.25)':'rgba(255,255,255,.04)'};color:${cats.has(c)?'#EAF4F4':'var(--muted)'}">${c}</span>
+      </label>`).join('');
+    wrap.querySelectorAll('input[name="pref-cat"]').forEach(inp => {
+      inp.addEventListener('change', () => {
+        const chip = inp.nextElementSibling;
+        chip.style.background = inp.checked ? 'rgba(31,111,139,.25)' : 'rgba(255,255,255,.04)';
+        chip.style.color = inp.checked ? '#EAF4F4' : 'var(--muted)';
+      });
+    });
+  }
+  if($('set-email') && accountEmail) $('set-email').value = accountEmail;
+  if($('set-comment-privacy')) $('set-comment-privacy').value = prefs.commentPrivacy || 'all';
+  if($('set-notif-email')) $('set-notif-email').checked = !!prefs.notifEmail;
+  if($('pref-notif')) $('pref-notif').value = prefs.notif || 'daily';
+  if($('pref-fontsize')) $('pref-fontsize').value = prefs.fontsize || 'md';
+  if($('pref-contrast')) $('pref-contrast').checked = !!prefs.contrast;
+  applyAccessibility(prefs);
+
+  if($('pref-fontsize')) $('pref-fontsize').addEventListener('change', () => {
+    applyAccessibility({ ...loadPrefs(), fontsize: $('pref-fontsize').value, contrast: $('pref-contrast').checked });
+  });
+  if($('pref-contrast')) $('pref-contrast').addEventListener('change', () => {
+    applyAccessibility({ ...loadPrefs(), fontsize: $('pref-fontsize').value, contrast: $('pref-contrast').checked });
+  });
+}
+
+async function saveSettings() {
+  setSettingsMsg('', 'info');
+  const saveBtn = $('save-settings-btn');
+  if(saveBtn) saveBtn.disabled = true;
+
+  const categories = Array.from(document.querySelectorAll('input[name="pref-cat"]:checked')).map(i => i.value);
+  const prefs = {
+    categories,
+    notif: $('pref-notif')?.value || 'daily',
+    notifEmail: !!$('set-notif-email')?.checked,
+    commentPrivacy: $('set-comment-privacy')?.value || 'all',
+    fontsize: $('pref-fontsize')?.value || 'md',
+    contrast: !!$('pref-contrast')?.checked,
+  };
+
+  try {
+    const nextEmail = $('set-email')?.value.trim() || '';
+    const pass1 = $('set-new-pass')?.value || '';
+    const pass2 = $('set-new-pass2')?.value || '';
+
+    if((pass1 || pass2) && pass1 !== pass2) {
+      setSettingsMsg('Le due password non coincidono.', 'err');
+      return;
+    }
+    if(pass1 && pass1.length < 6) {
+      setSettingsMsg('La password deve avere almeno 6 caratteri.', 'err');
+      return;
+    }
+
+    localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+    applyAccessibility(prefs);
+
+    const updates = [];
+    const { data: authData, error: authErr } = await sb.auth.getUser();
+    if(authErr || !authData?.user) {
+      setSettingsMsg('Sessione scaduta. Rientra per salvare account e sicurezza.', 'err');
+      return;
+    }
+
+    const currentEmail = authData.user.email || '';
+    if(nextEmail && nextEmail !== currentEmail) {
+      const { error } = await sb.auth.updateUser({ email: nextEmail });
+      if(error) {
+        setSettingsMsg('Cambio email non riuscito: ' + error.message, 'err');
+        return;
+      }
+      updates.push('Email aggiornata: controlla la posta per confermare.');
+    }
+
+    if(pass1) {
+      const { error } = await sb.auth.updateUser({ password: pass1 });
+      if(error) {
+        setSettingsMsg('Cambio password non riuscito: ' + error.message, 'err');
+        return;
+      }
+      updates.push('Password aggiornata.');
+      if($('set-new-pass')) $('set-new-pass').value = '';
+      if($('set-new-pass2')) $('set-new-pass2').value = '';
+    }
+
+    if(!updates.length) updates.push('Impostazioni salvate.');
+    setSettingsMsg(updates.join(' '), 'ok');
+    toast('Impostazioni salvate ✓');
+  } finally {
+    if(saveBtn) saveBtn.disabled = false;
+  }
+}
+
+async function exportMyData() {
+  setSettingsMsg('', 'info');
+  const { data: authData, error: authErr } = await sb.auth.getUser();
+  if(authErr || !authData?.user) {
+    setSettingsMsg('Sessione non valida: impossibile esportare i dati.', 'err');
+    return;
+  }
+
+  const [profileRes, postsRes] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', authData.user.id).single(),
+    sb.from('posts').select('*').eq('user_id', authData.user.id).order('created_at', { ascending: false }),
+  ]);
+
+  if(profileRes.error) {
+    setSettingsMsg('Export non riuscito: ' + profileRes.error.message, 'err');
+    return;
+  }
+  if(postsRes.error) {
+    setSettingsMsg('Export non riuscito: ' + postsRes.error.message, 'err');
+    return;
+  }
+
+  const payload = {
+    exported_at: new Date().toISOString(),
+    account: {
+      id: authData.user.id,
+      email: authData.user.email || null,
+      created_at: authData.user.created_at || null,
+    },
+    profile: profileRes.data || null,
+    posts: postsRes.data || [],
+    settings: loadPrefs(),
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `rivaltasulmincio-export-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+
+  setSettingsMsg('Export completato: file JSON scaricato.', 'ok');
+  toast('Dati esportati ✓');
+}
+
+async function closeAccount() {
+  setSettingsMsg('', 'info');
+  if(!confirm('Vuoi davvero chiudere il tuo account? Questa azione rimuove profilo e post personali.')) return;
+  const text = prompt('Per confermare definitivamente, scrivi CHIUDI');
+  if(text !== 'CHIUDI') {
+    setSettingsMsg('Chiusura annullata: conferma non valida.', 'info');
+    return;
+  }
+
+  const closeBtn = $('close-account-btn');
+  if(closeBtn) closeBtn.disabled = true;
+  try {
+    const { data: authData, error: authErr } = await sb.auth.getUser();
+    if(authErr || !authData?.user) {
+      setSettingsMsg('Sessione scaduta. Rientra e riprova.', 'err');
+      return;
+    }
+
+    const { error: postsErr } = await sb.from('posts').delete().eq('user_id', authData.user.id);
+    if(postsErr) {
+      setSettingsMsg('Chiusura non riuscita (post): ' + postsErr.message, 'err');
+      return;
+    }
+
+    const { error: profileErr } = await sb.from('profiles').delete().eq('id', authData.user.id);
+    if(profileErr) {
+      setSettingsMsg('Chiusura non riuscita (profilo): ' + profileErr.message, 'err');
+      return;
+    }
+
+    localStorage.removeItem(PREF_KEY);
+    await sb.auth.signOut({ scope: 'global' });
+    location.href = 'index.html';
+  } finally {
+    if(closeBtn) closeBtn.disabled = false;
+  }
+}
+
+// Apply accessibility on every page load (before UI binds)
+applyAccessibility(loadPrefs());
+
 async function logout() { await sb.auth.signOut(); location.href = 'index.html'; }
+
+async function logoutAll() {
+  if(!confirm('Uscire da tutti i dispositivi? Tutte le sessioni attive verranno revocate.')) return;
+  const { error } = await sb.auth.signOut({ scope: 'global' });
+  if(error) { toast(error.message,'err'); return; }
+  location.href = 'index.html';
+}
 
 /* ── First-time profile setup ────────────────────────────────────── */
 function showSetupScreen(session) {
