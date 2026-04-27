@@ -383,9 +383,9 @@
         <p style="color:var(--muted);font-size:.88rem;margin-top:4px" id="write-sub">Scrivi, salva come bozza o pubblica direttamente.</p>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-ghost" id="write-cancel-btn" onclick="cancelWrite()" style="display:none">Annulla</button>
-        <button class="btn btn-ghost" onclick="savePost(false)">Salva bozza</button>
-        <button class="btn btn-success" onclick="savePost(true)">Pubblica</button>
+        <button class="btn btn-ghost" id="write-cancel-btn" onclick="cancelWrite()" style="display:none" type="button">Annulla</button>
+        <button class="btn btn-ghost" id="w-save-draft-btn" onclick="savePost(false)" type="button">Salva bozza</button>
+        <button class="btn btn-success" id="w-publish-btn" onclick="savePost(true)" type="button">Pubblica</button>
       </div>
     </div>
     <div id="write-msg" style="margin-bottom:12px"></div>
@@ -634,6 +634,12 @@ function cancelWrite() {
 
 /* ── Save post ────────────────────────────────────────────────────── */
 async function savePost(publish) {
+  const draftBtn = $('w-save-draft-btn');
+  const publishBtn = $('w-publish-btn');
+  if(draftBtn) draftBtn.disabled = true;
+  if(publishBtn) publishBtn.disabled = true;
+
+  try {
   const title = $('w-title').value.trim();
   if(!title) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il titolo è obbligatorio.</p>'; return; }
   $('write-msg').innerHTML='';
@@ -643,17 +649,39 @@ async function savePost(publish) {
     category: $('w-cat').value, badge: $('w-badge').value.trim()||null, badge_color:'default',
     image_type: document.querySelector('input[name="wimg"]:checked')?.value||'nature',
     published: publish, published_at: publish ? new Date().toISOString() : null,
-    user_id: ME.id, author_username: ME.username,
   };
   let err;
-  if(id) { ({error:err} = await sb.from('posts').update(payload).eq('id',id)); }
-  else   { ({error:err} = await sb.from('posts').insert(payload)); }
+  if(id) {
+    ({error:err} = await sb.from('posts').update(payload).eq('id',id));
+  } else {
+    const { data: authData, error: authErr } = await sb.auth.getUser();
+    if(authErr || !authData?.user) { toast('Sessione scaduta. Effettua di nuovo il login.','err'); return; }
+
+    let authorUsername = ME?.username || null;
+    if(!authorUsername) {
+      const {data: profile} = await sb.from('profiles').select('username').eq('id', authData.user.id).single();
+      authorUsername = profile?.username || null;
+    }
+
+    const insertPayload = {
+      ...payload,
+      user_id: authData.user.id,
+      author_username: authorUsername,
+    };
+    ({error:err} = await sb.from('posts').insert(insertPayload));
+  }
   if(err) { toast(err.message,'err'); return; }
   if(!id) { $('w-id').value=''; $('w-title').value=''; $('w-exc').value=''; $('w-content').value=''; }
   $('write-cancel-btn').style.display='none';
   $('write-mode-label').textContent='Nuovo articolo';
   toast(publish ? 'Articolo pubblicato ✓' : 'Bozza salvata ✓');
   go('posts');
+  } catch (err) {
+    toast('Errore imprevisto: ' + (err?.message || 'operazione non riuscita'),'err');
+  } finally {
+    if(draftBtn) draftBtn.disabled = false;
+    if(publishBtn) publishBtn.disabled = false;
+  }
 }
 
 async function logout() { await sb.auth.signOut(); location.href = 'index.html'; }

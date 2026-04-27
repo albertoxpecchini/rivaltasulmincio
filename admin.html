@@ -381,8 +381,8 @@
     </form>
   </div>
   <div class="drawer-footer">
-    <button class="btn btn-ghost" id="save-draft-btn">Salva bozza</button>
-    <button class="btn btn-success" id="publish-btn">Pubblica</button>
+    <button class="btn btn-ghost" id="save-draft-btn" type="button">Salva bozza</button>
+    <button class="btn btn-success" id="publish-btn" type="button">Pubblica</button>
   </div>
 </div>
 
@@ -394,6 +394,8 @@
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
+let currentAdminUserId = null;
+let currentAdminUsername = null;
 
 /* ── Toast ──────────────────────────────────────────────────────────── */
 let _tt;
@@ -437,11 +439,13 @@ sb.auth.onAuthStateChange(async (event, session) => {
   if (session) {
     $('login-screen').style.display = 'none';
     $('app-screen').style.display = 'block';
+    currentAdminUserId = session.user.id;
 
     // Load profile for topbar avatar
     const { data: prof } = await sb.from('profiles')
       .select('username, display_name, avatar_emoji, avatar_color')
       .eq('id', session.user.id).single();
+    currentAdminUsername = prof?.username || null;
 
     const tp = $('topbar-profile');
     if (prof && tp) {
@@ -569,6 +573,12 @@ async function editPost(id) {
 
 /* ── Save ─────────────────────────────────────────────────────────── */
 async function savePost(publish) {
+  const saveDraftBtn = $('save-draft-btn');
+  const publishBtn = $('publish-btn');
+  saveDraftBtn.disabled = true;
+  publishBtn.disabled = true;
+
+  try {
   const id = $('f-id').value;
   const title = $('f-title').value.trim();
   if (!title) { showMsg('drawer-msg', 'Il titolo è obbligatorio.'); return; }
@@ -586,13 +596,43 @@ async function savePost(publish) {
   };
 
   let error;
-  if (id) ({ error } = await sb.from('posts').update(payload).eq('id', id));
-  else    ({ error } = await sb.from('posts').insert(payload));
+  if (id) {
+    ({ error } = await sb.from('posts').update(payload).eq('id', id));
+  } else {
+    const { data: authData, error: authErr } = await sb.auth.getUser();
+    if (authErr || !authData?.user) {
+      showMsg('drawer-msg', 'Sessione scaduta. Accedi di nuovo per pubblicare.');
+      return;
+    }
+
+    if (!currentAdminUserId) currentAdminUserId = authData.user.id;
+    if (!currentAdminUsername) {
+      const { data: prof } = await sb.from('profiles')
+        .select('username')
+        .eq('id', currentAdminUserId)
+        .single();
+      currentAdminUsername = prof?.username || null;
+    }
+
+    const insertPayload = {
+      ...payload,
+      user_id: currentAdminUserId,
+      author_username: currentAdminUsername,
+    };
+
+    ({ error } = await sb.from('posts').insert(insertPayload));
+  }
 
   if (error) { showMsg('drawer-msg', 'Errore: ' + error.message); return; }
   closeDrawer();
   toast(publish ? '✅ Articolo pubblicato' : '💾 Bozza salvata');
   await loadPosts();
+  } catch (err) {
+    showMsg('drawer-msg', 'Errore imprevisto: ' + (err?.message || 'Operazione non riuscita'));
+  } finally {
+    saveDraftBtn.disabled = false;
+    publishBtn.disabled = false;
+  }
 }
 
 $('save-draft-btn').addEventListener('click', () => savePost(false));
