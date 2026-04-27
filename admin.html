@@ -355,13 +355,12 @@
         <div class="field">
           <label>Categoria</label>
           <select id="f-category">
-            <option>Territorio</option>
-            <option>Il Luccio</option>
-            <option>Fauna</option>
-            <option>Ambiente</option>
-            <option>Ecoturismo</option>
-            <option>Storia</option>
             <option>Eventi</option>
+            <option>Territorio</option>
+            <option>Vita locale</option>
+            <option>Avvisi</option>
+            <option>Richieste</option>
+            <option>Storie</option>
           </select>
         </div>
         <div class="field">
@@ -400,6 +399,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="categories.client.js"></script>
 <script src="security.client.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -445,6 +445,27 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function normalizeCategoryName(input) {
+  if (window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.canonical(input);
+  }
+  return String(input || '').trim();
+}
+
+function isAllowedCategory(input) {
+  if (window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.isKnown(input);
+  }
+  return !!String(input || '').trim();
+}
+
+function badgeColorForCategory(input) {
+  if (window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.badgeColor(input);
+  }
+  return 'default';
 }
 
 /* ── Auth ─────────────────────────────────────────────────────────── */
@@ -583,7 +604,7 @@ function renderTable() {
               ${p.published ? `<a href="post.html?id=${p.id}" target="_blank">${escapeHtml(p.title || '(Senza titolo)')}</a>` : escapeHtml(p.title || '(Senza titolo)')}
             </td>
             <td style="color:var(--muted);font-size:.82rem">${p.author_username ? '@' + escapeHtml(p.author_username) : '—'}</td>
-            <td style="color:var(--muted)">${escapeHtml(p.category || '—')}</td>
+            <td style="color:var(--muted)">${escapeHtml(normalizeCategoryName(p.category || '—'))}</td>
             <td><span class="pill ${p.published ? 'pill-pub' : 'pill-draft'}">${p.published ? 'Pubblicato' : 'Bozza'}</span></td>
             <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at || p.created_at)}</td>
             <td>
@@ -637,9 +658,21 @@ function closeDrawer() {
   $('f-id').value = '';
 }
 
+function syncDrawerBadgeColorByCategory() {
+  const category = normalizeCategoryName($('f-category')?.value || '');
+  const target = badgeColorForCategory(category);
+  const radio = document.querySelector(`input[name="badge_color"][value="${target}"]`);
+  if (radio) radio.checked = true;
+}
+
 $('drawer-overlay').addEventListener('click', closeDrawer);
 $('drawer-close').addEventListener('click', closeDrawer);
-$('new-post-btn').addEventListener('click', () => { closeDrawer(); openDrawer('Nuovo articolo'); });
+$('new-post-btn').addEventListener('click', () => {
+  closeDrawer();
+  openDrawer('Nuovo articolo');
+  syncDrawerBadgeColorByCategory();
+});
+$('f-category').addEventListener('change', syncDrawerBadgeColorByCategory);
 
 /* ── Edit ─────────────────────────────────────────────────────────── */
 async function editPost(id) {
@@ -649,9 +682,9 @@ async function editPost(id) {
   $('f-title').value = p.title || '';
   $('f-excerpt').value = p.excerpt || '';
   $('f-content').value = p.content || '';
-  $('f-category').value = p.category || 'Territorio';
+  $('f-category').value = normalizeCategoryName(p.category || 'Territorio');
   $('f-badge').value = p.badge || '';
-  const bcr = document.querySelector(`input[name="badge_color"][value="${p.badge_color || 'default'}"]`);
+  const bcr = document.querySelector(`input[name="badge_color"][value="${p.badge_color || badgeColorForCategory($('f-category').value)}"]`);
   if (bcr) bcr.checked = true;
   const it = document.querySelector(`input[name="image_type"][value="${p.image_type || 'nature'}"]`);
   if (it) it.checked = true;
@@ -671,7 +704,9 @@ async function savePost(publish) {
   const title = $('f-title').value.trim();
   const excerpt = $('f-excerpt').value.trim();
   const content = $('f-content').value.trim();
+  const category = normalizeCategoryName($('f-category').value);
   if (!title) { showMsg('drawer-msg', 'Il titolo è obbligatorio.'); return; }
+  if (!category || !isAllowedCategory(category)) { showMsg('drawer-msg', 'Seleziona una categoria valida.'); return; }
 
   if (window.RSM_SECURITY) {
     const rateCheck = window.RSM_SECURITY.checkRateLimit('admin_post_write', writerIdentity, ADMIN_POST_RATE_CFG);
@@ -698,9 +733,9 @@ async function savePost(publish) {
     title,
     excerpt:     excerpt || null,
     content:     content || null,
-    category:    $('f-category').value,
+    category:    category,
     badge:       $('f-badge').value.trim() || null,
-    badge_color: document.querySelector('input[name="badge_color"]:checked').value,
+    badge_color: badgeColorForCategory(category),
     image_type:  document.querySelector('input[name="image_type"]:checked').value,
     published:   publish,
     published_at: publish ? new Date().toISOString() : null,

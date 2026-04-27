@@ -1087,6 +1087,37 @@
     .btn-read svg { width: 14px; height: 14px; }
     .post-cats { display: flex; gap: 6px; flex-wrap: wrap; }
 
+    .news-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .news-filter-chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .news-filter-chip:hover {
+      color: var(--primary);
+      border-color: rgba(31,111,139,.25);
+      transform: translateY(-1px);
+    }
+    .news-filter-chip.on {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 6px 18px rgba(31,111,139,.25);
+    }
+
     /* POST CARDS GRID */
     .posts-grid {
       display: grid;
@@ -2798,6 +2829,8 @@
       <!-- ─── CONTENT ─────────────────────────────────────────── -->
       <main>
 
+        <div class="news-filter-row reveal" id="news-filter-row"></div>
+
         <!-- Post in evidenza — popolato da JS/admin -->
         <article class="post-featured reveal" id="post-featured" style="display:none"></article>
 
@@ -3182,6 +3215,7 @@
 <!-- Supabase JS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="categories.client.js"></script>
 <script>
 /* ── Nav auth state ───────────────────────────────────────────────── */
 (function() {
@@ -3243,22 +3277,91 @@
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
 
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const fallbackCategories = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+  const categories = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : fallbackCategories;
+  const canonicalCategory = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.canonical(value)
+    : String(value || '').trim();
+  const badgeColorByCategory = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.badgeColor(value)
+    : 'default';
+  const categoryHref = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.categoryHref(value)
+    : ('category.html?name=' + encodeURIComponent(canonicalCategory(value)));
+  const escapeHtml = (value) => String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+  const sanitizePost = (post) => {
+    const category = canonicalCategory(post.category) || 'Territorio';
+    return {
+      ...post,
+      category,
+      badge_color: post.badge_color || badgeColorByCategory(category),
+    };
+  };
 
   const { data: posts, error } = await sb
     .from('posts')
     .select('id, title, excerpt, category, badge, badge_color, image_type, published_at')
     .eq('published', true)
     .order('published_at', { ascending: false })
-    .limit(7);
+    .limit(60);
 
   if (error) { console.warn('[Posts] Supabase error:', error.message); return; }
-  if (!posts || posts.length === 0) return;
-
-  const emptyEl = document.getElementById('news-empty');
-  if (emptyEl) emptyEl.style.display = 'none';
+  const normalizedPosts = (posts || []).map(sanitizePost);
 
   const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
   const badgeCls = c => c === 'green' ? 'badge green' : 'badge';
+  const emptyEl = document.getElementById('news-empty');
+  const featured = document.getElementById('post-featured');
+  const grid = document.getElementById('posts-grid');
+  const filterRow = document.getElementById('news-filter-row');
+
+  if (!featured || !grid) return;
+
+  const urlState = new URL(window.location.href);
+  const rawCat = canonicalCategory(urlState.searchParams.get('cat') || '');
+  let activeCategory = categories.includes(rawCat) ? rawCat : 'all';
+
+  function getFilteredPosts() {
+    if (activeCategory === 'all') return normalizedPosts;
+    return normalizedPosts.filter(p => p.category === activeCategory);
+  }
+
+  function syncFilterUrl() {
+    const next = new URL(window.location.href);
+    if (activeCategory === 'all') next.searchParams.delete('cat');
+    else next.searchParams.set('cat', activeCategory);
+    window.history.replaceState({}, '', next.pathname + next.search + next.hash);
+  }
+
+  function setFilter(category) {
+    activeCategory = category;
+    syncFilterUrl();
+    renderFilters();
+    renderPosts();
+  }
+
+  function renderFilters() {
+    if (!filterRow) return;
+    const chips = ['all'].concat(categories);
+    filterRow.innerHTML = chips.map((cat) => {
+      const isAll = cat === 'all';
+      const label = isAll ? 'Tutte' : cat;
+      const on = activeCategory === cat ? ' on' : '';
+      return `<button type="button" class="news-filter-chip${on}" data-cat="${escapeHtml(cat)}">${escapeHtml(label)}</button>`;
+    }).join('');
+
+    filterRow.querySelectorAll('[data-cat]').forEach((node) => {
+      node.addEventListener('click', () => {
+        const cat = node.getAttribute('data-cat') || 'all';
+        setFilter(cat);
+      });
+    });
+  }
 
   /* illustration SVG snippets keyed by image_type */
   const ILL = {
@@ -3273,10 +3376,47 @@
 
   const ill = type => ILL[type] || ILL.nature;
 
-  /* ── Featured post ─────────────────────────────────────────────── */
-  const p0 = posts[0];
-  const featured = document.getElementById('post-featured');
-  if (featured) {
+  const makeCard = p => `
+    <article class="post-card">
+      <div class="post-card__img">
+        ${ill(p.image_type)}
+        <div class="post-card__img-overlay"></div>
+        <a class="post-card__cat" href="${categoryHref(p.category)}">${escapeHtml(p.category || '')}</a>
+      </div>
+      <div class="post-card__body">
+        <div class="post-card__meta">
+          <time>${fmt(p.published_at)}</time>
+          <span>·</span>
+          <a href="${categoryHref(p.category)}">${escapeHtml(p.category || '')}</a>
+        </div>
+        <h3 class="post-card__title"><a href="post.html?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></h3>
+        <p class="post-card__excerpt">${escapeHtml(p.excerpt || '')}</p>
+        <div class="post-card__footer">
+          <a href="post.html?id=${p.id}" class="btn-read">Leggi <svg><use href="#i-arrow-r"/></svg></a>
+          <span class="${badgeCls(p.badge_color)}">${escapeHtml(p.badge || p.category || '')}</span>
+        </div>
+      </div>
+    </article>`;
+
+  function renderPosts() {
+    const filtered = getFilteredPosts();
+    if (!filtered.length) {
+      featured.style.display = 'none';
+      grid.innerHTML = '';
+      if (emptyEl) {
+        emptyEl.style.display = '';
+        const label = activeCategory === 'all' ? 'nessuna categoria' : activeCategory;
+        const lead = emptyEl.querySelector('p[style*="font-family"]');
+        const text = emptyEl.querySelector('p[style*="font-size:.88rem"]');
+        if (lead) lead.textContent = 'Nessun articolo disponibile';
+        if (text) text.textContent = `Non ci sono contenuti pubblicati per ${label}.`;
+      }
+      return;
+    }
+
+    if (emptyEl) emptyEl.style.display = 'none';
+
+    const p0 = filtered[0];
     featured.innerHTML = `
       <div class="post-featured__img">
         ${ill(p0.image_type)}
@@ -3286,45 +3426,22 @@
         <div class="post-meta">
           <time>${fmt(p0.published_at)}</time>
           <span class="post-meta__dot"></span>
-          <span>${p0.category || ''}</span>
+          <a href="${categoryHref(p0.category)}">${escapeHtml(p0.category || '')}</a>
         </div>
-        <h2 class="post-featured__title"><a href="post.html?id=${p0.id}">${p0.title}</a></h2>
-        <p class="post-featured__excerpt">${p0.excerpt || ''}</p>
+        <h2 class="post-featured__title"><a href="post.html?id=${p0.id}">${escapeHtml(p0.title || 'Articolo')}</a></h2>
+        <p class="post-featured__excerpt">${escapeHtml(p0.excerpt || '')}</p>
         <div class="post-featured__footer">
           <a href="post.html?id=${p0.id}" class="btn-read">Leggi <svg width="14" height="14"><use href="#i-arrow-r"/></svg></a>
-          <div class="post-cats"><span class="${badgeCls(p0.badge_color)}">${p0.badge || p0.category || ''}</span></div>
+          <div class="post-cats"><span class="${badgeCls(p0.badge_color)}">${escapeHtml(p0.badge || p0.category || '')}</span></div>
         </div>
       </div>`;
     featured.style.display = '';
+
+    grid.innerHTML = filtered.slice(1, 7).map(makeCard).join('');
   }
 
-  /* ── Grid cards — replace entire grid with dynamic cards ────────── */
-  const grid = document.getElementById('posts-grid');
-  if (!grid || posts.length < 2) return;
-
-  const makeCard = p => `
-    <article class="post-card">
-      <div class="post-card__img">
-        ${ill(p.image_type)}
-        <div class="post-card__img-overlay"></div>
-        <span class="post-card__cat">${p.category || ''}</span>
-      </div>
-      <div class="post-card__body">
-        <div class="post-card__meta">
-          <time>${fmt(p.published_at)}</time>
-          <span>·</span>
-          <span>${p.category || ''}</span>
-        </div>
-        <h3 class="post-card__title"><a href="post.html?id=${p.id}">${p.title}</a></h3>
-        <p class="post-card__excerpt">${p.excerpt || ''}</p>
-        <div class="post-card__footer">
-          <a href="post.html?id=${p.id}" class="btn-read">Leggi <svg><use href="#i-arrow-r"/></svg></a>
-          <span class="${badgeCls(p.badge_color)}">${p.badge || p.category || ''}</span>
-        </div>
-      </div>
-    </article>`;
-
-  grid.innerHTML = posts.slice(1, 7).map(makeCard).join('');
+  renderFilters();
+  renderPosts();
 })();
 </script>
 

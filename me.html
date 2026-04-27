@@ -596,8 +596,8 @@
         <label>Categoria *</label>
         <select id="w-cat">
           <option value="" selected>Seleziona categoria…</option>
-          <option>Territorio</option><option>Il Luccio</option><option>Fauna</option>
-          <option>Ambiente</option><option>Ecoturismo</option><option>Storia</option><option>Eventi</option>
+          <option>Eventi</option><option>Territorio</option><option>Vita locale</option>
+          <option>Avvisi</option><option>Richieste</option><option>Storie</option>
         </select>
       </div>
       <div class="fg">
@@ -636,6 +636,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
+<script src="categories.client.js"></script>
 <script src="security.client.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -772,6 +773,27 @@ function autoTitleFromContent(content) {
   return clean.slice(0, 62).trim() + '…';
 }
 
+function normalizeCategoryName(input) {
+  if(window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.canonical(input);
+  }
+  return String(input || '').trim();
+}
+
+function isAllowedCategory(input) {
+  if(window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.isKnown(input);
+  }
+  return !!String(input || '').trim();
+}
+
+function badgeColorForCategory(category) {
+  if(window.RSM_CATEGORIES) {
+    return window.RSM_CATEGORIES.badgeColor(category);
+  }
+  return 'default';
+}
+
 function evaluatePostSafety(title, excerpt, content) {
   if(!window.RSM_SECURITY) return { ok: true, message: '' };
   const payload = [title || '', excerpt || '', content || ''].join('\n');
@@ -793,7 +815,7 @@ function syncWritePreview() {
   const title = $('w-title')?.value.trim() || '';
   const excerpt = $('w-exc')?.value.trim() || '';
   const content = $('w-content')?.value.trim() || '';
-  const category = $('w-cat')?.value || '';
+  const category = normalizeCategoryName($('w-cat')?.value || '');
   const media = document.querySelector('input[name="wimg"]:checked')?.value || '';
 
   if($('pv-title')) $('pv-title').textContent = title || autoTitleFromContent(content) || 'Anteprima del post';
@@ -959,7 +981,7 @@ function renderMyPosts() {
   </tr></thead><tbody>${MY_POSTS.map(p=>`
     <tr>
       <td>${p.published?`<a class="post-title-link" href="post.html?id=${p.id}" target="_blank">${p.title||'(Senza titolo)'}</a>`:(p.title||'(Senza titolo)')}</td>
-      <td style="color:var(--muted)">${p.category||'—'}</td>
+      <td style="color:var(--muted)">${normalizeCategoryName(p.category)||'—'}</td>
       <td><span class="pill ${p.published?'pill-pub':'pill-draft'}">${p.published?'Pubblicato':'Bozza'}</span></td>
       <td style="color:var(--muted);font-size:.82rem">${fmt(p.published_at||p.created_at)}</td>
       <td><div class="act-row">
@@ -1000,7 +1022,7 @@ async function editPost(id) {
   $('w-title').value = p.title||'';
   $('w-exc').value = p.excerpt||'';
   $('w-content').value = p.content||'';
-  $('w-cat').value = p.category||'';
+  $('w-cat').value = normalizeCategoryName(p.category||'');
   $('w-badge').value = p.badge||'';
   const wr = document.querySelector(`input[name="wimg"][value="${p.image_type||''}"]`) || $('wi-none');
   if(wr) wr.checked = true;
@@ -1030,13 +1052,13 @@ async function savePost(publish) {
   const id = $('w-id').value;
   const writerIdentity = ME?.id || 'anonymous';
   const content = $('w-content').value.trim();
-  const category = $('w-cat').value;
+  const category = normalizeCategoryName($('w-cat').value);
   const manualTitle = $('w-title').value.trim();
   const excerpt = $('w-exc').value.trim();
   const selectedImage = document.querySelector('input[name="wimg"]:checked')?.value || '';
 
   if(!content) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Il testo del post è obbligatorio.</p>'; return; }
-  if(!category) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Seleziona una categoria prima di salvare.</p>'; return; }
+  if(!category || !isAllowedCategory(category)) { $('write-msg').innerHTML='<p style="color:#ef9a9a;font-size:.83rem">Seleziona una categoria valida prima di salvare.</p>'; return; }
 
   if(window.RSM_SECURITY) {
     const limitCheck = window.RSM_SECURITY.checkRateLimit('post_write', writerIdentity, POST_WRITE_RATE_CFG);
@@ -1083,7 +1105,7 @@ async function savePost(publish) {
     content,
     category,
     badge: $('w-badge').value.trim()||null,
-    badge_color:'default',
+    badge_color: badgeColorForCategory(category),
     image_type: selectedImage || null,
     published: publish,
     published_at: nextPublishedAt,
