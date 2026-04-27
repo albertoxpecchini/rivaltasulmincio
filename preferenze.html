@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="chiaro">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -399,8 +399,6 @@
 
     <div class="top-actions">
       <a class="btn btn-ghost" href="index.html">Home</a>
-      <a class="btn btn-ghost" href="me.html#write">Dashboard</a>
-      <button class="btn btn-primary" id="logout-btn" type="button">Esci</button>
     </div>
   </div>
 </header>
@@ -536,7 +534,7 @@
   const COLORS = ['#1F6F8B','#3a8c8a','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
 
   const defaultPrefs = {
-    theme: 'auto',
+    theme: 'chiaro',
     language: 'it',
     uiDensity: 'comfortable',
     fontsize: 'md',
@@ -776,6 +774,8 @@
     buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
 
     const prefs = loadPrefs();
+    // Keep this page always opening in light mode.
+    prefs.theme = 'chiaro';
 
     const { data: remoteSettings } = await sb.from('user_settings')
       .select('accessibility_fontsize,accessibility_high_contrast')
@@ -788,7 +788,7 @@
       savePrefs(prefs);
     }
 
-    if ($('pref-theme')) $('pref-theme').value = prefs.theme || 'auto';
+    if ($('pref-theme')) $('pref-theme').value = 'chiaro';
     if ($('pref-language')) $('pref-language').value = prefs.language || 'it';
     if ($('pref-density')) $('pref-density').value = prefs.uiDensity || 'comfortable';
     if ($('pref-fontsize')) $('pref-fontsize').value = prefs.fontsize || 'md';
