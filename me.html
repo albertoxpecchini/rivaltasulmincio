@@ -152,6 +152,87 @@
     .act-row { display: flex; gap: 6px; }
     .post-title-link { color: var(--text); text-decoration: none; font-weight: 600; transition: color .2s; }
     .post-title-link:hover { color: var(--a); }
+    .author-notifs {
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+    .author-notifs-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .author-notifs-head h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1rem;
+      color: rgba(234,244,244,.9);
+    }
+    .notif-list {
+      display: grid;
+      gap: 8px;
+    }
+    .notif-item {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255,255,255,.02);
+      display: grid;
+      gap: 5px;
+    }
+    .notif-item.unread {
+      border-color: rgba(58,140,138,.35);
+      background: rgba(58,140,138,.11);
+    }
+    .notif-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: .74rem;
+      color: var(--muted);
+    }
+    .notif-meta time {
+      font-variant-numeric: tabular-nums;
+    }
+    .notif-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #7dd9d4;
+      margin-right: 6px;
+    }
+    .notif-item p {
+      margin: 0;
+      font-size: .84rem;
+      color: rgba(234,244,244,.86);
+      line-height: 1.45;
+    }
+    .notif-link {
+      font-size: .76rem;
+      color: #9be0db;
+      text-decoration: none;
+      width: fit-content;
+    }
+    .notif-link:hover {
+      color: #c7f2ef;
+      text-decoration: underline;
+    }
+    .notif-empty {
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: .82rem;
+      color: var(--muted);
+      text-align: center;
+    }
 
     /* ── Write panel ──────────────────────────────────────────────── */
     .write-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
@@ -558,6 +639,15 @@
     <div style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn btn-success" type="button" onclick="scrollToWrite()">+ Nuovo articolo</button>
     </div>
+    <div class="author-notifs" id="author-notifs-wrap">
+      <div class="author-notifs-head">
+        <h3>Attività sui tuoi post</h3>
+        <button class="btn btn-ghost btn-sm" type="button" id="notif-mark-read-btn" onclick="markNotificationsRead()">Segna tutte lette</button>
+      </div>
+      <div class="notif-list" id="author-notifs-list">
+        <div class="notif-empty">Caricamento notifiche...</div>
+      </div>
+    </div>
     <div id="my-posts-wrap">
       <div class="empty"><span>⏳</span><p>Caricamento…</p></div>
     </div>
@@ -643,7 +733,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 const fmt = iso => new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
 
-let ME = null, MY_POSTS = [];
+let ME = null, MY_POSTS = [], AUTHOR_NOTIFS = [];
 const DAILY_SOFT_PUBLISH_LIMIT = 2;
 const POST_WRITE_RATE_CFG = { maxAttempts: 14, windowMs: 60 * 60 * 1000, lockMs: 60 * 60 * 1000 };
 const POST_MEDIA_LABELS = {
@@ -655,6 +745,39 @@ const POST_MEDIA_LABELS = {
   fishing: '🎣 Pesca',
   nature: '🌸 Natura',
 };
+
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isMissingRelationError(error) {
+  const msg = String(error?.message || '').toLowerCase();
+  return !!error && (
+    error.code === '42P01'
+    || error.code === 'PGRST205'
+    || msg.includes('does not exist')
+    || msg.includes('could not find the table')
+  );
+}
+
+function relativeTime(iso) {
+  const ts = new Date(iso).getTime();
+  if (!Number.isFinite(ts)) return '';
+  const diffMs = Date.now() - ts;
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 1) return 'adesso';
+  if (mins < 60) return mins + ' min fa';
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return hours + ' h fa';
+  const days = Math.floor(hours / 24);
+  if (days < 7) return days + ' g fa';
+  return fmt(iso);
+}
 
 /* ── Init ─────────────────────────────────────────────────────────── */
 (async function() {
@@ -958,6 +1081,7 @@ async function loadMyPosts() {
   MY_POSTS = data || [];
   renderMyPosts();
   updateOverviewCounters();
+  await loadAuthorNotifications();
   await refreshWriteLimitHint();
 }
 
@@ -968,6 +1092,93 @@ function updateOverviewCounters() {
   if($('ov-pub')) $('ov-pub').textContent = pub;
   if($('ov-draft')) $('ov-draft').textContent = draft;
   if($('ov-total')) $('ov-total').textContent = total;
+}
+
+function renderAuthorNotifications() {
+  const list = $('author-notifs-list');
+  const markBtn = $('notif-mark-read-btn');
+  if(!list) return;
+
+  if(!AUTHOR_NOTIFS.length) {
+    list.innerHTML = '<div class="notif-empty">Nessuna notifica recente sui tuoi post.</div>';
+    if(markBtn) markBtn.disabled = true;
+    return;
+  }
+
+  const unreadCount = AUTHOR_NOTIFS.filter(n => !n.is_read).length;
+  if(markBtn) {
+    markBtn.disabled = unreadCount === 0;
+    markBtn.textContent = unreadCount > 0 ? `Segna tutte lette (${unreadCount})` : 'Tutte lette';
+  }
+
+  list.innerHTML = AUTHOR_NOTIFS.map((item) => {
+    const css = item.is_read ? 'notif-item' : 'notif-item unread';
+    const typeLabel = item.type === 'comment' ? '💬 Commento' : '❤️ Mi piace';
+    const fallback = item.type === 'comment'
+      ? 'Nuovo commento su un tuo articolo.'
+      : 'Nuovo Mi piace su un tuo articolo.';
+    const message = escapeHtml(item.message || fallback);
+    const postLink = item.post_id ? `post.html?id=${item.post_id}` : 'me.html#posts';
+
+    return `<article class="${css}">
+      <div class="notif-meta">
+        <span><span class="notif-dot"></span>${typeLabel}</span>
+        <time>${relativeTime(item.created_at)}</time>
+      </div>
+      <p>${message}</p>
+      <a class="notif-link" href="${postLink}">Apri post</a>
+    </article>`;
+  }).join('');
+}
+
+async function loadAuthorNotifications() {
+  const list = $('author-notifs-list');
+  if(!list || !ME?.id) return;
+
+  const { data, error } = await sb.from('notifications')
+    .select('id,user_id,actor_id,actor_username,post_id,type,message,is_read,created_at')
+    .eq('user_id', ME.id)
+    .order('created_at', { ascending: false })
+    .limit(25);
+
+  if(error) {
+    if(isMissingRelationError(error)) {
+      list.innerHTML = '<div class="notif-empty">Notifiche non attive: applica supabase-security.sql su Supabase.</div>';
+      const markBtn = $('notif-mark-read-btn');
+      if(markBtn) markBtn.disabled = true;
+      return;
+    }
+    list.innerHTML = '<div class="notif-empty">Errore caricamento notifiche: ' + escapeHtml(error.message) + '</div>';
+    const markBtn = $('notif-mark-read-btn');
+    if(markBtn) markBtn.disabled = true;
+    return;
+  }
+
+  AUTHOR_NOTIFS = data || [];
+  renderAuthorNotifications();
+}
+
+async function markNotificationsRead() {
+  if(!ME?.id) return;
+  const unreadIds = AUTHOR_NOTIFS.filter(item => !item.is_read).map(item => item.id);
+  if(!unreadIds.length) {
+    toast('Nessuna nuova notifica da segnare.');
+    return;
+  }
+
+  const { error } = await sb.from('notifications')
+    .update({ is_read: true })
+    .eq('user_id', ME.id)
+    .in('id', unreadIds);
+
+  if(error) {
+    toast('Aggiornamento notifiche non riuscito: ' + error.message, 'err');
+    return;
+  }
+
+  AUTHOR_NOTIFS = AUTHOR_NOTIFS.map(item => ({ ...item, is_read: true }));
+  renderAuthorNotifications();
+  toast('Notifiche segnate come lette ✓');
 }
 
 function renderMyPosts() {

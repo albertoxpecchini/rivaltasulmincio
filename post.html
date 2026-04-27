@@ -116,6 +116,57 @@
     .author-name { font-size: .9rem; font-weight: 600; }
     .author-label { font-size: .76rem; color: var(--muted); }
 
+    .post-reactions {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border2);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .like-btn:hover {
+      color: var(--text);
+      border-color: rgba(58,140,138,.4);
+      transform: translateY(-1px);
+    }
+    .like-btn.on {
+      color: #ffd3dc;
+      border-color: rgba(255,98,130,.45);
+      background: rgba(255,98,130,.14);
+      box-shadow: 0 7px 22px rgba(255,98,130,.16);
+    }
+    .like-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .like-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      padding: 0 6px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-size: .74rem;
+      font-weight: 700;
+    }
+
     /* Discussion */
     .discussion {
       margin-top: 48px;
@@ -226,6 +277,28 @@
       color: var(--text);
       border-color: var(--border2);
     }
+    .community-rules {
+      border: 1px dashed rgba(58,140,138,.32);
+      border-radius: 12px;
+      background: rgba(58,140,138,.08);
+      padding: 11px 12px;
+      display: grid;
+      gap: 6px;
+    }
+    .community-rules strong {
+      font-size: .81rem;
+      color: #9be0db;
+    }
+    .community-rules ul {
+      margin: 0;
+      padding-left: 17px;
+      color: rgba(232,234,246,.75);
+      font-size: .79rem;
+      line-height: 1.45;
+    }
+    .community-rules li {
+      margin-bottom: 3px;
+    }
 
     /* ── Skeleton ─────────────────────────────────────────────────── */
     .skel {
@@ -300,9 +373,12 @@
   let activePost = null;
   let commentsCache = [];
   let commentPrivacy = 'all';
+  let likesCount = 0;
+  let viewerLikedPost = false;
 
   const COMMENT_RATE_CFG = { maxAttempts: 6, windowMs: 10 * 60 * 1000, lockMs: 30 * 60 * 1000 };
   const REPORT_RATE_CFG = { maxAttempts: 4, windowMs: 24 * 60 * 60 * 1000, lockMs: 24 * 60 * 60 * 1000 };
+  const LIKE_RATE_CFG = { maxAttempts: 20, windowMs: 10 * 60 * 1000, lockMs: 10 * 60 * 1000 };
 
   function isMissingRelationError(error) {
     const msg = String(error?.message || '').toLowerCase();
@@ -345,6 +421,160 @@
     box.style.display = '';
     box.className = 'discussion-msg ' + (type || '');
     box.textContent = message;
+  }
+
+  function syncLikeUi() {
+    const btn = document.getElementById('like-btn');
+    const icon = document.getElementById('like-icon');
+    const count = document.getElementById('like-count');
+    const hint = document.getElementById('like-hint');
+    if (!btn || !icon || !count) return;
+
+    btn.classList.toggle('on', viewerLikedPost);
+    icon.textContent = viewerLikedPost ? '❤️' : '🤍';
+    count.textContent = String(Math.max(0, likesCount));
+
+    if (hint) {
+      if (!viewerSession) {
+        hint.textContent = 'Accedi per mettere Mi piace e interagire con il post.';
+      } else if (viewerLikedPost) {
+        hint.textContent = 'Hai messo Mi piace a questo articolo.';
+      } else {
+        hint.textContent = 'Un singolo Mi piace per utente (toggle).';
+      }
+    }
+  }
+
+  function disableLikeUi(reason) {
+    const btn = document.getElementById('like-btn');
+    const hint = document.getElementById('like-hint');
+    if (btn) btn.disabled = true;
+    if (hint && reason) hint.textContent = reason;
+  }
+
+  async function createInteractionNotification(type, commentId) {
+    if (!viewerSession?.user?.id || !activePost?.id || !activePost?.user_id) return;
+    if (activePost.user_id === viewerSession.user.id) return;
+
+    const actor = viewerProfile?.username ? ('@' + viewerProfile.username) : 'Un utente';
+    const message = type === 'comment'
+      ? actor + ' ha commentato il tuo articolo.'
+      : actor + ' ha messo Mi piace al tuo articolo.';
+
+    const payload = {
+      user_id: activePost.user_id,
+      actor_id: viewerSession.user.id,
+      actor_username: viewerProfile?.username || null,
+      post_id: activePost.id,
+      comment_id: commentId || null,
+      type: type,
+      message: message,
+      is_read: false,
+    };
+
+    const { error } = await sb.from('notifications').insert(payload);
+    if (!error) return;
+
+    const errMsg = String(error.message || '').toLowerCase();
+    if (isMissingRelationError(error) || errMsg.includes('duplicate key')) return;
+    console.warn('[notifications] insert failed:', error.message);
+  }
+
+  async function loadLikes() {
+    const likeBtn = document.getElementById('like-btn');
+    if (!likeBtn || !activePost?.id) return;
+
+    const { count, error: countError } = await sb.from('post_likes')
+      .select('id', { count: 'exact', head: true })
+      .eq('post_id', activePost.id);
+
+    if (countError) {
+      if (isMissingRelationError(countError)) {
+        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
+        return;
+      }
+      disableLikeUi('Like temporaneamente non disponibili.');
+      return;
+    }
+
+    likesCount = count || 0;
+    viewerLikedPost = false;
+
+    if (viewerSession?.user?.id) {
+      const { data: likeRow, error: likeError } = await sb.from('post_likes')
+        .select('id')
+        .eq('post_id', activePost.id)
+        .eq('user_id', viewerSession.user.id)
+        .maybeSingle();
+
+      if (!likeError) viewerLikedPost = !!likeRow;
+    }
+
+    syncLikeUi();
+  }
+
+  async function toggleLike() {
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn?.disabled) return;
+
+    if (!viewerSession || !viewerProfile) {
+      showDiscussionMessage('Accedi per mettere Mi piace.', 'err');
+      return;
+    }
+    if (!activePost?.id) return;
+
+    if (window.RSM_SECURITY) {
+      const likeLimit = window.RSM_SECURITY.checkRateLimit('like_toggle', viewerSession.user.id, LIKE_RATE_CFG);
+      if (!likeLimit.ok) {
+        showDiscussionMessage('Troppi click su Mi piace. Riprova tra ' + window.RSM_SECURITY.formatRetry(likeLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+    }
+
+    if (viewerLikedPost) {
+      const { error } = await sb.from('post_likes')
+        .delete()
+        .eq('post_id', activePost.id)
+        .eq('user_id', viewerSession.user.id);
+      if (error) {
+        showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
+        return;
+      }
+      viewerLikedPost = false;
+      likesCount = Math.max(0, likesCount - 1);
+      syncLikeUi();
+      showDiscussionMessage('Mi piace rimosso.', 'ok');
+      return;
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      user_id: viewerSession.user.id,
+      actor_username: viewerProfile.username || null,
+    };
+
+    const { error } = await sb.from('post_likes').insert(payload);
+    if (error) {
+      const errMsg = String(error.message || '').toLowerCase();
+      if (errMsg.includes('duplicate key')) {
+        viewerLikedPost = true;
+        await loadLikes();
+        return;
+      }
+      if (isMissingRelationError(error)) {
+        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
+        showDiscussionMessage('Like non attivi nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    viewerLikedPost = true;
+    likesCount += 1;
+    syncLikeUi();
+    showDiscussionMessage('Mi piace registrato.', 'ok');
+    await createInteractionNotification('like', null);
   }
 
   async function loadViewerContext() {
@@ -541,7 +771,7 @@
       content: content,
       is_hidden: false,
     };
-    const { error } = await sb.from('comments').insert(payload);
+    const { data: insertedComment, error } = await sb.from('comments').insert(payload).select('id').single();
 
     if (error) {
       if (window.RSM_SECURITY) {
@@ -559,6 +789,7 @@
       window.RSM_SECURITY.clearRateFailures('comment_write', viewerSession.user.id);
     }
 
+    await createInteractionNotification('comment', insertedComment?.id || null);
     textarea.value = '';
     showDiscussionMessage('Commento pubblicato.', 'ok');
     await loadComments();
@@ -706,6 +937,9 @@
 
     const reportBtn = document.getElementById('report-post-btn');
     if (reportBtn) reportBtn.addEventListener('click', reportPost);
+
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn) likeBtn.addEventListener('click', toggleLike);
   }
 
   await loadViewerContext();
@@ -760,6 +994,14 @@
       <a href="index.html#news" class="btn btn-primary">← Tutte le notizie</a>
       ${activePost.author_username ? `<a href="${authorHref}" class="btn btn-ghost">Autore: @${safeAuthor} →</a>` : ''}
     </div>
+    <div class="post-reactions">
+      <button class="like-btn" id="like-btn" type="button">
+        <span id="like-icon">🤍</span>
+        <span>Mi piace</span>
+        <span class="like-count" id="like-count">0</span>
+      </button>
+      <span class="discussion-note" id="like-hint">Un singolo Mi piace per utente (toggle).</span>
+    </div>
     <section class="discussion" id="discussion">
       <div class="discussion-head">
         <h2>Discussione</h2>
@@ -773,6 +1015,14 @@
           <button class="btn btn-ghost btn-sm" id="report-post-btn" type="button">Segnala post</button>
         </div>
       </form>
+      <div class="community-rules">
+        <strong>Regole di convivenza</strong>
+        <ul>
+          <li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>
+          <li>Resta sul tema del post e usa un linguaggio costruttivo.</li>
+          <li>Evita spam, link ripetuti e contenuti offensivi.</li>
+        </ul>
+      </div>
       <div id="comments-list" class="comments-list">
         <p class="discussion-note">Caricamento commenti...</p>
       </div>
@@ -781,6 +1031,7 @@
 
   await resolveCommentPrivacy();
   bindDiscussionHandlers();
+  await loadLikes();
   syncCommentComposerState();
   await loadComments();
 

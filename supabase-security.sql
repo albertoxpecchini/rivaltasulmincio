@@ -195,6 +195,41 @@ create unique index if not exists uq_reports_unique_per_user_target
 on public.reports(reporter_id, coalesce(post_id, '00000000-0000-0000-0000-000000000000'::uuid), coalesce(comment_id, '00000000-0000-0000-0000-000000000000'::uuid));
 
 -- ------------------------------------------------------------------
+-- Post likes (single like per user/post)
+-- ------------------------------------------------------------------
+create table if not exists public.post_likes (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid not null references public.posts(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  actor_username text,
+  created_at timestamptz not null default now(),
+  constraint post_likes_unique_per_user_post unique (post_id, user_id)
+);
+
+create index if not exists idx_post_likes_post_id on public.post_likes(post_id);
+create index if not exists idx_post_likes_user_id on public.post_likes(user_id);
+create index if not exists idx_post_likes_created_at on public.post_likes(created_at desc);
+
+-- ------------------------------------------------------------------
+-- Lightweight notifications for post authors
+-- ------------------------------------------------------------------
+create table if not exists public.notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  actor_id uuid references auth.users(id) on delete set null,
+  actor_username text,
+  post_id uuid not null references public.posts(id) on delete cascade,
+  comment_id uuid references public.comments(id) on delete cascade,
+  type text not null check (type in ('like', 'comment')),
+  message text not null,
+  is_read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_notifications_user_created on public.notifications(user_id, created_at desc);
+create index if not exists idx_notifications_unread on public.notifications(user_id, is_read, created_at desc);
+
+-- ------------------------------------------------------------------
 -- Post guard (anti-spam + toxic words)
 -- ------------------------------------------------------------------
 create or replace function public.guard_post_insert_update()
@@ -245,6 +280,8 @@ alter table public.posts enable row level security;
 alter table public.user_settings enable row level security;
 alter table public.comments enable row level security;
 alter table public.reports enable row level security;
+alter table public.post_likes enable row level security;
+alter table public.notifications enable row level security;
 
 -- Profiles
 drop policy if exists profiles_public_read on public.profiles;
@@ -351,3 +388,56 @@ with check (public.is_admin(auth.uid()));
 drop policy if exists reports_admin_delete on public.reports;
 create policy reports_admin_delete on public.reports
 for delete using (public.is_admin(auth.uid()));
+
+-- Post likes
+drop policy if exists post_likes_public_read on public.post_likes;
+create policy post_likes_public_read on public.post_likes
+for select using (true);
+
+drop policy if exists post_likes_member_insert on public.post_likes;
+create policy post_likes_member_insert on public.post_likes
+for insert with check (
+  auth.uid() = user_id
+  and public.is_member(auth.uid())
+);
+
+drop policy if exists post_likes_owner_or_admin_delete on public.post_likes;
+create policy post_likes_owner_or_admin_delete on public.post_likes
+for delete using (
+  auth.uid() = user_id
+  or public.is_admin(auth.uid())
+);
+
+-- Notifications
+drop policy if exists notifications_owner_or_admin_read on public.notifications;
+create policy notifications_owner_or_admin_read on public.notifications
+for select using (
+  auth.uid() = user_id
+  or public.is_admin(auth.uid())
+);
+
+drop policy if exists notifications_actor_insert on public.notifications;
+create policy notifications_actor_insert on public.notifications
+for insert with check (
+  auth.uid() = actor_id
+  and auth.uid() <> user_id
+  and public.is_member(auth.uid())
+);
+
+drop policy if exists notifications_owner_or_admin_update on public.notifications;
+create policy notifications_owner_or_admin_update on public.notifications
+for update using (
+  auth.uid() = user_id
+  or public.is_admin(auth.uid())
+)
+with check (
+  auth.uid() = user_id
+  or public.is_admin(auth.uid())
+);
+
+drop policy if exists notifications_owner_or_admin_delete on public.notifications;
+create policy notifications_owner_or_admin_delete on public.notifications
+for delete using (
+  auth.uid() = user_id
+  or public.is_admin(auth.uid())
+);
