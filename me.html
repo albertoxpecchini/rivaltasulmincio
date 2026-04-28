@@ -66,22 +66,11 @@
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 1fr;
       min-height: 100vh;
     }
 
-    .sidebar {
-      position: sticky;
-      top: 0;
-      align-self: start;
-      height: 100vh;
-      border-right: 1px solid var(--border);
-      background: var(--sb);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .sidebar { display: none; }
 
     .sb-brand {
       display: flex;
@@ -937,8 +926,6 @@
     }
 
     @media (max-width: 940px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
       .mobile-nav { display: grid; }
       .main { padding: 10px; }
       .topbar { top: 6px; }
