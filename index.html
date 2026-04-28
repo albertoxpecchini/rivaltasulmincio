@@ -356,9 +356,7 @@
       border-radius: 14px;
       box-shadow: 0 12px 40px rgba(0,0,0,.18);
       border: 1px solid rgba(0,0,0,.07);
-      min-width: 320px;
-      max-height: min(76vh, 620px);
-      overflow-y: auto;
+      min-width: 210px;
       z-index: 200;
       padding: 6px;
     }
@@ -374,7 +372,7 @@
     .profile-dropdown a,
     .profile-dropdown button {
       display: flex; align-items: center; gap: 10px;
-      padding: 11px 12px; width: 100%;
+      padding: 10px 12px; width: 100%;
       font-size: .87rem; font-weight: 500; color: var(--text);
       background: none; border: none; cursor: pointer;
       text-decoration: none;
@@ -384,19 +382,17 @@
     }
     .profile-dropdown a:hover,
     .profile-dropdown button:hover { background: var(--bg); }
-    .profile-dropdown__sep { height: 1px; background: var(--border); margin: 8px 4px; }
-    .profile-dropdown__full,
-    .profile-dropdown__compact { display: block; }
-    .profile-dropdown__compact { display: none; }
-    .profile-dropdown .danger { color: #c0392b; }
-
-    @media (max-width: 900px) {
-      .profile-dropdown {
-        min-width: 240px;
-      }
-      .profile-dropdown__full { display: none; }
-      .profile-dropdown__compact { display: block; }
+    .profile-dropdown a.active { color: var(--primary); font-weight: 600; background: var(--primary-soft); }
+    .profile-dropdown a.item-primary {
+      color: #fff;
+      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
+      font-weight: 600;
+      margin-top: 2px;
     }
+    .profile-dropdown a.item-primary:hover { opacity: .9; }
+    .profile-dropdown a.item-primary.active { opacity: .88; }
+    .profile-dropdown__sep { height: 1px; background: var(--border); margin: 8px 4px; }
+    .profile-dropdown .danger { color: #c0392b; }
 
     /* Hamburger */
     .site-nav__toggle {
@@ -3263,44 +3259,37 @@
   }
 
   function buildUserMenu(username, emoji, color) {
-    const safeUsername = escapeHtml(username);
+    const safe = escapeHtml(username);
     const profileHref = 'profile.html?u=' + encodeURIComponent(username);
+    const path = window.location.pathname;
+
+    const isProfile   = path.includes('profile.html');
+    const isDashboard = path.includes('me.html');
+    const isWrite     = path.includes('write.html');
+    const isOwnProfile = isProfile &&
+      new URLSearchParams(window.location.search).get('u') === username;
+
+    const cls = (condition, extra) =>
+      condition ? ` class="active${extra ? ' ' + extra : ''}"` : (extra ? ` class="${extra}"` : '');
+
+    const editItem = isOwnProfile
+      ? `<a href="modifica-profilo.html?u=${encodeURIComponent(username)}" role="menuitem">✏️&nbsp; Modifica profilo</a>`
+      : '';
 
     return `
       <div class="profile-menu" id="profileMenu">
         <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
           <span class="profile-avatar" style="background:${color}">${emoji}</span>
-          @${safeUsername}
+          @${safe}
         </button>
-
-        <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu account">
-          <div class="profile-dropdown__full">
-            <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
-            <a href="me.html#posts" role="menuitem">📂&nbsp; Dashboard / I tuoi contenuti</a>
-            <a href="me.html#write" role="menuitem">✍️&nbsp; Crea nuovo (post, progetto, ecc.)</a>
-
-            <div class="profile-dropdown__sep"></div>
-
-            <a href="me.html#profile" role="menuitem">🔒&nbsp; Sicurezza (password, 2FA)</a>
-
-            <div class="profile-dropdown__sep"></div>
-
-            <a href="index.html#contatti" role="menuitem">🛟&nbsp; Aiuto / Supporto</a>
-            <a href="index.html#contatti" role="menuitem">💬&nbsp; Feedback</a>
-
-            <div class="profile-dropdown__sep"></div>
-
-            <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
-          </div>
-
-          <div class="profile-dropdown__compact">
-            <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
-            <a href="me.html#write" role="menuitem">✍️&nbsp; Crea post</a>
-
-            <div class="profile-dropdown__sep"></div>
-
-            <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
-          </div>
+        <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">
+          <div class="profile-dropdown__section-title">Navigazione</div>
+          <a href="${profileHref}" role="menuitem"${cls(isProfile)}>👤&nbsp; Profilo</a>
+          <a href="me.html" role="menuitem"${cls(isDashboard)}>📊&nbsp; Dashboard</a>
+          ${editItem}
+          <a href="write.html" role="menuitem"${cls(isWrite, 'item-primary')}>✍&nbsp; Scrivi</a>
+          <div class="profile-dropdown__sep"></div>
+          <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
         </div>
       </div>`;
   }
