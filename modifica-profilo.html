@@ -6,55 +6,54 @@
   <title>Modifica profilo – Rivalta sul Mincio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #020c10; --bg2: #051318; --glass: rgba(10,30,38,.6); --border: rgba(255,255,255,.08);
-      --text: #EAF4F4; --muted: rgba(234,244,244,.45); --p: #1F6F8B; --a: #3a8c8a;
-      --ok: rgba(129,199,132,.9); --err: rgba(239,154,154,.9);
+      --bg: #f5f5f7; --surface: #ffffff; --border: #d2d2d7;
+      --text: #1d1d1f; --muted: #86868b; --accent: #1F6F8B; --accent-2: #3a8c8a;
+      --ok: #2E7D32; --err: #b94747;
     }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
-    a { color: var(--a); text-decoration: none; }
-
-    /* Aurora bg */
-    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
-    .orb-1 { width: 900px; height: 900px; background: radial-gradient(circle, #1F6F8B 0%, transparent 55%); top:-300px; left:-250px; opacity:.12; animation: o1 22s ease-in-out infinite alternate; }
-    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #2E7D32 0%, transparent 60%); bottom:-150px; right:-100px; opacity:.1; animation: o2 18s ease-in-out infinite alternate; }
-    @keyframes o1 { to { transform: translate(80px,60px) scale(1.1); } }
-    @keyframes o2 { to { transform: translate(-60px,-40px) scale(1.2); } }
-    .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-               background-image: linear-gradient(rgba(255,255,255,.01) 1px, transparent 1px),
-                                 linear-gradient(90deg, rgba(255,255,255,.01) 1px, transparent 1px);
-               background-size: 60px 60px; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
 
     /* Topbar */
-    .topbar { position: sticky; top: 0; z-index: 100; padding: 0 24px; height: 52px;
+    .topbar { position: sticky; top: 0; z-index: 100; padding: 0 20px; height: 52px;
               display: flex; align-items: center; justify-content: space-between;
-              background: rgba(2,12,16,.85); backdrop-filter: blur(16px);
-              border-bottom: 1px solid var(--border); }
-    .topbar-brand { font-family: 'Fraunces', Georgia, serif; font-size: .95rem;
-                    background: linear-gradient(135deg, #EAF4F4, #3a8c8a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .nav-pill { padding: 6px 14px; border-radius: 20px; font-size: .8rem; font-weight: 600; cursor: pointer;
-                border: none; font-family: inherit; transition: all .18s; }
-    .nav-pill-ghost { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
-    .nav-pill-ghost:hover { color: var(--text); background: rgba(255,255,255,.1); }
-    .nav-pill-outline { background: transparent; color: var(--a); border: 1px solid rgba(58,140,138,.4); }
-    .nav-pill-outline:hover { background: rgba(58,140,138,.1); }
+              background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+              border-bottom: 1px solid rgba(0,0,0,.06); }
+    .top-brand { display: inline-flex; align-items: center; gap: 8px;
+                 font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700;
+                 color: var(--text); text-decoration: none; letter-spacing: -.01em; }
+    .top-logo { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+                background: linear-gradient(135deg, var(--accent), var(--accent-2));
+                display: inline-flex; align-items: center; justify-content: center;
+                font-size: .82rem; color: #fff; }
+    .top-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 6px;
+           border-radius: 9px; border: 1px solid var(--border);
+           background: var(--surface); color: var(--text);
+           font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600;
+           padding: 8px 14px; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .btn:hover { border-color: #aaa; }
+    .btn-primary { border-color: transparent;
+                   background: linear-gradient(135deg, var(--accent), var(--accent-2));
+                   color: #fff; box-shadow: 0 4px 16px rgba(31,111,139,.28); }
+    .btn-primary:hover { box-shadow: 0 6px 22px rgba(31,111,139,.4); border-color: transparent; }
+    .btn-ghost { color: var(--muted); }
 
     /* Page */
     .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
     .page-header { margin-bottom: 28px; }
-    .page-header h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.8rem; margin-bottom: 6px; }
+    .page-header h1 { font-family: 'Sora', sans-serif; font-size: 1.8rem; margin-bottom: 6px; }
     .page-header p { color: var(--muted); font-size: .9rem; }
 
     /* Bento grid */
     .bento { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
-    .bcard { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid var(--border);
-             border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+    .bcard { background: var(--surface); border: 1px solid var(--border);
+             border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px;
+             box-shadow: 0 1px 8px rgba(0,0,0,.05); }
     .bcard-wide { grid-column: span 2; }
     .bcard-tall { grid-row: span 2; }
     .bcard-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
@@ -64,7 +63,7 @@
     .preview-avatar { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center;
                       justify-content: center; font-size: 2rem; transition: background .25s; flex-shrink: 0; }
     .preview-username { font-size: .95rem; font-weight: 700; color: var(--muted); }
-    .preview-display { font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; font-weight: 600; }
+    .preview-display { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); }
     .preview-bio { font-size: .82rem; color: var(--muted); text-align: center; line-height: 1.5; max-width: 220px; }
 
     /* Emoji grid */
@@ -72,9 +71,9 @@
     .emoji-grid input[type="radio"] { display: none; }
     .emoji-grid label { display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
                         cursor: pointer; border-radius: 10px; border: 2px solid transparent;
-                        padding: 6px; transition: all .15s; background: rgba(255,255,255,.04); }
-    .emoji-grid label:hover { background: rgba(255,255,255,.1); }
-    .emoji-grid input:checked + label { border-color: var(--a); background: rgba(58,140,138,.15); }
+                        padding: 6px; transition: all .15s; background: rgba(0,0,0,.03); }
+    .emoji-grid label:hover { background: rgba(0,0,0,.06); }
+    .emoji-grid input:checked + label { border-color: var(--accent); background: rgba(31,111,139,.1); }
 
     /* Color grid */
     .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
@@ -82,17 +81,17 @@
     .color-grid label { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px;
                         cursor: pointer; border: 3px solid transparent; transition: all .15s; }
     .color-grid label:hover { transform: scale(1.1); }
-    .color-grid input:checked + label { border-color: #fff; box-shadow: 0 0 0 2px var(--a); }
+    .color-grid input:checked + label { border-color: var(--text); box-shadow: 0 0 0 2px var(--accent); }
 
     /* Form fields */
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field label { font-size: .78rem; font-weight: 600; color: var(--muted); }
     .field input, .field textarea {
-      background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 10px;
+      background: #ffffff; border: 1px solid var(--border); border-radius: 10px;
       color: var(--text); font-family: inherit; font-size: .9rem; padding: 10px 14px;
       transition: border-color .18s; resize: vertical;
     }
-    .field input:focus, .field textarea:focus { outline: none; border-color: var(--a); }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(31,111,139,.1); }
     .field textarea { min-height: 80px; }
     .field .hint { font-size: .74rem; color: var(--muted); }
 
@@ -113,25 +112,25 @@
       .bento { grid-template-columns: 1fr; }
       .bcard-wide { grid-column: span 1; }
       .bcard-tall { grid-row: span 1; }
-      .topbar-right { gap: 6px; }
-      .nav-pill { padding: 5px 10px; font-size: .73rem; }
+      .top-actions { display: none; }
     }
   </style>
 </head>
 <body>
 
-<div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-<div class="grid-bg"></div>
-
-<div class="topbar">
-  <a class="topbar-brand" href="index.html">Rivalta sul Mincio</a>
-  <div class="topbar-right">
-    <button class="nav-pill nav-pill-ghost" onclick="location.href='index.html'">Home</button>
-    <button class="nav-pill nav-pill-ghost" onclick="location.href='me.html'">Dashboard</button>
-    <a href="me.html#write" class="nav-pill nav-pill-ghost" style="text-decoration:none">Scrivi articolo</a>
-    <a id="link-profilo" href="profile.html" class="nav-pill nav-pill-outline" style="text-decoration:none">Vedi profilo</a>
+<nav class="topbar">
+  <a class="top-brand" href="index.html">
+    <span class="top-logo">🌿</span>
+    Rivalta sul Mincio
+  </a>
+  <div class="top-actions">
+    <a href="javascript:history.back()" class="btn btn-ghost">← Torna indietro</a>
+    <a href="index.html" class="btn btn-ghost">Home</a>
+    <a id="link-profilo" href="profile.html" class="btn btn-ghost">Profilo</a>
+    <a href="me.html" class="btn btn-ghost">Dashboard</a>
+    <a href="write.html" class="btn btn-primary">✍ Scrivi</a>
   </div>
-</div>
+</nav>
 
 <div class="page">
   <div class="page-header">
@@ -309,5 +308,63 @@ async function save() {
   $('save-btn').addEventListener('click', save);
 })();
 </script>
+
+<div style="line-height:0;background:var(--bg)"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:60px"><path d="M0,20 C360,55 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0F2A30"/></svg></div>
+<footer style="background:#0F2A30;color:#EAF4F4;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1180px;margin:0 auto;padding:48px 22px 0">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(234,244,244,.1)">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:46px;height:46px;background:linear-gradient(135deg,#1F6F8B,#2E7D32);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🌿</div>
+          <div>
+            <div style="font-size:1.1rem;font-weight:600">Pro Loco Rivalta sul Mincio</div>
+            <div style="font-size:.7rem;color:rgba(234,244,244,.5);text-transform:uppercase;letter-spacing:.08em">Ecoturismo · Mantova</div>
+          </div>
+        </div>
+        <p style="font-size:.9rem;color:rgba(234,244,244,.7);line-height:1.8;max-width:300px">Associazione di promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🌿 Ramsar 1971</span>
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🇪🇺 Natura 2000</span>
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🐟 PAT 2013</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Informazioni</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Privacy Policy</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Cookie Policy</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Diventa socio</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Note legali</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Contatti</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:.86rem;color:rgba(234,244,244,.65)">
+          <div>📍 Via Porto, 31<br>Rivalta sul Mincio (MN)</div>
+          <div>✉️ <a href="mailto:info@prolocorivalta.mn.it" style="color:rgba(234,244,244,.75);text-decoration:none">info@prolocorivalta.mn.it</a></div>
+          <div>📞 <a href="tel:+393398995680" style="color:rgba(234,244,244,.75);text-decoration:none">+39 339 899 5680</a></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 0;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:rgba(234,244,244,.45);flex-wrap:wrap;gap:10px">
+      <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
+      <div style="display:flex;gap:16px">
+        <span>Realizzato con cura per il territorio del Mincio</span>
+        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
 </body>
 </html>

@@ -6,19 +6,19 @@
   <title>Dashboard - Rivalta sul Mincio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       color-scheme: light;
-      --bg: #f4f6fb;
+      --bg: #f5f5f7;
       --sb: rgba(255,255,255,.86);
-      --surface: rgba(255,255,255,.78);
-      --surface-2: rgba(245,248,255,.94);
-      --border: rgba(105,124,168,.24);
-      --text: #101831;
-      --muted: #5f6c8f;
+      --surface: #ffffff;
+      --surface-2: rgba(245,245,247,.94);
+      --border: #d2d2d7;
+      --text: #1d1d1f;
+      --muted: #86868b;
       --p: #2253df;
       --a: #0da9d6;
       --g: #0a996a;
@@ -30,38 +30,12 @@
 
     body {
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 12% 9%, rgba(34,83,223,.16), transparent 34%),
-        radial-gradient(circle at 86% 86%, rgba(13,169,214,.14), transparent 36%),
-        linear-gradient(140deg, #f8faff 0%, #eef2fa 52%, #f6f7fb 100%);
+      background: var(--bg);
       color: var(--text);
-      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      font-family: 'DM Sans', 'Segoe UI', sans-serif;
       line-height: 1.5;
       overflow-x: hidden;
     }
-
-    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
-    .orb-1 {
-      width: 720px;
-      height: 720px;
-      background: radial-gradient(circle, rgba(34,83,223,.8) 0%, transparent 62%);
-      top: -230px;
-      left: -180px;
-      opacity: .17;
-      animation: orbA 24s ease-in-out infinite alternate;
-    }
-    .orb-2 {
-      width: 560px;
-      height: 560px;
-      background: radial-gradient(circle, rgba(13,169,214,.8) 0%, transparent 64%);
-      bottom: -190px;
-      right: -110px;
-      opacity: .14;
-      animation: orbB 20s ease-in-out infinite alternate;
-    }
-    @keyframes orbA { to { transform: translate(90px, 55px) scale(1.08); } }
-    @keyframes orbB { to { transform: translate(-70px, -45px) scale(1.12); } }
 
     .layout {
       position: relative;
@@ -96,9 +70,7 @@
     }
 
     .sb-name {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: .9rem;
-      line-height: 1.2;
+      font-family: 'Sora', sans-serif;
       background: linear-gradient(135deg,#163748,#3a8c8a);
       background-clip: text;
       -webkit-background-clip: text;
@@ -158,19 +130,17 @@
 
     .topbar {
       position: sticky;
-      top: 8px;
+      top: 0;
       z-index: 20;
-      height: 62px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: linear-gradient(160deg, rgba(255,255,255,.9) 0%, rgba(247,250,255,.7) 100%);
-      backdrop-filter: blur(16px);
+      height: 52px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 0 14px;
-      box-shadow: 0 14px 32px rgba(17,33,76,.12);
+      padding: 0 20px;
     }
 
     .top-brand {
@@ -179,8 +149,23 @@
       gap: 8px;
       color: var(--text);
       text-decoration: none;
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.03rem;
+      font-family: 'Sora', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    .top-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .82rem;
+      color: #fff;
     }
 
     .top-actions {
@@ -195,36 +180,34 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      border-radius: 999px;
+      border-radius: 9px;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(244,248,255,.76));
+      background: var(--surface);
       color: var(--text);
-      font-family: inherit;
-      font-size: .8rem;
-      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
       padding: 8px 14px;
       cursor: pointer;
       text-decoration: none;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      transition: all .15s;
     }
 
     .btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(34,83,223,.4);
-      box-shadow: 0 10px 24px rgba(18,39,96,.12);
+      border-color: #aaa;
     }
-    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
 
     .btn-primary {
       border-color: transparent;
-      background: linear-gradient(135deg, #1e3fd4 0%, #2253df 47%, #0da9d6 100%);
+      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
       color: #fff;
-      box-shadow: 0 14px 28px rgba(34,83,223,.34);
+      box-shadow: 0 4px 16px rgba(31,111,139,.28);
     }
+    .btn-primary:hover { box-shadow: 0 6px 22px rgba(31,111,139,.4); border-color: transparent; }
 
     .btn-ghost {
       color: var(--muted);
-      background: rgba(255,255,255,.6);
     }
 
     .card {
@@ -248,7 +231,7 @@
     }
 
     .dash-head h1 {
-      font-family: 'Fraunces', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: clamp(1.45rem, 2.7vw, 2rem);
       line-height: 1.1;
       margin-bottom: 6px;
@@ -337,7 +320,7 @@
     }
 
     .kpi-value {
-      font-family: 'Fraunces', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 1.8rem;
       line-height: 1;
       color: var(--text);
@@ -372,7 +355,7 @@
     }
 
     .section-title h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 1.2rem;
     }
 
@@ -493,7 +476,7 @@
     }
 
     .ops-card h3 {
-      font-family: 'Fraunces', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: .98rem;
       margin-bottom: 2px;
     }
@@ -649,7 +632,7 @@
     }
 
     .modal-head h3 {
-      font-family: 'Fraunces', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 1rem;
     }
 
@@ -830,7 +813,7 @@
     }
 
     .bc-title {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: clamp(2.2rem, 4vw, 2.8rem);
       font-weight: 700;
       color: var(--text);
@@ -907,7 +890,7 @@
     }
 
     .bc-kpi-val {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 2.6rem;
       font-weight: 700;
       letter-spacing: -.03em;
@@ -946,7 +929,7 @@
     }
 
     .bc-stat-num {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 5rem;
       font-weight: 700;
       color: #fff;
@@ -970,7 +953,7 @@
 
     .bc-list { grid-area: auto; align-content: start; justify-content: flex-start; }
     .bc-list-head { margin-bottom: 10px; }
-    .bc-list-head h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.02rem; margin-bottom: 2px; }
+    .bc-list-head h3 { font-family: 'Sora', sans-serif; font-size: 1.02rem; margin-bottom: 2px; }
     .bc-list-head p { font-size: .75rem; color: var(--muted); }
 
     .bc-motto {
@@ -982,7 +965,7 @@
     }
 
     .bc-motto-text {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Sora', sans-serif;
       font-size: 1.08rem;
       font-weight: 600;
       color: #fff;
@@ -1011,7 +994,7 @@
     @media (max-width: 940px) {
       .mobile-nav { display: grid; }
       .main { padding: 10px; }
-      .topbar { top: 6px; }
+      .topbar { top: 0; }
       .ops-grid { grid-template-columns: 1fr; }
       .bento {
         grid-template-columns: 1fr 1fr;
@@ -1041,45 +1024,25 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .orb, .bc { animation: none !important; transition: none !important; }
-      .bc { opacity: 1; }
+      .bc { animation: none !important; transition: none !important; opacity: 1; }
     }
   </style>
 </head>
 <body>
-<div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
 <div class="layout">
-  <aside class="sidebar" aria-label="Sidebar">
-    <div class="sb-brand">
-      <div class="sb-logo">RS</div>
-      <div class="sb-name">Rivalta sul Mincio</div>
-    </div>
-
-    <nav class="sb-menu" aria-label="Navigazione dashboard">
-      <button class="sb-item on" type="button" data-go="dashboard">Dashboard</button>
-      <button class="sb-item" type="button" data-go="contenuti">Contenuti</button>
-      <button class="sb-item" type="button" data-go="media">Media</button>
-      <button class="sb-item" type="button" data-go="analytics">Analytics</button>
-      <a class="sb-item" href="preferenze.html" style="text-decoration:none">Impostazioni</a>
-    </nav>
-
-    <div class="sidebar-foot">
-      <a class="sb-item" href="index.html" style="text-decoration:none">Home</a>
-      <button class="sb-item" id="logout-side" type="button">Esci</button>
-    </div>
-  </aside>
-
   <main class="main">
     <header class="topbar">
       <a class="top-brand" href="index.html">
-        <span class="sb-logo" style="width:28px;height:28px;font-size:.85rem">RS</span>
-        <span>Dashboard</span>
+        <span class="top-logo">🌿</span>
+        <span>Rivalta sul Mincio</span>
       </a>
       <div class="top-actions">
-        <a class="btn btn-ghost" href="index.html">Home</a>
-        <a class="btn btn-ghost" id="top-profilo" href="profile.html" style="display:none">Profilo</a>
-        <a class="btn btn-ghost" id="top-modifica" href="modifica-profilo.html" style="display:none">Modifica profilo</a>
+        <a href="javascript:history.back()" class="btn btn-ghost">← Torna indietro</a>
+        <a href="index.html" class="btn btn-ghost">Home</a>
+        <a href="profile.html" id="top-profilo" class="btn btn-ghost">Profilo</a>
+        <a href="me.html" class="btn btn-ghost">Dashboard</a>
+        <a href="write.html" class="btn btn-primary">✍ Scrivi</a>
+        <a href="modifica-profilo.html" id="top-modifica" class="btn btn-ghost" style="display:none">Modifica profilo</a>
       </div>
     </header>
 
@@ -1896,5 +1859,63 @@
   init();
 })();
 </script>
+
+<div style="line-height:0;background:var(--bg)"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:60px"><path d="M0,20 C360,55 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0F2A30"/></svg></div>
+<footer style="background:#0F2A30;color:#EAF4F4;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1180px;margin:0 auto;padding:48px 22px 0">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(234,244,244,.1)">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:46px;height:46px;background:linear-gradient(135deg,#1F6F8B,#2E7D32);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🌿</div>
+          <div>
+            <div style="font-size:1.1rem;font-weight:600">Pro Loco Rivalta sul Mincio</div>
+            <div style="font-size:.7rem;color:rgba(234,244,244,.5);text-transform:uppercase;letter-spacing:.08em">Ecoturismo · Mantova</div>
+          </div>
+        </div>
+        <p style="font-size:.9rem;color:rgba(234,244,244,.7);line-height:1.8;max-width:300px">Associazione di promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🌿 Ramsar 1971</span>
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🇪🇺 Natura 2000</span>
+          <span style="font-size:.72rem;padding:4px 11px;border:1px solid rgba(234,244,244,.15);border-radius:20px;color:rgba(234,244,244,.6)">🐟 PAT 2013</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Informazioni</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Privacy Policy</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Cookie Policy</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Diventa socio</a></li>
+          <li><a href="#" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Note legali</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Contatti</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:.86rem;color:rgba(234,244,244,.65)">
+          <div>📍 Via Porto, 31<br>Rivalta sul Mincio (MN)</div>
+          <div>✉️ <a href="mailto:info@prolocorivalta.mn.it" style="color:rgba(234,244,244,.75);text-decoration:none">info@prolocorivalta.mn.it</a></div>
+          <div>📞 <a href="tel:+393398995680" style="color:rgba(234,244,244,.75);text-decoration:none">+39 339 899 5680</a></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 0;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:rgba(234,244,244,.45);flex-wrap:wrap;gap:10px">
+      <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
+      <div style="display:flex;gap:16px">
+        <span>Realizzato con cura per il territorio del Mincio</span>
+        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
 </body>
 </html>
