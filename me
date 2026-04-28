@@ -25,6 +25,8 @@
       --warn: #da8c23;
       --err: #b94747;
       --ok: #1b8d61;
+      --accent: #1F6F8B;
+      --accent-2: #3a8c8a;
       --radius: 22px;
     }
 
@@ -129,43 +131,25 @@
     }
 
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      position: sticky; top: 0; z-index: 100;
       height: 52px;
+      background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(0,0,0,.06);
-      background: rgba(255,255,255,.94);
-      backdrop-filter: blur(14px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 0 20px;
     }
 
     .top-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text);
-      text-decoration: none;
-      font-family: 'Sora', sans-serif;
-      font-size: .88rem;
-      font-weight: 700;
-      letter-spacing: -.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700;
+      color: var(--text); text-decoration: none; letter-spacing: -.01em;
     }
 
     .top-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: .82rem;
-      color: #fff;
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: .78rem; color: #fff; font-weight: 700;
     }
 
     .btn {
@@ -1071,21 +1055,25 @@
       margin-top: 2px;
     }
     .user-dropdown a.item-primary:hover { opacity: .9; }
+    .user-dropdown a.item-primary.active {
+      outline: 2px solid #1F6F8B; outline-offset: 2px; opacity: .9;
+    }
     .user-dropdown__sep { height: 1px; background: var(--border); margin: 6px 4px; }
     .user-dropdown .danger { color: #b94747; }
   </style>
 </head>
 <body>
+
+<nav class="topbar">
+  <a class="top-brand" href="index">
+    <span class="top-logo">🌿</span>
+    Rivalta sul Mincio
+  </a>
+  <div id="user-menu-wrap"></div>
+</nav>
+
 <div class="layout">
   <main class="main">
-    <header class="topbar">
-      <a class="top-brand" href="index">
-        <span class="top-logo">🌿</span>
-        <span>Rivalta sul Mincio</span>
-      </a>
-      <div id="user-menu-wrap"></div>
-    </header>
-
     <div class="mobile-nav" aria-label="Menu rapido mobile">
       <button class="on" type="button" data-go="dashboard">Dashboard</button>
       <button type="button" data-go="contenuti">Contenuti</button>
