@@ -11,29 +11,29 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07090f;
-  --surface:rgba(255,255,255,.04);
-  --border:rgba(255,255,255,.08);
-  --text:#e8eaf6;
-  --muted:#8892b0;
-  --accent:#6c63ff;
-  --accent2:#a78bfa;
-  --grad:linear-gradient(135deg,#6c63ff,#a78bfa,#38bdf8);
-  --green:#22c55e;
-  --red:#f87171;
+  --bg:#eef6f4;
+  --surface:#ffffff;
+  --border:#c8deda;
+  --text:#0d2830;
+  --muted:#537575;
+  --accent:#1F6F8B;
+  --accent2:#3a8c8a;
+  --grad:linear-gradient(135deg,#1F6F8B,#3a8c8a);
+  --green:#2E7D32;
+  --red:#b53838;
 }
-html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+html,body{height:100%;font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 10%, rgba(31,111,139,.07), transparent 42%), radial-gradient(circle at 90% 90%, rgba(46,125,50,.06), transparent 38%), var(--bg);color:var(--text);overflow-x:hidden}
 
 /* ── Aurora background ── */
 .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
-.orb-1{width:700px;height:700px;background:radial-gradient(circle,#6c63ff 0%,transparent 70%);top:-200px;left:-200px;animation:drift1 18s ease-in-out infinite}
-.orb-2{width:500px;height:500px;background:radial-gradient(circle,#a78bfa 0%,transparent 70%);bottom:-100px;right:-100px;animation:drift2 22s ease-in-out infinite}
-.orb-3{width:400px;height:400px;background:radial-gradient(circle,#38bdf8 0%,transparent 70%);top:40%;left:40%;animation:drift3 16s ease-in-out infinite}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.06}
+.orb-1{width:700px;height:700px;background:radial-gradient(circle,#1F6F8B 0%,transparent 70%);top:-200px;left:-200px;animation:drift1 18s ease-in-out infinite}
+.orb-2{width:500px;height:500px;background:radial-gradient(circle,#2E7D32 0%,transparent 70%);bottom:-100px;right:-100px;animation:drift2 22s ease-in-out infinite}
+.orb-3{width:400px;height:400px;background:radial-gradient(circle,#3a8c8a 0%,transparent 70%);top:40%;left:40%;animation:drift3 16s ease-in-out infinite}
 @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,60px)}}
 @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-80px)}}
 @keyframes drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
-.grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(108,99,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.025) 1px,transparent 1px);background-size:40px 40px}
 #particles{position:absolute;inset:0;pointer-events:none}
 
 /* ── Layout ── */
@@ -42,13 +42,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 /* ── Card ── */
 .card{
   width:100%;max-width:440px;
-  background:rgba(255,255,255,.035);
+  background:rgba(255,255,255,.92);
   border:1px solid var(--border);
   border-radius:24px;
   backdrop-filter:blur(28px);
   -webkit-backdrop-filter:blur(28px);
   padding:48px 44px 44px;
-  box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);
+  box-shadow:0 32px 80px rgba(13,40,48,.12),0 0 0 1px rgba(31,111,139,.07);
   animation:cardIn .6s cubic-bezier(.22,1,.36,1) both
 }
 @keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
@@ -68,23 +68,23 @@ label{display:block;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-t
 .input-wrap{position:relative}
 input[type=password],input[type=text]{
   width:100%;padding:14px 48px 14px 16px;
-  background:rgba(255,255,255,.05);
+  background:var(--surface);
   border:1px solid var(--border);
   border-radius:12px;
   color:var(--text);font-size:.95rem;font-family:inherit;
   transition:border-color .2s,box-shadow .2s;outline:none
 }
-input:focus{border-color:rgba(108,99,255,.6);box-shadow:0 0 0 3px rgba(108,99,255,.15)}
+input:focus{border-color:rgba(31,111,139,.6);box-shadow:0 0 0 3px rgba(31,111,139,.12)}
 .eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.1rem;padding:2px;transition:color .2s}
 .eye-btn:hover{color:var(--text)}
 
 /* ── Strength meter ── */
 .strength-bar{display:flex;gap:4px;margin-top:8px}
-.seg{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.1);transition:background .3s}
-.seg.s1{background:#f87171}
-.seg.s2{background:#fb923c}
-.seg.s3{background:#facc15}
-.seg.s4{background:#22c55e}
+.seg{flex:1;height:3px;border-radius:99px;background:rgba(0,0,0,.08);transition:background .3s}
+.seg.s1{background:#c0392b}
+.seg.s2{background:#e67e22}
+.seg.s3{background:#f0c040}
+.seg.s4{background:#27ae60}
 .strength-label{font-size:.72rem;color:var(--muted);margin-top:5px;height:14px}
 
 /* ── Button ── */
@@ -121,19 +121,19 @@ input:focus{border-color:rgba(108,99,255,.6);box-shadow:0 0 0 3px rgba(108,99,25
 .btn-outline{
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 24px;border-radius:10px;
-  border:1px solid var(--border);background:transparent;
+  border:1px solid var(--border);background:rgba(0,0,0,.04);
   color:var(--text);font-size:.9rem;font-family:inherit;cursor:pointer;
   transition:background .2s,border-color .2s
 }
-.btn-outline:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+.btn-outline:hover{background:rgba(0,0,0,.07);border-color:#a8c8c4}
 
 /* ── Error banner ── */
 .err-banner{
   display:none;
-  background:rgba(248,113,113,.12);
-  border:1px solid rgba(248,113,113,.3);
+  background:rgba(181,56,56,.08);
+  border:1px solid rgba(181,56,56,.25);
   border-radius:10px;padding:12px 14px;
-  font-size:.85rem;color:#fca5a5;margin-bottom:20px;
+  font-size:.85rem;color:#b53838;margin-bottom:20px;
   animation:fadeIn .3s ease
 }
 .err-banner.show{display:flex;gap:10px;align-items:flex-start}

@@ -67,4 +67,11 @@ http.createServer((req, res) => {
   });
 }).listen(PORT, () => {
   console.log(`Server avviato → http://localhost:${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Server avviato → http://localhost:${PORT}`);
+    process.exit(0);
+  } else {
+    throw err;
+  }
 });

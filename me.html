@@ -12,13 +12,13 @@
 
     :root {
       color-scheme: light;
-      --bg: #f2f7fa;
+      --bg: #eef6f4;
       --sb: #ffffff;
       --surface: #ffffff;
-      --surface-2: #f4f8fb;
-      --border: #d6e1e8;
-      --text: #132f3d;
-      --muted: #607784;
+      --surface-2: #f0f7f5;
+      --border: #c8deda;
+      --text: #0d2830;
+      --muted: #537575;
       --p: #1F6F8B;
       --a: #3a8c8a;
       --g: #2E7D32;
@@ -750,9 +750,190 @@
 
     .mobile-nav button.on { color: #fff; border-color: rgba(58,140,138,.4); background: rgba(58,140,138,.16); }
 
+    /* ====== BENTO GRID ====== */
+    .bento {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas:
+        "hero  posts  stat"
+        "hero  views  stat"
+        "chart chart  draft"
+        "recent notif motto";
+    }
+
+    .bc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(13,40,48,.05);
+    }
+
+    .bc-hero { grid-area: hero; justify-content: flex-start; padding: 28px; }
+    .bc-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1F6F8B, #3a8c8a, #2E7D32);
+      border-radius: 18px 18px 0 0;
+    }
+
+    .bc-eyebrow {
+      font-size: .71rem;
+      font-weight: 700;
+      color: #3a8c8a;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 10px;
+    }
+
+    .bc-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .bc-sub {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .bc-hero-foot {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bc-hero-foot .period-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .bc-kpi { background: var(--surface-2); justify-content: center; }
+
+    .bc-kpi-lbl {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 8px;
+    }
+
+    .bc-kpi-val {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -.03em;
+      line-height: 1;
+      color: var(--p);
+      margin-bottom: 6px;
+    }
+
+    .bc-kpi-meta { font-size: .74rem; color: var(--muted); display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+
+    .bc-stat {
+      grid-area: stat;
+      background: linear-gradient(145deg, #0b5c6e 0%, #1F6F8B 55%, #3a8c8a 100%);
+      border-color: transparent;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      box-shadow: 0 8px 28px rgba(31,111,139,.32);
+    }
+
+    .bc-stat::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-conic-gradient(rgba(255,255,255,.04) 0% 25%, transparent 0% 50%) 0 0 / 6px 6px;
+      pointer-events: none;
+    }
+
+    .bc-stat-label {
+      font-size: .72rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.65);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 10px;
+    }
+
+    .bc-stat-num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -.04em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .bc-stat-sub {
+      font-size: .8rem;
+      color: rgba(255,255,255,.62);
+      margin-bottom: 10px;
+    }
+
+    .bc-stat .delta { color: rgba(255,255,255,.85); font-size: .8rem; }
+    .bc-stat .delta.up { color: #a5d6a7; }
+    .bc-stat .delta.down { color: #ef9a9a; }
+
+    .bc-chart { grid-area: chart; }
+    .bc-chart .section-title { margin-bottom: 10px; }
+
+    .bc-list { grid-area: auto; align-content: start; justify-content: flex-start; }
+    .bc-list-head { margin-bottom: 10px; }
+    .bc-list-head h3 { font-family: 'Fraunces', Georgia, serif; font-size: .95rem; margin-bottom: 2px; }
+    .bc-list-head p { font-size: .75rem; color: var(--muted); }
+
+    .bc-motto {
+      grid-area: motto;
+      background: var(--text);
+      border-color: transparent;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(13,40,48,.14);
+    }
+
+    .bc-motto-text {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -.01em;
+      line-height: 1.45;
+    }
+
+    .bc-motto-text em { color: #67c9c7; font-style: normal; }
+
     @media (max-width: 1200px) {
       .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .ops-grid { grid-template-columns: 1fr 1fr; }
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero  stat"
+          "hero  stat"
+          "posts views"
+          "chart chart"
+          "draft recent"
+          "notif motto";
+      }
     }
 
     @media (max-width: 940px) {
@@ -762,6 +943,16 @@
       .main { padding: 10px; }
       .topbar { top: 6px; }
       .ops-grid { grid-template-columns: 1fr; }
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero  stat"
+          "posts views"
+          "chart chart"
+          "draft recent"
+          "notif motto";
+      }
+      .bc-hero { min-height: 200px; }
     }
 
     @media (max-width: 560px) {
@@ -769,6 +960,12 @@
       .top-actions { width: 100%; justify-content: flex-end; }
       .dash-head-top { gap: 10px; }
       .chart-bars { height: 170px; }
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "hero" "stat" "posts" "views" "chart" "draft" "recent" "notif" "motto";
+      }
+      .bc-stat-num { font-size: 3.5rem; }
     }
   </style>
 </head>
@@ -815,95 +1012,116 @@
       <a href="preferenze.html">Impostazioni</a>
     </div>
 
-    <section class="card dash-head" id="dashboard">
-      <div class="dash-head-top">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Panoramica operativa: numeri chiave, andamento e attivita recenti per decidere rapidamente cosa pubblicare o correggere.</p>
-        </div>
-        <div class="head-meta">
-          <span class="chip" id="chip-user">@utente</span>
-          <label class="chip" for="global-period">Periodo
-            <select class="select" id="global-period" aria-label="Periodo globale">
-              <option value="7d">Ultimi 7 giorni</option>
-              <option value="30d">Ultimi 30 giorni</option>
-              <option value="90d">Ultimi 90 giorni</option>
-            </select>
-          </label>
-          <button class="btn btn-primary" id="open-create" type="button">Crea post</button>
-        </div>
-      </div>
-      <div class="tiny" id="sync-note">Sincronizzazione dati in corso...</div>
-    </section>
+    <div class="bento">
 
-    <section class="card" aria-label="KPI overview">
-      <div class="section-title">
-        <h2>Overview</h2>
-        <p>Valori numerici con confronto sul periodo precedente.</p>
-      </div>
-      <div class="kpi-grid" id="kpi-grid"></div>
-    </section>
-
-    <section class="card" id="analytics" aria-label="Andamento">
-      <div class="section-title">
-        <div>
-          <h2>Andamento</h2>
-          <p>Metrica principale nel tempo: interazioni (like + commenti).</p>
+      <!-- HERO — spans 2 rows -->
+      <article class="bc bc-hero" id="dashboard">
+        <div class="bc-eyebrow">Rivalta sul Mincio</div>
+        <div class="bc-title">Dashboard</div>
+        <div class="bc-sub">Panoramica operativa: pubblica, monitora e gestisci i tuoi contenuti in un colpo d'occhio.</div>
+        <div class="bc-hero-foot">
+          <div class="period-row">
+            <span class="chip" id="chip-user">@utente</span>
+            <label class="chip" for="global-period" style="gap:6px">Periodo
+              <select class="select" id="global-period" aria-label="Periodo globale">
+                <option value="7d">Ultimi 7 giorni</option>
+                <option value="30d">Ultimi 30 giorni</option>
+                <option value="90d">Ultimi 90 giorni</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" id="open-create" type="button">+ Crea post</button>
+          </div>
+          <div class="tiny" id="sync-note">Sincronizzazione dati in corso...</div>
         </div>
-        <div class="group-switch" role="group" aria-label="Filtri andamento">
-          <button class="switch-btn on" type="button" data-group="day">Giorno</button>
-          <button class="switch-btn" type="button" data-group="week">Settimana</button>
-          <button class="switch-btn" type="button" data-group="month">Mese</button>
+      </article>
+
+      <!-- KPI: Post pubblicati -->
+      <article class="bc bc-kpi" style="grid-area:posts">
+        <div class="bc-kpi-lbl">Post pubblicati</div>
+        <div class="bc-kpi-val" id="bc-val-posts">–</div>
+        <div class="bc-kpi-meta" id="bc-meta-posts"><span>nel periodo</span></div>
+      </article>
+
+      <!-- Big stat: Interazioni — spans 2 rows -->
+      <article class="bc bc-stat" id="analytics">
+        <div class="bc-stat-label">Interazioni</div>
+        <div class="bc-stat-num" id="bc-val-inter">–</div>
+        <div class="bc-stat-sub">like + commenti nel periodo</div>
+        <div id="bc-meta-inter"></div>
+      </article>
+
+      <!-- KPI: Visualizzazioni -->
+      <article class="bc bc-kpi" style="grid-area:views">
+        <div class="bc-kpi-lbl">Visualizzazioni</div>
+        <div class="bc-kpi-val" id="bc-val-views">–</div>
+        <div class="bc-kpi-meta" id="bc-meta-views"><span>nel periodo</span></div>
+      </article>
+
+      <!-- Chart: Andamento — spans 2 cols -->
+      <article class="bc bc-chart">
+        <div class="section-title">
+          <div>
+            <h2>Andamento</h2>
+            <p>Interazioni (like + commenti) nel tempo.</p>
+          </div>
+          <div class="group-switch" role="group" aria-label="Filtri andamento">
+            <button class="switch-btn on" type="button" data-group="day">Giorno</button>
+            <button class="switch-btn" type="button" data-group="week">Settimana</button>
+            <button class="switch-btn" type="button" data-group="month">Mese</button>
+          </div>
         </div>
-      </div>
-
-      <div class="chart-wrap">
-        <div class="chart-head">
-          <span id="chart-title">Interazioni nel periodo</span>
-          <span id="chart-total">Totale: 0</span>
+        <div class="chart-wrap">
+          <div class="chart-head">
+            <span id="chart-title">Interazioni nel periodo</span>
+            <span id="chart-total">Totale: 0</span>
+          </div>
+          <div class="chart-bars" id="chart-bars"></div>
+          <div class="chart-labels" id="chart-labels"></div>
         </div>
-        <div class="chart-bars" id="chart-bars"></div>
-        <div class="chart-labels" id="chart-labels"></div>
-      </div>
-    </section>
+      </article>
 
-    <section class="card" id="contenuti" aria-label="Operativo">
-      <div class="section-title">
-        <div>
-          <h2>Operativo</h2>
-          <p>Attivita recenti, bozze in sospeso e notifiche rilevanti.</p>
-        </div>
-      </div>
-
-      <div class="ops-grid">
-        <article class="ops-card">
-          <h3>Attivita recenti</h3>
-          <p>Ultimi post e modifiche.</p>
-          <div class="list" id="recent-list"></div>
-        </article>
-
-        <article class="ops-card">
-          <h3>Bozze / In sospeso</h3>
+      <!-- Bozze in sospeso -->
+      <article class="bc bc-list" style="grid-area:draft" id="contenuti">
+        <div class="bc-list-head">
+          <h3>📝 Bozze in sospeso</h3>
           <p>Contenuti da completare o pubblicare.</p>
-          <div class="list" id="drafts-list"></div>
-          <div class="note-line">Le azioni importanti restano sempre visibili: usa <strong>Crea post</strong> qui sopra.</div>
-        </article>
-
-        <article class="ops-card" id="media">
-          <h3>Notifiche rilevanti</h3>
-          <p>Avvisi recenti su like, commenti e coda operativa.</p>
-          <div class="list" id="notif-list"></div>
-        </article>
-      </div>
-
-      <div class="empty-state" id="empty-dashboard" style="display:none;margin-top:12px">
-        <p><strong>Nessun dato disponibile.</strong></p>
-        <p>Inizia creando il primo contenuto: poi vedrai KPI, andamento e lista operativa.</p>
-        <div>
-          <button class="btn btn-primary" type="button" id="empty-create">Crea</button>
         </div>
+        <div class="list" id="drafts-list"></div>
+        <div class="note-line" style="margin-top:auto;padding-top:10px">Usa <strong>+ Crea post</strong> per iniziare.</div>
+      </article>
+
+      <!-- Attività recenti -->
+      <article class="bc bc-list" style="grid-area:recent">
+        <div class="bc-list-head">
+          <h3>🕐 Attività recenti</h3>
+          <p>Ultimi post e modifiche.</p>
+        </div>
+        <div class="list" id="recent-list"></div>
+      </article>
+
+      <!-- Notifiche -->
+      <article class="bc bc-list" style="grid-area:notif" id="media">
+        <div class="bc-list-head">
+          <h3>🔔 Notifiche</h3>
+          <p>Like, commenti e avvisi operativi.</p>
+        </div>
+        <div class="list" id="notif-list"></div>
+      </article>
+
+      <!-- Motto -->
+      <article class="bc bc-motto">
+        <div class="bc-motto-text">"La comunità <em>vive</em><br>nelle sue <em>storie</em>."</div>
+      </article>
+
+    </div><!-- /bento -->
+
+    <div class="empty-state" id="empty-dashboard" style="display:none;margin-top:12px">
+      <p><strong>Nessun dato disponibile.</strong></p>
+      <p>Inizia creando il primo contenuto: poi vedrai andamento e attività.</p>
+      <div>
+        <button class="btn btn-primary" type="button" id="empty-create">Crea</button>
       </div>
-    </section>
+    </div>
   </main>
 </div>
 
@@ -1070,9 +1288,6 @@
   }
 
   function renderKpis() {
-    const grid = $('kpi-grid');
-    if (!grid) return;
-
     const days = PERIOD_DAYS[STATE.period] || 7;
     const periodText = days === 7 ? 'ultimi 7 giorni' : (days === 30 ? 'ultimi 30 giorni' : 'ultimi 90 giorni');
 
@@ -1097,15 +1312,20 @@
     const currViews = currPublished * 120 + currInteractions * 14;
     const prevViews = prevPublished * 120 + prevInteractions * 14;
 
-    const growthCurr = currPublished + currInteractions;
-    const growthPrev = prevPublished + prevInteractions;
+    function setKpi(valId, metaId, value, delta) {
+      const valEl = $(valId);
+      const metaEl = $(metaId);
+      if (valEl) valEl.textContent = typeof value === 'number' ? value.toLocaleString('it-IT') : value;
+      if (metaEl) metaEl.innerHTML = deltaBadge(delta) + ' <span>' + periodText + '</span>';
+    }
 
-    grid.innerHTML = [
-      buildKpi('Post pubblicati', currPublished, percentChange(currPublished, prevPublished), periodText),
-      buildKpi('Visualizzazioni', currViews.toLocaleString('it-IT'), percentChange(currViews, prevViews), periodText),
-      buildKpi('Interazioni', currInteractions, percentChange(currInteractions, prevInteractions), periodText),
-      buildKpi('Crescita', growthCurr, percentChange(growthCurr, growthPrev), periodText),
-    ].join('');
+    setKpi('bc-val-posts', 'bc-meta-posts', currPublished, percentChange(currPublished, prevPublished));
+    setKpi('bc-val-views', 'bc-meta-views', currViews, percentChange(currViews, prevViews));
+
+    const interEl = $('bc-val-inter');
+    const interMetaEl = $('bc-meta-inter');
+    if (interEl) interEl.textContent = currInteractions.toLocaleString('it-IT');
+    if (interMetaEl) interMetaEl.innerHTML = deltaBadge(percentChange(currInteractions, prevInteractions));
   }
 
   function buildBuckets(start, end, group) {
