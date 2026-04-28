@@ -87,8 +87,7 @@
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
         "hero     hero"
-        "articles since"
-        "actions  actions";
+        "articles since";
     }
 
     /* ── Card base ── */
@@ -164,14 +163,6 @@
     }
 
     .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; line-height: 1.3; }
-
-    /* ── Actions card ── */
-    .card-actions {
-      grid-area: actions;
-      display: none; flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center;
-      padding: 14px 20px;
-    }
-    .card-actions.visible { display: flex; }
 
     .btn {
       display: inline-flex; align-items: center; gap: 6px;
@@ -275,7 +266,7 @@
     @media (max-width: 560px) {
       .bento {
         grid-template-columns: 1fr;
-        grid-template-areas: "hero" "articles" "since" "actions";
+        grid-template-areas: "hero" "articles" "since";
       }
       .card-hero { flex-direction: column; align-items: flex-start; }
       .page { padding: 20px 14px 60px; }
@@ -333,9 +324,6 @@
       <div class="num skel" id="stat-since" style="font-size:20px;color:var(--accent-2);width:90px;height:24px"></div>
       <div class="stat-label">Membro da</div>
     </div>
-
-    <!-- Actions (own profile only) -->
-    <div class="card card-actions" id="tile-actions"></div>
 
   </div>
 
@@ -421,18 +409,6 @@ const un = new URLSearchParams(location.search).get('u');
   const {count} = await sb.from('posts').select('id', {count:'exact', head:true}).eq('user_id', prof.id).eq('published', true);
   const pe2 = $('stat-posts'); pe2.classList.remove('skel'); pe2.style = ''; pe2.textContent = count || 0;
   const se  = $('stat-since'); se.classList.remove('skel');  se.style  = ''; se.textContent  = fmtY(prof.created_at);
-
-  /* Own-profile actions — 4 clear navigation buttons */
-  if (session?.user?.id === prof.id) {
-    const tile = $('tile-actions');
-    tile.classList.add('visible');
-    tile.innerHTML = `
-      <a href="index.html" class="btn btn-ghost">Home</a>
-      <a href="me.html" class="btn btn-ghost">Dashboard</a>
-      <a href="me.html#write" class="btn btn-ghost">Scrivi articolo</a>
-      <a href="modifica-profilo.html?u=${encodeURIComponent(prof.username)}" class="btn btn-primary">Modifica profilo</a>
-    `;
-  }
 
   /* Posts */
   const {data:posts} = await sb.from('posts')
