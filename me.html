@@ -168,13 +168,6 @@
       color: #fff;
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
     .btn {
       display: inline-flex;
       align-items: center;
@@ -1011,7 +1004,6 @@
 
     @media (max-width: 560px) {
       .kpi-grid { grid-template-columns: 1fr; }
-      .top-actions { width: 100%; justify-content: flex-end; }
       .dash-head-top { gap: 10px; }
       .chart-bars { height: 170px; }
       .bento {
@@ -1026,6 +1018,61 @@
     @media (prefers-reduced-motion: reduce) {
       .bc { animation: none !important; transition: none !important; opacity: 1; }
     }
+
+    /* ── User dropdown ── */
+    .user-menu { position: relative; }
+    .user-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 12px 5px 6px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; font-size: .82rem; font-weight: 600;
+      color: var(--text); cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .15s;
+      white-space: nowrap;
+    }
+    .user-btn:hover { border-color: #aaa; }
+    .user-avatar {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .user-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: #fff; border: 1px solid rgba(0,0,0,.07);
+      border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.14);
+      min-width: 210px; z-index: 200; padding: 6px;
+    }
+    .user-dropdown.open { display: block; }
+    .user-dropdown__title {
+      padding: 8px 10px 6px; font-size: .67rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .07em; color: #72808a;
+    }
+    .user-dropdown a,
+    .user-dropdown button {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; width: 100%;
+      font-size: .87rem; font-weight: 500; color: var(--text);
+      background: none; border: none; cursor: pointer;
+      text-decoration: none; transition: background .15s;
+      text-align: left; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .user-dropdown a:hover,
+    .user-dropdown button:hover { background: var(--bg); }
+    .user-dropdown a.active {
+      color: #1F6F8B; font-weight: 700;
+      background: rgba(31,111,139,.07);
+    }
+    .user-dropdown a.item-primary {
+      color: #fff; font-weight: 600;
+      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
+      margin-top: 2px;
+    }
+    .user-dropdown a.item-primary:hover { opacity: .9; }
+    .user-dropdown__sep { height: 1px; background: var(--border); margin: 6px 4px; }
+    .user-dropdown .danger { color: #b94747; }
   </style>
 </head>
 <body>
@@ -1036,14 +1083,7 @@
         <span class="top-logo">🌿</span>
         <span>Rivalta sul Mincio</span>
       </a>
-      <div class="top-actions">
-        <a href="javascript:history.back()" class="btn btn-ghost">← Torna indietro</a>
-        <a href="index.html" class="btn btn-ghost">Home</a>
-        <a href="profile.html" id="top-profilo" class="btn btn-ghost">Profilo</a>
-        <a href="me.html" class="btn btn-ghost">Dashboard</a>
-        <a href="write.html" class="btn btn-primary">✍ Scrivi</a>
-        <a href="modifica-profilo.html" id="top-modifica" class="btn btn-ghost" style="display:none">Modifica profilo</a>
-      </div>
+      <div id="user-menu-wrap"></div>
     </header>
 
     <div class="mobile-nav" aria-label="Menu rapido mobile">
@@ -1841,12 +1881,68 @@
       const name = '@' + (profile.username || 'utente');
       chip.textContent = name;
     }
-    if (profile.username) {
-      const tp = $('top-profilo');
-      const tm = $('top-modifica');
-      if (tp) { tp.href = 'profile.html?u=' + encodeURIComponent(profile.username); tp.style.display = ''; }
-      if (tm) { tm.href = 'modifica-profilo.html?u=' + encodeURIComponent(profile.username); tm.style.display = ''; }
-    }
+
+    /* ── Build user dropdown ── */
+    (function buildUserMenu() {
+      const wrap = $('user-menu-wrap');
+      if (!wrap) return;
+
+      const safe = String(profile.username || 'utente').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const profileHref = 'profile.html?u=' + encodeURIComponent(profile.username || '');
+      const emoji = profile.avatar_emoji || '🌿';
+      const color = profile.avatar_color || '#1F6F8B';
+
+      wrap.innerHTML = `
+        <div class="user-menu" id="userMenuWrap">
+          <button class="user-btn" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar" style="background:${color}">${emoji}</span>
+            @${safe}
+          </button>
+          <div class="user-dropdown" id="userMenuDropdown" role="menu">
+            <div class="user-dropdown__title">Navigazione</div>
+            <a href="javascript:history.back()" role="menuitem">←&nbsp; Torna indietro</a>
+            <a href="index.html" role="menuitem">🏠&nbsp; Home</a>
+            <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
+            <a href="me.html" class="active" role="menuitem">📊&nbsp; Dashboard</a>
+            <a href="write.html" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
+            <div class="user-dropdown__sep"></div>
+            <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
+          </div>
+        </div>`;
+
+      const btn = $('userMenuBtn');
+      const dd  = $('userMenuDropdown');
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = dd.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+
+      dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
+      });
+
+      dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        dd.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }));
+
+      document.addEventListener('click', (e) => {
+        if (!$('userMenuWrap')?.contains(e.target)) {
+          dd.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      }, { capture: true });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          dd.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
 
     buildCategoryOptions();
     bindNavigation();
