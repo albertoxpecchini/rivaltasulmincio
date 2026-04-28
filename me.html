@@ -1016,7 +1016,7 @@
                 <option value="90d">Ultimi 90 giorni</option>
               </select>
             </label>
-            <button class="btn btn-primary" id="open-create" type="button">+ Crea post</button>
+            <a class="btn btn-primary" href="write.html">+ Crea post</a>
           </div>
           <div class="tiny" id="sync-note">Sincronizzazione dati in corso...</div>
         </div>
@@ -1106,7 +1106,7 @@
       <p><strong>Nessun dato disponibile.</strong></p>
       <p>Inizia creando il primo contenuto: poi vedrai andamento e attività.</p>
       <div>
-        <button class="btn btn-primary" type="button" id="empty-create">Crea</button>
+        <a class="btn btn-primary" href="write.html">Crea</a>
       </div>
     </div>
   </main>
@@ -1510,7 +1510,7 @@
             <span>${relativeTime(p.updated_at || p.created_at)}</span>
           </div>
           <div>
-            <button class="btn btn-ghost" type="button" data-edit="${p.id}" style="padding:5px 9px;font-size:.74rem">Continua bozza</button>
+            <a class="btn btn-ghost" href="write.html?id=${p.id}" style="padding:5px 9px;font-size:.74rem">Continua bozza</a>
           </div>
         </article>`;
     }).join('');
@@ -1662,7 +1662,7 @@
   function bindHashRouting() {
     const hash = (window.location.hash || '').replace('#', '');
     if (hash === 'write') {
-      openCreateModal(null);
+      window.location.href = 'write.html';
       return;
     }
     if (hash === 'posts') {
@@ -1671,6 +1671,9 @@
     }
     if (hash === 'profile') {
       window.location.href = 'preferenze.html';
+    }
+    if (hash === 'write') {
+      window.location.href = 'write.html';
     }
   }
 
