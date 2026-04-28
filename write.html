@@ -106,6 +106,223 @@
 
     .page-sub { font-size: .84rem; color: var(--muted); margin-top: 4px; }
 
+    /* ── Apple Bento Project Stats ── */
+    .project-bento {
+      display: grid;
+      gap: 6px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(96px, 1fr));
+      grid-template-areas:
+        "ps-hero   ps-pub   ps-draft"
+        "ps-hero   ps-total ps-top"
+        "ps-chart  ps-chart ps-quote";
+      aspect-ratio: 52 / 19;
+    }
+
+    .ps-card {
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.05);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: psIn .45s ease both;
+    }
+
+    .ps-card:nth-child(1) { animation-delay: .03s; }
+    .ps-card:nth-child(2) { animation-delay: .06s; }
+    .ps-card:nth-child(3) { animation-delay: .09s; }
+    .ps-card:nth-child(4) { animation-delay: .12s; }
+    .ps-card:nth-child(5) { animation-delay: .15s; }
+    .ps-card:nth-child(6) { animation-delay: .18s; }
+    .ps-card:nth-child(7) { animation-delay: .21s; }
+
+    @keyframes psIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ps-hero {
+      grid-area: ps-hero;
+      padding: 22px;
+      justify-content: space-between;
+    }
+
+    .ps-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1d1d1f, #6e6e73, #1d1d1f);
+      border-radius: 18px 18px 0 0;
+    }
+
+    .ps-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 8px;
+    }
+
+    .ps-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.25rem, 2vw, 1.6rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.02em;
+      line-height: 1.12;
+    }
+
+    .ps-sub {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    .ps-date {
+      margin-top: 10px;
+      font-size: .72rem;
+      color: #aeaeb2;
+    }
+
+    .ps-stat { justify-content: center; }
+    .ps-pub { grid-area: ps-pub; }
+    .ps-draft { grid-area: ps-draft; }
+    .ps-total { grid-area: ps-total; }
+    .ps-top { grid-area: ps-top; }
+
+    .ps-num {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1;
+      margin-bottom: 4px;
+      color: #0071e3;
+    }
+
+    .ps-pub .ps-num { color: #0071e3; }
+    .ps-draft .ps-num { color: #ff6b6b; }
+    .ps-total .ps-num { color: #00b4d8; }
+    .ps-top .ps-num {
+      color: #34d399;
+      font-size: 1.26rem;
+      line-height: 1.2;
+      letter-spacing: -.01em;
+      min-height: 2.4em;
+      display: flex;
+      align-items: center;
+    }
+
+    .ps-lbl {
+      font-size: .76rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .ps-chart {
+      grid-area: ps-chart;
+      padding: 16px 18px;
+      justify-content: flex-start;
+    }
+
+    .ps-chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .ps-chart-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .ps-chart-badge {
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    .ps-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 112px;
+    }
+
+    .ps-bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .ps-bar-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #34d399;
+      line-height: 1;
+    }
+
+    .ps-bar {
+      width: 100%;
+      border-radius: 6px;
+      min-height: 6px;
+      background: linear-gradient(180deg, #a7f3d0, #6ee7b7);
+      transition: height .22s ease;
+    }
+
+    .ps-bar-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: #86868b;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .ps-quote {
+      grid-area: ps-quote;
+      background: #1d1d1f;
+      justify-content: center;
+      padding: 18px 20px;
+    }
+
+    .ps-quote-text {
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -.01em;
+      line-height: 1.35;
+    }
+
+    .ps-quote-text em {
+      color: #34d399;
+      font-style: normal;
+    }
+
+    .ps-meta {
+      margin-top: 7px;
+      font-size: .7rem;
+      color: rgba(255,255,255,.55);
+    }
+
     /* ── Bento grid ── */
     .bento {
       display: grid;
@@ -241,11 +458,31 @@
     .toast.ok  { color: var(--ok); }
 
     @media (max-width: 700px) {
+      .project-bento {
+        aspect-ratio: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "ps-hero"
+          "ps-pub"
+          "ps-draft"
+          "ps-total"
+          "ps-top"
+          "ps-chart"
+          "ps-quote";
+      }
+
+      .ps-bars { height: 96px; }
+
       .bento {
         grid-template-columns: 1fr;
         grid-template-areas: "editor" "meta" "img" "status" "actions";
       }
       .page { padding: 16px 12px 60px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ps-card, .ps-bar { animation: none; transition: none; }
     }
   </style>
 </head>
@@ -279,6 +516,50 @@
   </div>
 
   <div class="err-msg" id="err-msg"></div>
+
+  <section class="project-bento" aria-label="Statistiche progetto">
+    <article class="ps-card ps-hero">
+      <div>
+        <div class="ps-eyebrow">Project Stats</div>
+        <div class="ps-title">Panoramica rapida del progetto</div>
+        <div class="ps-sub">Metriche contenuti in stile Apple Bento, aggiornate dai tuoi post.</div>
+      </div>
+      <div class="ps-date" id="ps-date">Aggiornamento in corso...</div>
+    </article>
+
+    <article class="ps-card ps-stat ps-pub">
+      <div class="ps-num" id="ps-published">0</div>
+      <div class="ps-lbl">Post pubblicati</div>
+    </article>
+
+    <article class="ps-card ps-stat ps-draft">
+      <div class="ps-num" id="ps-drafts">0</div>
+      <div class="ps-lbl">Bozze attive</div>
+    </article>
+
+    <article class="ps-card ps-stat ps-total">
+      <div class="ps-num" id="ps-total">0</div>
+      <div class="ps-lbl">Contenuti totali</div>
+    </article>
+
+    <article class="ps-card ps-stat ps-top">
+      <div class="ps-num" id="ps-top-category">N/A</div>
+      <div class="ps-lbl">Categoria principale</div>
+    </article>
+
+    <article class="ps-card ps-chart">
+      <div class="ps-chart-head">
+        <div class="ps-chart-title">Post pubblicati / ultimi 4 mesi</div>
+        <div class="ps-chart-badge" id="ps-chart-growth">0%</div>
+      </div>
+      <div class="ps-bars" id="ps-bars"></div>
+    </article>
+
+    <article class="ps-card ps-quote">
+      <div class="ps-quote-text">"Ogni bozza e un passo, ogni pubblicazione crea <em>impatto</em>."</div>
+      <div class="ps-meta" id="ps-meta">0 caratteri medi per contenuto</div>
+    </article>
+  </section>
 
   <div class="bento">
 
@@ -407,6 +688,141 @@
     return new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
+  function fmtNum(v) {
+    return Number(v || 0).toLocaleString('it-IT');
+  }
+
+  function monthKey(dateObj) {
+    return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function monthLabel(dateObj) {
+    return dateObj.toLocaleDateString('it-IT', { month: 'short' }).replace('.', '').toUpperCase();
+  }
+
+  function trendPct(curr, prev) {
+    if (prev <= 0 && curr <= 0) return 0;
+    if (prev <= 0) return 100;
+    return Math.round(((curr - prev) / prev) * 100);
+  }
+
+  function renderProjectStats(posts) {
+    const allPosts = Array.isArray(posts) ? posts : [];
+    const published = allPosts.filter(p => p.published);
+    const drafts = allPosts.length - published.length;
+
+    const categoryCount = {};
+    let totalChars = 0;
+
+    allPosts.forEach((p) => {
+      const cat = String(p.category || '').trim();
+      if (cat) categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+      totalChars += String(p.content || '').trim().length;
+    });
+
+    let topCategory = 'N/A';
+    let topCount = 0;
+    Object.keys(categoryCount).forEach((key) => {
+      if (categoryCount[key] > topCount) {
+        topCount = categoryCount[key];
+        topCategory = key;
+      }
+    });
+
+    const avgChars = allPosts.length ? Math.round(totalChars / allPosts.length) : 0;
+
+    const now = new Date();
+    const months = [];
+    for (let i = 3; i >= 0; i -= 1) {
+      months.push(new Date(now.getFullYear(), now.getMonth() - i, 1));
+    }
+
+    const publishedByMonth = {};
+    published.forEach((p) => {
+      const raw = p.published_at || p.created_at;
+      if (!raw) return;
+      const d = new Date(raw);
+      if (Number.isNaN(d.getTime())) return;
+      const key = monthKey(new Date(d.getFullYear(), d.getMonth(), 1));
+      publishedByMonth[key] = (publishedByMonth[key] || 0) + 1;
+    });
+
+    const monthCounts = months.map((m) => ({
+      label: monthLabel(m),
+      count: publishedByMonth[monthKey(m)] || 0,
+    }));
+
+    const currentMonth = monthCounts[monthCounts.length - 1]?.count || 0;
+    const prevMonth = monthCounts[monthCounts.length - 2]?.count || 0;
+    const growth = trendPct(currentMonth, prevMonth);
+
+    const barsWrap = $('ps-bars');
+    const maxValue = Math.max(1, ...monthCounts.map(x => x.count));
+    if (barsWrap) {
+      barsWrap.innerHTML = monthCounts.map((item) => {
+        const h = Math.max(10, Math.round((item.count / maxValue) * 78));
+        let gradient = 'linear-gradient(180deg,#a7f3d0,#6ee7b7)';
+        if (item.count >= maxValue * 0.9) gradient = 'linear-gradient(180deg,#34d399,#059669)';
+        else if (item.count >= maxValue * 0.55) gradient = 'linear-gradient(180deg,#6ee7b7,#34d399)';
+        return (
+          `<div class="ps-bar-group">` +
+          `<div class="ps-bar-val">${item.count}</div>` +
+          `<div class="ps-bar" style="height:${h}px;background:${gradient}"></div>` +
+          `<div class="ps-bar-lbl">${item.label}</div>` +
+          `</div>`
+        );
+      }).join('');
+    }
+
+    const publishedNode = $('ps-published');
+    const draftsNode = $('ps-drafts');
+    const totalNode = $('ps-total');
+    const topNode = $('ps-top-category');
+    const growthNode = $('ps-chart-growth');
+    const metaNode = $('ps-meta');
+    const dateNode = $('ps-date');
+
+    if (publishedNode) publishedNode.textContent = fmtNum(published.length);
+    if (draftsNode) draftsNode.textContent = fmtNum(drafts);
+    if (totalNode) totalNode.textContent = fmtNum(allPosts.length);
+    if (topNode) topNode.textContent = topCategory;
+
+    if (growthNode) {
+      const sign = growth > 0 ? '+' : '';
+      growthNode.textContent = `${sign}${growth}%`;
+      growthNode.style.color = growth >= 0 ? '#059669' : '#ff6b6b';
+    }
+
+    if (metaNode) {
+      metaNode.textContent = `${fmtNum(avgChars)} caratteri medi per contenuto`;
+    }
+
+    if (dateNode) {
+      const stamp = new Date().toLocaleDateString('it-IT', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+      dateNode.textContent = `Aggiornato il ${stamp}`;
+    }
+  }
+
+  async function refreshProjectStats() {
+    if (!session?.user?.id) return;
+    const { data, error } = await sb.from('posts')
+      .select('id,category,published,content,created_at,published_at')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    if (error) {
+      renderProjectStats([]);
+      return;
+    }
+
+    renderProjectStats(data || []);
+  }
+
   function autoTitle(content) {
     const c = String(content || '').replace(/\s+/g, ' ').trim();
     if (!c) return 'Nuovo post';
@@ -521,6 +937,7 @@
     $('btn-draft').disabled = $('btn-publish').disabled = false;
     if (error) { setErr('Errore: ' + error.message); return; }
     toast(publish ? 'Post pubblicato!' : 'Bozza salvata.', 'ok');
+    await refreshProjectStats();
     if (editId) await loadPost(editId);
   }
 
@@ -547,6 +964,7 @@
     buildCategories();
     buildImgPicker();
     bindCounters();
+    await refreshProjectStats();
     const params = new URLSearchParams(location.search);
     editId = params.get('id') || null;
     if (editId) await loadPost(editId);
