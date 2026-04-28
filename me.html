@@ -988,6 +988,8 @@
       </a>
       <div class="top-actions">
         <a class="btn btn-ghost" href="index.html">Home</a>
+        <a class="btn btn-ghost" id="top-profilo" href="profile.html" style="display:none">Profilo</a>
+        <a class="btn btn-ghost" id="top-modifica" href="modifica-profilo.html" style="display:none">Modifica profilo</a>
       </div>
     </header>
 
@@ -1756,6 +1758,12 @@
     if (chip) {
       const name = '@' + (profile.username || 'utente');
       chip.textContent = name;
+    }
+    if (profile.username) {
+      const tp = $('top-profilo');
+      const tm = $('top-modifica');
+      if (tp) { tp.href = 'profile.html?u=' + encodeURIComponent(profile.username); tp.style.display = ''; }
+      if (tm) { tm.href = 'modifica-profilo.html?u=' + encodeURIComponent(profile.username); tm.style.display = ''; }
     }
 
     buildCategoryOptions();

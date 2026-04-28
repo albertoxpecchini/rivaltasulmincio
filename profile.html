@@ -366,9 +366,21 @@ const ILL = {
 };
 
 const un = new URLSearchParams(location.search).get('u');
-if (!un) location.href = 'index.html';
 
 (async function () {
+  /* Redirect to own profile if ?u= is missing */
+  if (!un) {
+    try {
+      const { data: { session: s } } = await sb.auth.getSession();
+      if (s?.user) {
+        const { data: me } = await sb.from('profiles').select('username').eq('id', s.user.id).single();
+        if (me?.username) { location.replace('profile.html?u=' + me.username); return; }
+      }
+    } catch (_) {}
+    location.href = 'login.html';
+    return;
+  }
+
   let session = null;
   try { const {data} = await sb.auth.getSession(); session = data?.session || null; } catch (_) {}
 
@@ -402,11 +414,16 @@ if (!un) location.href = 'index.html';
   const pe2 = $('stat-posts'); pe2.classList.remove('skel'); pe2.style = ''; pe2.textContent = count || 0;
   const se  = $('stat-since'); se.classList.remove('skel');  se.style  = ''; se.textContent  = fmtY(prof.created_at);
 
-  /* Own-profile actions */
+  /* Own-profile actions — 4 clear navigation buttons */
   if (session?.user?.id === prof.id) {
     const tile = $('tile-actions');
     tile.classList.add('visible');
-    tile.innerHTML = `<a href="me.html" class="btn btn-primary">✏️ Modifica profilo</a><a href="write.html" class="btn btn-ghost">+ Scrivi articolo</a>`;
+    tile.innerHTML = `
+      <a href="index.html" class="btn btn-ghost">Home</a>
+      <a href="me.html" class="btn btn-ghost">Dashboard</a>
+      <a href="me.html#write" class="btn btn-ghost">Scrivi articolo</a>
+      <a href="modifica-profilo.html?u=${encodeURIComponent(prof.username)}" class="btn btn-primary">Modifica profilo</a>
+    `;
   }
 
   /* Posts */

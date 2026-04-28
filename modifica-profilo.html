@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modifica profilo – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #020c10; --bg2: #051318; --glass: rgba(10,30,38,.6); --border: rgba(255,255,255,.08);
+      --text: #EAF4F4; --muted: rgba(234,244,244,.45); --p: #1F6F8B; --a: #3a8c8a;
+      --ok: rgba(129,199,132,.9); --err: rgba(239,154,154,.9);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
+    a { color: var(--a); text-decoration: none; }
+
+    /* Aurora bg */
+    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
+    .orb-1 { width: 900px; height: 900px; background: radial-gradient(circle, #1F6F8B 0%, transparent 55%); top:-300px; left:-250px; opacity:.12; animation: o1 22s ease-in-out infinite alternate; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #2E7D32 0%, transparent 60%); bottom:-150px; right:-100px; opacity:.1; animation: o2 18s ease-in-out infinite alternate; }
+    @keyframes o1 { to { transform: translate(80px,60px) scale(1.1); } }
+    @keyframes o2 { to { transform: translate(-60px,-40px) scale(1.2); } }
+    .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+               background-image: linear-gradient(rgba(255,255,255,.01) 1px, transparent 1px),
+                                 linear-gradient(90deg, rgba(255,255,255,.01) 1px, transparent 1px);
+               background-size: 60px 60px; }
+
+    /* Topbar */
+    .topbar { position: sticky; top: 0; z-index: 100; padding: 0 24px; height: 52px;
+              display: flex; align-items: center; justify-content: space-between;
+              background: rgba(2,12,16,.85); backdrop-filter: blur(16px);
+              border-bottom: 1px solid var(--border); }
+    .topbar-brand { font-family: 'Fraunces', Georgia, serif; font-size: .95rem;
+                    background: linear-gradient(135deg, #EAF4F4, #3a8c8a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .nav-pill { padding: 6px 14px; border-radius: 20px; font-size: .8rem; font-weight: 600; cursor: pointer;
+                border: none; font-family: inherit; transition: all .18s; }
+    .nav-pill-ghost { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
+    .nav-pill-ghost:hover { color: var(--text); background: rgba(255,255,255,.1); }
+    .nav-pill-outline { background: transparent; color: var(--a); border: 1px solid rgba(58,140,138,.4); }
+    .nav-pill-outline:hover { background: rgba(58,140,138,.1); }
+
+    /* Page */
+    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.8rem; margin-bottom: 6px; }
+    .page-header p { color: var(--muted); font-size: .9rem; }
+
+    /* Bento grid */
+    .bento { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .bcard { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid var(--border);
+             border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+    .bcard-wide { grid-column: span 2; }
+    .bcard-tall { grid-row: span 2; }
+    .bcard-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+
+    /* Preview card */
+    .preview-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .preview-avatar { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center;
+                      justify-content: center; font-size: 2rem; transition: background .25s; flex-shrink: 0; }
+    .preview-username { font-size: .95rem; font-weight: 700; color: var(--muted); }
+    .preview-display { font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; font-weight: 600; }
+    .preview-bio { font-size: .82rem; color: var(--muted); text-align: center; line-height: 1.5; max-width: 220px; }
+
+    /* Emoji grid */
+    .emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .emoji-grid input[type="radio"] { display: none; }
+    .emoji-grid label { display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+                        cursor: pointer; border-radius: 10px; border: 2px solid transparent;
+                        padding: 6px; transition: all .15s; background: rgba(255,255,255,.04); }
+    .emoji-grid label:hover { background: rgba(255,255,255,.1); }
+    .emoji-grid input:checked + label { border-color: var(--a); background: rgba(58,140,138,.15); }
+
+    /* Color grid */
+    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .color-grid input[type="radio"] { display: none; }
+    .color-grid label { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px;
+                        cursor: pointer; border: 3px solid transparent; transition: all .15s; }
+    .color-grid label:hover { transform: scale(1.1); }
+    .color-grid input:checked + label { border-color: #fff; box-shadow: 0 0 0 2px var(--a); }
+
+    /* Form fields */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: .78rem; font-weight: 600; color: var(--muted); }
+    .field input, .field textarea {
+      background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: inherit; font-size: .9rem; padding: 10px 14px;
+      transition: border-color .18s; resize: vertical;
+    }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--a); }
+    .field textarea { min-height: 80px; }
+    .field .hint { font-size: .74rem; color: var(--muted); }
+
+    /* Save row */
+    .save-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 26px;
+           border-radius: 12px; font-size: .88rem; font-weight: 600; font-family: inherit;
+           cursor: pointer; border: none; transition: all .2s; }
+    .btn-primary { background: linear-gradient(135deg, #1F6F8B, #3a8c8a); color: #fff;
+                   box-shadow: 0 4px 20px rgba(31,111,139,.35); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(31,111,139,.5); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .status-msg { font-size: .85rem; }
+    .status-ok { color: var(--ok); }
+    .status-err { color: var(--err); }
+
+    @media (max-width: 600px) {
+      .bento { grid-template-columns: 1fr; }
+      .bcard-wide { grid-column: span 1; }
+      .bcard-tall { grid-row: span 1; }
+      .topbar-right { gap: 6px; }
+      .nav-pill { padding: 5px 10px; font-size: .73rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+<div class="grid-bg"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">Rivalta sul Mincio</a>
+  <div class="topbar-right">
+    <button class="nav-pill nav-pill-ghost" onclick="location.href='index.html'">Home</button>
+    <button class="nav-pill nav-pill-ghost" onclick="location.href='me.html'">Dashboard</button>
+    <a href="me.html#write" class="nav-pill nav-pill-ghost" style="text-decoration:none">Scrivi articolo</a>
+    <a id="link-profilo" href="profile.html" class="nav-pill nav-pill-outline" style="text-decoration:none">Vedi profilo</a>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Modifica profilo</h1>
+    <p>Le modifiche sono visibili pubblicamente nel tuo profilo</p>
+  </div>
+
+  <div class="bento">
+
+    <!-- Anteprima -->
+    <div class="bcard bcard-tall">
+      <div class="bcard-label">Anteprima</div>
+      <div class="preview-wrap">
+        <div class="preview-avatar" id="prev-avatar" style="background:#1F6F8B">🌿</div>
+        <div class="preview-username" id="prev-username">@...</div>
+        <div class="preview-display" id="prev-display">—</div>
+        <div class="preview-bio" id="prev-bio"></div>
+      </div>
+    </div>
+
+    <!-- Avatar emoji -->
+    <div class="bcard">
+      <div class="bcard-label">Emoji avatar</div>
+      <div class="emoji-grid" id="emoji-grid"></div>
+    </div>
+
+    <!-- Colore -->
+    <div class="bcard">
+      <div class="bcard-label">Colore sfondo</div>
+      <div class="color-grid" id="color-grid"></div>
+    </div>
+
+    <!-- Identità -->
+    <div class="bcard bcard-wide">
+      <div class="bcard-label">Identità</div>
+      <div class="field">
+        <label for="p-display">Nome visualizzato</label>
+        <input type="text" id="p-display" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
+      </div>
+      <div class="field">
+        <label for="p-bio">Bio</label>
+        <textarea id="p-bio" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
+        <span class="hint">Massimo 200 caratteri</span>
+      </div>
+    </div>
+
+    <!-- Dove sei -->
+    <div class="bcard bcard-wide">
+      <div class="bcard-label">Dove sei</div>
+      <div class="field">
+        <label for="p-comune">Comune</label>
+        <input type="text" id="p-comune" maxlength="80" placeholder="Es. Rivalta sul Mincio" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="save-row">
+    <button class="btn btn-primary" id="save-btn">Salva modifiche</button>
+    <span class="status-msg" id="save-status"></span>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+
+const EMOJIS = ['🌿','🌊','🦢','🚣','🎣','🌾','🏞️','🦆','🌙','✨','🧭','📍','🍃','🏰','🌸','🛶','🦋','🌤️','📸','🧡'];
+const COLORS = ['#1F6F8B','#3a8c8a','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
+
+let currentUser = null;
+let currentProfile = null;
+
+function buildPickers(emoji, color) {
+  const eg = $('emoji-grid');
+  const cg = $('color-grid');
+  eg.innerHTML = EMOJIS.map((e, i) =>
+    `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
+  ).join('');
+  cg.innerHTML = COLORS.map((c, i) =>
+    `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}"></label>`
+  ).join('');
+
+  eg.querySelectorAll('input').forEach(el => el.addEventListener('change', updatePreview));
+  cg.querySelectorAll('input').forEach(el => el.addEventListener('change', updatePreview));
+}
+
+function updatePreview() {
+  const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+  const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#1F6F8B';
+  const display = $('p-display').value.trim() || (currentProfile?.username || '');
+  const bio = $('p-bio').value.trim();
+
+  const av = $('prev-avatar');
+  av.textContent = emoji;
+  av.style.background = color;
+  $('prev-display').textContent = display || '—';
+  $('prev-bio').textContent = bio;
+}
+
+function setStatus(msg, type) {
+  const el = $('save-status');
+  el.textContent = msg;
+  el.className = 'status-msg ' + (type === 'ok' ? 'status-ok' : type === 'err' ? 'status-err' : '');
+}
+
+async function save() {
+  if (!currentUser || !currentProfile) return;
+  setStatus('', '');
+
+  const emoji  = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+  const color  = document.querySelector('input[name="pref-color"]:checked')?.value || '#1F6F8B';
+  const display = String($('p-display').value || '').trim();
+  const bio     = String($('p-bio').value || '').trim();
+  const comune  = String($('p-comune').value || '').trim();
+
+  const btn = $('save-btn');
+  btn.disabled = true;
+
+  const { error } = await sb.from('profiles').update({
+    display_name:  display || currentProfile.username,
+    bio:           bio || null,
+    comune:        comune || null,
+    avatar_emoji:  emoji,
+    avatar_color:  color,
+  }).eq('id', currentUser.id);
+
+  btn.disabled = false;
+
+  if (error) {
+    setStatus('Salvataggio non riuscito: ' + error.message, 'err');
+    return;
+  }
+
+  currentProfile.display_name = display || currentProfile.username;
+  currentProfile.bio = bio || null;
+  currentProfile.comune = comune || null;
+  currentProfile.avatar_emoji = emoji;
+  currentProfile.avatar_color = color;
+
+  setStatus('Profilo aggiornato con successo.', 'ok');
+}
+
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session?.user) { location.href = 'login.html'; return; }
+
+  currentUser = session.user;
+
+  const { data: profile, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (error || !profile) { location.href = 'me.html'; return; }
+
+  currentProfile = profile;
+
+  /* Update "Vedi profilo" link */
+  if (profile.username) $('link-profilo').href = 'profile.html?u=' + encodeURIComponent(profile.username);
+
+  /* Populate preview username */
+  $('prev-username').textContent = '@' + (profile.username || '');
+
+  /* Populate form */
+  $('p-display').value = profile.display_name || profile.username || '';
+  $('p-bio').value     = profile.bio || '';
+  $('p-comune').value  = profile.comune || '';
+
+  buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
+  updatePreview();
+
+  /* Live preview on typing */
+  $('p-display').addEventListener('input', updatePreview);
+  $('p-bio').addEventListener('input', updatePreview);
+
+  $('save-btn').addEventListener('click', save);
+})();
+</script>
+</body>
+</html>

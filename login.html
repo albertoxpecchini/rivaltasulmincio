@@ -1254,7 +1254,7 @@
 
       setButtonLoading('btn-magic', true, 'Invia link magico via email', 'Invio in corso...');
 
-      const redirectUrl = new URL('me.html#profile', window.location.href).toString();
+      const redirectUrl = new URL('profile.html', window.location.href).toString();
       const { error } = await sb.auth.signInWithOtp({
         email: email,
         options: { emailRedirectTo: redirectUrl, shouldCreateUser: false }
@@ -1326,7 +1326,8 @@
         return;
       }
 
-      window.location.href = 'me.html#profile';
+      const { data: loginProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
+      window.location.href = loginProf?.username ? 'profile.html?u=' + loginProf.username : 'profile.html';
     }
 
     function validEmail(email) {
@@ -1543,7 +1544,8 @@
         return;
       }
 
-      window.location.href = 'me.html#profile';
+      const { data: restoreProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
+      window.location.href = restoreProf?.username ? 'profile.html?u=' + restoreProf.username : 'profile.html';
     }
 
     function bindEvents() {
