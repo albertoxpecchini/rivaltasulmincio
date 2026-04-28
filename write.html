@@ -6,150 +6,184 @@
   <title>Scrivi – Rivalta sul Mincio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      color-scheme: light;
-      --bg:       #eef6f4;
+      --accent:   #1F6F8B;
+      --accent-2: #3a8c8a;
+      --green:    #2E7D32;
+      --text:     #1d1d1f;
+      --muted:    #86868b;
+      --border:   #d2d2d7;
       --surface:  #ffffff;
-      --surface-2:#f0f7f5;
-      --border:   #c8deda;
-      --text:     #0d2830;
-      --muted:    #537575;
-      --p:        #1F6F8B;
-      --a:        #3a8c8a;
-      --g:        #2E7D32;
+      --bg:       #f5f5f7;
       --err:      #b94747;
       --ok:       #2f7a44;
-      --radius:   16px;
     }
 
     body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 15% 12%, rgba(31,111,139,.10), transparent 42%),
-                  radial-gradient(circle at 88% 88%, rgba(46,125,50,.08), transparent 36%),
-                  var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.5;
-      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
     }
 
-    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(130px); }
-    .orb-1 { width: 760px; height: 760px; background: radial-gradient(circle, #1F6F8B 0%, transparent 58%); top: -250px; left: -160px; opacity: .11; animation: orbA 24s ease-in-out infinite alternate; }
-    .orb-2 { width: 520px; height: 520px; background: radial-gradient(circle, #2E7D32 0%, transparent 62%); bottom: -200px; right: -120px; opacity: .08; animation: orbB 20s ease-in-out infinite alternate; }
-    @keyframes orbA { to { transform: translate(90px, 55px) scale(1.08); } }
-    @keyframes orbB { to { transform: translate(-70px, -45px) scale(1.12); } }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-conic-gradient(rgba(0,0,0,.015) 0% 25%, transparent 0% 50%) 0 0 / 4px 4px;
+      pointer-events: none; z-index: 0;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
 
     /* ── Topbar ── */
     .topbar {
-      position: sticky; top: 8px; z-index: 20;
+      position: sticky; top: 0; z-index: 100;
       height: 52px;
-      border: 1px solid var(--border); border-radius: 14px;
-      background: rgba(255,255,255,.94); backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      padding: 0 14px;
-      box-shadow: 0 8px 24px rgba(15,45,62,.08);
-      margin: 10px 16px 0;
+      background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
     }
 
     .top-brand {
       display: inline-flex; align-items: center; gap: 8px;
-      color: var(--text); text-decoration: none;
-      font-family: 'Fraunces', Georgia, serif; font-size: .92rem;
+      font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700;
+      color: var(--text); text-decoration: none; letter-spacing: -.01em;
     }
 
     .top-logo {
-      width: 28px; height: 28px; border-radius: 8px;
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       display: inline-flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
-      font-size: .78rem; color: #fff; font-family: inherit; font-weight: 700;
+      font-size: .78rem; color: #fff; font-weight: 700;
     }
 
     .top-actions { display: flex; align-items: center; gap: 8px; }
 
     /* ── Buttons ── */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      border-radius: 10px; border: 1px solid var(--border);
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 9px; border: 1px solid var(--border);
       background: var(--surface); color: var(--text);
-      font-family: inherit; font-size: .82rem; font-weight: 600;
-      padding: 8px 14px; cursor: pointer; text-decoration: none; transition: all .2s;
+      font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600;
+      padding: 8px 14px; cursor: pointer; text-decoration: none; transition: all .15s;
     }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn:hover { border-color: #aaa; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
     .btn-primary {
       border-color: transparent;
-      background: linear-gradient(135deg, #1F6F8B, #3a8c8a);
-      color: #fff; box-shadow: 0 8px 24px rgba(31,111,139,.28);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; box-shadow: 0 4px 16px rgba(31,111,139,.28);
     }
+    .btn-primary:hover { box-shadow: 0 6px 22px rgba(31,111,139,.4); border-color: transparent; }
     .btn-ghost { color: var(--muted); }
-    .btn-danger { color: #b94747; border-color: rgba(185,71,71,.25); }
-    .btn-danger:hover { background: rgba(185,71,71,.06); }
+    .btn-danger { color: var(--err); border-color: rgba(185,71,71,.22); }
+    .btn-danger:hover { background: rgba(185,71,71,.05); }
 
-    /* ── Layout ── */
+    /* ── Page ── */
     .page {
       position: relative; z-index: 1;
-      max-width: 820px; margin: 0 auto;
+      max-width: 920px; margin: 0 auto;
       padding: 24px 16px 80px;
-      display: grid; gap: 18px;
+      display: grid; gap: 14px;
     }
 
-    /* ── Page header ── */
-    .page-head {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 12px; flex-wrap: wrap;
+    .page-eyebrow {
+      font-size: 10px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 5px;
     }
 
-    .page-head h1 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.1;
+    .page-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
     }
 
-    .page-head p { font-size: .84rem; color: var(--muted); margin-top: 4px; }
+    .page-sub { font-size: .84rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Bento grid ── */
+    .bento {
+      display: grid;
+      gap: 6px;
+      grid-template-columns: 1fr 296px;
+      grid-template-areas:
+        "editor  meta"
+        "editor  img"
+        "editor  status"
+        "actions actions";
+    }
 
     /* ── Card ── */
     .card {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--surface); padding: 22px;
-      box-shadow: 0 1px 6px rgba(13,40,48,.04);
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.05);
+      padding: 20px 22px;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
     }
 
-    .card-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1rem; margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
+    .card-editor {
+      grid-area: editor;
+      gap: 16px;
+    }
+
+    .card-editor::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--green), var(--accent-2), var(--accent));
+      border-radius: 14px 14px 0 0;
+    }
+
+    .card-meta   { grid-area: meta;   gap: 14px; }
+    .card-img    { grid-area: img;    gap: 10px; }
+    .card-status { grid-area: status; display: none; gap: 10px; }
+    .card-status.visible { display: flex; }
+
+    .card-actions {
+      grid-area: actions;
+      background: var(--text);
+      box-shadow: 0 6px 20px rgba(13,40,48,.14);
+      flex-direction: row; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 16px 22px;
+    }
+
+    .actions-label {
+      font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700;
+      color: #fff; letter-spacing: -.01em;
+    }
+    .actions-sub { font-size: .76rem; color: rgba(255,255,255,.5); margin-top: 2px; }
+    .actions-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .card-label {
+      font-size: 10px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px;
     }
 
     /* ── Fields ── */
     .field { display: grid; gap: 5px; }
-
     .field label {
       font-size: .72rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .05em;
-      color: var(--muted);
+      text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
     }
-
     .field input, .field textarea, .field select {
       width: 100%; border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--surface); color: var(--text);
-      font-family: inherit; font-size: .88rem;
+      font-family: 'DM Sans', sans-serif; font-size: .88rem;
       padding: 10px 12px; transition: border-color .2s, box-shadow .2s;
     }
-
     .field input:focus, .field textarea:focus, .field select:focus {
       outline: none; border-color: #8da9b8;
-      box-shadow: 0 0 0 3px rgba(31,111,139,.12);
+      box-shadow: 0 0 0 3px rgba(31,111,139,.1);
     }
-
-    .field textarea {
-      min-height: 260px; resize: vertical; line-height: 1.65;
-    }
-
+    .field textarea { min-height: 220px; resize: vertical; line-height: 1.65; flex: 1; }
     .field select {
       appearance: none;
       background-image:
@@ -162,60 +196,40 @@
       background-repeat: no-repeat;
       padding-right: 30px; cursor: pointer;
     }
+    .char-count { font-size: .7rem; color: var(--muted); text-align: right; margin-top: 2px; }
 
-    .field .hint { font-size: .73rem; color: var(--muted); }
-
-    /* ── Grid ── */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    /* ── Image type picker ── */
-    .img-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px;
-    }
-
-    .img-opt {
-      border: 2px solid var(--border); border-radius: 12px;
-      cursor: pointer; overflow: hidden; transition: border-color .2s, transform .15s;
-      background: var(--surface-2);
-    }
-
-    .img-opt:hover { transform: translateY(-2px); border-color: #9ab8c6; }
-    .img-opt.selected { border-color: var(--p); box-shadow: 0 0 0 3px rgba(31,111,139,.15); }
-
-    .img-opt input { display: none; }
-
-    .img-thumb { height: 54px; overflow: hidden; }
-    .img-thumb svg { width: 100%; height: 100%; display: block; }
-
-    .img-label {
-      font-size: .68rem; font-weight: 700; color: var(--muted);
-      text-align: center; padding: 4px 4px 6px;
-    }
-
-    /* ── Status bar ── */
-    .status-bar {
-      border: 1px solid var(--border); border-radius: 12px;
-      background: var(--surface-2); padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; flex-wrap: wrap;
-    }
-
-    .status-info { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    .pill {
-      display: inline-flex; align-items: center; gap: 4px;
+    /* ── Status ── */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
       border-radius: 999px; font-size: .72rem; font-weight: 700;
       padding: 4px 10px; border: 1px solid var(--border);
     }
+    .status-pill.draft { color: #e8a000; border-color: rgba(249,168,37,.3); background: rgba(249,168,37,.1); }
+    .status-pill.pub   { color: var(--ok);  border-color: rgba(46,125,50,.3);  background: rgba(46,125,50,.1); }
+    .status-date { font-size: .76rem; color: var(--muted); }
+    .status-num {
+      font-family: 'Sora', sans-serif; font-size: 2.2rem; font-weight: 800;
+      letter-spacing: -.03em; line-height: 1; color: var(--accent);
+    }
+    .status-num-label { font-size: .72rem; color: var(--muted); font-weight: 500; margin-top: 3px; }
 
-    .pill-draft { color: #e8a000; border-color: rgba(249,168,37,.3); background: rgba(249,168,37,.1); }
-    .pill-pub   { color: #2f7a44; border-color: rgba(46,125,50,.3);  background: rgba(46,125,50,.1); }
+    /* ── Image picker ── */
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 6px; }
+    .img-opt {
+      border: 2px solid var(--border); border-radius: 10px;
+      cursor: pointer; overflow: hidden; transition: border-color .15s, transform .15s;
+    }
+    .img-opt:hover { transform: translateY(-2px); border-color: #9ab8c6; }
+    .img-opt.selected { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(31,111,139,.12); }
+    .img-opt input { display: none; }
+    .img-thumb { height: 44px; overflow: hidden; }
+    .img-thumb svg { width: 100%; height: 100%; display: block; }
+    .img-label { font-size: .6rem; font-weight: 700; color: var(--muted); text-align: center; padding: 3px 2px 5px; }
 
-    .status-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    /* ── Toast ── */
+    /* ── Misc ── */
+    .err-msg { color: var(--err); font-size: .8rem; min-height: 16px; padding: 0 2px; }
     .toast {
-      position: fixed; bottom: 22px; right: 22px; z-index: 70;
+      position: fixed; bottom: 22px; right: 22px; z-index: 200;
       border: 1px solid var(--border); border-radius: 11px;
       background: rgba(255,255,255,.98); color: var(--text);
       padding: 10px 16px; font-size: .82rem;
@@ -226,24 +240,18 @@
     .toast.err { color: var(--err); }
     .toast.ok  { color: var(--ok); }
 
-    /* ── Error msg ── */
-    .err-msg { color: var(--err); font-size: .8rem; min-height: 18px; }
-
-    /* ── Char count ── */
-    .char-count { font-size: .72rem; color: var(--muted); text-align: right; margin-top: 2px; }
-
-    /* ── Responsive ── */
-    @media (max-width: 560px) {
-      .grid-2 { grid-template-columns: 1fr; }
+    @media (max-width: 700px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas: "editor" "meta" "img" "status" "actions";
+      }
       .page { padding: 16px 12px 60px; }
-      .topbar { margin: 8px 10px 0; }
     }
   </style>
 </head>
 <body>
-<div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-<!-- SVG defs for image thumbnails -->
+<!-- SVG gradient defs for illustration thumbnails -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="g-water"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d8b89"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
   <linearGradient id="g-marsh"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5fb085"/><stop offset="100%" stop-color="#15433a"/></linearGradient>
@@ -258,77 +266,92 @@
     Dashboard
   </a>
   <div class="top-actions">
-    <a class="btn btn-ghost" href="me.html">← Torna alla dashboard</a>
+    <a class="btn btn-ghost" href="me.html">&larr; Dashboard</a>
   </div>
 </nav>
 
 <main class="page">
 
-  <!-- Header -->
-  <div class="page-head">
-    <div>
-      <h1 id="page-title">Scrivi un post</h1>
-      <p id="page-sub">Stai creando un nuovo contenuto per la comunità.</p>
-    </div>
+  <div>
+    <div class="page-eyebrow">Rivalta sul Mincio</div>
+    <div class="page-title" id="page-title">Scrivi un post</div>
+    <div class="page-sub"   id="page-sub">Crea un nuovo contenuto per la comunit&agrave;.</div>
   </div>
 
-  <!-- Status bar (shown when editing existing) -->
-  <div class="status-bar" id="status-bar" style="display:none">
-    <div class="status-info">
-      <span id="status-pill"></span>
-      <span style="font-size:.8rem;color:var(--muted)" id="status-date"></span>
-    </div>
-    <div class="status-actions">
-      <button class="btn btn-danger" id="btn-delete" type="button">🗑 Elimina</button>
-    </div>
-  </div>
+  <div class="err-msg" id="err-msg"></div>
 
-  <!-- Main content card -->
-  <div class="card">
-    <div class="card-title">✏️ Contenuto</div>
-    <div style="display:grid;gap:14px">
+  <div class="bento">
+
+    <!-- ── Editor card ── -->
+    <div class="card card-editor">
       <div class="field">
-        <label for="f-title">Titolo (facoltativo)</label>
-        <input id="f-title" type="text" placeholder="Un titolo accattivante…" maxlength="120" />
+        <label for="f-title">Titolo</label>
+        <input id="f-title" type="text" placeholder="Un titolo accattivante&hellip; (facoltativo)" maxlength="120" />
         <div class="char-count" id="title-count">0 / 120</div>
       </div>
       <div class="field">
-        <label for="f-excerpt">Sommario (facoltativo)</label>
-        <input id="f-excerpt" type="text" placeholder="Breve anteprima del post…" maxlength="200" />
+        <label for="f-excerpt">Sommario</label>
+        <input id="f-excerpt" type="text" placeholder="Breve anteprima del post&hellip; (facoltativo)" maxlength="200" />
         <div class="char-count" id="excerpt-count">0 / 200</div>
       </div>
-      <div class="field">
+      <div class="field" style="flex:1;display:flex;flex-direction:column">
         <label for="f-content">Contenuto *</label>
-        <textarea id="f-content" placeholder="Scrivi qui il tuo contributo per la comunità di Rivalta sul Mincio…"></textarea>
+        <textarea id="f-content" placeholder="Scrivi qui il tuo contributo&hellip;" style="flex:1;min-height:260px"></textarea>
       </div>
     </div>
-  </div>
 
-  <!-- Meta card -->
-  <div class="card">
-    <div class="card-title">🗂 Dettagli</div>
-    <div class="grid-2">
+    <!-- ── Meta card ── -->
+    <div class="card card-meta">
+      <div class="card-label">Dettagli</div>
       <div class="field">
         <label for="f-category">Categoria *</label>
         <select id="f-category"></select>
       </div>
-      <div class="field">
-        <label>Immagine di copertina</label>
-        <div class="hint" style="margin-bottom:8px">Scegli l'illustrazione che meglio rappresenta il post.</div>
-        <div class="img-grid" id="img-grid"></div>
+      <div style="margin-top:8px">
+        <div class="card-label" style="margin-bottom:6px">Autore</div>
+        <div id="meta-username" style="font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--accent)">&ndash;</div>
+        <div id="meta-displayname" style="font-size:.76rem;color:var(--muted);margin-top:2px"></div>
       </div>
     </div>
-  </div>
 
-  <!-- Error -->
-  <div class="err-msg" id="err-msg"></div>
+    <!-- ── Copertina card ── -->
+    <div class="card card-img">
+      <div class="card-label">Copertina</div>
+      <div class="img-grid" id="img-grid"></div>
+    </div>
 
-  <!-- Actions -->
-  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-    <a class="btn btn-ghost" href="me.html">Annulla</a>
-    <button class="btn" id="btn-draft" type="button">💾 Salva bozza</button>
-    <button class="btn btn-primary" id="btn-publish" type="button">🚀 Pubblica</button>
-  </div>
+    <!-- ── Status card (visible only when editing) ── -->
+    <div class="card card-status" id="card-status">
+      <div><span id="status-pill" class="status-pill"></span></div>
+      <div style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap">
+        <div>
+          <div class="status-num" id="status-num">&ndash;</div>
+          <div class="status-num-label" id="status-num-label">caratteri</div>
+        </div>
+        <div style="flex:1">
+          <div class="status-date" id="status-date"></div>
+        </div>
+      </div>
+      <button class="btn btn-danger" id="btn-delete" type="button"
+        style="margin-top:6px;width:100%;justify-content:center">&times; Elimina post</button>
+    </div>
+
+    <!-- ── Actions card (dark) ── -->
+    <div class="card card-actions">
+      <div>
+        <div class="actions-label" id="actions-label">Pronto a pubblicare?</div>
+        <div class="actions-sub">Salva come bozza o pubblica subito.</div>
+      </div>
+      <div class="actions-btns">
+        <a class="btn" href="me.html"
+          style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)">Annulla</a>
+        <button class="btn" id="btn-draft" type="button"
+          style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff">Bozza</button>
+        <button class="btn btn-primary" id="btn-publish" type="button">Pubblica</button>
+      </div>
+    </div>
+
+  </div><!-- /bento -->
 
 </main>
 
@@ -344,30 +367,26 @@
 
   const ILL_DEFS = [
     { key: 'festival', label: 'Festival',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-sunset)"/><g fill="#143B43" opacity=".85"><rect x="10" y="30" width="15" height="24"/><polygon points="8,30 18,18 28,30"/><rect x="28" y="24" width="20" height="30"/><polygon points="25,24 38,10 51,24"/><rect x="60" y="22" width="18" height="32"/><polygon points="58,22 69,8 80,22"/></g></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-sunset)"/><g fill="#143B43" opacity=".85"><rect x="8" y="26" width="13" height="18"/><polygon points="6,26 15,16 24,26"/><rect x="26" y="20" width="18" height="24"/><polygon points="24,20 35,8 46,20"/><rect x="58" y="18" width="16" height="26"/><polygon points="56,18 66,6 76,18"/></g></svg>' },
     { key: 'heron', label: 'Airone',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-marsh)"/><rect x="0" y="34" width="100" height="20" fill="url(#g-water)"/><g transform="translate(45 4)"><path d="M6 26 L5 42" stroke="#0F2A30" stroke-width="1.5" stroke-linecap="round"/><path d="M1 20 Q6 14 15 19 Q20 21 23 26 Q20 29 16 28 L8 29 Q3 27 1 20Z" fill="#0F2A30"/><path d="M14 20 Q11 8 12 1" stroke="#0F2A30" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="13" cy="0" rx="4" ry="3" fill="#0F2A30"/><path d="M15 0 L20 -2" stroke="#F9A825" stroke-width="1.5" stroke-linecap="round"/></g></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-marsh)"/><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/><g transform="translate(45 3)"><path d="M5 20 L5 34" stroke="#0F2A30" stroke-width="1.5" stroke-linecap="round"/><path d="M1 16 Q5 10 13 15 Q17 17 19 21 Q17 24 13 23 L7 24 Q3 22 1 16Z" fill="#0F2A30"/><path d="M12 16 Q10 6 11 1" stroke="#0F2A30" stroke-width="2.5" stroke-linecap="round" fill="none"/><ellipse cx="11" cy="0" rx="3.5" ry="2.5" fill="#0F2A30"/><path d="M13 0 L18 -2" stroke="#F9A825" stroke-width="1.2" stroke-linecap="round"/></g></svg>' },
     { key: 'cycling', label: 'Ciclismo',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-spring)"/><path d="M0,38 Q50,48 100,38 L100,54 L0,54Z" fill="url(#g-water)"/><g transform="translate(42 22)"><circle cx="0" cy="8" r="6" fill="none" stroke="#0F2A30" stroke-width="1.5"/><circle cx="16" cy="8" r="6" fill="none" stroke="#0F2A30" stroke-width="1.5"/><path d="M0,8 L6,-1 L12,8 L16,8" stroke="#0F2A30" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="9" cy="-8" r="3" fill="#0F2A30"/></g></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-spring)"/><path d="M0,30 Q50,40 100,30 L100,44 L0,44Z" fill="url(#g-water)"/><g transform="translate(42 18)"><circle cx="0" cy="7" r="5.5" fill="none" stroke="#0F2A30" stroke-width="1.5"/><circle cx="15" cy="7" r="5.5" fill="none" stroke="#0F2A30" stroke-width="1.5"/><path d="M0,7 L5,0 L11,7 L15,7" stroke="#0F2A30" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="8" cy="-6" r="2.5" fill="#0F2A30"/></g></svg>' },
     { key: 'village', label: 'Borgo',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-deep)"/><circle cx="80" cy="10" r="8" fill="#EAF4F4" opacity=".8"/><circle cx="78" cy="8" r="7" fill="#0F2A30"/><g fill="#0F2A30"><rect x="8" y="34" width="13" height="20"/><polygon points="6,34 14,24 22,34"/><rect x="37" y="18" width="6" height="36"/><polygon points="35,18 40,9 45,18"/><rect x="44" y="38" width="13" height="16"/><polygon points="42,38 50,28 58,38"/></g></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-deep)"/><circle cx="80" cy="9" r="7" fill="#EAF4F4" opacity=".8"/><circle cx="78" cy="7" r="6" fill="#0F2A30"/><g fill="#0F2A30"><rect x="8" y="28" width="12" height="16"/><polygon points="6,28 14,18 22,28"/><rect x="37" y="15" width="5" height="29"/><polygon points="35,15 39,7 44,15"/><rect x="44" y="30" width="12" height="14"/><polygon points="42,30 50,21 58,30"/></g></svg>' },
     { key: 'reeds', label: 'Canneto',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-marsh)"/><rect x="0" y="35" width="100" height="19" fill="url(#g-water)"/><g stroke="#143B43" stroke-width="1.5" stroke-linecap="round" fill="none"><path d="M5,54 L5,24"/><path d="M14,54 L14,20"/><path d="M22,54 L22,27"/><path d="M78,54 L78,30"/><path d="M87,54 L87,22"/><path d="M95,54 L95,26"/></g><g fill="#5b3a1f"><ellipse cx="5" cy="22" rx="1.5" ry="4"/><ellipse cx="14" cy="18" rx="1.5" ry="4"/><ellipse cx="87" cy="20" rx="1.5" ry="4"/></g></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-marsh)"/><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/><g stroke="#143B43" stroke-width="1.5" stroke-linecap="round" fill="none"><path d="M5,44 L5,18"/><path d="M13,44 L13,14"/><path d="M21,44 L21,20"/><path d="M80,44 L80,22"/><path d="M88,44 L88,15"/><path d="M96,44 L96,19"/></g><g fill="#5b3a1f"><ellipse cx="5" cy="16" rx="1.5" ry="3.5"/><ellipse cx="13" cy="12" rx="1.5" ry="3.5"/><ellipse cx="88" cy="13" rx="1.5" ry="3.5"/></g></svg>' },
     { key: 'nature', label: 'Natura',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-water)"/><ellipse cx="25" cy="48" rx="16" ry="4" fill="#43A047"/><ellipse cx="55" cy="38" rx="18" ry="4" fill="#43A047"/><ellipse cx="88" cy="50" rx="14" ry="4" fill="#43A047"/></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-water)"/><ellipse cx="25" cy="38" rx="16" ry="4" fill="#43A047"/><ellipse cx="55" cy="30" rx="18" ry="4" fill="#43A047"/><ellipse cx="87" cy="40" rx="13" ry="3.5" fill="#43A047"/></svg>' },
     { key: 'fishing', label: 'Pesca',
-      svg: `<svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="54" fill="url(#g-deep)"/><g transform="translate(20 22)"><path d="M0,0 L25,0 L23,9 L2,9Z" fill="#0F2A30"/><g transform="translate(10 -16)"><circle cx="2" cy="0" r="3" fill="#0F2A30"/><path d="M-1,2 L-2,12 L0,15 L3,15 L5,12 L3,2Z" fill="#0F2A30"/><path d="M3,5 L16,-6" stroke="#5b3a1f" stroke-width="1" stroke-linecap="round"/></g></g><rect x="0" y="35" width="100" height="19" fill="url(#g-water)"/></svg>` },
+      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-deep)"/><g transform="translate(20 18)"><path d="M0,0 L24,0 L22,8 L2,8Z" fill="#0F2A30"/><g transform="translate(9 -13)"><circle cx="2" cy="0" r="2.5" fill="#0F2A30"/><path d="M-1,2 L-2,10 L0,13 L3,13 L5,10 L3,2Z" fill="#0F2A30"/><path d="M3,4 L15,-5" stroke="#5b3a1f" stroke-width="1" stroke-linecap="round"/></g></g><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/></svg>' },
   ];
 
   const CATEGORIES = window.RSM_CATEGORIES
     ? window.RSM_CATEGORIES.all()
     : ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
 
-  let session = null;
-  let profile = null;
-  let editId = null;
-  let selectedImg = null;
-  let currentPost = null;
+  let session = null, profile = null, editId = null, selectedImg = null, currentPost = null;
 
   function escapeHtml(v) {
     return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -391,26 +410,24 @@
   function autoTitle(content) {
     const c = String(content || '').replace(/\s+/g, ' ').trim();
     if (!c) return 'Nuovo post';
-    return c.length <= 64 ? c : c.slice(0, 61).trim() + '…';
+    return c.length <= 64 ? c : c.slice(0, 61).trim() + '\u2026';
   }
 
-  /* ── Build category select ── */
   function buildCategories() {
     $('f-category').innerHTML = CATEGORIES
       .map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
       .join('');
   }
 
-  /* ── Build image picker ── */
   function buildImgPicker() {
     const grid = $('img-grid');
-    grid.innerHTML = ILL_DEFS.map(def => `
-      <label class="img-opt" data-key="${def.key}" title="${def.label}">
-        <input type="radio" name="img_type" value="${def.key}" />
-        <div class="img-thumb">${def.svg}</div>
-        <div class="img-label">${def.label}</div>
-      </label>
-    `).join('');
+    grid.innerHTML = ILL_DEFS.map(def =>
+      `<label class="img-opt" data-key="${def.key}" title="${def.label}">` +
+      `<input type="radio" name="img_type" value="${def.key}" />` +
+      `<div class="img-thumb">${def.svg}</div>` +
+      `<div class="img-label">${def.label}</div>` +
+      `</label>`
+    ).join('');
 
     grid.querySelectorAll('.img-opt').forEach(opt => {
       opt.addEventListener('click', () => {
@@ -428,136 +445,115 @@
     });
   }
 
-  /* ── Char counters ── */
   function bindCounters() {
-    const title   = $('f-title');
-    const excerpt = $('f-excerpt');
-    title.addEventListener('input',   () => { $('title-count').textContent   = `${title.value.length} / 120`; });
-    excerpt.addEventListener('input', () => { $('excerpt-count').textContent = `${excerpt.value.length} / 200`; });
+    const titleEl   = $('f-title');
+    const excerptEl = $('f-excerpt');
+    const contentEl = $('f-content');
+    titleEl.addEventListener('input',   () => { $('title-count').textContent   = `${titleEl.value.length} / 120`; });
+    excerptEl.addEventListener('input', () => { $('excerpt-count').textContent = `${excerptEl.value.length} / 200`; });
+    contentEl.addEventListener('input', () => {
+      if ($('card-status').classList.contains('visible'))
+        $('status-num').textContent = contentEl.value.length.toLocaleString('it-IT');
+    });
   }
 
-  /* ── Load existing post ── */
   async function loadPost(id) {
     const { data, error } = await sb.from('posts')
       .select('*').eq('id', id).eq('user_id', session.user.id).single();
-
-    if (error || !data) {
-      toast('Post non trovato o accesso negato.', 'err');
-      return;
-    }
-
+    if (error || !data) { toast('Post non trovato o accesso negato.', 'err'); return; }
     currentPost = data;
-    $('page-title').textContent = 'Modifica post';
-    $('page-sub').textContent   = 'Stai modificando un contenuto esistente.';
-
-    $('f-title').value   = data.title   || '';
-    $('f-excerpt').value = data.excerpt || '';
-    $('f-content').value = data.content || '';
-    $('f-category').value = data.category || CATEGORIES[0];
-    $('title-count').textContent   = `${(data.title || '').length} / 120`;
-    $('excerpt-count').textContent = `${(data.excerpt || '').length} / 200`;
-
+    $('page-title').textContent        = 'Modifica post';
+    $('page-sub').textContent          = 'Stai modificando un contenuto esistente.';
+    $('actions-label').textContent     = data.published ? 'Aggiorna o rimuovi' : 'Pronto a pubblicare?';
+    $('btn-publish').textContent       = data.published ? 'Ripubblica' : 'Pubblica';
+    $('f-title').value                 = data.title   || '';
+    $('f-excerpt').value               = data.excerpt || '';
+    $('f-content').value               = data.content || '';
+    $('f-category').value              = data.category || CATEGORIES[0];
+    $('title-count').textContent       = `${(data.title   || '').length} / 120`;
+    $('excerpt-count').textContent     = `${(data.excerpt || '').length} / 200`;
     if (data.image_type) selectImg(data.image_type);
-
-    const bar = $('status-bar');
-    bar.style.display = '';
-    $('status-pill').outerHTML = data.published
-      ? `<span class="pill pill-pub" id="status-pill">✅ Pubblicato</span>`
-      : `<span class="pill pill-draft" id="status-pill">📝 Bozza</span>`;
-    $('status-date').textContent = data.published
+    const sc   = $('card-status');
+    const pill = $('status-pill');
+    sc.classList.add('visible');
+    if (data.published) { pill.className = 'status-pill pub';   pill.textContent = 'Pubblicato'; }
+    else                { pill.className = 'status-pill draft'; pill.textContent = 'Bozza'; }
+    $('status-num').textContent       = (data.content || '').length.toLocaleString('it-IT');
+    $('status-num-label').textContent = 'caratteri';
+    $('status-date').textContent      = data.published
       ? `Pubblicato il ${fmtDate(data.published_at)}`
       : `Ultima modifica ${fmtDate(data.updated_at || data.created_at)}`;
-
-    $('btn-publish').textContent = data.published ? '🔄 Ripubblica' : '🚀 Pubblica';
   }
 
-  /* ── Save ── */
   async function save(publish) {
     setErr('');
     const content  = $('f-content').value.trim();
     const title    = $('f-title').value.trim();
     const excerpt  = $('f-excerpt').value.trim();
     const category = $('f-category').value.trim();
-
-    if (!content)  { setErr('Il contenuto è obbligatorio.'); return; }
+    if (!content)  { setErr('Il contenuto \u00e8 obbligatorio.'); return; }
     if (!category) { setErr('Seleziona una categoria.'); return; }
-
-    $('btn-draft').disabled   = true;
-    $('btn-publish').disabled = true;
-
-    const badgeColor = window.RSM_CATEGORIES
-      ? window.RSM_CATEGORIES.badgeColor(category)
-      : 'default';
-
+    $('btn-draft').disabled = $('btn-publish').disabled = true;
+    const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
     const payload = {
-      title:        title || autoTitle(content),
-      excerpt:      excerpt || null,
-      content,
-      category,
-      badge_color:  badgeColor,
-      image_type:   selectedImg || null,
-      published:    publish,
+      title:       title || autoTitle(content),
+      excerpt:     excerpt || null,
+      content, category,
+      badge_color: badgeColor,
+      image_type:  selectedImg || null,
+      published:   publish,
       published_at: publish ? new Date().toISOString() : (currentPost?.published_at || null),
     };
-
     let error;
     if (editId) {
       ({ error } = await sb.from('posts').update(payload).eq('id', editId).eq('user_id', session.user.id));
     } else {
-      let insertResult;
-      ({ data: insertResult, error } = await sb.from('posts').insert({
-        ...payload,
-        user_id: session.user.id,
-        author_username: profile.username || null,
+      let ins;
+      ({ data: ins, error } = await sb.from('posts').insert({
+        ...payload, user_id: session.user.id,
+        author_username: profile?.username || null,
       }).select('id').single());
-      if (!error && insertResult) {
-        editId = insertResult.id;
+      if (!error && ins) {
+        editId = ins.id;
         history.replaceState(null, '', `?id=${editId}`);
       }
     }
-
-    $('btn-draft').disabled   = false;
-    $('btn-publish').disabled = false;
-
-    if (error) { setErr('Errore nel salvataggio: ' + error.message); return; }
-
-    toast(publish ? 'Post pubblicato! 🚀' : 'Bozza salvata.', 'ok');
+    $('btn-draft').disabled = $('btn-publish').disabled = false;
+    if (error) { setErr('Errore: ' + error.message); return; }
+    toast(publish ? 'Post pubblicato!' : 'Bozza salvata.', 'ok');
     if (editId) await loadPost(editId);
   }
 
-  /* ── Delete ── */
   async function deletePost() {
     if (!editId) return;
-    if (!confirm('Eliminare questo post? L\'azione è irreversibile.')) return;
-
+    if (!confirm('Eliminare questo post? L\u2019azione \u00e8 irreversibile.')) return;
     const { error } = await sb.from('posts').delete().eq('id', editId).eq('user_id', session.user.id);
-    if (error) { toast('Errore eliminazione: ' + error.message, 'err'); return; }
+    if (error) { toast('Errore: ' + error.message, 'err'); return; }
     toast('Post eliminato.', 'ok');
     setTimeout(() => { window.location.href = 'me.html'; }, 900);
   }
 
-  /* ── Init ── */
   async function init() {
     const { data: sd } = await sb.auth.getSession();
     session = sd?.session || null;
     if (!session) { window.location.href = 'login.html'; return; }
-
     const { data: prof } = await sb.from('profiles')
       .select('id,username,display_name').eq('id', session.user.id).single();
     profile = prof;
-
+    if (prof) {
+      $('meta-username').textContent    = '@' + (prof.username || '\u2013');
+      $('meta-displayname').textContent = prof.display_name || '';
+    }
     buildCategories();
     buildImgPicker();
     bindCounters();
-
-    // Check for ?id= param (edit mode)
     const params = new URLSearchParams(location.search);
     editId = params.get('id') || null;
     if (editId) await loadPost(editId);
-
     $('btn-draft').addEventListener('click',   () => save(false));
     $('btn-publish').addEventListener('click', () => save(true));
-    $('btn-delete')?.addEventListener('click', deletePost);
+    const del = $('btn-delete');
+    if (del) del.addEventListener('click', deletePost);
   }
 
   init();
