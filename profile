@@ -326,7 +326,7 @@
 </defs></svg>
 
 <nav class="topbar">
-  <a class="top-brand" href="index.html">
+  <a class="top-brand" href="index">
     <span class="top-logo">🌿</span>
     Rivalta sul Mincio
   </a>
@@ -383,7 +383,7 @@ const $ = id => document.getElementById(id);
 const fmt  = iso => new Date(iso).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
 const fmtY = iso => new Date(iso).toLocaleDateString('it-IT', {month:'long', year:'numeric'});
 const canonicalCategory  = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.canonical(v)   : String(v||'').trim();
-const categoryHref       = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.categoryHref(v) : ('category.html?name='+encodeURIComponent(canonicalCategory(v)));
+const categoryHref       = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.categoryHref(v) : ('category?name='+encodeURIComponent(canonicalCategory(v)));
 const badgeColorByCategory = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(v) : 'default';
 const escapeHtml = v => String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
@@ -406,10 +406,10 @@ const un = new URLSearchParams(location.search).get('u');
       const { data: { session: s } } = await sb.auth.getSession();
       if (s?.user) {
         const { data: me } = await sb.from('profiles').select('username').eq('id', s.user.id).single();
-        if (me?.username) { location.replace('profile.html?u=' + me.username); return; }
+        if (me?.username) { location.replace('profile?u=' + me.username); return; }
       }
     } catch (_) {}
-    location.href = 'login.html';
+    location.href = 'login';
     return;
   }
 
@@ -431,17 +431,17 @@ const un = new URLSearchParams(location.search).get('u');
     const wrap = document.getElementById('user-menu-wrap');
     if (!wrap) return;
     if (!session || !viewer) {
-      wrap.innerHTML = `<a href="login.html" style="font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--accent);border:1px solid var(--border);border-radius:9px;padding:6px 14px;text-decoration:none;">🔑 Accedi</a>`;
+      wrap.innerHTML = `<a href="login" style="font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--accent);border:1px solid var(--border);border-radius:9px;padding:6px 14px;text-decoration:none;">🔑 Accedi</a>`;
       return;
     }
     const username      = viewer.username || 'utente';
     const emoji         = viewer.avatar_emoji || '🌿';
     const color         = viewer.avatar_color || '#1F6F8B';
     const safe          = String(username).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    const profileHref   = 'profile.html?u=' + encodeURIComponent(username);
+    const profileHref   = 'profile?u=' + encodeURIComponent(username);
     const isOwnProfile  = (viewer.username === un);
     const editItem      = isOwnProfile
-      ? `<a href="modifica-profilo.html?u=${encodeURIComponent(username)}" role="menuitem">✏️&nbsp; Modifica profilo</a>`
+      ? `<a href="modifica-profilo?u=${encodeURIComponent(username)}" role="menuitem">✏️&nbsp; Modifica profilo</a>`
       : '';
     wrap.innerHTML = `
       <div class="user-menu" id="userMenuWrap">
@@ -452,11 +452,11 @@ const un = new URLSearchParams(location.search).get('u');
         <div class="user-dropdown" id="userMenuDropdown" role="menu">
           <div class="user-dropdown__title">Navigazione</div>
           <a href="javascript:history.back()" role="menuitem">←&nbsp; Torna indietro</a>
-          <a href="index.html" role="menuitem">🏠&nbsp; Home</a>
+          <a href="index" role="menuitem">🏠&nbsp; Home</a>
           <a href="${profileHref}" class="active" role="menuitem">👤&nbsp; Profilo</a>
-          <a href="me.html" role="menuitem">📊&nbsp; Dashboard</a>
+          <a href="me" role="menuitem">📊&nbsp; Dashboard</a>
           ${editItem}
-          <a href="write.html" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
+          <a href="write" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
           <div class="user-dropdown__sep"></div>
           <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
         </div>
@@ -470,7 +470,7 @@ const un = new URLSearchParams(location.search).get('u');
     });
     dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
       await sb.auth.signOut();
-      window.location.href = 'index.html';
+      window.location.href = 'index';
     });
     dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
       dd.classList.remove('open');
@@ -542,9 +542,9 @@ const un = new URLSearchParams(location.search).get('u');
       </div>
       <div class="pcard-body">
         <div class="pcard-meta">${fmt(p.published_at)}</div>
-        <div class="pcard-title"><a href="post.html?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></div>
+        <div class="pcard-title"><a href="post?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></div>
         ${p.excerpt ? `<div class="pcard-exc">${escapeHtml(p.excerpt)}</div>` : ''}
-        <div class="pcard-foot"><a href="post.html?id=${p.id}" class="btn-read">Leggi →</a></div>
+        <div class="pcard-foot"><a href="post?id=${p.id}" class="btn-read">Leggi →</a></div>
       </div>
     </article>`;
   }).join('');
@@ -573,11 +573,11 @@ const un = new URLSearchParams(location.search).get('u');
       <div>
         <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
-          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
-          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
-          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
-          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+          <li><a href="index" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
         </ul>
       </div>
       <div>
@@ -602,7 +602,7 @@ const un = new URLSearchParams(location.search).get('u');
       <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
       <div style="display:flex;gap:16px">
         <span>Realizzato con cura per il territorio del Mincio</span>
-        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+        <a href="admin" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
       </div>
     </div>
   </div>

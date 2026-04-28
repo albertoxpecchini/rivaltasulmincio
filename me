@@ -1079,7 +1079,7 @@
 <div class="layout">
   <main class="main">
     <header class="topbar">
-      <a class="top-brand" href="index.html">
+      <a class="top-brand" href="index">
         <span class="top-logo">🌿</span>
         <span>Rivalta sul Mincio</span>
       </a>
@@ -1091,7 +1091,7 @@
       <button type="button" data-go="contenuti">Contenuti</button>
       <button type="button" data-go="media">Media</button>
       <button type="button" data-go="analytics">Analytics</button>
-      <a href="preferenze.html">Impostazioni</a>
+      <a href="preferenze">Impostazioni</a>
     </div>
 
     <div class="bento">
@@ -1111,7 +1111,7 @@
                 <option value="90d">Ultimi 90 giorni</option>
               </select>
             </label>
-            <a class="btn btn-primary" href="write.html">+ Crea post</a>
+            <a class="btn btn-primary" href="write">+ Crea post</a>
           </div>
           <div class="tiny" id="sync-note">Sincronizzazione dati in corso...</div>
           <div class="hero-stats" aria-label="Project stats">
@@ -1215,7 +1215,7 @@
       <p><strong>Nessun dato disponibile.</strong></p>
       <p>Inizia creando il primo contenuto: poi vedrai andamento e attività.</p>
       <div>
-        <a class="btn btn-primary" href="write.html">Crea</a>
+        <a class="btn btn-primary" href="write">Crea</a>
       </div>
     </div>
   </main>
@@ -1634,7 +1634,7 @@
             <span>${relativeTime(p.updated_at || p.created_at)}</span>
           </div>
           <div>
-            <a class="btn btn-ghost" href="write.html?id=${p.id}" style="padding:5px 9px;font-size:.74rem">Continua bozza</a>
+            <a class="btn btn-ghost" href="write?id=${p.id}" style="padding:5px 9px;font-size:.74rem">Continua bozza</a>
           </div>
         </article>`;
     }).join('');
@@ -1786,7 +1786,7 @@
   function bindHashRouting() {
     const hash = (window.location.hash || '').replace('#', '');
     if (hash === 'write') {
-      window.location.href = 'write.html';
+      window.location.href = 'write';
       return;
     }
     if (hash === 'posts') {
@@ -1794,10 +1794,10 @@
       return;
     }
     if (hash === 'profile') {
-      window.location.href = 'preferenze.html';
+      window.location.href = 'preferenze';
     }
     if (hash === 'write') {
-      window.location.href = 'write.html';
+      window.location.href = 'write';
     }
   }
 
@@ -1849,7 +1849,7 @@
 
     $('logout-side')?.addEventListener('click', async () => {
       await sb.auth.signOut();
-      window.location.href = 'index.html';
+      window.location.href = 'index';
     });
 
     document.addEventListener('keydown', (event) => {
@@ -1861,7 +1861,7 @@
     const { data: sessionData } = await sb.auth.getSession();
     STATE.session = sessionData?.session || null;
     if (!STATE.session) {
-      window.location.href = 'login.html';
+      window.location.href = 'login';
       return;
     }
 
@@ -1871,7 +1871,7 @@
       .single();
 
     if (error || !profile) {
-      window.location.href = 'login.html';
+      window.location.href = 'login';
       return;
     }
 
@@ -1888,7 +1888,7 @@
       if (!wrap) return;
 
       const safe = String(profile.username || 'utente').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      const profileHref = 'profile.html?u=' + encodeURIComponent(profile.username || '');
+      const profileHref = 'profile?u=' + encodeURIComponent(profile.username || '');
       const emoji = profile.avatar_emoji || '🌿';
       const color = profile.avatar_color || '#1F6F8B';
 
@@ -1901,10 +1901,10 @@
           <div class="user-dropdown" id="userMenuDropdown" role="menu">
             <div class="user-dropdown__title">Navigazione</div>
             <a href="javascript:history.back()" role="menuitem">←&nbsp; Torna indietro</a>
-            <a href="index.html" role="menuitem">🏠&nbsp; Home</a>
+            <a href="index" role="menuitem">🏠&nbsp; Home</a>
             <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
-            <a href="me.html" class="active" role="menuitem">📊&nbsp; Dashboard</a>
-            <a href="write.html" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
+            <a href="me" class="active" role="menuitem">📊&nbsp; Dashboard</a>
+            <a href="write" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
             <div class="user-dropdown__sep"></div>
             <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
           </div>
@@ -1921,7 +1921,7 @@
 
       dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
         await sb.auth.signOut();
-        window.location.href = 'index.html';
+        window.location.href = 'index';
       });
 
       dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
@@ -1978,11 +1978,11 @@
       <div>
         <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
-          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
-          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
-          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
-          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+          <li><a href="index" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
         </ul>
       </div>
       <div>
@@ -2007,7 +2007,7 @@
       <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
       <div style="display:flex;gap:16px">
         <span>Realizzato con cura per il territorio del Mincio</span>
-        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+        <a href="admin" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
       </div>
     </div>
   </div>

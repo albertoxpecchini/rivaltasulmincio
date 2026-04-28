@@ -4,8 +4,23 @@ const path = require('path');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = path.resolve(__dirname);
+const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
+const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
+const HTML_PAGES = new Set([
+  'write',
+  'reset',
+  'profile',
+  'preferenze',
+  'post',
+  'modifica-profilo',
+  'me',
+  'login',
+  'index',
+  'category',
+  'admin',
+  'db-test'
+]);
 const MIME = {
-  '.html': 'text/html; charset=utf-8',
   '.css':  'text/css',
   '.js':   'application/javascript',
   '.png':  'image/png',
@@ -31,17 +46,47 @@ function getSafeFilePath(rawUrl) {
   } catch (err) {
     return null;
   }
-  const normalizedPath = path.normalize(decodedPath === '/' ? '/index.html' : decodedPath);
+  const normalizedPath = path.normalize(decodedPath === '/' ? '/index' : decodedPath);
   const absolutePath = path.resolve(ROOT, '.' + normalizedPath);
 
-  if (!absolutePath.startsWith(ROOT)) {
+  if (!isInsideRoot(absolutePath)) {
     return null;
   }
 
   return absolutePath;
 }
 
+function isInsideRoot(absolutePath) {
+  const relativePath = path.relative(ROOT, absolutePath);
+  return relativePath === '' || (!relativePath.startsWith('..') && !path.isAbsolute(relativePath));
+}
+
+function isHtmlPage(filePath) {
+  return HTML_PAGES.has(path.basename(filePath));
+}
+
+function getHtmlRedirect(rawUrl) {
+  const requestUrl = new URL(rawUrl || '/', 'http://localhost');
+  if (!requestUrl.pathname.toLowerCase().endsWith(LEGACY_PAGE_SUFFIX)) {
+    return null;
+  }
+
+  requestUrl.pathname = requestUrl.pathname.slice(0, -5) || '/index';
+  return requestUrl.pathname + requestUrl.search;
+}
+
 http.createServer((req, res) => {
+  const cleanUrl = getHtmlRedirect(req.url);
+  if (cleanUrl) {
+    res.writeHead(308, {
+      ...SECURITY_HEADERS,
+      Location: cleanUrl,
+      'Cache-Control': 'no-store'
+    });
+    res.end();
+    return;
+  }
+
   const filePath  = getSafeFilePath(req.url);
   if (!filePath) {
     res.writeHead(403, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
@@ -50,8 +95,9 @@ http.createServer((req, res) => {
   }
 
   const ext       = path.extname(filePath).toLowerCase();
+  const isPage    = isHtmlPage(filePath);
   const cacheControl = process.env.NODE_ENV === 'production'
-    ? (ext === '.html' ? 'no-store' : 'public, max-age=86400')
+    ? (isPage ? 'no-store' : 'public, max-age=86400')
     : 'no-store';
 
   fs.readFile(filePath, (err, data) => {
@@ -63,13 +109,13 @@ http.createServer((req, res) => {
 
     res.writeHead(200, {
       ...SECURITY_HEADERS,
-      'Content-Type': MIME[ext] || 'application/octet-stream',
+      'Content-Type': isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream'),
       'Cache-Control': cacheControl
     });
     res.end(data);
   });
 }).listen(PORT, () => {
-  console.log(`Server avviato → http://localhost:${PORT}`);
+  console.log(`Server avviato -> http://localhost:${PORT}`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
     console.error(`Porta ${PORT} gia in uso. Chiudi il processo esistente o usa una porta diversa con PORT=<numero>.`);

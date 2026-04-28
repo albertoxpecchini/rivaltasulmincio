@@ -553,7 +553,7 @@
 </defs></svg>
 
 <nav class="topbar">
-  <a class="top-brand" href="index.html">
+  <a class="top-brand" href="index">
     <span class="top-logo">🌿</span>
     Rivalta sul Mincio
   </a>
@@ -677,7 +677,7 @@
         <div class="actions-sub">Salva come bozza o pubblica subito.</div>
       </div>
       <div class="actions-btns">
-        <a class="btn" href="me.html"
+        <a class="btn" href="me"
           style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)">Annulla</a>
         <button class="btn" id="btn-draft" type="button"
           style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff">Bozza</button>
@@ -1000,13 +1000,13 @@
     const { error } = await sb.from('posts').delete().eq('id', editId).eq('user_id', session.user.id);
     if (error) { toast('Errore: ' + error.message, 'err'); return; }
     toast('Post eliminato.', 'ok');
-    setTimeout(() => { window.location.href = 'me.html'; }, 900);
+    setTimeout(() => { window.location.href = 'me'; }, 900);
   }
 
   async function init() {
     const { data: sd } = await sb.auth.getSession();
     session = sd?.session || null;
-    if (!session) { window.location.href = 'login.html'; return; }
+    if (!session) { window.location.href = 'login'; return; }
     const { data: prof } = await sb.from('profiles')
       .select('id,username,display_name,avatar_emoji,avatar_color').eq('id', session.user.id).single();
     profile = prof;
@@ -1023,7 +1023,7 @@
       const emoji    = prof?.avatar_emoji || '🌿';
       const color    = prof?.avatar_color || '#1F6F8B';
       const safe     = String(username).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      const profileHref = 'profile.html?u=' + encodeURIComponent(username);
+      const profileHref = 'profile?u=' + encodeURIComponent(username);
       wrap.innerHTML = `
         <div class="user-menu" id="userMenuWrap">
           <button class="user-btn" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
@@ -1033,10 +1033,10 @@
           <div class="user-dropdown" id="userMenuDropdown" role="menu">
             <div class="user-dropdown__title">Navigazione</div>
             <a href="javascript:history.back()" role="menuitem">←&nbsp; Torna indietro</a>
-            <a href="index.html" role="menuitem">🏠&nbsp; Home</a>
+            <a href="index" role="menuitem">🏠&nbsp; Home</a>
             <a href="${profileHref}" role="menuitem">👤&nbsp; Profilo</a>
-            <a href="me.html" role="menuitem">📊&nbsp; Dashboard</a>
-            <a href="write.html" class="item-primary active" role="menuitem">✍&nbsp; Scrivi</a>
+            <a href="me" role="menuitem">📊&nbsp; Dashboard</a>
+            <a href="write" class="item-primary active" role="menuitem">✍&nbsp; Scrivi</a>
             <div class="user-dropdown__sep"></div>
             <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
           </div>
@@ -1050,7 +1050,7 @@
       });
       dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
         await sb.auth.signOut();
-        window.location.href = 'index.html';
+        window.location.href = 'index';
       });
       dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
         dd.classList.remove('open');
@@ -1108,11 +1108,11 @@
       <div>
         <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
-          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
-          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
-          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
-          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+          <li><a href="index" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
         </ul>
       </div>
       <div>
@@ -1137,7 +1137,7 @@
       <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
       <div style="display:flex;gap:16px">
         <span>Realizzato con cura per il territorio del Mincio</span>
-        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+        <a href="admin" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
       </div>
     </div>
   </div>

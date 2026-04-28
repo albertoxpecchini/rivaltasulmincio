@@ -321,7 +321,7 @@
 
 <!-- Topbar -->
 <div class="topbar">
-  <a class="topbar-brand" href="index.html">Pro Loco Rivalta sul Mincio</a>
+  <a class="topbar-brand" href="index">Pro Loco Rivalta sul Mincio</a>
   <div class="topbar-right" id="nav-auth"></div>
 </div>
 
@@ -331,8 +331,8 @@
 
       <!-- Navigation buttons -->
       <div class="post-nav">
-        <a href="index.html#news" class="btn btn-ghost btn-sm">← Torna alle notizie</a>
-        <a href="index.html" class="btn btn-ghost btn-sm">🏠 Home</a>
+        <a href="index#news" class="btn btn-ghost btn-sm">← Torna alle notizie</a>
+        <a href="index" class="btn btn-ghost btn-sm">🏠 Home</a>
       </div>
 
       <!-- Content injected here -->
@@ -404,7 +404,7 @@
     : String(value || '').trim();
   const categoryHref = (value) => window.RSM_CATEGORIES
     ? window.RSM_CATEGORIES.categoryHref(value)
-    : ('category.html?name=' + encodeURIComponent(canonicalCategory(value)));
+    : ('category?name=' + encodeURIComponent(canonicalCategory(value)));
   const badgeColorByCategory = (value) => window.RSM_CATEGORIES
     ? window.RSM_CATEGORIES.badgeColor(value)
     : 'default';
@@ -598,13 +598,13 @@
     if (!nav) return;
 
     if (viewerSession && viewerProfile) {
-      nav.innerHTML = `<a href="me.html" class="btn btn-ghost btn-sm" style="gap:7px">
+      nav.innerHTML = `<a href="me" class="btn btn-ghost btn-sm" style="gap:7px">
         <span style="width:22px;height:22px;border-radius:6px;background:${viewerProfile.avatar_color || '#1F6F8B'};display:inline-flex;align-items:center;justify-content:center;font-size:.85rem">${viewerProfile.avatar_emoji || '🌿'}</span>
         @${viewerProfile.username}</a>`;
       return;
     }
 
-    nav.innerHTML = `<a href="login.html" class="btn btn-primary btn-sm">Accedi</a>`;
+    nav.innerHTML = `<a href="login" class="btn btn-primary btn-sm">Accedi</a>`;
   }
 
   function renderContent(text) {
@@ -946,14 +946,14 @@
   renderNavAuth();
 
   if (!id || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
-    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>Nessun ID specificato.</p><a href="index.html#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
+    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>Nessun ID specificato.</p><a href="index#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
     return;
   }
 
   const { data: post, error } = await sb.from('posts').select('*').eq('id', id).eq('published', true).single();
 
   if (error || !post) {
-    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>L'articolo non esiste o non è ancora pubblicato.</p><a href="index.html#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
+    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>L'articolo non esiste o non è ancora pubblicato.</p><a href="index#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
     return;
   }
 
@@ -973,7 +973,7 @@
   const safeBadge = escapeHtml(activePost.badge || activePost.category || '');
   const safeAuthor = escapeHtml(activePost.author_username || '');
   const safeCategoryHref = categoryHref(activePost.category);
-  const authorHref = activePost.author_username ? `profile.html?u=${encodeURIComponent(activePost.author_username)}` : '';
+  const authorHref = activePost.author_username ? `profile?u=${encodeURIComponent(activePost.author_username)}` : '';
 
   wrap.innerHTML = `
     <div class="post-badges">
@@ -991,7 +991,7 @@
     <div class="content-divider"></div>
     <div class="content">${renderContent(activePost.content)}</div>
     <div class="post-footer">
-      <a href="index.html#news" class="btn btn-primary">← Tutte le notizie</a>
+      <a href="index#news" class="btn btn-primary">← Tutte le notizie</a>
       ${activePost.author_username ? `<a href="${authorHref}" class="btn btn-ghost">Autore: @${safeAuthor} →</a>` : ''}
     </div>
     <div class="post-reactions">

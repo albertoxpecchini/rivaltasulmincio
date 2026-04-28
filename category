@@ -169,10 +169,10 @@
 <div class="aurora"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
 <div class="topbar">
-  <a class="topbar-brand" href="index.html">Pro Loco Rivalta sul Mincio</a>
+  <a class="topbar-brand" href="index">Pro Loco Rivalta sul Mincio</a>
   <div class="topbar-actions">
-    <a class="btn" href="index.html#news">Bacheca</a>
-    <a class="btn" href="me.html">Account</a>
+    <a class="btn" href="index#news">Bacheca</a>
+    <a class="btn" href="me">Account</a>
   </div>
 </div>
 
@@ -221,7 +221,7 @@
 
   row.innerHTML = categories.map(function (cat) {
     const cls = cat === activeCategory ? 'chip on' : 'chip';
-    return '<a class="' + cls + '" href="category.html?name=' + encodeURIComponent(cat) + '">' + cat + '</a>';
+    return '<a class="' + cls + '" href="category?name=' + encodeURIComponent(cat) + '">' + cat + '</a>';
   }).join('');
 
   const fmt = function (iso) {
@@ -272,7 +272,7 @@
             '<time>' + fmt(post.published_at) + '</time>' +
             '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
           '</div>' +
-          '<h2 class="post-title"><a href="post.html?id=' + post.id + '">' + escapeHtml(post.title || 'Articolo') + '</a></h2>' +
+          '<h2 class="post-title"><a href="post?id=' + post.id + '">' + escapeHtml(post.title || 'Articolo') + '</a></h2>' +
           '<p class="post-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
         '</article>';
       }).join('');

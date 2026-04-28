@@ -171,7 +171,7 @@
 <body>
 
 <nav class="topbar">
-  <a class="top-brand" href="index.html">
+  <a class="top-brand" href="index">
     <span class="top-logo">🌿</span>
     Rivalta sul Mincio
   </a>
@@ -324,12 +324,12 @@ async function save() {
 
 (async function init() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session?.user) { location.href = 'login.html'; return; }
+  if (!session?.user) { location.href = 'login'; return; }
 
   currentUser = session.user;
 
   const { data: profile, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  if (error || !profile) { location.href = 'me.html'; return; }
+  if (error || !profile) { location.href = 'me'; return; }
 
   currentProfile = profile;
 
@@ -341,7 +341,7 @@ async function save() {
     const emoji       = profile.avatar_emoji || '🌿';
     const color       = profile.avatar_color || '#1F6F8B';
     const safe        = String(username).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    const profileHref = 'profile.html?u=' + encodeURIComponent(username);
+    const profileHref = 'profile?u=' + encodeURIComponent(username);
     wrap.innerHTML = `
       <div class="user-menu" id="userMenuWrap">
         <button class="user-btn" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
@@ -351,10 +351,10 @@ async function save() {
         <div class="user-dropdown" id="userMenuDropdown" role="menu">
           <div class="user-dropdown__title">Navigazione</div>
           <a href="javascript:history.back()" role="menuitem">←&nbsp; Torna indietro</a>
-          <a href="index.html" role="menuitem">🏠&nbsp; Home</a>
+          <a href="index" role="menuitem">🏠&nbsp; Home</a>
           <a href="${profileHref}" class="active" role="menuitem">👤&nbsp; Profilo</a>
-          <a href="me.html" role="menuitem">📊&nbsp; Dashboard</a>
-          <a href="write.html" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
+          <a href="me" role="menuitem">📊&nbsp; Dashboard</a>
+          <a href="write" class="item-primary" role="menuitem">✍&nbsp; Scrivi</a>
           <div class="user-dropdown__sep"></div>
           <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
         </div>
@@ -368,7 +368,7 @@ async function save() {
     });
     dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
       await sb.auth.signOut();
-      window.location.href = 'index.html';
+      window.location.href = 'index';
     });
     dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
       dd.classList.remove('open');
@@ -429,11 +429,11 @@ async function save() {
       <div>
         <h4 style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1F6F8B">Naviga</h4>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li><a href="index.html" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
-          <li><a href="index.html#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
-          <li><a href="index.html#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
-          <li><a href="index.html#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
-          <li><a href="index.html#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
+          <li><a href="index" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Home</a></li>
+          <li><a href="index#valli" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Le Valli del Mincio</a></li>
+          <li><a href="index#luccio" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Il Luccio</a></li>
+          <li><a href="index#chi-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Chi siamo</a></li>
+          <li><a href="index#dove-siamo" style="font-size:.88rem;color:rgba(234,244,244,.6);text-decoration:none">Dove siamo</a></li>
         </ul>
       </div>
       <div>
@@ -458,7 +458,7 @@ async function save() {
       <span>© <span id="footer-year"></span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
       <div style="display:flex;gap:16px">
         <span>Realizzato con cura per il territorio del Mincio</span>
-        <a href="admin.html" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
+        <a href="admin" style="opacity:.5;font-size:.74rem;color:rgba(234,244,244,.6);text-decoration:none">⚙ Admin</a>
       </div>
     </div>
   </div>

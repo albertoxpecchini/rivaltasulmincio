@@ -181,7 +181,7 @@ input:focus{border-color:rgba(31,111,139,.6);box-shadow:0 0 0 3px rgba(31,111,13
         <div class="big-icon">🔗</div>
         <div class="success-title" style="color:var(--red)">Link non valido</div>
         <p class="success-sub">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
-        <a href="login.html" class="btn-outline">← Torna al login</a>
+        <a href="login" class="btn-outline">← Torna al login</a>
       </div>
     </div>
 
@@ -222,7 +222,7 @@ input:focus{border-color:rgba(31,111,139,.6);box-shadow:0 0 0 3px rgba(31,111,13
         <div class="spinner"></div>
       </button>
 
-      <a href="login.html" class="back-link">← Torna al login</a>
+      <a href="login" class="back-link">← Torna al login</a>
     </div>
 
     <!-- State: success -->
@@ -231,7 +231,7 @@ input:focus{border-color:rgba(31,111,139,.6);box-shadow:0 0 0 3px rgba(31,111,13
         <div class="big-icon">✅</div>
         <div class="success-title">Password aggiornata!</div>
         <p class="success-sub">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
-        <a href="login.html" class="btn-outline" style="margin:0 auto">Vai al login →</a>
+        <a href="login" class="btn-outline" style="margin:0 auto">Vai al login →</a>
       </div>
     </div>
   </div>
@@ -371,7 +371,7 @@ async function doReset(){
 
   showState('s-success');
   // Auto-redirect after 3s
-  setTimeout(()=>{ window.location.href='login.html'; }, 3000);
+  setTimeout(()=>{ window.location.href='login'; }, 3000);
 }
 
 // Allow Enter key

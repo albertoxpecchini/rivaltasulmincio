@@ -743,7 +743,7 @@
 <body>
   <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <a class="site-brand" href="index.html" aria-label="Torna alla home">
+      <a class="site-brand" href="index" aria-label="Torna alla home">
         <span class="brand-mark" aria-hidden="true">ðŸŒŠ</span>
         <span class="brand-copy">
           <span class="brand-title">Rivalta sul Mincio</span>
@@ -751,7 +751,7 @@
         </span>
       </a>
       <nav class="header-nav" aria-label="Navigazione">
-        <a href="index.html">Home</a>
+        <a href="index">Home</a>
       </nav>
     </div>
   </header>
@@ -825,7 +825,7 @@
 
             <div class="inline-actions">
               <button class="link-btn" type="button" id="login-to-forgot">Password dimenticata?</button>
-              <a href="index.html" class="link-btn">Torna alla home</a>
+              <a href="index" class="link-btn">Torna alla home</a>
             </div>
           </section>
 
@@ -1254,7 +1254,7 @@
 
       setButtonLoading('btn-magic', true, 'Invia link magico via email', 'Invio in corso...');
 
-      const redirectUrl = new URL('profile.html', window.location.href).toString();
+      const redirectUrl = new URL('profile', window.location.href).toString();
       const { error } = await sb.auth.signInWithOtp({
         email: email,
         options: { emailRedirectTo: redirectUrl, shouldCreateUser: false }
@@ -1327,7 +1327,7 @@
       }
 
       const { data: loginProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
-      window.location.href = loginProf?.username ? 'profile.html?u=' + loginProf.username : 'profile.html';
+      window.location.href = loginProf?.username ? 'profile?u=' + loginProf.username : 'profile';
     }
 
     function validEmail(email) {
@@ -1436,7 +1436,7 @@
       }
 
       const acceptedAt = new Date().toISOString();
-      const redirectUrl = new URL('login.html?verified=1', window.location.href).toString();
+      const redirectUrl = new URL('login?verified=1', window.location.href).toString();
 
       const metadata = {
         username: username,
@@ -1490,7 +1490,7 @@
         return;
       }
 
-      const resetRedirect = new URL('reset.html', window.location.href).toString();
+      const resetRedirect = new URL('reset', window.location.href).toString();
       setButtonLoading('btn-forgot', true, 'Invia email reset', 'Invio in corso...');
 
       const { error } = await sb.auth.resetPasswordForEmail(email, {
@@ -1545,7 +1545,7 @@
       }
 
       const { data: restoreProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
-      window.location.href = restoreProf?.username ? 'profile.html?u=' + restoreProf.username : 'profile.html';
+      window.location.href = restoreProf?.username ? 'profile?u=' + restoreProf.username : 'profile';
     }
 
     function bindEvents() {
@@ -1595,7 +1595,7 @@
       });
 
       byId('reg1-back-home').addEventListener('click', () => {
-        window.location.href = 'index.html';
+        window.location.href = 'index';
       });
 
       byId('reg2-username').addEventListener('input', updateIdentityPreview);

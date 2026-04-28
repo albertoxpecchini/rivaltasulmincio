@@ -516,13 +516,13 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html">
+    <a class="brand" href="index">
       <span class="brand-logo">🌊</span>
       <span>Rivalta sul Mincio</span>
     </a>
 
     <div class="top-actions">
-      <a class="btn btn-ghost" href="index.html">Home</a>
+      <a class="btn btn-ghost" href="index">Home</a>
     </div>
   </div>
 </header>
@@ -541,7 +541,7 @@
           <span id="user-chip-name">@utente</span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn btn-ghost" href="me.html">Dashboard</a>
+          <a class="btn btn-ghost" href="me">Dashboard</a>
           <button class="btn btn-ghost" id="logout-btn" type="button">Esci</button>
         </div>
       </div>
@@ -567,7 +567,7 @@
       </div>
       <div style="margin-top:auto;padding-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <button class="btn btn-primary" id="save-profile-btn" type="button">Salva profilo</button>
-        <a class="btn btn-ghost" id="public-profile-link" href="profile.html">Profilo pubblico</a>
+        <a class="btn btn-ghost" id="public-profile-link" href="profile">Profilo pubblico</a>
       </div>
       <div class="status" id="profile-status"></div>
     </article>
@@ -818,7 +818,7 @@
     currentProfile.bio = bio || null;
 
     if ($('user-chip-name')) $('user-chip-name').textContent = '@' + username;
-    if ($('public-profile-link')) $('public-profile-link').href = 'profile.html?u=' + encodeURIComponent(username);
+    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(username);
 
     setStatus('profile-status', 'Profilo aggiornato con successo.', 'ok');
   }
@@ -893,20 +893,20 @@
 
   async function logout() {
     await sb.auth.signOut();
-    location.href = 'index.html';
+    location.href = 'index';
   }
 
   async function init() {
     const { data: sessionData } = await sb.auth.getSession();
     const session = sessionData?.session || null;
     if (!session) {
-      location.href = 'login.html';
+      location.href = 'login';
       return;
     }
 
     const { data: profile, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
     if (error || !profile) {
-      location.href = 'me.html';
+      location.href = 'me';
       return;
     }
 
@@ -922,7 +922,7 @@
     if ($('p-username')) $('p-username').value = profile.username || '';
     if ($('p-display')) $('p-display').value = profile.display_name || profile.username || '';
     if ($('p-bio')) $('p-bio').value = profile.bio || '';
-    if ($('public-profile-link')) $('public-profile-link').href = 'profile.html?u=' + encodeURIComponent(profile.username || '');
+    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(profile.username || '');
 
     buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
 

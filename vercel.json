@@ -1,8 +1,19 @@
 {
+  "rewrites": [
+    { "source": "/", "destination": "/index" }
+  ],
   "headers": [
     {
-      "source": "/(.*)\\.html",
+      "source": "/",
       "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(write|reset|profile|preferenze|post|modifica-profilo|me|login|index|category|admin|db-test)",
+      "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },

@@ -75,7 +75,7 @@
 
   function categoryHref(input) {
     var cat = canonical(input);
-    return 'category.html?name=' + encodeURIComponent(cat || '');
+    return 'category?name=' + encodeURIComponent(cat || '');
   }
 
   global.RSM_CATEGORIES = {

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DB Test – Rivalta sul Mincio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f7; color: #1d1d1f; padding: 24px; }
+    h1 { font-size: 1.4rem; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+    .card { background: #fff; border: 1px solid #d2d2d7; border-radius: 12px; padding: 16px; }
+    .card h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: #86868b; margin-bottom: 10px; }
+    .result { font-size: .82rem; font-family: 'Courier New', monospace; line-height: 1.6; word-break: break-all; }
+    .ok   { color: #2E7D32; }
+    .err  { color: #b94747; }
+    .pending { color: #86868b; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; margin-right: 4px; }
+    .badge-ok  { background: #e8f5e9; color: #2E7D32; }
+    .badge-err { background: #fdecea; color: #b94747; }
+    .badge-skip { background: #f0f0f0; color: #86868b; }
+    pre { white-space: pre-wrap; margin-top: 6px; font-size: .78rem; color: #555; }
+    .summary { background: #fff; border: 1px solid #d2d2d7; border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .summary strong { font-size: 1.1rem; }
+    button { padding: 8px 18px; border-radius: 8px; border: 1px solid #d2d2d7; background: #fff; font-size: .84rem; font-weight: 600; cursor: pointer; }
+    button:hover { border-color: #1F6F8B; color: #1F6F8B; }
+  </style>
+</head>
+<body>
+<h1>🔬 Database Test – Rivalta sul Mincio</h1>
+
+<div class="summary" id="summary">
+  <span>Esecuzione in corso…</span>
+</div>
+
+<button onclick="runAll()" style="margin-bottom:16px">▶ Riesegui tutti i test</button>
+
+<div class="grid" id="grid"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const TESTS = [
+  {
+    id: 'connection',
+    label: 'Connessione Supabase',
+    desc: 'Raggiunge il progetto Supabase',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id').limit(1);
+      if (error) throw error;
+      return `OK — risposta ricevuta (${data?.length ?? 0} righe)`;
+    }
+  },
+  {
+    id: 'profiles_columns',
+    label: 'Tabella profiles — colonne chiave',
+    desc: 'Verifica che id, username, display_name, bio, comune, avatar_emoji, avatar_color, role, created_at esistano',
+    run: async () => {
+      const cols = ['id','username','display_name','bio','comune','avatar_emoji','avatar_color','role','created_at'];
+      const { data, error } = await sb.from('profiles').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      // If we got here without error, all columns exist
+      return `OK — tutte le colonne trovate: ${cols.join(', ')}`;
+    }
+  },
+  {
+    id: 'posts_table',
+    label: 'Tabella posts',
+    desc: 'Verifica id, title, excerpt, content, category, published, user_id, created_at, published_at',
+    run: async () => {
+      const cols = ['id','title','excerpt','content','category','published','user_id','created_at','published_at'];
+      const { data, error } = await sb.from('posts').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      return `OK — ${data?.length ?? 0} righe leggibili (published=true via RLS non richiesta qui)`;
+    }
+  },
+  {
+    id: 'posts_published',
+    label: 'Post pubblicati pubblici',
+    desc: 'Conta i post con published=true leggibili da anonimo',
+    run: async () => {
+      const { count, error } = await sb.from('posts').select('id', { count: 'exact', head: true }).eq('published', true);
+      if (error) throw error;
+      return `OK — ${count} post pubblicati visibili pubblicamente`;
+    }
+  },
+  {
+    id: 'categories',
+    label: 'Tabella categories (opzionale)',
+    desc: 'Verifica se esiste una tabella categories separata',
+    run: async () => {
+      const { data, error } = await sb.from('categories').select('*').limit(5);
+      if (error) {
+        if (error.code === '42P01' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste (le categorie sono gestite lato client — OK)';
+        }
+        throw error;
+      }
+      return `OK — ${data?.length ?? 0} categorie trovate`;
+    }
+  },
+  {
+    id: 'comments_table',
+    label: 'Tabella comments (opzionale)',
+    desc: 'Verifica se la tabella comments esiste',
+    run: async () => {
+      const { data, error } = await sb.from('comments').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora — funzionalità commenti non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'likes_table',
+    label: 'Tabella likes (opzionale)',
+    desc: 'Verifica se la tabella likes esiste',
+    run: async () => {
+      const { data, error } = await sb.from('likes').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora — funzionalità like non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'notifications_table',
+    label: 'Tabella notifications (opzionale)',
+    desc: 'Verifica se la tabella notifications esiste',
+    run: async () => {
+      const { data, error } = await sb.from('notifications').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'auth_session',
+    label: 'Sessione auth corrente',
+    desc: 'Controlla se esiste una sessione utente attiva',
+    run: async () => {
+      const { data: { session }, error } = await sb.auth.getSession();
+      if (error) throw error;
+      if (!session) return '— Nessun utente loggato (anonimo)';
+      return `OK — loggato come ${session.user.email} (id: ${session.user.id.slice(0,8)}…)`;
+    }
+  },
+  {
+    id: 'rls_profiles_anon',
+    label: 'RLS profiles — lettura anonima',
+    desc: 'Un utente anonimo può leggere i profili pubblici?',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,username').limit(3);
+      if (error) throw error;
+      if (!data || data.length === 0) return '⚠ Nessun profilo o RLS blocca la lettura pubblica';
+      return `OK — ${data.length} profili leggibili pubblicamente`;
+    }
+  },
+  {
+    id: 'profiles_comune_column',
+    label: 'Colonna comune in profiles',
+    desc: 'Test diretto: tenta di leggere il campo "comune"',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,comune').limit(1);
+      if (error) {
+        if (error.message?.includes('comune') || error.message?.includes('schema cache')) {
+          throw new Error('Colonna "comune" NON trovata — esegui: ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS comune TEXT;');
+        }
+        throw error;
+      }
+      return `OK — colonna "comune" presente`;
+    }
+  },
+];
+
+const results = {};
+
+function renderCard(test, status, message, detail) {
+  const statusClass = status === 'ok' ? 'ok' : status === 'err' ? 'err' : 'pending';
+  const badge = status === 'ok'
+    ? '<span class="badge badge-ok">PASS</span>'
+    : status === 'err'
+    ? '<span class="badge badge-err">FAIL</span>'
+    : '<span class="badge badge-skip">…</span>';
+
+  return `
+    <div class="card" id="card-${test.id}">
+      <h2>${badge} ${test.label}</h2>
+      <div class="result ${statusClass}">${message}</div>
+      ${detail ? `<pre>${detail}</pre>` : ''}
+      <div style="margin-top:8px;font-size:.74rem;color:#86868b">${test.desc}</div>
+    </div>`;
+}
+
+function updateSummary() {
+  const total = TESTS.length;
+  const done  = Object.keys(results).length;
+  const passed = Object.values(results).filter(r => r === 'ok').length;
+  const failed = Object.values(results).filter(r => r === 'err').length;
+  const pct = done > 0 ? Math.round((passed / done) * 100) : 0;
+
+  document.getElementById('summary').innerHTML = `
+    <strong>${done}/${total}</strong> eseguiti &nbsp;|&nbsp;
+    <span style="color:#2E7D32;font-weight:700">${passed} PASS</span> &nbsp;|&nbsp;
+    <span style="color:#b94747;font-weight:700">${failed} FAIL</span> &nbsp;|&nbsp;
+    <span style="color:#86868b">${total - done} in attesa</span>
+    ${done === total ? `&nbsp;— <strong>${pct === 100 ? '✅ Tutti i test superati' : `⚠ ${failed} test falliti`}</strong>` : ''}
+  `;
+}
+
+async function runAll() {
+  const grid = document.getElementById('grid');
+  Object.keys(results).forEach(k => delete results[k]);
+
+  // Render all as pending
+  grid.innerHTML = TESTS.map(t => renderCard(t, 'pending', 'In esecuzione…', '')).join('');
+  updateSummary();
+
+  for (const test of TESTS) {
+    try {
+      const msg = await test.run();
+      results[test.id] = 'ok';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'ok', msg, '');
+    } catch (e) {
+      results[test.id] = 'err';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'err', e.message || String(e), '');
+    }
+    updateSummary();
+  }
+}
+
+runAll();
+</script>
+</body>
+</html>
