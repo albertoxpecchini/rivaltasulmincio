@@ -2,7 +2,7 @@ const http = require('http');
 const fs   = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const ROOT = path.resolve(__dirname);
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -50,6 +50,9 @@ http.createServer((req, res) => {
   }
 
   const ext       = path.extname(filePath).toLowerCase();
+  const cacheControl = process.env.NODE_ENV === 'production'
+    ? (ext === '.html' ? 'no-store' : 'public, max-age=86400')
+    : 'no-store';
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -61,7 +64,7 @@ http.createServer((req, res) => {
     res.writeHead(200, {
       ...SECURITY_HEADERS,
       'Content-Type': MIME[ext] || 'application/octet-stream',
-      'Cache-Control': ext === '.html' ? 'no-store' : 'public, max-age=86400'
+      'Cache-Control': cacheControl
     });
     res.end(data);
   });
@@ -69,8 +72,8 @@ http.createServer((req, res) => {
   console.log(`Server avviato → http://localhost:${PORT}`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.log(`Server avviato → http://localhost:${PORT}`);
-    process.exit(0);
+    console.error(`Porta ${PORT} gia in uso. Chiudi il processo esistente o usa una porta diversa con PORT=<numero>.`);
+    process.exit(1);
   } else {
     throw err;
   }
