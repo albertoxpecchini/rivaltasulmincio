@@ -1042,7 +1042,7 @@
       position: relative;
       padding: 8px;
       border-radius: 46px;
-      background: rgba(255, 250, 240, 0.42);
+      background: linear-gradient(145deg, rgba(211, 237, 243, 0.62), rgba(235, 248, 252, 0.42));
       border: 1px solid rgba(37, 63, 53, 0.12);
       box-shadow: var(--shadow-strong);
       overflow: hidden;
@@ -1064,6 +1064,7 @@
       min-height: 560px;
       perspective: 1200px;
       padding: 48px 0 84px;
+      touch-action: pan-y;
     }
 
     .carousel-slide {
@@ -1078,6 +1079,7 @@
       transform: translate3d(-50%, 26px, 0) scale(0.76) rotateY(-12deg);
       transition: opacity 760ms var(--ease), transform 760ms var(--ease), filter 760ms var(--ease);
       filter: saturate(0.82) contrast(0.98) brightness(0.7);
+      animation: floatPhoto 6.2s ease-in-out infinite;
     }
 
     .carousel-slide[data-state="active"] {
@@ -1113,6 +1115,17 @@
       height: 100%;
       min-height: 100%;
       border-radius: 34px;
+      transition: transform 440ms var(--ease-soft), filter 440ms var(--ease-soft);
+      will-change: transform;
+    }
+
+    .carousel-card .photo-slot:hover {
+      transform: scale(1.01);
+      filter: saturate(1.1);
+    }
+    @keyframes floatPhoto {
+      0%, 100% { transform: translate3d(-50%, 0, 0) scale(1) rotateY(0deg); }
+      50% { transform: translate3d(-50%, -8px, 0) scale(1.015) rotateY(0deg); }
     }
 
     .carousel-caption {
@@ -1284,8 +1297,8 @@
     .recipe-panel {
       padding: clamp(24px, 4vw, 46px);
       border-radius: 38px;
-      background: rgba(255, 250, 240, 0.76);
-      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: linear-gradient(160deg, rgba(227, 245, 252, 0.9), rgba(244, 252, 255, 0.86));
+      border: 1px solid rgba(76, 135, 162, 0.2);
       box-shadow: var(--shadow);
     }
 
@@ -1308,16 +1321,19 @@
       gap: 8px;
       margin-top: 24px;
     }
+    #luccio .story-card {
+      background: linear-gradient(155deg, rgba(208, 239, 249, 0.85), rgba(236, 250, 255, 0.94));
+      border-color: rgba(76, 135, 162, 0.26);
+    }
 
     .news-shell {
       display: grid;
-      grid-template-columns: minmax(0, 0.74fr) minmax(280px, 0.26fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: 22px;
       align-items: start;
     }
 
-    .news-main,
-    .news-side {
+    .news-main {
       padding: 8px;
       border-radius: 42px;
       background: rgba(255, 250, 240, 0.46);
@@ -1325,15 +1341,13 @@
       box-shadow: var(--shadow);
     }
 
-    .news-inner,
-    .news-side-inner {
+    .news-inner {
       border-radius: 34px;
       background: rgba(255, 250, 240, 0.76);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .news-inner { padding: clamp(18px, 3vw, 34px); }
-    .news-side-inner { padding: 26px; }
 
     .news-filter-row {
       display: flex;
@@ -2202,7 +2216,7 @@
             <p class="section-kicker">Galleria</p>
             <h2 class="section-title">Un carosello per le foto che arriveranno.</h2>
           </div>
-          <p class="section-lead" data-reveal style="--delay: 120ms">Autoplay, frecce, punti, tastiera e swipe. Gli slot sono gi&agrave; nominati per rimpiazzare i placeholder con scatti reali del borgo, della sagra e delle valli.</p>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Una galleria viva: foto morbide e fluttuanti, autoplay, frecce, punti, tastiera, swipe e scorrimento manuale orizzontale per sfogliare liberamente.</p>
         </div>
 
         <div class="gallery-stage" data-reveal>
@@ -2283,6 +2297,7 @@
             <li>Ricette tramandate, legate alla pesca e alla cucina d&rsquo;acqua dolce.</li>
             <li>Un racconto gastronomico da collegare a foto di dettaglio e reportage.</li>
             <li>CTA verso news, eventi e contatti senza interrompere l&rsquo;esperienza.</li>
+            <li>Spazio dedicato alla Festa del Pesce annuale, con programma e men&ugrave; in evidenza.</li>
           </ul>
           <div class="button-row">
             <a class="button magnetic" href="#news"><span>Leggi le ultime</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
@@ -2299,6 +2314,11 @@
             <h3>Salsa alla Rivaltese</h3>
             <p>Cipolla, capperi, peperoni, acciughe, spezie e polenta. Il blocco &egrave; pronto per foto di cucina o servizio.</p>
             <div class="recipe-list"><span class="tag">sagra</span><span class="tag">tradizione</span></div>
+          </article>
+          <article class="recipe-panel">
+            <h3>Festa del Pesce</h3>
+            <p>Area speciale in stile men&ugrave;: antipasti di lago, luccio in bianco, luccio in salsa, grigliate e dolci locali. Perfetta per aggiornare date e programma dell&rsquo;evento annuale.</p>
+            <div class="recipe-list"><span class="tag">evento annuale</span><span class="tag">men&ugrave;</span><span class="tag">azzurrino</span><span class="tag">famiglie</span><span class="tag">musica</span></div>
           </article>
           <figure class="photo-frame" style="grid-column: 1 / -1;">
             <div class="photo-slot" data-photo-slot="luccio-table" data-photo-label="Foto tavola e luccio" style="--photo:url('https://picsum.photos/seed/rivalta-luccio-table/1200/760')" role="img" aria-label="Tavola dedicata al luccio"></div>
@@ -2333,17 +2353,6 @@
             </div>
           </main>
 
-          <aside class="news-side" data-reveal style="--delay: 120ms">
-            <div class="news-side-inner">
-              <p class="section-kicker">Link rapidi</p>
-              <div class="side-list">
-                <a href="#valli"><span>Valli del Mincio</span><span aria-hidden="true">&rarr;</span></a>
-                <a href="#luccio"><span>Sagra e luccio</span><span aria-hidden="true">&rarr;</span></a>
-                <a href="#dove-siamo"><span>Come arrivare</span><span aria-hidden="true">&rarr;</span></a>
-                <a href="privacy"><span>Privacy policy</span><span aria-hidden="true">&rarr;</span></a>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
@@ -2378,7 +2387,13 @@
 
         <div class="contact-grid">
           <figure class="map-plate" data-reveal>
-            <div class="photo-slot" data-photo-slot="location-map-photo" data-photo-label="Foto o mappa di arrivo" style="--photo:url('https://picsum.photos/seed/rivalta-location-map/1400/900')" role="img" aria-label="Mappa fotografica di Rivalta sul Mincio"></div>
+            <iframe
+              title="Google Maps - Pro Loco Rivalta sul Mincio"
+              src="https://www.google.com/maps?q=Via+Porto+31,+46040+Rivalta+sul+Mincio+MN&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              style="width:100%;min-height:420px;border:0;border-radius:30px;"
+              allowfullscreen></iframe>
           </figure>
           <article class="contact-card" data-reveal style="--delay: 120ms">
             <div>
@@ -2389,6 +2404,11 @@
               <div class="contact-line"><strong>Email</strong><a href="mailto:info@prolocorivalta.mn.it">info@prolocorivalta.mn.it</a></div>
               <div class="contact-line"><strong>Telefono</strong><a href="tel:+393398995680">+39 339 899 5680</a></div>
               <div class="contact-line"><strong>Accessi</strong><span>Auto dalla SP 18, bici lungo la ciclabile del Mincio, barca dagli imbarcaderi della valle.</span></div>
+            </div>
+            <div class="button-row">
+              <a class="button secondary magnetic" href="https://www.google.com/maps/dir/?api=1&destination=Via+Porto+31,+46040+Rivalta+sul+Mincio+MN" target="_blank" rel="noopener">
+                <span>Apri percorso su Google Maps</span><span class="button-icon" aria-hidden="true">&rarr;</span>
+              </a>
             </div>
           </article>
         </div>
@@ -2748,6 +2768,16 @@
         pointerDown = false;
         play();
       });
+      root.addEventListener('wheel', function (event) {
+        if (Math.abs(event.deltaX) < 8 && Math.abs(event.deltaY) < 8) return;
+        event.preventDefault();
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+          setSlide(index + (event.deltaX > 0 ? 1 : -1));
+        } else {
+          setSlide(index + (event.deltaY > 0 ? 1 : -1));
+        }
+        play();
+      }, { passive: false });
 
       root.addEventListener('mouseenter', stop);
       root.addEventListener('mouseleave', play);
