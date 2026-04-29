@@ -1364,39 +1364,37 @@
     .archive-month a { color: inherit; }
     .archive-month-count { font-size: .72rem; opacity: .7; }
 
-    /* Facebook */
-    .fb-widget {
-      background: linear-gradient(135deg, #1877F2 0%, #0d5cbf 100%);
-      border-radius: 12px; padding: 22px;
-      text-align: center;
-      position: relative; overflow: hidden;
+    /* Facebook page card */
+    .fb-card { border: 1px solid #dde; border-radius: 10px; overflow: hidden; background: #fff; font-family: 'Inter', system-ui, sans-serif; }
+    .fb-card__cover { height: 72px; background: linear-gradient(135deg, #1877F2 0%, #0d5cbf 100%); position: relative; }
+    .fb-card__avatar-wrap { position: relative; height: 0; }
+    .fb-card__avatar {
+      position: absolute; top: -26px; left: 14px;
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 3px solid #fff; background: #fff;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.18);
     }
-    .fb-widget::after {
-      content: '';
-      position: absolute; top: -30px; right: -30px;
-      width: 120px; height: 120px;
-      background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
+    .fb-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .fb-card__body { padding: 32px 14px 14px; }
+    .fb-card__name { font-size: .88rem; font-weight: 700; color: #1c1e21; margin-bottom: 1px; }
+    .fb-card__meta { font-size: .72rem; color: #65676b; margin-bottom: 8px; }
+    .fb-card__desc { font-size: .78rem; color: #3e4145; line-height: 1.5; margin-bottom: 10px; }
+    .fb-card__stats {
+      display: flex; gap: 14px; font-size: .74rem; color: #65676b;
+      padding: 8px 0; border-top: 1px solid #f0f2f5; border-bottom: 1px solid #f0f2f5;
+      margin-bottom: 10px;
     }
-    .fb-widget__icon {
-      width: 42px; height: 42px;
-      background: rgba(255,255,255,.18);
-      border-radius: 12px;
-      display: inline-flex; align-items: center; justify-content: center;
-      margin-bottom: 12px;
-      position: relative; z-index: 1;
-    }
-    .fb-widget__icon svg { width: 22px; height: 22px; fill: #fff; }
-    .fb-widget__name { font-size: .94rem; font-weight: 700; color: #fff; margin-bottom: 4px; position: relative; z-index: 1; }
-    .fb-widget__follows { font-size: .78rem; color: rgba(255,255,255,.78); margin-bottom: 16px; position: relative; z-index: 1; }
-    .fb-btn {
-      display: inline-block;
-      background: #fff; color: #1877F2;
+    .fb-card__stats strong { color: #1c1e21; font-weight: 700; }
+    .fb-card__info { font-size: .72rem; color: #65676b; margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+    .fb-card__info a { color: #1877F2; font-weight: 600; }
+    .fb-card__btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; padding: 7px 10px;
+      background: #e7f3ff; color: #1877F2;
       font-size: .82rem; font-weight: 700;
-      padding: 9px 22px; border-radius: 8px;
-      transition: all var(--transition);
-      position: relative; z-index: 1;
+      border-radius: 6px; text-decoration: none; transition: background .15s;
     }
-    .fb-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.15); color: #1877F2; }
+    .fb-card__btn:hover { background: #cce4ff; color: #1877F2; }
 
     /* News list */
     .news-list { display: flex; flex-direction: column; }
@@ -2891,12 +2889,31 @@
             <svg class="widget__head-icon"><use href="#i-share"/></svg>
             <h3>Seguici</h3>
           </div>
-          <div class="widget__body">
-            <div class="fb-widget">
-              <div class="fb-widget__icon"><svg><use href="#i-fb"/></svg></div>
-              <div class="fb-widget__name">Pro Loco Rivalta sul Mincio</div>
-              <div class="fb-widget__follows">Comunità locale</div>
-              <a href="#" class="fb-btn">Metti Mi Piace</a>
+          <div class="widget__body" style="padding:0;">
+            <div class="fb-card">
+              <div class="fb-card__cover"></div>
+              <div class="fb-card__avatar-wrap">
+                <div class="fb-card__avatar">
+                  <img src="logo.svg" alt="Pro Loco Rivalta sul Mincio" />
+                </div>
+              </div>
+              <div class="fb-card__body">
+                <div class="fb-card__name">Pro Loco Rivalta sul Mincio</div>
+                <div class="fb-card__meta">Pagina &middot; Organizzazione no-profit</div>
+                <div class="fb-card__desc">Pro Loco Rivalta sul Mincio APS, ecoturismo e promozione ambientale nel cuore del Parco del Mincio.</div>
+                <div class="fb-card__stats">
+                  <div><strong>1.413</strong> Follower</div>
+                  <div><strong>83</strong> Seguiti</div>
+                </div>
+                <div class="fb-card__info">
+                  <span>&#x24D8;</span>
+                  <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Scopri di pi&ugrave;</a>
+                </div>
+                <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer" class="fb-card__btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                  Metti Mi Piace
+                </a>
+              </div>
             </div>
           </div>
         </div>
