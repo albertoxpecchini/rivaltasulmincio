@@ -759,6 +759,8 @@
   </style>
 
 
+  <!-- Vercel Speed Insights -->
+  <script defer src="/speed-insights-bundle.js"></script>
 </head>
 <body>
 
