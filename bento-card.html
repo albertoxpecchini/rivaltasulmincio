@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rivalta sul Mincio – Community Stats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Crosshatch texture */
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-conic-gradient(rgba(255,255,255,0.018) 0% 25%, transparent 0% 50%) 0 0 / 4px 4px;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* === GRID — Template C: 2-col vertical 600px === */
+  .grid {
+    display: grid;
+    width: 600px;
+    padding: 18px;
+    gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "hero      hero"
+      "posts     members"
+      "likes     comuni"
+      "cats      highlight"
+      "quote     quote";
+  }
+
+  /* === CARD BASE === */
+  .card {
+    background: #1a1a1a;
+    border-radius: 14px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.45);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .num {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #6e6e73;
+    line-height: 1.25;
+  }
+
+  /* === HERO === */
+  .card-hero {
+    grid-area: hero;
+    padding: 22px 22px 20px;
+  }
+
+  .card-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1F6F8B, #34d399, #1F6F8B);
+    border-radius: 14px 14px 0 0;
+  }
+
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 16px;
+  }
+
+  .logo-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    border: 1px solid rgba(31,111,139,0.38);
+    background: linear-gradient(135deg, rgba(31,111,139,0.5), rgba(46,125,50,0.42));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .logo-copy { line-height: 1.15; }
+
+  .logo-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f5f5f7;
+    letter-spacing: -0.015em;
+  }
+
+  .logo-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: rgba(245,245,247,0.36);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1F6F8B;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #f5f5f7;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .hero-sub {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #3a3a3c;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .hero-date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #3a3a3c;
+    margin-top: 11px;
+  }
+
+  /* === STAT CARDS === */
+  .card-posts     { grid-area: posts; }
+  .card-members   { grid-area: members; }
+  .card-likes     { grid-area: likes; }
+  .card-comuni    { grid-area: comuni; }
+  .card-cats      { grid-area: cats; }
+
+  .card-stat .num   { margin-bottom: 4px; }
+  .card-stat .label { font-size: 12px; line-height: 1.3; }
+
+  /* === HIGHLIGHT === */
+  .card-highlight {
+    grid-area: highlight;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(150deg, #0F2A30 0%, #1F6F8B 55%, #34d399 100%);
+    padding: 24px 16px;
+  }
+
+  .card-highlight .num {
+    font-size: 46px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .card-highlight .label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+  }
+
+  .card-highlight .sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.42);
+    margin-top: 6px;
+  }
+
+  /* === QUOTE === */
+  .card-quote {
+    grid-area: quote;
+    background: #1a1a1a;
+    border: 1px solid rgba(52,211,153,0.18);
+    padding: 20px 24px;
+    justify-content: center;
+  }
+
+  .card-quote::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #1F6F8B, #34d399);
+    border-radius: 14px 0 0 14px;
+  }
+
+  .quote-text {
+    font-family: 'Sora', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #f5f5f7;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+
+  .quote-text em {
+    color: #34d399;
+    font-style: normal;
+  }
+</style>
+</head>
+<body>
+  <div class="grid">
+
+    <!-- HERO — spans full width -->
+    <div class="card card-hero">
+      <div class="hero-logo">
+        <div class="logo-mark">&#127807;</div>
+        <div class="logo-copy">
+          <div class="logo-name">Rivalta sul Mincio</div>
+          <div class="logo-sub">Piattaforma editoriale comunitaria</div>
+        </div>
+      </div>
+      <div class="hero-eyebrow">Community Platform</div>
+      <div class="hero-tagline">Racconta il</div>
+      <div class="hero-tagline">territorio.</div>
+      <div class="hero-sub">Scopri la comunità.</div>
+      <div class="hero-date">Rivalta sul Mincio &middot; Rodigo &middot; Fossato &middot; 2026</div>
+    </div>
+
+    <!-- STAT 1: Articoli -->
+    <div class="card card-stat card-posts">
+      <div class="num" style="font-size: 36px; color: #1F6F8B">234</div>
+      <div class="label">Articoli pubblicati</div>
+    </div>
+
+    <!-- STAT 2: Utenti -->
+    <div class="card card-stat card-members">
+      <div class="num" style="font-size: 36px; color: #00b4d8">847</div>
+      <div class="label">Utenti registrati</div>
+    </div>
+
+    <!-- STAT 3: Like -->
+    <div class="card card-stat card-likes">
+      <div class="num" style="font-size: 36px; color: #34d399">3.2K</div>
+      <div class="label">Like &amp; reazioni</div>
+    </div>
+
+    <!-- STAT 4: Comuni -->
+    <div class="card card-stat card-comuni">
+      <div class="num" style="font-size: 36px; color: #ff6b6b">3</div>
+      <div class="label">Comuni coperti</div>
+    </div>
+
+    <!-- STAT 5: Categorie -->
+    <div class="card card-stat card-cats">
+      <div class="num" style="font-size: 36px; color: #F59E0B">8</div>
+      <div class="label">Categorie attive</div>
+    </div>
+
+    <!-- HIGHLIGHT -->
+    <div class="card card-highlight">
+      <div class="num">100%</div>
+      <div class="label">Open<br>Community</div>
+      <div class="sub">Accesso libero e gratuito</div>
+    </div>
+
+    <!-- QUOTE — spans full width -->
+    <div class="card card-quote">
+      <div class="quote-text">"Scrivi, <em>condividi</em>, connetti il <em>territorio</em>."</div>
+    </div>
+
+  </div>
+</body>
+</html>
