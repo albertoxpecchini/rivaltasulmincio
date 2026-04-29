@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note Legali — Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #1F6F8B;
+      --text:   #1d1d1f;
+      --muted:  #6e6e73;
+      --border: #d2d2d7;
+      --bg:     #f5f5f7;
+      --surface:#ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Topbar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .top-brand {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: .9rem; font-weight: 700;
+      color: var(--accent); text-decoration: none;
+    }
+
+    .top-back {
+      font-size: .8rem; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 5px 12px; text-decoration: none;
+      transition: color .15s, border-color .15s;
+    }
+    .top-back:hover { color: var(--text); border-color: #aaa; text-decoration: none; }
+
+    /* ── Document ── */
+    .doc-wrap {
+      max-width: 740px; margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .doc-eyebrow {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .doc-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700; line-height: 1.2;
+      color: var(--text); margin-bottom: 8px;
+    }
+
+    .doc-meta {
+      font-size: .82rem; color: var(--muted);
+      margin-bottom: 36px; padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Indice ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .toc-title {
+      font-size: .72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin-bottom: 12px;
+    }
+
+    .toc ol { padding-left: 18px; }
+    .toc li { font-size: .84rem; margin-bottom: 5px; line-height: 1.5; }
+    .toc a { color: var(--text); }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── Sezioni ── */
+    .doc-section { margin-bottom: 40px; }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-size: .72rem; font-weight: 700;
+      color: var(--accent); letter-spacing: .06em;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--text);
+    }
+
+    p { margin-bottom: 12px; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol { padding-left: 22px; margin-bottom: 12px; }
+    li { margin-bottom: 5px; }
+
+    .highlight-box {
+      background: rgba(31,111,139,.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: .9rem;
+    }
+
+    .placeholder {
+      background: rgba(249,168,37,.1);
+      border: 1px dashed rgba(249,168,37,.5);
+      border-radius: 4px; padding: 1px 6px;
+      color: #b45309; font-style: italic;
+      font-size: .85em;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 64px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: .8rem; color: var(--muted);
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+
+    @media print {
+      .topbar { display: none; }
+      .doc-wrap { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="top-brand" href="index.html">Rivalta sul Mincio</a>
+  <a class="top-back" href="index.html">← Torna al sito</a>
+</header>
+
+<main class="doc-wrap">
+
+  <p class="doc-eyebrow">Documento legale</p>
+  <h1 class="doc-title">Note Legali</h1>
+  <p class="doc-meta">
+    Versione 1.0 — <span class="placeholder">[data entrata in vigore]</span> &nbsp;·&nbsp;
+    Rivalta sul Mincio — Pro Loco <span class="placeholder">[ragione sociale completa]</span>
+  </p>
+
+  <!-- Indice -->
+  <nav class="toc" aria-label="Indice">
+    <p class="toc-title">Indice</p>
+    <ol>
+      <li><a href="#art1">Titolare e gestore del sito</a></li>
+      <li><a href="#art2">Natura del sito e servizi offerti</a></li>
+      <li><a href="#art3">Condizioni di utilizzo</a></li>
+      <li><a href="#art4">Account utente e responsabilità dei contenuti</a></li>
+      <li><a href="#art5">Proprietà intellettuale</a></li>
+      <li><a href="#art6">Esclusione di garanzie e limitazione di responsabilità</a></li>
+      <li><a href="#art7">Link a siti esterni</a></li>
+      <li><a href="#art8">Legge applicabile e foro competente</a></li>
+      <li><a href="#art9">Modifiche alle note legali</a></li>
+      <li><a href="#art10">Contatti</a></li>
+    </ol>
+  </nav>
+
+  <!-- Art. 1 -->
+  <section class="doc-section" id="art1">
+    <div class="section-header">
+      <span class="section-num">Art. 1</span>
+      <h2 class="section-title">Titolare e gestore del sito</h2>
+    </div>
+    <p>Il sito web <strong>rivaltasulmincio.it</strong> è di proprietà e gestito da:</p>
+    <ul>
+      <li>Denominazione: <span class="placeholder">[ragione sociale / denominazione Pro Loco]</span></li>
+      <li>Sede legale: <span class="placeholder">[indirizzo completo, CAP, Comune, Provincia]</span></li>
+      <li>Codice fiscale / P.IVA: <span class="placeholder">[CF / P.IVA]</span></li>
+      <li>Registro: <span class="placeholder">[eventuale iscrizione registro APS/ETS o RUNTS]</span></li>
+      <li>Email: <span class="placeholder">[email di contatto]</span></li>
+      <li>PEC: <span class="placeholder">[indirizzo PEC, se disponibile]</span></li>
+    </ul>
+  </section>
+
+  <!-- Art. 2 -->
+  <section class="doc-section" id="art2">
+    <div class="section-header">
+      <span class="section-num">Art. 2</span>
+      <h2 class="section-title">Natura del sito e servizi offerti</h2>
+    </div>
+    <p>Rivalta sul Mincio è una piattaforma editoriale comunitaria dedicata al territorio di Rivalta sul Mincio (MN). Il sito consente a utenti registrati di:</p>
+    <ul>
+      <li>Creare un profilo pubblico d'autore;</li>
+      <li>Pubblicare articoli, notizie e contenuti editoriali;</li>
+      <li>Commentare e interagire con i contenuti della comunità;</li>
+      <li>Categorizzare e leggere contenuti per tema (cronaca, eventi, sport, cultura, ecc.).</li>
+    </ul>
+    <p>Il sito è accessibile gratuitamente. La registrazione è necessaria per pubblicare contenuti. Non sono previste transazioni economiche o acquisti.</p>
+    <div class="highlight-box">
+      Il sito è gestito da una associazione senza scopo di lucro (Pro Loco). Non viene svolta attività commerciale. I contenuti pubblicati hanno finalità informativa e culturale riguardante il territorio locale.
+    </div>
+  </section>
+
+  <!-- Art. 3 -->
+  <section class="doc-section" id="art3">
+    <div class="section-header">
+      <span class="section-num">Art. 3</span>
+      <h2 class="section-title">Condizioni di utilizzo</h2>
+    </div>
+    <p>L'utilizzo del sito comporta l'accettazione delle presenti Note Legali, della <a href="privacy.html">Privacy Policy</a> e della <a href="cookie.html">Cookie Policy</a>.</p>
+    <p>È <strong>vietato</strong> utilizzare il sito per:</p>
+    <ul>
+      <li>Pubblicare contenuti falsi, diffamatori, offensivi, discriminatori o lesivi della dignità delle persone;</li>
+      <li>Pubblicare materiale protetto da copyright senza autorizzazione;</li>
+      <li>Fare spam, pubblicità commerciale non autorizzata o promozione di prodotti o servizi;</li>
+      <li>Diffondere malware, phishing o contenuti fraudolenti;</li>
+      <li>Raccogliere dati personali di altri utenti senza consenso;</li>
+      <li>Tentare accessi non autorizzati ai sistemi informatici del sito;</li>
+      <li>Impersonare altre persone o enti.</li>
+    </ul>
+    <p>Il Titolare si riserva il diritto di rimuovere contenuti che violino queste condizioni e di sospendere o eliminare account degli utenti responsabili, senza preavviso.</p>
+  </section>
+
+  <!-- Art. 4 -->
+  <section class="doc-section" id="art4">
+    <div class="section-header">
+      <span class="section-num">Art. 4</span>
+      <h2 class="section-title">Account utente e responsabilità dei contenuti</h2>
+    </div>
+    <p>La registrazione richiede un indirizzo email valido. L'utente è responsabile della sicurezza delle proprie credenziali e di tutte le attività compiute con il proprio account.</p>
+    <p>Gli utenti che pubblicano contenuti (articoli, commenti, bio del profilo) sono <strong>personalmente responsabili</strong> di quanto pubblicato ai sensi delle leggi vigenti, in particolare del D.Lgs. 70/2003 (E-Commerce) e delle norme sulla diffamazione a mezzo stampa.</p>
+    <p>Il Titolare agisce come <em>hosting provider</em> ai sensi dell'art. 16 del D.Lgs. 70/2003 e non è responsabile dei contenuti pubblicati dagli utenti, purché, venuto a conoscenza di contenuti illeciti, proceda alla loro rimozione tempestiva.</p>
+    <p>Per segnalare contenuti illeciti o inappropriati, contattare: <span class="placeholder">[email segnalazioni]</span></p>
+  </section>
+
+  <!-- Art. 5 -->
+  <section class="doc-section" id="art5">
+    <div class="section-header">
+      <span class="section-num">Art. 5</span>
+      <h2 class="section-title">Proprietà intellettuale</h2>
+    </div>
+    <p><strong>Contenuti del sito (design, codice, loghi):</strong> Il design, il codice sorgente, i grafici, i loghi e i testi redazionali del sito sono di proprietà del Titolare o dei rispettivi autori e sono protetti dalle norme in materia di diritto d'autore (L. 633/1941 e s.m.i.). È vietata la riproduzione, distribuzione o modifica senza autorizzazione scritta.</p>
+    <p><strong>Contenuti pubblicati dagli utenti:</strong> Gli utenti mantengono la titolarità dei diritti d'autore sui propri contenuti. Pubblicando sul sito, l'utente concede al Titolare una licenza non esclusiva, gratuita e revocabile per pubblicare, visualizzare e distribuire il contenuto nell'ambito del sito e delle sue comunicazioni istituzionali (es. social media della Pro Loco).</p>
+    <p><strong>Contenuti di terze parti:</strong> Il sito integra font forniti da Google Fonts e un widget della Pagina Facebook ufficiale. I diritti su tali contenuti rimangono in capo ai rispettivi titolari.</p>
+  </section>
+
+  <!-- Art. 6 -->
+  <section class="doc-section" id="art6">
+    <div class="section-header">
+      <span class="section-num">Art. 6</span>
+      <h2 class="section-title">Esclusione di garanzie e limitazione di responsabilità</h2>
+    </div>
+    <p>Il sito è fornito "così com'è" (<em>as is</em>). Il Titolare non garantisce la continuità del servizio, l'assenza di errori o l'accuratezza di tutti i contenuti pubblicati dagli utenti.</p>
+    <p>Il Titolare non è responsabile per:</p>
+    <ul>
+      <li>Interruzioni del servizio dovute a manutenzione, guasti tecnici o cause di forza maggiore;</li>
+      <li>Perdita di dati causata da problemi tecnici imprevisti;</li>
+      <li>Danni diretti o indiretti derivanti dall'uso o dall'impossibilità di usare il sito;</li>
+      <li>Contenuti di siti esterni raggiungibili tramite link presenti nel sito.</li>
+    </ul>
+    <p>Il Titolare adotta misure tecniche adeguate per la sicurezza dei dati (cifratura in transito via HTTPS, Row Level Security su Supabase, autenticazione JWT), ma non può garantire l'assoluta inviolabilità dei sistemi.</p>
+  </section>
+
+  <!-- Art. 7 -->
+  <section class="doc-section" id="art7">
+    <div class="section-header">
+      <span class="section-num">Art. 7</span>
+      <h2 class="section-title">Link a siti esterni</h2>
+    </div>
+    <p>Il sito può contenere link a risorse esterne. Tali link sono forniti per comodità informativa. Il Titolare non ha controllo sui siti esterni e non ne condivide i contenuti, le politiche sulla privacy o le pratiche commerciali.</p>
+    <p>La presenza di un link non implica alcuna forma di approvazione, sponsorizzazione o affiliazione con il sito collegato.</p>
+  </section>
+
+  <!-- Art. 8 -->
+  <section class="doc-section" id="art8">
+    <div class="section-header">
+      <span class="section-num">Art. 8</span>
+      <h2 class="section-title">Legge applicabile e foro competente</h2>
+    </div>
+    <p>Le presenti Note Legali sono regolate dalla legge italiana. Per qualsiasi controversia relativa all'uso del sito, salvo diversa previsione di legge, è competente in via esclusiva il Foro di <span class="placeholder">[Mantova / sede legale della Pro Loco]</span>.</p>
+    <p>Per le controversie con consumatori (utenti privati) si applicano le disposizioni del Codice del Consumo (D.Lgs. 206/2005). In tal caso l'utente può avvalersi della piattaforma europea di risoluzione delle controversie online (ODR) disponibile all'indirizzo: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr</a>.</p>
+  </section>
+
+  <!-- Art. 9 -->
+  <section class="doc-section" id="art9">
+    <div class="section-header">
+      <span class="section-num">Art. 9</span>
+      <h2 class="section-title">Modifiche alle note legali</h2>
+    </div>
+    <p>Il Titolare si riserva il diritto di modificare le presenti Note Legali in qualsiasi momento. Le modifiche saranno pubblicate su questa pagina con indicazione della data di aggiornamento e saranno efficaci dalla data di pubblicazione.</p>
+    <p>Si raccomanda agli utenti di consultare periodicamente questa pagina. Il proseguimento dell'utilizzo del sito successivamente alla pubblicazione delle modifiche costituisce accettazione delle stesse.</p>
+  </section>
+
+  <!-- Art. 10 -->
+  <section class="doc-section" id="art10">
+    <div class="section-header">
+      <span class="section-num">Art. 10</span>
+      <h2 class="section-title">Contatti</h2>
+    </div>
+    <p>Per qualsiasi comunicazione legale o richiesta relativa a questi documenti:</p>
+    <ul>
+      <li>Email: <span class="placeholder">[email del titolare]</span></li>
+      <li>PEC: <span class="placeholder">[PEC, se disponibile]</span></li>
+      <li>Indirizzo postale: <span class="placeholder">[indirizzo completo della Pro Loco]</span></li>
+    </ul>
+  </section>
+
+  <footer class="doc-footer">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="cookie.html">Cookie Policy</a>
+    <a href="index.html">← Torna al sito</a>
+  </footer>
+
+</main>
+</body>
+</html>

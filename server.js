@@ -17,7 +17,10 @@ const HTML_PAGES = new Set([
   'login',
   'index',
   'category',
-  'db-test'
+  'db-test',
+  'privacy',
+  'cookie',
+  'note-legali'
 ]);
 const MIME = {
   '.css':  'text/css',

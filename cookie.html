@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Policy — Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #1F6F8B;
+      --text:   #1d1d1f;
+      --muted:  #6e6e73;
+      --border: #d2d2d7;
+      --bg:     #f5f5f7;
+      --surface:#ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Topbar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .top-brand {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: .9rem; font-weight: 700;
+      color: var(--accent); text-decoration: none;
+    }
+
+    .top-back {
+      font-size: .8rem; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 5px 12px; text-decoration: none;
+      transition: color .15s, border-color .15s;
+    }
+    .top-back:hover { color: var(--text); border-color: #aaa; text-decoration: none; }
+
+    /* ── Document ── */
+    .doc-wrap {
+      max-width: 740px; margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .doc-eyebrow {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .doc-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700; line-height: 1.2;
+      color: var(--text); margin-bottom: 8px;
+    }
+
+    .doc-meta {
+      font-size: .82rem; color: var(--muted);
+      margin-bottom: 36px; padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Indice ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .toc-title {
+      font-size: .72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin-bottom: 12px;
+    }
+
+    .toc ol { padding-left: 18px; }
+    .toc li { font-size: .84rem; margin-bottom: 5px; line-height: 1.5; }
+    .toc a { color: var(--text); }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── Sezioni ── */
+    .doc-section { margin-bottom: 40px; }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-size: .72rem; font-weight: 700;
+      color: var(--accent); letter-spacing: .06em;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--text);
+    }
+
+    p { margin-bottom: 12px; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol { padding-left: 22px; margin-bottom: 12px; }
+    li { margin-bottom: 5px; }
+
+    .highlight-box {
+      background: rgba(31,111,139,.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: .9rem;
+    }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: .84rem; margin: 16px 0;
+    }
+    th {
+      text-align: left; padding: 10px 14px;
+      background: var(--bg); border: 1px solid var(--border);
+      font-weight: 600; font-size: .76rem;
+      text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+    }
+    td {
+      padding: 10px 14px; border: 1px solid var(--border);
+      vertical-align: top; line-height: 1.5;
+    }
+
+    .placeholder {
+      background: rgba(249,168,37,.1);
+      border: 1px dashed rgba(249,168,37,.5);
+      border-radius: 4px; padding: 1px 6px;
+      color: #b45309; font-style: italic;
+      font-size: .85em;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 64px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: .8rem; color: var(--muted);
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+
+    @media print {
+      .topbar { display: none; }
+      .doc-wrap { padding: 24px; }
+      .highlight-box { border-left-color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="top-brand" href="index.html">Rivalta sul Mincio</a>
+  <a class="top-back" href="index.html">← Torna al sito</a>
+</header>
+
+<main class="doc-wrap">
+
+  <p class="doc-eyebrow">Documento legale</p>
+  <h1 class="doc-title">Cookie Policy</h1>
+  <p class="doc-meta">
+    Versione 1.0 — <span class="placeholder">[data entrata in vigore]</span> &nbsp;·&nbsp;
+    Rivalta sul Mincio — Pro Loco <span class="placeholder">[ragione sociale completa]</span>
+  </p>
+
+  <!-- Indice -->
+  <nav class="toc" aria-label="Indice">
+    <p class="toc-title">Indice</p>
+    <ol>
+      <li><a href="#art1">Cosa sono i cookie</a></li>
+      <li><a href="#art2">Cookie utilizzati da questo sito</a></li>
+      <li><a href="#art3">Cookie tecnici necessari</a></li>
+      <li><a href="#art4">Cookie di terze parti</a></li>
+      <li><a href="#art5">localStorage e sessionStorage</a></li>
+      <li><a href="#art6">Consenso e gestione preferenze</a></li>
+      <li><a href="#art7">Come disabilitare i cookie</a></li>
+      <li><a href="#art8">Aggiornamenti a questa policy</a></li>
+      <li><a href="#art9">Contatti</a></li>
+    </ol>
+  </nav>
+
+  <!-- Art. 1 -->
+  <section class="doc-section" id="art1">
+    <div class="section-header">
+      <span class="section-num">Art. 1</span>
+      <h2 class="section-title">Cosa sono i cookie</h2>
+    </div>
+    <p>I cookie sono piccoli file di testo che un sito web salva sul dispositivo dell'utente durante la navigazione. Vengono inviati dal server al browser e possono essere riletti dal server ad ogni visita successiva.</p>
+    <p>Esistono cookie di sessione (eliminati alla chiusura del browser) e cookie persistenti (che rimangono sul dispositivo per un periodo definito o fino alla cancellazione manuale). In base all'origine si distinguono cookie di prima parte (impostati direttamente da questo sito) e cookie di terze parti (impostati da domini esterni).</p>
+  </section>
+
+  <!-- Art. 2 -->
+  <section class="doc-section" id="art2">
+    <div class="section-header">
+      <span class="section-num">Art. 2</span>
+      <h2 class="section-title">Cookie utilizzati da questo sito</h2>
+    </div>
+    <p>Questo sito utilizza esclusivamente <strong>cookie tecnici necessari</strong> per il funzionamento del servizio di autenticazione. Non utilizza cookie di profilazione, cookie di tracciamento comportamentale né cookie pubblicitari.</p>
+    <div class="highlight-box">
+      Questo sito <strong>non</strong> utilizza Google Analytics, Facebook Pixel, o altri strumenti di analisi comportamentale basati su cookie.
+    </div>
+  </section>
+
+  <!-- Art. 3 -->
+  <section class="doc-section" id="art3">
+    <div class="section-header">
+      <span class="section-num">Art. 3</span>
+      <h2 class="section-title">Cookie tecnici necessari</h2>
+    </div>
+    <p>I seguenti cookie sono impostati da <strong>Supabase</strong>, il servizio di backend utilizzato per l'autenticazione degli utenti. Sono classificati come tecnici necessari ai sensi dell'art. 122 del Codice della Privacy e della Direttiva e-Privacy, e pertanto non richiedono il consenso.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome cookie</th>
+          <th>Origine</th>
+          <th>Tipo</th>
+          <th>Durata</th>
+          <th>Finalità</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>sb-&lt;project-ref&gt;-auth-token</code></td>
+          <td>Prima parte (Supabase)</td>
+          <td>Persistente, HttpOnly</td>
+          <td>~1 ora (JWT access token) / ~7 giorni (refresh token)</td>
+          <td>Mantiene la sessione autenticata dell'utente. Contiene il JWT di accesso e il refresh token necessari per identificare l'utente nelle API Supabase.</td>
+        </tr>
+        <tr>
+          <td><code>sb-&lt;project-ref&gt;-auth-token-code-verifier</code></td>
+          <td>Prima parte (Supabase)</td>
+          <td>Sessione</td>
+          <td>Durata sessione browser</td>
+          <td>Utilizzato nel flusso PKCE (Proof Key for Code Exchange) del magic link per prevenire attacchi di intercettazione dell'authorization code.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>I nomi esatti dei cookie contengono il codice progetto Supabase (<code>&lt;project-ref&gt;</code>) che corrisponde al subdomain del progetto. I dati contenuti nei cookie di autenticazione vengono trasmessi esclusivamente verso i server Supabase (<code>*.supabase.co</code>) e non vengono condivisi con terze parti.</p>
+  </section>
+
+  <!-- Art. 4 -->
+  <section class="doc-section" id="art4">
+    <div class="section-header">
+      <span class="section-num">Art. 4</span>
+      <h2 class="section-title">Cookie di terze parti</h2>
+    </div>
+    <p>Questo sito incorpora risorse esterne che potrebbero impostare cookie di terze parti. Di seguito l'elenco:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fornitore</th>
+          <th>Risorsa caricata</th>
+          <th>Cookie potenziali</th>
+          <th>Informativa terza parte</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Google Fonts</td>
+          <td>Font Inter, Fraunces, DM Sans, Sora</td>
+          <td>Nessun cookie impostato; l'IP dell'utente viene trasmesso ai server Google al momento del caricamento del font.</td>
+          <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></td>
+        </tr>
+        <tr>
+          <td>Facebook / Meta</td>
+          <td>Plugin "Pagina Facebook" (iframe facebook.com)</td>
+          <td>Facebook può impostare propri cookie di sessione e tracciamento all'interno dell'iframe. Il comportamento dipende dalle impostazioni del browser e dal consenso prestato su Facebook.</td>
+          <td><a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Per il plugin Facebook: il widget è caricato tramite un iframe ospitato su <code>www.facebook.com</code>. Qualora l'utente non desideri che Facebook riceva informazioni sulla propria visita, può bloccare i cookie di terze parti dal browser o utilizzare un'estensione di blocco dei tracker.</p>
+  </section>
+
+  <!-- Art. 5 -->
+  <section class="doc-section" id="art5">
+    <div class="section-header">
+      <span class="section-num">Art. 5</span>
+      <h2 class="section-title">localStorage e sessionStorage</h2>
+    </div>
+    <p>Oltre ai cookie, questo sito utilizza le Web Storage API del browser (<strong>localStorage</strong> e <strong>sessionStorage</strong>). Queste tecnologie non trasmettono dati al server e sono inaccessibili da domini terzi.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Chiave</th>
+          <th>Storage</th>
+          <th>Contenuto</th>
+          <th>Finalità</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>sb-&lt;project-ref&gt;-auth-token</code></td>
+          <td>localStorage</td>
+          <td>JWT access token + refresh token Supabase (serializzati in JSON)</td>
+          <td>Persistenza della sessione tra navigazioni; alternativa ai cookie di sessione per il client Supabase JS.</td>
+        </tr>
+        <tr>
+          <td><code>rsm_sec_v1_*</code></td>
+          <td>localStorage</td>
+          <td>Timestamp dell'ultima azione (invio modulo, login, richiesta magic link)</td>
+          <td>Rate limiting lato client: impedisce l'invio ripetuto di form in intervalli brevi, riducendo il rischio di abusi.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>I dati in localStorage persistono fino alla cancellazione manuale da parte dell'utente o fino al logout (che svuota la chiave Supabase). I dati in sessionStorage vengono eliminati alla chiusura della scheda o del browser.</p>
+  </section>
+
+  <!-- Art. 6 -->
+  <section class="doc-section" id="art6">
+    <div class="section-header">
+      <span class="section-num">Art. 6</span>
+      <h2 class="section-title">Consenso e gestione preferenze</h2>
+    </div>
+    <p>Poiché questo sito utilizza esclusivamente cookie tecnici necessari, la normativa vigente (art. 122 D.Lgs. 196/2003 e Linee Guida del Garante) non impone l'acquisizione del consenso preventivo per tali cookie.</p>
+    <p>Il cookie di autenticazione Supabase viene impostato <strong>solo a seguito di un'azione esplicita dell'utente</strong> (registrazione, login, click su magic link). L'utente può in qualsiasi momento:</p>
+    <ul>
+      <li>Effettuare il <strong>logout</strong> dalla piattaforma: la sessione viene invalidata e i token rimossi dal localStorage.</li>
+      <li>Cancellare manualmente cookie e localStorage dalle impostazioni del browser.</li>
+      <li>Bloccare i cookie di terze parti (Facebook, Google Fonts) tramite le impostazioni del browser o estensioni di privacy.</li>
+    </ul>
+  </section>
+
+  <!-- Art. 7 -->
+  <section class="doc-section" id="art7">
+    <div class="section-header">
+      <span class="section-num">Art. 7</span>
+      <h2 class="section-title">Come disabilitare i cookie</h2>
+    </div>
+    <p>È possibile gestire, bloccare o eliminare i cookie attraverso le impostazioni del browser. Di seguito i link alle guide dei principali browser:</p>
+    <ul>
+      <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
+      <li><a href="https://support.mozilla.org/it/kb/protezione-antitracciamento-avanzata-firefox-desktop" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
+      <li><a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Apple Safari</a></li>
+      <li><a href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer">Microsoft Edge</a></li>
+    </ul>
+    <p>La disabilitazione dei cookie tecnici Supabase comporterà l'impossibilità di accedere con il proprio account e di utilizzare le funzionalità riservate agli utenti registrati.</p>
+  </section>
+
+  <!-- Art. 8 -->
+  <section class="doc-section" id="art8">
+    <div class="section-header">
+      <span class="section-num">Art. 8</span>
+      <h2 class="section-title">Aggiornamenti a questa policy</h2>
+    </div>
+    <p>Il Titolare si riserva il diritto di aggiornare la presente Cookie Policy in qualsiasi momento. Le modifiche saranno pubblicate su questa pagina con indicazione della data di aggiornamento. Si raccomanda di consultare periodicamente questa pagina.</p>
+    <p>In caso di modifiche sostanziali che riguardino cookie non tecnici, verrà riproposta la richiesta di consenso agli utenti.</p>
+  </section>
+
+  <!-- Art. 9 -->
+  <section class="doc-section" id="art9">
+    <div class="section-header">
+      <span class="section-num">Art. 9</span>
+      <h2 class="section-title">Contatti</h2>
+    </div>
+    <p>Per qualsiasi domanda relativa all'uso dei cookie su questo sito, è possibile contattare il Titolare:</p>
+    <ul>
+      <li>Email: <span class="placeholder">[email del titolare]</span></li>
+      <li>Indirizzo: <span class="placeholder">[indirizzo della Pro Loco]</span></li>
+    </ul>
+  </section>
+
+  <footer class="doc-footer">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="note-legali.html">Note Legali</a>
+    <a href="index.html">← Torna al sito</a>
+  </footer>
+
+</main>
+</body>
+</html>
