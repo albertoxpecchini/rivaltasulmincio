@@ -173,7 +173,7 @@
       background: var(--surface);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 16px 20px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -200,7 +200,7 @@
     /* Hero bento card */
     .bcard-hero {
       grid-area: hero;
-      padding: 20px 22px 18px;
+      padding: 16px 18px 14px;
     }
 
     .bcard-hero::before {
@@ -215,8 +215,8 @@
     .hero-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .logo-mark {
@@ -260,7 +260,7 @@
 
     .hero-tagline {
       font-family: 'Sora', sans-serif;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 700;
       color: #f5f5f7;
       letter-spacing: -0.03em;
@@ -269,7 +269,7 @@
 
     .hero-tagline-muted {
       font-family: 'Sora', sans-serif;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--text-dim);
       letter-spacing: -0.03em;
@@ -297,12 +297,12 @@
       justify-content: center;
       align-items: center;
       background: linear-gradient(150deg, #0F2A30 0%, #1F6F8B 55%, #34d399 100%);
-      padding: 22px 14px;
+      padding: 14px 10px;
     }
 
-    .bcard-highlight .bnum { font-size: 40px; color: #fff; }
-    .bcard-highlight .blabel { font-size: 12px; color: rgba(255,255,255,0.82); font-weight: 600; }
-    .bcard-highlight .bsub { font-size: 10px; color: rgba(255,255,255,0.42); margin-top: 5px; }
+    .bcard-highlight .bnum { font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: 0.04em; }
+    .bcard-highlight .blabel { font-size: 11px; color: rgba(255,255,255,0.82); font-weight: 600; }
+    .bcard-highlight .bsub { font-size: 10px; color: rgba(255,255,255,0.42); margin-top: 4px; }
 
     /* Quote bento card */
     .bcard-quote {
@@ -773,52 +773,52 @@
 
           <div class="bcard bcard-hero">
             <div class="hero-logo">
-              <div class="logo-mark">&#127807;</div>
+              <div class="logo-mark">&#127754;</div>
               <div class="logo-copy">
                 <div class="logo-name">Rivalta sul Mincio</div>
-                <div class="logo-sub">Piattaforma editoriale comunitaria</div>
+                <div class="logo-sub">Parco del Mincio &middot; Mantova</div>
               </div>
             </div>
-            <div class="hero-eyebrow">Community Platform</div>
-            <div class="hero-tagline">Racconta il</div>
-            <div class="hero-tagline">territorio.</div>
-            <div class="hero-tagline-muted">Scopri la comunita.</div>
-            <div class="hero-date">Rivalta sul Mincio &middot; Rodigo &middot; Fossato &middot; 2026</div>
+            <div class="hero-eyebrow">Territorio &amp; Natura</div>
+            <div class="hero-tagline">Il fiume</div>
+            <div class="hero-tagline">Mincio.</div>
+            <div class="hero-tagline-muted">Dal Garda al Po.</div>
+            <div class="hero-date">Rivalta sul Mincio &middot; Rodigo &middot; Fossato</div>
           </div>
 
           <div class="bcard bcard-posts">
-            <div class="bnum" style="font-size:34px;color:#1F6F8B">234</div>
-            <div class="blabel">Articoli pubblicati</div>
+            <div class="bnum" style="font-size:28px;color:#1F6F8B">75 km</div>
+            <div class="blabel">Lunghezza del Mincio</div>
           </div>
 
           <div class="bcard bcard-members">
-            <div class="bnum" style="font-size:34px;color:#00b4d8">847</div>
-            <div class="blabel">Utenti registrati</div>
+            <div class="bnum" style="font-size:28px;color:#00b4d8">14K ha</div>
+            <div class="blabel">Area Parco del Mincio</div>
           </div>
 
           <div class="bcard bcard-likes">
-            <div class="bnum" style="font-size:34px;color:#34d399">3.2K</div>
-            <div class="blabel">Like &amp; reazioni</div>
+            <div class="bnum" style="font-size:28px;color:#34d399">200+</div>
+            <div class="blabel">Specie ornitologiche</div>
           </div>
 
           <div class="bcard bcard-comuni">
-            <div class="bnum" style="font-size:34px;color:#ff6b6b">3</div>
-            <div class="blabel">Comuni coperti</div>
+            <div class="bnum" style="font-size:28px;color:#ff6b6b">3</div>
+            <div class="blabel">Comuni del progetto</div>
           </div>
 
           <div class="bcard bcard-cats">
-            <div class="bnum" style="font-size:34px;color:#F59E0B">8</div>
-            <div class="blabel">Categorie attive</div>
+            <div class="bnum" style="font-size:28px;color:#F59E0B">1984</div>
+            <div class="blabel">Istituzione Parco</div>
           </div>
 
           <div class="bcard bcard-highlight">
-            <div class="bnum">100%</div>
-            <div class="blabel">Open<br>Community</div>
-            <div class="bsub">Accesso libero e gratuito</div>
+            <div class="bnum">Riserva</div>
+            <div class="blabel">Naturale<br>Regionale</div>
+            <div class="bsub">Parco del Mincio</div>
           </div>
 
           <div class="bcard bcard-quote">
-            <div class="quote-text">"Scrivi, <em>condividi</em>, connetti il <em>territorio</em>."</div>
+            <div class="quote-text">"Dove il <em>Garda</em> incontra il <em>Po</em>, nasce una comunita."</div>
           </div>
 
         </div>
