@@ -20,8 +20,8 @@
       --surface-2: #222;
       --text: #f5f5f7;
       --text-muted: #6e6e73;
-      --text-dim: #3a3a3c;
-      --border: rgba(255,255,255,0.09);
+      --text-dim: #5a5a62;
+      --border: rgba(255,255,255,0.11);
       --border-focus: rgba(31,111,139,0.6);
       --ok: #34d399;
       --err: #ff6b6b;
@@ -145,13 +145,14 @@
 
     .auth-layout {
       display: grid;
-      grid-template-columns: 1fr minmax(340px, 420px);
-      gap: 18px;
+      grid-template-columns: 1fr minmax(260px, 300px);
+      gap: 20px;
       align-items: start;
     }
 
-    /* ===== BENTO PANEL (left) ===== */
+    /* ===== BENTO PANEL (right, decorative) ===== */
     .bento-panel {
+      order: 2;
       position: sticky;
       top: 82px;
     }
@@ -333,15 +334,26 @@
 
     .quote-text em { color: #34d399; font-style: normal; }
 
-    /* ===== AUTH PANEL (right) ===== */
-    .auth-panel { min-width: 0; }
+    /* ===== AUTH PANEL (left, primary) ===== */
+    .auth-panel { order: 1; min-width: 0; }
 
     .auth-card {
       border-radius: 18px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(31,111,139,0.22);
       background: var(--surface);
-      box-shadow: var(--shadow);
-      padding: 24px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(31,111,139,0.08);
+      padding: 28px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1F6F8B, #34d399);
+      border-radius: 18px 18px 0 0;
     }
 
     .view { display: none; animation: fadeIn 0.24s var(--transition); }
@@ -365,11 +377,11 @@
 
     .view-head h2 {
       font-family: 'Sora', sans-serif;
-      font-size: 1.65rem;
+      font-size: 1.85rem;
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.1;
       margin-bottom: 7px;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.03em;
       color: #f5f5f7;
     }
 
@@ -414,10 +426,10 @@
 
     .field > span,
     .group-label {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      color: var(--text-muted);
+      color: #8e8e95;
       font-weight: 700;
     }
 
@@ -729,9 +741,10 @@
     .inline-actions .link-btn:hover { border-bottom-color: rgba(110,231,183,0.6); }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 980px) {
+    @media (max-width: 860px) {
       .auth-layout { grid-template-columns: 1fr; }
-      .bento-panel { position: static; }
+      .bento-panel { position: static; order: 2; }
+      .auth-panel { order: 1; }
     }
 
     @media (max-width: 720px) {
