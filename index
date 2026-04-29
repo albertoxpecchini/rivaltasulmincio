@@ -3019,7 +3019,7 @@
           <input type="email" placeholder="latua@email.it" aria-label="Email" required>
           <button type="submit">Iscriviti</button>
         </form>
-        <div class="newsletter__note">Iscrivendoti accetti la nostra <a href="#" style="color:rgba(234,244,244,.75);text-decoration:underline;">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</div>
+        <div class="newsletter__note">Iscrivendoti accetti la nostra <a href="privacy" style="color:rgba(234,244,244,.75);text-decoration:underline;">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</div>
       </div>
     </div>
   </div>
@@ -3055,8 +3055,8 @@
           <span class="footer-badge">🐟 PAT 2013</span>
         </div>
         <div class="footer-social">
-          <a href="#" class="social-btn" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a>
-          <a href="#" class="social-btn" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
+          <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a>
+          <a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
           <a href="#" class="social-btn" aria-label="YouTube"><svg><use href="#i-yt"/></svg></a>
         </div>
       </div>
@@ -3076,11 +3076,11 @@
       <div class="footer-col">
         <h4>Informazioni</h4>
         <ul class="footer-links">
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Cookie Policy</a></li>
-          <li><a href="#">Diventa socio</a></li>
-          <li><a href="#">Volontariato</a></li>
-          <li><a href="#">Note legali</a></li>
+          <li><a href="privacy">Privacy Policy</a></li>
+          <li><a href="cookie">Cookie Policy</a></li>
+          <li><a href="#contatti">Diventa socio</a></li>
+          <li><a href="#contatti">Volontariato</a></li>
+          <li><a href="note-legali">Note legali</a></li>
         </ul>
       </div>
 
