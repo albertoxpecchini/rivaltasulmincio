@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/(write|reset|profile|preferenze|post|modifica-profilo|me|login|index|category|db-test)",
+      "source": "/(write|reset|profile|preferenze|post|modifica-profilo|me|login|index|category|db-test|privacy|cookie|note-legali)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
