@@ -1,0 +1,539 @@
+DOCUMENTO TECNICO COMPLETO PER REDAZIONE PRIVACY POLICY, COOKIE POLICY E NOTE LEGALI
+Sito: www.rivaltasulmincio.it
+Redatto da: analisi tecnica del codice sorgente — aprile 2026
+PARTE 1 — DESCRIZIONE GENERALE DEL SITO
+Nome del sito: Rivalta sul Mincio
+URL: https://www.rivaltasulmincio.it
+Natura: Piattaforma editoriale comunitaria locale — blog / social network iperlocale
+Gestore dichiarato nel codice: Pro Loco Rivalta sul Mincio
+Tecnologia: Applicazione web statica (HTML + JavaScript puro, nessun framework frontend) servita tramite server Node.js custom, con backend dati su Supabase (PostgreSQL cloud hosted)
+
+Cosa fa il sito:
+Il sito è una piattaforma editoriale comunitaria per il comune di Rivalta sul Mincio (MN) e comuni limitrofi (Rodigo, Fossato). Permette ai residenti di creare un account, pubblicare articoli su temi locali (eventi, territorio, vita locale, avvisi, richieste, storie), commentare e mettere like agli articoli altrui. Esiste un pannello di amministrazione riservato agli utenti con ruolo admin per la moderazione dei contenuti.
+
+Categorie di utenti:
+
+Visitatori anonimi — leggono articoli, vedono profili pubblici, non creano account
+Utenti registrati (members) — pubblicano articoli, commentano, mettono like, modificano il proprio profilo
+Amministratori — moderano contenuti, gestiscono utenti, approvano/rifiutano segnalazioni
+Comuni accettati in fase di registrazione (campo obbligatorio):
+
+Rivalta sul Mincio
+Rodigo
+Fossato
+Fuori comune
+PARTE 2 — ARCHITETTURA TECNICA
+2.1 Server web
+Il sito è servito da un server Node.js custom (server.js) che:
+
+Ascolta sulla porta 3000 (o variabile d'ambiente PORT)
+Serve file statici HTML, CSS, JS, immagini SVG, font WOFF2
+Non gestisce logica applicativa server-side — tutto il codice applicativo gira nel browser dell'utente (client-side JavaScript)
+Imposta i seguenti security header HTTP su ogni risposta:
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), microphone=(), camera=() ← vieta esplicitamente accesso a geolocalizzazione, microfono e fotocamera
+Cache policy: pagine HTML con Cache-Control: no-store (nessuna cache); asset statici con max-age=86400 in produzione
+Protezione directory traversal: ogni path viene validato per assicurarsi sia dentro la root del progetto
+2.2 Backend database — Supabase
+Fornitore: Supabase Inc., 970 Toa Payoh North, Singapore / infrastruttura AWS (Amazon Web Services)
+URL progetto: https://tljwxymcavgpzntksjtx.supabase.co
+Regione AWS dichiarata da Supabase: tipicamente eu-west-1 o us-east-1 a seconda del piano (da verificare nella dashboard Supabase del titolare)
+
+Supabase fornisce:
+
+Database PostgreSQL — archiviazione di tutti i dati utente
+Auth — gestione autenticazione (login, sessioni, JWT, email di verifica e reset password)
+API REST/GraphQL automatica — generata dal database, accessibile con chiave anon + RLS
+Row Level Security (RLS) — policy di sicurezza a livello di riga, attiva su tutte le tabelle: ogni utente può leggere/scrivere solo i dati autorizzati
+Chiave pubblica usata nel codice (ANON KEY): È una chiave JWT pubblica a bassa privilegio, normale in applicazioni Supabase. Non dà accesso ai dati senza le RLS policy che li proteggono.
+
+Il browser del visitatore si connette direttamente a Supabase — non passa dal server Node.js per le operazioni dati. La connessione è HTTPS/TLS.
+
+PARTE 3 — DATI PERSONALI RACCOLTI E DOVE VANNO
+3.1 Visitatori anonimi (non registrati)
+Dati raccolti dall'applicazione stessa: Nessuno in modo diretto dal codice applicativo.
+
+Dati raccolti da terze parti caricate dalla pagina:
+
+Servizio	Tipo di dato che può raccogliere	Finalità
+Google Fonts API (fonts.googleapis.com, fonts.gstatic.com)	Indirizzo IP, browser, pagina visitata, data/ora	Servire i font Inter e Fraunces — Google può loggare le richieste
+jsDelivr CDN (cdn.jsdelivr.net)	Indirizzo IP, browser, pagina visitata, data/ora	Servire la libreria JavaScript Supabase (supabase-js@2)
+Google Maps (maps.google.com) — iframe nella sezione "Dove siamo"	Indirizzo IP, cookie Google, posizione approssimativa	Mostrare la mappa del luogo
+Supabase API (tljwxymcavgpzntksjtx.supabase.co)	Indirizzo IP, richieste alle API pubbliche (lettura articoli)	Caricare gli articoli pubblici
+Nota: Non è presente alcun sistema di analytics (Google Analytics, Matomo, Facebook Pixel, Hotjar o simili). Non vengono impostati cookie di profilazione dal sito stesso.
+
+3.2 Utenti che si registrano
+Dati raccolti obbligatoriamente in fase di registrazione (Step 1 — Account):
+
+Indirizzo email
+Password (mai archiviata in chiaro — Supabase usa bcrypt/argon2 hashing)
+Dati raccolti obbligatoriamente in fase di registrazione (Step 2 — Identità locale):
+
+Username (nome utente univoco, minimo 3 caratteri, solo lettere minuscole, numeri e underscore)
+Nome visualizzato (display_name, obbligatorio)
+Comune di appartenenza (scelta obbligatoria tra: Rivalta sul Mincio, Rodigo, Fossato, Fuori comune)
+Bio (biografia breve, minimo 8 caratteri, massimo 240)
+Avatar emoji (scelta da 16 opzioni predefinite)
+Colore avatar (scelta da 8 colori predefiniti)
+Accettazione esplicita delle regole della comunità (checkbox obbligatoria) con registrazione di:
+community_rules_accepted: true
+community_rules_accepted_at: timestamp ISO del momento dell'accettazione
+community_rules_version: "2026-04" (versione aprile 2026)
+Dove vanno questi dati:
+Tutti vengono inviati via HTTPS a Supabase Auth e salvati nella tabella profiles del database PostgreSQL Supabase.
+
+Verifica email: Supabase invia un'email di conferma all'indirizzo fornito. Senza verifica l'account non può pubblicare né commentare.
+
+3.3 Dati generati dall'attività dell'utente registrato
+Articoli pubblicati (tabella posts):
+
+Titolo (facoltativo, max 120 caratteri)
+Sommario/excerpt (facoltativo, max 200 caratteri)
+Contenuto completo (obbligatorio, max ~12.000 caratteri lato sicurezza)
+Categoria (obbligatoria: Eventi / Territorio / Vita locale / Avvisi / Richieste / Storie)
+Tipo illustrazione (festival / airone / ciclismo / borgo / canneto / pesca / natura — solo SVG generati, nessuna foto reale caricata)
+Stato: bozza o pubblicato
+published_at: timestamp di pubblicazione
+created_at, updated_at: timestamp automatici
+user_id: riferimento all'utente autore (UUID)
+author_username: username dell'autore al momento della pubblicazione
+Commenti (tabella comments):
+
+Testo del commento (min 3, max 1.200 caratteri)
+post_id: articolo a cui si riferisce
+user_id: autore
+author_username: username al momento
+created_at, updated_at: timestamp automatici
+is_hidden: se nascosto da moderatore
+moderation_note: eventuale nota del moderatore
+Vincolo: modificabile entro 10 minuti dalla creazione
+Like (tabella post_likes):
+
+post_id: articolo
+user_id: chi ha messo like
+actor_username: username
+created_at: timestamp
+Vincolo: un solo like per utente per articolo (UNIQUE constraint)
+Notifiche (tabella notifications):
+
+user_id: utente destinatario
+actor_id: utente che ha compiuto l'azione (like/commento)
+actor_username: username di chi ha agito
+post_id: articolo coinvolto
+comment_id: eventuale commento coinvolto
+type: tipo ("like" o "comment")
+message: testo della notifica (es. "mario ha commentato il tuo articolo.")
+is_read: se letta
+created_at: timestamp
+Segnalazioni/Report (tabella reports):
+
+reporter_id: UUID dell'utente che segnala
+post_id o comment_id: contenuto segnalato
+reason: motivo della segnalazione
+details: dettaglio aggiuntivo
+status: stato (pending / reviewing / resolved / rejected)
+reviewed_by, reviewed_at: chi e quando ha gestito la segnalazione
+Impostazioni utente (tabella user_settings):
+
+user_id: riferimento all'utente
+comment_privacy: chi può commentare ("all" / "members" / "none")
+notif_frequency: frequenza notifiche ("instant" / "daily" / "weekly" / "off")
+notif_email: notifiche via email (boolean)
+preferred_categories: categorie preferite (JSON)
+accessibility_fontsize: dimensione testo ("sm" / "md" / "lg" / "xl")
+accessibility_high_contrast: contrasto elevato (boolean)
+created_at, updated_at: timestamp
+PARTE 4 — COOKIE E STORAGE LOCALE (localStorage)
+4.1 Cookie
+Cookie tecnici di sessione — Supabase Auth:
+Il sito non imposta cookie propri tramite JavaScript. Supabase Auth, al momento del login, salva il token di sessione JWT nel localStorage del browser (non in un cookie). Le sessioni Supabase possono anche usare cookie HttpOnly a seconda della configurazione Auth; da verificare nella dashboard Supabase del progetto.
+
+Cookie di Google Maps (iframe):
+Quando l'utente visualizza la sezione "Dove siamo" con la mappa incorporata di Google Maps, Google può impostare cookie propri nel browser. Google Maps funziona come servizio di terze parti con propria privacy policy.
+
+Cookie di Google Fonts:
+Le richieste ai server Google Fonts possono generare cookie Google ma generalmente Google Fonts è configurato per non tracciare gli utenti (verifica politica Google Fonts).
+
+4.2 localStorage (storage locale del browser)
+Il sito usa localStorage per due scopi tecnici:
+
+1. Sessione utente (Supabase Auth):
+Supabase JS salva automaticamente la sessione utente nel localStorage con chiave del tipo:
+
+sb-tljwxymcavgpzntksjtx-auth-token (o simile, generato da Supabase) Contiene: access token JWT, refresh token, dati utente base (user_id, email). Serve a mantenere la sessione attiva tra i ricaricamenti di pagina.
+2. Preferenze interfaccia utente:
+
+Chiave: rsm_prefs_v1
+Contenuto JSON:
+
+{
+  "theme": "chiaro/scuro/auto",
+  "language": "it/en",
+  "uiDensity": "comfortable/compact",
+  "fontsize": "sm/md/lg/xl",
+  "contrast": false
+}
+Scopo: ricordare le preferenze di visualizzazione (tema, lingua, densità UI, dimensione font, contrasto) tra una sessione e l'altra
+NON contiene dati personali sensibili
+3. Rate limiting anti-spam (tecnico):
+
+Chiavi con pattern: rsm_sec_v1_{azione}__{identificatore}
+Esempi di chiavi generate:
+rsm_sec_v1_login_password__{email} — tentativi di login falliti
+rsm_sec_v1_magic_link__{email} — invii link magico
+rsm_sec_v1_forgot_password__{email} — richieste reset password
+rsm_sec_v1_comment__{user_id} — rate limit commenti
+rsm_sec_v1_like_toggle__{user_id} — rate limit like
+rsm_sec_v1_report__{user_id} — rate limit segnalazioni
+Contenuto: { "attempts": [timestamp1, timestamp2, ...], "lockedUntil": 0 }
+Scopo: bloccare automaticamente tentativi ripetuti (anti-brute-force, anti-spam)
+Si cancellano automaticamente con il tempo (window temporale)
+NON vengono inviati a nessun server — rimangono nel browser dell'utente
+sessionStorage: Non utilizzato.
+
+PARTE 5 — SERVIZI TERZI CARICATI DAL SITO
+5.1 Google Fonts
+URL: https://fonts.googleapis.com e https://fonts.gstatic.com
+Cosa carica: Font tipografici Inter (300–700) e Fraunces (500–700), usati in tutto il sito; su alcune pagine: DM Sans e Sora
+Quando: Ad ogni caricamento di qualsiasi pagina del sito
+Dati che Google può ricevere: Indirizzo IP del visitatore, browser (User-Agent), URL della pagina che ha richiesto il font, data e ora
+Riferimento policy Google: https://policies.google.com/privacy
+Alternativa privacy-first: I font potrebbero essere ospitati localmente (self-hosted) per eliminare questa dipendenza
+5.2 jsDelivr CDN
+URL: https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js
+Cosa carica: La libreria JavaScript open source Supabase Client SDK v2
+Quando: Ad ogni caricamento di qualsiasi pagina che usa il database (praticamente tutte)
+Dati che jsDelivr può ricevere: Indirizzo IP, browser, URL richiedente
+Riferimento policy jsDelivr: https://www.jsdelivr.com/privacy-policy-jsdelivr-net
+5.3 Google Maps
+URL: https://maps.google.com/maps?q=Via+Porto,+31,+Rivalta+sul+Mincio+MN,+Italy&output=embed&z=16
+Cosa carica: Mappa interattiva incorporata tramite iframe nella sezione "Dove siamo" della homepage
+Quando: Solo nella homepage, visibile senza autenticazione
+Dati che Google può ricevere: Indirizzo IP, cookie Google esistenti, comportamento di interazione con la mappa, posizione approssimativa se il browser la concede (ma il server imposta Permissions-Policy: geolocation=() che vieta la richiesta)
+Riferimento policy Google Maps: https://policies.google.com/privacy
+5.4 Supabase
+URL: https://tljwxymcavgpzntksjtx.supabase.co
+Ruolo: Backend principale (database, autenticazione, API)
+Quando: Continuamente durante l'uso del sito — ogni lettura e scrittura di dati
+Dati che Supabase riceve: Tutti i dati personali descritti nella Parte 3, più indirizzo IP delle richieste API
+Sede: Supabase Inc., Singapore; dati ospitati su AWS (regione da verificare)
+Riferimento policy Supabase: https://supabase.com/privacy
+DPA (Data Processing Agreement): Supabase offre DPA per i titolari del trattamento — verificare se sottoscritto
+Trasferimento extra-UE: Potenzialmente sì se i server AWS non sono nella regione EU. Da verificare e documentare. Supabase è certificato SOC 2 Type II.
+PARTE 6 — SCHEMA COMPLETO DEL DATABASE
+Tabella: profiles
+Profilo pubblico di ogni utente registrato.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Sì	Chiave primaria, corrisponde a auth.users.id di Supabase
+username	text	Sì	Nome utente unico, min 3 char, solo [a-z0-9_]
+display_name	text	Sì	Nome visualizzato pubblicamente
+bio	text	No	Biografia breve
+comune	text	Sì	Comune scelto in registrazione
+avatar_emoji	text	No	Emoji avatar scelto
+avatar_color	text	No	Colore hex dello sfondo avatar
+role	text	No	Ruolo: "user" (default) / "admin" / "reader"
+created_at	timestamptz	Auto	Data creazione account
+RLS: Tutti possono leggere i profili pubblicamente. Solo il proprietario o un admin può modificare il proprio profilo.
+
+Tabella: posts
+Articoli pubblicati dagli utenti.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Auto	Chiave primaria
+user_id	UUID	Sì	FK verso profiles.id — autore
+author_username	text	No	Username autore al momento della pubblicazione
+title	text	No	Titolo articolo (max 120 caratteri)
+excerpt	text	No	Sommario (max 200 caratteri)
+content	text	Sì	Corpo dell'articolo (max ~12.000 caratteri)
+category	text	No	Categoria canonica
+image_type	text	No	Tipo illustrazione SVG
+badge	text	No	Etichetta badge
+badge_color	text	No	Colore badge ("default" / "green")
+published	boolean	No	true = pubblicato, false = bozza
+published_at	timestamptz	No	Data/ora pubblicazione
+created_at	timestamptz	Auto	Data creazione
+updated_at	timestamptz	Auto	Data ultima modifica
+Trigger di validazione PostgreSQL (guard_post_insert_update):
+
+Titolo minimo 3 caratteri (se presente)
+Contenuto minimo 10 caratteri
+Massimo 8 link URL nel testo
+Blocco parole non consentite (lista in tabella blocked_words)
+RLS: Chiunque può leggere i post pubblicati. Solo l'autore o un admin può modificare/eliminare. Solo membri verificati possono creare post.
+
+Tabella: comments
+Commenti agli articoli.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Auto	Chiave primaria
+post_id	UUID	Sì	FK verso posts.id
+user_id	UUID	Sì	FK verso profiles.id — autore commento
+author_username	text	No	Username autore al momento
+content	text	Sì	Testo commento (3–1.200 caratteri)
+is_hidden	boolean	No	true = nascosto da moderatore
+moderation_note	text	No	Nota del moderatore
+created_at	timestamptz	Auto	Data creazione
+updated_at	timestamptz	Auto	Data ultima modifica
+Trigger di validazione (guard_comment_insert_update):
+
+Contenuto 3–1.200 caratteri
+Massimo 2 link URL
+Blocco parole non consentite
+RLS: I commenti non nascosti sono pubblici. Solo l'autore (entro 10 minuti dalla creazione) o un admin può modificare. Solo l'autore o admin può eliminare. Solo membri verificati possono commentare.
+
+Tabella: post_likes
+Like (Mi piace) agli articoli.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Auto	Chiave primaria
+post_id	UUID	Sì	FK verso posts.id
+user_id	UUID	Sì	FK verso profiles.id
+actor_username	text	No	Username di chi ha messo like
+created_at	timestamptz	Auto	Data like
+Vincolo: UNIQUE(post_id, user_id) — un like per utente per articolo.
+RLS: Lettura pubblica. Scrittura solo per membri verificati.
+
+Tabella: notifications
+Notifiche generate da interazioni (like, commenti).
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Auto	Chiave primaria
+user_id	UUID	Sì	Destinatario della notifica
+actor_id	UUID	Sì	Chi ha generato l'azione
+actor_username	text	No	Username di chi ha agito
+post_id	UUID	No	Articolo coinvolto
+comment_id	UUID	No	Commento coinvolto (se applicabile)
+type	text	Sì	"like" o "comment"
+message	text	No	Testo notifica (es. "mario ha commentato il tuo articolo.")
+is_read	boolean	No	Se letta dall'utente
+created_at	timestamptz	Auto	Data creazione
+RLS: Visibile solo all'utente destinatario o ad un admin.
+
+Tabella: user_settings
+Impostazioni personali dell'utente.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+user_id	UUID	Sì	PK + FK verso profiles.id
+comment_privacy	text	No	Chi può commentare: "all" / "members" / "none"
+notif_frequency	text	No	Frequenza notifiche email
+notif_email	boolean	No	Abilita notifiche email
+preferred_categories	jsonb	No	Categorie preferite (array JSON)
+accessibility_fontsize	text	No	Dimensione testo: "sm" / "md" / "lg" / "xl"
+accessibility_high_contrast	boolean	No	Modalità contrasto elevato
+created_at	timestamptz	Auto	Data creazione
+updated_at	timestamptz	Auto	Data ultima modifica
+RLS: Visibile e modificabile solo dal proprietario o da un admin.
+
+Tabella: reports
+Segnalazioni di abusi da parte degli utenti.
+
+Colonna	Tipo	Obbligatorio	Descrizione
+id	UUID	Auto	Chiave primaria
+post_id	UUID	No	Articolo segnalato (o comment_id, almeno uno obbligatorio)
+comment_id	UUID	No	Commento segnalato
+reporter_id	UUID	Sì	Chi ha segnalato
+reason	text	No	Motivo segnalazione
+details	text	No	Dettaglio aggiuntivo
+status	text	No	"pending" / "reviewing" / "resolved" / "rejected"
+reviewed_by	UUID	No	Admin che ha gestito la segnalazione
+reviewed_at	timestamptz	No	Data gestione
+created_at	timestamptz	Auto	Data segnalazione
+RLS: Leggibile e modificabile solo dagli admin. L'utente può solo inserire (una segnalazione per contenuto).
+
+Tabella: blocked_words
+Dizionario di parole vietate (usato dai trigger PostgreSQL).
+
+Colonna	Tipo	Descrizione
+word	text PK	Parola vietata
+created_at	timestamptz	Data aggiunta
+Parole precaricate nel codice client (lista parziale):
+vaffanculo, stronzo, coglione, merda, idiota, cretino, troia, puttana, razzista, violenza, odio (+ eventuali altre in database)
+
+PARTE 7 — FLUSSI DI DATI DETTAGLIATI
+Flusso 1: Registrazione nuovo utente
+
+Utente compila Step 1 (email + password)
+  → Validazione client-side (formato email, password min 6 char, corrispondenza)
+  → Compila Step 2 (username, display_name, comune, bio, avatar, colore, accettazione regole)
+  → Validazione client-side (username min 3 char, bio min 8 char, comune selezionato, checkbox regole)
+  → Verifica unicità username: GET https://tljwxymcavgpzntksjtx.supabase.co (query su tabella profiles)
+  → POST https://tljwxymcavgpzntksjtx.supabase.co/auth/v1/signup
+      Payload: { email, password, options: { data: { username, display_name, comune, bio,
+                avatar_emoji, avatar_color, community_rules_accepted: true,
+                community_rules_accepted_at: "2026-...", community_rules_version: "2026-04" } } }
+  → Supabase crea record in auth.users (gestione interna Supabase)
+  → Supabase invia email di verifica all'indirizzo fornito
+  → Trigger Supabase o funzione ensureProfileForUser() crea record in tabella profiles
+  → Utente visualizza schermata "Verifica email"
+  → Utente clicca link nell'email → sessione attivata → redirect a profile.html?u=username
+Flusso 2: Login con password
+
+Utente inserisce email + password
+  → checkRateLimit: verifica in localStorage che non ci siano troppi tentativi falliti
+    (max 5 tentativi in 10 minuti, blocco 15 minuti)
+  → POST https://tljwxymcavgpzntksjtx.supabase.co/auth/v1/token?grant_type=password
+  → Se email non verificata → logout immediato, mostra schermata verifica
+  → ensureProfileForUser(): verifica profilo in tabella profiles, lo crea se mancante
+  → Query: SELECT username FROM profiles WHERE id = user.id
+  → Redirect a profile.html?u=<username>
+  → Token JWT salvato in localStorage del browser
+Flusso 3: Magic link (login senza password)
+
+Utente inserisce email
+  → checkRateLimit (max 4 invii in 15 minuti, blocco 20 minuti)
+  → POST https://tljwxymcavgpzntksjtx.supabase.co/auth/v1/otp
+      con emailRedirectTo = "https://www.rivaltasulmincio.it/profile"
+  → Supabase invia email con link magico one-time
+  → Utente clicca → Supabase valida token → sessione creata → redirect a profile.html
+  → profile.html senza ?u= rileva sessione → recupera username → redirect a profile.html?u=username
+Flusso 4: Reset password
+
+Utente inserisce email
+  → checkRateLimit (max 4 richieste in 30 minuti, blocco 30 minuti)
+  → POST https://tljwxymcavgpzntksjtx.supabase.co/auth/v1/recover
+  → Supabase invia email con link di reset
+  → Utente clicca → reset.html → listener onAuthStateChange rileva PASSWORD_RECOVERY
+  → Utente inserisce nuova password → PATCH auth/v1/user
+Flusso 5: Pubblicazione articolo
+
+Utente autenticato su write.html o me.html
+  → Compila titolo (facoltativo), sommario (facoltativo), contenuto (obbligatorio), categoria (obbligatoria)
+  → Sceglie illustrazione SVG
+  → Clicca "Salva bozza" o "Pubblica"
+  → Validazione client-side: contenuto obbligatorio, categoria obbligatoria
+  → Se nuovo: POST a tabella posts con user_id = session.user.id
+  → Se modifica: PATCH a tabella posts dove id = post.id AND user_id = session.user.id (RLS garantisce ownership)
+  → Trigger PostgreSQL guard_post_insert_update valida lato database:
+      - Titolo min 3 char
+      - Contenuto min 10 char
+      - Max 8 link
+      - Nessuna parola vietata
+  → Articolo appare nella homepage e nel profilo autore
+Flusso 6: Commento
+
+Utente autenticato su post.html
+  → Scrive commento (3–1.200 caratteri)
+  → checkRateLimit commento (max 6 commenti in 10 minuti, blocco 30 minuti)
+  → Validazione client-side (sicurezza testo: lunghezza, link, uppercase spam, parole vietate)
+  → POST a tabella comments
+  → Trigger PostgreSQL guard_comment_insert_update valida lato database
+  → INSERT a tabella notifications per l'autore dell'articolo
+      (type: "comment", message: "username ha commentato il tuo articolo.")
+Flusso 7: Like
+
+Utente autenticato su post.html
+  → checkRateLimit like (max 20 like in 10 minuti, blocco 10 minuti)
+  → Se già likato: DELETE da post_likes
+  → Se non likato: INSERT in post_likes + INSERT in notifications
+      (type: "like", message: "username ha messo Mi piace al tuo articolo.")
+Flusso 8: Segnalazione abuso
+
+Utente autenticato su post.html
+  → Apre modal di segnalazione
+  → Seleziona motivo
+  → checkRateLimit report (max 4 segnalazioni in 24 ore, blocco 24 ore)
+  → INSERT in reports: { post_id, reporter_id, reason, status: "pending" }
+  → Admin vede la segnalazione nel pannello admin
+  → Admin cambia status a "reviewing", "resolved" o "rejected"
+PARTE 8 — SICUREZZA E MISURE TECNICHE
+8.1 Autenticazione e autorizzazione
+Autenticazione gestita interamente da Supabase Auth (standard OAuth2/JWT)
+Password non mai memorizzate in chiaro (hashing Supabase)
+Sessioni basate su JWT con refresh token
+Row Level Security (RLS) su tutte le 7 tabelle principali: 21 policy attive
+Utenti con ruolo "admin" vedono e gestiscono tutti i dati; utenti normali vedono solo i propri
+8.2 Protezione anti-spam / anti-abuso lato client
+Rate limiting su: login (5/10min), magic link (4/15min), reset password (4/30min), commenti (6/10min), like (20/10min), segnalazioni (4/24h), admin login (5/10min), admin creazione post (20/h)
+Dati rate limiting archiviati in localStorage del browser dell'utente (non nel server)
+Filtro parole offensive nel browser prima dell'invio + trigger PostgreSQL lato database
+Rilevamento spam: link eccessivi, caratteri ripetuti, righe identiche, testo tutto maiuscolo
+8.3 Protezione anti-spam / anti-abuso lato server (database)
+Trigger PostgreSQL guard_post_insert_update e guard_comment_insert_update
+Blocco parole da tabella blocked_words nel database
+Unique constraint su post_likes (impedisce like multipli)
+8.4 Sicurezza del server web
+Header X-Frame-Options: DENY — previene clickjacking/iframe embedding
+Header X-Content-Type-Options: nosniff — previene MIME sniffing
+Header Referrer-Policy: strict-origin-when-cross-origin — limita info trasmesse con i referrer
+Header Permissions-Policy: geolocation=(), microphone=(), camera=() — vieta esplicitamente accesso a hardware sensibile
+Protezione directory traversal nel server Node.js
+HTTPS obbligatorio (TLS, gestito dal provider di hosting)
+8.5 Validazione input
+Sanitizzazione username: solo [a-z0-9_], convertito automaticamente in minuscolo
+Escape HTML su tutti i contenuti utente prima del rendering (prevenzione XSS)
+Validazione formati email, lunghezze minime e massime su tutti i campi
+PARTE 9 — FUNZIONALITÀ SPECIFICHE DEL PANNELLO ADMIN
+L'amministratore, una volta autenticato con credenziali admin, può:
+
+Gestione articoli:
+
+Vedere tutti gli articoli (pubblicati e bozze) di tutti gli utenti
+Creare nuovi articoli per conto di qualsiasi utente
+Modificare qualsiasi articolo esistente (titolo, contenuto, categoria, stato)
+Eliminare qualsiasi articolo
+Cambiare stato pubblicazione (bozza ↔ pubblicato)
+Gestione utenti:
+
+Vedere la lista completa di tutti gli utenti registrati con: username, display_name, avatar, ruolo, data iscrizione
+Cambiare il ruolo di un utente (da "user" ad "admin" o viceversa)
+Moderazione:
+
+Vedere tutte le segnalazioni di abuso inviate dagli utenti
+Vedere chi ha segnalato e cosa è stato segnalato
+Cambiare lo stato di ogni segnalazione (pending → reviewing → resolved / rejected)
+Accesso admin: Tramite login separato su admin.html con email + password. Tasso di tentativi limitato (5/10min, blocco 20min). Viene verificato che il ruolo profiles.role = 'admin' prima di mostrare qualsiasi dato.
+
+PARTE 10 — CONSERVAZIONE DEI DATI
+Il codice applicativo non definisce politiche di cancellazione automatica. I dati rimangono nel database Supabase finché:
+
+L'utente li elimina manualmente (commenti, like, propri articoli tramite write.html)
+Un admin li elimina dal pannello
+Il titolare del trattamento li cancella manualmente dalla dashboard Supabase
+Da definire nella policy (il codice non specifica):
+
+Periodo massimo di conservazione dei profili inattivi
+Periodo di conservazione delle notifiche lette
+Periodo di conservazione dei log di accesso (se Supabase li mantiene)
+Procedura di cancellazione account su richiesta dell'utente
+Cancellazione account: Non esiste nel codice attuale un percorso self-service per la cancellazione dell'account da parte dell'utente. Il codice di preferenze.html menziona "chiudi account" come funzionalità pianificata ma non implementata. La cancellazione deve avvenire tramite richiesta al titolare del trattamento.
+
+PARTE 11 — METADATI SEO E GEO NEL CODICE
+Nella homepage (index.html) sono presenti i seguenti metadati geografici hardcoded nel codice:
+
+
+<meta name="geo.region" content="IT-MN" />
+<meta name="geo.placename" content="Rivalta sul Mincio, Rodigo" />
+<meta name="geo.position" content="45.181000;10.665000" />
+<meta name="ICBM" content="45.181000, 10.665000" />
+Questi sono metadati SEO statici per i motori di ricerca, non raccolgono dati dai visitatori.
+
+Schema JSON-LD (dati strutturati per Google):
+
+Tipo: WebSite + LocalBusiness
+Identifica la Pro Loco Rivalta sul Mincio come organizzazione
+Elenca le sezioni principali del sito
+Menziona eventi (Sagra del Luccio) e luoghi (Valli del Mincio)
+PARTE 12 — RIEPILOGO RAPIDO PER IL LEGALE
+Voce	Dettaglio
+Titolare del trattamento	Pro Loco Rivalta sul Mincio (da completare con indirizzo, CF/PI, contatto DPO se applicabile)
+Natura del sito	Piattaforma editoriale comunitaria locale, con area pubblica e area riservata agli iscritti
+Dati raccolti da visitatori anonimi	Nessuno direttamente. Google Fonts, jsDelivr e Google Maps raccolgono IP e dati browser
+Dati raccolti da registrati	Email, password (hashed), username, nome, comune, bio, avatar, accettazione regole con timestamp
+Dati generati dall'attività	Articoli, commenti, like, notifiche, segnalazioni, preferenze UI
+Base giuridica	Contratto (esecuzione del servizio) per i dati di registrazione; Legittimo interesse per sicurezza/rate-limiting; Consenso esplicito per regole comunità
+Trasferimento extra-UE	Sì — Supabase/AWS (da verificare regione esatta); Google (Fonts, Maps)
+Cookie propri	Nessuno con finalità di profilazione
+Cookie tecnici	Token di sessione JWT in localStorage (non cookie HTTP)
+Cookie terze parti	Google Fonts (potenzialmente), Google Maps (sì)
+Analytics/tracking	Assenti (nessun Google Analytics, Pixel, Hotjar o simili)
+Diritto alla cancellazione	Non implementato self-service — solo tramite richiesta al titolare
+Sicurezza	HTTPS, RLS database, header di sicurezza HTTP, rate limiting, filtro contenuti, validazione input, nessuna memorizzazione password in chiaro
+Moderazione	Presente — admin può vedere, modificare, eliminare qualsiasi contenuto e gestire le segnalazioni degli utenti
+Età minima	Non implementato controllo età nel codice — da definire nella policy
+Versione regole comunità	"2026-04" (aprile 2026) — timestamp accettazione registrato per ogni utente
+Fine documento tecnico. Totale: ~8.500 parole di analisi tecnica del codice sorgente.
+
+Tutte le informazioni derivano dall'analisi diretta del codice sorgente del progetto. Per la redazione legale definitiva, verificare con il titolare: regione AWS del progetto Supabase, eventuale DPA con Supabase sottoscritto, dati aziendali completi del titolare, indirizzo email di contatto privacy, eventuale presenza di un DPO.

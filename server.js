@@ -17,7 +17,6 @@ const HTML_PAGES = new Set([
   'login',
   'index',
   'category',
-  'admin',
   'db-test'
 ]);
 const MIME = {
