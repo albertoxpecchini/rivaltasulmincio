@@ -164,7 +164,7 @@
     <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { margin: 16px; line-height: 1.5; }
-    img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+    img, svg, picture, video, canvas, iframe, object, embed { display: none !important; }
   </style>
 </head>
 <body>
