@@ -4,41 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ─── SEO PRIMARY ─────────────────────────────────────────── -->
   <title>Pro Loco Rivalta sul Mincio | Valli del Mincio, Luccio, Ecoturismo</title>
   <meta name="description" content="Pro Loco Rivalta sul Mincio (Mantova): scopri le Valli del Mincio, il luccio, l'ecoturismo, le sagre e le tradizioni del borgo nel cuore del Parco del Mincio. Eventi, escursioni e contatti." />
   <meta name="keywords" content="Rivalta sul Mincio, Pro Loco Rivalta, Valli del Mincio, Parco del Mincio, Mantova, sagra del luccio, ecoturismo Mantova, Rodigo, ninfei Mincio, birdwatching Mincio, ciclabile Mincio" />
   <meta name="author" content="Pro Loco Rivalta sul Mincio" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="canonical" href="https://www.rivaltasulmincio.it/" />
-  <meta name="theme-color" content="#0F2A30" />
+  <meta name="theme-color" content="#253f35" />
 
-  <!-- ─── GEO META (per ricerche locali) ──────────────────────── -->
   <meta name="geo.region" content="IT-MN" />
   <meta name="geo.placename" content="Rivalta sul Mincio, Rodigo" />
   <meta name="geo.position" content="45.181000;10.665000" />
   <meta name="ICBM" content="45.181000, 10.665000" />
 
-  <!-- ─── OPEN GRAPH (Facebook, WhatsApp, Telegram) ──────────── -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Pro Loco Rivalta sul Mincio" />
-  <meta property="og:title" content="Pro Loco Rivalta sul Mincio – Valli del Mincio e Tradizioni" />
+  <meta property="og:title" content="Pro Loco Rivalta sul Mincio - Valli del Mincio e tradizioni" />
   <meta property="og:description" content="Ecoturismo, sagre e natura nel cuore del Parco del Mincio. Scopri le Valli, il luccio e i percorsi del borgo." />
   <meta property="og:url" content="https://www.rivaltasulmincio.it/" />
   <meta property="og:locale" content="it_IT" />
-  <meta property="og:image" content="https://www.rivaltasulmincio.it/og-image.svg" />
+  <meta property="og:image" content="https://picsum.photos/seed/rivalta-og-wetlands/1200/630" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/svg+xml" />
-  <meta property="og:image:alt" content="Pro Loco Rivalta sul Mincio – Valli del Mincio" />
+  <meta property="og:image:alt" content="Valli del Mincio a Rivalta sul Mincio" />
 
-  <!-- ─── TWITTER CARD ────────────────────────────────────────── -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pro Loco Rivalta sul Mincio" />
   <meta name="twitter:description" content="Le Valli del Mincio, il luccio e le tradizioni del borgo. Ecoturismo nel Parco del Mincio." />
-  <meta name="twitter:image" content="https://www.rivaltasulmincio.it/og-image.svg" />
+  <meta name="twitter:image" content="https://picsum.photos/seed/rivalta-og-wetlands/1200/630" />
 
-  <!-- ─── JSON-LD STRUCTURED DATA ─────────────────────────────── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,13 +43,6 @@
         "name": "Pro Loco Rivalta sul Mincio",
         "alternateName": "Pro Loco Rivalta",
         "url": "https://www.rivaltasulmincio.it/",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.rivaltasulmincio.it/logo.svg",
-          "width": 512,
-          "height": 512
-        },
-        "image": "https://www.rivaltasulmincio.it/og-image.svg",
         "description": "Associazione di promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio, nel cuore del Parco Regionale del Mincio.",
         "email": "info@prolocorivalta.mn.it",
         "telephone": "+39-339-899-5680",
@@ -83,15 +70,7 @@
         "name": "Pro Loco Rivalta sul Mincio",
         "description": "Sito ufficiale della Pro Loco di Rivalta sul Mincio: Valli del Mincio, il luccio, ecoturismo, eventi, sagre e tradizioni.",
         "publisher": { "@id": "https://www.rivaltasulmincio.it/#organization" },
-        "inLanguage": "it-IT",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://www.rivaltasulmincio.it/?q={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
-        }
+        "inLanguage": "it-IT"
       },
       {
         "@type": "TouristDestination",
@@ -99,7 +78,6 @@
         "name": "Rivalta sul Mincio",
         "description": "Borgo di pescatori nel Parco Regionale del Mincio, frazione di Rodigo (Mantova). Riserva Naturale, Valli del Mincio, fioritura dei ninfei, birdwatching e tradizione del luccio.",
         "url": "https://www.rivaltasulmincio.it/",
-        "image": "https://www.rivaltasulmincio.it/og-image.svg",
         "geo": {
           "@type": "GeoCoordinates",
           "latitude": 45.181,
@@ -137,11 +115,11 @@
         "name": "Esplora il sito",
         "itemListElement": [
           { "@type": "SiteNavigationElement", "position": 1, "name": "Introduzione", "url": "https://www.rivaltasulmincio.it/#introduzione" },
-          { "@type": "SiteNavigationElement", "position": 2, "name": "Le Valli del Mincio", "url": "https://www.rivaltasulmincio.it/#valli" },
-          { "@type": "SiteNavigationElement", "position": 3, "name": "Il Luccio", "url": "https://www.rivaltasulmincio.it/#luccio" },
-          { "@type": "SiteNavigationElement", "position": 4, "name": "News", "url": "https://www.rivaltasulmincio.it/#news" },
-          { "@type": "SiteNavigationElement", "position": 5, "name": "Chi siamo", "url": "https://www.rivaltasulmincio.it/#chi-siamo" },
-          { "@type": "SiteNavigationElement", "position": 6, "name": "Dove siamo", "url": "https://www.rivaltasulmincio.it/#dove-siamo" },
+          { "@type": "SiteNavigationElement", "position": 2, "name": "Esperienze", "url": "https://www.rivaltasulmincio.it/#esperienze" },
+          { "@type": "SiteNavigationElement", "position": 3, "name": "Galleria", "url": "https://www.rivaltasulmincio.it/#galleria" },
+          { "@type": "SiteNavigationElement", "position": 4, "name": "Le Valli del Mincio", "url": "https://www.rivaltasulmincio.it/#valli" },
+          { "@type": "SiteNavigationElement", "position": 5, "name": "Il Luccio", "url": "https://www.rivaltasulmincio.it/#luccio" },
+          { "@type": "SiteNavigationElement", "position": 6, "name": "News", "url": "https://www.rivaltasulmincio.it/#news" },
           { "@type": "SiteNavigationElement", "position": 7, "name": "Contatti", "url": "https://www.rivaltasulmincio.it/#contatti" }
         ]
       }
@@ -149,1756 +127,2950 @@
   }
   </script>
 
-  <!-- Fonts: Cabinet Grotesk (primary) + Fraunces (display serif) -->
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23253f35'/%3E%3Cpath d='M9 39 C18 30 46 30 55 39' stroke='%23f7f0e4' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M9 49 C19 43 45 43 55 49' stroke='%23c58b5d' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='43' cy='27' r='3' fill='%23f7f0e4'/%3E%3C/svg%3E" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='12' fill='%231F6F8B'/><path d='M4 14C8 10 16 10 20 14' stroke='%23EAF4F4' stroke-width='2' fill='none' stroke-linecap='round'/><circle cx='15' cy='10' r='1.2' fill='%23EAF4F4'/></svg>" />
-  <link rel="apple-touch-icon" href="/logo.svg" />
+  <style>
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --mist: #e4ddcf;
+      --marsh: #253f35;
+      --marsh-2: #3d6353;
+      --water: #2f6b67;
+      --clay: #b8663f;
+      --reed: #c6a462;
+      --fog: rgba(247, 240, 228, 0.72);
+      --white: #fffdf8;
+      --line: rgba(37, 63, 53, 0.16);
+      --line-dark: rgba(255, 250, 240, 0.16);
+      --shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      --shadow-strong: 0 42px 110px rgba(23, 34, 29, 0.28);
+      --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+      --container: min(100% - 44px, 1400px);
+      color-scheme: light;
+    }
 
-    <style>
     *, *::before, *::after { box-sizing: border-box; }
-    body { margin: 16px; line-height: 1.5; }
-    img, svg, picture, video, canvas, iframe, object, embed { display: none !important; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--cream);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.32), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.20), transparent 34rem),
+        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+      line-height: 1.5;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      pointer-events: none;
+      opacity: 0.26;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    ::selection {
+      background: rgba(184, 102, 63, 0.28);
+    }
+
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: 12px;
+      z-index: 90;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-160%);
+      transition: transform 360ms var(--ease);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.78);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, var(--marsh), var(--water));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20);
+      overflow: hidden;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      border: 2px solid var(--paper);
+      border-top: 0;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-radius: 50%;
+      opacity: 0.92;
+    }
+
+    .brand-mark::before { height: 18px; bottom: 10px; }
+    .brand-mark::after { height: 12px; bottom: 4px; opacity: 0.48; }
+
+    .brand-name {
+      display: grid;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-name strong {
+      font-size: 0.98rem;
+      font-weight: 800;
+    }
+
+    .brand-name span {
+      font-size: 0.72rem;
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: rgba(23, 34, 29, 0.68);
+      transition: color 420ms var(--ease), background 420ms var(--ease), transform 420ms var(--ease);
+    }
+
+    .nav-mobile-login {
+      display: none !important;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible,
+    .nav-links a.active {
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.84);
+      transform: translateY(-1px);
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-login,
+    .profile-btn,
+    .nav-toggle {
+      border: 0;
+      border-radius: 999px;
+      background: var(--marsh);
+      color: var(--paper);
+      min-height: 42px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms var(--ease), background 420ms var(--ease), box-shadow 420ms var(--ease);
+    }
+
+    .nav-login:hover,
+    .profile-btn:hover,
+    .nav-toggle:hover {
+      transform: translateY(-1px);
+      background: #1f362e;
+      box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    }
+
+    .nav-login:active,
+    .profile-btn:active,
+    .nav-toggle:active,
+    .button:active {
+      transform: scale(0.98);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      padding: 0;
+      position: relative;
+    }
+
+    .nav-toggle span {
+      position: absolute;
+      width: 17px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform 500ms var(--ease), opacity 500ms var(--ease);
+    }
+
+    .nav-toggle span:first-child { transform: translateY(-5px); }
+    .nav-toggle span:last-child { transform: translateY(5px); }
+    .nav-toggle.open span:first-child { transform: rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle.open span:last-child { transform: rotate(-45deg); }
+
+    .profile-menu {
+      position: relative;
+    }
+
+    .profile-avatar {
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--water);
+      color: var(--paper);
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 12px);
+      width: 230px;
+      padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms var(--ease), transform 360ms var(--ease), visibility 360ms var(--ease);
+    }
+
+    .profile-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .profile-dropdown__section-title {
+      padding: 8px 10px;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5);
+      font-weight: 900;
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 14px;
+      font-weight: 750;
+      text-align: left;
+      transition: background 300ms var(--ease), transform 300ms var(--ease);
+    }
+
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover,
+    .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08);
+      transform: translateX(2px);
+    }
+
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: var(--line); margin: 8px 4px; }
+
+    .hero {
+      position: relative;
+      min-height: auto;
+      padding: clamp(112px, 10vw, 138px) 0 clamp(64px, 8vw, 86px);
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 79% 16%, rgba(47, 107, 103, 0.28), transparent 24rem),
+        linear-gradient(180deg, rgba(255, 250, 240, 0.35), rgba(239, 229, 210, 0.92));
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      z-index: -1;
+      height: 180px;
+      background: linear-gradient(180deg, transparent, var(--cream));
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(360px, 0.74fr);
+      align-items: center;
+      gap: clamp(28px, 5vw, 86px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--marsh);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    .hero-title {
+      max-width: 940px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(3.55rem, 8vw, 8.7rem);
+      line-height: 0.88;
+      letter-spacing: -0.034em;
+      text-wrap: balance;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--clay);
+      letter-spacing: -0.07em;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      margin: 28px 0 0;
+      color: rgba(23, 34, 29, 0.72);
+      font-size: clamp(1.08rem, 1.8vw, 1.36rem);
+      line-height: 1.52;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      position: relative;
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px 9px 8px 22px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 900;
+      color: var(--paper);
+      background: var(--marsh);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 38px rgba(23, 34, 29, 0.18);
+      transition: transform 520ms var(--ease), background 520ms var(--ease), box-shadow 520ms var(--ease);
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 250, 240, 0.22), transparent 34%);
+      opacity: 0;
+      transition: opacity 420ms var(--ease);
+    }
+
+    .button span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .button .button-icon {
+      position: relative;
+      z-index: 1;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--marsh);
+      background: var(--paper);
+      transition: transform 520ms var(--ease);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #20392f;
+      box-shadow: 0 24px 52px rgba(23, 34, 29, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .button:hover::before { opacity: 1; }
+    .button:hover .button-icon { transform: translate(3px, -1px) scale(1.04); }
+
+    .button.secondary {
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.66);
+      border-color: rgba(37, 63, 53, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .button.secondary .button-icon {
+      background: var(--marsh);
+      color: var(--paper);
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: clamp(460px, 50vw, 620px);
+    }
+
+    .photo-frame {
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.36);
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .photo-slot {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: 34px;
+      background-image:
+        linear-gradient(180deg, rgba(23, 34, 29, 0.02), rgba(23, 34, 29, 0.34)),
+        var(--photo);
+      background-size: cover;
+      background-position: center;
+      min-height: 260px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      transform: translateZ(0);
+    }
+
+    .photo-slot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 240, 0.18), transparent 38%),
+        radial-gradient(circle at 80% 16%, rgba(255, 250, 240, 0.24), transparent 16rem);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .photo-slot[data-photo-label]::before {
+      content: attr(data-photo-label);
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 2;
+      max-width: calc(100% - 36px);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--paper);
+      background: rgba(23, 34, 29, 0.50);
+      border: 1px solid rgba(255, 250, 240, 0.20);
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-photo-main {
+      position: absolute;
+      inset: 0 0 54px 88px;
+      transform: rotate(2deg);
+    }
+
+    .hero-photo-main .photo-slot { height: 100%; }
+
+    .hero-photo-main .photo-slot[data-photo-label]::before {
+      left: auto;
+      right: 18px;
+      top: 18px;
+      bottom: auto;
+    }
+
+    .hero-photo-side {
+      position: absolute;
+      left: 0;
+      bottom: 86px;
+      width: min(52%, 330px);
+      transform: rotate(-6deg);
+    }
+
+    .hero-photo-side .photo-slot { min-height: 260px; }
+
+    .hero-photo-tiny {
+      position: absolute;
+      right: 20px;
+      bottom: 0;
+      width: min(46%, 280px);
+      transform: rotate(5deg);
+    }
+
+    .hero-photo-tiny .photo-slot { min-height: 210px; }
+
+    .hero-note {
+      position: absolute;
+      left: 48px;
+      top: 22px;
+      z-index: 4;
+      width: 176px;
+      padding: 16px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 26px;
+      background: rgba(255, 250, 240, 0.80);
+      box-shadow: 0 20px 48px rgba(23, 34, 29, 0.16);
+      backdrop-filter: blur(18px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .hero-note span {
+      display: block;
+      margin-top: 10px;
+      color: rgba(23, 34, 29, 0.58);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .marquee-band {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 240, 0.34);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      gap: 46px;
+      padding: 18px 0;
+      animation: drift 36s infinite linear;
+      color: rgba(37, 63, 53, 0.72);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .marquee-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 46px;
+    }
+
+    .marquee-track span::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--clay);
+      opacity: 0.72;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .section {
+      padding: clamp(92px, 11vw, 168px) 0;
+      position: relative;
+    }
+
+    .section.compact {
+      padding-top: clamp(70px, 8vw, 120px);
+    }
+
+    .section.dark {
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 86% 14%, rgba(184, 102, 63, 0.22), transparent 28rem),
+        linear-gradient(145deg, #14231e, #253f35 55%, #17221d);
+    }
+
+    .section.dark .eyebrow,
+    .section.dark .section-kicker,
+    .section.dark .section-lead {
+      color: rgba(255, 250, 240, 0.72);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.84fr) minmax(260px, 0.5fr);
+      gap: clamp(26px, 6vw, 90px);
+      align-items: end;
+      margin-bottom: clamp(38px, 6vw, 84px);
+    }
+
+    .section-title {
+      margin: 0;
+      max-width: 920px;
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 6.8rem);
+      line-height: 0.94;
+      letter-spacing: -0.056em;
+      text-wrap: balance;
+    }
+
+    .section-title em {
+      color: var(--clay);
+      font-style: italic;
+    }
+
+    .section-lead {
+      max-width: 620px;
+      margin: 0;
+      color: rgba(23, 34, 29, 0.70);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .section-kicker {
+      margin: 0 0 18px;
+      color: var(--water);
+      font-size: 0.82rem;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .atlas-grid {
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .atlas-panel {
+      position: relative;
+      padding: 8px;
+      border-radius: 42px;
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: rgba(255, 250, 240, 0.42);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .atlas-panel-inner {
+      min-height: 100%;
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.74);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+      overflow: hidden;
+    }
+
+    .atlas-photo .photo-slot {
+      min-height: 610px;
+      border-radius: 34px;
+    }
+
+    .atlas-copy {
+      padding: clamp(24px, 4vw, 52px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 36px;
+    }
+
+    .atlas-copy h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.9vw, 4.3rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+    }
+
+    .atlas-copy p {
+      margin: 20px 0 0;
+      color: rgba(23, 34, 29, 0.68);
+      line-height: 1.72;
+      font-size: 1.04rem;
+    }
+
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .fact {
+      min-height: 138px;
+      padding: 18px;
+      border-radius: 26px;
+      background: rgba(37, 63, 53, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fact strong {
+      font-size: clamp(1.9rem, 3.5vw, 3.3rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fact span {
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1fr);
+      gap: clamp(24px, 6vw, 96px);
+      align-items: start;
+    }
+
+    .sticky-copy {
+      position: sticky;
+      top: 128px;
+    }
+
+    .stack-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stack-card {
+      position: relative;
+      min-height: 420px;
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.42);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-origin: 50% 0%;
+    }
+
+    .stack-card-inner {
+      min-height: 404px;
+      border-radius: 34px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 0.58fr) minmax(260px, 0.42fr);
+      background: var(--paper);
+    }
+
+    .stack-card .photo-slot {
+      height: 100%;
+      min-height: 404px;
+      border-radius: 0;
+    }
+
+    .stack-card-copy {
+      padding: clamp(24px, 4vw, 44px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .stack-card-copy h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .stack-card-copy p {
+      margin: 14px 0 0;
+      color: rgba(23, 34, 29, 0.66);
+      line-height: 1.64;
+    }
+
+    .stack-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(47, 107, 103, 0.10);
+      color: var(--water);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .gallery-stage {
+      position: relative;
+      padding: 8px;
+      border-radius: 46px;
+      background: rgba(255, 250, 240, 0.42);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+
+    .carousel {
+      position: relative;
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(198, 164, 98, 0.24), transparent 25rem),
+        linear-gradient(145deg, rgba(37, 63, 53, 0.96), rgba(23, 34, 29, 0.98));
+      min-height: 660px;
+      overflow: hidden;
+      color: var(--paper);
+    }
+
+    .carousel-viewport {
+      position: relative;
+      min-height: 560px;
+      perspective: 1200px;
+      padding: 48px 0 84px;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      left: 50%;
+      top: 48px;
+      width: min(72vw, 760px);
+      height: min(64vw, 500px);
+      min-height: 360px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(-50%, 26px, 0) scale(0.76) rotateY(-12deg);
+      transition: opacity 760ms var(--ease), transform 760ms var(--ease), filter 760ms var(--ease);
+      filter: saturate(0.82) contrast(0.98) brightness(0.7);
+    }
+
+    .carousel-slide[data-state="active"] {
+      z-index: 4;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate3d(-50%, 0, 0) scale(1) rotateY(0deg);
+      filter: saturate(1) contrast(1.04) brightness(1);
+    }
+
+    .carousel-slide[data-state="prev"] {
+      z-index: 3;
+      opacity: 0.44;
+      transform: translate3d(-108%, 34px, -140px) scale(0.78) rotateY(16deg);
+    }
+
+    .carousel-slide[data-state="next"] {
+      z-index: 3;
+      opacity: 0.44;
+      transform: translate3d(8%, 34px, -140px) scale(0.78) rotateY(-16deg);
+    }
+
+    .carousel-card {
+      height: 100%;
+      padding: 8px;
+      border-radius: 42px;
+      border: 1px solid rgba(255, 250, 240, 0.20);
+      background: rgba(255, 250, 240, 0.08);
+      box-shadow: 0 36px 90px rgba(0, 0, 0, 0.20);
+    }
+
+    .carousel-card .photo-slot {
+      height: 100%;
+      min-height: 100%;
+      border-radius: 34px;
+    }
+
+    .carousel-caption {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 24px;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      color: var(--paper);
+    }
+
+    .carousel-caption h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 0.95;
+      letter-spacing: -0.045em;
+      text-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    }
+
+    .carousel-caption p {
+      max-width: 290px;
+      margin: 0;
+      color: rgba(255, 250, 240, 0.74);
+      font-weight: 700;
+      line-height: 1.34;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .carousel-btn,
+    .carousel-dot {
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      color: var(--paper);
+      background: rgba(255, 250, 240, 0.10);
+      backdrop-filter: blur(14px);
+      transition: transform 420ms var(--ease), background 420ms var(--ease);
+    }
+
+    .carousel-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .carousel-btn:hover,
+    .carousel-dot:hover,
+    .carousel-dot.active {
+      background: rgba(255, 250, 240, 0.22);
+      transform: translateY(-2px);
+    }
+
+    .carousel-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .carousel-dot {
+      width: 11px;
+      height: 11px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .photo-rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(260px, 36vw);
+      gap: 18px;
+      overflow-x: auto;
+      padding: 4px var(--side-pad, 0) 14px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+    }
+
+    .rail-item {
+      scroll-snap-align: start;
+      padding: 8px;
+      border-radius: 36px;
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: rgba(255, 250, 240, 0.44);
+      box-shadow: var(--shadow);
+    }
+
+    .rail-item .photo-slot {
+      min-height: clamp(300px, 42vw, 510px);
+      border-radius: 28px;
+    }
+
+    .split-story {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(340px, 0.62fr);
+      gap: clamp(24px, 6vw, 90px);
+      align-items: center;
+    }
+
+    .story-card {
+      padding: clamp(24px, 4vw, 54px);
+      border-radius: 42px;
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: rgba(255, 250, 240, 0.62);
+      box-shadow: var(--shadow);
+    }
+
+    .story-card h3 {
+      margin: 0 0 20px;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+    }
+
+    .story-card p {
+      margin: 0 0 16px;
+      color: rgba(23, 34, 29, 0.70);
+      line-height: 1.72;
+    }
+
+    .story-list {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .story-list li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: rgba(23, 34, 29, 0.70);
+    }
+
+    .story-list li::before {
+      content: "";
+      width: 38px;
+      height: 2px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: var(--clay);
+    }
+
+    .luccio-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
+      gap: 18px;
+    }
+
+    .recipe-panel {
+      padding: clamp(24px, 4vw, 46px);
+      border-radius: 38px;
+      background: rgba(255, 250, 240, 0.76);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .recipe-panel h3 {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.1vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .recipe-panel p {
+      color: rgba(23, 34, 29, 0.68);
+      line-height: 1.68;
+    }
+
+    .recipe-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .news-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 0.74fr) minmax(280px, 0.26fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .news-main,
+    .news-side {
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.46);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .news-inner,
+    .news-side-inner {
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.76);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .news-inner { padding: clamp(18px, 3vw, 34px); }
+    .news-side-inner { padding: 26px; }
+
+    .news-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .news-filter-chip {
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      border-radius: 999px;
+      min-height: 36px;
+      padding: 0 14px;
+      color: rgba(23, 34, 29, 0.68);
+      background: rgba(255, 250, 240, 0.62);
+      font-weight: 850;
+      transition: transform 340ms var(--ease), background 340ms var(--ease), color 340ms var(--ease);
+    }
+
+    .news-filter-chip:hover,
+    .news-filter-chip.on {
+      color: var(--paper);
+      background: var(--marsh);
+      transform: translateY(-1px);
+    }
+
+    .news-status {
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .post-featured,
+    .post-card {
+      overflow: hidden;
+      border-radius: 30px;
+      background: var(--white);
+      border: 1px solid rgba(37, 63, 53, 0.10);
+      transition: transform 520ms var(--ease), box-shadow 520ms var(--ease);
+    }
+
+    .post-featured:hover,
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 70px rgba(23, 34, 29, 0.16);
+    }
+
+    .post-featured {
+      display: grid;
+      grid-template-columns: minmax(0, 0.55fr) minmax(280px, 0.45fr);
+      margin-bottom: 18px;
+    }
+
+    .news-card__media,
+    .post-featured__media {
+      min-height: 300px;
+      border-radius: 0;
+    }
+
+    .post-featured__body,
+    .post-card__body {
+      padding: 24px;
+    }
+
+    .post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: rgba(23, 34, 29, 0.50);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .post-featured__title,
+    .post-card__title {
+      margin: 14px 0 12px;
+      font-family: var(--serif);
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+    }
+
+    .post-featured__title { font-size: clamp(2rem, 3.3vw, 3.35rem); }
+    .post-card__title { font-size: 1.65rem; }
+
+    .post-featured__excerpt,
+    .post-card__excerpt {
+      color: rgba(23, 34, 29, 0.66);
+      line-height: 1.62;
+    }
+
+    .post-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .post-card .news-card__media {
+      min-height: 220px;
+    }
+
+    .post-card__footer,
+    .post-featured__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--marsh);
+      font-weight: 900;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(184, 102, 63, 0.12);
+      color: #8f492f;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .badge.green {
+      background: rgba(47, 107, 103, 0.12);
+      color: var(--water);
+    }
+
+    .news-empty {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px dashed rgba(37, 63, 53, 0.20);
+      border-radius: 30px;
+      padding: 34px;
+      color: rgba(23, 34, 29, 0.62);
+    }
+
+    .news-empty strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--ink);
+      letter-spacing: -0.035em;
+    }
+
+    .side-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .side-list a {
+      padding: 14px 0;
+      border-top: 1px solid rgba(37, 63, 53, 0.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(23, 34, 29, 0.70);
+      font-weight: 850;
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .community-panel {
+      padding: clamp(24px, 5vw, 58px);
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .community-panel h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5.6vw, 6rem);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+    }
+
+    .community-panel p {
+      max-width: 720px;
+      color: rgba(255, 250, 240, 0.74);
+      line-height: 1.72;
+      font-size: 1.06rem;
+    }
+
+    .community-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .community-item {
+      padding: 24px;
+      border-radius: 30px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+    }
+
+    .community-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: 1.72rem;
+      letter-spacing: -0.035em;
+    }
+
+    .community-item span {
+      color: rgba(255, 250, 240, 0.68);
+      line-height: 1.58;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(310px, 0.38fr);
+      gap: 18px;
+    }
+
+    .map-plate {
+      min-height: 590px;
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.44);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .map-plate .photo-slot {
+      min-height: 574px;
+      border-radius: 34px;
+    }
+
+    .contact-card {
+      padding: clamp(24px, 4vw, 42px);
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.76);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .contact-card h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+    }
+
+    .contact-lines {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-line {
+      padding-top: 14px;
+      border-top: 1px solid rgba(37, 63, 53, 0.12);
+    }
+
+    .contact-line strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--water);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .newsletter {
+      position: relative;
+      color: var(--paper);
+      padding: clamp(74px, 9vw, 132px) 0;
+      background: var(--marsh);
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: "";
+      position: absolute;
+      inset: -20% 40% -20% -10%;
+      background: radial-gradient(circle, rgba(198, 164, 98, 0.30), transparent 38rem);
+      pointer-events: none;
+    }
+
+    .newsletter-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.48fr);
+      gap: clamp(24px, 6vw, 90px);
+      align-items: center;
+    }
+
+    .newsletter h2 {
+      margin: 0;
+      max-width: 900px;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 7.8rem);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+    }
+
+    .newsletter p {
+      max-width: 620px;
+      color: rgba(255, 250, 240, 0.72);
+      font-size: 1.08rem;
+      line-height: 1.66;
+    }
+
+    .newsletter-form {
+      padding: 8px;
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    }
+
+    .newsletter-form-inner {
+      padding: 22px;
+      border-radius: 26px;
+      background: rgba(255, 250, 240, 0.92);
+      color: var(--ink);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: rgba(23, 34, 29, 0.62);
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid rgba(37, 63, 53, 0.15);
+      border-radius: 18px;
+      background: var(--paper);
+      min-height: 54px;
+      padding: 0 16px;
+      color: var(--ink);
+      outline: none;
+      transition: border 320ms var(--ease), box-shadow 320ms var(--ease);
+    }
+
+    .field input:focus {
+      border-color: rgba(47, 107, 103, 0.50);
+      box-shadow: 0 0 0 4px rgba(47, 107, 103, 0.10);
+    }
+
+    .form-status {
+      min-height: 22px;
+      margin: 12px 0 0;
+      color: var(--water);
+      font-weight: 800;
+    }
+
+    .footer {
+      color: rgba(255, 250, 240, 0.72);
+      background: #101c18;
+      padding: 72px 0 34px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) repeat(3, minmax(140px, 0.22fr));
+      gap: clamp(24px, 5vw, 76px);
+      align-items: start;
+    }
+
+    .footer h3,
+    .footer h4 {
+      margin: 0 0 16px;
+      color: var(--paper);
+      letter-spacing: -0.02em;
+    }
+
+    .footer h3 {
+      max-width: 520px;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .footer p {
+      max-width: 540px;
+      line-height: 1.66;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 250, 240, 0.68);
+      font-weight: 750;
+    }
+
+    .footer-links a:hover { color: var(--paper); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 250, 240, 0.12);
+      font-size: 0.86rem;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--marsh);
+      color: var(--paper);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      transition: transform 420ms var(--ease), background 420ms var(--ease);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      background: #1f362e;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translate3d(0, 36px, 0);
+      transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+      transition-delay: var(--delay, 0ms);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: rgba(37, 63, 53, 0.08);
+    }
+
+    .skeleton::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255, 250, 240, 0.42), transparent);
+      animation: shimmer 1.6s infinite;
+    }
+
+    @keyframes shimmer {
+      to { transform: translateX(100%); }
+    }
+
+    @media (max-width: 1120px) {
+      .nav-island {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .brand {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .nav-actions {
+        margin-left: auto;
+        justify-self: end;
+      }
+
+      .nav-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        position: fixed;
+        inset: 78px 14px auto 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 16px;
+        border-radius: 30px;
+        background: rgba(247, 240, 228, 0.94);
+        border: 1px solid rgba(255, 250, 240, 0.7);
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(24px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px) scale(0.98);
+        transition: opacity 420ms var(--ease), transform 420ms var(--ease), visibility 420ms var(--ease);
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+      }
+
+      .nav-links a {
+        min-height: 50px;
+        justify-content: center;
+      }
+
+      .nav-toggle {
+        display: inline-flex !important;
+        flex: 0 0 44px;
+        opacity: 1;
+        visibility: visible;
+      }
+      .hero-layout,
+      .atlas-grid,
+      .experience-grid,
+      .split-story,
+      .luccio-layout,
+      .news-shell,
+      .community-grid,
+      .contact-grid,
+      .newsletter-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sticky-copy { position: static; }
+      .hero-media { order: -1; min-height: 620px; }
+      .hero-photo-main { inset: 0 0 88px 72px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --container: min(100% - 28px, 1400px); }
+
+      .site-header { top: 10px; }
+      .nav-island { border-radius: 28px; }
+      .brand-name span { display: none; }
+      .brand-name strong { font-size: 0.92rem; }
+      .nav-actions #nav-auth { display: none; }
+      .nav-mobile-login { display: inline-flex !important; }
+      .nav-toggle {
+        position: absolute;
+        right: clamp(10px, calc(100vw - 380px), 96px);
+        top: 8px;
+      }
+      .nav-login { min-height: 40px; padding: 0 12px; }
+
+      .hero {
+        padding: 112px 0 70px;
+      }
+
+      .hero-title {
+        max-width: 100%;
+        font-size: clamp(2.85rem, 13.7vw, 4.25rem);
+        line-height: 0.93;
+        letter-spacing: -0.025em;
+      }
+
+      .hero-media {
+        min-height: 560px;
+      }
+
+      .hero-photo-main {
+        inset: 22px 0 118px 18px;
+      }
+
+      .hero-photo-side {
+        width: 54%;
+        bottom: 58px;
+      }
+
+      .hero-photo-tiny {
+        width: 50%;
+        right: 0;
+      }
+
+      .hero-note {
+        left: 18px;
+        top: 0;
+        width: 150px;
+      }
+
+      .section-head,
+      .stack-card-inner,
+      .post-featured {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 78px 0;
+      }
+
+      .fact-grid,
+      .post-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .atlas-photo .photo-slot,
+      .map-plate,
+      .map-plate .photo-slot {
+        min-height: 460px;
+      }
+
+      .stack-card,
+      .stack-card-inner,
+      .stack-card .photo-slot {
+        min-height: auto;
+      }
+
+      .stack-card .photo-slot {
+        min-height: 320px;
+      }
+
+      .carousel {
+        min-height: 560px;
+      }
+
+      .carousel-viewport {
+        min-height: 460px;
+        padding: 34px 0 82px;
+      }
+
+      .carousel-slide {
+        top: 34px;
+        width: calc(100% - 24px);
+        min-height: 360px;
+        height: 380px;
+      }
+
+      .carousel-slide[data-state="prev"],
+      .carousel-slide[data-state="next"] {
+        opacity: 0;
+        transform: translate3d(-50%, 26px, 0) scale(0.82);
+      }
+
+      .carousel-caption {
+        display: grid;
+        align-items: start;
+      }
+
+      .photo-rail {
+        grid-auto-columns: minmax(236px, 80vw);
+      }
+
+      .footer-bottom {
+        display: grid;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Salta al contenuto</a>
 
-<!-- ═══════════ SVG SYMBOLS LIBRARY ════════════════════════════════ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <!-- gradients -->
-    <linearGradient id="grad-water" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#2d8b89"/>
-      <stop offset="60%" stop-color="#1F6F8B"/>
-      <stop offset="100%" stop-color="#0F2A30"/>
-    </linearGradient>
-    <linearGradient id="grad-marsh" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#5fb085"/>
-      <stop offset="55%" stop-color="#2d8b60"/>
-      <stop offset="100%" stop-color="#15433a"/>
-    </linearGradient>
-    <linearGradient id="grad-sunset" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f0c084"/>
-      <stop offset="40%" stop-color="#d68a55"/>
-      <stop offset="100%" stop-color="#1F6F8B"/>
-    </linearGradient>
-    <linearGradient id="grad-deep" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1a5961"/>
-      <stop offset="100%" stop-color="#0e3540"/>
-    </linearGradient>
-    <linearGradient id="grad-spring" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#a3d9b1"/>
-      <stop offset="100%" stop-color="#2E7D32"/>
-    </linearGradient>
-
-    <!-- icons -->
-    <symbol id="i-bird" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12c0-3 2-5 5-5s5 2 5 5h6l-3 3-2-1-2 2-3-1-2 1-1-1c-1.5 0-3-1-3-3z"/>
-      <circle cx="6" cy="9" r=".6" fill="currentColor"/>
-    </symbol>
-    <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 3c-3 8-9 14-18 18 1-7 4-12 8-15s7-3 10-3z"/>
-      <path d="M3 21c5-5 9-9 16-16"/>
-    </symbol>
-    <symbol id="i-water" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3c-3 5-6 8-6 12 0 3 3 6 6 6s6-3 6-6c0-4-3-7-6-12z"/>
-    </symbol>
-    <symbol id="i-fish" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12c2-3 5-5 9-5s7 2 9 5c-2 3-5 5-9 5s-7-2-9-5z"/>
-      <path d="M21 12l3-2v4l-3-2z" fill="currentColor"/>
-      <circle cx="15" cy="11" r=".8" fill="currentColor"/>
-    </symbol>
-    <symbol id="i-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="6" cy="16" r="4"/>
-      <circle cx="18" cy="16" r="4"/>
-      <path d="M6 16l4-9h5l3 9M10 7h4"/>
-    </symbol>
-    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <circle cx="11" cy="11" r="7"/>
-      <path d="M21 21l-4.5-4.5"/>
-    </symbol>
-    <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2H4a2 2 0 00-2 2v8l10 10 10-10L12 2z"/>
-      <circle cx="7" cy="7" r="1.2" fill="currentColor"/>
-    </symbol>
-    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="5" width="18" height="16" rx="2"/>
-      <path d="M3 9h18M8 3v4M16 3v4"/>
-    </symbol>
-    <symbol id="i-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 11a9 9 0 019 9M4 4a16 16 0 0116 16"/>
-      <circle cx="5" cy="19" r="1.4" fill="currentColor"/>
-    </symbol>
-    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10 14a4 4 0 015.66 0l3-3a4 4 0 10-5.66-5.66l-1 1M14 10a4 4 0 01-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/>
-    </symbol>
-    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v14"/>
-    </symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="5" width="18" height="14" rx="2"/>
-      <path d="M3 7l9 7 9-7"/>
-    </symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 22s8-7 8-13a8 8 0 10-16 0c0 6 8 13 8 13z"/>
-      <circle cx="12" cy="9" r="2.6"/>
-    </symbol>
-    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M22 16.9v3a2 2 0 01-2.2 2 19.7 19.7 0 01-8.6-3.1A19.5 19.5 0 015 12.4 19.7 19.7 0 011.9 3.8 2 2 0 013.9 1.6h3a2 2 0 012 1.7c.1 1 .3 2 .6 3a2 2 0 01-.5 2L8 9.7a16 16 0 006.3 6.3l1.4-1.4a2 2 0 012-.5c1 .3 2 .5 3 .6a2 2 0 011.7 2z"/>
-    </symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M12 7v5l3 2"/>
-    </symbol>
-    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 12l5 5L20 6"/>
-    </symbol>
-    <symbol id="i-arrow-r" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10.3 5.3a1 1 0 011.4 0l4 4a1 1 0 010 1.4l-4 4a1 1 0 01-1.4-1.4L12.6 11H5a1 1 0 110-2h7.6l-2.3-2.3a1 1 0 010-1.4z" clip-rule="evenodd"/>
-    </symbol>
-    <symbol id="i-fb" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M22 12a10 10 0 10-11.6 9.9V14.9H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.7-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/>
-    </symbol>
-    <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="5"/>
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-    </symbol>
-    <symbol id="i-yt" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M22 8a3 3 0 00-2.1-2.1C18 5.5 12 5.5 12 5.5s-6 0-7.9.4A3 3 0 002 8a31 31 0 000 8 3 3 0 002.1 2.1c1.9.4 7.9.4 7.9.4s6 0 7.9-.4A3 3 0 0022 16a31 31 0 000-8zM10 15V9l5 3-5 3z"/>
-    </symbol>
-    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/>
-    </symbol>
-  </defs>
-</svg>
-
-<!-- ═══════════ HEADER ═══════════════════════════════════════════ -->
-<header class="site-header" id="navbar">
-  <div class="container">
-    <div class="site-header__inner">
-
-      <!-- Brand -->
-      <a href="#home" class="site-brand" aria-label="Pro Loco Rivalta sul Mincio">
-        <div class="site-brand__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(234,244,244,.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 14C6 10 14 10 18 14M22 14L19 12V16L22 14Z"/>
-            <circle cx="14" cy="13" r="1" fill="rgba(234,244,244,.85)" stroke="none"/>
-          </svg>
-        </div>
-        <div>
-          <div class="site-brand__name">Pro Loco Rivalta</div>
-          <div class="site-brand__sub">sul Mincio · Mantova</div>
-        </div>
+  <header class="site-header" id="navbar">
+    <div class="nav-island">
+      <a class="brand" href="#home" aria-label="Pro Loco Rivalta sul Mincio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">
+          <strong>Pro Loco Rivalta</strong>
+          <span>sul Mincio - Mantova</span>
+        </span>
       </a>
 
-      <div class="site-header__sep" aria-hidden="true"></div>
-
-      <!-- Nav -->
-      <nav class="site-nav">
-        <ul class="site-nav__list" id="navList">
-          <li><a href="#home" class="active">Home</a></li>
-          <li><a href="#introduzione">Introduzione</a></li>
-          <li><a href="#dati">Dati</a></li>
-          <li><a href="#valli">Le Valli</a></li>
-          <li><a href="#luccio">Il Luccio</a></li>
-          <li><a href="#news">News</a></li>
-          <li><a href="#chi-siamo">Chi siamo</a></li>
-          <li><a href="#dove-siamo">Dove siamo</a></li>
-          <li><a href="#contatti">Contatti</a></li>
-        </ul>
+      <nav class="nav-links" id="navList" aria-label="Navigazione principale">
+        <a href="#home" class="active">Home</a>
+        <a href="#esperienze">Esperienze</a>
+        <a href="#galleria">Galleria</a>
+        <a href="#valli">Valli</a>
+        <a href="#luccio">Luccio</a>
+        <a href="#news">News</a>
+        <a href="#contatti">Contatti</a>
+        <a href="login" class="nav-mobile-login">Accedi</a>
       </nav>
 
-      <!-- Actions -->
-      <div class="site-header__actions">
-        <div id="nav-auth" style="display:flex;align-items:center;gap:8px">
-          <a href="login" class="nav-accedi-btn">Accedi</a>
+      <div class="nav-actions">
+        <div id="nav-auth">
+          <a href="login" class="nav-login">Accedi</a>
         </div>
-        <button class="site-nav__toggle" id="navToggle" aria-label="Apri menu" aria-expanded="false">
-          <span></span><span></span><span></span>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Apri menu" aria-expanded="false" aria-controls="navList">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
-
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- ═══════════ HERO ══════════════════════════════════════════════ -->
-<section class="hero" id="home">
-  <!-- Full-bleed real photo background -->
-  <div class="hero__bg">
-    <img src="https://picsum.photos/seed/mincio-river-reeds/1920/1080"
-         alt=""
-         aria-hidden="true"
-         loading="eager"
-         fetchpriority="high" />
-  </div>
-  <div class="hero__ripples"></div>
-
-  <!-- Floating photo card — Artistic Asymmetry (bottom right) -->
-  <div class="hero__float-card gsap-scale-img" aria-hidden="true">
-    <img src="https://picsum.photos/seed/wetlands-heron/800/1200"
-         alt="" loading="eager" />
-  </div>
-
-  <div class="hero__wave">
-    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,45 C240,90 480,5 720,45 C960,85 1200,5 1440,45 L1440,90 L0,90 Z" fill="#eef6f4"/>
-    </svg>
-  </div>
-
-  <div class="container">
-    <div class="hero__content">
-      <div class="hero__eyebrow">Parco del Mincio &middot; Mantova</div>
-      <h1 class="hero__title">
-        Dove la natura<br/>incontra <em>la storia</em><br/>delle acque.
-      </h1>
-      <p class="hero__desc">Rivalta sul Mincio &egrave; un borgo di pescatori immerso nel cuore del Parco Regionale del Mincio: valli d&rsquo;acqua, canneti, aironi e la tradizione millenaria del luccio arrosto.</p>
-      <div class="hero__actions">
-        <a href="#valli" class="btn btn-primary">
-          Scopri il territorio
-          <svg width="16" height="16"><use href="#i-arrow-r"/></svg>
-        </a>
-        <a href="#chi-siamo" class="btn btn-outline">Chi siamo</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ MARQUEE ════════════════════════════════════════════ -->
-<div class="marquee-section" aria-hidden="true">
-  <div class="marquee-track">
-    <!-- Set A -->
-    <span class="marquee-item"><svg><use href="#i-bird"/></svg> Oltre 260 specie di uccelli</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Sito Ramsar</span></span>
-    <span class="marquee-item"><svg><use href="#i-water"/></svg> 1.100 ettari di riserva naturale</span>
-    <span class="marquee-item"><svg><use href="#i-fish"/></svg> <span class="accent">Luccio PAT 2013</span></span>
-    <span class="marquee-item"><svg><use href="#i-bike"/></svg> Ciclabile del Mincio</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Rete Natura 2000</span></span>
-    <span class="marquee-item"><svg><use href="#i-water"/></svg> 43 km di corso del Mincio</span>
-    <span class="marquee-item"><svg><use href="#i-bird"/></svg> Ninfee in fioritura luglio &ndash; agosto</span>
-    <span class="marquee-item"><svg><use href="#i-fish"/></svg> Sagra del Luccio &mdash; 50+ anni</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Pro Loco fondata 1967</span></span>
-    <!-- Set B (duplicate for seamless loop) -->
-    <span class="marquee-item"><svg><use href="#i-bird"/></svg> Oltre 260 specie di uccelli</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Sito Ramsar</span></span>
-    <span class="marquee-item"><svg><use href="#i-water"/></svg> 1.100 ettari di riserva naturale</span>
-    <span class="marquee-item"><svg><use href="#i-fish"/></svg> <span class="accent">Luccio PAT 2013</span></span>
-    <span class="marquee-item"><svg><use href="#i-bike"/></svg> Ciclabile del Mincio</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Rete Natura 2000</span></span>
-    <span class="marquee-item"><svg><use href="#i-water"/></svg> 43 km di corso del Mincio</span>
-    <span class="marquee-item"><svg><use href="#i-bird"/></svg> Ninfee in fioritura luglio &ndash; agosto</span>
-    <span class="marquee-item"><svg><use href="#i-fish"/></svg> Sagra del Luccio &mdash; 50+ anni</span>
-    <span class="marquee-item"><svg><use href="#i-leaf"/></svg> <span class="accent">Pro Loco fondata 1967</span></span>
-  </div>
-</div>
-
-<!-- ═══════════ INTRODUZIONE ══════════════════════════════════════ -->
-<section class="section" id="introduzione">
-  <div class="container">
-    <div class="intro-grid">
-      <div class="intro-art reveal">
-        <!-- Pictorial illustration: village + river -->
-        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <rect width="600" height="480" fill="url(#grad-sunset)"/>
-          <!-- sun -->
-          <circle cx="450" cy="140" r="50" fill="#fff" opacity=".85"/>
-          <circle cx="450" cy="140" r="38" fill="#ffd9a3"/>
-          <!-- distant hills -->
-          <path d="M0,260 Q150,220 300,250 T600,240 L600,320 L0,320 Z" fill="#1F6F8B" opacity=".5"/>
-          <path d="M0,290 Q120,260 240,280 Q360,300 500,275 T600,290 L600,340 L0,340 Z" fill="#0F2A30" opacity=".45"/>
-          <!-- village rooftops -->
-          <g fill="#143B43">
-            <rect x="120" y="260" width="40" height="50"/>
-            <polygon points="115,260 140,232 165,260"/>
-            <rect x="155" y="245" width="50" height="65"/>
-            <polygon points="148,245 180,212 212,245"/>
-            <rect x="200" y="255" width="35" height="55"/>
-            <polygon points="195,255 217,228 240,255"/>
-            <!-- bell tower -->
-            <rect x="245" y="200" width="22" height="110"/>
-            <polygon points="240,200 256,170 272,200"/>
-            <rect x="252" y="220" width="8" height="14" fill="#1F6F8B"/>
-            <!-- more houses -->
-            <rect x="280" y="262" width="42" height="48"/>
-            <polygon points="275,262 301,235 327,262"/>
-            <rect x="320" y="252" width="38" height="58"/>
-            <polygon points="315,252 339,224 363,252"/>
-          </g>
-          <!-- windows -->
-          <g fill="#F9A825" opacity=".8">
-            <rect x="130" y="278" width="6" height="8"/>
-            <rect x="142" y="278" width="6" height="8"/>
-            <rect x="170" y="265" width="6" height="9"/>
-            <rect x="185" y="265" width="6" height="9"/>
-            <rect x="212" y="270" width="5" height="8"/>
-            <rect x="295" y="278" width="6" height="8"/>
-            <rect x="335" y="270" width="5" height="8"/>
-          </g>
-          <!-- water -->
-          <rect x="0" y="320" width="600" height="160" fill="url(#grad-water)"/>
-          <!-- water reflections -->
-          <g stroke="#EAF4F4" stroke-width="1" fill="none" opacity=".3">
-            <path d="M0,360 Q150,355 300,360 T600,360"/>
-            <path d="M0,400 Q200,395 400,400 T600,398"/>
-            <path d="M0,440 Q150,435 300,440 T600,438"/>
-          </g>
-          <!-- fishing boat -->
-          <g transform="translate(380 340)">
-            <path d="M0,10 L80,10 L72,28 L8,28 Z" fill="#0F2A30"/>
-            <rect x="36" y="-20" width="2" height="30" fill="#0F2A30"/>
-            <path d="M38,-20 L62,5 L38,5 Z" fill="#EAF4F4" opacity=".85"/>
-            <ellipse cx="40" cy="32" rx="42" ry="3" fill="#0F2A30" opacity=".4"/>
-          </g>
-          <!-- birds -->
-          <g fill="none" stroke="#0F2A30" stroke-width="1.5" stroke-linecap="round" opacity=".7">
-            <path d="M380,80 q5,-5 10,0 q5,-5 10,0"/>
-            <path d="M420,100 q4,-4 8,0 q4,-4 8,0"/>
-            <path d="M340,110 q4,-4 8,0 q4,-4 8,0"/>
-          </g>
-          <!-- reeds in foreground -->
-          <g stroke="#143B43" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".85">
-            <path d="M30,480 L30,400"/>
-            <path d="M45,480 L45,380"/>
-            <path d="M60,480 L60,410"/>
-            <path d="M540,480 L540,400"/>
-            <path d="M555,480 L555,420"/>
-            <path d="M570,480 L570,390"/>
-          </g>
-          <!-- cattail tops -->
-          <g fill="#5b3a1f">
-            <ellipse cx="30" cy="395" rx="3" ry="9"/>
-            <ellipse cx="45" cy="375" rx="3" ry="9"/>
-            <ellipse cx="540" cy="395" rx="3" ry="9"/>
-            <ellipse cx="570" cy="385" rx="3" ry="9"/>
-          </g>
-        </svg>
-        <div class="intro-art__badge">
-          <div class="intro-art__badge-title">Rivalta sul Mincio</div>
-          <div class="intro-art__badge-meta">Frazione di Rodigo · Mantova</div>
-        </div>
-      </div>
-
-      <div class="reveal">
-        <div class="eyebrow">Benvenuti</div>
-        <h2 class="section-title">Centro esatto della<br/>provincia, <em style="font-style:italic;color:var(--primary);">cuore del Mincio</em>.</h2>
-        <p class="section-lead">Rivalta sul Mincio — <strong>centro esatto della provincia di Mantova</strong> — è un'ideale base di partenza per chi desidera visitare un territorio che merita molto più di una visita frettolosa. Qui il fiume rallenta, si allarga e genera un labirinto di canali, isole galleggianti e canneti.</p>
-        <p class="section-lead" style="margin-top:14px;">Le «Valli del Mincio» rappresentano una <strong>Zona Umida di Importanza Internazionale</strong> riconosciuta dalla Convenzione di Ramsar e rientrano nella Rete Natura 2000 quale Sito di Importanza Comunitaria. Nel loro cuore, la Pro Loco «Amici di Rivalta» promuove itinerari naturalistici ed educazione ambientale.</p>
-      </div>
-    </div>
-
-    <div class="feature-cards reveal-stagger">
-      <div class="feature-card">
-        <div class="feature-card__icon"><svg><use href="#i-leaf"/></svg></div>
-        <h3 class="feature-card__title">Riserva Naturale</h3>
-        <p class="feature-card__desc">Sito Ramsar e Natura 2000: le Valli del Mincio (circa 1.100 ha) ospitano canneti, chiari, praterie a carice e oltre 260 specie di uccelli.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__icon"><svg><use href="#i-water"/></svg></div>
-        <h3 class="feature-card__title">Escursioni d'acqua</h3>
-        <p class="feature-card__desc">In barca dagli imbarcaderi di Grazie, Rivalta e Belfiore, o in canoa con il Canoa Club Rivalta nei canneti più nascosti.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__icon"><svg><use href="#i-fish"/></svg></div>
-        <h3 class="feature-card__title">Tradizione viva</h3>
-        <p class="feature-card__desc">Il Luccio in Bianco e in Salsa alla Rivaltese — ricette PAT dal 2013 — sono il cuore gastronomico di una tradizione plurisecolare.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ DATI ══════════════════════════════════════════════ -->
-<section class="section section--alt dati-section" id="dati">
-  <div class="container">
-    <div class="section-head-center reveal">
-      <div class="eyebrow">Il territorio in numeri</div>
-      <h2 class="section-title">Dati che parlano<br/>di <em style="font-style:italic;color:var(--primary);">un ecosistema unico</em>.</h2>
-    </div>
-    <div class="dati-grid reveal-stagger">
-      <div class="dato-card">
-        <div class="dato-card__icon"><svg><use href="#i-bird"/></svg></div>
-        <div class="dato-card__num"><span data-count="260">0</span><sup>+</sup></div>
-        <div class="dato-card__label">Specie di uccelli</div>
-        <div class="dato-card__desc">Aironi, folaghe, tarabusi e anatre selvatiche nel sistema palustre delle Valli del Mincio.</div>
-      </div>
-      <div class="dato-card">
-        <div class="dato-card__icon"><svg><use href="#i-leaf"/></svg></div>
-        <div class="dato-card__num"><span data-count="1100">0</span></div>
-        <div class="dato-card__label">Ettari di Riserva</div>
-        <div class="dato-card__desc">La superficie protetta delle Valli del Mincio, Sito Ramsar e Rete Natura 2000.</div>
-      </div>
-      <div class="dato-card">
-        <div class="dato-card__icon"><svg><use href="#i-water"/></svg></div>
-        <div class="dato-card__num"><span data-count="43">0</span><span class="dato-unit">km</span></div>
-        <div class="dato-card__label">Corso del Mincio</div>
-        <div class="dato-card__desc">Dal Lago di Garda al Po, attraverso paludi, valli e il Parco Regionale del Mincio.</div>
-      </div>
-      <div class="dato-card">
-        <div class="dato-card__icon"><svg><use href="#i-fish"/></svg></div>
-        <div class="dato-card__num"><span data-count="50">0</span><sup>+</sup></div>
-        <div class="dato-card__label">Anni di Sagra del Luccio</div>
-        <div class="dato-card__desc">La Sagra, nata negli anni '70, celebra ogni estate la tradizione del luccio arrosto.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ LE VALLI DEL MINCIO ══════════════════════════════ -->
-<section class="section section--alt" id="valli">
-  <div class="container">
-    <div class="valli-grid">
-      <div class="valli-art reveal">
-        <svg viewBox="0 0 480 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="valli-sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#b8d8e8"/>
-              <stop offset="60%" stop-color="#d4eaf0"/>
-              <stop offset="100%" stop-color="#e8f4f0"/>
-            </linearGradient>
-            <linearGradient id="valli-water-l" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#1a5c7a"/>
-              <stop offset="100%" stop-color="#0d3d52"/>
-            </linearGradient>
-          </defs>
-          <!-- sky gradient -->
-          <rect width="480" height="600" fill="url(#valli-sky)"/>
-          <!-- early morning sun glow -->
-          <circle cx="60" cy="95" r="38" fill="#fff9e6" opacity=".9"/>
-          <circle cx="60" cy="95" r="28" fill="#ffd566" opacity=".7"/>
-          <!-- sun rays -->
-          <g stroke="#ffd566" stroke-width="1" opacity=".25" stroke-linecap="round">
-            <line x1="60" y1="48" x2="60" y2="30"/>
-            <line x1="87" y1="68" x2="100" y2="56"/>
-            <line x1="97" y1="95" x2="118" y2="95"/>
-            <line x1="87" y1="122" x2="100" y2="134"/>
-            <line x1="33" y1="68" x2="20" y2="56"/>
-            <line x1="23" y1="95" x2="2" y2="95"/>
-          </g>
-          <!-- distant hills / tree line -->
-          <path d="M0,195 Q80,170 160,185 Q240,200 320,178 Q400,160 480,182 L480,240 L0,240 Z" fill="#2a7a5c" opacity=".55"/>
-          <path d="M0,215 Q100,200 200,210 Q300,222 400,205 Q440,198 480,208 L480,260 L0,260 Z" fill="#0f3d2e" opacity=".6"/>
-          <!-- willow trees at water edge -->
-          <g fill="#1a5740" opacity=".75">
-            <ellipse cx="380" cy="252" rx="35" ry="28"/>
-            <ellipse cx="395" cy="240" rx="24" ry="22"/>
-            <path d="M380,280 L380,252 M395,265 L395,240" stroke="#1a5740" stroke-width="3.5" stroke-linecap="round"/>
-            <!-- drooping branches -->
-            <path d="M380,260 Q370,295 365,320" stroke="#1a5740" stroke-width="1.5" fill="none" opacity=".7"/>
-            <path d="M390,265 Q400,295 398,325" stroke="#1a5740" stroke-width="1.5" fill="none" opacity=".7"/>
-          </g>
-          <g fill="#0d2e1e" opacity=".5">
-            <ellipse cx="420" cy="255" rx="28" ry="22"/>
-            <ellipse cx="450" cy="248" rx="22" ry="18"/>
-          </g>
-          <!-- water surface -->
-          <rect x="0" y="260" width="480" height="340" fill="url(#valli-water-l)"/>
-          <!-- sky reflection in water -->
-          <rect x="0" y="260" width="480" height="80" fill="#1f6f8b" opacity=".4"/>
-          <!-- water ripples -->
-          <g stroke="#7ab8cc" stroke-width=".8" fill="none" opacity=".45">
-            <path d="M0,305 Q120,298 240,305 T480,302"/>
-            <path d="M0,360 Q160,353 320,360 T480,357"/>
-            <path d="M0,420 Q120,413 240,420 T480,417"/>
-            <path d="M0,480 Q200,473 400,480 T480,478"/>
-            <path d="M0,540 Q160,533 320,540 T480,537"/>
-          </g>
-          <!-- large lily pad colony – il "chiaro" -->
-          <g opacity=".95">
-            <!-- pads -->
-            <ellipse cx="200" cy="380" rx="46" ry="10" fill="#245c2a"/>
-            <ellipse cx="200" cy="377" rx="46" ry="10" fill="#2d7a34"/>
-            <ellipse cx="260" cy="395" rx="38" ry="9" fill="#245c2a"/>
-            <ellipse cx="260" cy="392" rx="38" ry="9" fill="#2d7a34"/>
-            <ellipse cx="140" cy="400" rx="42" ry="9" fill="#245c2a"/>
-            <ellipse cx="140" cy="397" rx="42" ry="9" fill="#2d7a34"/>
-            <ellipse cx="310" cy="375" rx="36" ry="8" fill="#245c2a"/>
-            <ellipse cx="310" cy="372" rx="36" ry="8" fill="#338a3a"/>
-            <ellipse cx="100" cy="385" rx="30" ry="7" fill="#245c2a"/>
-            <ellipse cx="100" cy="382" rx="30" ry="7" fill="#2d7a34"/>
-            <ellipse cx="355" cy="400" rx="44" ry="9" fill="#245c2a"/>
-            <ellipse cx="355" cy="397" rx="44" ry="9" fill="#2d7a34"/>
-            <!-- farther pads -->
-            <ellipse cx="80" cy="450" rx="36" ry="8" fill="#245c2a"/>
-            <ellipse cx="80" cy="447" rx="36" ry="8" fill="#2d7a34"/>
-            <ellipse cx="170" cy="465" rx="42" ry="9" fill="#245c2a"/>
-            <ellipse cx="170" cy="462" rx="42" ry="9" fill="#2d7a34"/>
-            <ellipse cx="290" cy="455" rx="38" ry="8" fill="#245c2a"/>
-            <ellipse cx="290" cy="452" rx="38" ry="8" fill="#2d7a34"/>
-            <ellipse cx="400" cy="460" rx="40" ry="9" fill="#245c2a"/>
-            <ellipse cx="400" cy="457" rx="40" ry="9" fill="#2d7a34"/>
-          </g>
-          <!-- white ninfee (water lilies) -->
-          <g>
-            <g transform="translate(200 374)"><circle r="7" fill="#fffef8"/><ellipse cx="-6" cy="-1" rx="5.5" ry="2.5" fill="#fff" transform="rotate(-30)"/><ellipse cx="6" cy="-1" rx="5.5" ry="2.5" fill="#fff" transform="rotate(30)"/><ellipse cy="-7" rx="2.5" ry="5.5" fill="#fff"/><ellipse cx="4" cy="-4" rx="3.5" ry="1.5" fill="#fff" transform="rotate(60)"/><ellipse cx="-4" cy="-4" rx="3.5" ry="1.5" fill="#fff" transform="rotate(-60)"/><circle r="2.2" fill="#f5c518"/></g>
-            <g transform="translate(310 370)"><circle r="6" fill="#fffef8"/><ellipse cx="-5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(-30)"/><ellipse cx="5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(30)"/><ellipse cy="-6" rx="2" ry="4.5" fill="#fff"/><circle r="1.8" fill="#f5c518"/></g>
-            <g transform="translate(140 394)"><circle r="6" fill="#fffef8"/><ellipse cx="-5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(-30)"/><ellipse cx="5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(30)"/><ellipse cy="-6" rx="2" ry="4.5" fill="#fff"/><circle r="1.8" fill="#f5c518"/></g>
-            <g transform="translate(355 394)"><circle r="6" fill="#fffef8"/><ellipse cx="-5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(-30)"/><ellipse cx="5" cy="-1" rx="4.5" ry="2" fill="#fff" transform="rotate(30)"/><ellipse cy="-6" rx="2" ry="4.5" fill="#fff"/><circle r="1.8" fill="#f5c518"/></g>
-            <g transform="translate(170 459)"><circle r="7" fill="#fffef8"/><ellipse cx="-6" cy="-1" rx="5.5" ry="2.5" fill="#fff" transform="rotate(-30)"/><ellipse cx="6" cy="-1" rx="5.5" ry="2.5" fill="#fff" transform="rotate(30)"/><ellipse cy="-7" rx="2.5" ry="5.5" fill="#fff"/><circle r="2.2" fill="#f5c518"/></g>
-          </g>
-          <!-- grey heron standing in shallows -->
-          <g transform="translate(230 285)">
-            <!-- legs (wading in water) -->
-            <path d="M20,155 L17,230" stroke="#8ea0a8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <path d="M28,155 L32,230" stroke="#8ea0a8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <!-- feet -->
-            <path d="M17,230 L8,238 M17,230 L14,242 M17,230 L22,240" stroke="#8ea0a8" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <path d="M32,230 L24,238 M32,230 L30,242 M32,230 L38,238" stroke="#8ea0a8" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <!-- body -->
-            <path d="M5,120 Q22,105 55,118 Q78,126 88,140 Q80,155 62,152 L28,155 Q8,152 5,120 Z" fill="#d0d8de"/>
-            <!-- wing fold -->
-            <path d="M12,125 Q34,150 68,140" stroke="#a0adb5" stroke-width="1.5" fill="none" opacity=".8"/>
-            <!-- dark back markings -->
-            <path d="M5,120 Q22,105 55,118" stroke="#4d6870" stroke-width="2.5" fill="none"/>
-            <!-- neck -->
-            <path d="M62,120 Q55,80 58,45" stroke="#d0d8de" stroke-width="8" stroke-linecap="round" fill="none"/>
-            <!-- neck stripe -->
-            <path d="M62,120 Q55,80 58,45" stroke="#4d6870" stroke-width="2" stroke-linecap="round" fill="none" opacity=".5"/>
-            <!-- head -->
-            <ellipse cx="60" cy="40" rx="13" ry="8" fill="#d0d8de" transform="rotate(-10 60 40)"/>
-            <!-- black eye stripe -->
-            <path d="M50,37 L43,36" stroke="#0a1a20" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- eye -->
-            <circle cx="57" cy="38" r="2.2" fill="#f5c518"/>
-            <circle cx="57" cy="38" r="1.2" fill="#0a1a20"/>
-            <!-- beak (pointed down — feeding posture) -->
-            <path d="M67,45 L88,60" stroke="#e8b820" stroke-width="3.5" stroke-linecap="round"/>
-            <!-- crest feathers -->
-            <path d="M53,34 L44,24 M55,33 L48,20" stroke="#0a1a20" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
-            <!-- chest plumes -->
-            <path d="M25,135 Q15,155 18,175" stroke="#d0d8de" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <path d="M20,135 Q8,160 12,178" stroke="#d0d8de" stroke-width="2" stroke-linecap="round" fill="none"/>
-          </g>
-          <!-- small egret (garzetta) in flight -->
-          <g transform="translate(340 120)" opacity=".8">
-            <path d="M0,0 Q10,-8 20,0 Q10,4 0,0Z" fill="#fff"/>
-            <path d="M20,0 Q30,-6 40,0 Q30,4 20,0Z" fill="#fff"/>
-            <!-- neck/body -->
-            <path d="M18,-2 Q20,-10 22,-14" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
-            <ellipse cx="22" cy="-16" rx="4" ry="3" fill="#fff"/>
-            <path d="M26,-14 L36,-17" stroke="#e8c820" stroke-width="2.5" stroke-linecap="round"/>
-          </g>
-          <!-- canoe on water -->
-          <g transform="translate(60 310)">
-            <path d="M0,12 Q35,4 70,12 Q55,22 35,22 Q15,22 0,12 Z" fill="#5c3d1e"/>
-            <path d="M0,12 Q35,4 70,12" stroke="#3d2810" stroke-width="1.2" fill="none"/>
-            <!-- paddler silhouette -->
-            <g transform="translate(28 4)">
-              <circle cx="7" cy="-18" r="5" fill="#1a2a30"/>
-              <rect x="4" y="-13" width="6" height="12" rx="3" fill="#1a2a30"/>
-              <!-- paddle -->
-              <rect x="14" y="-10" width="28" height="2" rx="1" fill="#3d2810"/>
-              <ellipse cx="42" cy="-9" rx="4" ry="7" fill="#3d2810" transform="rotate(-20 42 -9)"/>
-            </g>
-            <!-- water reflection -->
-            <ellipse cx="35" cy="20" rx="38" ry="4" fill="#0d3d52" opacity=".35"/>
-          </g>
-          <!-- foreground reed bed (canneto) -->
-          <!-- tall dense reeds left -->
-          <g fill="none" stroke-linecap="round">
-            <path d="M10,600 L10,440" stroke="#2d5a2d" stroke-width="3.5"/>
-            <path d="M22,600 L22,420" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M34,600 L34,450" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M46,600 L46,435" stroke="#2d5a2d" stroke-width="3.5"/>
-            <path d="M58,600 L58,455" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M70,600 L70,440" stroke="#2d5a2d" stroke-width="2.5"/>
-          </g>
-          <!-- reed heads (bulrush/cattail) left -->
-          <g fill="#6b4226">
-            <ellipse cx="10" cy="435" rx="3.5" ry="12"/>
-            <ellipse cx="22" cy="415" rx="3.5" ry="12"/>
-            <ellipse cx="34" cy="445" rx="3" ry="11"/>
-            <ellipse cx="46" cy="430" rx="3.5" ry="12"/>
-            <ellipse cx="58" cy="450" rx="3" ry="10"/>
-            <ellipse cx="70" cy="435" rx="2.5" ry="9"/>
-          </g>
-          <!-- reed tufts / grass right -->
-          <g fill="none" stroke-linecap="round">
-            <path d="M420,600 L420,455" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M435,600 L435,440" stroke="#2d5a2d" stroke-width="3.5"/>
-            <path d="M450,600 L450,460" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M465,600 L465,448" stroke="#2d5a2d" stroke-width="3"/>
-            <path d="M478,600 L478,465" stroke="#2d5a2d" stroke-width="2.5"/>
-          </g>
-          <g fill="#6b4226">
-            <ellipse cx="420" cy="450" rx="3" ry="10"/>
-            <ellipse cx="435" cy="435" rx="3.5" ry="12"/>
-            <ellipse cx="450" cy="455" rx="3" ry="10"/>
-            <ellipse cx="465" cy="443" rx="3" ry="11"/>
-          </g>
-          <!-- flying birds in sky (aironi) -->
-          <g fill="none" stroke="#4a7080" stroke-width="1.8" stroke-linecap="round" opacity=".75">
-            <path d="M300,65 q9,-7 18,0 q9,-7 18,0"/>
-            <path d="M360,100 q7,-5 14,0 q7,-5 14,0"/>
-            <path d="M240,90 q7,-5 14,0 q7,-5 14,0"/>
-            <path d="M155,75 q6,-4 12,0 q6,-4 12,0"/>
-          </g>
-          <!-- dragonfly -->
-          <g transform="translate(310 310)" opacity=".65">
-            <ellipse cx="0" cy="0" rx="1.8" ry="12" fill="#0a3d52"/>
-            <ellipse cx="-10" cy="-3" rx="12" ry="3.5" fill="#7ad4ea" transform="rotate(-15)" opacity=".8"/>
-            <ellipse cx="10" cy="-3" rx="12" ry="3.5" fill="#7ad4ea" transform="rotate(15)" opacity=".8"/>
-            <ellipse cx="-8" cy="3" rx="10" ry="2.8" fill="#7ad4ea" transform="rotate(15)" opacity=".7"/>
-            <ellipse cx="8" cy="3" rx="10" ry="2.8" fill="#7ad4ea" transform="rotate(-15)" opacity=".7"/>
-          </g>
-        </svg>
-      </div>
-
-      <div class="reveal">
-        <div class="eyebrow">Riserva Naturale · Sito Ramsar</div>
-        <h2 class="section-title">Le Valli del Mincio,<br/>oasi <em style="font-style:italic;color:var(--accent);">d'acqua e silenzio</em>.</h2>
-        <p class="section-lead">Tra Rivalta e Borgo Angeli, il Mincio rallenta e si allarga in un sistema palustre di circa 1.100 ettari che si snoda per 7–8 km lungo il corso medio del fiume: un mosaico di canneti, chiari e praterie a carice di rilievo europeo.</p>
-        <p class="section-lead" style="margin-top:12px;">Dichiarata Riserva Naturale dalla Regione Lombardia nel 1984 e riconosciuta "Zona Umida di Importanza Internazionale" dalla <strong>Convenzione di Ramsar (1971)</strong>, rientra inoltre nella rete <strong>Natura 2000</strong> come Sito di Importanza Comunitaria.</p>
-
-        <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="background:var(--primary-soft);border-radius:10px;padding:14px 16px;">
-            <div style="font-weight:700;color:var(--primary);font-size:.88rem;margin-bottom:6px;">🌾 I Canneti</div>
-            <div style="font-size:.83rem;color:var(--text-muted);line-height:1.55;">La formazione più estesa: habitat del Tarabuso, dell'Airone rosso, del Falco di palude e dei Cannareccioni.</div>
-          </div>
-          <div style="background:var(--primary-soft);border-radius:10px;padding:14px 16px;">
-            <div style="font-weight:700;color:var(--primary);font-size:.88rem;margin-bottom:6px;">💧 I Chiari</div>
-            <div style="font-size:.83rem;color:var(--text-muted);line-height:1.55;">Ex appostamenti di caccia trasformati in specchi d'acqua libera: il Vignale, il Bascone, il Mulinello e altri, ricchi di anatre, folaghe e gabbiani.</div>
-          </div>
-          <div style="background:var(--primary-soft);border-radius:10px;padding:14px 16px;">
-            <div style="font-weight:700;color:var(--primary);font-size:.88rem;margin-bottom:6px;">🌿 Le Praterie a Carice</div>
-            <div style="font-size:.83rem;color:var(--text-muted);line-height:1.55;">Habitat raro con orchidee, genziana di palude e la più importante popolazione italiana di Forapaglie (20–30 coppie nidificanti).</div>
-          </div>
-          <div style="background:var(--primary-soft);border-radius:10px;padding:14px 16px;">
-            <div style="font-weight:700;color:var(--primary);font-size:.88rem;margin-bottom:6px;">🚣 Centro Parco di Rivalta</div>
-            <div style="font-size:.83rem;color:var(--text-muted);line-height:1.55;">Museo Etnografico dei Mestieri del Fiume: aperto domenica e festivi da marzo a ottobre. Feriali su prenotazione (Pro Loco Rivalta).</div>
+  <main id="main" class="page-shell">
+    <section class="hero" id="home">
+      <div class="container hero-layout">
+        <div class="hero-copy-block" data-reveal>
+          <p class="eyebrow">Parco del Mincio - Mantova</p>
+          <h1 class="hero-title">Rivalta sul Mincio, dove l&rsquo;acqua <em>diventa paese</em>.</h1>
+          <p class="hero-copy">Un borgo di pescatori nel cuore delle Valli del Mincio: canneti, chiari, aironi, ciclabili lente e una cucina d&rsquo;acqua che tiene insieme memoria e futuro.</p>
+          <div class="button-row">
+            <a class="button magnetic" href="#galleria"><span>Guarda la galleria</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+            <a class="button secondary magnetic" href="#esperienze"><span>Scopri cosa fare</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
-        <ul class="valli-list" style="margin-top:22px;">
-          <li><svg><use href="#i-check"/></svg>Aironi cenerini, garzette, nitticore, tarabusi</li>
-          <li><svg><use href="#i-check"/></svg>Ninfee bianche in fioritura luglio–agosto</li>
-          <li><svg><use href="#i-check"/></svg>Lucci, tinche, anguille, carpe e rane di Lataste</li>
-          <li><svg><use href="#i-check"/></svg>Escursioni in barca dagli imbarcaderi di Grazie, Rivalta e Belfiore</li>
-          <li><svg><use href="#i-check"/></svg>Escursioni in canoa con assistenza tecnica (Canoa Club Rivalta)</li>
-          <li><svg><use href="#i-check"/></svg>Birdwatching con punti d'osservazione mimetizzati</li>
-        </ul>
-        <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="#news" class="btn btn-secondary">
-            Leggi gli articoli
-            <svg width="16" height="16"><use href="#i-arrow-r"/></svg>
-          </a>
-          <a href="#contatti" class="btn btn-ghost">Prenota un'escursione</a>
+        <div class="hero-media" aria-label="Spazi fotografici principali">
+          <div class="hero-note" data-reveal style="--delay: 140ms">Tante foto, un solo racconto.<span>Ogni riquadro ha uno slot stabile per i tuoi scatti.</span></div>
+          <figure class="photo-frame hero-photo-main" data-parallax="0.12" data-reveal style="--delay: 80ms">
+            <div class="photo-slot" data-photo-slot="hero-main" data-photo-label="Foto hero principale" style="--photo:url('https://picsum.photos/seed/rivalta-mincio-hero-main/1200/1500')" role="img" aria-label="Scorcio fotografico delle Valli del Mincio"></div>
+          </figure>
+          <figure class="photo-frame hero-photo-side" data-parallax="-0.06" data-reveal style="--delay: 180ms">
+            <div class="photo-slot" data-photo-slot="hero-reeds" data-photo-label="Canneti e acqua" style="--photo:url('https://picsum.photos/seed/rivalta-reeds-water/900/1100')" role="img" aria-label="Canneti lungo il Mincio"></div>
+          </figure>
+          <figure class="photo-frame hero-photo-tiny" data-parallax="0.2" data-reveal style="--delay: 260ms">
+            <div class="photo-slot" data-photo-slot="hero-community" data-photo-label="Comunit&agrave;" style="--photo:url('https://picsum.photos/seed/rivalta-local-life/850/850')" role="img" aria-label="Vita locale a Rivalta sul Mincio"></div>
+          </figure>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══════════ IL LUCCIO ════════════════════════════════════════ -->
-<section class="section" id="luccio">
-  <div class="container">
-    <div class="section-head-center reveal">
-      <div class="eyebrow">Il simbolo del borgo</div>
-      <h2 class="section-title">Il <em style="font-style:italic;color:var(--primary);">luccio</em>: re del Mincio<br/>e cuore della tradizione.</h2>
-      <p class="section-lead">Predatore d'acqua dolce dal corpo affusolato, il luccio (Esox lucius) è da secoli protagonista della vita di Rivalta: dalla pesca con la nassa fino alla sagra estiva che ne celebra le ricette tramandate.</p>
-    </div>
-
-    <div class="luccio-top">
-      <div class="luccio-art-wrap reveal">
-        <svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="deep-water" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#0a3040"/>
-              <stop offset="40%" stop-color="#0d4055"/>
-              <stop offset="100%" stop-color="#061820"/>
-            </linearGradient>
-            <linearGradient id="surface-light" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#1a6a8a" stop-opacity=".5"/>
-              <stop offset="100%" stop-color="#0d4055" stop-opacity="0"/>
-            </linearGradient>
-            <radialGradient id="fish-glow" cx="65%" cy="50%">
-              <stop offset="0%" stop-color="#5fb0a0" stop-opacity=".3"/>
-              <stop offset="100%" stop-color="transparent"/>
-            </radialGradient>
-          </defs>
-          <!-- deep water background -->
-          <rect width="700" height="480" fill="url(#deep-water)"/>
-          <!-- subtle glow around fish area -->
-          <rect width="700" height="480" fill="url(#fish-glow)"/>
-          <!-- caustic light rays from surface -->
-          <g opacity=".12" fill="#8dd8f0">
-            <polygon points="80,0 100,0 180,480 140,480"/>
-            <polygon points="200,0 216,0 290,480 256,480"/>
-            <polygon points="340,0 355,0 420,480 390,480"/>
-            <polygon points="490,0 502,0 560,480 535,480"/>
-            <polygon points="600,0 610,0 660,480 645,480"/>
-          </g>
-          <!-- surface water shimmer (top) -->
-          <rect width="700" height="40" fill="url(#surface-light)"/>
-          <g stroke="#8dd8f0" stroke-width=".6" fill="none" opacity=".3">
-            <path d="M0,12 Q88,6 175,12 Q262,18 350,12 Q438,6 525,12 Q613,18 700,12"/>
-            <path d="M0,22 Q100,16 200,22 Q300,28 400,22 Q500,16 600,22 Q650,28 700,22"/>
-          </g>
-          <!-- bottom sandy/muddy floor -->
-          <ellipse cx="350" cy="490" rx="420" ry="50" fill="#0a2830" opacity=".8"/>
-          <!-- aquatic vegetation (bottom) — elodea / waterweed -->
-          <g fill="none" stroke-linecap="round" opacity=".85">
-            <!-- left cluster -->
-            <path d="M30,480 Q20,420 40,370" stroke="#1a5c3a" stroke-width="3.5"/>
-            <path d="M55,480 Q65,430 50,380" stroke="#1a5c3a" stroke-width="3"/>
-            <path d="M80,480 Q75,440 90,395" stroke="#206040" stroke-width="3.5"/>
-            <path d="M105,480 Q100,450 115,405" stroke="#1a5c3a" stroke-width="3"/>
-            <path d="M130,480 Q120,445 135,400" stroke="#206040" stroke-width="2.5"/>
-            <!-- leaf fronds -->
-            <path d="M40,420 Q20,415 18,430" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <path d="M50,400 Q35,394 33,408" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <path d="M85,430 Q70,425 68,440" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <path d="M90,410 Q75,404 73,418" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <!-- right cluster -->
-            <path d="M560,480 Q550,435 565,385" stroke="#1a5c3a" stroke-width="3.5"/>
-            <path d="M590,480 Q600,440 585,390" stroke="#206040" stroke-width="3"/>
-            <path d="M620,480 Q615,450 630,400" stroke="#1a5c3a" stroke-width="3.5"/>
-            <path d="M650,480 Q645,445 660,395" stroke="#206040" stroke-width="3"/>
-            <path d="M680,480 Q670,440 685,400" stroke="#1a5c3a" stroke-width="2.5"/>
-            <path d="M570,420 Q555,415 553,430" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <path d="M625,410 Q610,404 608,418" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-            <path d="M660,430 Q645,424 643,438" stroke="#1a6040" stroke-width="2" opacity=".7"/>
-          </g>
-          <!-- pike / luccio (ESOX LUCIUS) – more realistic markings -->
-          <g transform="translate(80 230)">
-            <!-- shadow -->
-            <ellipse cx="275" cy="90" rx="250" ry="22" fill="#000" opacity=".18"/>
-            <!-- main body (elongated torpedo shape) -->
-            <path d="M0,0
-                     C15,-42 75,-58 190,-50
-                     C310,-42 410,-26 490,-12
-                     L548,-4 L548,4
-                     L490,12
-                     C410,26 310,42 190,50
-                     C75,58 15,42 0,0 Z"
-                  fill="#3e7a68"/>
-            <!-- dorsal pattern – dark olive-green -->
-            <path d="M50,-28 Q200,-54 470,-20 Q300,-12 50,-28 Z" fill="#1e4d3a" opacity=".85"/>
-            <!-- lateral line -->
-            <path d="M60,0 Q200,8 470,2" stroke="#2d6050" stroke-width="1.2" fill="none" opacity=".6"/>
-            <!-- pale yellowish belly -->
-            <path d="M50,26 Q200,52 468,18 Q300,12 50,26 Z" fill="#c8d8b0" opacity=".55"/>
-            <!-- characteristic light spots / camouflage pattern -->
-            <g fill="#a8c890" opacity=".6">
-              <ellipse cx="100" cy="-8" rx="7" ry="4"/>
-              <ellipse cx="148" cy="-24" rx="8" ry="4.5"/>
-              <ellipse cx="200" cy="-6" rx="7" ry="4"/>
-              <ellipse cx="248" cy="-22" rx="9" ry="4.5"/>
-              <ellipse cx="298" cy="-7" rx="7" ry="4"/>
-              <ellipse cx="348" cy="-20" rx="8" ry="4.5"/>
-              <ellipse cx="396" cy="-8" rx="7" ry="4"/>
-              <ellipse cx="428" cy="-18" rx="7" ry="4"/>
-              <!-- belly spots -->
-              <ellipse cx="120" cy="18" rx="6" ry="3.5"/>
-              <ellipse cx="180" cy="28" rx="6" ry="3.5"/>
-              <ellipse cx="255" cy="22" rx="7" ry="4"/>
-              <ellipse cx="325" cy="28" rx="6" ry="3.5"/>
-              <ellipse cx="390" cy="20" rx="6" ry="3.5"/>
-            </g>
-            <!-- scale texture lines -->
-            <g stroke="#2a5545" stroke-width=".8" fill="none" opacity=".3">
-              <path d="M100,-28 Q95,0 100,28"/>
-              <path d="M160,-38 Q155,-5 160,35"/>
-              <path d="M220,-44 Q215,-8 220,42"/>
-              <path d="M280,-46 Q275,-8 280,44"/>
-              <path d="M340,-42 Q335,-8 340,40"/>
-              <path d="M400,-36 Q395,-5 400,34"/>
-              <path d="M450,-26 Q446,0 450,24"/>
-            </g>
-            <!-- tail fin (forked) -->
-            <path d="M0,0 L-55,-55 L-32,-14 L-55,0 L-32,14 L-55,55 Z" fill="#2e6050"/>
-            <path d="M0,0 L-48,-44 L-30,-11 L-48,0 L-30,11 L-48,44 Z" fill="#4a8070" opacity=".7"/>
-            <!-- tail fin rays -->
-            <g stroke="#1e4d3a" stroke-width="1" fill="none" opacity=".5">
-              <line x1="-30" y1="-14" x2="-52" y2="-50"/>
-              <line x1="-30" y1="0" x2="-54" y2="0"/>
-              <line x1="-30" y1="14" x2="-52" y2="50"/>
-            </g>
-            <!-- dorsal fin (high, characteristic of pike) -->
-            <path d="M320,-46 Q350,-95 400,-50 Q370,-46 320,-46 Z" fill="#2e6050"/>
-            <path d="M320,-46 Q348,-88 398,-50" stroke="#1e4d3a" stroke-width="1.2" fill="none" opacity=".5"/>
-            <!-- dorsal fin rays -->
-            <g stroke="#1e4d3a" stroke-width=".8" fill="none" opacity=".4">
-              <line x1="335" y1="-46" x2="330" y2="-85"/>
-              <line x1="352" y1="-46" x2="350" y2="-90"/>
-              <line x1="370" y1="-46" x2="372" y2="-88"/>
-              <line x1="386" y1="-46" x2="390" y2="-82"/>
-            </g>
-            <!-- anal fin -->
-            <path d="M280,44 Q295,85 320,50 Z" fill="#2e6050"/>
-            <!-- pectoral fins -->
-            <path d="M430,0 Q450,35 460,-10 Z" fill="#3e7a68" opacity=".8"/>
-            <!-- gill plate -->
-            <path d="M465,-28 Q455,0 465,28" stroke="#1e4d3a" stroke-width="2.5" fill="none" opacity=".7"/>
-            <!-- mouth (slightly open) -->
-            <path d="M540,-10 Q548,0 540,10" stroke="#0d2a20" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <!-- jaw teeth hint -->
-            <path d="M542,-6 L538,-2 M542,2 L538,6" stroke="#c8d0b8" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
-            <!-- eye (yellow-green iris, large) -->
-            <circle cx="510" cy="-5" r="9" fill="#f5e84a" opacity=".9"/>
-            <circle cx="510" cy="-5" r="6" fill="#1a3a28"/>
-            <circle cx="510" cy="-5" r="3" fill="#0a1a10"/>
-            <circle cx="513" cy="-8" r="2" fill="#fff" opacity=".7"/>
-            <!-- bony ridge above eye -->
-            <path d="M502,-12 Q510,-16 518,-12" stroke="#1e4d3a" stroke-width="1.5" fill="none" opacity=".6"/>
-          </g>
-          <!-- small perch (persico) school fleeing -->
-          <g transform="translate(560 310)" opacity=".65">
-            <g fill="#c87840">
-              <ellipse cx="0" cy="0" rx="14" ry="5"/>
-              <path d="M-14,0 L-20,-6 L-14,-2 L-14,2 L-20,6 Z" fill="#a06030"/>
-              <path d="M-2,-5 Q2,-12 7,-5 Z" fill="#804020"/>
-              <circle cx="8" cy="-1" r="1.5" fill="#fff"/>
-              <circle cx="8" cy="-1" r="0.8" fill="#0a0a0a"/>
-            </g>
-            <g fill="#c87840" transform="translate(22 -12)">
-              <ellipse cx="0" cy="0" rx="12" ry="4"/>
-              <path d="M-12,0 L-17,-5 L-12,-1 L-12,1 L-17,5 Z" fill="#a06030"/>
-              <circle cx="7" cy="-1" r="1.2" fill="#fff"/>
-              <circle cx="7" cy="-1" r="0.6" fill="#0a0a0a"/>
-            </g>
-            <g fill="#c87840" transform="translate(40 8)">
-              <ellipse cx="0" cy="0" rx="13" ry="4.5"/>
-              <path d="M-13,0 L-18,-5 L-13,-2 L-13,2 L-18,5 Z" fill="#a06030"/>
-            </g>
-          </g>
-          <!-- air bubbles rising -->
-          <g fill="none" stroke="#8dd8f0" stroke-width="1" opacity=".35">
-            <circle cx="160" cy="140" r="5"/>
-            <circle cx="170" cy="100" r="3.5"/>
-            <circle cx="155" cy="70" r="2.5"/>
-            <circle cx="640" cy="180" r="4.5"/>
-            <circle cx="648" cy="140" r="3"/>
-            <circle cx="635" cy="110" r="2"/>
-          </g>
-          <!-- distant reeds at water surface (top) -->
-          <g stroke="#0a2820" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4">
-            <line x1="0" y1="0" x2="8" y2="28"/>
-            <line x1="15" y1="0" x2="20" y2="25"/>
-            <line x1="680" y1="0" x2="688" y2="22"/>
-            <line x1="695" y1="0" x2="698" y2="20"/>
-          </g>
-        </svg>
-        <div class="luccio-quote">
-          <em>Esox lucius</em> — il "lupo del fiume": silenzioso, paziente, sovrano delle acque del Mincio da generazioni. Re incontrastato delle Valli.
-        </div>
+    <section class="marquee-band" aria-label="Segni del territorio">
+      <div class="marquee-track" aria-hidden="true">
+        <span>Valli del Mincio</span><span>Birdwatching</span><span>Canoa e barca</span><span>Sagra del Luccio</span><span>Ciclabile Mantova-Peschiera</span><span>Rete Natura 2000</span>
+        <span>Valli del Mincio</span><span>Birdwatching</span><span>Canoa e barca</span><span>Sagra del Luccio</span><span>Ciclabile Mantova-Peschiera</span><span>Rete Natura 2000</span>
       </div>
+    </section>
 
-      <!-- PAT Recognition Banner -->
-      <div class="pat-banner reveal">
-        <div class="pat-banner__seal">🏅</div>
-        <h3 class="pat-banner__title">Prodotti Agroalimentari Tradizionali della Regione Lombardia</h3>
-        <p class="pat-banner__desc">Con delibera della Giunta Regionale del 3 aprile 2013, le ricette <strong style="color:#fff;">Luccio in Bianco alla Rivaltese</strong> e <strong style="color:#fff;">Luccio in Salsa alla Rivaltese</strong> sono state inserite nell'Elenco PAT, riconoscendone le metodiche tramandate da almeno 25 anni a Rivalta sul Mincio.</p>
-        <div class="pat-banner__date">BURL – Serie Ordinaria n° 15 · 8 aprile 2013</div>
-        <div class="pat-banner__docs">
-          <a class="pat-banner__doc" href="BURL-SOn15_08-04-2013_integrale.pdf" download aria-label="Scarica BURL n°15 integrale (PDF)">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 9l3 3 3-3M7 4v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            BURL n°15 – 8 apr. 2013 (integrale)
-          </a>
-          <a class="pat-banner__doc" href="BURL-SOn15_08-04-2013_pagg.6-12.pdf" download aria-label="Scarica Elenco PAT – prodotti nn. 1-248 (PDF)">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 9l3 3 3-3M7 4v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Allegato A – Elenco PAT (nn. 1–248)
-          </a>
-          <a class="pat-banner__doc" href="BURL-SOn15_08-04-2013_pag.14.pdf" download aria-label="Scarica Schede ricette ufficiali Luccio (PDF)">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 9l3 3 3-3M7 4v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Allegato B – Schede ricette ufficiali
-          </a>
+    <section class="section compact" id="introduzione">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Atlante vivo</p>
+            <h2 class="section-title">Il centro della provincia ha il ritmo lento delle <em>zone umide</em>.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 140ms">Rivalta sul Mincio &egrave; una base naturale per leggere il territorio: il fiume rallenta, si allarga in canali e canneti, e la Pro Loco &ldquo;Amici di Rivalta&rdquo; custodisce itinerari, tradizioni e accoglienza.</p>
         </div>
-      </div>
-    </div>
 
-    <!-- Due ricette PAT ufficiali -->
-    <div class="recipes-grid reveal-stagger">
-
-      <!-- Luccio in Bianco -->
-      <div class="recipe-card-v2">
-        <div class="recipe-card-v2__header">
-          <span class="recipe-card-v2__tag">PAT – Prodotto Tradizionale</span>
-          <h3 class="recipe-card-v2__title">Luccio in Bianco alla Rivaltese</h3>
-        </div>
-        <div class="recipe-card-v2__body">
-          <div class="recipe-ingr">
-            <div class="recipe-ingr__label">Ingredienti</div>
-            <div class="recipe-ingr__list">
-              <span class="recipe-ingr__pill">Luccio (500–1000 g)</span>
-              <span class="recipe-ingr__pill">Limone</span>
-              <span class="recipe-ingr__pill">Cedro di Gargnano del Garda</span>
-              <span class="recipe-ingr__pill">Olio EVO Lago di Garda</span>
-              <span class="recipe-ingr__pill">Grana Padano</span>
-              <span class="recipe-ingr__pill">Noce moscata</span>
-              <span class="recipe-ingr__pill">Pepe nero</span>
-              <span class="recipe-ingr__pill">Rosmarino</span>
-              <span class="recipe-ingr__pill">Aceto bianco</span>
+        <div class="atlas-grid">
+          <article class="atlas-panel atlas-photo" data-reveal>
+            <div class="atlas-panel-inner">
+              <div class="photo-slot" data-photo-slot="atlas-wide-wetlands" data-photo-label="Ampio scatto delle valli" style="--photo:url('https://picsum.photos/seed/rivalta-atlas-wetlands/1500/1000')" role="img" aria-label="Vista ampia delle Valli del Mincio"></div>
             </div>
-          </div>
-          <div class="recipe-method">
-            <div class="recipe-method__label">Preparazione</div>
-            Lavaggio in abbondante acqua corrente, lessatura per 10–12 minuti, spolpatura e diliscatura. Il pesce viene quindi guarnito con pepe nero, olio extravergine d'oliva del Garda (sponda bresciana), noce moscata, Grana Padano grattugiato e succo di limone.
-          </div>
-          <div class="recipe-serve">Servito con fettine di cedro di Gargnano e pane morbido.</div>
-        </div>
-      </div>
+          </article>
 
-      <!-- Luccio in Salsa -->
-      <div class="recipe-card-v2">
-        <div class="recipe-card-v2__header">
-          <span class="recipe-card-v2__tag">PAT – Prodotto Tradizionale</span>
-          <h3 class="recipe-card-v2__title">Luccio in Salsa alla Rivaltese</h3>
-        </div>
-        <div class="recipe-card-v2__body">
-          <div class="recipe-ingr">
-            <div class="recipe-ingr__label">Ingredienti</div>
-            <div class="recipe-ingr__list">
-              <span class="recipe-ingr__pill">Luccio (500–1000 g)</span>
-              <span class="recipe-ingr__pill">Cipolla</span>
-              <span class="recipe-ingr__pill">Capperi</span>
-              <span class="recipe-ingr__pill">Pomodori pelati</span>
-              <span class="recipe-ingr__pill">Peperoni</span>
-              <span class="recipe-ingr__pill">Acciughe sott'olio</span>
-              <span class="recipe-ingr__pill">Aceto bianco</span>
-              <span class="recipe-ingr__pill">Cannella</span>
-              <span class="recipe-ingr__pill">Chiodi di garofano</span>
-              <span class="recipe-ingr__pill">Noce moscata</span>
-              <span class="recipe-ingr__pill">Zucchero</span>
-            </div>
-          </div>
-          <div class="recipe-method">
-            <div class="recipe-method__label">Preparazione</div>
-            Lessatura 10–12 minuti, spolpatura e diliscatura. La salsa si prepara cuocendo in olio di semi per 30 minuti cipolle, capperi, pomodori pelati, peperoni, acciughe, noce moscata, pepe, rosmarino e aceto. A cottura ultimata la salsa viene versata sul luccio.
-          </div>
-          <div class="recipe-serve">Servito tiepido con polenta di mais abbrustolita.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ MAIN BLOG ═══════════════════════════════════════ -->
-<div class="main-wrapper section--alt" id="news" style="background:var(--bg-alt);">
-  <div class="container">
-    <div class="section-head-center reveal" style="margin-bottom:48px;">
-      <div class="eyebrow">News &amp; Articoli</div>
-      <h2 class="section-title">Le ultime dal territorio</h2>
-      <p class="section-lead">Eventi, escursioni, segnalazioni naturalistiche e racconti del Mincio dalla nostra redazione.</p>
-    </div>
-
-    <div class="main-grid">
-
-      <!-- ─── CONTENT ─────────────────────────────────────────── -->
-      <main>
-
-        <div class="news-filter-row reveal" id="news-filter-row"></div>
-
-        <!-- Post in evidenza — popolato da JS/admin -->
-        <article class="post-featured reveal" id="post-featured" style="display:none"></article>
-
-        <!-- Griglia post — popolata da JS/admin -->
-        <div class="posts-grid reveal-stagger" id="posts-grid"></div>
-
-        <!-- Stato vuoto (visibile se non ci sono post) -->
-        <div class="news-empty reveal" id="news-empty">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--border);margin-bottom:16px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-          <p style="font-family:'Fraunces',Georgia,serif;font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:6px;">Nessun articolo pubblicato</p>
-          <p style="font-size:.88rem;color:var(--text-muted);">I contenuti vengono caricati dalla redazione tramite il pannello admin.</p>
-        </div>
-
-      </main>
-
-      <!-- ─── SIDEBAR ────────────────────────────────────────── -->
-      <aside class="sidebar">
-
-        <!-- LINK UTILI -->
-        <div class="widget reveal">
-          <div class="widget__head">
-            <svg class="widget__head-icon"><use href="#i-link"/></svg>
-            <h3>Siti suggeriti</h3>
-          </div>
-          <div class="widget__body">
-            <ul class="link-list">
-              <li><a href="#" class="link-item"><span>Parco Regionale del Mincio</span><span class="link-item__arrow">↗</span></a></li>
-              <li><a href="#" class="link-item"><span>Comune di Rodigo</span><span class="link-item__arrow">↗</span></a></li>
-              <li><a href="#" class="link-item"><span>Turismo Mantova</span><span class="link-item__arrow">↗</span></a></li>
-              <li><a href="#" class="link-item"><span>UNESCO Mantova e Sabbioneta</span><span class="link-item__arrow">↗</span></a></li>
-              <li><a href="#" class="link-item"><span>LIPU – Birdlife Italia</span><span class="link-item__arrow">↗</span></a></li>
-              <li><a href="#" class="link-item"><span>Ciclabile del Mincio</span><span class="link-item__arrow">↗</span></a></li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- SEGUICI -->
-        <div class="widget reveal">
-          <div class="widget__head">
-            <svg class="widget__head-icon"><use href="#i-share"/></svg>
-            <h3>Seguici</h3>
-          </div>
-          <div class="widget__body" style="padding:0;">
-            <div class="fb-card">
-              <div class="fb-card__cover"></div>
-              <div class="fb-card__avatar-wrap">
-                <div class="fb-card__avatar">
-                  <img src="logo.svg" alt="Pro Loco Rivalta sul Mincio" />
-                </div>
+          <article class="atlas-panel" data-reveal style="--delay: 120ms">
+            <div class="atlas-panel-inner atlas-copy">
+              <div>
+                <h2>Acqua, canneti, paese.</h2>
+                <p>Qui il paesaggio &egrave; fatto di margini sottili: barche, argini, praterie a carice, chiari e case basse. La homepage diventa una mappa emotiva dove sostituire ogni placeholder con le tue foto.</p>
               </div>
-              <div class="fb-card__body">
-                <div class="fb-card__name">Pro Loco Rivalta sul Mincio</div>
-                <div class="fb-card__meta">Pagina &middot; Organizzazione no-profit</div>
-                <div class="fb-card__desc">Pro Loco Rivalta sul Mincio APS, ecoturismo e promozione ambientale nel cuore del Parco del Mincio.</div>
-                <div class="fb-card__stats">
-                  <div><strong>1.413</strong> Follower</div>
-                  <div><strong>83</strong> Seguiti</div>
-                </div>
-                <div class="fb-card__info">
-                  <span>&#x24D8;</span>
-                  <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Scopri di pi&ugrave;</a>
-                </div>
-                <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer" class="fb-card__btn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-                  Metti Mi Piace
-                </a>
+              <div class="fact-grid" aria-label="Dati del territorio">
+                <div class="fact"><strong data-count="260">0</strong><span>specie di uccelli censite nel sistema palustre</span></div>
+                <div class="fact"><strong data-count="1100">0</strong><span>ettari di riserva nel cuore delle Valli</span></div>
+                <div class="fact"><strong data-count="43">0</strong><span>chilometri di Mincio dal Garda al Po</span></div>
+                <div class="fact"><strong data-count="1967">0</strong><span>anno di fondazione della Pro Loco</span></div>
               </div>
             </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="esperienze">
+      <div class="container experience-grid">
+        <div class="sticky-copy" data-reveal>
+          <p class="section-kicker">Esperienze</p>
+          <h2 class="section-title">Quattro modi per entrare nel <em>Mincio</em>.</h2>
+          <p class="section-lead">Una sezione pensata come stack fotografico: ogni card pu&ograve; diventare una storia, un evento o un pacchetto visita quando avrai le immagini finali.</p>
+          <div class="button-row">
+            <a class="button secondary magnetic" href="#contatti"><span>Organizza una visita</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
-      </aside>
+        <div class="stack-list">
+          <article class="stack-card" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-boat" data-photo-label="Barca nelle valli" style="--photo:url('https://picsum.photos/seed/rivalta-boat-experience/1100/900')" role="img" aria-label="Escursione in barca nelle Valli del Mincio"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>Dal livello dell&rsquo;acqua.</h3>
+                  <p>Partenze dagli imbarcaderi, canali stretti, silenzio dei canneti e un punto di vista che cambia il modo di leggere la valle.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">barca</span><span class="tag">canoa</span><span class="tag">guide locali</span></div>
+              </div>
+            </div>
+          </article>
 
-    </div>
-  </div>
-</div>
+          <article class="stack-card" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-bike" data-photo-label="Ciclabile" style="--photo:url('https://picsum.photos/seed/rivalta-bike-path/1100/900')" role="img" aria-label="Ciclabile nei pressi di Rivalta"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>La valle a pedali.</h3>
+                  <p>Rivalta &egrave; una tappa ideale tra Mantova e Peschiera del Garda, con deviazioni lente verso argini, pontili e scorci d&rsquo;acqua.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">cicloturismo</span><span class="tag">argini</span><span class="tag">soste</span></div>
+              </div>
+            </div>
+          </article>
 
-<!-- ═══════════ CHI SIAMO ═══════════════════════════════════════ -->
-<section class="section section--dark" id="chi-siamo">
-  <div class="container">
-    <div class="section-head-center reveal">
-      <div class="eyebrow" style="color:var(--secondary);">Chi siamo</div>
-      <h2 class="section-title" style="color:#fff;">Una comunità al servizio<br/>del <em style="font-style:italic;color:var(--secondary);">territorio</em>.</h2>
-      <p class="section-lead" style="color:rgba(234,244,244,.7);">L'Associazione Pro Loco <strong style="color:#fff;">«Amici di Rivalta» A.P.S.</strong> è stata costituita il <strong style="color:#fff;">26 aprile 1967</strong> davanti al notaio Dott. Giuseppe Nicolini del Collegio Notarile di Mantova. Da oltre 55 anni promuove il territorio, tutela le Valli del Mincio e tramanda le tradizioni del borgo attraverso le sue sezioni attive.</p>
-    </div>
-
-    <div class="chisiamo-grid reveal-stagger">
-      <div class="value-card">
-        <div class="value-card__num">1967</div>
-        <h3 class="value-card__title">Fondazione</h3>
-        <p class="value-card__desc">Costituita il 26 aprile 1967, è una delle Pro Loco più longeve della provincia di Mantova. Statuto aggiornato il 19 marzo 2013.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-card__num" style="font-size:1.4rem;">Amici<br/>del Mincio</div>
-        <h3 class="value-card__title">Sezione naturalistica</h3>
-        <p class="value-card__desc">Il Gruppo Amici del Mincio si occupa di ricerca scientifica, monitoraggio faunistico e salvaguardia ambientale delle Valli del Mincio.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-card__num" style="font-size:1.4rem;">Canoa<br/>Club</div>
-        <h3 class="value-card__title">Sezione sportiva</h3>
-        <p class="value-card__desc">Il Canoa Club Rivalta organizza escursioni guidate in canoa nelle valli, con assistenza tecnica e logistica per gruppi e singoli.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-card__num">APS</div>
-        <h3 class="value-card__title">Associazione di Promozione Sociale</h3>
-        <p class="value-card__desc">Promuoviamo iniziative culturali, la Sagra del Luccio, itinerari di turismo naturalistico ed educazione ambientale per scuole e visitatori.</p>
-      </div>
-    </div>
-
-    <div class="chisiamo-cta reveal">
-      <a href="#contatti" class="btn btn-secondary">
-        Diventa socio della Pro Loco
-        <svg width="16" height="16"><use href="#i-arrow-r"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ DOVE SIAMO ══════════════════════════════════════ -->
-<section class="section" id="dove-siamo">
-  <div class="container">
-    <div class="section-head-center reveal">
-      <div class="eyebrow">Dove siamo</div>
-      <h2 class="section-title">Come raggiungerci<br/>a <em style="font-style:italic;color:var(--primary);">Rivalta sul Mincio</em>.</h2>
-      <p class="section-lead">Frazione del Comune di Rodigo, in provincia di Mantova, a circa 10 km dal centro città. L'ufficio turistico Pro Loco si trova in <strong>Via Porto, 31</strong>. Facilmente raggiungibile in auto, in bicicletta lungo la ciclabile del Mincio o in barca dagli imbarcaderi di Grazie, Rivalta e Belfiore.</p>
-    </div>
-
-    <div class="dove-grid">
-      <div class="map-card reveal">
-        <iframe
-          src="https://maps.google.com/maps?q=Via+Porto,+31,+Rivalta+sul+Mincio+MN,+Italy&output=embed&z=16"
-          title="Posizione Pro Loco Rivalta sul Mincio – Via Porto, 31"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen></iframe>
-        <div class="map-label">
-          <div class="map-label__title">Rivalta sul Mincio</div>
-          <div class="map-label__sub">Via Porto, 31 · 46040 Rivalta (MN)</div>
+          <article class="stack-card" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-birdwatching" data-photo-label="Birdwatching" style="--photo:url('https://picsum.photos/seed/rivalta-birdwatching/1100/900')" role="img" aria-label="Birdwatching nelle Valli del Mincio"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>Aironi, chiari, canneti.</h3>
+                  <p>La zona umida &egrave; un archivio naturale aperto: specie migratrici, nidificazioni, fioriture estive e tracce da osservare con rispetto.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">fauna</span><span class="tag">Ramsar</span><span class="tag">stagioni</span></div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
+    </section>
 
-      <div class="dove-info">
-        <div class="info-card">
-          <div class="info-card__icon"><svg><use href="#i-pin"/></svg></div>
-          <div>
-            <div class="info-card__title">Indirizzo</div>
-            <div class="info-card__text">Via Porto, 31<br/>46040 Rivalta sul Mincio<br/>Frazione di Rodigo (MN)</div>
+    <section class="section" id="galleria">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Galleria</p>
+            <h2 class="section-title">Un carosello per le foto che arriveranno.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Autoplay, frecce, punti, tastiera e swipe. Gli slot sono gi&agrave; nominati per rimpiazzare i placeholder con scatti reali del borgo, della sagra e delle valli.</p>
+        </div>
+
+        <div class="gallery-stage" data-reveal>
+          <div class="carousel" id="rsmCarousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Galleria fotografica di Rivalta sul Mincio">
+            <div class="carousel-viewport">
+              <article class="carousel-slide" aria-label="Valli del Mincio">
+                <div class="carousel-card">
+                  <div class="photo-slot" data-photo-slot="carousel-valli" data-photo-label="Valli del Mincio" style="--photo:url('https://picsum.photos/seed/rivalta-carousel-valli/1400/900')" role="img" aria-label="Valli del Mincio"></div>
+                </div>
+                <div class="carousel-caption"><h3>Valli del Mincio</h3><p>Lo scatto ampio per aprire il racconto naturalistico.</p></div>
+              </article>
+
+              <article class="carousel-slide" aria-label="Rivalta dal porto">
+                <div class="carousel-card">
+                  <div class="photo-slot" data-photo-slot="carousel-porto" data-photo-label="Porto e borgo" style="--photo:url('https://picsum.photos/seed/rivalta-carousel-porto/1400/900')" role="img" aria-label="Porto di Rivalta sul Mincio"></div>
+                </div>
+                <div class="carousel-caption"><h3>Porto e borgo</h3><p>Case, barche, argini e arrivi lenti.</p></div>
+              </article>
+
+              <article class="carousel-slide" aria-label="Sagra del Luccio">
+                <div class="carousel-card">
+                  <div class="photo-slot" data-photo-slot="carousel-sagra-luccio" data-photo-label="Sagra del Luccio" style="--photo:url('https://picsum.photos/seed/rivalta-carousel-sagra/1400/900')" role="img" aria-label="Tavola della Sagra del Luccio"></div>
+                </div>
+                <div class="carousel-caption"><h3>Sagra del Luccio</h3><p>La tradizione gastronomica come immagine centrale.</p></div>
+              </article>
+
+              <article class="carousel-slide" aria-label="Ciclabile del Mincio">
+                <div class="carousel-card">
+                  <div class="photo-slot" data-photo-slot="carousel-ciclabile" data-photo-label="Ciclabile" style="--photo:url('https://picsum.photos/seed/rivalta-carousel-cycling/1400/900')" role="img" aria-label="Percorso ciclabile del Mincio"></div>
+                </div>
+                <div class="carousel-caption"><h3>Ciclabile</h3><p>Una foto orizzontale perfetta per raccontare il viaggio.</p></div>
+              </article>
+
+              <article class="carousel-slide" aria-label="Comunit&agrave; Pro Loco">
+                <div class="carousel-card">
+                  <div class="photo-slot" data-photo-slot="carousel-comunita" data-photo-label="Comunit&agrave;" style="--photo:url('https://picsum.photos/seed/rivalta-carousel-community/1400/900')" role="img" aria-label="Comunit&agrave; della Pro Loco"></div>
+                </div>
+                <div class="carousel-caption"><h3>Comunit&agrave;</h3><p>Volti, volontari, eventi, mani al lavoro.</p></div>
+              </article>
+            </div>
+
+            <div class="carousel-controls" aria-label="Controlli galleria">
+              <button class="carousel-btn" type="button" data-carousel-prev aria-label="Foto precedente">&larr;</button>
+              <div class="carousel-dots" data-carousel-dots></div>
+              <button class="carousel-btn" type="button" data-carousel-next aria-label="Foto successiva">&rarr;</button>
+            </div>
           </div>
         </div>
-        <div class="info-card">
-          <div class="info-card__icon"><svg><use href="#i-water"/></svg></div>
-          <div>
-            <div class="info-card__title">In auto e in bici</div>
-            <div class="info-card__text">A 10 km da Mantova lungo la SP 18. Ciclabile del Mincio: tappa intermedia tra Mantova e Peschiera del Garda.</div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card__icon"><svg><use href="#i-mail"/></svg></div>
-          <div>
-            <div class="info-card__title">Scrivici</div>
-            <div class="info-card__text"><a href="mailto:info@prolocorivalta.mn.it">info@prolocorivalta.mn.it</a></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card__icon"><svg><use href="#i-phone"/></svg></div>
-          <div>
-            <div class="info-card__title">Chiamaci</div>
-            <div class="info-card__text"><a href="tel:+393398995680">+39 339 899 5680</a><br/>Uff. turistico: Via Porto, 31</div>
-          </div>
-        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══════════ NEWSLETTER ══════════════════════════════════════ -->
-<section class="newsletter">
-  <div class="container">
-    <div class="newsletter-grid">
-      <div class="reveal">
-        <div class="eyebrow" style="color:var(--secondary);">Resta in contatto</div>
-        <h2 class="newsletter__title">Il Mincio nella<br/>tua casella di posta.</h2>
-        <p class="newsletter__desc">Iscriviti alla newsletter della Pro Loco: eventi, sagre, escursioni guidate e racconti dalle Valli del Mincio. Una mail al mese, niente spam.</p>
+    <section class="section" id="valli">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Riserva naturale - Sito Ramsar</p>
+            <h2 class="section-title">Le Valli del Mincio, oasi d&rsquo;acqua e <em>silenzio</em>.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Tra Rivalta e Borgo Angeli il fiume rallenta e diventa un mosaico di canneti, chiari e praterie a carice. Una zona umida riconosciuta dalla Convenzione di Ramsar e dalla rete Natura 2000.</p>
+        </div>
+
+        <div class="photo-rail" data-horizontal-gallery data-reveal>
+          <figure class="rail-item"><div class="photo-slot" data-photo-slot="rail-canneti" data-photo-label="Canneti" style="--photo:url('https://picsum.photos/seed/rivalta-rail-reeds/900/1200')" role="img" aria-label="Canneti delle Valli del Mincio"></div></figure>
+          <figure class="rail-item"><div class="photo-slot" data-photo-slot="rail-chiari" data-photo-label="Chiari" style="--photo:url('https://picsum.photos/seed/rivalta-rail-water/900/1200')" role="img" aria-label="Specchi d'acqua nelle Valli"></div></figure>
+          <figure class="rail-item"><div class="photo-slot" data-photo-slot="rail-ninfee" data-photo-label="Ninfee" style="--photo:url('https://picsum.photos/seed/rivalta-rail-waterlilies/900/1200')" role="img" aria-label="Fioritura delle ninfee"></div></figure>
+          <figure class="rail-item"><div class="photo-slot" data-photo-slot="rail-aironi" data-photo-label="Aironi" style="--photo:url('https://picsum.photos/seed/rivalta-rail-herons/900/1200')" role="img" aria-label="Aironi nel Parco del Mincio"></div></figure>
+        </div>
       </div>
-      <div class="reveal">
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Grazie per esserti iscritto!');">
-          <input type="email" placeholder="latua@email.it" aria-label="Email" required>
-          <button type="submit">Iscriviti</button>
+    </section>
+
+    <section class="section compact" id="luccio">
+      <div class="container split-story">
+        <div class="story-card" data-reveal>
+          <p class="section-kicker">Il simbolo del borgo</p>
+          <h3>Il luccio tiene insieme tavola, festa e memoria.</h3>
+          <p>Il Luccio in Bianco e il Luccio in Salsa alla Rivaltese sono ricette PAT dal 2013. La homepage lascia spazio a immagini di cucina, volontari, piatti e tavolate della sagra.</p>
+          <ul class="story-list">
+            <li>Ricette tramandate, legate alla pesca e alla cucina d&rsquo;acqua dolce.</li>
+            <li>Un racconto gastronomico da collegare a foto di dettaglio e reportage.</li>
+            <li>CTA verso news, eventi e contatti senza interrompere l&rsquo;esperienza.</li>
+          </ul>
+          <div class="button-row">
+            <a class="button magnetic" href="#news"><span>Leggi le ultime</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+        <div class="luccio-layout" data-reveal style="--delay: 120ms">
+          <article class="recipe-panel">
+            <h3>Bianco alla Rivaltese</h3>
+            <p>Limone, cedro di Gargnano, olio EVO, Grana Padano e aromi. Uno slot foto dedicato al piatto finito pu&ograve; vivere qui.</p>
+            <div class="recipe-list"><span class="tag">PAT 2013</span><span class="tag">ricetta locale</span></div>
+          </article>
+          <article class="recipe-panel">
+            <h3>Salsa alla Rivaltese</h3>
+            <p>Cipolla, capperi, peperoni, acciughe, spezie e polenta. Il blocco &egrave; pronto per foto di cucina o servizio.</p>
+            <div class="recipe-list"><span class="tag">sagra</span><span class="tag">tradizione</span></div>
+          </article>
+          <figure class="photo-frame" style="grid-column: 1 / -1;">
+            <div class="photo-slot" data-photo-slot="luccio-table" data-photo-label="Foto tavola e luccio" style="--photo:url('https://picsum.photos/seed/rivalta-luccio-table/1200/760')" role="img" aria-label="Tavola dedicata al luccio"></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">News e articoli</p>
+            <h2 class="section-title">Le ultime dal territorio.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Eventi, escursioni, avvisi e racconti caricati dalla redazione tramite Supabase. Se non ci sono post, resta un vuoto curato e coerente con il nuovo design.</p>
+        </div>
+
+        <div class="news-shell">
+          <main class="news-main" aria-label="Ultime news" data-reveal>
+            <div class="news-inner">
+              <div class="news-filter-row" id="news-filter-row" aria-label="Filtra news per categoria"></div>
+              <div class="news-status" id="news-status">Caricamento articoli in corso.</div>
+              <article class="post-featured skeleton" id="post-featured" style="display:none"></article>
+              <div class="post-card-grid" id="posts-grid"></div>
+              <div class="news-empty" id="news-empty" style="display:none">
+                <div>
+                  <strong>Nessun articolo pubblicato</strong>
+                  <span>I contenuti verranno mostrati qui appena la redazione li pubblica.</span>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <aside class="news-side" data-reveal style="--delay: 120ms">
+            <div class="news-side-inner">
+              <p class="section-kicker">Link rapidi</p>
+              <div class="side-list">
+                <a href="#valli"><span>Valli del Mincio</span><span aria-hidden="true">&rarr;</span></a>
+                <a href="#luccio"><span>Sagra e luccio</span><span aria-hidden="true">&rarr;</span></a>
+                <a href="#dove-siamo"><span>Come arrivare</span><span aria-hidden="true">&rarr;</span></a>
+                <a href="privacy"><span>Privacy policy</span><span aria-hidden="true">&rarr;</span></a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="chi-siamo">
+      <div class="container community-grid">
+        <div class="community-panel" data-reveal>
+          <p class="section-kicker">Chi siamo</p>
+          <h2>Una comunit&agrave; che lavora per il territorio.</h2>
+          <p>L&rsquo;Associazione Pro Loco &ldquo;Amici di Rivalta&rdquo; A.P.S. nasce il 26 aprile 1967. Promuove iniziative culturali, ambientali e gastronomiche, con una rete di volontari che tiene vivo il rapporto tra borgo, acqua e visitatori.</p>
+          <div class="button-row">
+            <a class="button secondary magnetic" href="#contatti"><span>Contatta la Pro Loco</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="community-list">
+          <article class="community-item" data-reveal style="--delay: 80ms"><strong>Dal 1967</strong><span>Promozione turistica, tutela ambientale, cultura locale e supporto agli eventi del borgo.</span></article>
+          <article class="community-item" data-reveal style="--delay: 160ms"><strong>Amici del Mincio</strong><span>Sezione naturalistica dedicata a ricerca, monitoraggio e conoscenza delle Valli.</span></article>
+          <article class="community-item" data-reveal style="--delay: 240ms"><strong>Canoa Club</strong><span>Sezione sportiva per vivere il paesaggio dall&rsquo;acqua, con escursioni e assistenza.</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="dove-siamo">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Dove siamo</p>
+            <h2 class="section-title">Arrivare a Rivalta &egrave; gi&agrave; parte del viaggio.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Rivalta sul Mincio &egrave; frazione del Comune di Rodigo, a circa 10 km da Mantova. L&rsquo;ufficio turistico Pro Loco si trova in Via Porto, 31.</p>
+        </div>
+
+        <div class="contact-grid">
+          <figure class="map-plate" data-reveal>
+            <div class="photo-slot" data-photo-slot="location-map-photo" data-photo-label="Foto o mappa di arrivo" style="--photo:url('https://picsum.photos/seed/rivalta-location-map/1400/900')" role="img" aria-label="Mappa fotografica di Rivalta sul Mincio"></div>
+          </figure>
+          <article class="contact-card" data-reveal style="--delay: 120ms">
+            <div>
+              <h3>Via Porto, 31</h3>
+              <p class="section-lead">46040 Rivalta sul Mincio, frazione di Rodigo, provincia di Mantova.</p>
+            </div>
+            <div class="contact-lines">
+              <div class="contact-line"><strong>Email</strong><a href="mailto:info@prolocorivalta.mn.it">info@prolocorivalta.mn.it</a></div>
+              <div class="contact-line"><strong>Telefono</strong><a href="tel:+393398995680">+39 339 899 5680</a></div>
+              <div class="contact-line"><strong>Accessi</strong><span>Auto dalla SP 18, bici lungo la ciclabile del Mincio, barca dagli imbarcaderi della valle.</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <div class="container newsletter-grid">
+        <div data-reveal>
+          <p class="section-kicker">Resta in contatto</p>
+          <h2 id="newsletter-title">Il Mincio nella tua casella di posta.</h2>
+          <p>Una mail al mese con eventi, sagre, escursioni e racconti dalle Valli del Mincio. Niente rumore, solo cose utili.</p>
+        </div>
+        <form class="newsletter-form" id="newsletter-form" data-reveal style="--delay: 120ms" novalidate>
+          <div class="newsletter-form-inner">
+            <div class="field">
+              <label for="newsletter-email">Email</label>
+              <input id="newsletter-email" type="email" name="email" autocomplete="email" placeholder="nome@email.it" required />
+            </div>
+            <p class="form-status" id="newsletter-status" role="status"></p>
+            <button class="button magnetic" type="submit"><span>Iscrivimi</span><span class="button-icon" aria-hidden="true">&rarr;</span></button>
+            <p style="margin:16px 0 0;color:rgba(23,34,29,.58);font-size:.9rem;">Iscrivendoti accetti la <a href="privacy" style="text-decoration:underline;">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</p>
+          </div>
         </form>
-        <div class="newsletter__note">Iscrivendoti accetti la nostra <a href="privacy" style="color:rgba(234,244,244,.75);text-decoration:underline;">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contatti">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>Pro Loco Rivalta sul Mincio</h3>
+          <p>Ecoturismo, cultura locale, eventi, Sagra del Luccio e promozione ambientale nel cuore del Parco Regionale del Mincio.</p>
+        </div>
+        <nav aria-label="Sezioni">
+          <h4>Esplora</h4>
+          <ul class="footer-links">
+            <li><a href="#esperienze">Esperienze</a></li>
+            <li><a href="#galleria">Galleria</a></li>
+            <li><a href="#valli">Valli</a></li>
+            <li><a href="#news">News</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Area utente">
+          <h4>Area</h4>
+          <ul class="footer-links">
+            <li><a href="login">Accedi</a></li>
+            <li><a href="me">Dashboard</a></li>
+            <li><a href="write">Scrivi</a></li>
+            <li><a href="profile">Profili</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legale e social">
+          <h4>Link</h4>
+          <ul class="footer-links">
+            <li><a href="privacy">Privacy</a></li>
+            <li><a href="cookie">Cookie</a></li>
+            <li><a href="note-legali">Note legali</a></li>
+            <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year"></span> Pro Loco Rivalta sul Mincio A.P.S.</span>
+        <span>Via Porto, 31 - 46040 Rivalta sul Mincio (MN)</span>
       </div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- ═══════════ FOOTER ════════════════════════════════════════════ -->
-<div class="footer-wave" aria-hidden="true">
-  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,20 C360,55 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0F2A30"/>
-  </svg>
-</div>
-<footer class="footer" id="contatti">
-  <div class="container">
-    <div class="footer-grid">
+  <a class="back-to-top" href="#home" aria-label="Torna su">&uarr;</a>
 
-      <div class="footer-brand">
-        <div class="footer-brand__logo">
-          <div class="logo-mark" style="width:46px;height:46px;border-radius:12px;">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-              <path d="M2 14C6 10 14 10 18 14M22 14L19 12V16L22 14Z" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="14" cy="13" r="1" fill="white"/>
-            </svg>
-          </div>
-          <div>
-            <div class="footer-brand__name">Pro Loco Rivalta sul Mincio</div>
-            <div class="footer-brand__sub">Ecoturismo · Mantova</div>
-          </div>
-        </div>
-        <p class="footer-brand__desc">Associazione di promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio, nel cuore del Parco Regionale del Mincio.</p>
-        <div class="footer-badges">
-          <span class="footer-badge">🌿 Ramsar 1971</span>
-          <span class="footer-badge">🇪🇺 Natura 2000</span>
-          <span class="footer-badge">🐟 PAT 2013</span>
-        </div>
-        <div class="footer-social">
-          <a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a>
-          <a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
-          <a href="#" class="social-btn" aria-label="YouTube"><svg><use href="#i-yt"/></svg></a>
-        </div>
-      </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+  (function () {
+    'use strict';
 
-      <div class="footer-col">
-        <h4>Naviga</h4>
-        <ul class="footer-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#introduzione">Introduzione</a></li>
-          <li><a href="#valli">Le Valli del Mincio</a></li>
-          <li><a href="#luccio">Il Luccio</a></li>
-          <li><a href="#chi-siamo">Chi siamo</a></li>
-          <li><a href="#dove-siamo">Dove siamo</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Informazioni</h4>
-        <ul class="footer-links">
-          <li><a href="privacy">Privacy Policy</a></li>
-          <li><a href="cookie">Cookie Policy</a></li>
-          <li><a href="#contatti">Diventa socio</a></li>
-          <li><a href="#contatti">Volontariato</a></li>
-          <li><a href="note-legali">Note legali</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Contatti</h4>
-        <div class="footer-contact">
-          <div class="footer-contact-item">
-            <svg><use href="#i-pin"/></svg>
-            <span>Via Porto, 31<br/>Rivalta sul Mincio (MN)</span>
-          </div>
-          <div class="footer-contact-item">
-            <svg><use href="#i-mail"/></svg>
-            <a href="mailto:info@prolocorivalta.mn.it">info@prolocorivalta.mn.it</a>
-          </div>
-          <div class="footer-contact-item">
-            <svg><use href="#i-phone"/></svg>
-            <a href="tel:+393398995680">+39 339 899 5680</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Pro Loco Rivalta sul Mincio · Tutti i diritti riservati</span>
-      <div class="footer-bottom-right">
-        <span>Realizzato con cura per il territorio del Mincio</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- BACK TO TOP -->
-<button class="back-to-top" id="backToTop" aria-label="Torna su">
-  <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.7 12.7a1 1 0 01-1.4 0L10 9.4l-3.3 3.3a1 1 0 01-1.4-1.4l4-4a1 1 0 011.4 0l4 4a1 1 0 010 1.4z" clip-rule="evenodd"/></svg>
-</button>
-
-<!-- ═══════════ JAVASCRIPT ════════════════════════════════════════ -->
-<script>
-  // Sticky header shadow + back-to-top
-  const navbar = document.getElementById('navbar');
-  const backTop = document.getElementById('backToTop');
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        navbar.classList.toggle('scrolled', window.scrollY > 10);
-        backTop.classList.toggle('visible', window.scrollY > 400);
-        updateActiveNav();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
-  // Mobile menu
-  const toggle = document.getElementById('navToggle');
-  const navList = document.getElementById('navList');
-  toggle.addEventListener('click', () => {
-    const open = navList.classList.toggle('open');
-    toggle.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  navList.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      navList.classList.remove('open');
-      toggle.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // Archive collapsible
-  document.querySelectorAll('[data-archive-toggle]').forEach(el => {
-    el.addEventListener('click', () => {
-      el.parentElement.classList.toggle('open');
-    });
-  });
-
-  // Back to top
-  backTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // Active nav link on scroll
-  const sections = ['home','introduzione','dati','valli','luccio','news','chi-siamo','dove-siamo','contatti'];
-  const navLinks = navList.querySelectorAll('a');
-  function updateActiveNav() {
-    let current = sections[0];
-    const scrollPos = window.scrollY + 120;
-    for (const id of sections) {
-      const el = document.getElementById(id);
-      if (el && scrollPos >= el.offsetTop) current = id;
-    }
-    navLinks.forEach(a => {
-      const href = a.getAttribute('href').replace('#','');
-      a.classList.toggle('active', href === current);
-    });
-  }
-
-  // Pagination
-  document.querySelectorAll('.page-btn').forEach(btn => {
-    if (!btn.querySelector('svg')) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-      });
-    }
-  });
-
-  // Year
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ─── Scroll reveal animations ───
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
-
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
-
-  // ─── Animated counters ───
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.dataset.count, 10);
-        const duration = 1400;
-        const start = performance.now();
-        function frame(now) {
-          const t = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - t, 3);
-          el.textContent = Math.round(eased * target).toLocaleString('it-IT');
-          if (t < 1) requestAnimationFrame(frame);
-          else el.textContent = target.toLocaleString('it-IT');
-        }
-        requestAnimationFrame(frame);
-        counterObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
-</script>
-
-<!-- Supabase JS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script src="categories.client.js"></script>
-<script>
-/* ── Nav auth state ───────────────────────────────────────────────── */
-(function() {
-  if(typeof SUPABASE_URL==='undefined'||SUPABASE_URL.includes('your-project')) return;
-  const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const nav = document.getElementById('nav-auth');
-  if(!nav) return;
-
-  let outsideCloseBound = false;
-
-  function escapeHtml(value) {
-    return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function closeDropdown() {
-    document.getElementById('profileDropdown')?.classList.remove('open');
-    document.getElementById('profileBtn')?.setAttribute('aria-expanded', 'false');
-  }
-
-  function buildUserMenu(username, emoji, color) {
-    const safe = escapeHtml(username);
-    const profileHref = 'profile?u=' + encodeURIComponent(username);
-    const path = window.location.pathname;
-
-    const isProfile   = path.includes('profile');
-    const isDashboard = path.includes('me');
-    const isWrite     = path.includes('write');
-    const isOwnProfile = isProfile &&
-      new URLSearchParams(window.location.search).get('u') === username;
-
-    const cls = (condition, extra) =>
-      condition ? ` class="active${extra ? ' ' + extra : ''}"` : (extra ? ` class="${extra}"` : '');
-
-    const editItem = isOwnProfile
-      ? `<a href="modifica-profilo?u=${encodeURIComponent(username)}" role="menuitem">✏️&nbsp; Modifica profilo</a>`
-      : '';
-
-    return `
-      <div class="profile-menu" id="profileMenu">
-        <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-          <span class="profile-avatar" style="background:${color}">${emoji}</span>
-          @${safe}
-        </button>
-        <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">
-          <div class="profile-dropdown__section-title">Navigazione</div>
-          <a href="${profileHref}" role="menuitem"${cls(isProfile)}>👤&nbsp; Profilo</a>
-          <a href="me" role="menuitem"${cls(isDashboard)}>📊&nbsp; Dashboard</a>
-          ${editItem}
-          <a href="write" role="menuitem"${cls(isWrite, 'item-primary')}>✍&nbsp; Scrivi</a>
-          <div class="profile-dropdown__sep"></div>
-          <button data-action="logout" class="danger" role="menuitem">🚪&nbsp; Esci</button>
-        </div>
-      </div>`;
-  }
-
-  function bindMenuActions() {
-    const menu = document.getElementById('profileMenu');
-    const btn = document.getElementById('profileBtn');
-    const dd = document.getElementById('profileDropdown');
-    if(!menu || !btn || !dd) return;
-
-    btn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const open = dd.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(open));
-    });
-
-    dd.querySelectorAll('[data-action="logout"]').forEach((logoutBtn) => {
-      logoutBtn.addEventListener('click', async () => {
-        await _sb.auth.signOut();
-        window.location.reload();
-      });
-    });
-
-    dd.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        closeDropdown();
-      });
-    });
-
-    if(!outsideCloseBound) {
-      document.addEventListener('click', (event) => {
-        const activeMenu = document.getElementById('profileMenu');
-        if(!activeMenu) return;
-        if(activeMenu.contains(event.target)) return;
-        closeDropdown();
-      }, { capture: true });
-
-      document.addEventListener('keydown', (event) => {
-        if(event.key === 'Escape') closeDropdown();
-      });
-
-      outsideCloseBound = true;
-    }
-  }
-
-  async function renderAuth(session) {
-    if(session) {
-      const {data:p} = await _sb.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single();
-      const emoji = p?.avatar_emoji || '👤';
-      const color = p?.avatar_color || '#1F6F8B';
-      const username = p?.username || session.user.email?.split('@')[0] || 'profilo';
-
-      nav.innerHTML = buildUserMenu(username, emoji, color);
-      bindMenuActions();
-
-    } else {
-      nav.innerHTML = `<a href="login" class="nav-accedi-btn">Accedi</a>`;
-    }
-  }
-
-  _sb.auth.onAuthStateChange((_event, session) => { renderAuth(session); });
-  _sb.auth.getSession().then(({data:{session}}) => renderAuth(session));
-})();
-
-/* ── Posts loader ──────────────────────────────────────────────────── */
-(async function loadPosts() {
-  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
-
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const fallbackCategories = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
-  const categories = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : fallbackCategories;
-  const canonicalCategory = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.canonical(value)
-    : String(value || '').trim();
-  const badgeColorByCategory = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.badgeColor(value)
-    : 'default';
-  const categoryHref = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.categoryHref(value)
-    : ('category?name=' + encodeURIComponent(canonicalCategory(value)));
-  const escapeHtml = (value) => String(value || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-  const sanitizePost = (post) => {
-    const category = canonicalCategory(post.category) || 'Territorio';
-    return {
-      ...post,
-      category,
-      badge_color: post.badge_color || badgeColorByCategory(category),
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var CATEGORY_ORDER = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+    var LEGACY_TO_CANONICAL = {
+      'eventi': 'Eventi',
+      'territorio': 'Territorio',
+      'vita locale': 'Vita locale',
+      'avvisi': 'Avvisi',
+      'richieste': 'Richieste',
+      'storie': 'Storie',
+      'il luccio': 'Storie',
+      'fauna': 'Territorio',
+      'ambiente': 'Territorio',
+      'ecoturismo': 'Territorio',
+      'storia': 'Storie'
     };
-  };
+    var BADGE_COLOR_BY_CATEGORY = {
+      'Eventi': 'green',
+      'Territorio': 'default',
+      'Vita locale': 'default',
+      'Avvisi': 'green',
+      'Richieste': 'green',
+      'Storie': 'default'
+    };
 
-  const { data: posts, error } = await sb
-    .from('posts')
-    .select('id, title, excerpt, category, badge, badge_color, image_type, published_at')
-    .eq('published', true)
-    .order('published_at', { ascending: false })
-    .limit(60);
-
-  if (error) { console.warn('[Posts] Supabase error:', error.message); return; }
-  const normalizedPosts = (posts || []).map(sanitizePost);
-
-  const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
-  const badgeCls = c => c === 'green' ? 'badge green' : 'badge';
-  const emptyEl = document.getElementById('news-empty');
-  const featured = document.getElementById('post-featured');
-  const grid = document.getElementById('posts-grid');
-  const filterRow = document.getElementById('news-filter-row');
-
-  if (!featured || !grid) return;
-
-  const urlState = new URL(window.location.href);
-  const rawCat = canonicalCategory(urlState.searchParams.get('cat') || '');
-  let activeCategory = categories.includes(rawCat) ? rawCat : 'all';
-
-  function getFilteredPosts() {
-    if (activeCategory === 'all') return normalizedPosts;
-    return normalizedPosts.filter(p => p.category === activeCategory);
-  }
-
-  function syncFilterUrl() {
-    const next = new URL(window.location.href);
-    if (activeCategory === 'all') next.searchParams.delete('cat');
-    else next.searchParams.set('cat', activeCategory);
-    window.history.replaceState({}, '', next.pathname + next.search + next.hash);
-  }
-
-  function setFilter(category) {
-    activeCategory = category;
-    syncFilterUrl();
-    renderFilters();
-    renderPosts();
-  }
-
-  function renderFilters() {
-    if (!filterRow) return;
-    const chips = ['all'].concat(categories);
-    filterRow.innerHTML = chips.map((cat) => {
-      const isAll = cat === 'all';
-      const label = isAll ? 'Tutte' : cat;
-      const on = activeCategory === cat ? ' on' : '';
-      return `<button type="button" class="news-filter-chip${on}" data-cat="${escapeHtml(cat)}">${escapeHtml(label)}</button>`;
-    }).join('');
-
-    filterRow.querySelectorAll('[data-cat]').forEach((node) => {
-      node.addEventListener('click', () => {
-        const cat = node.getAttribute('data-cat') || 'all';
-        setFilter(cat);
-      });
-    });
-  }
-
-  /* illustration SVG snippets keyed by image_type */
-  const ILL = {
-    festival: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-sunset)"/><g fill="#143B43" opacity=".88"><rect x="40" y="160" width="60" height="60"/><polygon points="32,160 70,118 108,160"/><rect x="100" y="145" width="80" height="75"/><polygon points="92,145 140,98 188,145"/><rect x="240" y="140" width="70" height="80"/><polygon points="232,140 275,95 318,140"/></g><path d="M30,90 Q200,140 370,80" stroke="#fff" stroke-width="1" fill="none" opacity=".4"/><g fill="#F9A825"><circle cx="60" cy="105" r="3"/><circle cx="180" cy="138" r="3"/><circle cx="300" cy="120" r="3"/></g></svg>`,
-    heron:   `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-marsh)"/><rect x="0" y="150" width="400" height="100" fill="url(#grad-water)"/><g transform="translate(180 60)"><path d="M22 100 L20 160" stroke="#0F2A30" stroke-width="2.5" stroke-linecap="round"/><path d="M28 100 L32 160" stroke="#0F2A30" stroke-width="2.5" stroke-linecap="round"/><path d="M5 80 Q25 65 60 78 Q80 85 90 95 Q82 105 65 103 L30 105 Q10 102 5 80 Z" fill="#0F2A30"/><path d="M55 82 Q45 50 50 25" stroke="#0F2A30" stroke-width="6" stroke-linecap="round" fill="none"/><ellipse cx="52" cy="22" rx="9" ry="6" fill="#0F2A30" transform="rotate(-15 52 22)"/><path d="M58 21 L78 17" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round"/></g></svg>`,
-    cycling: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-spring)"/><path d="M0,165 Q120,140 240,155 T400,150 L400,200 L0,200 Z" fill="#1F6F8B" opacity=".4"/><path d="M0,200 Q200,210 400,200 L400,250 L0,250 Z" fill="url(#grad-water)"/><path d="M-20,210 Q120,195 280,210 T420,205" stroke="#EAF4F4" stroke-width="20" fill="none" opacity=".7"/><g transform="translate(170 168)"><circle cx="0" cy="20" r="14" fill="none" stroke="#0F2A30" stroke-width="2.5"/><circle cx="40" cy="20" r="14" fill="none" stroke="#0F2A30" stroke-width="2.5"/><path d="M0,20 L15,-2 L30,20 L40,20" stroke="#0F2A30" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="-22" r="6" fill="#0F2A30"/></g></svg>`,
-    village: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-deep)"/><circle cx="320" cy="55" r="25" fill="#EAF4F4" opacity=".85"/><circle cx="312" cy="50" r="22" fill="#0F2A30"/><g fill="#0F2A30"><rect x="30" y="150" width="50" height="50"/><polygon points="22,150 55,118 88,150"/><rect x="148" y="100" width="22" height="100"/><polygon points="142,100 159,72 176,100"/><rect x="170" y="160" width="50" height="40"/><polygon points="162,160 195,128 228,160"/></g><g fill="#F9A825" opacity=".9"><rect x="42" y="170" width="5" height="7"/><rect x="180" y="175" width="5" height="7"/></g><rect x="0" y="200" width="400" height="50" fill="url(#grad-water)"/></svg>`,
-    reeds:   `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-marsh)"/><rect x="0" y="160" width="400" height="90" fill="url(#grad-water)"/><g stroke="#143B43" stroke-width="2.5" stroke-linecap="round" fill="none"><path d="M20,250 L20,140"/><path d="M50,250 L50,135"/><path d="M80,250 L80,145"/><path d="M310,250 L310,160"/><path d="M340,250 L340,155"/><path d="M370,250 L370,138"/></g><g fill="#5b3a1f"><ellipse cx="20" cy="138" rx="3" ry="11"/><ellipse cx="50" cy="133" rx="3" ry="11"/><ellipse cx="80" cy="143" rx="3" ry="11"/><ellipse cx="340" cy="153" rx="3" ry="11"/><ellipse cx="370" cy="136" rx="3" ry="11"/></g></svg>`,
-    fishing: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-deep)"/><g transform="translate(80 130)"><path d="M0,0 L100,0 L92,22 L8,22 Z" fill="#0F2A30"/><g transform="translate(40 -38)"><circle cx="5" cy="0" r="6" fill="#0F2A30"/><path d="M-2,5 L-5,30 L0,38 L8,38 L12,30 L8,5 Z" fill="#0F2A30"/><path d="M8,12 L40,-15" stroke="#5b3a1f" stroke-width="2" stroke-linecap="round"/></g></g><rect x="0" y="160" width="400" height="90" fill="url(#grad-water)"/></svg>`,
-    nature:  `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="250" fill="url(#grad-water)"/><g><ellipse cx="100" cy="220" rx="40" ry="9" fill="#43A047"/><ellipse cx="220" cy="180" rx="48" ry="11" fill="#43A047"/><ellipse cx="370" cy="240" rx="44" ry="10" fill="#43A047"/></g><g transform="translate(220 175)"><circle r="9" fill="#fff"/><ellipse cx="-8" cy="-2" rx="7" ry="3.5" fill="#fff" transform="rotate(-30)"/><ellipse cx="8" cy="-2" rx="7" ry="3.5" fill="#fff" transform="rotate(30)"/><circle r="3" fill="#F9A825"/></g></svg>`,
-  };
-
-  const ill = type => ILL[type] || ILL.nature;
-
-  const makeCard = p => `
-    <article class="post-card">
-      <div class="post-card__img">
-        ${ill(p.image_type)}
-        <div class="post-card__img-overlay"></div>
-        <a class="post-card__cat" href="${categoryHref(p.category)}">${escapeHtml(p.category || '')}</a>
-      </div>
-      <div class="post-card__body">
-        <div class="post-card__meta">
-          <time>${fmt(p.published_at)}</time>
-          <span>·</span>
-          <a href="${categoryHref(p.category)}">${escapeHtml(p.category || '')}</a>
-        </div>
-        <h3 class="post-card__title"><a href="post?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></h3>
-        <p class="post-card__excerpt">${escapeHtml(p.excerpt || '')}</p>
-        <div class="post-card__footer">
-          <a href="post?id=${p.id}" class="btn-read">Leggi <svg><use href="#i-arrow-r"/></svg></a>
-          <span class="${badgeCls(p.badge_color)}">${escapeHtml(p.badge || p.category || '')}</span>
-        </div>
-      </div>
-    </article>`;
-
-  function renderPosts() {
-    const filtered = getFilteredPosts();
-    if (!filtered.length) {
-      featured.style.display = 'none';
-      grid.innerHTML = '';
-      if (emptyEl) {
-        emptyEl.style.display = '';
-        const label = activeCategory === 'all' ? 'nessuna categoria' : activeCategory;
-        const lead = emptyEl.querySelector('p[style*="font-family"]');
-        const text = emptyEl.querySelector('p[style*="font-size:.88rem"]');
-        if (lead) lead.textContent = 'Nessun articolo disponibile';
-        if (text) text.textContent = `Non ci sono contenuti pubblicati per ${label}.`;
-      }
-      return;
+    function $(selector, root) {
+      return (root || document).querySelector(selector);
     }
 
-    if (emptyEl) emptyEl.style.display = 'none';
+    function $all(selector, root) {
+      return Array.prototype.slice.call((root || document).querySelectorAll(selector));
+    }
 
-    const p0 = filtered[0];
-    featured.innerHTML = `
-      <div class="post-featured__img">
-        ${ill(p0.image_type)}
-        <span class="featured-label">In evidenza</span>
-      </div>
-      <div class="post-featured__body">
-        <div class="post-meta">
-          <time>${fmt(p0.published_at)}</time>
-          <span class="post-meta__dot"></span>
-          <a href="${categoryHref(p0.category)}">${escapeHtml(p0.category || '')}</a>
-        </div>
-        <h2 class="post-featured__title"><a href="post?id=${p0.id}">${escapeHtml(p0.title || 'Articolo')}</a></h2>
-        <p class="post-featured__excerpt">${escapeHtml(p0.excerpt || '')}</p>
-        <div class="post-featured__footer">
-          <a href="post?id=${p0.id}" class="btn-read">Leggi <svg width="14" height="14"><use href="#i-arrow-r"/></svg></a>
-          <div class="post-cats"><span class="${badgeCls(p0.badge_color)}">${escapeHtml(p0.badge || p0.category || '')}</span></div>
-        </div>
-      </div>`;
-    featured.style.display = '';
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
-    grid.innerHTML = filtered.slice(1, 7).map(makeCard).join('');
-  }
-
-  renderFilters();
-  renderPosts();
-})();
-</script>
-<!-- GSAP + ScrollTrigger -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script>
-(function() {
-  if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
-
-  /* ─── 1. Hover Physics on cards ─────────────────────────────────── */
-  const hoverTargets = '.feature-card, .dato-card, .value-card, .recipe-card-v2, .post-card, .info-card';
-  document.querySelectorAll(hoverTargets).forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      gsap.to(card, { y: -7, scale: 1.025, duration: 0.45, ease: 'power2.out' });
-    });
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, { y: 0, scale: 1, duration: 0.55, ease: 'power3.out' });
-    });
-  });
-
-  /* ─── 2. Image Scale & Fade Scroll ──────────────────────────────── */
-  const scaleImgs = '.intro-art, .valli-art, .luccio-art-wrap, .hero__float-card';
-  document.querySelectorAll(scaleImgs).forEach(el => {
-    gsap.fromTo(el,
-      { scale: 0.88, opacity: 0.6 },
-      {
-        scale: 1, opacity: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-          end: 'top 30%',
-          scrub: 1.2,
-        }
+    function canonicalCategory(input) {
+      var raw = String(input || '').trim();
+      if (!raw) return '';
+      var normalized = raw.toLowerCase();
+      if (LEGACY_TO_CANONICAL[normalized]) return LEGACY_TO_CANONICAL[normalized];
+      for (var i = 0; i < CATEGORY_ORDER.length; i += 1) {
+        if (CATEGORY_ORDER[i].toLowerCase() === normalized) return CATEGORY_ORDER[i];
       }
-    );
-    /* Fade out as it leaves viewport */
-    gsap.to(el, {
-      opacity: 0.2,
-      scale: 0.95,
-      ease: 'power1.in',
-      scrollTrigger: {
-        trigger: el,
-        start: 'bottom 60%',
-        end: 'bottom 10%',
-        scrub: 1.2,
-      }
-    });
-  });
+      return raw;
+    }
 
-  /* ─── 3. Fade-up entrances for section text ──────────────────────── */
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    if (!el.classList.contains('in')) return; // only re-animate if already revealed
-  });
-  /* Use GSAP for reveal items that haven't triggered yet */
-  document.querySelectorAll('.reveal:not(.in), .reveal-stagger:not(.in)').forEach(el => {
-    gsap.fromTo(el,
-      { y: 32, opacity: 0 },
-      {
-        y: 0, opacity: 1,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        }
-      }
-    );
-  });
+    function badgeColor(input) {
+      return BADGE_COLOR_BY_CATEGORY[canonicalCategory(input)] || 'default';
+    }
 
-  /* ─── 4. Stats counter section: pin label left, scroll right ────── */
-  const datSection = document.querySelector('.dati-section');
-  if (datSection) {
-    const cards = datSection.querySelectorAll('.dato-card');
-    cards.forEach((card, i) => {
-      gsap.fromTo(card,
-        { y: 50, opacity: 0 },
-        {
-          y: 0, opacity: 1,
-          duration: 0.7,
-          delay: i * 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 82%',
-            toggleActions: 'play none none none',
+    function categoryHref(input) {
+      return 'category?name=' + encodeURIComponent(canonicalCategory(input) || '');
+    }
+
+    window.RSM_CATEGORIES = {
+      all: function () { return CATEGORY_ORDER.slice(); },
+      canonical: canonicalCategory,
+      badgeColor: badgeColor,
+      categoryHref: categoryHref
+    };
+
+    function initNav() {
+      var toggle = $('#navToggle');
+      var nav = $('#navList');
+      if (!toggle || !nav) return;
+
+      function closeMenu() {
+        nav.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+      }
+
+      toggle.addEventListener('click', function () {
+        var open = !nav.classList.contains('open');
+        nav.classList.toggle('open', open);
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('menu-open', open);
+      });
+
+      $all('a[href^="#"]', nav).forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeMenu();
+      });
+
+      var sectionIds = ['home', 'esperienze', 'galleria', 'valli', 'luccio', 'news', 'chi-siamo', 'dove-siamo', 'contatti'];
+      var links = $all('a[href^="#"]', nav);
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          links.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      }, { rootMargin: '-42% 0px -52% 0px', threshold: 0.01 });
+
+      sectionIds.forEach(function (id) {
+        var section = document.getElementById(id);
+        if (section) observer.observe(section);
+      });
+    }
+
+    function initReveal() {
+      var items = $all('[data-reveal]');
+      if (!items.length) return;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        items.forEach(function (item) { item.classList.add('is-visible'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
           }
-        }
-      );
-    });
-  }
+        });
+      }, { threshold: 0.14 });
 
-  /* ─── 5. Hero float card subtle parallax ────────────────────────── */
-  const floatCard = document.querySelector('.hero__float-card');
-  if (floatCard) {
-    gsap.to(floatCard, {
-      y: -60,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1.5,
+      items.forEach(function (item) { observer.observe(item); });
+    }
+
+    function initCounters() {
+      var counters = $all('[data-count]');
+      if (!counters.length) return;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        counters.forEach(function (el) { el.textContent = el.dataset.count || '0'; });
+        return;
       }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var target = parseInt(el.dataset.count, 10) || 0;
+          var start = performance.now();
+          var duration = 1300;
+          function frame(now) {
+            var t = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = String(Math.round(target * eased));
+            if (t < 1) requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.45 });
+
+      counters.forEach(function (el) { observer.observe(el); });
+    }
+
+    function initMagneticButtons() {
+      $all('.magnetic').forEach(function (button) {
+        button.addEventListener('pointermove', function (event) {
+          var rect = button.getBoundingClientRect();
+          var x = ((event.clientX - rect.left) / rect.width) * 100;
+          var y = ((event.clientY - rect.top) / rect.height) * 100;
+          button.style.setProperty('--mx', x + '%');
+          button.style.setProperty('--my', y + '%');
+        });
+      });
+    }
+
+    function initNewsletter() {
+      var form = $('#newsletter-form');
+      var input = $('#newsletter-email');
+      var status = $('#newsletter-status');
+      if (!form || !input || !status) return;
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var value = input.value.trim();
+        if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          status.textContent = 'Inserisci un indirizzo email valido.';
+          input.focus();
+          return;
+        }
+        status.textContent = 'Grazie, iscrizione registrata in questa sessione.';
+        form.reset();
+      });
+    }
+
+    function initCarousel() {
+      var root = $('#rsmCarousel');
+      if (!root) return;
+      var slides = $all('.carousel-slide', root);
+      var prev = $('[data-carousel-prev]', root);
+      var next = $('[data-carousel-next]', root);
+      var dotsRoot = $('[data-carousel-dots]', root);
+      var index = 0;
+      var timer = null;
+      var startX = 0;
+      var pointerDown = false;
+
+      function setSlide(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach(function (slide, i) {
+          var state = 'hidden';
+          if (i === index) state = 'active';
+          else if (i === (index - 1 + slides.length) % slides.length) state = 'prev';
+          else if (i === (index + 1) % slides.length) state = 'next';
+          slide.dataset.state = state;
+          slide.setAttribute('aria-hidden', state === 'active' ? 'false' : 'true');
+        });
+        $all('.carousel-dot', dotsRoot).forEach(function (dot, i) {
+          dot.classList.toggle('active', i === index);
+          dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+      }
+
+      function stop() {
+        if (timer) window.clearInterval(timer);
+        timer = null;
+      }
+
+      function play() {
+        if (reduceMotion) return;
+        stop();
+        timer = window.setInterval(function () { setSlide(index + 1); }, 4600);
+      }
+
+      slides.forEach(function (_slide, i) {
+        var dot = document.createElement('button');
+        dot.className = 'carousel-dot';
+        dot.type = 'button';
+        dot.setAttribute('aria-label', 'Vai alla foto ' + (i + 1));
+        dot.addEventListener('click', function () {
+          setSlide(i);
+          play();
+        });
+        dotsRoot.appendChild(dot);
+      });
+
+      if (prev) prev.addEventListener('click', function () { setSlide(index - 1); play(); });
+      if (next) next.addEventListener('click', function () { setSlide(index + 1); play(); });
+
+      root.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          setSlide(index - 1);
+          play();
+        }
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          setSlide(index + 1);
+          play();
+        }
+      });
+
+      root.addEventListener('pointerdown', function (event) {
+        pointerDown = true;
+        startX = event.clientX;
+        stop();
+        if (root.setPointerCapture) root.setPointerCapture(event.pointerId);
+      });
+
+      root.addEventListener('pointerup', function (event) {
+        if (!pointerDown) return;
+        pointerDown = false;
+        var delta = event.clientX - startX;
+        if (Math.abs(delta) > 42) setSlide(index + (delta < 0 ? 1 : -1));
+        play();
+      });
+
+      root.addEventListener('pointercancel', function () {
+        pointerDown = false;
+        play();
+      });
+
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', play);
+      root.addEventListener('focusin', stop);
+      root.addEventListener('focusout', play);
+
+      setSlide(0);
+      play();
+    }
+
+    function initAuth() {
+      var nav = $('#nav-auth');
+      if (!nav) return;
+      if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+        nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+        return;
+      }
+
+      var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      var outsideBound = false;
+
+      function initials(username) {
+        return String(username || 'utente').trim().slice(0, 2).toUpperCase();
+      }
+
+      function closeDropdown() {
+        var dropdown = $('#profileDropdown');
+        var button = $('#profileBtn');
+        if (dropdown) dropdown.classList.remove('open');
+        if (button) button.setAttribute('aria-expanded', 'false');
+      }
+
+      function item(label, href, active, primary) {
+        return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + label + '</span><span aria-hidden="true">&rarr;</span></a>';
+      }
+
+      function buildMenu(username, color) {
+        var safe = escapeHtml(username);
+        var current = window.location.pathname;
+        var profileHref = 'profile?u=' + encodeURIComponent(username);
+        var isProfile = current.indexOf('profile') >= 0;
+        var isDashboard = current.indexOf('me') >= 0;
+        var isWrite = current.indexOf('write') >= 0;
+        var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username
+          ? item('Modifica profilo', 'modifica-profilo', false, false)
+          : '';
+
+        return '<div class="profile-menu" id="profileMenu">' +
+          '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">' +
+          '<span class="profile-avatar" style="background:' + escapeHtml(color || '#2f6b67') + '">' + escapeHtml(initials(username)) + '</span>' +
+          '<span>@' + safe + '</span>' +
+          '</button>' +
+          '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">' +
+          '<div class="profile-dropdown__section-title">Navigazione</div>' +
+          item('Profilo', profileHref, isProfile, false) +
+          item('Dashboard', 'me', isDashboard, false) +
+          editItem +
+          item('Scrivi', 'write', isWrite, true) +
+          '<div class="profile-dropdown__sep"></div>' +
+          '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>' +
+          '</div></div>';
+      }
+
+      function bindMenu() {
+        var button = $('#profileBtn');
+        var dropdown = $('#profileDropdown');
+        if (!button || !dropdown) return;
+
+        button.addEventListener('click', function (event) {
+          event.stopPropagation();
+          var open = !dropdown.classList.contains('open');
+          dropdown.classList.toggle('open', open);
+          button.setAttribute('aria-expanded', String(open));
+        });
+
+        $all('[data-action="logout"]', dropdown).forEach(function (logoutButton) {
+          logoutButton.addEventListener('click', function () {
+            client.auth.signOut().then(function () { window.location.reload(); });
+          });
+        });
+
+        $all('a', dropdown).forEach(function (link) {
+          link.addEventListener('click', closeDropdown);
+        });
+
+        if (!outsideBound) {
+          document.addEventListener('click', function (event) {
+            var menu = $('#profileMenu');
+            if (menu && !menu.contains(event.target)) closeDropdown();
+          }, { capture: true });
+          document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeDropdown();
+          });
+          outsideBound = true;
+        }
+      }
+
+      function render(session) {
+        if (!session) {
+          nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+          return;
+        }
+
+        client.from('profiles')
+          .select('username,avatar_color')
+          .eq('id', session.user.id)
+          .single()
+          .then(function (result) {
+            var profile = result && result.data ? result.data : {};
+            var username = profile.username || (session.user.email || 'profilo').split('@')[0];
+            nav.innerHTML = buildMenu(username, profile.avatar_color || '#2f6b67');
+            bindMenu();
+          });
+      }
+
+      client.auth.onAuthStateChange(function (_event, session) { render(session); });
+      client.auth.getSession().then(function (result) {
+        render(result && result.data ? result.data.session : null);
+      });
+    }
+
+    function newsSeed(post) {
+      var type = String(post.image_type || post.category || 'territorio').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return type || 'territorio';
+    }
+
+    function newsPhoto(slot, seed) {
+      return '<div class="news-card__media photo-slot" data-photo-slot="' + escapeHtml(slot) + '" style="--photo:url(https://picsum.photos/seed/rivalta-news-' + escapeHtml(seed) + '/900/680)" aria-hidden="true"></div>';
+    }
+
+    function initPosts() {
+      var status = $('#news-status');
+      var filterRow = $('#news-filter-row');
+      var featured = $('#post-featured');
+      var grid = $('#posts-grid');
+      var empty = $('#news-empty');
+      if (!status || !filterRow || !featured || !grid || !empty) return;
+
+      var categories = CATEGORY_ORDER.slice();
+      var activeCategory = 'all';
+      var posts = [];
+
+      function setStatus(message) {
+        status.textContent = message || '';
+        status.style.display = message ? '' : 'none';
+      }
+
+      function fmt(iso) {
+        if (!iso) return '';
+        return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function badgeClass(color) {
+        return color === 'green' ? 'badge green' : 'badge';
+      }
+
+      function normalize(post) {
+        var category = canonicalCategory(post.category) || 'Territorio';
+        return Object.assign({}, post, {
+          category: category,
+          badge_color: post.badge_color || badgeColor(category)
+        });
+      }
+
+      function filteredPosts() {
+        if (activeCategory === 'all') return posts;
+        return posts.filter(function (post) { return post.category === activeCategory; });
+      }
+
+      function renderFilters() {
+        var chips = ['all'].concat(categories);
+        filterRow.innerHTML = chips.map(function (cat) {
+          var label = cat === 'all' ? 'Tutte' : cat;
+          var on = activeCategory === cat ? ' on' : '';
+          return '<button type="button" class="news-filter-chip' + on + '" data-cat="' + escapeHtml(cat) + '">' + escapeHtml(label) + '</button>';
+        }).join('');
+
+        $all('[data-cat]', filterRow).forEach(function (button) {
+          button.addEventListener('click', function () {
+            activeCategory = button.getAttribute('data-cat') || 'all';
+            renderFilters();
+            renderPosts();
+          });
+        });
+      }
+
+      function cardMarkup(post) {
+        var seed = newsSeed(post);
+        return '<article class="post-card">' +
+          newsPhoto('news-card-' + escapeHtml(seed), seed) +
+          '<div class="post-card__body">' +
+          '<div class="post-meta"><time>' + escapeHtml(fmt(post.published_at)) + '</time><a href="' + categoryHref(post.category) + '">' + escapeHtml(post.category) + '</a></div>' +
+          '<h3 class="post-card__title"><a href="post?id=' + encodeURIComponent(post.id) + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
+          '<p class="post-card__excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
+          '<div class="post-card__footer"><a class="btn-read" href="post?id=' + encodeURIComponent(post.id) + '">Leggi <span aria-hidden="true">&rarr;</span></a><span class="' + badgeClass(post.badge_color) + '">' + escapeHtml(post.badge || post.category) + '</span></div>' +
+          '</div></article>';
+      }
+
+      function renderPosts() {
+        var list = filteredPosts();
+        featured.style.display = 'none';
+        grid.innerHTML = '';
+
+        if (!list.length) {
+          empty.style.display = '';
+          setStatus(activeCategory === 'all' ? '' : 'Nessun articolo per la categoria selezionata.');
+          return;
+        }
+
+        empty.style.display = 'none';
+        setStatus('');
+        var first = list[0];
+        var seed = newsSeed(first);
+        featured.classList.remove('skeleton');
+        featured.innerHTML =
+          newsPhoto('news-featured-' + escapeHtml(seed), seed) +
+          '<div class="post-featured__body">' +
+          '<div class="post-meta"><time>' + escapeHtml(fmt(first.published_at)) + '</time><a href="' + categoryHref(first.category) + '">' + escapeHtml(first.category) + '</a></div>' +
+          '<h2 class="post-featured__title"><a href="post?id=' + encodeURIComponent(first.id) + '">' + escapeHtml(first.title || 'Articolo') + '</a></h2>' +
+          '<p class="post-featured__excerpt">' + escapeHtml(first.excerpt || '') + '</p>' +
+          '<div class="post-featured__footer"><a class="btn-read" href="post?id=' + encodeURIComponent(first.id) + '">Leggi <span aria-hidden="true">&rarr;</span></a><span class="' + badgeClass(first.badge_color) + '">' + escapeHtml(first.badge || first.category) + '</span></div>' +
+          '</div>';
+        featured.style.display = '';
+        grid.innerHTML = list.slice(1, 7).map(cardMarkup).join('');
+      }
+
+      renderFilters();
+
+      if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+        posts = [];
+        renderPosts();
+        setStatus('Archivio non collegato. Quando Supabase risponde, le news appariranno qui.');
+        return;
+      }
+
+      var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      client
+        .from('posts')
+        .select('id, title, excerpt, category, badge, badge_color, image_type, published_at')
+        .eq('published', true)
+        .order('published_at', { ascending: false })
+        .limit(60)
+        .then(function (result) {
+          if (result.error) {
+            posts = [];
+            renderPosts();
+            setStatus('Non riesco a caricare le news in questo momento.');
+            return;
+          }
+          posts = (result.data || []).map(normalize);
+          renderPosts();
+        });
+    }
+
+    function initGsap() {
+      if (reduceMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.utils.toArray('[data-parallax]').forEach(function (el) {
+        var amount = parseFloat(el.getAttribute('data-parallax') || '0.1') * 240;
+        gsap.to(el, {
+          y: amount,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2
+          }
+        });
+      });
+
+      gsap.utils.toArray('[data-stack-card]').forEach(function (card, index) {
+        gsap.fromTo(card,
+          { y: 70, rotate: index % 2 ? -1.4 : 1.4, scale: 0.94 },
+          {
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%',
+              end: 'top 40%',
+              scrub: 1.1
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray('.photo-slot').forEach(function (slot) {
+        gsap.fromTo(slot,
+          { scale: 0.94 },
+          {
+            scale: 1.03,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: slot,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.4
+            }
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var year = $('#year');
+      if (year) year.textContent = String(new Date().getFullYear());
+      initNav();
+      initReveal();
+      initCounters();
+      initMagneticButtons();
+      initNewsletter();
+      initCarousel();
+      initAuth();
+      initPosts();
+      initGsap();
     });
-  }
-
-})();
-</script>
-
+  })();
+  </script>
 </body>
 </html>
