@@ -202,17 +202,8 @@
       font-family: var(--sans);
       color: var(--ink);
       position: relative;
-      background:
-        radial-gradient(130% 68% at 16% -14%, rgba(194, 170, 128, 0.30) 0 54%, transparent 75%),
-        radial-gradient(126% 62% at 88% -10%, rgba(114, 160, 154, 0.24) 0 50%, transparent 73%),
-        radial-gradient(158% 46% at 18% 34%, rgba(126, 176, 169, 0.20) 0 30%, transparent 53%),
-        radial-gradient(162% 48% at 82% 46%, rgba(103, 147, 141, 0.18) 0 32%, transparent 56%),
-        linear-gradient(180deg, #f4ead2 0%, #e7dfca 40%, #c8d7d2 72%, #b1cec9 100%);
-      background-size: 100% 100%, 100% 100%, 165% 62%, 172% 66%, 100% 100%;
-      background-position: 0 0, 0 0, -22% 12%, 114% 34%, 0 0;
-      background-repeat: no-repeat;
+      background: linear-gradient(180deg, #f2e5c9 0 34%, #d7ddd3 34% 68%, #b8cac3 68% 100%);
       background-attachment: fixed;
-      animation: body-water-flow 22s ease-in-out infinite alternate;
       line-height: 1.5;
       overflow-x: hidden;
       text-rendering: optimizeLegibility;
@@ -222,29 +213,7 @@
     body.menu-open { overflow: hidden; }
 
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 80;
-      pointer-events: none;
-      opacity: 0.26;
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
-      mix-blend-mode: multiply;
-    }
-
-    @keyframes body-water-flow {
-      0% {
-        background-position: 0 0, 0 0, -24% 12%, 116% 34%, 0 0;
-      }
-      50% {
-        background-position: 0 0, 0 0, -19% 15%, 111% 31%, 0 0;
-      }
-      100% {
-        background-position: 0 0, 0 0, -22% 13%, 113% 33%, 0 0;
-      }
+      content: none;
     }
 
     a {
@@ -555,9 +524,7 @@
       position: absolute;
       inset: 0;
       z-index: -2;
-      background:
-        radial-gradient(circle at 79% 16%, rgba(114, 160, 154, 0.26), transparent 24rem),
-        linear-gradient(180deg, rgba(252, 246, 236, 0.40), rgba(231, 222, 204, 0.92));
+      background: #e7dfca;
     }
 
     .hero-wave {
@@ -577,12 +544,12 @@
     }
 
     .wave-back {
-      fill: rgba(140, 171, 162, 0.28);
+      fill: #b8cac3;
       animation: wave-back-morph 9s ease-in-out infinite;
     }
 
     .wave-front {
-      fill: rgba(244, 235, 219, 0.92);
+      fill: #d7ddd3;
       animation: wave-front-morph 6s ease-in-out infinite;
     }
 
