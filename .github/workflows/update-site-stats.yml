@@ -29,7 +29,16 @@ jobs:
 
       - name: Update Supabase site stats
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SERVICE_KEY }}
           GITHUB_SHA: ${{ github.sha }}
-        run: node scripts/update-site-stats.mjs
+        run: |
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "::error::Missing SUPABASE_URL (repo secret or repo variable)."
+            exit 1
+          fi
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::error::Missing SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_KEY)."
+            exit 1
+          fi
+          node scripts/update-site-stats.mjs

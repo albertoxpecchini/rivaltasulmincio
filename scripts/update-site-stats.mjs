@@ -3,8 +3,8 @@ import path from 'node:path';
 import { execSync } from 'node:child_process';
 
 const ROOT = process.cwd();
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 const GITHUB_SHA = process.env.GITHUB_SHA || '';
 const DRY_RUN = String(process.env.DRY_RUN || '') === '1';
 
@@ -130,6 +130,7 @@ function buildStats() {
 function requireEnv() {
   if (DRY_RUN) return;
   if (!SUPABASE_URL) throw new Error('Missing SUPABASE_URL');
+  if (!/^https?:\/\//i.test(SUPABASE_URL)) throw new Error('SUPABASE_URL must start with http:// or https://');
   if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
 }
 
