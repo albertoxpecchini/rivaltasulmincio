@@ -1644,12 +1644,26 @@
       function esc(str) {
         return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
+      function renderChangelogFallback(message) {
+        setText('rel-hash', '—');
+        setText('rel-msg', message || 'Changelog non disponibile');
+        setText('rel-author', '');
+        setText('rel-date', '');
+        setHTML('rel-changes', '<li style="opacity:.6">Dettagli non disponibili al momento.</li>');
+        setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
+      }
 
       // /api/changelog — commit info + AI changelog generato dal server
-      fetch('/api/changelog')
-        .then(function (r) { return r.ok ? r.json() : null; })
+      fetch('/api/changelog', { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('http-' + r.status);
+          return r.json();
+        })
         .then(function (data) {
-          if (!data) return;
+          if (!data || (typeof data !== 'object')) {
+            renderChangelogFallback('Changelog non disponibile');
+            return;
+          }
 
           setText('rel-hash',   data.sha     || '—');
           var topMsg = data.message || '—';
@@ -1689,9 +1703,7 @@
           }
         })
         .catch(function () {
-          setText('rel-hash', '—');
-          setText('rel-msg',  'Changelog non raggiungibile');
-          setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
+          renderChangelogFallback('Changelog non raggiungibile');
         });
 
       // Supabase site_releases — solo nome versione (etichetta manuale)
