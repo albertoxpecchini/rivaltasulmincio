@@ -30,7 +30,7 @@ jobs:
       - name: Update Supabase site stats
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL || 'https://tljwxymcavgpzntksjtx.supabase.co' }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SERVICE_KEY || vars.SUPABASE_SERVICE_ROLE_KEY || vars.SUPABASE_SERVICE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SERVICE_KEY || vars.SUPABASE_SERVICE_ROLE_KEY }} 
           GITHUB_SHA: ${{ github.sha }}
         run: |
           if [ -z "$SUPABASE_URL" ]; then
