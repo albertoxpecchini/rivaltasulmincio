@@ -1313,8 +1313,13 @@
     .festa-poster-frame:hover { transform: rotate(0deg) translateY(-4px); }
 
     .festa-photo {
-      min-height: 460px;
+      min-height: unset;
+      aspect-ratio: 2 / 3;
       border-radius: 30px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
     }
 
     .festa-badge {
@@ -2701,7 +2706,7 @@
           </div>
           <aside class="festa-poster" data-reveal style="--delay: 140ms" aria-label="Manifesto della 40&deg; Festa del Pesce">
             <div class="festa-poster-frame">
-              <div class="photo-slot festa-photo" data-photo-slot="festa-poster" data-photo-label="Manifesto Festa del Pesce 2025" style="--photo:url('img/luccio-in-salsa.jpg')" role="img" aria-label="Manifesto della 40&deg; Festa del Pesce e del Luccio alla Rivaltese"></div>
+              <div class="photo-slot festa-photo" data-photo-slot="festa-poster" data-photo-label="Manifesto Festa del Pesce 2025" style="--photo:url('img/locandina-festa-pesce-40.jpg')" role="img" aria-label="Manifesto della 40&deg; Festa del Pesce e del Luccio alla Rivaltese"></div>
               <span class="festa-badge" aria-hidden="true"><strong>40</strong><span>anniversario<br/>1985 &mdash; 2025</span></span>
             </div>
           </aside>
