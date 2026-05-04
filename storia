@@ -662,6 +662,47 @@
       content: '+'; color: var(--water); font-weight: 800;
       flex-shrink: 0; margin-top: 1px;
     }
+    .release-commits-list {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .release-commits-list li {
+      border: 1px solid rgba(37, 63, 53, 0.18);
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 4px;
+    }
+    .release-commits-list .row-top {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+    }
+    .release-commits-list .row-top code {
+      color: var(--water);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .release-commits-list .row-msg {
+      font-size: 0.87rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .release-commits-list .row-files {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      opacity: 0.85;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .release-skeleton {
       color: var(--reed); font-size: 0.82rem; font-style: italic; opacity: 0.65;
     }
@@ -912,6 +953,10 @@
       </div>
       <div class="release-changes-title">Cosa è stato aggiunto</div>
       <ul class="release-changes-list" id="rel-changes">
+        <li><span class="release-skeleton">caricamento…</span></li>
+      </ul>
+      <div class="release-changes-title" style="margin-top:18px;">Ultimi push e commit</div>
+      <ul class="release-commits-list" id="rel-commits">
         <li><span class="release-skeleton">caricamento…</span></li>
       </ul>
     </div>
@@ -1596,6 +1641,9 @@
         var el = document.getElementById(id);
         if (el) el.innerHTML = val;
       }
+      function esc(str) {
+        return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
 
       // /api/changelog — commit info + AI changelog generato dal server
       fetch('/api/changelog')
@@ -1604,8 +1652,10 @@
           if (!data) return;
 
           setText('rel-hash',   data.sha     || '—');
-          setText('rel-msg',    data.message || '—');
-          setText('rel-author', data.author  || '');
+          var topMsg = data.message || '—';
+          var topFiles = Number(data.files_changed || 0);
+          setText('rel-msg', topMsg);
+          setText('rel-author', (data.author || '') + (topFiles ? (' · ' + topFiles + ' file') : ''));
           if (data.date) setText('rel-date', formatDateIT(data.date));
 
           var linkEl = document.getElementById('rel-link');
@@ -1614,15 +1664,34 @@
           var changes = Array.isArray(data.changes) ? data.changes : [];
           if (changes.length) {
             setHTML('rel-changes', changes.map(function (c) {
-              return '<li>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>';
+              return '<li>' + esc(c) + '</li>';
             }).join(''));
           } else {
             setHTML('rel-changes', '<li style="opacity:.5">Nessuna nota disponibile.</li>');
+          }
+
+          var recentCommits = Array.isArray(data.recent_commits) ? data.recent_commits : [];
+          if (recentCommits.length) {
+            setHTML('rel-commits', recentCommits.map(function (c) {
+              var when = c.date ? formatDateIT(c.date) : 'data non disponibile';
+              var fileLabel = Number(c.files_changed || 0) + ' file cambiati';
+              var fileList = Array.isArray(c.changed_files) && c.changed_files.length
+                ? c.changed_files.join(', ')
+                : 'Nessun dettaglio file disponibile';
+              return '<li>' +
+                '<div class="row-top"><code>' + esc(c.short_sha || c.sha || '—') + '</code><span>' + esc(when) + '</span></div>' +
+                '<div class="row-msg">' + esc(c.message || 'Aggiornamento sito') + '</div>' +
+                '<div class="row-files">' + esc(fileLabel + ' · ' + fileList) + '</div>' +
+              '</li>';
+            }).join(''));
+          } else {
+            setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
           }
         })
         .catch(function () {
           setText('rel-hash', '—');
           setText('rel-msg',  'Changelog non raggiungibile');
+          setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
         });
 
       // Supabase site_releases — solo nome versione (etichetta manuale)

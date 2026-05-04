@@ -57,10 +57,24 @@ async function handleChangelog(req, res) {
     const REPO = 'albertoxpecchini/rivaltasulmincio';
     const UA   = { 'User-Agent': 'rivaltasulmincio-server/1.0' };
 
-    const listRes = await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=1`, { headers: UA });
+    const listRes = await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=5`, { headers: UA });
     if (!listRes.ok) throw new Error(`gh-list ${listRes.status}`);
     const commits = await listRes.json();
     if (!Array.isArray(commits) || !commits[0]) throw new Error('no-commits');
+
+    const recentCommits = commits.slice(0, 5);
+
+    const detailEntries = await Promise.all(recentCommits.map(async (commit) => {
+      try {
+        const detailRes = await fetch(`https://api.github.com/repos/${REPO}/commits/${commit.sha}`, { headers: UA });
+        if (!detailRes.ok) return [commit.sha, null];
+        const detail = await detailRes.json();
+        return [commit.sha, detail];
+      } catch (_) {
+        return [commit.sha, null];
+      }
+    }));
+    const detailBySha = new Map(detailEntries);
 
     const c0     = commits[0];
     const sha    = c0.sha;
@@ -69,9 +83,8 @@ async function handleChangelog(req, res) {
     const date   = c0.commit.author.date;
     const url    = c0.html_url;
 
-    const detailRes = await fetch(`https://api.github.com/repos/${REPO}/commits/${sha}`, { headers: UA });
-    if (!detailRes.ok) throw new Error(`gh-detail ${detailRes.status}`);
-    const detail = await detailRes.json();
+    const detail = detailBySha.get(sha);
+    if (!detail) throw new Error('gh-detail missing');
     const files  = detail.files  || [];
     const stats  = detail.stats  || {};
 
@@ -115,11 +128,27 @@ async function handleChangelog(req, res) {
     }
     if (!changes.length) changes = [msg || 'Aggiornamento sito'];
 
+    const recent_commit_rows = recentCommits.map((c) => {
+      const detailForCommit = detailBySha.get(c.sha);
+      const detailFiles = Array.isArray(detailForCommit?.files) ? detailForCommit.files : [];
+      return {
+        sha: c.sha,
+        short_sha: c.sha.slice(0, 7),
+        message: (c.commit?.message || '').split('\n')[0] || 'Aggiornamento sito',
+        author: c.commit?.author?.name || 'Autore sconosciuto',
+        date: c.commit?.author?.date || null,
+        url: c.html_url,
+        files_changed: detailFiles.length,
+        changed_files: detailFiles.slice(0, 6).map(f => f.filename)
+      };
+    });
+
     const payload = JSON.stringify({
       sha, message: msg, author, date, url,
       changes,
       files_changed: files.length,
-      stats: { total: stats.total || 0, add: stats.additions || 0, del: stats.deletions || 0 }
+      stats: { total: stats.total || 0, add: stats.additions || 0, del: stats.deletions || 0 },
+      recent_commits: recent_commit_rows
     });
 
     _changelogCache     = payload;
@@ -216,30 +245,7 @@ function handler(req, res) {
   }
 
  if (req.method === 'GET' && requestPathLower === '/api/changelog') {
-  const supabaseProjectRef = process.env.SUPABASE_REF; // oppure hardcoded come stringa
-  const url = `https://${supabaseProjectRef}.supabase.co/functions/v1/changelog`;
-
-  // forward minimal: stessa request (solo GET)
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      // importante: la Edge Function gestisce JSON; qui passi solo ciò che serve
-      'Accept': 'application/json',
-    },
-  })
-    .then(async (edgeRes) => {
-      res.statusCode = edgeRes.status;
-
-      // copia headers principali (minimali) ma *non* sovrascrivere CORS globale del tuo server
-      const text = await edgeRes.text();
-      res.setHeader('Content-Type', edgeRes.headers.get('content-type') ?? 'application/json; charset=utf-8');
-      res.end(text);
-    })
-    .catch((e) => {
-      res.statusCode = 502;
-      res.end(JSON.stringify({ error: 'Edge changelog failed', details: String(e?.message ?? e) }));
-    });
-
+  handleChangelog(req, res);
   return;
 }
 
