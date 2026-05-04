@@ -524,7 +524,7 @@
       position: absolute;
       inset: 0;
       z-index: -2;
-      background: #7ed957;
+      background: var(--paper);
     }
 
     .hero-wave {
@@ -544,13 +544,13 @@
     }
 
     .wave-back {
-      fill: #ffffff;
+      fill: var(--paper);
       opacity: 0.62;
       animation: wave-back-morph 9s ease-in-out infinite;
     }
 
     .wave-front {
-      fill: #ffffff;
+      fill: var(--paper);
       animation: wave-front-morph 6s ease-in-out infinite;
     }
 
