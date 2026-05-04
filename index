@@ -1308,13 +1308,16 @@
       box-shadow: var(--shadow-strong);
       transform: rotate(-1.4deg);
       transition: transform 720ms var(--ease-soft);
+      display: flex;
+      flex-direction: column;
     }
 
     .festa-poster-frame:hover { transform: rotate(0deg) translateY(-4px); }
 
     .festa-photo {
-      min-height: unset;
+      flex: 1;
       aspect-ratio: 1 / 1;
+      width: 100%;
       border-radius: 30px;
       background-size: cover;
       background-position: center;
