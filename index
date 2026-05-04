@@ -193,7 +193,7 @@
 
     html {
       scroll-behavior: smooth;
-      background: #7ed957;
+      background: var(--paper);
     }
 
     body {
@@ -202,7 +202,7 @@
       font-family: var(--sans);
       color: var(--ink);
       position: relative;
-      background: #7ed957;
+      background: var(--paper);
       background-attachment: scroll;
       line-height: 1.5;
       overflow-x: hidden;
