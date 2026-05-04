@@ -203,16 +203,16 @@
       color: var(--ink);
       position: relative;
       background:
-        radial-gradient(130% 68% at 16% -14%, rgba(233, 176, 102, 0.42) 0 54%, transparent 75%),
-        radial-gradient(126% 62% at 88% -10%, rgba(23, 127, 140, 0.38) 0 50%, transparent 73%),
-        radial-gradient(158% 46% at 18% 34%, rgba(22, 150, 160, 0.34) 0 30%, transparent 53%),
-        radial-gradient(162% 48% at 82% 46%, rgba(47, 107, 103, 0.30) 0 32%, transparent 56%),
-        linear-gradient(180deg, #f9e3be 0%, #e4d6ad 38%, #aed5cb 70%, #7dbfc1 100%);
+        radial-gradient(130% 68% at 16% -14%, rgba(194, 170, 128, 0.30) 0 54%, transparent 75%),
+        radial-gradient(126% 62% at 88% -10%, rgba(114, 160, 154, 0.24) 0 50%, transparent 73%),
+        radial-gradient(158% 46% at 18% 34%, rgba(126, 176, 169, 0.20) 0 30%, transparent 53%),
+        radial-gradient(162% 48% at 82% 46%, rgba(103, 147, 141, 0.18) 0 32%, transparent 56%),
+        linear-gradient(180deg, #f4ead2 0%, #e7dfca 40%, #c8d7d2 72%, #b1cec9 100%);
       background-size: 100% 100%, 100% 100%, 165% 62%, 172% 66%, 100% 100%;
       background-position: 0 0, 0 0, -22% 12%, 114% 34%, 0 0;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      animation: body-water-flow 16s ease-in-out infinite alternate;
+      animation: body-water-flow 22s ease-in-out infinite alternate;
       line-height: 1.5;
       overflow-x: hidden;
       text-rendering: optimizeLegibility;
@@ -237,13 +237,13 @@
 
     @keyframes body-water-flow {
       0% {
-        background-position: 0 0, 0 0, -28% 9%, 120% 38%, 0 0;
+        background-position: 0 0, 0 0, -24% 12%, 116% 34%, 0 0;
       }
       50% {
-        background-position: 0 0, 0 0, -14% 17%, 106% 27%, 0 0;
+        background-position: 0 0, 0 0, -19% 15%, 111% 31%, 0 0;
       }
       100% {
-        background-position: 0 0, 0 0, -22% 14%, 112% 33%, 0 0;
+        background-position: 0 0, 0 0, -22% 13%, 113% 33%, 0 0;
       }
     }
 
@@ -556,8 +556,8 @@
       inset: 0;
       z-index: -2;
       background:
-        radial-gradient(circle at 79% 16%, rgba(47, 107, 103, 0.28), transparent 24rem),
-        linear-gradient(180deg, rgba(255, 250, 240, 0.35), rgba(239, 229, 210, 0.92));
+        radial-gradient(circle at 79% 16%, rgba(114, 160, 154, 0.26), transparent 24rem),
+        linear-gradient(180deg, rgba(252, 246, 236, 0.40), rgba(231, 222, 204, 0.92));
     }
 
     .hero-wave {
@@ -577,12 +577,12 @@
     }
 
     .wave-back {
-      fill: rgba(198, 164, 98, 0.22);
+      fill: rgba(140, 171, 162, 0.28);
       animation: wave-back-morph 9s ease-in-out infinite;
     }
 
     .wave-front {
-      fill: var(--cream);
+      fill: rgba(244, 235, 219, 0.92);
       animation: wave-front-morph 6s ease-in-out infinite;
     }
 
