@@ -1314,12 +1314,10 @@
 
     .festa-photo {
       min-height: unset;
-      aspect-ratio: 2 / 3;
+      aspect-ratio: 1 / 1;
       border-radius: 30px;
-      background-size: contain;
-      background-repeat: no-repeat;
+      background-size: cover;
       background-position: center;
-      background-color: transparent;
     }
 
     .festa-badge {
@@ -2702,7 +2700,7 @@
           <div class="festa-meta" data-reveal>
             <p class="section-kicker"><span class="festa-pulse" aria-hidden="true"></span>40&deg; edizione &middot; 1985 &mdash; 2025</p>
             <h2 class="section-title festa-title">Festa del Pesce e del <em>Luccio alla Rivaltese</em>.</h2>
-            <p class="section-lead">La Festa del Pesce e del Luccio alla Rivaltese torna nel 2025 per celebrare la sua 40&ordf; edizione, nei fine settimana del 4-5-6 e 11-12-13 luglio, presso l&rsquo;Area Feste Platana, ai margini del canneto delle Valli del Mincio, a Rivalta sul Mincio (MN). Le cucine apriranno alle ore 19:30 con servizio al tavolo a cura delle volontarie e dei volontari della Pro Loco Rivalta sul Mincio APS.</p>
+            <p class="section-lead">Quarant&rsquo;anni di cucina d&rsquo;acqua dolce all&rsquo;Area Feste Platana, ai margini del canneto delle Valli del Mincio. Cucine aperte dalle 19:30, servizio al tavolo a cura dei volontari della Pro Loco Rivalta sul Mincio APS.</p>
           </div>
           <aside class="festa-poster" data-reveal style="--delay: 140ms" aria-label="Manifesto della 40&deg; Festa del Pesce">
             <div class="festa-poster-frame">
