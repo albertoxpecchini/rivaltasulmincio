@@ -38,7 +38,7 @@ jobs:
             exit 1
           fi
           if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
-            echo "::error::Missing SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_KEY)."
-            exit 1
+            echo "::warning::Missing SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_KEY). Skip update-site-stats."
+            exit 0
           fi
           node scripts/update-site-stats.mjs
