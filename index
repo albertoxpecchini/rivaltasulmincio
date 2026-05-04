@@ -193,7 +193,7 @@
 
     html {
       scroll-behavior: smooth;
-      background: var(--cream);
+      background: #7ed957;
     }
 
     body {
@@ -202,7 +202,7 @@
       font-family: var(--sans);
       color: var(--ink);
       position: relative;
-      background: linear-gradient(180deg, #f2e5c9 0 34%, #d7ddd3 34% 68%, #b8cac3 68% 100%);
+      background: #7ed957;
       background-attachment: scroll;
       line-height: 1.5;
       overflow-x: hidden;
@@ -524,7 +524,7 @@
       position: absolute;
       inset: 0;
       z-index: -2;
-      background: #e7dfca;
+      background: #7ed957;
     }
 
     .hero-wave {
@@ -534,7 +534,7 @@
       right: 0;
       z-index: 3;
       pointer-events: none;
-      filter: drop-shadow(0 9px 22px rgba(23, 34, 29, 0.20));
+      filter: none;
     }
 
     .hero-wave svg {
@@ -544,12 +544,13 @@
     }
 
     .wave-back {
-      fill: #b8cac3;
+      fill: #ffffff;
+      opacity: 0.62;
       animation: wave-back-morph 9s ease-in-out infinite;
     }
 
     .wave-front {
-      fill: #d7ddd3;
+      fill: #ffffff;
       animation: wave-front-morph 6s ease-in-out infinite;
     }
 
