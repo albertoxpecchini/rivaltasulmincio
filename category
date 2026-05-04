@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categoria - Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --marsh: #253f35;
+      --marsh-2: #3d6353;
+      --water: #2f6b67;
+      --clay: #b8663f;
+      --reed: #c6a462;
+      --line: rgba(37,63,53,0.15);
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(198,164,98,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(47,107,103,.14) 0%, transparent 55%),
+        linear-gradient(160deg, #fdf6e8 0%, #f5ede0 40%, #ede4d6 100%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    a { color: var(--water); text-decoration: none; }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    @media (max-width: 760px) { .brand-name span { display: none; } }
+
+    /* ── Page ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 100px 20px 80px;
+    }
+
+    .head h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+    .head p { color: var(--ink-soft); font-size: .9rem; }
+
+    /* ── Category chips ── */
+    .category-row {
+      margin-top: 20px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(37,63,53,.05);
+      color: var(--ink-soft);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      transition: all .2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .chip:hover { color: var(--ink); border-color: rgba(37,63,53,.25); background: rgba(37,63,53,.09); }
+    .chip.on {
+      color: var(--cream);
+      background: var(--marsh);
+      border-color: transparent;
+      box-shadow: 0 6px 18px rgba(37,63,53,.25);
+    }
+
+    /* ── Posts ── */
+    .posts { margin-top: 24px; display: grid; gap: 12px; }
+    .post-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      box-shadow: 0 1px 6px rgba(37,63,53,.05);
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--ink-soft);
+      font-size: .78rem;
+    }
+    .post-title {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+    .post-title a { color: var(--ink); }
+    .post-title a:hover { color: var(--water); }
+    .post-excerpt { color: var(--ink-soft); font-size: .9rem; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 700;
+      color: var(--cream);
+      background: var(--marsh);
+    }
+    .badge.green { background: #2E7D32; }
+
+    .empty {
+      margin-top: 24px;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      color: var(--ink-soft);
+      text-align: center;
+      font-size: .88rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div></div>
+    <div id="nav-auth"></div>
+  </div>
+</header>
+
+<main class="page">
+  <header class="head">
+    <h1 id="cat-title">Categoria</h1>
+    <p id="cat-sub">Pagina dedicata con i post pubblicati per questa categoria.</p>
+  </header>
+
+  <nav class="category-row" id="category-row"></nav>
+  <section class="posts" id="posts"></section>
+  <div class="empty" id="empty" style="display:none"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nav = $('nav-auth');
+  if (!nav) return;
+  if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return;
+  }
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var outsideBound = false;
+  function closeDropdown() {
+    var d = $('profileDropdown'), b = $('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function item(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'"><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtml(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? item('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtml(color||'#2f6b67')+'">'+escapeHtml(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      item('Profilo',profileHref,isProfile,false)+
+      item('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      item('Scrivi','write',isWrite,true)+
+      item('Categorie','/category',current.indexOf('/category')>=0,false)+
+      item('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      item('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindMenu() {
+    var btn = $('profileBtn'), dd = $('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { client.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDropdown); });
+    if (!outsideBound) {
+      document.addEventListener('click', function(e) { var m=$('profileMenu'); if(m&&!m.contains(e.target)) closeDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDropdown(); });
+      outsideBound = true;
+    }
+  }
+  function render(session) {
+    if (!session) { nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return; }
+    client.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single().then(function(r) {
+      var p = r&&r.data?r.data:{};
+      var username = p.username || (session.user.email||'profilo').split('@')[0];
+      nav.innerHTML = buildMenu(username, p.avatar_color||'#2f6b67', p.avatar_emoji||'\uD83C\uDF3F');
+      bindMenu();
+    });
+  }
+  client.auth.onAuthStateChange(function(_e,s){ render(s); });
+  client.auth.getSession().then(function(r){ render(r&&r.data?r.data.session:null); });
+})();
+</script>
+<script src="categories.client.js"></script>
+<script>
+(function () {
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const row = document.getElementById('category-row');
+  const postsEl = document.getElementById('posts');
+  const emptyEl = document.getElementById('empty');
+  const titleEl = document.getElementById('cat-title');
+  const subEl = document.getElementById('cat-sub');
+
+  const categories = window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.all()
+    : ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+  const canonical = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.canonical(value)
+    : String(value || '').trim();
+  const badgeColor = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.badgeColor(value)
+    : 'default';
+
+  const params = new URLSearchParams(window.location.search);
+  const requested = canonical(params.get('name') || '');
+  const activeCategory = categories.includes(requested) ? requested : categories[0];
+
+  document.title = activeCategory + ' - Rivalta sul Mincio';
+  titleEl.textContent = activeCategory;
+  subEl.textContent = 'Articoli pubblicati nella categoria ' + activeCategory + '.';
+
+  row.innerHTML = categories.map(function (cat) {
+    const cls = cat === activeCategory ? 'chip on' : 'chip';
+    return '<a class="' + cls + '" href="category?name=' + encodeURIComponent(cat) + '">' + cat + '</a>';
+  }).join('');
+
+  const fmt = function (iso) {
+    return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  sb.from('posts')
+    .select('id,title,excerpt,category,badge,badge_color,published_at')
+    .eq('published', true)
+    .order('published_at', { ascending: false })
+    .limit(120)
+    .then(function (res) {
+      if (res.error) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = 'Errore caricamento post: ' + res.error.message;
+        return;
+      }
+
+      const rows = (res.data || []).map(function (post) {
+        return {
+          ...post,
+          category: canonical(post.category) || 'Territorio',
+          badge_color: post.badge_color || badgeColor(post.category)
+        };
+      }).filter(function (post) {
+        return post.category === activeCategory;
+      });
+
+      if (!rows.length) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = 'Nessun articolo disponibile in questa categoria.';
+        return;
+      }
+
+      postsEl.innerHTML = rows.map(function (post) {
+        const badgeClass = post.badge_color === 'green' ? 'badge green' : 'badge';
+        return '<article class="post-card">' +
+          '<div class="post-meta">' +
+            '<time>' + fmt(post.published_at) + '</time>' +
+            '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
+          '</div>' +
+          '<h2 class="post-title"><a href="post?id=' + post.id + '">' + escapeHtml(post.title || 'Articolo') + '</a></h2>' +
+          '<p class="post-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
+        '</article>';
+      }).join('');
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articolo – Pro Loco Rivalta sul Mincio</title>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --marsh: #253f35;
+      --marsh-2: #3d6353;
+      --water: #2f6b67;
+      --clay: #b8663f;
+      --reed: #c6a462;
+      --line: rgba(37,63,53,0.15);
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(198,164,98,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(47,107,103,.14) 0%, transparent 55%),
+        linear-gradient(160deg, #fdf6e8 0%, #f5ede0 40%, #ede4d6 100%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    a { color: var(--water); text-decoration: none; }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    @media (max-width: 760px) { .brand-name span { display: none; } }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: .84rem;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--marsh); color: var(--cream); box-shadow: 0 4px 16px rgba(37,63,53,.25); }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); color: var(--cream); }
+    .btn-ghost { background: rgba(37,63,53,.06); color: var(--ink-soft); border: 1px solid var(--line); }
+    .btn-ghost:hover { color: var(--ink); background: rgba(37,63,53,.10); border-color: rgba(37,63,53,.22); }
+    .btn-sm { padding: 7px 14px; font-size: .8rem; }
+
+    /* ── Page layout ── */
+    .page { position: relative; z-index: 1; }
+    .container { max-width: 740px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Article ── */
+    .post-wrap { padding: 100px 0 100px; }
+
+    .post-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 44px; flex-wrap: wrap; gap: 10px; }
+
+    .post-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: .74rem; font-weight: 700; }
+    .badge-default { background: rgba(47,107,103,.14); color: var(--water); border: 1px solid rgba(47,107,103,.22); }
+    .badge-green  { background: rgba(46,125,50,.14); color: #2E7D32; border: 1px solid rgba(46,125,50,.25); }
+
+    .post-meta { display: flex; gap: 10px; align-items: center; font-size: .82rem; color: var(--ink-soft); margin-bottom: 20px; flex-wrap: wrap; }
+    .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--line); }
+
+    h1.post-title {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 650;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+    .post-lead {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      border-left: 3px solid var(--water);
+      padding-left: 18px;
+      margin-bottom: 40px;
+    }
+
+    .content-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); margin-bottom: 36px; }
+
+    .content { font-size: 1.01rem; color: var(--ink); }
+    .content p { margin-bottom: 1.4em; }
+    .content h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 650; margin: 2.4em 0 .7em; color: var(--ink); }
+    .content h3 { font-size: 1.1rem; font-weight: 600; margin: 1.8em 0 .5em; color: var(--ink); }
+    .content strong { color: var(--ink); font-weight: 600; }
+    .content em { color: var(--ink-soft); font-style: italic; }
+    .content ul, .content ol { padding-left: 1.5em; margin-bottom: 1.4em; }
+    .content li { margin-bottom: .5em; }
+    .content a { color: var(--water); border-bottom: 1px solid rgba(47,107,103,.35); transition: border-color .2s; }
+    .content a:hover { border-color: var(--water); }
+
+    .post-footer { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .author-card { display: flex; align-items: center; gap: 12px; }
+    .author-av { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .author-name { font-size: .9rem; font-weight: 600; }
+    .author-label { font-size: .76rem; color: var(--ink-soft); }
+
+    .post-reactions {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      background: rgba(255,250,240,.6);
+      color: var(--ink-soft);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .like-btn:hover {
+      color: var(--ink);
+      border-color: rgba(47,107,103,.35);
+      transform: translateY(-1px);
+    }
+    .like-btn.on {
+      color: #c0002a;
+      border-color: rgba(192,0,42,.35);
+      background: rgba(192,0,42,.08);
+      box-shadow: 0 7px 22px rgba(192,0,42,.12);
+    }
+    .like-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .like-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      padding: 0 6px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(37,63,53,.08);
+      color: var(--ink);
+      font-size: .74rem;
+      font-weight: 700;
+    }
+
+    /* Discussion */
+    .discussion {
+      margin-top: 48px;
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+      display: grid;
+      gap: 16px;
+    }
+    .discussion-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .discussion-head h2 { font-family: var(--serif); font-size: 1.25rem; }
+    .discussion-note { color: var(--ink-soft); font-size: .8rem; line-height: 1.5; }
+    .discussion-msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: .82rem;
+      border: 1px solid var(--line);
+      background: rgba(255,250,240,.5);
+      color: var(--ink-soft);
+    }
+    .discussion-msg.err { border-color: rgba(181,56,56,.3); color: #b53838; background: rgba(181,56,56,.08); }
+    .discussion-msg.ok  { border-color: rgba(46,125,50,.35); color: #2E7D32; background: rgba(46,125,50,.09); }
+    .comment-form { display: grid; gap: 10px; }
+    .comment-form textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      padding: 12px;
+      font-family: var(--sans);
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+    .comment-form textarea:focus {
+      outline: none;
+      border-color: rgba(47,107,103,.6);
+      box-shadow: 0 0 0 3px rgba(47,107,103,.12);
+    }
+    .comments-list { display: grid; gap: 10px; }
+    .comment-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: .78rem;
+      color: var(--ink-soft);
+    }
+    .comment-body { font-size: .9rem; color: var(--ink); line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .comment-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mini-btn {
+      background: rgba(37,63,53,.05);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      border-radius: 18px;
+      padding: 4px 10px;
+      font-size: .73rem;
+      cursor: pointer;
+    }
+    .mini-btn:hover { color: var(--ink); border-color: rgba(37,63,53,.25); }
+    .community-rules {
+      border: 1px dashed rgba(47,107,103,.32);
+      border-radius: 12px;
+      background: rgba(47,107,103,.06);
+      padding: 11px 12px;
+      display: grid;
+      gap: 6px;
+    }
+    .community-rules strong { font-size: .81rem; color: var(--marsh); }
+    .community-rules ul { margin: 0; padding-left: 17px; color: var(--ink-soft); font-size: .79rem; line-height: 1.45; }
+    .community-rules li { margin-bottom: 3px; }
+
+    /* ── Skeleton ── */
+    .skel {
+      background: linear-gradient(90deg, rgba(37,63,53,.06) 25%, rgba(37,63,53,.10) 50%, rgba(37,63,53,.06) 75%);
+      background-size: 400% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { to { background-position: -400% 0; } }
+
+    /* ── Error ── */
+    .error-wrap { text-align: center; padding: 100px 20px; }
+    .error-wrap h2 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 10px; }
+    .error-wrap p { color: var(--ink-soft); margin-bottom: 28px; }
+  </style>
+</head>
+<body>
+
+<!-- Nav island -->
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div></div>
+    <div id="nav-auth"></div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="container">
+    <div class="post-wrap">
+
+      <!-- Navigation buttons -->
+      <div class="post-nav">
+        <a href="/#news" class="btn btn-ghost btn-sm">← Torna alle notizie</a>
+        <a href="/" class="btn btn-ghost btn-sm">🏠 Home</a>
+      </div>
+
+      <!-- Content injected here -->
+      <div id="post-content">
+        <!-- skeleton -->
+        <div id="skeleton">
+          <div class="post-badges">
+            <div class="skel" style="width:70px;height:24px;border-radius:20px"></div>
+          </div>
+          <div class="skel" style="width:30%;height:12px;margin-bottom:14px"></div>
+          <div class="skel" style="width:88%;height:40px;margin-bottom:10px;border-radius:10px"></div>
+          <div class="skel" style="width:65%;height:40px;margin-bottom:32px;border-radius:10px"></div>
+          <div class="skel" style="height:16px;margin-bottom:10px"></div>
+          <div class="skel" style="width:94%;height:16px;margin-bottom:10px"></div>
+          <div class="skel" style="width:80%;height:16px;margin-bottom:10px"></div>
+          <div class="skel" style="width:88%;height:16px;margin-bottom:10px"></div>
+          <div class="skel" style="width:72%;height:16px"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script src="security.client.js"></script>
+<script src="categories.client.js"></script>
+<script>
+(async function() {
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const id = new URLSearchParams(location.search).get('id');
+  const wrap = document.getElementById('post-content');
+  const nav = document.getElementById('nav-auth');
+
+  let viewerSession = null;
+  let viewerProfile = null;
+  let activePost = null;
+  let commentsCache = [];
+  let commentPrivacy = 'all';
+  let likesCount = 0;
+  let viewerLikedPost = false;
+
+  const COMMENT_RATE_CFG = { maxAttempts: 6, windowMs: 10 * 60 * 1000, lockMs: 30 * 60 * 1000 };
+  const REPORT_RATE_CFG = { maxAttempts: 4, windowMs: 24 * 60 * 60 * 1000, lockMs: 24 * 60 * 60 * 1000 };
+  const LIKE_RATE_CFG = { maxAttempts: 20, windowMs: 10 * 60 * 1000, lockMs: 10 * 60 * 1000 };
+
+  function isMissingRelationError(error) {
+    const msg = String(error?.message || '').toLowerCase();
+    return !!error && (
+      error.code === '42P01'
+      || error.code === 'PGRST205'
+      || msg.includes('does not exist')
+      || msg.includes('could not find the table')
+    );
+  }
+
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  const canonicalCategory = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.canonical(value)
+    : String(value || '').trim();
+  const categoryHref = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.categoryHref(value)
+    : ('category?name=' + encodeURIComponent(canonicalCategory(value)));
+  const badgeColorByCategory = (value) => window.RSM_CATEGORIES
+    ? window.RSM_CATEGORIES.badgeColor(value)
+    : 'default';
+
+  function showDiscussionMessage(message, type) {
+    const box = document.getElementById('discussion-msg');
+    if (!box) return;
+    if (!message) {
+      box.style.display = 'none';
+      box.className = 'discussion-msg';
+      box.textContent = '';
+      return;
+    }
+    box.style.display = '';
+    box.className = 'discussion-msg ' + (type || '');
+    box.textContent = message;
+  }
+
+  function syncLikeUi() {
+    const btn = document.getElementById('like-btn');
+    const icon = document.getElementById('like-icon');
+    const count = document.getElementById('like-count');
+    const hint = document.getElementById('like-hint');
+    if (!btn || !icon || !count) return;
+
+    btn.classList.toggle('on', viewerLikedPost);
+    icon.textContent = viewerLikedPost ? '❤️' : '🤍';
+    count.textContent = String(Math.max(0, likesCount));
+
+    if (hint) {
+      if (!viewerSession) {
+        hint.textContent = 'Accedi per mettere Mi piace e interagire con il post.';
+      } else if (viewerLikedPost) {
+        hint.textContent = 'Hai messo Mi piace a questo articolo.';
+      } else {
+        hint.textContent = 'Un singolo Mi piace per utente (toggle).';
+      }
+    }
+  }
+
+  function disableLikeUi(reason) {
+    const btn = document.getElementById('like-btn');
+    const hint = document.getElementById('like-hint');
+    if (btn) btn.disabled = true;
+    if (hint && reason) hint.textContent = reason;
+  }
+
+  async function createInteractionNotification(type, commentId) {
+    if (!viewerSession?.user?.id || !activePost?.id || !activePost?.user_id) return;
+    if (activePost.user_id === viewerSession.user.id) return;
+
+    const actor = viewerProfile?.username ? ('@' + viewerProfile.username) : 'Un utente';
+    const message = type === 'comment'
+      ? actor + ' ha commentato il tuo articolo.'
+      : actor + ' ha messo Mi piace al tuo articolo.';
+
+    const payload = {
+      user_id: activePost.user_id,
+      actor_id: viewerSession.user.id,
+      actor_username: viewerProfile?.username || null,
+      post_id: activePost.id,
+      comment_id: commentId || null,
+      type: type,
+      message: message,
+      is_read: false,
+    };
+
+    const { error } = await sb.from('notifications').insert(payload);
+    if (!error) return;
+
+    const errMsg = String(error.message || '').toLowerCase();
+    if (isMissingRelationError(error) || errMsg.includes('duplicate key')) return;
+    console.warn('[notifications] insert failed:', error.message);
+  }
+
+  async function loadLikes() {
+    const likeBtn = document.getElementById('like-btn');
+    if (!likeBtn || !activePost?.id) return;
+
+    const { count, error: countError } = await sb.from('post_likes')
+      .select('id', { count: 'exact', head: true })
+      .eq('post_id', activePost.id);
+
+    if (countError) {
+      if (isMissingRelationError(countError)) {
+        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
+        return;
+      }
+      disableLikeUi('Like temporaneamente non disponibili.');
+      return;
+    }
+
+    likesCount = count || 0;
+    viewerLikedPost = false;
+
+    if (viewerSession?.user?.id) {
+      const { data: likeRow, error: likeError } = await sb.from('post_likes')
+        .select('id')
+        .eq('post_id', activePost.id)
+        .eq('user_id', viewerSession.user.id)
+        .maybeSingle();
+
+      if (!likeError) viewerLikedPost = !!likeRow;
+    }
+
+    syncLikeUi();
+  }
+
+  async function toggleLike() {
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn?.disabled) return;
+
+    if (!viewerSession || !viewerProfile) {
+      showDiscussionMessage('Accedi per mettere Mi piace.', 'err');
+      return;
+    }
+    if (!activePost?.id) return;
+
+    if (window.RSM_SECURITY) {
+      const likeLimit = window.RSM_SECURITY.checkRateLimit('like_toggle', viewerSession.user.id, LIKE_RATE_CFG);
+      if (!likeLimit.ok) {
+        showDiscussionMessage('Troppi click su Mi piace. Riprova tra ' + window.RSM_SECURITY.formatRetry(likeLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+    }
+
+    if (viewerLikedPost) {
+      const { error } = await sb.from('post_likes')
+        .delete()
+        .eq('post_id', activePost.id)
+        .eq('user_id', viewerSession.user.id);
+      if (error) {
+        showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
+        return;
+      }
+      viewerLikedPost = false;
+      likesCount = Math.max(0, likesCount - 1);
+      syncLikeUi();
+      showDiscussionMessage('Mi piace rimosso.', 'ok');
+      return;
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      user_id: viewerSession.user.id,
+      actor_username: viewerProfile.username || null,
+    };
+
+    const { error } = await sb.from('post_likes').insert(payload);
+    if (error) {
+      const errMsg = String(error.message || '').toLowerCase();
+      if (errMsg.includes('duplicate key')) {
+        viewerLikedPost = true;
+        await loadLikes();
+        return;
+      }
+      if (isMissingRelationError(error)) {
+        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
+        showDiscussionMessage('Like non attivi nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    viewerLikedPost = true;
+    likesCount += 1;
+    syncLikeUi();
+    showDiscussionMessage('Mi piace registrato.', 'ok');
+    await createInteractionNotification('like', null);
+  }
+
+  async function loadViewerContext() {
+    const { data: sessionData } = await sb.auth.getSession();
+    viewerSession = sessionData?.session || null;
+
+    if (!viewerSession) {
+      viewerProfile = null;
+      return;
+    }
+
+    const { data: profile } = await sb.from('profiles')
+      .select('id,username,role,avatar_emoji,avatar_color')
+      .eq('id', viewerSession.user.id)
+      .single();
+
+    viewerProfile = profile || null;
+  }
+
+  function escapeHtmlNav(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var navOutsideBound = false;
+  function closeNavDropdown() {
+    var d = document.getElementById('profileDropdown'), b = document.getElementById('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function navItem(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'" ><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildNavMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtmlNav(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? navItem('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtmlNav(color||'#2f6b67')+'">'+escapeHtmlNav(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      navItem('Profilo',profileHref,isProfile,false)+
+      navItem('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      navItem('Scrivi','write',isWrite,true)+
+      navItem('Categorie','/category',current.indexOf('/category')>=0,false)+
+      navItem('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      navItem('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindNavMenu() {
+    var btn = document.getElementById('profileBtn'), dd = document.getElementById('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { sb.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeNavDropdown); });
+    if (!navOutsideBound) {
+      document.addEventListener('click', function(e) { var m=document.getElementById('profileMenu'); if(m&&!m.contains(e.target)) closeNavDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeNavDropdown(); });
+      navOutsideBound = true;
+    }
+  }
+  function renderNavAuth() {
+    if (!nav) return;
+    if (viewerSession && viewerProfile) {
+      nav.innerHTML = buildNavMenu(viewerProfile.username, viewerProfile.avatar_color||'#2f6b67', viewerProfile.avatar_emoji||'\uD83C\uDF3F');
+      bindNavMenu();
+      return;
+    }
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+  }
+
+  function renderContent(text) {
+    if (!text) return '';
+    var safe = escapeHtml(text);
+    return safe
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n\n+/g, '</p><p>')
+      .replace(/^/, '<p>') + '</p>';
+  }
+
+  function canViewerComment() {
+    if (commentPrivacy === 'none') {
+      return { ok: false, reason: 'I commenti per questo autore sono disattivati.' };
+    }
+    if (!viewerSession || !viewerProfile) {
+      return { ok: false, reason: 'Accedi per poter commentare.' };
+    }
+    if (commentPrivacy === 'members' && !['user', 'admin'].includes(viewerProfile.role || '')) {
+      return { ok: false, reason: 'Solo i membri verificati possono commentare questo post.' };
+    }
+    return { ok: true, reason: '' };
+  }
+
+  function syncCommentComposerState() {
+    const status = canViewerComment();
+    const textarea = document.getElementById('comment-text');
+    const submitBtn = document.getElementById('comment-submit');
+    if (!textarea || !submitBtn) return;
+
+    textarea.disabled = !status.ok;
+    submitBtn.disabled = !status.ok;
+
+    if (!status.ok) {
+      textarea.placeholder = status.reason;
+      showDiscussionMessage(status.reason, '');
+    } else {
+      textarea.placeholder = 'Scrivi un commento rispettoso e costruttivo...';
+      showDiscussionMessage('', '');
+    }
+  }
+
+  async function resolveCommentPrivacy() {
+    if (!activePost?.user_id) {
+      commentPrivacy = 'all';
+      return;
+    }
+
+    const { data, error } = await sb.from('user_settings')
+      .select('comment_privacy')
+      .eq('user_id', activePost.user_id)
+      .maybeSingle();
+
+    if (error) {
+      commentPrivacy = 'all';
+      return;
+    }
+
+    commentPrivacy = data?.comment_privacy || 'all';
+  }
+
+  function renderComments() {
+    const list = document.getElementById('comments-list');
+    if (!list) return;
+
+    if (!commentsCache.length) {
+      list.innerHTML = '<p class="discussion-note">Nessun commento ancora. Inizia tu la discussione.</p>';
+      return;
+    }
+
+    const nowTs = Date.now();
+    list.innerHTML = commentsCache.map((comment) => {
+      const author = comment.author_username ? '@' + escapeHtml(comment.author_username) : 'Utente';
+      const ownComment = !!viewerSession && comment.user_id === viewerSession.user.id;
+      const createdAt = new Date(comment.created_at).getTime();
+      const canEdit = ownComment && (nowTs - createdAt) <= (10 * 60 * 1000);
+
+      return `
+        <article class="comment-card">
+          <div class="comment-meta">
+            <span>${author}</span>
+            <time>${new Date(comment.created_at).toLocaleString('it-IT')}</time>
+          </div>
+          <div class="comment-body">${escapeHtml(comment.content)}</div>
+          <div class="comment-actions">
+            ${canEdit ? `<button class="mini-btn" type="button" onclick="editComment('${comment.id}')">Modifica</button>` : ''}
+            ${ownComment ? `<button class="mini-btn" type="button" onclick="deleteComment('${comment.id}')">Elimina</button>` : ''}
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  async function loadComments() {
+    const list = document.getElementById('comments-list');
+    if (!list || !activePost?.id) return;
+
+    const { data, error } = await sb.from('comments')
+      .select('id,post_id,user_id,author_username,content,created_at,is_hidden')
+      .eq('post_id', activePost.id)
+      .eq('is_hidden', false)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      if (isMissingRelationError(error)) {
+        list.innerHTML = '<p class="discussion-note">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>';
+        return;
+      }
+      list.innerHTML = `<p class="discussion-note">Errore caricamento commenti: ${escapeHtml(error.message)}</p>`;
+      return;
+    }
+
+    commentsCache = data || [];
+    renderComments();
+  }
+
+  async function submitComment(event) {
+    event.preventDefault();
+    const textarea = document.getElementById('comment-text');
+    if (!textarea || !viewerSession || !viewerProfile || !activePost?.id) {
+      showDiscussionMessage('Accedi per poter commentare.', 'err');
+      return;
+    }
+
+    const access = canViewerComment();
+    if (!access.ok) {
+      showDiscussionMessage(access.reason, 'err');
+      return;
+    }
+
+    const content = textarea.value.trim();
+    if (!content) {
+      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const commentLimit = window.RSM_SECURITY.checkRateLimit('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      if (!commentLimit.ok) {
+        showDiscussionMessage('Stai commentando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(commentLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+
+      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
+        minChars: 3,
+        maxChars: 1200,
+        maxLinks: 2,
+        maxRepeatedChar: 6,
+        maxRepeatedLine: 3,
+      });
+      if (!safety.ok) {
+        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+        showDiscussionMessage(safety.message, 'err');
+        return;
+      }
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      user_id: viewerSession.user.id,
+      author_username: viewerProfile.username || null,
+      content: content,
+      is_hidden: false,
+    };
+    const { data: insertedComment, error } = await sb.from('comments').insert(payload).select('id').single();
+
+    if (error) {
+      if (window.RSM_SECURITY) {
+        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      }
+      if (isMissingRelationError(error)) {
+        showDiscussionMessage('Commenti non attivi nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Commento non salvato: ' + error.message, 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.clearRateFailures('comment_write', viewerSession.user.id);
+    }
+
+    await createInteractionNotification('comment', insertedComment?.id || null);
+    textarea.value = '';
+    showDiscussionMessage('Commento pubblicato.', 'ok');
+    await loadComments();
+  }
+
+  async function editComment(commentId) {
+    if (!viewerSession) return;
+    const comment = commentsCache.find((item) => item.id === commentId);
+    if (!comment || comment.user_id !== viewerSession.user.id) return;
+
+    const ageMs = Date.now() - new Date(comment.created_at).getTime();
+    if (ageMs > 10 * 60 * 1000) {
+      showDiscussionMessage('Puoi modificare un commento solo entro 10 minuti.', 'err');
+      return;
+    }
+
+    const next = prompt('Modifica commento:', comment.content || '');
+    if (next === null) return;
+    const content = String(next).trim();
+    if (!content) {
+      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
+        minChars: 3,
+        maxChars: 1200,
+        maxLinks: 2,
+        maxRepeatedChar: 6,
+        maxRepeatedLine: 3,
+      });
+      if (!safety.ok) {
+        showDiscussionMessage(safety.message, 'err');
+        return;
+      }
+    }
+
+    const { error } = await sb.from('comments').update({ content: content }).eq('id', commentId);
+    if (error) {
+      showDiscussionMessage('Modifica non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    showDiscussionMessage('Commento aggiornato.', 'ok');
+    await loadComments();
+  }
+
+  async function deleteComment(commentId) {
+    if (!viewerSession) return;
+    const comment = commentsCache.find((item) => item.id === commentId);
+    if (!comment || comment.user_id !== viewerSession.user.id) return;
+    if (!confirm('Eliminare questo commento?')) return;
+
+    const { error } = await sb.from('comments').delete().eq('id', commentId);
+    if (error) {
+      showDiscussionMessage('Eliminazione non riuscita: ' + error.message, 'err');
+      return;
+    }
+
+    showDiscussionMessage('Commento eliminato.', 'ok');
+    await loadComments();
+  }
+
+  async function reportPost() {
+    if (!viewerSession || !activePost?.id) {
+      showDiscussionMessage('Accedi per inviare una segnalazione.', 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      const reportLimit = window.RSM_SECURITY.checkRateLimit('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      if (!reportLimit.ok) {
+        showDiscussionMessage('Hai inviato troppe segnalazioni. Riprova tra ' + window.RSM_SECURITY.formatRetry(reportLimit.retryAfterMs) + '.', 'err');
+        return;
+      }
+    }
+
+    const reason = prompt('Motivo segnalazione (es: spam, offese, disinformazione):', 'spam');
+    if (reason === null) return;
+    const reasonText = String(reason || '').trim();
+    if (!reasonText) {
+      showDiscussionMessage('Inserisci un motivo valido per la segnalazione.', 'err');
+      return;
+    }
+
+    const details = prompt('Dettagli (opzionale):', '') || '';
+    const detailsText = String(details).trim();
+
+    if (reasonText.length < 3) {
+      showDiscussionMessage('Motivo troppo breve.', 'err');
+      return;
+    }
+    if (reasonText.length > 120) {
+      showDiscussionMessage('Motivo troppo lungo.', 'err');
+      return;
+    }
+    if (detailsText.length > 1000) {
+      showDiscussionMessage('Dettagli troppo lunghi.', 'err');
+      return;
+    }
+
+    const reportLinks = (reasonText + '\n' + detailsText).match(/https?:\/\/|www\./gi);
+    if (reportLinks && reportLinks.length > 1) {
+      showDiscussionMessage('Segnalazione bloccata: troppi link.', 'err');
+      return;
+    }
+
+    const payload = {
+      post_id: activePost.id,
+      reporter_id: viewerSession.user.id,
+      reason: reasonText,
+      details: detailsText || null,
+      status: 'pending',
+    };
+
+    const { error } = await sb.from('reports').insert(payload);
+    if (error) {
+      if (window.RSM_SECURITY) {
+        window.RSM_SECURITY.recordRateFailure('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      }
+
+      const errMsg = String(error.message || '').toLowerCase();
+      if (errMsg.includes('duplicate key')) {
+        showDiscussionMessage('Hai gia segnalato questo contenuto.', 'err');
+        return;
+      }
+      if (isMissingRelationError(error)) {
+        showDiscussionMessage('Segnalazioni non attive nel database. Esegui supabase-security.sql.', 'err');
+        return;
+      }
+      showDiscussionMessage('Segnalazione non inviata: ' + error.message, 'err');
+      return;
+    }
+
+    if (window.RSM_SECURITY) {
+      window.RSM_SECURITY.clearRateFailures('report_write', viewerSession.user.id);
+    }
+    showDiscussionMessage('Segnalazione inviata alla moderazione. Grazie.', 'ok');
+  }
+
+  function bindDiscussionHandlers() {
+    const form = document.getElementById('comment-form');
+    if (form) form.addEventListener('submit', submitComment);
+
+    const reportBtn = document.getElementById('report-post-btn');
+    if (reportBtn) reportBtn.addEventListener('click', reportPost);
+
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn) likeBtn.addEventListener('click', toggleLike);
+  }
+
+  await loadViewerContext();
+  renderNavAuth();
+
+  if (!id || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
+    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>Nessun ID specificato.</p><a href="/#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
+    return;
+  }
+
+  const { data: post, error } = await sb.from('posts').select('*').eq('id', id).eq('published', true).single();
+
+  if (error || !post) {
+    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>L'articolo non esiste o non è ancora pubblicato.</p><a href="/#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
+    return;
+  }
+
+  document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
+  const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  const badgeCls = c => c === 'green' ? 'badge badge-green' : 'badge badge-default';
+
+  activePost = {
+    ...post,
+    category: canonicalCategory(post.category) || 'Territorio',
+    badge_color: post.badge_color || badgeColorByCategory(post.category)
+  };
+  const safeTitle = escapeHtml(activePost.title || 'Articolo');
+  const safeExcerpt = escapeHtml(activePost.excerpt || '');
+  const safeCategory = escapeHtml(activePost.category || '');
+  const safeBadge = escapeHtml(activePost.badge || activePost.category || '');
+  const safeAuthor = escapeHtml(activePost.author_username || '');
+  const safeCategoryHref = categoryHref(activePost.category);
+  const authorHref = activePost.author_username ? `profile?u=${encodeURIComponent(activePost.author_username)}` : '';
+
+  wrap.innerHTML = `
+    <div class="post-badges">
+      <span class="${badgeCls(activePost.badge_color)}">${safeBadge}</span>
+      ${activePost.category && activePost.badge && activePost.category !== activePost.badge ? `<a class="badge badge-default" href="${safeCategoryHref}">${safeCategory}</a>` : ''}
+    </div>
+    <div class="post-meta">
+      <time>${fmt(activePost.published_at)}</time>
+      <span class="meta-dot"></span>
+      <a href="${safeCategoryHref}" style="color:var(--water)">${safeCategory}</a>
+      ${activePost.author_username ? `<span class="meta-dot"></span><a href="${authorHref}" style="color:var(--water)">@${safeAuthor}</a>` : ''}
+    </div>
+    <h1 class="post-title">${safeTitle}</h1>
+    ${activePost.excerpt ? `<p class="post-lead">${safeExcerpt}</p>` : ''}
+    <div class="content-divider"></div>
+    <div class="content">${renderContent(activePost.content)}</div>
+    <div class="post-footer">
+      <a href="/#news" class="btn btn-primary">← Tutte le notizie</a>
+      ${activePost.author_username ? `<a href="${authorHref}" class="btn btn-ghost">Autore: @${safeAuthor} →</a>` : ''}
+    </div>
+    <div class="post-reactions">
+      <button class="like-btn" id="like-btn" type="button">
+        <span id="like-icon">🤍</span>
+        <span>Mi piace</span>
+        <span class="like-count" id="like-count">0</span>
+      </button>
+      <span class="discussion-note" id="like-hint">Un singolo Mi piace per utente (toggle).</span>
+    </div>
+    <section class="discussion" id="discussion">
+      <div class="discussion-head">
+        <h2>Discussione</h2>
+      </div>
+      <p class="discussion-note">Commenti con filtro anti-spam e moderazione. Modifica consentita entro 10 minuti.</p>
+      <div id="discussion-msg" class="discussion-msg" style="display:none"></div>
+      <form class="comment-form" id="comment-form">
+        <textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" id="comment-submit" type="submit">Pubblica commento</button>
+          <button class="btn btn-ghost btn-sm" id="report-post-btn" type="button">Segnala post</button>
+        </div>
+      </form>
+      <div class="community-rules">
+        <strong>Regole di convivenza</strong>
+        <ul>
+          <li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>
+          <li>Resta sul tema del post e usa un linguaggio costruttivo.</li>
+          <li>Evita spam, link ripetuti e contenuti offensivi.</li>
+        </ul>
+      </div>
+      <div id="comments-list" class="comments-list">
+        <p class="discussion-note">Caricamento commenti...</p>
+      </div>
+    </section>
+  `;
+
+  await resolveCommentPrivacy();
+  bindDiscussionHandlers();
+  await loadLikes();
+  syncCommentComposerState();
+  await loadComments();
+
+  window.editComment = editComment;
+  window.deleteComment = deleteComment;
+})();
+</script>
+</body>
+</html>

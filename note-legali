@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note Legali — Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #17221d;
+      --ink-soft: #31453b;
+      --cream:    #f7f0e4;
+      --paper:    #fffaf0;
+      --marsh:    #253f35;
+      --water:    #2f6b67;
+      --clay:     #b8663f;
+      --reed:     #c6a462;
+      --line:     rgba(37, 63, 53, 0.15);
+      --sans:     "Cabinet Grotesk", system-ui, sans-serif;
+      --serif:    "Fraunces", Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.28), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.16), transparent 34rem),
+        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+
+    a { color: var(--marsh); text-decoration: none; }
+    a:hover { color: var(--water); text-decoration: underline; }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed; top: 20px; left: 0; right: 0;
+      z-index: 70; pointer-events: none;
+    }
+
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+
+    /* ── Document ── */
+    .doc-wrap {
+      max-width: 740px; margin: 0 auto;
+      padding: 108px 24px 96px;
+      position: relative; z-index: 1;
+    }
+
+    .doc-eyebrow {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--water);
+      margin-bottom: 10px;
+    }
+
+    .doc-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 650; line-height: 1.2; letter-spacing: -0.03em;
+      color: var(--ink); margin-bottom: 8px;
+    }
+
+    .doc-meta {
+      font-size: .82rem; color: var(--ink-soft);
+      margin-bottom: 36px; padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 12px rgba(37,63,53,.07);
+    }
+
+    .toc-title {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--ink-soft); margin-bottom: 12px;
+    }
+
+    .toc ol { padding-left: 18px; }
+    .toc li { font-size: .84rem; margin-bottom: 5px; line-height: 1.5; }
+    .toc a { color: var(--ink); }
+    .toc a:hover { color: var(--marsh); text-decoration: none; }
+
+    /* ── Sections ── */
+    .doc-section { margin-bottom: 40px; }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-num {
+      font-size: .72rem; font-weight: 700;
+      color: var(--marsh); letter-spacing: .06em;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 1.1rem; font-weight: 650;
+      color: var(--ink); letter-spacing: -0.02em;
+    }
+
+    p { margin-bottom: 12px; color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol { padding-left: 22px; margin-bottom: 12px; }
+    li { margin-bottom: 5px; }
+
+    .highlight-box {
+      background: rgba(47, 107, 103, 0.07);
+      border-left: 3px solid var(--water);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px; margin: 16px 0; font-size: .9rem;
+    }
+
+    .placeholder {
+      background: rgba(198,164,98,.12);
+      border: 1px dashed rgba(198,164,98,.5);
+      border-radius: 4px; padding: 1px 6px;
+      color: var(--clay); font-style: italic; font-size: .85em;
+    }
+
+    /* ── Footer ── */
+    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
+    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
+    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
+    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
+    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
+    .footer p { max-width:540px; line-height:1.66; }
+    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
+    .footer-links a:hover { color:var(--paper); }
+    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
+    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
+
+    @media (max-width: 600px) {
+      .doc-wrap { padding: 100px 16px 64px; }
+      .brand-name { display: none; }
+    }
+
+    @media print {
+      .site-header { display: none; }
+      .doc-wrap { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div></div>
+    <div id="nav-auth"></div>
+  </div>
+</header>
+
+<main class="doc-wrap">
+
+  <p class="doc-eyebrow">Documento legale</p>
+  <h1 class="doc-title">Note Legali</h1>
+  <p class="doc-meta">
+    Versione 1.0 — <span class="placeholder">[data entrata in vigore]</span> &nbsp;·&nbsp;
+    Rivalta sul Mincio — Pro Loco <span class="placeholder">[ragione sociale completa]</span>
+  </p>
+
+  <!-- Indice -->
+  <nav class="toc" aria-label="Indice">
+    <p class="toc-title">Indice</p>
+    <ol>
+      <li><a href="#art1">Titolare e gestore del sito</a></li>
+      <li><a href="#art2">Natura del sito e servizi offerti</a></li>
+      <li><a href="#art3">Condizioni di utilizzo</a></li>
+      <li><a href="#art4">Account utente e responsabilità dei contenuti</a></li>
+      <li><a href="#art5">Proprietà intellettuale</a></li>
+      <li><a href="#art6">Esclusione di garanzie e limitazione di responsabilità</a></li>
+      <li><a href="#art7">Link a siti esterni</a></li>
+      <li><a href="#art8">Legge applicabile e foro competente</a></li>
+      <li><a href="#art9">Modifiche alle note legali</a></li>
+      <li><a href="#art10">Contatti</a></li>
+    </ol>
+  </nav>
+
+  <!-- Art. 1 -->
+  <section class="doc-section" id="art1">
+    <div class="section-header">
+      <span class="section-num">Art. 1</span>
+      <h2 class="section-title">Titolare e gestore del sito</h2>
+    </div>
+    <p>Il sito web <strong>rivaltasulmincio.it</strong> è di proprietà e gestito da:</p>
+    <ul>
+      <li>Denominazione: <span class="placeholder">[ragione sociale / denominazione Pro Loco]</span></li>
+      <li>Sede legale: <span class="placeholder">[indirizzo completo, CAP, Comune, Provincia]</span></li>
+      <li>Codice fiscale / P.IVA: <span class="placeholder">[CF / P.IVA]</span></li>
+      <li>Registro: <span class="placeholder">[eventuale iscrizione registro APS/ETS o RUNTS]</span></li>
+      <li>Email: <span class="placeholder">[email di contatto]</span></li>
+      <li>PEC: <span class="placeholder">[indirizzo PEC, se disponibile]</span></li>
+    </ul>
+  </section>
+
+  <!-- Art. 2 -->
+  <section class="doc-section" id="art2">
+    <div class="section-header">
+      <span class="section-num">Art. 2</span>
+      <h2 class="section-title">Natura del sito e servizi offerti</h2>
+    </div>
+    <p>Rivalta sul Mincio è una piattaforma editoriale comunitaria dedicata al territorio di Rivalta sul Mincio (MN). Il sito consente a utenti registrati di:</p>
+    <ul>
+      <li>Creare un profilo pubblico d'autore;</li>
+      <li>Pubblicare articoli, notizie e contenuti editoriali;</li>
+      <li>Commentare e interagire con i contenuti della comunità;</li>
+      <li>Categorizzare e leggere contenuti per tema (cronaca, eventi, sport, cultura, ecc.).</li>
+    </ul>
+    <p>Il sito è accessibile gratuitamente. La registrazione è necessaria per pubblicare contenuti. Non sono previste transazioni economiche o acquisti.</p>
+    <div class="highlight-box">
+      Il sito è gestito da una associazione senza scopo di lucro (Pro Loco). Non viene svolta attività commerciale. I contenuti pubblicati hanno finalità informativa e culturale riguardante il territorio locale.
+    </div>
+  </section>
+
+  <!-- Art. 3 -->
+  <section class="doc-section" id="art3">
+    <div class="section-header">
+      <span class="section-num">Art. 3</span>
+      <h2 class="section-title">Condizioni di utilizzo</h2>
+    </div>
+    <p>L'utilizzo del sito comporta l'accettazione delle presenti Note Legali, della <a href="privacy">Privacy Policy</a> e della <a href="cookie">Cookie Policy</a>.</p>
+    <p>È <strong>vietato</strong> utilizzare il sito per:</p>
+    <ul>
+      <li>Pubblicare contenuti falsi, diffamatori, offensivi, discriminatori o lesivi della dignità delle persone;</li>
+      <li>Pubblicare materiale protetto da copyright senza autorizzazione;</li>
+      <li>Fare spam, pubblicità commerciale non autorizzata o promozione di prodotti o servizi;</li>
+      <li>Diffondere malware, phishing o contenuti fraudolenti;</li>
+      <li>Raccogliere dati personali di altri utenti senza consenso;</li>
+      <li>Tentare accessi non autorizzati ai sistemi informatici del sito;</li>
+      <li>Impersonare altre persone o enti.</li>
+    </ul>
+    <p>Il Titolare si riserva il diritto di rimuovere contenuti che violino queste condizioni e di sospendere o eliminare account degli utenti responsabili, senza preavviso.</p>
+  </section>
+
+  <!-- Art. 4 -->
+  <section class="doc-section" id="art4">
+    <div class="section-header">
+      <span class="section-num">Art. 4</span>
+      <h2 class="section-title">Account utente e responsabilità dei contenuti</h2>
+    </div>
+    <p>La registrazione richiede un indirizzo email valido. L'utente è responsabile della sicurezza delle proprie credenziali e di tutte le attività compiute con il proprio account.</p>
+    <p>Gli utenti che pubblicano contenuti (articoli, commenti, bio del profilo) sono <strong>personalmente responsabili</strong> di quanto pubblicato ai sensi delle leggi vigenti, in particolare del D.Lgs. 70/2003 (E-Commerce) e delle norme sulla diffamazione a mezzo stampa.</p>
+    <p>Il Titolare agisce come <em>hosting provider</em> ai sensi dell'art. 16 del D.Lgs. 70/2003 e non è responsabile dei contenuti pubblicati dagli utenti, purché, venuto a conoscenza di contenuti illeciti, proceda alla loro rimozione tempestiva.</p>
+    <p>Per segnalare contenuti illeciti o inappropriati, contattare: <span class="placeholder">[email segnalazioni]</span></p>
+  </section>
+
+  <!-- Art. 5 -->
+  <section class="doc-section" id="art5">
+    <div class="section-header">
+      <span class="section-num">Art. 5</span>
+      <h2 class="section-title">Proprietà intellettuale</h2>
+    </div>
+    <p><strong>Contenuti del sito (design, codice, loghi):</strong> Il design, il codice sorgente, i grafici, i loghi e i testi redazionali del sito sono di proprietà del Titolare o dei rispettivi autori e sono protetti dalle norme in materia di diritto d'autore (L. 633/1941 e s.m.i.). È vietata la riproduzione, distribuzione o modifica senza autorizzazione scritta.</p>
+    <p><strong>Contenuti pubblicati dagli utenti:</strong> Gli utenti mantengono la titolarità dei diritti d'autore sui propri contenuti. Pubblicando sul sito, l'utente concede al Titolare una licenza non esclusiva, gratuita e revocabile per pubblicare, visualizzare e distribuire il contenuto nell'ambito del sito e delle sue comunicazioni istituzionali (es. social media della Pro Loco).</p>
+    <p><strong>Contenuti di terze parti:</strong> Il sito integra font forniti da Google Fonts e un widget della Pagina Facebook ufficiale. I diritti su tali contenuti rimangono in capo ai rispettivi titolari.</p>
+  </section>
+
+  <!-- Art. 6 -->
+  <section class="doc-section" id="art6">
+    <div class="section-header">
+      <span class="section-num">Art. 6</span>
+      <h2 class="section-title">Esclusione di garanzie e limitazione di responsabilità</h2>
+    </div>
+    <p>Il sito è fornito "così com'è" (<em>as is</em>). Il Titolare non garantisce la continuità del servizio, l'assenza di errori o l'accuratezza di tutti i contenuti pubblicati dagli utenti.</p>
+    <p>Il Titolare non è responsabile per:</p>
+    <ul>
+      <li>Interruzioni del servizio dovute a manutenzione, guasti tecnici o cause di forza maggiore;</li>
+      <li>Perdita di dati causata da problemi tecnici imprevisti;</li>
+      <li>Danni diretti o indiretti derivanti dall'uso o dall'impossibilità di usare il sito;</li>
+      <li>Contenuti di siti esterni raggiungibili tramite link presenti nel sito.</li>
+    </ul>
+    <p>Il Titolare adotta misure tecniche adeguate per la sicurezza dei dati (cifratura in transito via HTTPS, Row Level Security su Supabase, autenticazione JWT), ma non può garantire l'assoluta inviolabilità dei sistemi.</p>
+  </section>
+
+  <!-- Art. 7 -->
+  <section class="doc-section" id="art7">
+    <div class="section-header">
+      <span class="section-num">Art. 7</span>
+      <h2 class="section-title">Link a siti esterni</h2>
+    </div>
+    <p>Il sito può contenere link a risorse esterne. Tali link sono forniti per comodità informativa. Il Titolare non ha controllo sui siti esterni e non ne condivide i contenuti, le politiche sulla privacy o le pratiche commerciali.</p>
+    <p>La presenza di un link non implica alcuna forma di approvazione, sponsorizzazione o affiliazione con il sito collegato.</p>
+  </section>
+
+  <!-- Art. 8 -->
+  <section class="doc-section" id="art8">
+    <div class="section-header">
+      <span class="section-num">Art. 8</span>
+      <h2 class="section-title">Legge applicabile e foro competente</h2>
+    </div>
+    <p>Le presenti Note Legali sono regolate dalla legge italiana. Per qualsiasi controversia relativa all'uso del sito, salvo diversa previsione di legge, è competente in via esclusiva il Foro di <span class="placeholder">[Mantova / sede legale della Pro Loco]</span>.</p>
+    <p>Per le controversie con consumatori (utenti privati) si applicano le disposizioni del Codice del Consumo (D.Lgs. 206/2005). In tal caso l'utente può avvalersi della piattaforma europea di risoluzione delle controversie online (ODR) disponibile all'indirizzo: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr</a>.</p>
+  </section>
+
+  <!-- Art. 9 -->
+  <section class="doc-section" id="art9">
+    <div class="section-header">
+      <span class="section-num">Art. 9</span>
+      <h2 class="section-title">Modifiche alle note legali</h2>
+    </div>
+    <p>Il Titolare si riserva il diritto di modificare le presenti Note Legali in qualsiasi momento. Le modifiche saranno pubblicate su questa pagina con indicazione della data di aggiornamento e saranno efficaci dalla data di pubblicazione.</p>
+    <p>Si raccomanda agli utenti di consultare periodicamente questa pagina. Il proseguimento dell'utilizzo del sito successivamente alla pubblicazione delle modifiche costituisce accettazione delle stesse.</p>
+  </section>
+
+  <!-- Art. 10 -->
+  <section class="doc-section" id="art10">
+    <div class="section-header">
+      <span class="section-num">Art. 10</span>
+      <h2 class="section-title">Contatti</h2>
+    </div>
+    <p>Per qualsiasi comunicazione legale o richiesta relativa a questi documenti:</p>
+    <ul>
+      <li>Email: <span class="placeholder">[email del titolare]</span></li>
+      <li>PEC: <span class="placeholder">[PEC, se disponibile]</span></li>
+      <li>Indirizzo postale: <span class="placeholder">[indirizzo completo della Pro Loco]</span></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer" id="contatti">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <h3>Pro Loco Rivalta sul Mincio</h3>
+        <p>Ecoturismo, cultura locale, eventi, Sagra del Luccio e promozione ambientale nel cuore del Parco Regionale del Mincio.</p>
+      </div>
+      <nav aria-label="Sezioni">
+        <h4>Esplora</h4>
+        <ul class="footer-links">
+          <li><a href="/#esperienze">Esperienze</a></li>
+          <li><a href="/#galleria">Galleria</a></li>
+          <li><a href="/#valli">Valli</a></li>
+          <li><a href="/#news">News</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Area utente">
+        <h4>Area</h4>
+        <ul class="footer-links">
+          <li><a href="login">Accedi</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="write">Scrivi</a></li>
+          <li><a href="profile">Profili</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Legale e social">
+        <h4>Link</h4>
+        <ul class="footer-links">
+          <li><a href="privacy">Privacy</a></li>
+          <li><a href="cookie">Cookie</a></li>
+          <li><a href="note-legali">Note legali</a></li>
+          <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="footer-year"></span> Pro Loco Rivalta sul Mincio A.P.S.</span>
+      <span>Via Porto, 31 &ndash; 46040 Rivalta sul Mincio (MN)</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nav = $('nav-auth');
+  if (!nav) return;
+  if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return;
+  }
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var outsideBound = false;
+  function closeDropdown() {
+    var d = $('profileDropdown'), b = $('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function item(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'"><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtml(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? item('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtml(color||'#2f6b67')+'">'+escapeHtml(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      item('Profilo',profileHref,isProfile,false)+
+      item('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      item('Scrivi','write',isWrite,true)+
+      item('Categorie','/category',current.indexOf('/category')>=0,false)+
+      item('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      item('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindMenu() {
+    var btn = $('profileBtn'), dd = $('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { client.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDropdown); });
+    if (!outsideBound) {
+      document.addEventListener('click', function(e) { var m=$('profileMenu'); if(m&&!m.contains(e.target)) closeDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDropdown(); });
+      outsideBound = true;
+    }
+  }
+  function render(session) {
+    if (!session) { nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return; }
+    client.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single().then(function(r) {
+      var p = r&&r.data?r.data:{};
+      var username = p.username || (session.user.email||'profilo').split('@')[0];
+      nav.innerHTML = buildMenu(username, p.avatar_color||'#2f6b67', p.avatar_emoji||'\uD83C\uDF3F');
+      bindMenu();
+    });
+  }
+  client.auth.onAuthStateChange(function(_e,s){ render(s); });
+  client.auth.getSession().then(function(r){ render(r&&r.data?r.data.session:null); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DB Test – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --marsh: #253f35;
+      --water: #2f6b67;
+      --reed: #c6a462;
+      --line: rgba(37,63,53,0.15);
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(198,164,98,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(47,107,103,.14) 0%, transparent 55%),
+        linear-gradient(160deg, #fdf6e8 0%, #f5ede0 40%, #ede4d6 100%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    @media (max-width: 760px) { .brand-name span { display: none; } }
+
+    /* ── Page ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 100px 20px 60px;
+    }
+
+    .page-head { margin-bottom: 20px; }
+    .page-head h1 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+    .page-head p { font-size: .88rem; color: var(--ink-soft); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 6px rgba(37,63,53,.05);
+    }
+    .card h2 {
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ink-soft);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .result { font-size: .82rem; font-family: 'Courier New', monospace; line-height: 1.6; word-break: break-all; }
+    .ok      { color: #2E7D32; }
+    .err     { color: #b94747; }
+    .pending { color: var(--ink-soft); }
+
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; margin-right: 4px; }
+    .badge-ok   { background: rgba(46,125,50,.12); color: #2E7D32; }
+    .badge-err  { background: rgba(185,71,71,.10); color: #b94747; }
+    .badge-skip { background: rgba(37,63,53,.07); color: var(--ink-soft); }
+
+    pre { white-space: pre-wrap; margin-top: 6px; font-size: .78rem; color: var(--ink-soft); }
+
+    .summary {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 1px 6px rgba(37,63,53,.05);
+    }
+    .summary strong { font-size: 1.1rem; }
+
+    .run-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--marsh);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: .84rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: opacity .2s;
+    }
+    .run-btn:hover { opacity: .82; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div></div>
+    <div id="nav-auth"></div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="page-head">
+    <h1>🔬 Database Test</h1>
+    <p>Diagnostica della connessione Supabase e delle tabelle del progetto.</p>
+  </div>
+
+  <div class="summary" id="summary">
+    <span>Esecuzione in corso…</span>
+  </div>
+
+  <button class="run-btn" onclick="runAll()">▶ Riesegui tutti i test</button>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nav = $('nav-auth');
+  if (!nav) return;
+  if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return;
+  }
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var outsideBound = false;
+  function closeDropdown() {
+    var d = $('profileDropdown'), b = $('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function item(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'"><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtml(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? item('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtml(color||'#2f6b67')+'">'+escapeHtml(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      item('Profilo',profileHref,isProfile,false)+
+      item('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      item('Scrivi','write',isWrite,true)+
+      item('Categorie','/category',current.indexOf('/category')>=0,false)+
+      item('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      item('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindMenu() {
+    var btn = $('profileBtn'), dd = $('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { client.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDropdown); });
+    if (!outsideBound) {
+      document.addEventListener('click', function(e) { var m=$('profileMenu'); if(m&&!m.contains(e.target)) closeDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDropdown(); });
+      outsideBound = true;
+    }
+  }
+  function render(session) {
+    if (!session) { nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return; }
+    client.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single().then(function(r) {
+      var p = r&&r.data?r.data:{};
+      var username = p.username || (session.user.email||'profilo').split('@')[0];
+      nav.innerHTML = buildMenu(username, p.avatar_color||'#2f6b67', p.avatar_emoji||'\uD83C\uDF3F');
+      bindMenu();
+    });
+  }
+  client.auth.onAuthStateChange(function(_e,s){ render(s); });
+  client.auth.getSession().then(function(r){ render(r&&r.data?r.data.session:null); });
+})();
+</script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const TESTS = [
+  {
+    id: 'connection',
+    label: 'Connessione Supabase',
+    desc: 'Raggiunge il progetto Supabase',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id').limit(1);
+      if (error) throw error;
+      return `OK — risposta ricevuta (${data?.length ?? 0} righe)`;
+    }
+  },
+  {
+    id: 'profiles_columns',
+    label: 'Tabella profiles — colonne chiave',
+    desc: 'Verifica che id, username, display_name, bio, comune, avatar_emoji, avatar_color, role, created_at esistano',
+    run: async () => {
+      const cols = ['id','username','display_name','bio','comune','avatar_emoji','avatar_color','role','created_at'];
+      const { data, error } = await sb.from('profiles').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      // If we got here without error, all columns exist
+      return `OK — tutte le colonne trovate: ${cols.join(', ')}`;
+    }
+  },
+  {
+    id: 'posts_table',
+    label: 'Tabella posts',
+    desc: 'Verifica id, title, excerpt, content, category, published, user_id, created_at, published_at',
+    run: async () => {
+      const cols = ['id','title','excerpt','content','category','published','user_id','created_at','published_at'];
+      const { data, error } = await sb.from('posts').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      return `OK — ${data?.length ?? 0} righe leggibili (published=true via RLS non richiesta qui)`;
+    }
+  },
+  {
+    id: 'posts_published',
+    label: 'Post pubblicati pubblici',
+    desc: 'Conta i post con published=true leggibili da anonimo',
+    run: async () => {
+      const { count, error } = await sb.from('posts').select('id', { count: 'exact', head: true }).eq('published', true);
+      if (error) throw error;
+      return `OK — ${count} post pubblicati visibili pubblicamente`;
+    }
+  },
+  {
+    id: 'categories',
+    label: 'Tabella categories (opzionale)',
+    desc: 'Verifica se esiste una tabella categories separata',
+    run: async () => {
+      const { data, error } = await sb.from('categories').select('*').limit(5);
+      if (error) {
+        if (error.code === '42P01' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste (le categorie sono gestite lato client — OK)';
+        }
+        throw error;
+      }
+      return `OK — ${data?.length ?? 0} categorie trovate`;
+    }
+  },
+  {
+    id: 'comments_table',
+    label: 'Tabella comments (opzionale)',
+    desc: 'Verifica se la tabella comments esiste',
+    run: async () => {
+      const { data, error } = await sb.from('comments').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora — funzionalità commenti non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'likes_table',
+    label: 'Tabella likes (opzionale)',
+    desc: 'Verifica se la tabella likes esiste',
+    run: async () => {
+      const { data, error } = await sb.from('likes').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora — funzionalità like non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'notifications_table',
+    label: 'Tabella notifications (opzionale)',
+    desc: 'Verifica se la tabella notifications esiste',
+    run: async () => {
+      const { data, error } = await sb.from('notifications').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return '⚠ Non esiste ancora';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'auth_session',
+    label: 'Sessione auth corrente',
+    desc: 'Controlla se esiste una sessione utente attiva',
+    run: async () => {
+      const { data: { session }, error } = await sb.auth.getSession();
+      if (error) throw error;
+      if (!session) return '— Nessun utente loggato (anonimo)';
+      return `OK — loggato come ${session.user.email} (id: ${session.user.id.slice(0,8)}…)`;
+    }
+  },
+  {
+    id: 'rls_profiles_anon',
+    label: 'RLS profiles — lettura anonima',
+    desc: 'Un utente anonimo può leggere i profili pubblici?',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,username').limit(3);
+      if (error) throw error;
+      if (!data || data.length === 0) return '⚠ Nessun profilo o RLS blocca la lettura pubblica';
+      return `OK — ${data.length} profili leggibili pubblicamente`;
+    }
+  },
+  {
+    id: 'profiles_comune_column',
+    label: 'Colonna comune in profiles',
+    desc: 'Test diretto: tenta di leggere il campo "comune"',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,comune').limit(1);
+      if (error) {
+        if (error.message?.includes('comune') || error.message?.includes('schema cache')) {
+          throw new Error('Colonna "comune" NON trovata — esegui: ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS comune TEXT;');
+        }
+        throw error;
+      }
+      return `OK — colonna "comune" presente`;
+    }
+  },
+];
+
+const results = {};
+
+function renderCard(test, status, message, detail) {
+  const statusClass = status === 'ok' ? 'ok' : status === 'err' ? 'err' : 'pending';
+  const badge = status === 'ok'
+    ? '<span class="badge badge-ok">PASS</span>'
+    : status === 'err'
+    ? '<span class="badge badge-err">FAIL</span>'
+    : '<span class="badge badge-skip">…</span>';
+
+  return `
+    <div class="card" id="card-${test.id}">
+      <h2>${badge} ${test.label}</h2>
+      <div class="result ${statusClass}">${message}</div>
+      ${detail ? `<pre>${detail}</pre>` : ''}
+      <div style="margin-top:8px;font-size:.74rem;color:var(--ink-soft)">${test.desc}</div>
+    </div>`;
+}
+
+function updateSummary() {
+  const total = TESTS.length;
+  const done  = Object.keys(results).length;
+  const passed = Object.values(results).filter(r => r === 'ok').length;
+  const failed = Object.values(results).filter(r => r === 'err').length;
+  const pct = done > 0 ? Math.round((passed / done) * 100) : 0;
+
+  document.getElementById('summary').innerHTML = `
+    <strong>${done}/${total}</strong> eseguiti &nbsp;|&nbsp;
+    <span style="color:#2E7D32;font-weight:700">${passed} PASS</span> &nbsp;|&nbsp;
+    <span style="color:#b94747;font-weight:700">${failed} FAIL</span> &nbsp;|&nbsp;
+    <span style="color:var(--ink-soft)">${total - done} in attesa</span>
+    ${done === total ? `&nbsp;— <strong>${pct === 100 ? '✅ Tutti i test superati' : `⚠ ${failed} test falliti`}</strong>` : ''}
+  `;
+}
+
+async function runAll() {
+  const grid = document.getElementById('grid');
+  Object.keys(results).forEach(k => delete results[k]);
+
+  // Render all as pending
+  grid.innerHTML = TESTS.map(t => renderCard(t, 'pending', 'In esecuzione…', '')).join('');
+  updateSummary();
+
+  for (const test of TESTS) {
+    try {
+      const msg = await test.run();
+      results[test.id] = 'ok';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'ok', msg, '');
+    } catch (e) {
+      results[test.id] = 'err';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'err', e.message || String(e), '');
+    }
+    updateSummary();
+  }
+}
+
+runAll();
+</script>
+</body>
+</html>

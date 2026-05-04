@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modifica profilo – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:        #17221d;
+      --ink-soft:   #31453b;
+      --cream:      #f7f0e4;
+      --paper:      #fffaf0;
+      --mist:       #e4ddcf;
+      --marsh:      #253f35;
+      --marsh-2:    #3d6353;
+      --water:      #2f6b67;
+      --clay:       #b8663f;
+      --reed:       #c6a462;
+      --white:      #fffdf8;
+      --line:       rgba(37, 63, 53, 0.15);
+      --ok:         #2f6b67;
+      --err:        #b83232;
+      --radius:     14px;
+      --shadow-card: 0 2px 24px rgba(37, 63, 53, 0.09), 0 0 0 1px rgba(37, 63, 53, 0.07);
+      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
+      --serif:      "Fraunces", Georgia, serif;
+      --ease:       cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.28), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.16), transparent 34rem),
+        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+    a { color: var(--marsh); text-decoration: none; }
+    a:hover { color: var(--water); }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img {
+      width: 42px; height: 42px; object-fit: cover; display: block;
+    }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #user-menu-wrap { display: flex; align-items: center; }
+
+    .profile-btn {
+      border: 0;
+      border-radius: 999px;
+      background: #253f35;
+      color: #fffaf0;
+      min-height: 42px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+
+    .profile-btn:hover {
+      transform: translateY(-1px);
+      background: #1f362e;
+      box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    }
+
+    .profile-btn:active { transform: scale(0.98); }
+
+    .profile-menu { position: relative; }
+
+    .profile-avatar {
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 12px);
+      width: 230px;
+      padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .profile-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .profile-dropdown__section-title {
+      padding: 8px 10px;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5);
+      font-weight: 900;
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #17221d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 14px;
+      font-weight: 750;
+      text-align: left;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover,
+    .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08);
+      transform: translateX(2px);
+    }
+
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px;
+           border-radius: 999px; border: 1px solid var(--line);
+           background: var(--paper); color: var(--ink);
+           font-family: var(--sans); font-size: .82rem; font-weight: 700;
+           padding: 8px 18px; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .btn:hover { background: var(--mist); }
+    .btn-primary { border-color: transparent;
+                   background: var(--marsh);
+                   color: var(--paper); box-shadow: 0 4px 16px rgba(37,63,53,.28); }
+    .btn-primary:hover { background: #1f362e; box-shadow: 0 6px 22px rgba(37,63,53,.4); border-color: transparent; }
+    .btn-ghost { color: var(--ink-soft); }
+
+    /* Page */
+    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 108px 20px 80px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-family: var(--serif); font-size: 1.9rem; font-weight: 650; letter-spacing: -.02em; color: var(--ink); margin-bottom: 6px; }
+    .page-header p { color: var(--ink-soft); font-size: .9rem; }
+
+    /* Bento grid */
+    .bento { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .bcard {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px; padding: 22px;
+      display: flex; flex-direction: column; gap: 14px;
+      box-shadow: var(--shadow-card);
+    }
+    .bcard-wide { grid-column: span 2; }
+    .bcard-tall { grid-row: span 2; }
+    .bcard-label {
+      font-size: .68rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--ink-soft);
+    }
+
+    /* Preview card */
+    .preview-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .preview-avatar { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center;
+                      justify-content: center; font-size: 2rem; transition: background .25s; flex-shrink: 0; }
+    .preview-username { font-size: .9rem; font-weight: 700; color: var(--ink-soft); }
+    .preview-display { font-family: var(--serif); font-size: 1.1rem; font-weight: 650; color: var(--ink); }
+    .preview-bio { font-size: .82rem; color: var(--ink-soft); text-align: center; line-height: 1.5; max-width: 220px; }
+
+    /* Emoji grid */
+    .emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .emoji-grid input[type="radio"] { display: none; }
+    .emoji-grid label { display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+                        cursor: pointer; border-radius: 10px; border: 2px solid transparent;
+                        padding: 6px; transition: all .15s; background: rgba(37,63,53,.04); }
+    .emoji-grid label:hover { background: rgba(37,63,53,.1); }
+    .emoji-grid input:checked + label { border-color: var(--marsh); background: rgba(37,63,53,.1); }
+
+    /* Color grid */
+    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .color-grid input[type="radio"] { display: none; }
+    .color-grid label { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px;
+                        cursor: pointer; border: 3px solid transparent; transition: all .15s; }
+    .color-grid label:hover { transform: scale(1.1); }
+    .color-grid input:checked + label { border-color: var(--ink); box-shadow: 0 0 0 2px var(--marsh); }
+
+    /* Form fields */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); }
+    .field input, .field textarea {
+      background: rgba(255, 250, 240, 0.7); border: 1px solid var(--line); border-radius: 12px;
+      color: var(--ink); font-family: var(--sans); font-size: .92rem; padding: 11px 16px;
+      transition: border-color .18s, box-shadow .18s; resize: vertical;
+    }
+    .field input:focus, .field textarea:focus {
+      outline: none; border-color: var(--marsh);
+      box-shadow: 0 0 0 3px rgba(37,63,53,.1);
+    }
+    .field textarea { min-height: 80px; }
+    .field .hint { font-size: .74rem; color: var(--ink-soft); }
+
+    /* Save row */
+    .save-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
+           border-radius: 999px; font-size: .9rem; font-weight: 800; font-family: var(--sans);
+           cursor: pointer; border: none; transition: all .2s; }
+    .btn-primary { background: var(--marsh); color: var(--paper);
+                   box-shadow: 0 4px 20px rgba(37,63,53,.3); }
+    .btn-primary:hover { background: #1f362e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,63,53,.45); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .status-msg { font-size: .85rem; }
+    .status-ok { color: var(--ok); }
+    .status-err { color: var(--err); }
+
+    @media (max-width: 600px) {
+      .bento { grid-template-columns: 1fr; }
+      .bcard-wide { grid-column: span 1; }
+      .bcard-tall { grid-row: span 1; }
+      .page { padding: 100px 14px 60px; }
+      .brand-name { display: none; }
+      .site-header { top: 10px; }
+      .nav-island { border-radius: 28px; }
+    }
+
+    /* ── Footer ── */
+    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
+    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
+    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
+    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
+    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
+    .footer p { max-width:540px; line-height:1.66; }
+    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
+    .footer-links a:hover { color:var(--paper); }
+    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
+    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark">
+        <img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" />
+      </div>
+      <span class="brand-name">
+        <strong>Rivalta sul Mincio</strong>
+        <span>Parco del Mincio &middot; Mantova</span>
+      </span>
+    </a>
+    <div></div>
+    <div id="user-menu-wrap"></div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Modifica profilo</h1>
+    <p>Le modifiche sono visibili pubblicamente nel tuo profilo</p>
+  </div>
+
+  <div class="bento">
+
+    <!-- Anteprima -->
+    <div class="bcard bcard-tall">
+      <div class="bcard-label">Anteprima</div>
+      <div class="preview-wrap">
+        <div class="preview-avatar" id="prev-avatar" style="background:#1F6F8B">🌿</div>
+        <div class="preview-username" id="prev-username">@...</div>
+        <div class="preview-display" id="prev-display">—</div>
+        <div class="preview-bio" id="prev-bio"></div>
+      </div>
+    </div>
+
+    <!-- Avatar emoji -->
+    <div class="bcard">
+      <div class="bcard-label">Emoji avatar</div>
+      <div class="emoji-grid" id="emoji-grid"></div>
+    </div>
+
+    <!-- Colore -->
+    <div class="bcard">
+      <div class="bcard-label">Colore sfondo</div>
+      <div class="color-grid" id="color-grid"></div>
+    </div>
+
+    <!-- Identità -->
+    <div class="bcard bcard-wide">
+      <div class="bcard-label">Identità</div>
+      <div class="field">
+        <label for="p-display">Nome visualizzato</label>
+        <input type="text" id="p-display" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
+      </div>
+      <div class="field">
+        <label for="p-bio">Bio</label>
+        <textarea id="p-bio" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
+        <span class="hint">Massimo 200 caratteri</span>
+      </div>
+    </div>
+
+    <!-- Dove sei -->
+    <div class="bcard bcard-wide">
+      <div class="bcard-label">Dove sei</div>
+      <div class="field">
+        <label for="p-comune">Comune</label>
+        <input type="text" id="p-comune" maxlength="80" placeholder="Es. Rivalta sul Mincio" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="save-row">
+    <button class="btn btn-primary" id="save-btn">Salva modifiche</button>
+    <span class="status-msg" id="save-status"></span>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+
+const EMOJIS = ['🌿','🌊','🦢','🚣','🎣','🌾','🏞️','🦆','🌙','✨','🧭','📍','🍃','🏰','🌸','🛶','🦋','🌤️','📸','🧡'];
+const COLORS = ['#1F6F8B','#3a8c8a','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
+
+let currentUser = null;
+let currentProfile = null;
+
+function buildPickers(emoji, color) {
+  const eg = $('emoji-grid');
+  const cg = $('color-grid');
+  eg.innerHTML = EMOJIS.map((e, i) =>
+    `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
+  ).join('');
+  cg.innerHTML = COLORS.map((c, i) =>
+    `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}"></label>`
+  ).join('');
+
+  eg.querySelectorAll('input').forEach(el => el.addEventListener('change', updatePreview));
+  cg.querySelectorAll('input').forEach(el => el.addEventListener('change', updatePreview));
+}
+
+function updatePreview() {
+  const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+  const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#1F6F8B';
+  const display = $('p-display').value.trim() || (currentProfile?.username || '');
+  const bio = $('p-bio').value.trim();
+
+  const av = $('prev-avatar');
+  av.textContent = emoji;
+  av.style.background = color;
+  $('prev-display').textContent = display || '—';
+  $('prev-bio').textContent = bio;
+}
+
+function setStatus(msg, type) {
+  const el = $('save-status');
+  el.textContent = msg;
+  el.className = 'status-msg ' + (type === 'ok' ? 'status-ok' : type === 'err' ? 'status-err' : '');
+}
+
+async function save() {
+  if (!currentUser || !currentProfile) return;
+  setStatus('', '');
+
+  const emoji  = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+  const color  = document.querySelector('input[name="pref-color"]:checked')?.value || '#1F6F8B';
+  const display = String($('p-display').value || '').trim();
+  const bio     = String($('p-bio').value || '').trim();
+  const comune  = String($('p-comune').value || '').trim();
+
+  const btn = $('save-btn');
+  btn.disabled = true;
+
+  const { error } = await sb.from('profiles').update({
+    display_name:  display || currentProfile.username,
+    bio:           bio || null,
+    comune:        comune || null,
+    avatar_emoji:  emoji,
+    avatar_color:  color,
+  }).eq('id', currentUser.id);
+
+  btn.disabled = false;
+
+  if (error) {
+    setStatus('Salvataggio non riuscito: ' + error.message, 'err');
+    return;
+  }
+
+  currentProfile.display_name = display || currentProfile.username;
+  currentProfile.bio = bio || null;
+  currentProfile.comune = comune || null;
+  currentProfile.avatar_emoji = emoji;
+  currentProfile.avatar_color = color;
+
+  setStatus('Profilo aggiornato con successo.', 'ok');
+}
+
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session?.user) { location.href = 'login'; return; }
+
+  currentUser = session.user;
+
+  const { data: profile, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (error || !profile) { location.href = '/dashboard'; return; }
+
+  currentProfile = profile;
+
+  /* ── Build user dropdown ── */
+  (function buildUserMenu() {
+    const wrap = $('user-menu-wrap');
+    if (!wrap) return;
+    const username    = profile.username || 'utente';
+    const emoji       = profile.avatar_emoji || '🌿';
+    const color       = profile.avatar_color || '#1F6F8B';
+    const safe        = String(username).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const profileHref = 'profile?u=' + encodeURIComponent(username);
+
+    function initials(value) {
+      return String(value || 'utente').trim().slice(0, 2).toUpperCase();
+    }
+
+    function item(label, href, active, primary) {
+      return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + label + '</span><span aria-hidden="true">&rarr;</span></a>';
+    }
+
+    wrap.innerHTML =
+      '<div class="profile-menu" id="profileMenu">' +
+        '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">' +
+          '<span class="profile-avatar" style="background:' + color + '">' + emoji + '</span>' +
+          '<span>@' + safe + '</span>' +
+        '</button>' +
+        '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">' +
+          '<div class="profile-dropdown__section-title">Navigazione</div>' +
+          item('Profilo', profileHref, false, false) +
+          item('Dashboard', '/dashboard', false, false) +
+          item('Modifica profilo', 'modifica-profilo?u=' + encodeURIComponent(username), true, false) +
+          item('Scrivi', 'write', false, true) +
+          item('Categorie', '/category', false, false) +
+          item('Aspetto', 'preferenze', false, false) +
+          item('Reimposta Password', 'reset', false, false) +
+          '<div class="profile-dropdown__sep"></div>' +
+          '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>' +
+        '</div>' +
+      '</div>';
+
+    const btn = $('profileBtn');
+    const dd  = $('profileDropdown');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = dd.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelector('[data-action="logout"]').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      window.location.href = '/';
+    });
+    dd.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      dd.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }));
+    document.addEventListener('click', (e) => {
+      if (!$('profileMenu')?.contains(e.target)) {
+        dd.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }, { capture: true });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dd.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+
+  /* Populate preview username */
+  $('prev-username').textContent = '@' + (profile.username || '');
+
+  /* Populate form */
+  $('p-display').value = profile.display_name || profile.username || '';
+  $('p-bio').value     = profile.bio || '';
+  $('p-comune').value  = profile.comune || '';
+
+  buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
+  updatePreview();
+
+  /* Live preview on typing */
+  $('p-display').addEventListener('input', updatePreview);
+  $('p-bio').addEventListener('input', updatePreview);
+
+  $('save-btn').addEventListener('click', save);
+})();
+</script>
+
+<footer class="footer" id="contatti">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <h3>Pro Loco Rivalta sul Mincio</h3>
+        <p>Ecoturismo, cultura locale, eventi, Sagra del Luccio e promozione ambientale nel cuore del Parco Regionale del Mincio.</p>
+      </div>
+      <nav aria-label="Sezioni">
+        <h4>Esplora</h4>
+        <ul class="footer-links">
+          <li><a href="/#esperienze">Esperienze</a></li>
+          <li><a href="/#galleria">Galleria</a></li>
+          <li><a href="/#valli">Valli</a></li>
+          <li><a href="/#news">News</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Area utente">
+        <h4>Area</h4>
+        <ul class="footer-links">
+          <li><a href="login">Accedi</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="write">Scrivi</a></li>
+          <li><a href="profile">Profili</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Legale e social">
+        <h4>Link</h4>
+        <ul class="footer-links">
+          <li><a href="privacy">Privacy</a></li>
+          <li><a href="cookie">Cookie</a></li>
+          <li><a href="note-legali">Note legali</a></li>
+          <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="footer-year"></span> Pro Loco Rivalta sul Mincio A.P.S.</span>
+      <span>Via Porto, 31 &ndash; 46040 Rivalta sul Mincio (MN)</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
+</body>
+</html>

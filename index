@@ -1,0 +1,3641 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+  <title>Pro Loco Rivalta sul Mincio | Valli del Mincio, Luccio, Ecoturismo</title>
+  <meta name="description" content="Pro Loco Rivalta sul Mincio (Mantova): scopri le Valli del Mincio, il luccio, l'ecoturismo, le sagre e le tradizioni del borgo nel cuore del Parco del Mincio. Eventi, escursioni e contatti." />
+  <meta name="keywords" content="Rivalta sul Mincio, Pro Loco Rivalta, Valli del Mincio, Parco del Mincio, Mantova, sagra del luccio, ecoturismo Mantova, Rodigo, ninfei Mincio, birdwatching Mincio, ciclabile Mincio" />
+  <meta name="author" content="Pro Loco Rivalta sul Mincio" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <link rel="canonical" href="https://www.rivaltasulmincio.it/" />
+  <meta name="theme-color" content="#253f35" />
+
+  <meta name="geo.region" content="IT-MN" />
+  <meta name="geo.placename" content="Rivalta sul Mincio, Rodigo" />
+  <meta name="geo.position" content="45.181000;10.665000" />
+  <meta name="ICBM" content="45.181000, 10.665000" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Pro Loco Rivalta sul Mincio" />
+  <meta property="og:title" content="Pro Loco Rivalta sul Mincio - Valli del Mincio e tradizioni" />
+  <meta property="og:description" content="Ecoturismo, sagre e natura nel cuore del Parco del Mincio. Scopri le Valli, il luccio e i percorsi del borgo." />
+  <meta property="og:url" content="https://www.rivaltasulmincio.it/" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:image" content="https://picsum.photos/seed/rivalta-og-wetlands/1200/630" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Valli del Mincio a Rivalta sul Mincio" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pro Loco Rivalta sul Mincio" />
+  <meta name="twitter:description" content="Le Valli del Mincio, il luccio e le tradizioni del borgo. Ecoturismo nel Parco del Mincio." />
+  <meta name="twitter:image" content="https://picsum.photos/seed/rivalta-og-wetlands/1200/630" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.rivaltasulmincio.it/#organization",
+        "name": "Pro Loco Rivalta sul Mincio",
+        "alternateName": "Pro Loco Rivalta",
+        "url": "https://www.rivaltasulmincio.it/",
+        "description": "Associazione di promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio, nel cuore del Parco Regionale del Mincio.",
+        "email": "info@prolocorivalta.mn.it",
+        "telephone": "+39-339-899-5680",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via Porto, 31",
+          "addressLocality": "Rivalta sul Mincio",
+          "addressRegion": "MN",
+          "postalCode": "46040",
+          "addressCountry": "IT"
+        },
+        "areaServed": {
+          "@type": "Place",
+          "name": "Rivalta sul Mincio, Parco Regionale del Mincio"
+        },
+        "sameAs": [
+          "https://www.facebook.com/prolocrivaltasulmincio",
+          "https://www.instagram.com/prolocrivalta"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.rivaltasulmincio.it/#website",
+        "url": "https://www.rivaltasulmincio.it/",
+        "name": "Pro Loco Rivalta sul Mincio",
+        "description": "Sito ufficiale della Pro Loco di Rivalta sul Mincio: Valli del Mincio, il luccio, ecoturismo, eventi, sagre e tradizioni.",
+        "publisher": { "@id": "https://www.rivaltasulmincio.it/#organization" },
+        "inLanguage": "it-IT"
+      },
+      {
+        "@type": "TouristDestination",
+        "@id": "https://www.rivaltasulmincio.it/#destination",
+        "name": "Rivalta sul Mincio",
+        "description": "Borgo di pescatori nel Parco Regionale del Mincio, frazione di Rodigo (Mantova). Riserva Naturale, Valli del Mincio, fioritura dei ninfei, birdwatching e tradizione del luccio.",
+        "url": "https://www.rivaltasulmincio.it/",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 45.181,
+          "longitude": 10.665
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rivalta sul Mincio",
+          "addressRegion": "MN",
+          "postalCode": "46040",
+          "addressCountry": "IT"
+        },
+        "touristType": ["Birdwatching", "Ecoturismo", "Cicloturismo", "Pesca sportiva", "Turismo culturale"],
+        "includesAttraction": [
+          {
+            "@type": "TouristAttraction",
+            "name": "Le Valli del Mincio",
+            "description": "Riserva Naturale Regionale di oltre 1.500 ettari: zona umida con canneti, ninfei e oltre 260 specie di uccelli."
+          },
+          {
+            "@type": "TouristAttraction",
+            "name": "Festa del Pesce e del Luccio alla Rivaltese",
+            "description": "Sagra estiva di Rivalta sul Mincio dedicata al pesce di fiume e al Luccio alla Rivaltese (PAT/De.Co.). Nel 2025 celebra la 40ª edizione (1985-2025)."
+          },
+          {
+            "@type": "TouristAttraction",
+            "name": "Ciclabile del Mincio",
+            "description": "Tappa intermedia tra Mantova e Peschiera del Garda."
+          }
+        ]
+      },
+      {
+        "@type": "Festival",
+        "@id": "https://www.rivaltasulmincio.it/#festa-pesce-2025",
+        "name": "Festa del Pesce e del Luccio alla Rivaltese - 40ª edizione",
+        "description": "Quarantesima edizione (1985-2025) della Festa del Pesce e del Luccio alla Rivaltese, dedicata a Luciano Soave. Cucina tipica d'acqua dolce con Luccio in salsa e Luccio in bianco (PAT/De.Co.), vini di Cantina Ricchi, servizio al tavolo dalle 19:30. In concomitanza la BARACCA dei NOTT-AMBULI con street food e 6 concerti live.",
+        "startDate": "2025-07-04T19:30:00+02:00",
+        "endDate": "2025-07-13T23:30:00+02:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Area Feste Platana",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Rivalta sul Mincio",
+            "addressRegion": "MN",
+            "postalCode": "46040",
+            "addressCountry": "IT"
+          }
+        },
+        "organizer": { "@id": "https://www.rivaltasulmincio.it/#organization" },
+        "image": "https://picsum.photos/seed/rivalta-festa-pesce-2025/900/1200",
+        "url": "https://www.rivaltasulmincio.it/#luccio",
+        "subEvent": [
+          { "@type": "Event", "name": "Festa del Pesce - Primo weekend", "startDate": "2025-07-04T19:30:00+02:00", "endDate": "2025-07-06T23:30:00+02:00" },
+          { "@type": "Event", "name": "Festa del Pesce - Secondo weekend", "startDate": "2025-07-11T19:30:00+02:00", "endDate": "2025-07-13T23:30:00+02:00" }
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://www.rivaltasulmincio.it/#sections",
+        "name": "Esplora il sito",
+        "itemListElement": [
+          { "@type": "SiteNavigationElement", "position": 1, "name": "Introduzione", "url": "https://www.rivaltasulmincio.it/#introduzione" },
+          { "@type": "SiteNavigationElement", "position": 2, "name": "Esperienze", "url": "https://www.rivaltasulmincio.it/#esperienze" },
+          { "@type": "SiteNavigationElement", "position": 3, "name": "Galleria", "url": "https://www.rivaltasulmincio.it/#galleria" },
+          { "@type": "SiteNavigationElement", "position": 4, "name": "Le Valli del Mincio", "url": "https://www.rivaltasulmincio.it/#valli" },
+          { "@type": "SiteNavigationElement", "position": 5, "name": "Festa del Pesce", "url": "https://www.rivaltasulmincio.it/#luccio" },
+          { "@type": "SiteNavigationElement", "position": 6, "name": "News", "url": "https://www.rivaltasulmincio.it/#news" },
+          { "@type": "SiteNavigationElement", "position": 7, "name": "Contatti", "url": "https://www.rivaltasulmincio.it/#contatti" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+
+  <style>
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --mist: #e4ddcf;
+      --marsh: #253f35;
+      --marsh-2: #3d6353;
+      --water: #2f6b67;
+      --clay: #b8663f;
+      --reed: #c6a462;
+      --fog: rgba(247, 240, 228, 0.72);
+      --white: #fffdf8;
+      --line: rgba(37, 63, 53, 0.16);
+      --line-dark: rgba(255, 250, 240, 0.16);
+      --shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      --shadow-strong: 0 42px 110px rgba(23, 34, 29, 0.28);
+      --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+      --container: min(100% - 44px, 1400px);
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--cream);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.32), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.20), transparent 34rem),
+        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+      line-height: 1.5;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      pointer-events: none;
+      opacity: 0.26;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    ::selection {
+      background: rgba(184, 102, 63, 0.28);
+    }
+
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: 12px;
+      z-index: 90;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-160%);
+      transition: transform 360ms var(--ease);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.78);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-mark img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand-name {
+      display: grid;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-name strong {
+      font-size: 0.98rem;
+      font-weight: 800;
+    }
+
+    .brand-name span {
+      font-size: 0.72rem;
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: rgba(23, 34, 29, 0.68);
+      transition: color 420ms var(--ease), background 420ms var(--ease), transform 420ms var(--ease);
+    }
+
+    .nav-mobile-login {
+      display: none !important;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible,
+    .nav-links a.active {
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.84);
+      transform: translateY(-1px);
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #nav-auth {
+      opacity: 0;
+      transition: opacity 220ms var(--ease);
+    }
+    #nav-auth.auth-ready { opacity: 1; }
+
+    .nav-mobile-login {
+      opacity: 0;
+      transition: opacity 220ms var(--ease);
+    }
+    .nav-mobile-login.auth-ready { opacity: 1; }
+
+    .nav-login,
+    .profile-btn,
+    .nav-toggle {
+      border: 0;
+      border-radius: 999px;
+      background: var(--marsh);
+      color: var(--paper);
+      min-height: 42px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms var(--ease), background 420ms var(--ease), box-shadow 420ms var(--ease);
+    }
+
+    .nav-login:hover,
+    .profile-btn:hover,
+    .nav-toggle:hover {
+      transform: translateY(-1px);
+      background: #1f362e;
+      box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    }
+
+    .nav-login:active,
+    .profile-btn:active,
+    .nav-toggle:active,
+    .button:active {
+      transform: scale(0.98);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      padding: 0;
+      position: relative;
+    }
+
+    .nav-toggle span {
+      position: absolute;
+      width: 17px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform 500ms var(--ease), opacity 500ms var(--ease);
+    }
+
+    .nav-toggle span:first-child { transform: translateY(-5px); }
+    .nav-toggle span:last-child { transform: translateY(5px); }
+    .nav-toggle.open span:first-child { transform: rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle.open span:last-child { transform: rotate(-45deg); }
+
+    .profile-menu {
+      position: relative;
+    }
+
+    .profile-avatar {
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--water);
+      color: var(--paper);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 12px);
+      width: 230px;
+      padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms var(--ease), transform 360ms var(--ease), visibility 360ms var(--ease);
+    }
+
+    .profile-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .profile-dropdown__section-title {
+      padding: 8px 10px;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5);
+      font-weight: 900;
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 14px;
+      font-weight: 750;
+      text-align: left;
+      transition: background 300ms var(--ease), transform 300ms var(--ease);
+    }
+
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover,
+    .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08);
+      transform: translateX(2px);
+    }
+
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: var(--line); margin: 8px 4px; }
+
+    .hero {
+      position: relative;
+      min-height: auto;
+      padding: clamp(92px, 11vw, 168px) 0;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 79% 16%, rgba(47, 107, 103, 0.28), transparent 24rem),
+        linear-gradient(180deg, rgba(255, 250, 240, 0.35), rgba(239, 229, 210, 0.92));
+    }
+
+    .hero-wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      pointer-events: none;
+      filter: drop-shadow(0 9px 22px rgba(23, 34, 29, 0.20));
+    }
+
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 96px;
+    }
+
+    .wave-back {
+      fill: rgba(198, 164, 98, 0.22);
+      animation: wave-back-morph 9s ease-in-out infinite;
+    }
+
+    .wave-front {
+      fill: var(--cream);
+      animation: wave-front-morph 6s ease-in-out infinite;
+    }
+
+    @keyframes wave-back-morph {
+      0%, 100% { d: path("M0,36 C180,72 360,2 540,36 C720,72 900,2 1080,36 C1260,72 1360,18 1440,36 L1440,96 L0,96 Z"); }
+      50%       { d: path("M0,54 C180,14 360,84 540,54 C720,14 900,84 1080,54 C1260,14 1360,66 1440,54 L1440,96 L0,96 Z"); }
+    }
+
+    @keyframes wave-front-morph {
+      0%, 100% { d: path("M0,42 C220,80 440,6 660,42 C880,78 1100,6 1320,42 C1380,54 1420,30 1440,42 L1440,96 L0,96 Z"); }
+      50%       { d: path("M0,58 C220,16 440,88 660,58 C880,18 1100,88 1320,58 C1380,38 1420,70 1440,58 L1440,96 L0,96 Z"); }
+    }
+
+    .img-banner {
+      position: relative;
+      height: clamp(340px, 54vh, 580px);
+      overflow: hidden;
+    }
+
+    .img-banner-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+    }
+
+    .img-banner-wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      pointer-events: none;
+      filter: drop-shadow(0 10px 26px rgba(23, 34, 29, 0.26));
+    }
+
+    .img-banner-wave svg {
+      display: block;
+      width: 100%;
+      height: 96px;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(360px, 1fr);
+      align-items: center;
+      gap: clamp(28px, 4vw, 64px);
+    }
+
+    .hero-copy-block {
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--marsh);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    .hero-title {
+      max-width: 920px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 6.8rem);
+      line-height: 0.94;
+      letter-spacing: -0.056em;
+      text-wrap: balance;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 28px 0 0;
+      color: rgba(23, 34, 29, 0.70);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      position: relative;
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px 9px 8px 22px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 900;
+      color: var(--paper);
+      background: var(--marsh);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 38px rgba(23, 34, 29, 0.18);
+      transition: transform 520ms var(--ease), background 520ms var(--ease), box-shadow 520ms var(--ease);
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 250, 240, 0.22), transparent 34%);
+      opacity: 0;
+      transition: opacity 420ms var(--ease);
+    }
+
+    .button span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .button .button-icon {
+      position: relative;
+      z-index: 1;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--marsh);
+      background: var(--paper);
+      transition: transform 520ms var(--ease);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #20392f;
+      box-shadow: 0 24px 52px rgba(23, 34, 29, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .button:hover::before { opacity: 1; }
+    .button:hover .button-icon { transform: translate(3px, -1px) scale(1.04); }
+
+    .button.secondary {
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.66);
+      border-color: rgba(37, 63, 53, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .button.secondary .button-icon {
+      background: var(--marsh);
+      color: var(--paper);
+    }
+
+    .hero-media {
+      position: relative;
+      aspect-ratio: 3 / 2;
+    }
+
+    .rsm-swiper--hero {
+      height: 100%;
+      border-radius: 24px;
+    }
+
+    .photo-frame {
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.36);
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .photo-slot {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: 34px;
+      background-image:
+        linear-gradient(180deg, rgba(23, 34, 29, 0.02), rgba(23, 34, 29, 0.34)),
+        var(--photo);
+      background-size: cover;
+      background-position: center;
+      min-height: 260px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      transform: translateZ(0);
+    }
+
+    .photo-slot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 240, 0.18), transparent 38%),
+        radial-gradient(circle at 80% 16%, rgba(255, 250, 240, 0.24), transparent 16rem);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+
+    .hero-photo-main {
+      position: absolute;
+      inset: 0 0 54px 88px;
+      transform: rotate(2deg);
+    }
+
+    .hero-photo-main .photo-slot { height: 100%; }
+
+    .hero-photo-main .photo-slot[data-photo-label]::before {
+      left: auto;
+      right: 18px;
+      top: 18px;
+      bottom: auto;
+    }
+
+    .hero-photo-side {
+      position: absolute;
+      left: 0;
+      bottom: 86px;
+      width: min(52%, 330px);
+      transform: rotate(-6deg);
+    }
+
+    .hero-photo-side .photo-slot { min-height: 260px; }
+
+    .hero-photo-tiny {
+      position: absolute;
+      right: 20px;
+      bottom: 0;
+      width: min(46%, 280px);
+      transform: rotate(5deg);
+    }
+
+    .hero-photo-tiny .photo-slot { min-height: 210px; }
+
+    .hero-note {
+      position: absolute;
+      left: 48px;
+      top: 22px;
+      z-index: 4;
+      width: 176px;
+      padding: 16px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 26px;
+      background: rgba(255, 250, 240, 0.80);
+      box-shadow: 0 20px 48px rgba(23, 34, 29, 0.16);
+      backdrop-filter: blur(18px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .hero-note span {
+      display: block;
+      margin-top: 10px;
+      color: rgba(23, 34, 29, 0.58);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .marquee-band {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 240, 0.34);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      gap: 46px;
+      padding: 18px 0;
+      animation: drift 36s infinite linear;
+      color: rgba(37, 63, 53, 0.72);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .marquee-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 46px;
+    }
+
+    .marquee-track span::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--clay);
+      opacity: 0.72;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .section {
+      padding: clamp(92px, 11vw, 168px) 0;
+      position: relative;
+    }
+
+    .section.compact {
+      padding-top: clamp(70px, 8vw, 120px);
+    }
+
+    .section.dark {
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 86% 14%, rgba(184, 102, 63, 0.22), transparent 28rem),
+        linear-gradient(145deg, #14231e, #253f35 55%, #17221d);
+    }
+
+    .section.dark .eyebrow,
+    .section.dark .section-kicker,
+    .section.dark .section-lead {
+      color: rgba(255, 250, 240, 0.72);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.84fr) minmax(260px, 0.5fr);
+      gap: clamp(26px, 6vw, 90px);
+      align-items: end;
+      margin-bottom: clamp(38px, 6vw, 84px);
+    }
+
+    .section-title {
+      margin: 0;
+      max-width: 920px;
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 6.8rem);
+      line-height: 0.94;
+      letter-spacing: -0.056em;
+      text-wrap: balance;
+    }
+
+    .section-title em {
+      color: var(--clay);
+      font-style: italic;
+    }
+
+    .section-lead {
+      max-width: 620px;
+      margin: 0;
+      color: rgba(23, 34, 29, 0.70);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .section-kicker {
+      margin: 0 0 18px;
+      color: var(--water);
+      font-size: 0.82rem;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .atlas-grid {
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .atlas-panel {
+      position: relative;
+      padding: 8px;
+      border-radius: 42px;
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: rgba(255, 250, 240, 0.42);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .atlas-panel-inner {
+      min-height: 100%;
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.74);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+      overflow: hidden;
+    }
+
+    .atlas-photo .atlas-panel-inner {
+      height: 100%;
+    }
+
+    .atlas-photo .photo-slot {
+      height: 100%;
+      min-height: 610px;
+      border-radius: 34px;
+    }
+
+    .atlas-copy {
+      padding: clamp(24px, 4vw, 52px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 36px;
+    }
+
+    .atlas-copy h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.9vw, 4.3rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+    }
+
+    .atlas-copy p {
+      margin: 20px 0 0;
+      color: rgba(23, 34, 29, 0.68);
+      line-height: 1.72;
+      font-size: 1.04rem;
+    }
+
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .fact {
+      min-height: 138px;
+      padding: 18px;
+      border-radius: 26px;
+      background: rgba(37, 63, 53, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fact strong {
+      font-size: clamp(1.9rem, 3.5vw, 3.3rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fact span {
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1fr);
+      gap: clamp(24px, 6vw, 96px);
+      align-items: start;
+    }
+
+    .sticky-copy {
+      position: sticky;
+      top: 128px;
+    }
+
+    .all-cards {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card1 {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 50px;
+    }
+
+    .card2 {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 100px;
+    }
+
+    .card3 {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 150px;
+    }
+
+    .card4 {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 200px;
+    }
+
+    .stack-card {
+      position: relative;
+      min-height: 420px;
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.42);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-origin: 50% 0%;
+    }
+
+    .stack-card-inner {
+      min-height: 404px;
+      border-radius: 34px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 0.58fr) minmax(260px, 0.42fr);
+      background: var(--paper);
+    }
+
+    .stack-card .photo-slot {
+      height: 100%;
+      min-height: 404px;
+      border-radius: 0;
+    }
+
+    .stack-card-copy {
+      padding: clamp(24px, 4vw, 44px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .stack-card-copy h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .stack-card-copy p {
+      margin: 14px 0 0;
+      color: rgba(23, 34, 29, 0.66);
+      line-height: 1.64;
+    }
+
+    .stack-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(47, 107, 103, 0.10);
+      color: var(--water);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .gallery-stage {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-strong);
+    }
+
+    .rsm-swiper {
+      height: 520px;
+    }
+
+    .rsm-slide {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .rsm-slide img,
+    .rsm-slide video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .rsm-swiper .swiper-pagination {
+      bottom: 14px;
+    }
+
+    .rsm-swiper .swiper-pagination-bullet {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 250, 240, 0.30);
+      opacity: 1;
+      transition: background 300ms, transform 300ms;
+    }
+
+    .rsm-swiper .swiper-pagination-bullet-active {
+      background: rgba(255, 250, 240, 0.85);
+      transform: scale(1.2);
+    }
+
+    .rsm-swiper .swiper-button-prev,
+    .rsm-swiper .swiper-button-next {
+      --swiper-navigation-size: 22px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(37, 63, 53, 0.72);
+      border: 1px solid rgba(255, 250, 240, 0.22);
+      color: var(--cream);
+      backdrop-filter: blur(8px);
+      transition: background 300ms var(--ease), transform 300ms var(--ease);
+    }
+
+    .rsm-swiper .swiper-button-prev:hover,
+    .rsm-swiper .swiper-button-next:hover {
+      background: var(--marsh);
+      transform: scale(1.08);
+    }
+
+    .rsm-swiper .swiper-button-prev { left: 14px; }
+    .rsm-swiper .swiper-button-next { right: 14px; }
+
+    .photo-rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(260px, 36vw);
+      gap: 18px;
+      overflow-x: auto;
+      padding: 4px var(--side-pad, 0) 14px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+    }
+
+    .rail-item {
+      scroll-snap-align: start;
+      padding: 8px;
+      border-radius: 36px;
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      background: rgba(255, 250, 240, 0.44);
+      box-shadow: var(--shadow);
+    }
+
+    .rail-item .photo-slot {
+      min-height: clamp(300px, 42vw, 510px);
+      border-radius: 28px;
+    }
+
+    .festa-section {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .festa-section::before {
+      content: "";
+      position: absolute;
+      inset: clamp(60px, 9vw, 130px) clamp(-40px, -3vw, -16px) clamp(60px, 9vw, 130px);
+      z-index: -1;
+      border-radius: 60px;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(184, 102, 63, 0.16), transparent 40%),
+        radial-gradient(circle at 88% 12%, rgba(47, 107, 103, 0.18), transparent 44%),
+        linear-gradient(160deg, rgba(255, 250, 240, 0.74), rgba(228, 221, 207, 0.52));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .festa-container {
+      display: grid;
+      gap: clamp(36px, 5vw, 72px);
+    }
+
+    .festa-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+      gap: clamp(28px, 4vw, 64px);
+      align-items: end;
+    }
+
+    .festa-meta .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px 8px 12px;
+      border-radius: 999px;
+      background: rgba(184, 102, 63, 0.12);
+      color: var(--clay);
+      margin-bottom: 22px;
+    }
+
+    .festa-pulse {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--clay);
+      box-shadow: 0 0 0 0 rgba(184, 102, 63, 0.55);
+      animation: festaPulse 2.4s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+    }
+
+    @keyframes festaPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(184, 102, 63, 0.55); }
+      70%  { box-shadow: 0 0 0 14px rgba(184, 102, 63, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(184, 102, 63, 0); }
+    }
+
+    .festa-title {
+      font-size: clamp(2.6rem, 5.6vw, 6.2rem);
+      max-width: 880px;
+    }
+
+    .festa-meta .section-lead {
+      margin-top: 22px;
+    }
+
+    .festa-poster {
+      position: relative;
+      align-self: stretch;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .festa-poster-frame {
+      position: relative;
+      width: min(100%, 380px);
+      padding: 15px;
+      border-radius: 38px;
+      background:
+        linear-gradient(150deg, rgba(255, 250, 240, 0.92), rgba(228, 221, 207, 0.62));
+      border: 1px solid rgba(37, 63, 53, 0.14);
+      box-shadow: var(--shadow-strong);
+      transform: rotate(-1.4deg);
+      transition: transform 720ms var(--ease-soft);
+    }
+
+    .festa-poster-frame:hover { transform: rotate(0deg) translateY(-4px); }
+
+    .festa-photo {
+      min-height: 460px;
+      border-radius: 30px;
+    }
+
+    .festa-badge {
+      position: absolute;
+      right: -22px;
+      bottom: -22px;
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      text-align: center;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255, 250, 240, 0.32), transparent 56%),
+        linear-gradient(150deg, var(--clay), #8a4527);
+      box-shadow: 0 22px 46px rgba(138, 69, 39, 0.42), inset 0 1px 0 rgba(255, 250, 240, 0.32);
+      transform: rotate(8deg);
+      animation: festaFloat 7s ease-in-out infinite;
+    }
+
+    .festa-badge strong {
+      font-family: var(--serif);
+      font-size: 2.6rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .festa-badge span {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      line-height: 1.3;
+      opacity: 0.92;
+    }
+
+    @keyframes festaFloat {
+      0%, 100% { transform: rotate(8deg) translateY(0); }
+      50%      { transform: rotate(6deg) translateY(-6px); }
+    }
+
+    .festa-dates {
+      padding: clamp(22px, 3vw, 38px) clamp(22px, 3vw, 44px);
+      border-radius: 30px;
+      background:
+        linear-gradient(150deg, rgba(37, 63, 53, 0.96), rgba(20, 35, 30, 0.98));
+      color: var(--paper);
+      box-shadow: var(--shadow-strong);
+      display: grid;
+      gap: 22px;
+    }
+
+    .festa-dates-line {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 250, 240, 0.66);
+      font-weight: 800;
+    }
+
+    .festa-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) auto repeat(3, minmax(0, 1fr));
+      gap: clamp(8px, 1.6vw, 22px);
+      align-items: center;
+    }
+
+    .festa-day {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 18px 14px;
+      border-radius: 22px;
+      background: rgba(255, 250, 240, 0.06);
+      border: 1px solid rgba(255, 250, 240, 0.12);
+      transition: transform 480ms var(--ease), background 480ms var(--ease);
+    }
+
+    .festa-day:hover {
+      transform: translateY(-3px);
+      background: rgba(184, 102, 63, 0.18);
+    }
+
+    .festa-day strong {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .festa-day span {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 250, 240, 0.62);
+      font-weight: 800;
+    }
+
+    .festa-day-divider {
+      width: 1px;
+      height: 56px;
+      margin: 0 4px;
+      background: linear-gradient(to bottom, transparent, rgba(255, 250, 240, 0.34), transparent);
+      align-self: center;
+      justify-self: center;
+    }
+
+    .festa-dates-foot {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .festa-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      color: rgba(255, 250, 240, 0.86);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .festa-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      gap: clamp(20px, 2.6vw, 36px);
+      align-items: stretch;
+    }
+
+    .festa-menu {
+      padding: clamp(28px, 3.6vw, 56px);
+      border-radius: 38px;
+      background: rgba(255, 250, 240, 0.86);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .festa-menu-head {
+      max-width: 620px;
+      margin-bottom: clamp(28px, 3.4vw, 44px);
+    }
+
+    .festa-menu-head h3 {
+      margin: 0 0 14px;
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+
+    .festa-menu-head p {
+      margin: 0;
+      color: rgba(23, 34, 29, 0.72);
+      line-height: 1.66;
+    }
+
+    .festa-menu-head strong {
+      color: var(--marsh);
+      font-weight: 850;
+    }
+
+    .festa-menu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: festa-menu;
+    }
+
+    .festa-menu-list > li {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: baseline;
+      padding: 22px 0;
+      border-top: 1px solid rgba(37, 63, 53, 0.12);
+      transition: padding-left 460ms var(--ease), color 460ms var(--ease);
+    }
+
+    .festa-menu-list > li:first-child { border-top: 0; padding-top: 6px; }
+    .festa-menu-list > li:hover { padding-left: 6px; color: var(--marsh); }
+
+    .festa-menu-num {
+      font-family: "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      color: var(--clay);
+      font-weight: 800;
+    }
+
+    .festa-menu-name {
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+      line-height: 1.22;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+
+    .festa-menu-name em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .festa-menu-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .festa-wines {
+      position: relative;
+      padding: clamp(28px, 3.4vw, 48px);
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 90% 12%, rgba(184, 102, 63, 0.18), transparent 60%),
+        linear-gradient(155deg, rgba(47, 107, 103, 0.92), rgba(37, 63, 53, 0.96));
+      color: var(--paper);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .festa-wines::after {
+      content: "";
+      position: absolute;
+      inset: -20% -30% auto auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(198, 164, 98, 0.32), transparent 62%);
+      pointer-events: none;
+    }
+
+    .festa-wines .section-kicker {
+      color: rgba(255, 250, 240, 0.74);
+    }
+
+    .festa-wines h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+    }
+
+    .festa-wines > p {
+      margin: 0;
+      color: rgba(255, 250, 240, 0.78);
+      line-height: 1.62;
+    }
+
+    .festa-wine-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .festa-wine-list > li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 0;
+      border-top: 1px dashed rgba(255, 250, 240, 0.18);
+    }
+
+    .festa-wine-list > li:first-child { border-top: 0; }
+
+    .festa-wine-list strong {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      font-weight: 650;
+    }
+
+    .festa-wine-list span {
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: rgba(255, 250, 240, 0.7);
+      font-style: italic;
+    }
+
+    .festa-foot {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: clamp(20px, 2.6vw, 36px);
+    }
+
+    .festa-tribute,
+    .festa-baracca {
+      padding: clamp(26px, 3vw, 42px);
+      border-radius: 32px;
+      background: rgba(255, 250, 240, 0.78);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .festa-tribute {
+      background:
+        linear-gradient(150deg, rgba(255, 250, 240, 0.92), rgba(228, 221, 207, 0.7));
+      border-left: 3px solid var(--clay);
+    }
+
+    .festa-tribute-eyebrow {
+      margin: 0;
+      color: var(--water);
+      font-size: 0.74rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .festa-tribute h4,
+    .festa-baracca h4 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .festa-tribute p,
+    .festa-baracca p {
+      margin: 0;
+      color: rgba(23, 34, 29, 0.7);
+      line-height: 1.62;
+    }
+
+    .festa-baracca strong { color: var(--marsh); font-weight: 850; }
+
+    .festa-baracca .button { align-self: flex-start; margin-top: 6px; }
+
+    .news-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .news-main {
+      padding: 8px;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.46);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .news-inner {
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.76);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .news-inner { padding: clamp(18px, 3vw, 34px); }
+
+    .news-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .news-filter-chip {
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      border-radius: 999px;
+      min-height: 36px;
+      padding: 0 14px;
+      color: rgba(23, 34, 29, 0.68);
+      background: rgba(255, 250, 240, 0.62);
+      font-weight: 850;
+      transition: transform 340ms var(--ease), background 340ms var(--ease), color 340ms var(--ease);
+    }
+
+    .news-filter-chip:hover,
+    .news-filter-chip.on {
+      color: var(--paper);
+      background: var(--marsh);
+      transform: translateY(-1px);
+    }
+
+    .news-status {
+      color: rgba(23, 34, 29, 0.62);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .post-featured,
+    .post-card {
+      overflow: hidden;
+      border-radius: 30px;
+      background: var(--white);
+      border: 1px solid rgba(37, 63, 53, 0.10);
+      transition: transform 520ms var(--ease), box-shadow 520ms var(--ease);
+    }
+
+    .post-featured:hover,
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 70px rgba(23, 34, 29, 0.16);
+    }
+
+    .post-featured {
+      display: grid;
+      grid-template-columns: minmax(0, 0.55fr) minmax(280px, 0.45fr);
+      margin-bottom: 18px;
+    }
+
+    .news-card__media,
+    .post-featured__media {
+      min-height: 300px;
+      border-radius: 0;
+    }
+
+    .post-featured__body,
+    .post-card__body {
+      padding: 24px;
+    }
+
+    .post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: rgba(23, 34, 29, 0.50);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .post-featured__title,
+    .post-card__title {
+      margin: 14px 0 12px;
+      font-family: var(--serif);
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+    }
+
+    .post-featured__title { font-size: clamp(2rem, 3.3vw, 3.35rem); }
+    .post-card__title { font-size: 1.65rem; }
+
+    .post-featured__excerpt,
+    .post-card__excerpt {
+      color: rgba(23, 34, 29, 0.66);
+      line-height: 1.62;
+    }
+
+    .post-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .post-card .news-card__media {
+      min-height: 220px;
+    }
+
+    .post-card__footer,
+    .post-featured__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--marsh);
+      font-weight: 900;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(184, 102, 63, 0.12);
+      color: #8f492f;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .badge.green {
+      background: rgba(47, 107, 103, 0.12);
+      color: var(--water);
+    }
+
+    .news-empty {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px dashed rgba(37, 63, 53, 0.20);
+      border-radius: 30px;
+      padding: 34px;
+      color: rgba(23, 34, 29, 0.62);
+    }
+
+    .news-empty strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--ink);
+      letter-spacing: -0.035em;
+    }
+
+    .side-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .side-list a {
+      padding: 14px 0;
+      border-top: 1px solid rgba(37, 63, 53, 0.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(23, 34, 29, 0.70);
+      font-weight: 850;
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .community-panel {
+      padding: clamp(24px, 5vw, 58px);
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .community-panel h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5.6vw, 6rem);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+    }
+
+    .community-panel p {
+      max-width: 720px;
+      color: rgba(255, 250, 240, 0.74);
+      line-height: 1.72;
+      font-size: 1.06rem;
+    }
+
+    .community-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .community-item {
+      padding: 24px;
+      border-radius: 30px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+    }
+
+    .community-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: 1.72rem;
+      letter-spacing: -0.035em;
+    }
+
+    .community-item span {
+      color: rgba(255, 250, 240, 0.68);
+      line-height: 1.58;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(310px, 0.38fr);
+      gap: 18px;
+    }
+
+    .map-plate {
+      min-height: 590px;
+      padding: 0;
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.44);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .map-plate .photo-slot {
+      min-height: 574px;
+      border-radius: 34px;
+    }
+
+    .map-plate .rsm-swiper--map {
+      width: 100%;
+      height: 100%;
+      min-height: 590px;
+      border-radius: 42px;
+      overflow: hidden;
+    }
+
+    .map-plate .rsm-swiper--map .swiper-wrapper,
+    .map-plate .rsm-swiper--map .swiper-slide {
+      height: 100%;
+    }
+
+    .map-plate .rsm-swiper--map .rsm-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .contact-card {
+      padding: clamp(24px, 4vw, 42px);
+      border-radius: 42px;
+      background: rgba(255, 250, 240, 0.76);
+      border: 1px solid rgba(37, 63, 53, 0.12);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .contact-card h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+    }
+
+    .contact-lines {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-line {
+      padding-top: 14px;
+      border-top: 1px solid rgba(37, 63, 53, 0.12);
+    }
+
+    .contact-line strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--water);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .newsletter {
+      position: relative;
+      color: var(--paper);
+      padding: clamp(74px, 9vw, 132px) 0;
+      background: var(--marsh);
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: "";
+      position: absolute;
+      inset: -20% 40% -20% -10%;
+      background: radial-gradient(circle, rgba(198, 164, 98, 0.30), transparent 38rem);
+      pointer-events: none;
+    }
+
+    .newsletter-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.48fr);
+      gap: clamp(24px, 6vw, 90px);
+      align-items: center;
+    }
+
+    .newsletter h2 {
+      margin: 0;
+      max-width: 900px;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 7.8rem);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+    }
+
+    .newsletter p {
+      max-width: 620px;
+      color: rgba(255, 250, 240, 0.72);
+      font-size: 1.08rem;
+      line-height: 1.66;
+    }
+
+    .newsletter-form {
+      padding: 8px;
+      border-radius: 34px;
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid var(--line-dark);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    }
+
+    .newsletter-form-inner {
+      padding: 22px;
+      border-radius: 26px;
+      background: rgba(255, 250, 240, 0.92);
+      color: var(--ink);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: rgba(23, 34, 29, 0.62);
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid rgba(37, 63, 53, 0.15);
+      border-radius: 18px;
+      background: var(--paper);
+      min-height: 54px;
+      padding: 0 16px;
+      color: var(--ink);
+      outline: none;
+      transition: border 320ms var(--ease), box-shadow 320ms var(--ease);
+    }
+
+    .field input:focus {
+      border-color: rgba(47, 107, 103, 0.50);
+      box-shadow: 0 0 0 4px rgba(47, 107, 103, 0.10);
+    }
+
+    .form-status {
+      min-height: 22px;
+      margin: 12px 0 0;
+      color: var(--water);
+      font-weight: 800;
+    }
+
+    .footer {
+      color: rgba(255, 250, 240, 0.72);
+      background: #101c18;
+      padding: 72px 0 34px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) repeat(3, minmax(140px, 0.22fr));
+      gap: clamp(24px, 5vw, 76px);
+      align-items: start;
+    }
+
+    .footer h3,
+    .footer h4 {
+      margin: 0 0 16px;
+      color: var(--paper);
+      letter-spacing: -0.02em;
+    }
+
+    .footer h3 {
+      max-width: 520px;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .footer p {
+      max-width: 540px;
+      line-height: 1.66;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 250, 240, 0.68);
+      font-weight: 750;
+    }
+
+    .footer-links a:hover { color: var(--paper); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 250, 240, 0.12);
+      font-size: 0.86rem;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--marsh);
+      color: var(--paper);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      transition: transform 420ms var(--ease), background 420ms var(--ease);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      background: #1f362e;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translate3d(0, 36px, 0);
+      transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+      transition-delay: var(--delay, 0ms);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: rgba(37, 63, 53, 0.08);
+    }
+
+    .skeleton::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255, 250, 240, 0.42), transparent);
+      animation: shimmer 1.6s infinite;
+    }
+
+    @keyframes shimmer {
+      to { transform: translateX(100%); }
+    }
+
+    @media (max-width: 1120px) {
+      .nav-island {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .brand {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .nav-actions {
+        margin-left: auto;
+        justify-self: end;
+      }
+
+      .nav-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        position: fixed;
+        inset: 78px 14px auto 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 16px;
+        border-radius: 30px;
+        background: rgba(247, 240, 228, 0.94);
+        border: 1px solid rgba(255, 250, 240, 0.7);
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(24px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px) scale(0.98);
+        transition: opacity 420ms var(--ease), transform 420ms var(--ease), visibility 420ms var(--ease);
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+      }
+
+      .nav-links a {
+        min-height: 50px;
+        justify-content: center;
+      }
+
+      .nav-toggle {
+        display: inline-flex !important;
+        flex: 0 0 44px;
+        opacity: 1;
+        visibility: visible;
+      }
+      .hero-layout,
+      .atlas-grid,
+      .experience-grid,
+      .festa-head,
+      .festa-grid,
+      .festa-foot,
+      .news-shell,
+      .community-grid,
+      .contact-grid,
+      .newsletter-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .festa-poster { justify-content: center; }
+      .festa-poster-frame { transform: rotate(-1deg); width: min(100%, 420px); }
+      .festa-dates-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .festa-day-divider {
+        grid-column: 1 / -1;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255, 250, 240, 0.34), transparent);
+      }
+      .festa-menu-list > li {
+        grid-template-columns: 44px minmax(0, 1fr);
+        row-gap: 4px;
+      }
+      .festa-menu-tag {
+        grid-column: 2 / -1;
+      }
+
+      .sticky-copy { position: static; }
+      .hero-media { order: -1; }
+      .hero-photo-main { inset: 0 0 88px 72px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --container: min(100% - 28px, 1400px); }
+
+      .site-header { top: 10px; }
+      .nav-island { border-radius: 28px; }
+      .brand-name span { display: none; }
+      .brand-name strong { font-size: 0.92rem; }
+      .nav-actions #nav-auth { display: none; }
+      .nav-mobile-login { display: inline-flex !important; }
+      .nav-toggle {
+        position: absolute;
+        right: clamp(10px, calc(100vw - 380px), 96px);
+        top: 8px;
+      }
+      .nav-login { min-height: 40px; padding: 0 12px; }
+
+      .hero {
+        padding: 78px 0;
+      }
+
+      .hero-title {
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+
+      .hero-media {
+        order: 0;
+        aspect-ratio: auto;
+        min-height: auto;
+        overflow: hidden;
+        border-radius: 16px;
+      }
+
+      .hero-photo-main {
+        inset: 22px 0 118px 18px;
+      }
+
+      .hero-photo-side {
+        width: 54%;
+        bottom: 58px;
+      }
+
+      .hero-photo-tiny {
+        width: 50%;
+        right: 0;
+      }
+
+      .hero-note {
+        left: 18px;
+        top: 0;
+        width: 150px;
+      }
+
+      .section-head,
+      .stack-card-inner,
+      .post-featured {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 78px 0;
+      }
+
+      .fact-grid,
+      .post-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .atlas-photo .photo-slot,
+      .map-plate,
+      .map-plate .photo-slot {
+        min-height: 460px;
+      }
+
+      .map-plate .rsm-swiper--map {
+        min-height: 460px;
+      }
+
+      .stack-card,
+      .stack-card-inner,
+      .stack-card .photo-slot {
+        min-height: auto;
+      }
+
+      .stack-card .photo-slot {
+        min-height: 320px;
+      }
+
+      .rsm-swiper {
+        height: 260px;
+      }
+
+      .rsm-swiper--hero {
+        aspect-ratio: auto;
+        height: 280px;
+        border-radius: 16px;
+      }
+
+      .rsm-slide {
+        width: 100%;
+        height: 100%;
+      }
+
+      .button-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .button {
+        min-height: 44px;
+        padding: 6px 8px 6px 16px;
+        font-size: 0.9rem;
+      }
+
+      .button .button-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .photo-rail {
+        grid-auto-columns: minmax(236px, 80vw);
+      }
+
+      .footer-bottom {
+        display: grid;
+      }
+
+      .rsm-swiper .swiper-button-prev,
+      .rsm-swiper .swiper-button-next {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Salta al contenuto</a>
+
+  <header class="site-header" id="navbar">
+    <div class="nav-island">
+      <a class="brand" href="#home" aria-label="Pro Loco Rivalta sul Mincio">
+        <div class="logo-mark">
+          <img src="/img/favicon.png" alt="Logo Rivalta sul Mincio" width="40" height="40">
+        </div>
+        <span class="brand-name">
+          <strong>Rivalta sul Mincio</strong>
+          <span>Parco del Mincio &middot; Mantova</span>
+        </span>
+      </a>
+
+      <nav class="nav-links" id="navList" aria-label="Navigazione principale">
+        <a href="#home" class="active">Home</a>
+        <a href="#esperienze">Esperienze</a>
+        <a href="#galleria">Galleria</a>
+        <a href="#valli">Valli</a>
+        <a href="#luccio">Festa del Pesce</a>
+        <a href="#news">News</a>
+        <a href="#contatti">Contatti</a>
+        <a href="/preferenze">Aspetto</a>
+        <a href="login" class="nav-mobile-login">Accedi</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth">
+          <a href="login" class="nav-login">Accedi</a>
+        </div>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Apri menu" aria-expanded="false" aria-controls="navList">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell">
+
+    <section class="img-banner" aria-label="Veduta aerea di Rivalta sul Mincio">
+      <img class="img-banner-video" src="/img/Gemini_Generated_Image_9mqfj89mqfj89mqf.jpg" alt="Veduta aerea animata di Rivalta sul Mincio" loading="eager" decoding="async">
+      <div class="img-banner-wave" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 96" preserveAspectRatio="none">
+          <path class="wave-back" d="M0,36 C180,72 360,2 540,36 C720,72 900,2 1080,36 C1260,72 1360,18 1440,36 L1440,96 L0,96 Z"/>
+          <path class="wave-front" d="M0,42 C220,80 440,6 660,42 C880,78 1100,6 1320,42 C1380,54 1420,30 1440,42 L1440,96 L0,96 Z"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="hero" id="home">
+      <div class="container hero-layout">
+        <div class="hero-copy-block">
+          <p class="section-kicker">Parco del Mincio - Mantova</p>
+          <h1 class="hero-title">Rivalta sul Mincio, dove l&rsquo;acqua <em>diventa paese</em>.</h1>
+          <p class="hero-copy">Un borgo di pescatori nel cuore delle Valli del Mincio: canneti, chiari, aironi, ciclabili lente e una cucina d&rsquo;acqua che tiene insieme memoria e futuro.</p>
+          <div class="button-row">
+            <a class="button magnetic" href="#galleria"><span>Guarda la galleria</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+            <a class="button secondary magnetic" href="#esperienze"><span>Scopri cosa fare</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <div class="swiper rsm-swiper rsm-swiper--hero" role="region" aria-label="Galleria animata di Rivalta sul Mincio">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide rsm-slide">
+                <img src="/video/mincio-1.gif" alt="Mantova e i laghi del Mincio" loading="eager" decoding="async">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <img src="/video/mincio-2.gif" alt="Rivalta sul Mincio al tramonto" loading="lazy" decoding="async">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <img src="/video/mincio-3.gif" alt="Le valli del Mincio tra i canneti" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <button class="swiper-button-prev" aria-label="Video precedente"></button>
+            <button class="swiper-button-next" aria-label="Video successivo"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-wave" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 96" preserveAspectRatio="none">
+          <path class="wave-back" d="M0,36 C180,72 360,2 540,36 C720,72 900,2 1080,36 C1260,72 1360,18 1440,36 L1440,96 L0,96 Z"/>
+          <path class="wave-front" d="M0,42 C220,80 440,6 660,42 C880,78 1100,6 1320,42 C1380,54 1420,30 1440,42 L1440,96 L0,96 Z"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="marquee-band" aria-label="Segni del territorio">
+      <div class="marquee-track" aria-hidden="true">
+        <span>Festa del Pesce 2025</span><span>40&deg; edizione</span><span>Luccio alla Rivaltese</span><span>Valli del Mincio</span><span>Cantina Ricchi</span><span>Area Feste Platana</span>
+        <span>Festa del Pesce 2025</span><span>40&deg; edizione</span><span>Luccio alla Rivaltese</span><span>Valli del Mincio</span><span>Cantina Ricchi</span><span>Area Feste Platana</span>
+      </div>
+    </section>
+
+    <section class="section compact" id="introduzione">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Atlante vivo</p>
+            <h2 class="section-title">Il centro della provincia ha il ritmo lento delle <em>zone umide</em>.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 140ms">Rivalta sul Mincio &egrave; una base naturale per leggere il territorio: il fiume rallenta, si allarga in canali e canneti, e la Pro Loco &ldquo;Amici di Rivalta&rdquo; custodisce itinerari, tradizioni e accoglienza.</p>
+        </div>
+
+        <div class="atlas-grid">
+          <article class="atlas-panel atlas-photo" data-reveal>
+            <div class="atlas-panel-inner">
+              <div class="photo-slot" data-photo-slot="atlas-wide-wetlands" data-photo-label="Ampio scatto delle valli" style="--photo:url('https://picsum.photos/seed/rivalta-atlas-wetlands/1500/1000')" role="img" aria-label="Vista ampia delle Valli del Mincio"></div>
+            </div>
+          </article>
+
+          <article class="atlas-panel" data-reveal style="--delay: 120ms">
+            <div class="atlas-panel-inner atlas-copy">
+              <div>
+                <h2>Acqua, canneti, paese.</h2>
+                <p>Qui il paesaggio &egrave; fatto di margini sottili: barche, argini, praterie a carice, chiari e case basse. La homepage diventa una mappa emotiva dove sostituire ogni placeholder con le tue foto.</p>
+              </div>
+              <div class="fact-grid" aria-label="Dati del territorio">
+                <div class="fact"><strong data-count="260">0</strong><span>specie di uccelli censite nel sistema palustre</span></div>
+                <div class="fact"><strong data-count="1100">0</strong><span>ettari di riserva nel cuore delle Valli</span></div>
+                <div class="fact"><strong data-count="43">0</strong><span>chilometri di Mincio dal Garda al Po</span></div>
+                <div class="fact"><strong data-count="1967">0</strong><span>anno di fondazione della Pro Loco</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="esperienze">
+      <div class="container experience-grid">
+        <div class="sticky-copy" data-reveal>
+          <p class="section-kicker">Esperienze</p>
+          <h2 class="section-title">Quattro modi per entrare nel <em>Mincio</em>.</h2>
+          <p class="section-lead">Una sezione pensata come stack fotografico: ogni card pu&ograve; diventare una storia, un evento o un pacchetto visita quando avrai le immagini finali.</p>
+          <div class="button-row">
+            <a class="button secondary magnetic" href="#contatti"><span>Organizza una visita</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+        <div class="all-cards">
+          <article class="stack-card card1" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-boat" data-photo-label="Barca nelle valli" style="--photo:url('img/waterbike-mincio.jpg')" role="img" aria-label="Escursione in barca nelle Valli del Mincio"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>Dal livello dell&rsquo;acqua.</h3>
+                  <p>Partenze dagli imbarcaderi, canali stretti, silenzio dei canneti e un punto di vista che cambia il modo di leggere la valle.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">barca</span><span class="tag">canoa</span><span class="tag">guide locali</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stack-card card2" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-bike" data-photo-label="Ciclabile" style="--photo:url('img/mantova-laghi-aerea.jpg')" role="img" aria-label="Ciclabile nei pressi di Rivalta"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>La valle a pedali.</h3>
+                  <p>Rivalta &egrave; una tappa ideale tra Mantova e Peschiera del Garda, con deviazioni lente verso argini, pontili e scorci d&rsquo;acqua.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">cicloturismo</span><span class="tag">argini</span><span class="tag">soste</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stack-card card3" data-stack-card data-reveal>
+            <div class="stack-card-inner">
+              <div class="photo-slot" data-photo-slot="experience-birdwatching" data-photo-label="Birdwatching" style="--photo:url('img/museo-etnografico-tramonto.jpg')" role="img" aria-label="Birdwatching nelle Valli del Mincio"></div>
+              <div class="stack-card-copy">
+                <div>
+                  <h3>Aironi, chiari, canneti.</h3>
+                  <p>La zona umida &egrave; un archivio naturale aperto: specie migratrici, nidificazioni, fioriture estive e tracce da osservare con rispetto.</p>
+                </div>
+                <div class="stack-meta"><span class="tag">fauna</span><span class="tag">Ramsar</span><span class="tag">stagioni</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="galleria">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Galleria</p>
+            <h2 class="section-title">Un carosello per le foto che arriveranno.</h2>
+          </div>
+        </div>
+
+        <div class="gallery-stage" data-reveal>
+          <div class="swiper rsm-swiper" role="region" aria-label="Galleria fotografica di Rivalta sul Mincio">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/mantova-laghi-aerea.jpg')" role="img" aria-label="Mantova e i laghi del Mincio, vista aerea"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/festa-pesce.jpg')" role="img" aria-label="Festa del Pesce e del Luccio all&rsquo;Area Feste Platana"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/luccio-in-salsa.jpg')" role="img" aria-label="Luccio in salsa alla rivaltese, prodotto PAT"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/gong-bath-parco.jpg')" role="img" aria-label="Gong Bath al Parco della Corte di Rivalta"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/waterbike-mincio.jpg')" role="img" aria-label="Waterbike sul fiume Mincio tra i canneti"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <button class="swiper-button-prev" aria-label="Foto precedente"></button>
+            <button class="swiper-button-next" aria-label="Foto successiva"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="valli">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Riserva naturale - Sito Ramsar</p>
+            <h2 class="section-title">Le Valli del Mincio, oasi d&rsquo;acqua e <em>silenzio</em>.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Tra Rivalta e Borgo Angeli il fiume rallenta e diventa un mosaico di canneti, chiari e praterie a carice. Una zona umida riconosciuta dalla Convenzione di Ramsar e dalla rete Natura 2000.</p>
+        </div>
+
+        <div class="gallery-stage" data-reveal>
+          <div class="swiper rsm-swiper" role="region" aria-label="Galleria delle Valli del Mincio">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/museo-etnografico-tramonto.jpg')" role="img" aria-label="Porto storico di Rivalta al tramonto, riflesso sul Mincio"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/corte-mincio-storica.jpg')" role="img" aria-label="Rivalta sul Mincio, inizio Novecento: barche sul fiume"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/museo-etnografico.jpg')" role="img" aria-label="Museo Etnografico delle Valli del Mincio"></div>
+              <div class="swiper-slide rsm-slide" style="background-image:url('img/waterbike-mincio.jpg')" role="img" aria-label="Waterbike sul Mincio tra i canneti delle Valli"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <button class="swiper-button-prev" aria-label="Foto precedente"></button>
+            <button class="swiper-button-next" aria-label="Foto successiva"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact festa-section" id="luccio" aria-label="Festa del Pesce e del Luccio alla Rivaltese 2025">
+      <div class="container festa-container">
+        <header class="festa-head">
+          <div class="festa-meta" data-reveal>
+            <p class="section-kicker"><span class="festa-pulse" aria-hidden="true"></span>40&deg; edizione &middot; 1985 &mdash; 2025</p>
+            <h2 class="section-title festa-title">Festa del Pesce e del <em>Luccio alla Rivaltese</em>.</h2>
+            <p class="section-lead">Quarant&rsquo;anni di cucina d&rsquo;acqua dolce all&rsquo;Area Feste Platana, ai margini del canneto delle Valli del Mincio. Cucine aperte dalle 19:30, servizio al tavolo a cura dei volontari della Pro Loco Rivalta sul Mincio APS.</p>
+          </div>
+          <aside class="festa-poster" data-reveal style="--delay: 140ms" aria-label="Manifesto della 40&deg; Festa del Pesce">
+            <div class="festa-poster-frame">
+              <div class="photo-slot festa-photo" data-photo-slot="festa-poster" data-photo-label="Manifesto Festa del Pesce 2025" style="--photo:url('img/luccio-in-salsa.jpg')" role="img" aria-label="Manifesto della 40&deg; Festa del Pesce e del Luccio alla Rivaltese"></div>
+              <span class="festa-badge" aria-hidden="true"><strong>40</strong><span>anniversario<br/>1985 &mdash; 2025</span></span>
+            </div>
+          </aside>
+        </header>
+
+        <div class="festa-dates" data-reveal style="--delay: 80ms" aria-label="Date della 40&deg; Festa del Pesce">
+          <div class="festa-dates-line">Luglio 2025 &middot; Area Feste Platana, Rivalta sul Mincio</div>
+          <div class="festa-dates-grid" role="list">
+            <div class="festa-day" role="listitem"><strong>Ven 4</strong><span>Luglio</span></div>
+            <div class="festa-day" role="listitem"><strong>Sab 5</strong><span>Luglio</span></div>
+            <div class="festa-day" role="listitem"><strong>Dom 6</strong><span>Luglio</span></div>
+            <div class="festa-day-divider" aria-hidden="true"></div>
+            <div class="festa-day" role="listitem"><strong>Ven 11</strong><span>Luglio</span></div>
+            <div class="festa-day" role="listitem"><strong>Sab 12</strong><span>Luglio</span></div>
+            <div class="festa-day" role="listitem"><strong>Dom 13</strong><span>Luglio</span></div>
+          </div>
+          <div class="festa-dates-foot">
+            <span class="festa-pill">Cucine dalle 19:30</span>
+            <span class="festa-pill">Servizio al tavolo</span>
+            <span class="festa-pill">Stoviglie lavabili &middot; zero plastica monouso</span>
+          </div>
+        </div>
+
+        <div class="festa-grid">
+          <article class="festa-menu" data-reveal>
+            <header class="festa-menu-head">
+              <p class="section-kicker">Il men&ugrave; 2025</p>
+              <h3>Quarant&rsquo;anni di ricette d&rsquo;acqua dolce.</h3>
+              <p>Le specialit&agrave; storiche della Pro Loco. <strong>Luccio in salsa</strong> e <strong>Luccio in bianco</strong> sono Prodotti Agroalimentari Tradizionali della Regione Lombardia (PAT) e prodotti De.Co. comunale.</p>
+            </header>
+            <ol class="festa-menu-list" aria-label="Piatti della 40&deg; edizione">
+              <li><span class="festa-menu-num">01</span><span class="festa-menu-name">Risotto con pesce gatto, pesina o saltarei</span><span class="festa-menu-tag">primo</span></li>
+              <li><span class="festa-menu-num">02</span><span class="festa-menu-name">Tortelloni di branzino</span><span class="festa-menu-tag">primo</span></li>
+              <li><span class="festa-menu-num">03</span><span class="festa-menu-name">Bigoli al torchio con sardelle</span><span class="festa-menu-tag">primo</span></li>
+              <li><span class="festa-menu-num">04</span><span class="festa-menu-name"><em>Luccio in salsa</em> alla Rivaltese</span><span class="festa-menu-tag">PAT &middot; De.Co.</span></li>
+              <li><span class="festa-menu-num">05</span><span class="festa-menu-name"><em>Luccio in bianco</em> alla Rivaltese</span><span class="festa-menu-tag">PAT &middot; De.Co.</span></li>
+              <li><span class="festa-menu-num">06</span><span class="festa-menu-name">Anguilla ai ferri</span><span class="festa-menu-tag">secondo</span></li>
+              <li><span class="festa-menu-num">07</span><span class="festa-menu-name">Pesina e saltarei fritti</span><span class="festa-menu-tag">fritto</span></li>
+              <li><span class="festa-menu-num">08</span><span class="festa-menu-name">Frittata con saltarei</span><span class="festa-menu-tag">tradizione</span></li>
+              <li><span class="festa-menu-num">09</span><span class="festa-menu-name">Angolo dolci</span><span class="festa-menu-tag">dessert</span></li>
+            </ol>
+          </article>
+
+          <aside class="festa-wines" data-reveal style="--delay: 140ms" aria-label="Vini in abbinamento &mdash; Cantina Ricchi">
+            <p class="section-kicker">In abbinamento</p>
+            <h3>Cantina Ricchi &middot; Monzambano</h3>
+            <p>Etichette dell&rsquo;Alto Mantovano selezionate per armonizzarsi con i piatti a base di pesce di fiume.</p>
+            <ul class="festa-wine-list">
+              <li><strong>Chiaretto</strong><span>&ldquo;La Casina&rdquo;</span></li>
+              <li><strong>Bianco</strong><span>&ldquo;La Casina&rdquo;</span></li>
+              <li><strong>Bianco</strong><span>&ldquo;Brioso&rdquo;</span></li>
+              <li><strong>Spumante brut</strong><span>&ldquo;Espressioni 8&rdquo;</span></li>
+              <li><strong>Spumante dolce</strong><span>&ldquo;Aroma 85&rdquo;</span></li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="festa-foot">
+          <article class="festa-tribute" data-reveal>
+            <p class="festa-tribute-eyebrow">In ricordo</p>
+            <h4>Luciano Soave</h4>
+            <p>La 40&deg; edizione &egrave; dedicata a Luciano, volontario storico della Pro Loco. Per anni ha curato i risotti della festa e, d&rsquo;inverno, il vin brul&eacute; della comunit&agrave;.</p>
+          </article>
+          <article class="festa-baracca" data-reveal style="--delay: 120ms">
+            <p class="festa-tribute-eyebrow">In concomitanza</p>
+            <h4>BARACCA dei NOTT-AMBULI 2025</h4>
+            <p>Quarta edizione: panini con porchetta, hot dog, cipperone, aperitivi, cocktail e birre artigianali, con <strong>6 concerti live</strong> nell&rsquo;area eventi adiacente.</p>
+            <a class="button magnetic" href="#news"><span>Leggi il programma</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">News e articoli</p>
+            <h2 class="section-title">Le ultime dal territorio.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Eventi, escursioni, avvisi e racconti caricati dalla redazione tramite Supabase. Se non ci sono post, resta un vuoto curato e coerente con il nuovo design.</p>
+        </div>
+
+        <div class="news-shell">
+          <main class="news-main" aria-label="Ultime news" data-reveal>
+            <div class="news-inner">
+              <div class="news-filter-row" id="news-filter-row" aria-label="Filtra news per categoria"></div>
+              <div class="news-status" id="news-status">Caricamento articoli in corso.</div>
+              <article class="post-featured skeleton" id="post-featured" style="display:none"></article>
+              <div class="post-card-grid" id="posts-grid"></div>
+              <div class="news-empty" id="news-empty" style="display:none">
+                <div>
+                  <strong>Nessun articolo pubblicato</strong>
+                  <span>I contenuti verranno mostrati qui appena la redazione li pubblica.</span>
+                </div>
+              </div>
+            </div>
+          </main>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="chi-siamo">
+      <div class="container community-grid">
+        <div class="community-panel" data-reveal>
+          <p class="section-kicker">Chi siamo</p>
+          <h2>Una comunit&agrave; che lavora per il territorio.</h2>
+          <p>L&rsquo;Associazione Pro Loco &ldquo;Amici di Rivalta&rdquo; A.P.S. nasce il 26 aprile 1967. Promuove iniziative culturali, ambientali e gastronomiche, con una rete di volontari che tiene vivo il rapporto tra borgo, acqua e visitatori.</p>
+          <div class="button-row">
+            <a class="button secondary magnetic" href="#contatti"><span>Contatta la Pro Loco</span><span class="button-icon" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="community-list">
+          <article class="community-item" data-reveal style="--delay: 80ms"><strong>Dal 1967</strong><span>Promozione turistica, tutela ambientale, cultura locale e supporto agli eventi del borgo.</span></article>
+          <article class="community-item" data-reveal style="--delay: 160ms"><strong>Amici del Mincio</strong><span>Sezione naturalistica dedicata a ricerca, monitoraggio e conoscenza delle Valli.</span></article>
+          <article class="community-item" data-reveal style="--delay: 240ms"><strong>Canoa Club</strong><span>Sezione sportiva per vivere il paesaggio dall&rsquo;acqua, con escursioni e assistenza.</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="dove-siamo">
+      <div class="container">
+        <div class="section-head">
+          <div data-reveal>
+            <p class="section-kicker">Dove siamo</p>
+            <h2 class="section-title">Arrivare a Rivalta &egrave; gi&agrave; parte del viaggio.</h2>
+          </div>
+          <p class="section-lead" data-reveal style="--delay: 120ms">Rivalta sul Mincio &egrave; frazione del Comune di Rodigo, a circa 10 km da Mantova. L&rsquo;ufficio turistico Pro Loco si trova in Via Porto, 31.</p>
+        </div>
+
+        <div class="contact-grid">
+          <figure class="map-plate" data-reveal>
+            <div class="swiper rsm-swiper rsm-swiper--map" role="region" aria-label="Carosello animato del territorio di Rivalta sul Mincio">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide rsm-slide">
+                  <video src="/video/dove-siamo-1.mp4" muted loop autoplay playsinline preload="metadata" aria-label="Veduta animata delle strade di Rivalta sul Mincio"></video>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <button class="swiper-button-prev" aria-label="Slide precedente"></button>
+              <button class="swiper-button-next" aria-label="Slide successiva"></button>
+            </div>
+          </figure>
+          <article class="contact-card" data-reveal style="--delay: 120ms">
+            <div>
+              <h3>Via Porto, 31</h3>
+              <p class="section-lead">46040 Rivalta sul Mincio, frazione di Rodigo, provincia di Mantova.</p>
+            </div>
+            <div class="contact-lines">
+              <div class="contact-line"><strong>Email</strong><a href="mailto:info@prolocorivalta.mn.it">info@prolocorivalta.mn.it</a></div>
+              <div class="contact-line"><strong>Telefono</strong><a href="tel:+393398995680">+39 339 899 5680</a></div>
+              <div class="contact-line"><strong>Accessi</strong><span>Auto dalla SP 18, bici lungo la ciclabile del Mincio, barca dagli imbarcaderi della valle.</span></div>
+            </div>
+            <div class="button-row">
+              <a class="button secondary magnetic" href="https://www.google.com/maps/dir/?api=1&destination=Via+Porto+31,+46040+Rivalta+sul+Mincio+MN" target="_blank" rel="noopener">
+                <span>Apri percorso su Google Maps</span><span class="button-icon" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <div class="container newsletter-grid">
+        <div data-reveal>
+          <p class="section-kicker">Resta in contatto</p>
+          <h2 id="newsletter-title">Il Mincio nella tua casella di posta.</h2>
+          <p>Una mail al mese con eventi, sagre, escursioni e racconti dalle Valli del Mincio. Niente rumore, solo cose utili.</p>
+        </div>
+        <form class="newsletter-form" id="newsletter-form" data-reveal style="--delay: 120ms" novalidate>
+          <div class="newsletter-form-inner">
+            <div class="field">
+              <label for="newsletter-email">Email</label>
+              <input id="newsletter-email" type="email" name="email" autocomplete="email" placeholder="nome@email.it" required />
+            </div>
+            <p class="form-status" id="newsletter-status" role="status"></p>
+            <button class="button magnetic" type="submit"><span>Iscrivimi</span><span class="button-icon" aria-hidden="true">&rarr;</span></button>
+            <p style="margin:16px 0 0;color:rgba(23,34,29,.58);font-size:.9rem;">Iscrivendoti accetti la <a href="privacy" style="text-decoration:underline;">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contatti">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>Pro Loco Rivalta sul Mincio</h3>
+          <p>Ecoturismo, cultura locale, eventi, Sagra del Luccio e promozione ambientale nel cuore del Parco Regionale del Mincio.</p>
+        </div>
+        <nav aria-label="Sezioni">
+          <h4>Esplora</h4>
+          <ul class="footer-links">
+            <li><a href="#esperienze">Esperienze</a></li>
+            <li><a href="#galleria">Galleria</a></li>
+            <li><a href="#valli">Valli</a></li>
+            <li><a href="#news">News</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Area utente">
+          <h4>Area</h4>
+          <ul class="footer-links">
+            <li><a href="login">Accedi</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="write">Scrivi</a></li>
+            <li><a href="profile">Profili</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legale e social">
+          <h4>Link</h4>
+          <ul class="footer-links">
+            <li><a href="privacy">Privacy</a></li>
+            <li><a href="cookie">Cookie</a></li>
+            <li><a href="note-legali">Note legali</a></li>
+            <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year"></span> Pro Loco Rivalta sul Mincio A.P.S.</span>
+        <span>Via Porto, 31 - 46040 Rivalta sul Mincio (MN)</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#home" aria-label="Torna su">&uarr;</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/node_modules/animejs/dist/bundles/anime.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var CATEGORY_ORDER = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+    var LEGACY_TO_CANONICAL = {
+      'eventi': 'Eventi',
+      'territorio': 'Territorio',
+      'vita locale': 'Vita locale',
+      'avvisi': 'Avvisi',
+      'richieste': 'Richieste',
+      'storie': 'Storie',
+      'il luccio': 'Storie',
+      'fauna': 'Territorio',
+      'ambiente': 'Territorio',
+      'ecoturismo': 'Territorio',
+      'storia': 'Storie'
+    };
+    var BADGE_COLOR_BY_CATEGORY = {
+      'Eventi': 'green',
+      'Territorio': 'default',
+      'Vita locale': 'default',
+      'Avvisi': 'green',
+      'Richieste': 'green',
+      'Storie': 'default'
+    };
+
+    function $(selector, root) {
+      return (root || document).querySelector(selector);
+    }
+
+    function $all(selector, root) {
+      return Array.prototype.slice.call((root || document).querySelectorAll(selector));
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function canonicalCategory(input) {
+      var raw = String(input || '').trim();
+      if (!raw) return '';
+      var normalized = raw.toLowerCase();
+      if (LEGACY_TO_CANONICAL[normalized]) return LEGACY_TO_CANONICAL[normalized];
+      for (var i = 0; i < CATEGORY_ORDER.length; i += 1) {
+        if (CATEGORY_ORDER[i].toLowerCase() === normalized) return CATEGORY_ORDER[i];
+      }
+      return raw;
+    }
+
+    function badgeColor(input) {
+      return BADGE_COLOR_BY_CATEGORY[canonicalCategory(input)] || 'default';
+    }
+
+    function categoryHref(input) {
+      return 'category?name=' + encodeURIComponent(canonicalCategory(input) || '');
+    }
+
+    window.RSM_CATEGORIES = {
+      all: function () { return CATEGORY_ORDER.slice(); },
+      canonical: canonicalCategory,
+      badgeColor: badgeColor,
+      categoryHref: categoryHref
+    };
+
+    function initNav() {
+      var toggle = $('#navToggle');
+      var nav = $('#navList');
+      if (!toggle || !nav) return;
+
+      function closeMenu() {
+        nav.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+      }
+
+      toggle.addEventListener('click', function () {
+        var open = !nav.classList.contains('open');
+        nav.classList.toggle('open', open);
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('menu-open', open);
+      });
+
+      $all('a[href^="#"]', nav).forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeMenu();
+      });
+
+      var sectionIds = ['home', 'esperienze', 'galleria', 'valli', 'luccio', 'news', 'chi-siamo', 'dove-siamo', 'contatti'];
+      var links = $all('a[href^="#"]', nav);
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          links.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      }, { rootMargin: '-42% 0px -52% 0px', threshold: 0.01 });
+
+      sectionIds.forEach(function (id) {
+        var section = document.getElementById(id);
+        if (section) observer.observe(section);
+      });
+    }
+
+    function initReveal() {
+      var items = $all('[data-reveal]');
+      if (!items.length) return;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        items.forEach(function (item) { item.classList.add('is-visible'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+
+      items.forEach(function (item) { observer.observe(item); });
+    }
+
+    function initCounters() {
+      var counters = $all('[data-count]');
+      if (!counters.length) return;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        counters.forEach(function (el) { el.textContent = el.dataset.count || '0'; });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var target = parseInt(el.dataset.count, 10) || 0;
+          var start = performance.now();
+          var duration = 1300;
+          function frame(now) {
+            var t = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = String(Math.round(target * eased));
+            if (t < 1) requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.45 });
+
+      counters.forEach(function (el) { observer.observe(el); });
+    }
+
+    function initMagneticButtons() {
+      $all('.magnetic').forEach(function (button) {
+        button.addEventListener('pointermove', function (event) {
+          var rect = button.getBoundingClientRect();
+          var x = ((event.clientX - rect.left) / rect.width) * 100;
+          var y = ((event.clientY - rect.top) / rect.height) * 100;
+          button.style.setProperty('--mx', x + '%');
+          button.style.setProperty('--my', y + '%');
+        });
+      });
+    }
+
+    function initNewsletter() {
+      var form = $('#newsletter-form');
+      var input = $('#newsletter-email');
+      var status = $('#newsletter-status');
+      if (!form || !input || !status) return;
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var value = input.value.trim();
+        if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          status.textContent = 'Inserisci un indirizzo email valido.';
+          input.focus();
+          return;
+        }
+        status.textContent = 'Grazie, iscrizione registrata in questa sessione.';
+        form.reset();
+      });
+    }
+
+    function initCarousel() {
+      if (typeof Swiper === 'undefined') return;
+      document.querySelectorAll('.rsm-swiper:not(.rsm-swiper--hero)').forEach(function (el) {
+        var slideCount = el.querySelectorAll('.swiper-slide').length;
+        var hasMultipleSlides = slideCount > 1;
+        new Swiper(el, {
+          loop: hasMultipleSlides,
+          grabCursor: true,
+          spaceBetween: 30,
+          effect: 'fade',
+          fadeEffect: { crossFade: true },
+          autoplay: hasMultipleSlides ? {
+            delay: 4000,
+            disableOnInteraction: false,
+          } : false,
+          pagination: {
+            el: el.querySelector('.swiper-pagination'),
+            clickable: true,
+            dynamicBullets: true,
+          },
+          navigation: {
+            nextEl: el.querySelector('.swiper-button-next'),
+            prevEl: el.querySelector('.swiper-button-prev'),
+          },
+          keyboard: { enabled: true },
+        });
+      });
+    }
+
+    function initHeroVideoSwiper() {
+      var heroEl = document.querySelector('.rsm-swiper--hero');
+      if (!heroEl || typeof Swiper === 'undefined') return;
+
+      var heroSwiper = new Swiper(heroEl, {
+        loop: true,
+        grabCursor: true,
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        autoplay: false,
+        pagination: {
+          el: heroEl.querySelector('.swiper-pagination'),
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: heroEl.querySelector('.swiper-button-next'),
+          prevEl: heroEl.querySelector('.swiper-button-prev'),
+        },
+        keyboard: { enabled: true },
+      });
+
+      function playActiveVideo() {
+        heroEl.querySelectorAll('video').forEach(function (v) {
+          v.pause();
+          v.currentTime = 0;
+        });
+        var active = heroEl.querySelector('.swiper-slide-active video');
+        if (active) active.play().catch(function () {});
+      }
+
+      var fallbackTimer = null;
+
+      // Frecce: slideChangeTransitionEnd scatta dopo il fade → slide attiva già visibile
+      heroSwiper.on('slideChangeTransitionEnd', function () {
+        clearTimeout(fallbackTimer);
+        playActiveVideo();
+      });
+
+      // Drag: slideChangeTransitionEnd spesso non scatta → fallback a 350ms
+      heroSwiper.on('slideChange', function () {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = setTimeout(function () {
+          var active = heroEl.querySelector('.swiper-slide-active video');
+          if (active && active.paused) playActiveVideo();
+        }, 350);
+      });
+
+      // Avanza slide solo se è il video attivo a finire (evita loop nascosti)
+      heroEl.addEventListener('ended', function (e) {
+        if (e.target.tagName !== 'VIDEO') return;
+        var active = heroEl.querySelector('.swiper-slide-active video');
+        if (e.target === active) heroSwiper.slideNext();
+      }, true);
+
+      playActiveVideo();
+    }
+
+    function initBannerVideo() {
+      var vid = document.querySelector('.img-banner-video');
+      if (!vid) return;
+      if (vid.tagName !== 'VIDEO') return;
+      var obs = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          vid.play().catch(function () {});
+          obs.disconnect();
+        }
+      }, { threshold: 0.1 });
+      obs.observe(vid);
+    }
+
+    function initAuth() {
+      var nav = $('#nav-auth');
+      if (!nav) return;
+      if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+        nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+        return;
+      }
+
+      var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      var outsideBound = false;
+
+      function initials(username) {
+        return String(username || 'utente').trim().slice(0, 2).toUpperCase();
+      }
+
+      function closeDropdown() {
+        var dropdown = $('#profileDropdown');
+        var button = $('#profileBtn');
+        if (dropdown) dropdown.classList.remove('open');
+        if (button) button.setAttribute('aria-expanded', 'false');
+      }
+
+      function item(label, href, active, primary) {
+        return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + label + '</span><span aria-hidden="true">&rarr;</span></a>';
+      }
+
+      function buildMenu(username, color, emoji) {
+        emoji = emoji || '🌿';
+        var safe = escapeHtml(username);
+        var current = window.location.pathname;
+        var profileHref = 'profile?u=' + encodeURIComponent(username);
+        var isProfile = current.indexOf('profile') >= 0;
+        var currentLower = current.toLowerCase();
+        var isDashboard = currentLower.indexOf('/dashboard') >= 0 || currentLower.indexOf('/me') >= 0;
+        var isWrite = current.indexOf('write') >= 0;
+        var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username
+          ? item('Modifica profilo', 'modifica-profilo', false, false)
+          : '';
+
+        return '<div class="profile-menu" id="profileMenu">' +
+          '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">' +
+          '<span class="profile-avatar" style="background:' + escapeHtml(color || '#2f6b67') + '">' + escapeHtml(emoji) + '</span>' +
+          '<span>@' + safe + '</span>' +
+          '</button>' +
+          '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">' +
+          '<div class="profile-dropdown__section-title">Navigazione</div>' +
+          item('Profilo', profileHref, isProfile, false) +
+          item('Dashboard', '/dashboard', isDashboard, false) +
+          editItem +
+          item('Scrivi', 'write', isWrite, true) +
+          item('Categorie', '/category', current.indexOf('/category') >= 0, false) +
+          item('Aspetto', 'preferenze', current.indexOf('preferenze') >= 0, false) +
+          item('Reimposta Password', 'reset', current.indexOf('reset') >= 0, false) +
+          '<div class="profile-dropdown__sep"></div>' +
+          '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>' +
+          '</div></div>';
+      }
+
+      function bindMenu() {
+        var button = $('#profileBtn');
+        var dropdown = $('#profileDropdown');
+        if (!button || !dropdown) return;
+
+        button.addEventListener('click', function (event) {
+          event.stopPropagation();
+          var open = !dropdown.classList.contains('open');
+          dropdown.classList.toggle('open', open);
+          button.setAttribute('aria-expanded', String(open));
+        });
+
+        $all('[data-action="logout"]', dropdown).forEach(function (logoutButton) {
+          logoutButton.addEventListener('click', function () {
+            client.auth.signOut().then(function () { window.location.reload(); });
+          });
+        });
+
+        $all('a', dropdown).forEach(function (link) {
+          link.addEventListener('click', closeDropdown);
+        });
+
+        if (!outsideBound) {
+          document.addEventListener('click', function (event) {
+            var menu = $('#profileMenu');
+            if (menu && !menu.contains(event.target)) closeDropdown();
+          }, { capture: true });
+          document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeDropdown();
+          });
+          outsideBound = true;
+        }
+      }
+
+      function render(session) {
+        if (!session) {
+          nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+          nav.classList.add('auth-ready');
+          var ml = document.querySelector('.nav-mobile-login');
+          if (ml) ml.classList.add('auth-ready');
+          return;
+        }
+
+        client.from('profiles')
+          .select('username,avatar_emoji,avatar_color')
+          .eq('id', session.user.id)
+          .single()
+          .then(function (result) {
+            var profile = result && result.data ? result.data : {};
+            var username = profile.username || (session.user.email || 'profilo').split('@')[0];
+            nav.innerHTML = buildMenu(username, profile.avatar_color || '#2f6b67', profile.avatar_emoji || '🌿');
+            nav.classList.add('auth-ready');
+            var ml = document.querySelector('.nav-mobile-login');
+            if (ml) ml.classList.add('auth-ready');
+            bindMenu();
+          });
+      }
+
+      client.auth.onAuthStateChange(function (_event, session) { render(session); });
+      client.auth.getSession().then(function (result) {
+        render(result && result.data ? result.data.session : null);
+      });
+    }
+
+    function newsSeed(post) {
+      var type = String(post.image_type || post.category || 'territorio').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return type || 'territorio';
+    }
+
+    function newsPhoto(slot, seed) {
+      return '<div class="news-card__media photo-slot" data-photo-slot="' + escapeHtml(slot) + '" style="--photo:url(https://picsum.photos/seed/rivalta-news-' + escapeHtml(seed) + '/900/680)" aria-hidden="true"></div>';
+    }
+
+    function initPosts() {
+      var status = $('#news-status');
+      var filterRow = $('#news-filter-row');
+      var featured = $('#post-featured');
+      var grid = $('#posts-grid');
+      var empty = $('#news-empty');
+      if (!status || !filterRow || !featured || !grid || !empty) return;
+
+      var categories = CATEGORY_ORDER.slice();
+      var activeCategory = 'all';
+      var posts = [];
+
+      function setStatus(message) {
+        status.textContent = message || '';
+        status.style.display = message ? '' : 'none';
+      }
+
+      function fmt(iso) {
+        if (!iso) return '';
+        return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function badgeClass(color) {
+        return color === 'green' ? 'badge green' : 'badge';
+      }
+
+      function normalize(post) {
+        var category = canonicalCategory(post.category) || 'Territorio';
+        return Object.assign({}, post, {
+          category: category,
+          badge_color: post.badge_color || badgeColor(category)
+        });
+      }
+
+      function filteredPosts() {
+        if (activeCategory === 'all') return posts;
+        return posts.filter(function (post) { return post.category === activeCategory; });
+      }
+
+      function renderFilters() {
+        var chips = ['all'].concat(categories);
+        filterRow.innerHTML = chips.map(function (cat) {
+          var label = cat === 'all' ? 'Tutte' : cat;
+          var on = activeCategory === cat ? ' on' : '';
+          return '<button type="button" class="news-filter-chip' + on + '" data-cat="' + escapeHtml(cat) + '">' + escapeHtml(label) + '</button>';
+        }).join('');
+
+        $all('[data-cat]', filterRow).forEach(function (button) {
+          button.addEventListener('click', function () {
+            activeCategory = button.getAttribute('data-cat') || 'all';
+            renderFilters();
+            renderPosts();
+          });
+        });
+      }
+
+      function cardMarkup(post) {
+        var seed = newsSeed(post);
+        return '<article class="post-card">' +
+          newsPhoto('news-card-' + escapeHtml(seed), seed) +
+          '<div class="post-card__body">' +
+          '<div class="post-meta"><time>' + escapeHtml(fmt(post.published_at)) + '</time><a href="' + categoryHref(post.category) + '">' + escapeHtml(post.category) + '</a></div>' +
+          '<h3 class="post-card__title"><a href="post?id=' + encodeURIComponent(post.id) + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
+          '<p class="post-card__excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
+          '<div class="post-card__footer"><a class="btn-read" href="post?id=' + encodeURIComponent(post.id) + '">Leggi <span aria-hidden="true">&rarr;</span></a><span class="' + badgeClass(post.badge_color) + '">' + escapeHtml(post.badge || post.category) + '</span></div>' +
+          '</div></article>';
+      }
+
+      function renderPosts() {
+        var list = filteredPosts();
+        featured.style.display = 'none';
+        grid.innerHTML = '';
+
+        if (!list.length) {
+          empty.style.display = '';
+          setStatus(activeCategory === 'all' ? '' : 'Nessun articolo per la categoria selezionata.');
+          return;
+        }
+
+        empty.style.display = 'none';
+        setStatus('');
+        var first = list[0];
+        var seed = newsSeed(first);
+        featured.classList.remove('skeleton');
+        featured.innerHTML =
+          newsPhoto('news-featured-' + escapeHtml(seed), seed) +
+          '<div class="post-featured__body">' +
+          '<div class="post-meta"><time>' + escapeHtml(fmt(first.published_at)) + '</time><a href="' + categoryHref(first.category) + '">' + escapeHtml(first.category) + '</a></div>' +
+          '<h2 class="post-featured__title"><a href="post?id=' + encodeURIComponent(first.id) + '">' + escapeHtml(first.title || 'Articolo') + '</a></h2>' +
+          '<p class="post-featured__excerpt">' + escapeHtml(first.excerpt || '') + '</p>' +
+          '<div class="post-featured__footer"><a class="btn-read" href="post?id=' + encodeURIComponent(first.id) + '">Leggi <span aria-hidden="true">&rarr;</span></a><span class="' + badgeClass(first.badge_color) + '">' + escapeHtml(first.badge || first.category) + '</span></div>' +
+          '</div>';
+        featured.style.display = '';
+        grid.innerHTML = list.slice(1, 7).map(cardMarkup).join('');
+      }
+
+      renderFilters();
+
+      if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+        posts = [];
+        renderPosts();
+        setStatus('Archivio non collegato. Quando Supabase risponde, le news appariranno qui.');
+        return;
+      }
+
+      var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      client
+        .from('posts')
+        .select('id, title, excerpt, category, badge, badge_color, image_type, published_at')
+        .eq('published', true)
+        .order('published_at', { ascending: false })
+        .limit(60)
+        .then(function (result) {
+          if (result.error) {
+            posts = [];
+            renderPosts();
+            setStatus('Non riesco a caricare le news in questo momento.');
+            return;
+          }
+          posts = (result.data || []).map(normalize);
+          renderPosts();
+        });
+    }
+
+    function initGsap() {
+      if (reduceMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.utils.toArray('[data-parallax]').forEach(function (el) {
+        var amount = parseFloat(el.getAttribute('data-parallax') || '0.1') * 240;
+        gsap.to(el, {
+          y: amount,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2
+          }
+        });
+      });
+
+      gsap.utils.toArray('.photo-slot').forEach(function (slot) {
+        gsap.fromTo(slot,
+          { scale: 0.94 },
+          {
+            scale: 1.03,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: slot,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.4
+            }
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    }
+
+    function initAnimeJs() {
+      if (reduceMotion || typeof anime === 'undefined' || typeof anime.animate !== 'function') return;
+
+      anime.animate('.nav-island', {
+        translateY: [-28, 0],
+        opacity: [0, 1],
+        duration: 880,
+        ease: 'out(4)'
+      });
+
+      anime.animate('.hero-copy-block > *', {
+        translateY: [30, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(95, { start: 140 }),
+        duration: 900,
+        ease: 'out(3)'
+      });
+
+      anime.animate('.hero-media', {
+        translateX: [22, 0],
+        scale: [0.97, 1],
+        opacity: [0, 1],
+        duration: 980,
+        delay: 220,
+        ease: 'out(4)'
+      });
+
+      anime.animate('.fact', {
+        translateY: [18, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(130, { start: 380 }),
+        duration: 760,
+        ease: 'out(3)'
+      });
+
+      anime.animate('.marquee-track span', {
+        opacity: [0.42, 1],
+        delay: anime.stagger(120),
+        duration: 1700,
+        direction: 'alternate',
+        loop: true,
+        ease: 'inOut(2)'
+      });
+
+      var interactiveCards = $all('.stack-card, .post-card, .community-item, .festa-day, .festa-poster-frame');
+      interactiveCards.forEach(function (card) {
+        card.addEventListener('pointerenter', function () {
+          anime.animate(card, {
+            scale: 1.015,
+            translateY: -5,
+            duration: 360,
+            ease: 'out(3)'
+          });
+        });
+
+        card.addEventListener('pointerleave', function () {
+          anime.animate(card, {
+            scale: 1,
+            translateY: 0,
+            duration: 420,
+            ease: 'out(3)'
+          });
+        });
+      });
+
+      var backToTop = $('.back-to-top');
+      if (backToTop && 'IntersectionObserver' in window) {
+        var footer = $('.footer');
+        if (footer) {
+          var footerObserver = new IntersectionObserver(function (entries) {
+            if (!entries[0]) return;
+            if (entries[0].isIntersecting) {
+              anime.animate(backToTop, {
+                scale: [1, 1.09, 1],
+                duration: 740,
+                ease: 'inOut(3)'
+              });
+            }
+          }, { threshold: 0.28 });
+          footerObserver.observe(footer);
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var year = $('#year');
+      if (year) year.textContent = String(new Date().getFullYear());
+      initBannerVideo();
+      initNav();
+      initReveal();
+      initCounters();
+      initMagneticButtons();
+      initNewsletter();
+      initCarousel();
+      initHeroVideoSwiper();
+      initAuth();
+      initPosts();
+      initGsap();
+      initAnimeJs();
+    });
+  })();
+  </script>
+</body>
+</html>

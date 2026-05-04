@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nuova Password — Pro Loco Rivalta sul Mincio</title>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --marsh: #253f35;
+      --water: #2f6b67;
+      --reed: #c6a462;
+      --line: rgba(37,63,53,0.15);
+      --ok: #2E7D32;
+      --err: #b53838;
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+    }
+
+    html,body{
+      height:100%;
+      font-family: var(--sans);
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(198,164,98,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(47,107,103,.14) 0%, transparent 55%),
+        linear-gradient(160deg, #fdf6e8 0%, #f5ede0 40%, #ede4d6 100%);
+      color: var(--ink);
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    #particles{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    @media (max-width: 760px) { .brand-name span { display: none; } }
+
+    /* ── Layout ── */
+    .page{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 48px}
+
+    /* ── Card ── */
+    .card{
+      width:100%;max-width:440px;
+      background:rgba(255,250,240,.92);
+      border:1px solid var(--line);
+      border-radius:24px;
+      backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+      padding:48px 44px 44px;
+      box-shadow:0 32px 80px rgba(37,63,53,.10),0 0 0 1px rgba(37,63,53,.06);
+      animation:cardIn .6s cubic-bezier(.22,1,.36,1) both
+    }
+    @keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
+
+    /* ── Brand ── */
+    .brand-card{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+    .brand-card-img{width:40px;height:40px;border-radius:12px;object-fit:cover}
+    .brand-card-name{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+
+    /* ── Headings ── */
+    .card-title{font-family:var(--serif);font-size:1.9rem;font-weight:650;line-height:1.2;margin-bottom:8px}
+    .card-sub{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:32px}
+
+    /* ── Form ── */
+    .field{margin-bottom:20px}
+    label{display:block;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+    .input-wrap{position:relative}
+    input[type=password],input[type=text]{
+      width:100%;padding:14px 48px 14px 16px;
+      background:var(--paper);border:1px solid var(--line);border-radius:12px;
+      color:var(--ink);font-size:.95rem;font-family:var(--sans);
+      transition:border-color .2s,box-shadow .2s;outline:none
+    }
+    input:focus{border-color:rgba(47,107,103,.6);box-shadow:0 0 0 3px rgba(47,107,103,.12)}
+    .eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:1.1rem;padding:2px;transition:color .2s}
+    .eye-btn:hover{color:var(--ink)}
+
+    /* ── Strength meter ── */
+    .strength-bar{display:flex;gap:4px;margin-top:8px}
+    .seg{flex:1;height:3px;border-radius:99px;background:rgba(37,63,53,.10);transition:background .3s}
+    .seg.s1{background:#c0392b}
+    .seg.s2{background:#e67e22}
+    .seg.s3{background:#e6c040}
+    .seg.s4{background:#27ae60}
+    .strength-label{font-size:.72rem;color:var(--ink-soft);margin-top:5px;height:14px}
+
+    /* ── Button ── */
+    .btn-main{
+      width:100%;padding:15px;margin-top:8px;
+      background:var(--marsh);
+      border:none;border-radius:12px;
+      color:var(--cream);font-size:1rem;font-weight:700;font-family:var(--sans);
+      cursor:pointer;letter-spacing:.03em;
+      box-shadow:0 8px 28px rgba(37,63,53,.22);
+      transition:opacity .2s,transform .15s,box-shadow .2s;
+      position:relative;overflow:hidden
+    }
+    .btn-main:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 12px 36px rgba(37,63,53,.30)}
+    .btn-main:active{transform:translateY(0)}
+    .btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-main .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+    .btn-main.loading .btn-text{display:none}
+    .btn-main.loading .spinner{display:block}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── States ── */
+    .state{display:none}
+    .state.active{display:block;animation:fadeIn .4s ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    /* ── Success / Error ── */
+    .big-icon{font-size:3.5rem;margin-bottom:16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+    .success-title{font-family:var(--serif);font-size:1.7rem;font-weight:650;margin-bottom:10px}
+    .success-sub{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:28px}
+    .btn-outline{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 24px;border-radius:10px;
+      border:1px solid var(--line);background:rgba(37,63,53,.05);
+      color:var(--ink);font-size:.9rem;font-family:var(--sans);cursor:pointer;
+      transition:background .2s,border-color .2s;text-decoration:none
+    }
+    .btn-outline:hover{background:rgba(37,63,53,.09);border-color:rgba(37,63,53,.22)}
+
+    /* ── Error banner ── */
+    .err-banner{
+      display:none;
+      background:rgba(181,56,56,.08);border:1px solid rgba(181,56,56,.25);
+      border-radius:10px;padding:12px 14px;
+      font-size:.85rem;color:#b53838;margin-bottom:20px;
+      animation:fadeIn .3s ease
+    }
+    .err-banner.show{display:flex;gap:10px;align-items:flex-start}
+
+    /* ── Back link ── */
+    .back-link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:.82rem;color:var(--ink-soft);text-decoration:none;
+      margin-top:24px;transition:color .2s
+    }
+    .back-link:hover{color:var(--ink)}
+
+    .token-err{text-align:center;padding:8px 0}
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div></div>
+    <div id="nav-auth"></div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="card">
+    <div class="brand-card">
+      <img src="/img/favicon.png" alt="" class="brand-card-img" onerror="this.style.display='none'">
+      <span class="brand-card-name">Rivalta sul Mincio · Parco del Mincio · Mantova</span>
+    </div>
+
+    <!-- State: loading -->
+    <div class="state active" id="s-loading">
+      <div style="text-align:center;padding:20px 0">
+        <div style="width:40px;height:40px;border:3px solid rgba(37,63,53,.12);border-top-color:var(--marsh);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px"></div>
+        <p style="color:var(--ink-soft);font-size:.9rem">Verifica del link in corso…</p>
+      </div>
+    </div>
+
+    <!-- State: invalid token -->
+    <div class="state" id="s-invalid">
+      <div class="token-err">
+        <div class="big-icon">🔗</div>
+        <div class="success-title" style="color:var(--err)">Link non valido</div>
+        <p class="success-sub">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
+        <a href="login" class="btn-outline">← Torna al login</a>
+      </div>
+    </div>
+
+    <!-- State: reset form -->
+    <div class="state" id="s-form">
+      <h1 class="card-title">Nuova password</h1>
+      <p class="card-sub">Scegli una password sicura per il tuo account.</p>
+
+      <div class="err-banner" id="err-banner">
+        <span>⚠️</span><span id="err-text"></span>
+      </div>
+
+      <div class="field">
+        <label>Nuova password</label>
+        <div class="input-wrap">
+          <input type="password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password">
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1">👁</button>
+        </div>
+        <div class="strength-bar">
+          <div class="seg" id="seg0"></div>
+          <div class="seg" id="seg1"></div>
+          <div class="seg" id="seg2"></div>
+          <div class="seg" id="seg3"></div>
+        </div>
+        <div class="strength-label" id="str-label"></div>
+      </div>
+
+      <div class="field">
+        <label>Conferma password</label>
+        <div class="input-wrap">
+          <input type="password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password">
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-main" id="reset-btn" onclick="doReset()">
+        <span class="btn-text">Imposta nuova password</span>
+        <div class="spinner"></div>
+      </button>
+
+      <a href="login" class="back-link">← Torna al login</a>
+    </div>
+
+    <!-- State: success -->
+    <div class="state" id="s-success">
+      <div style="text-align:center;padding:8px 0">
+        <div class="big-icon">✅</div>
+        <div class="success-title">Password aggiornata!</div>
+        <p class="success-sub">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
+        <a href="login" class="btn-outline" style="margin:0 auto">Vai al login →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nav = $('nav-auth');
+  if (!nav) return;
+  if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return;
+  }
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var outsideBound = false;
+  function closeDropdown() {
+    var d = $('profileDropdown'), b = $('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function item(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'"><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtml(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? item('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtml(color||'#2f6b67')+'">'+escapeHtml(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      item('Profilo',profileHref,isProfile,false)+
+      item('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      item('Scrivi','write',isWrite,true)+
+      item('Categorie','/category',current.indexOf('/category')>=0,false)+
+      item('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      item('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindMenu() {
+    var btn = $('profileBtn'), dd = $('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { client.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDropdown); });
+    if (!outsideBound) {
+      document.addEventListener('click', function(e) { var m=$('profileMenu'); if(m&&!m.contains(e.target)) closeDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDropdown(); });
+      outsideBound = true;
+    }
+  }
+  function render(session) {
+    if (!session) { nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return; }
+    client.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single().then(function(r) {
+      var p = r&&r.data?r.data:{};
+      var username = p.username || (session.user.email||'profilo').split('@')[0];
+      nav.innerHTML = buildMenu(username, p.avatar_color||'#2f6b67', p.avatar_emoji||'\uD83C\uDF3F');
+      bindMenu();
+    });
+  }
+  client.auth.onAuthStateChange(function(_e,s){ render(s); });
+  client.auth.getSession().then(function(r){ render(r&&r.data?r.data.session:null); });
+})();
+</script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ── Particles ──
+(function(){
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let W, H, pts = [];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<22;i++) pts.push({x:Math.random()*1e4,y:Math.random()*1e4,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.6,a:Math.random()*.6+.2});
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x%W,p.y%H,p.r,0,6.28);
+      ctx.fillStyle=`rgba(198,164,98,${p.a})`;ctx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+// ── Eye toggle ──
+function toggleEye(id, btn){
+  const el = document.getElementById(id);
+  el.type = el.type==='password' ? 'text' : 'password';
+  btn.textContent = el.type==='password' ? '👁' : '🙈';
+}
+
+// ── Strength meter ──
+document.getElementById('pwd1').addEventListener('input', function(){
+  const v = this.value;
+  let s = 0;
+  if(v.length>=8) s++;
+  if(/[A-Z]/.test(v)) s++;
+  if(/[0-9]/.test(v)) s++;
+  if(/[^A-Za-z0-9]/.test(v)) s++;
+  const labels=['','Debole','Discreta','Buona','Ottima'];
+  const cls=['','s1','s2','s3','s4'];
+  for(let i=0;i<4;i++){
+    const seg=document.getElementById('seg'+i);
+    seg.className='seg'+(i<s?' '+cls[s]:'');
+  }
+  document.getElementById('str-label').textContent = v.length ? labels[s] : '';
+});
+
+// ── Show state ──
+function showState(id){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── Error ──
+function showErr(msg){
+  const b=document.getElementById('err-banner');
+  document.getElementById('err-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),5000);
+}
+
+// ── Auth state listener ──
+let _session = null;
+let _ready = false;
+
+sb.auth.onAuthStateChange((event, session) => {
+  if(event === 'PASSWORD_RECOVERY'){
+    _session = session;
+    showState('s-form');
+    _ready = true;
+  } else if(event === 'SIGNED_IN' && session) {
+    // already signed in (token in hash), treat as recovery ready
+    _session = session;
+    if(!_ready) {
+      showState('s-form');
+      _ready = true;
+    }
+  }
+});
+
+// Check for hash params from Supabase email link
+// Supabase puts access_token in the URL hash; the SDK handles it automatically.
+// If after a short delay no recovery event fired, the token is invalid.
+setTimeout(()=>{
+  if(!_ready){
+    // also check if there's any session at all via getSession
+    sb.auth.getSession().then(({data:{session}})=>{
+      if(session){
+        _session = session;
+        showState('s-form');
+        _ready = true;
+      } else {
+        // check URL hash manually — Supabase may have already consumed it
+        const hash = window.location.hash;
+        if(hash && hash.includes('access_token')){
+          // still waiting, give more time
+          setTimeout(()=>{
+            if(!_ready) showState('s-invalid');
+          }, 2000);
+        } else if(!hash || (!hash.includes('type=recovery') && !hash.includes('access_token'))){
+          showState('s-invalid');
+        }
+      }
+    });
+  }
+}, 1500);
+
+// ── Submit ──
+async function doReset(){
+  const p1 = document.getElementById('pwd1').value;
+  const p2 = document.getElementById('pwd2').value;
+  if(!p1 || p1.length < 8){ showErr('La password deve essere di almeno 8 caratteri.'); return; }
+  if(p1 !== p2){ showErr('Le password non coincidono.'); return; }
+
+  const btn = document.getElementById('reset-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const {error} = await sb.auth.updateUser({password: p1});
+
+  btn.classList.remove('loading');
+  btn.disabled = false;
+
+  if(error){
+    showErr(error.message || 'Errore durante l\'aggiornamento della password.');
+    return;
+  }
+
+  showState('s-success');
+  // Auto-redirect after 3s
+  setTimeout(()=>{ window.location.href='login'; }, 3000);
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('s-form').classList.contains('active')) doReset();
+});
+</script>
+</body>
+</html>

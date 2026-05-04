@@ -1,0 +1,34 @@
+{
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "index",
+          "login",
+          "write",
+          "reset",
+          "profile",
+          "preferenze",
+          "post",
+          "modifica-profilo",
+          "dashboard",
+          "category",
+          "db-test",
+          "privacy",
+          "cookie",
+          "note-legali",
+          "security.client.js",
+          "supabase.config.js",
+          "node_modules/animejs/dist/bundles/anime.umd.min.js",
+          "img/**",
+          "video/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/server.js" }
+  ]
+}

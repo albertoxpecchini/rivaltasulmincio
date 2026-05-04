@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="chiaro">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preferenze - Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #17221d;
+      --ink-soft: #31453b;
+      --cream: #f7f0e4;
+      --paper: #fffaf0;
+      --marsh: #253f35;
+      --marsh-2: #3d6353;
+      --water: #2f6b67;
+      --clay: #b8663f;
+      --reed: #c6a462;
+      --line: rgba(37,63,53,0.15);
+      --ok: #2E7D32;
+      --err: #b53838;
+      --font-base: 16px;
+      --sans: "Cabinet Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+    }
+
+    :root[data-density='compact'] { --font-base: 15px; }
+
+    html { font-size: var(--font-base); }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(198,164,98,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(47,107,103,.14) 0%, transparent 55%),
+        linear-gradient(160deg, #fdf6e8 0%, #f5ede0 40%, #ede4d6 100%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    /* ── Nav Island ── */
+    .site-header {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 70;
+      pointer-events: none;
+    }
+    .nav-island {
+      position: relative;
+      width: min(100% - 28px, 1240px);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid rgba(255, 250, 240, 0.68);
+      border-radius: 999px;
+      background: rgba(247, 240, 228, 0.82);
+      box-shadow: 0 18px 48px rgba(23, 34, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      pointer-events: auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 11px;
+      min-width: 0; color: var(--ink); text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 42px; flex: 0 0 42px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 42px; height: 42px; object-fit: cover; display: block; }
+    .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
+    .brand-name strong { font-size: 0.98rem; font-weight: 800; }
+    .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
+    #nav-auth { display: flex; align-items: center; }
+    .nav-login {
+      border: 0; border-radius: 999px;
+      background: var(--marsh); color: var(--paper);
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500; font-family: var(--sans);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none; cursor: pointer;
+    }
+    .nav-login:hover { transform: translateY(-1px); background: #1f362e; text-decoration: none; }
+    .profile-btn {
+      border: 0; border-radius: 999px;
+      background: #253f35; color: #fffaf0;
+      min-height: 42px; padding: 0 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 9px; font-weight: 500;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      cursor: pointer; font-family: var(--sans);
+    }
+    .profile-btn:hover { transform: translateY(-1px); background: #1f362e; box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20); }
+    .profile-btn:active { transform: scale(0.98); }
+    .profile-menu { position: relative; }
+    .profile-avatar {
+      width: 26px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #2f6b67; color: #fffaf0;
+      font-size: 1rem; line-height: 1;
+    }
+    .profile-dropdown {
+      position: absolute; right: 0; top: calc(100% + 12px);
+      width: 230px; padding: 10px;
+      border: 1px solid rgba(255, 250, 240, 0.58);
+      border-radius: 24px;
+      background: rgba(255, 250, 240, 0.94);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      backdrop-filter: blur(20px);
+      opacity: 0; visibility: hidden;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1), transform 360ms cubic-bezier(0.32, 0.72, 0, 1), visibility 360ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .profile-dropdown__section-title {
+      padding: 8px 10px; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(23, 34, 29, 0.5); font-weight: 900;
+    }
+    .profile-dropdown a, .profile-dropdown button {
+      width: 100%; border: 0; background: transparent; color: #17221d;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 38px; padding: 0 10px; border-radius: 14px;
+      font-weight: 750; text-align: left; text-decoration: none; cursor: pointer;
+      transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1), transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .profile-dropdown a:hover, .profile-dropdown button:hover, .profile-dropdown .active {
+      background: rgba(37, 63, 53, 0.08); transform: translateX(2px);
+    }
+    .profile-dropdown .danger { color: #8f3b28; }
+    .profile-dropdown__sep { height: 1px; background: rgba(37, 63, 53, 0.15); margin: 8px 4px; }
+    @media (max-width: 760px) { .brand-name span { display: none; } }
+
+    /* ── Topbar nav links ── */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: rgba(23, 34, 29, 0.68);
+      text-decoration: none;
+      transition: color 420ms cubic-bezier(0.32, 0.72, 0, 1), background 420ms cubic-bezier(0.32, 0.72, 0, 1), transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.84);
+      transform: translateY(-1px);
+    }
+    .nav-toggle {
+      display: none;
+      border: 0;
+      border-radius: 999px;
+      background: var(--marsh);
+      color: var(--paper);
+      width: 44px;
+      min-height: 42px;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex: 0 0 44px;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+    .nav-toggle span {
+      position: absolute;
+      width: 17px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform 500ms cubic-bezier(0.32, 0.72, 0, 1), opacity 500ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .nav-toggle span:first-child { transform: translateY(-5px); }
+    .nav-toggle span:last-child  { transform: translateY(5px); }
+    .nav-toggle.open span:first-child { transform: rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle.open span:last-child  { transform: rotate(-45deg); }
+    .nav-actions-wrap { display: inline-flex; align-items: center; gap: 8px; }
+    @media (max-width: 1120px) {
+      .nav-island { display: flex; justify-content: space-between; }
+      .nav-links {
+        position: fixed;
+        inset: 78px 14px auto 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 16px;
+        border-radius: 30px;
+        background: rgba(247, 240, 228, 0.94);
+        border: 1px solid rgba(255, 250, 240, 0.7);
+        box-shadow: 0 42px 110px rgba(23, 34, 29, 0.28);
+        backdrop-filter: blur(24px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px) scale(0.98);
+        transition: opacity 420ms cubic-bezier(0.32, 0.72, 0, 1), transform 420ms cubic-bezier(0.32, 0.72, 0, 1), visibility 420ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+      .nav-links a { min-height: 50px; justify-content: center; }
+      .nav-toggle { display: inline-flex !important; }
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: var(--sans);
+      transition: all .2s;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--marsh);
+      border-color: transparent;
+      color: var(--cream);
+    }
+    .btn-ghost {
+      background: rgba(37,63,53,.05);
+      color: var(--ink-soft);
+    }
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Page ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1040px, 100% - 28px);
+      margin: 0 auto;
+      padding: 100px 0 56px;
+      display: grid;
+      gap: 16px;
+    }
+
+    /* ── Fields ── */
+    .field { display: grid; gap: 6px; }
+    .field label {
+      font-size: .73rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,250,240,.7);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: .9rem;
+    }
+    .field textarea {
+      min-height: 84px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: rgba(47,107,103,.6);
+      box-shadow: 0 0 0 3px rgba(47,107,103,.12);
+    }
+
+    /* ── Status / subnote ── */
+    .status { min-height: 20px; font-size: .82rem; }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--err); }
+    .subnote { font-size: .75rem; color: var(--ink-soft); line-height: 1.45; }
+
+    /* ── BENTO ── */
+    .bento {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas:
+        "tema    lingua   densita"
+        "fs      contrast motto";
+    }
+    .bc {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(37,63,53,.05);
+    }
+
+    .bc-head { margin-bottom: 2px; }
+    .bc-head h2 { font-family: var(--serif); font-size: 1.08rem; margin-bottom: 3px; }
+    .bc-head p { font-size: .79rem; color: var(--ink-soft); }
+    .bc-pref { background: rgba(37,63,53,.03); }
+    .bc-pref-label {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 6px;
+    }
+    .bc-pref-val {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .bc-motto {
+      grid-area: motto;
+      background: var(--marsh);
+      border-color: transparent;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(37,63,53,.20);
+    }
+    .bc-motto-text {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--cream);
+      letter-spacing: -.01em;
+      line-height: 1.5;
+    }
+    .bc-motto-text em { color: var(--reed); font-style: normal; }
+
+    @media (max-width: 920px) {
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "tema    lingua"
+          "densita fs"
+          "contrast motto";
+      }
+    }
+    @media (max-width: 600px) {
+      .page { width: min(1040px, 100% - 18px); }
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "tema" "lingua" "densita" "fs" "contrast" "motto";
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark"><img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" /></div>
+      <span class="brand-name"><strong>Rivalta sul Mincio</strong><span>Parco del Mincio &middot; Mantova</span></span>
+    </a>
+    <div id="nav-auth" style="margin-left:auto"></div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="bento">
+
+    <!-- TEMA -->
+    <article class="bc bc-pref" style="grid-area:tema">
+      <div class="bc-pref-label">Tema</div>
+      <div class="bc-pref-val">🌤️</div>
+      <div class="field" style="margin-top:auto">
+        <label for="pref-theme">Scegli tema</label>
+        <select id="pref-theme">
+          <option value="auto">Automatico</option>
+          <option value="chiaro">Chiaro</option>
+          <option value="scuro">Scuro</option>
+        </select>
+      </div>
+    </article>
+
+    <!-- LINGUA -->
+    <article class="bc bc-pref" style="grid-area:lingua">
+      <div class="bc-pref-label">Lingua</div>
+      <div class="bc-pref-val">🇮🇹</div>
+      <div class="field" style="margin-top:auto">
+        <label for="pref-language">Scegli lingua</label>
+        <select id="pref-language">
+          <option value="it">Italiano</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </article>
+
+    <!-- DENSITÀ -->
+    <article class="bc bc-pref" style="grid-area:densita">
+      <div class="bc-pref-label">Densità UI</div>
+      <div class="bc-pref-val">⚡</div>
+      <div class="field" style="margin-top:auto">
+        <label for="pref-density">Scegli densità</label>
+        <select id="pref-density">
+          <option value="comfortable">Standard</option>
+          <option value="compact">Compatta</option>
+        </select>
+      </div>
+    </article>
+
+    <!-- FONT SIZE -->
+    <article class="bc bc-pref" style="grid-area:fs">
+      <div class="bc-pref-label">Testo</div>
+      <div class="bc-pref-val">Aa</div>
+      <div class="field" style="margin-top:auto">
+        <label for="pref-fontsize">Dimensione</label>
+        <select id="pref-fontsize">
+          <option value="sm">Piccolo</option>
+          <option value="md">Normale</option>
+          <option value="lg">Grande</option>
+          <option value="xl">Molto grande</option>
+        </select>
+      </div>
+    </article>
+
+    <!-- ACCESSIBILITÀ + SALVA UI -->
+    <article class="bc" style="grid-area:contrast">
+      <div class="bc-pref-label">Accessibilità</div>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.88rem;color:var(--ink);flex:1">
+        <input id="pref-contrast" type="checkbox" />
+        Contrasto elevato
+      </label>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-primary" id="save-ui-btn" type="button">Salva preferenze UI</button>
+        <div class="status" id="ui-status"></div>
+        <div class="subnote">Tema e lingua salvati in locale. Accessibilità sincronizzata su cloud.</div>
+      </div>
+    </article>
+
+    <!-- MOTTO -->
+    <article class="bc bc-motto">
+      <div class="bc-motto-text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</div>
+    </article>
+
+  </div><!-- /bento -->
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nav = $('nav-auth');
+  if (!nav) return;
+  if (typeof supabase === 'undefined' || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.indexOf('your-project') >= 0) {
+    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return;
+  }
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var outsideBound = false;
+  function closeDropdown() {
+    var d = $('profileDropdown'), b = $('profileBtn');
+    if (d) d.classList.remove('open');
+    if (b) b.setAttribute('aria-expanded','false');
+  }
+  function item(label, href, active, primary) {
+    return '<a href="'+href+'" role="menuitem" class="'+(active?'active ':'')+(primary?'item-primary':'')+'"><span>'+label+'</span><span aria-hidden="true">&rarr;</span></a>';
+  }
+  function buildMenu(username, color, emoji) {
+    emoji = emoji || '\uD83C\uDF3F';
+    var safe = escapeHtml(username);
+    var current = window.location.pathname;
+    var profileHref = 'profile?u='+encodeURIComponent(username);
+    var isProfile = current.indexOf('profile') >= 0;
+    var isDashboard = current.toLowerCase().indexOf('/dashboard') >= 0 || current.toLowerCase().indexOf('/me') >= 0;
+    var isWrite = current.indexOf('write') >= 0;
+    var editItem = isProfile && new URLSearchParams(window.location.search).get('u') === username ? item('Modifica profilo','modifica-profilo',false,false) : '';
+    return '<div class="profile-menu" id="profileMenu">'+
+      '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="profile-avatar" style="background:'+escapeHtml(color||'#2f6b67')+'">'+escapeHtml(emoji)+'</span>'+
+      '<span>@'+safe+'</span></button>'+
+      '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'+
+      '<div class="profile-dropdown__section-title">Navigazione</div>'+
+      item('Profilo',profileHref,isProfile,false)+
+      item('Dashboard','/dashboard',isDashboard,false)+
+      editItem+
+      item('Scrivi','write',isWrite,true)+
+      item('Categorie','/category',current.indexOf('/category')>=0,false)+
+      item('Aspetto','preferenze',current.indexOf('preferenze')>=0,false)+
+      item('Reimposta Password','reset',current.indexOf('reset')>=0,false)+
+      '<div class="profile-dropdown__sep"></div>'+
+      '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'+
+      '</div></div>';
+  }
+  function bindMenu() {
+    var btn = $('profileBtn'), dd = $('profileDropdown');
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    dd.querySelectorAll('[data-action="logout"]').forEach(function(b) {
+      b.addEventListener('click', function() { client.auth.signOut().then(function(){ window.location.reload(); }); });
+    });
+    dd.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDropdown); });
+    if (!outsideBound) {
+      document.addEventListener('click', function(e) { var m=$('profileMenu'); if(m&&!m.contains(e.target)) closeDropdown(); }, {capture:true});
+      document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDropdown(); });
+      outsideBound = true;
+    }
+  }
+  function render(session) {
+    if (!session) { nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>'; return; }
+    client.from('profiles').select('username,avatar_emoji,avatar_color').eq('id',session.user.id).single().then(function(r) {
+      var p = r&&r.data?r.data:{};
+      var username = p.username || (session.user.email||'profilo').split('@')[0];
+      nav.innerHTML = buildMenu(username, p.avatar_color||'#2f6b67', p.avatar_emoji||'\uD83C\uDF3F');
+      bindMenu();
+    });
+  }
+  client.auth.onAuthStateChange(function(_e,s){ render(s); });
+  client.auth.getSession().then(function(r){ render(r&&r.data?r.data.session:null); });
+})();
+</script>
+<script>
+(function () {
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const $ = (id) => document.getElementById(id);
+  const PREF_KEY = 'rsm_prefs_v1';
+
+  const EMOJIS = ['🌿','🌊','🦢','🚣','🎣','🌾','🏞️','🦆','🌙','✨','🧭','📍','🍃','🏰','🌸','🛶','🦋','🌤️','📸','🧡'];
+  const COLORS = ['#253f35','#2f6b67','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
+
+  const defaultPrefs = {
+    theme: 'chiaro',
+    language: 'it',
+    uiDensity: 'comfortable',
+    fontsize: 'md',
+    contrast: false,
+  };
+
+  let currentUser = null;
+  let currentProfile = null;
+
+  function setStatus(id, msg, type) {
+    const box = $(id);
+    if (!box) return;
+    box.className = 'status' + (type ? (' ' + type) : '');
+    box.textContent = msg || '';
+  }
+
+  function loadPrefs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(PREF_KEY)) || {};
+      return Object.assign({}, defaultPrefs, parsed);
+    } catch {
+      return Object.assign({}, defaultPrefs);
+    }
+  }
+
+  function savePrefs(prefs) {
+    localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+  }
+
+  function applyUiPrefs(prefs) {
+    const root = document.documentElement;
+    const theme = prefs.theme || 'auto';
+    const density = prefs.uiDensity || 'comfortable';
+
+    if (theme === 'auto') {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      root.dataset.theme = prefersLight ? 'chiaro' : 'scuro';
+    } else {
+      root.dataset.theme = theme;
+    }
+
+    root.dataset.density = density;
+
+    const sizeMap = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
+    root.style.fontSize = sizeMap[prefs.fontsize || 'md'] || '16px';
+    root.style.filter = prefs.contrast ? 'contrast(1.16)' : '';
+  }
+
+  function sanitizeUsername(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
+  }
+
+  function buildPickers(emoji, color) {
+    const emojiGrid = $('emoji-grid');
+    const colorGrid = $('color-grid');
+    if (!emojiGrid || !colorGrid) return;
+
+    emojiGrid.innerHTML = EMOJIS.map(function (item, index) {
+      const checked = item === emoji ? 'checked' : '';
+      return '<input type="radio" id="em-' + index + '" name="pref-emoji" value="' + item + '" ' + checked + '><label for="em-' + index + '">' + item + '</label>';
+    }).join('');
+
+    colorGrid.innerHTML = COLORS.map(function (item, index) {
+      const checked = item === color ? 'checked' : '';
+      return '<input type="radio" id="co-' + index + '" name="pref-color" value="' + item + '" ' + checked + '><label for="co-' + index + '" style="background:' + item + '"></label>';
+    }).join('');
+
+    emojiGrid.querySelectorAll('input[name="pref-emoji"]').forEach(function (node) {
+      node.addEventListener('change', syncAvatarPreview);
+    });
+    colorGrid.querySelectorAll('input[name="pref-color"]').forEach(function (node) {
+      node.addEventListener('change', syncAvatarPreview);
+    });
+
+    syncAvatarPreview();
+  }
+
+  function syncAvatarPreview() {
+    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
+    const preview = $('avatar-preview');
+    const chipAv = $('user-chip-avatar');
+    if (preview) {
+      preview.textContent = emoji;
+      preview.style.background = color;
+    }
+    if (chipAv) {
+      chipAv.textContent = emoji;
+      chipAv.style.background = color;
+    }
+  }
+
+  async function saveProfile() {
+    if (!currentUser || !currentProfile) return;
+    setStatus('profile-status', '', '');
+
+    const username = sanitizeUsername($('p-username')?.value || '');
+    const displayName = String($('p-display')?.value || '').trim();
+    const bio = String($('p-bio')?.value || '').trim();
+
+    if (username.length < 3) {
+      setStatus('profile-status', 'Username troppo corto: minimo 3 caratteri.', 'err');
+      return;
+    }
+
+    const btn = $('save-profile-btn');
+    if (btn) btn.disabled = true;
+    const payload = {
+      username: username,
+      display_name: displayName || username,
+      bio: bio || null,
+    };
+
+    const { error } = await sb.from('profiles').update(payload).eq('id', currentUser.id);
+    if (btn) btn.disabled = false;
+
+    if (error) {
+      if (error.code === '23505') {
+        setStatus('profile-status', 'Username gia in uso. Prova con un altro.', 'err');
+      } else {
+        setStatus('profile-status', 'Salvataggio non riuscito: ' + error.message, 'err');
+      }
+      return;
+    }
+
+    currentProfile.username = username;
+    currentProfile.display_name = displayName || username;
+    currentProfile.bio = bio || null;
+
+    if ($('user-chip-name')) $('user-chip-name').textContent = '@' + username;
+    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(username);
+
+    setStatus('profile-status', 'Profilo aggiornato con successo.', 'ok');
+  }
+
+  async function saveAvatar() {
+    if (!currentUser || !currentProfile) return;
+    setStatus('avatar-status', '', '');
+
+    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
+
+    const btn = $('save-avatar-btn');
+    if (btn) btn.disabled = true;
+
+    const { error } = await sb.from('profiles')
+      .update({ avatar_emoji: emoji, avatar_color: color })
+      .eq('id', currentUser.id);
+
+    if (btn) btn.disabled = false;
+
+    if (error) {
+      setStatus('avatar-status', 'Aggiornamento avatar non riuscito: ' + error.message, 'err');
+      return;
+    }
+
+    currentProfile.avatar_emoji = emoji;
+    currentProfile.avatar_color = color;
+    setStatus('avatar-status', 'Avatar aggiornato.', 'ok');
+  }
+
+  async function saveUiPreferences() {
+    if (!currentUser) return;
+    setStatus('ui-status', '', '');
+
+    const next = loadPrefs();
+    next.theme = $('pref-theme')?.value || 'auto';
+    next.language = $('pref-language')?.value || 'it';
+    next.uiDensity = $('pref-density')?.value || 'comfortable';
+    next.fontsize = $('pref-fontsize')?.value || 'md';
+    next.contrast = !!$('pref-contrast')?.checked;
+
+    savePrefs(next);
+    applyUiPrefs(next);
+
+    const btn = $('save-ui-btn');
+    if (btn) btn.disabled = true;
+
+    const payload = {
+      user_id: currentUser.id,
+      accessibility_fontsize: next.fontsize,
+      accessibility_high_contrast: next.contrast,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await sb.from('user_settings').upsert(payload, { onConflict: 'user_id' });
+
+    if (btn) btn.disabled = false;
+
+    if (error) {
+      const msg = String(error.message || '').toLowerCase();
+      const missing = error.code === '42P01' || error.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table');
+      if (missing) {
+        setStatus('ui-status', 'Preferenze locali salvate. Per sync server applica supabase-security.sql.', 'ok');
+      } else {
+        setStatus('ui-status', 'Preferenze locali salvate, ma sync server fallita: ' + error.message, 'err');
+      }
+      return;
+    }
+
+    setStatus('ui-status', 'Preferenze UI salvate.', 'ok');
+  }
+
+  async function logout() {
+    await sb.auth.signOut();
+    location.href = '/';
+  }
+
+  async function init() {
+    const { data: sessionData } = await sb.auth.getSession();
+    const session = sessionData?.session || null;
+    if (!session) {
+      location.href = 'login';
+      return;
+    }
+
+    const { data: profile, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+    if (error || !profile) {
+      location.href = '/dashboard';
+      return;
+    }
+
+    currentUser = session.user;
+    currentProfile = profile;
+
+    if ($('user-chip-name')) $('user-chip-name').textContent = '@' + (profile.username || 'utente');
+    if ($('user-chip-avatar')) {
+      $('user-chip-avatar').textContent = profile.avatar_emoji || '🌿';
+      $('user-chip-avatar').style.background = profile.avatar_color || '#253f35';
+    }
+
+    if ($('p-username')) $('p-username').value = profile.username || '';
+    if ($('p-display')) $('p-display').value = profile.display_name || profile.username || '';
+    if ($('p-bio')) $('p-bio').value = profile.bio || '';
+    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(profile.username || '');
+
+    buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#253f35');
+
+    const prefs = loadPrefs();
+    // Keep this page always opening in light mode.
+    prefs.theme = 'chiaro';
+
+    const { data: remoteSettings } = await sb.from('user_settings')
+      .select('accessibility_fontsize,accessibility_high_contrast')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+
+    if (remoteSettings) {
+      if (remoteSettings.accessibility_fontsize) prefs.fontsize = remoteSettings.accessibility_fontsize;
+      if (typeof remoteSettings.accessibility_high_contrast === 'boolean') prefs.contrast = remoteSettings.accessibility_high_contrast;
+      savePrefs(prefs);
+    }
+
+    if ($('pref-theme')) $('pref-theme').value = 'chiaro';
+    if ($('pref-language')) $('pref-language').value = prefs.language || 'it';
+    if ($('pref-density')) $('pref-density').value = prefs.uiDensity || 'comfortable';
+    if ($('pref-fontsize')) $('pref-fontsize').value = prefs.fontsize || 'md';
+    if ($('pref-contrast')) $('pref-contrast').checked = !!prefs.contrast;
+
+    applyUiPrefs(prefs);
+
+    $('save-profile-btn')?.addEventListener('click', saveProfile);
+    $('save-avatar-btn')?.addEventListener('click', saveAvatar);
+    $('save-ui-btn')?.addEventListener('click', saveUiPreferences);
+    $('logout-btn')?.addEventListener('click', logout);
+
+    $('p-username')?.addEventListener('input', function () {
+      this.value = sanitizeUsername(this.value);
+    });
+
+    ['pref-theme','pref-density','pref-fontsize','pref-contrast'].forEach(function (id) {
+      const el = $(id);
+      if (!el) return;
+      el.addEventListener('change', function () {
+        const live = loadPrefs();
+        live.theme = $('pref-theme')?.value || live.theme;
+        live.uiDensity = $('pref-density')?.value || live.uiDensity;
+        live.fontsize = $('pref-fontsize')?.value || live.fontsize;
+        live.contrast = !!$('pref-contrast')?.checked;
+        applyUiPrefs(live);
+      });
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
