@@ -203,7 +203,7 @@
       color: var(--ink);
       position: relative;
       background: linear-gradient(180deg, #f2e5c9 0 34%, #d7ddd3 34% 68%, #b8cac3 68% 100%);
-      background-attachment: fixed;
+      background-attachment: scroll;
       line-height: 1.5;
       overflow-x: hidden;
       text-rendering: optimizeLegibility;
