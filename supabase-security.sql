@@ -230,6 +230,40 @@ create index if not exists idx_notifications_user_created on public.notification
 create index if not exists idx_notifications_unread on public.notifications(user_id, is_read, created_at desc);
 
 -- ------------------------------------------------------------------
+-- Site telemetry for /storia
+-- ------------------------------------------------------------------
+create table if not exists public.site_stats (
+  key text primary key,
+  value text not null,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.site_releases (
+  id uuid primary key default gen_random_uuid(),
+  version text not null,
+  notes text,
+  released_at timestamptz not null default now(),
+  created_by uuid references auth.users(id)
+);
+
+create index if not exists idx_site_releases_released_at on public.site_releases(released_at desc);
+
+create or replace function public.touch_site_stats_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_site_stats_updated_at on public.site_stats;
+create trigger trg_site_stats_updated_at
+before update on public.site_stats
+for each row execute function public.touch_site_stats_updated_at();
+
+-- ------------------------------------------------------------------
 -- Post guard (anti-spam + toxic words)
 -- ------------------------------------------------------------------
 create or replace function public.guard_post_insert_update()
@@ -282,6 +316,8 @@ alter table public.comments enable row level security;
 alter table public.reports enable row level security;
 alter table public.post_likes enable row level security;
 alter table public.notifications enable row level security;
+alter table public.site_stats enable row level security;
+alter table public.site_releases enable row level security;
 
 -- Profiles
 drop policy if exists profiles_public_read on public.profiles;
@@ -441,3 +477,23 @@ for delete using (
   auth.uid() = user_id
   or public.is_admin(auth.uid())
 );
+
+-- Site stats
+drop policy if exists site_stats_public_read on public.site_stats;
+create policy site_stats_public_read on public.site_stats
+for select using (true);
+
+drop policy if exists site_stats_admin_write on public.site_stats;
+create policy site_stats_admin_write on public.site_stats
+for all using (public.is_admin(auth.uid()))
+with check (public.is_admin(auth.uid()));
+
+-- Site releases
+drop policy if exists site_releases_public_read on public.site_releases;
+create policy site_releases_public_read on public.site_releases
+for select using (true);
+
+drop policy if exists site_releases_admin_write on public.site_releases;
+create policy site_releases_admin_write on public.site_releases
+for all using (public.is_admin(auth.uid()))
+with check (public.is_admin(auth.uid()));

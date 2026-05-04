@@ -2481,7 +2481,6 @@
         <a href="#luccio">Festa del Pesce</a>
         <a href="#news">News</a>
         <a href="#contatti">Contatti</a>
-        <a href="/preferenze">Aspetto</a>
         <a href="login" class="nav-mobile-login">Accedi</a>
       </nav>
 
@@ -2909,6 +2908,7 @@
             <li><a href="#galleria">Galleria</a></li>
             <li><a href="#valli">Valli</a></li>
             <li><a href="#news">News</a></li>
+            <li><a href="/storia">Storia del sito</a></li>
           </ul>
         </nav>
         <nav aria-label="Area utente">
@@ -3294,7 +3294,6 @@
           editItem +
           item('Scrivi', 'write', isWrite, true) +
           item('Categorie', '/category', current.indexOf('/category') >= 0, false) +
-          item('Aspetto', 'preferenze', current.indexOf('preferenze') >= 0, false) +
           item('Reimposta Password', 'reset', current.indexOf('reset') >= 0, false) +
           '<div class="profile-dropdown__sep"></div>' +
           '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>' +
