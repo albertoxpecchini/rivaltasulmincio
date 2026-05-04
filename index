@@ -203,16 +203,16 @@
       color: var(--ink);
       position: relative;
       background:
-        radial-gradient(120% 62% at 14% -10%, rgba(198, 164, 98, 0.24) 0 56%, transparent 74%),
-        radial-gradient(118% 58% at 84% -12%, rgba(47, 107, 103, 0.21) 0 52%, transparent 72%),
-        radial-gradient(140% 40% at 20% 30%, rgba(47, 107, 103, 0.19) 0 32%, transparent 52%),
-        radial-gradient(145% 42% at 78% 42%, rgba(61, 99, 83, 0.18) 0 30%, transparent 53%),
-        linear-gradient(180deg, #f5eddc 0%, #e8dfc8 42%, #d6d8c9 66%, #cad8d2 100%);
+        radial-gradient(130% 68% at 16% -14%, rgba(233, 176, 102, 0.42) 0 54%, transparent 75%),
+        radial-gradient(126% 62% at 88% -10%, rgba(23, 127, 140, 0.38) 0 50%, transparent 73%),
+        radial-gradient(158% 46% at 18% 34%, rgba(22, 150, 160, 0.34) 0 30%, transparent 53%),
+        radial-gradient(162% 48% at 82% 46%, rgba(47, 107, 103, 0.30) 0 32%, transparent 56%),
+        linear-gradient(180deg, #f9e3be 0%, #e4d6ad 38%, #aed5cb 70%, #7dbfc1 100%);
       background-size: 100% 100%, 100% 100%, 165% 62%, 172% 66%, 100% 100%;
       background-position: 0 0, 0 0, -22% 12%, 114% 34%, 0 0;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      animation: body-water-flow 20s ease-in-out infinite alternate;
+      animation: body-water-flow 16s ease-in-out infinite alternate;
       line-height: 1.5;
       overflow-x: hidden;
       text-rendering: optimizeLegibility;
@@ -237,13 +237,13 @@
 
     @keyframes body-water-flow {
       0% {
-        background-position: 0 0, 0 0, -24% 10%, 116% 36%, 0 0;
+        background-position: 0 0, 0 0, -28% 9%, 120% 38%, 0 0;
       }
       50% {
-        background-position: 0 0, 0 0, -16% 16%, 108% 29%, 0 0;
+        background-position: 0 0, 0 0, -14% 17%, 106% 27%, 0 0;
       }
       100% {
-        background-position: 0 0, 0 0, -20% 14%, 112% 33%, 0 0;
+        background-position: 0 0, 0 0, -22% 14%, 112% 33%, 0 0;
       }
     }
 
