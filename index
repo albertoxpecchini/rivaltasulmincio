@@ -2999,13 +2999,25 @@
       });
     }
 
+    function isValidHttpsUrl(url) {
+      if (!url || typeof url !== 'string') return false;
+      try {
+        var u = new URL(url);
+        return u.protocol === 'https:';
+      } catch (_) {
+        return false;
+      }
+    }
+
     function newsSeed(post) {
       var type = String(post.image_type || post.category || 'territorio').toLowerCase().replace(/[^a-z0-9]+/g, '-');
       return type || 'territorio';
     }
 
-    function newsPhoto(slot, seed) {
-      return '<div class="news-card__media photo-slot" data-photo-slot="' + escapeHtml(slot) + '" style="--photo:url(https://picsum.photos/seed/rivalta-news-' + escapeHtml(seed) + '/900/680)" aria-hidden="true"></div>';
+    function newsPhoto(slot, seed, imageUrl) {
+      var url = (isValidHttpsUrl(imageUrl) ? imageUrl : null) ||
+                ('https://picsum.photos/seed/rivalta-news-' + encodeURIComponent(seed) + '/900/680');
+      return '<div class="news-card__media photo-slot" data-photo-slot="' + escapeHtml(slot) + '" style="--photo:url(\'' + url.replace(/\\/g, '').replace(/'/g, '%27') + '\')" aria-hidden="true"></div>';
     }
 
     function initPosts() {
@@ -3067,7 +3079,7 @@
       function cardMarkup(post) {
         var seed = newsSeed(post);
         return '<article class="post-card">' +
-          newsPhoto('news-card-' + escapeHtml(seed), seed) +
+          newsPhoto('news-card-' + escapeHtml(seed), seed, post.image_url) +
           '<div class="post-card__body">' +
           '<div class="post-meta"><time>' + escapeHtml(fmt(post.published_at)) + '</time><a href="' + categoryHref(post.category) + '">' + escapeHtml(post.category) + '</a></div>' +
           '<h3 class="post-card__title"><a href="post?id=' + encodeURIComponent(post.id) + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
@@ -3093,7 +3105,7 @@
         var seed = newsSeed(first);
         featured.classList.remove('skeleton');
         featured.innerHTML =
-          newsPhoto('news-featured-' + escapeHtml(seed), seed) +
+          newsPhoto('news-featured-' + escapeHtml(seed), seed, first.image_url) +
           '<div class="post-featured__body">' +
           '<div class="post-meta"><time>' + escapeHtml(fmt(first.published_at)) + '</time><a href="' + categoryHref(first.category) + '">' + escapeHtml(first.category) + '</a></div>' +
           '<h2 class="post-featured__title"><a href="post?id=' + encodeURIComponent(first.id) + '">' + escapeHtml(first.title || 'Articolo') + '</a></h2>' +
@@ -3116,7 +3128,7 @@
       var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       client
         .from('posts')
-        .select('id, title, excerpt, category, badge, badge_color, image_type, published_at')
+        .select('id, title, excerpt, category, badge, badge_color, image_type, image_url, published_at')
         .eq('published', true)
         .order('published_at', { ascending: false })
         .limit(60)

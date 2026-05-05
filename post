@@ -114,6 +114,20 @@
 
     .content-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); margin-bottom: 36px; }
 
+    .post-hero-img {
+      margin: 0 0 36px;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: var(--line);
+    }
+    .post-hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .content { font-size: 1.01rem; color: var(--ink); }
     .content p { margin-bottom: 1.4em; }
     .content h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 650; margin: 2.4em 0 .7em; color: var(--ink); }
@@ -997,6 +1011,7 @@
     <h1 class="post-title">${safeTitle}</h1>
     ${activePost.excerpt ? `<p class="post-lead">${safeExcerpt}</p>` : ''}
     <div class="content-divider"></div>
+    ${activePost.image_url ? `<figure class="post-hero-img"><img src="${escapeHtml(activePost.image_url)}" alt="${safeTitle}" loading="lazy" /></figure>` : ''}
     <div class="content">${renderContent(activePost.content)}</div>
     <div class="post-footer">
       <a href="/#news" class="btn btn-primary">← Tutte le notizie</a>
