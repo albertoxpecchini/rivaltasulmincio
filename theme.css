@@ -2,7 +2,7 @@
  * theme.css — Rivalta sul Mincio
  * Footer canonico + dark mode completo + density compact.
  * Incluso in ogni pagina prima di </head>.
- * data-theme / data-density impostati dall'inline FOUC script leggendo localStorage.
+ * data-theme / data-density / data-fontsize / data-contrast impostati dall'inline FOUC script leggendo localStorage.
  */
 
 /* ================================================================
@@ -62,6 +62,7 @@ html[data-theme="scuro"] {
   --cream:       #0f1d17;
   --paper:       #152118;
   --mist:        #1d2e26;
+  --fog:         rgba(11, 19, 14, 0.72);
   --white:       #152118;
   --marsh:       #253f35;
   --marsh-2:     #3d6353;
@@ -69,11 +70,13 @@ html[data-theme="scuro"] {
   --clay:        #c87a55;
   --reed:        #c6a462;
   --line:        rgba(150, 190, 175, 0.13);
+  --line-dark:   rgba(150, 190, 175, 0.20);
   --ok:          #4caf8a;
   --err:         #e07070;
   --warn:        #d4945a;
   --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(150, 190, 175, 0.07);
   --shadow:      0 26px 80px rgba(0, 0, 0, 0.44);
+  --shadow-strong: 0 44px 118px rgba(0, 0, 0, 0.58);
   color-scheme:  dark;
 }
 
@@ -446,6 +449,178 @@ html[data-theme="scuro"] .cat-chip { background: rgba(21, 36, 29, 0.90); color: 
 html[data-theme="scuro"] .cat-chip:hover,
 html[data-theme="scuro"] .cat-chip.active { background: var(--marsh); color: #e8f2ec; }
 
+/* ── 18.b. Componenti trasversali non coperti ── */
+html[data-theme="scuro"] .profile-btn,
+html[data-theme="scuro"] .nav-home-btn,
+html[data-theme="scuro"] .run-btn {
+  background: var(--marsh);
+  color: #e8f2ec;
+}
+html[data-theme="scuro"] .run-btn { border-color: rgba(150, 190, 175, 0.18); }
+html[data-theme="scuro"] .profile-btn:hover,
+html[data-theme="scuro"] .nav-home-btn:hover,
+html[data-theme="scuro"] .run-btn:hover {
+  background: #1c3028;
+  color: #e8f2ec;
+}
+
+html[data-theme="scuro"] .link-btn,
+html[data-theme="scuro"] .mini-btn { color: var(--water); }
+html[data-theme="scuro"] .link-btn:hover,
+html[data-theme="scuro"] .mini-btn:hover { color: #5dbfb8; }
+
+html[data-theme="scuro"] .btn-outline {
+  background: rgba(150, 190, 175, 0.08);
+  border-color: rgba(150, 190, 175, 0.24);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .btn-outline:hover {
+  background: rgba(150, 190, 175, 0.16);
+  border-color: rgba(150, 190, 175, 0.34);
+}
+html[data-theme="scuro"] .eye-btn { color: var(--ink-soft); }
+html[data-theme="scuro"] .eye-btn:hover { color: var(--ink); }
+html[data-theme="scuro"] .back-link { color: var(--ink-soft); }
+html[data-theme="scuro"] .back-link:hover { color: var(--ink); }
+
+html[data-theme="scuro"] .field > span,
+html[data-theme="scuro"] .group-label { color: rgba(212, 228, 221, 0.58); }
+html[data-theme="scuro"] .field input::placeholder,
+html[data-theme="scuro"] .field textarea::placeholder { color: rgba(212, 228, 221, 0.44); }
+html[data-theme="scuro"] .steps span { background: rgba(150, 190, 175, 0.22); }
+html[data-theme="scuro"] .steps span.active { background: var(--water); }
+html[data-theme="scuro"] .input-action {
+  background: rgba(150, 190, 175, 0.12);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .input-action:hover { background: rgba(150, 190, 175, 0.20); }
+html[data-theme="scuro"] .inline-actions .link-btn { border-bottom-color: rgba(150, 190, 175, 0.36); }
+html[data-theme="scuro"] .inline-actions .link-btn:hover { border-bottom-color: rgba(150, 190, 175, 0.60); }
+
+html[data-theme="scuro"] .button.secondary {
+  color: var(--ink);
+  background: rgba(150, 190, 175, 0.10);
+  border-color: rgba(150, 190, 175, 0.20);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+html[data-theme="scuro"] .button.secondary .button-icon {
+  background: var(--marsh);
+  color: #e8f2ec;
+}
+html[data-theme="scuro"] .photo-frame,
+html[data-theme="scuro"] .news-main,
+html[data-theme="scuro"] .map-plate,
+html[data-theme="scuro"] .contact-card,
+html[data-theme="scuro"] .release-card,
+html[data-theme="scuro"] .community-panel,
+html[data-theme="scuro"] .community-item {
+  background: rgba(11, 20, 15, 0.78);
+  border-color: rgba(150, 190, 175, 0.15);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
+}
+html[data-theme="scuro"] .news-inner,
+html[data-theme="scuro"] .fn-card,
+html[data-theme="scuro"] .stack-item,
+html[data-theme="scuro"] .number-tile,
+html[data-theme="scuro"] .uptime-unit,
+html[data-theme="scuro"] .release-commits-list li {
+  background: rgba(14, 24, 19, 0.90);
+  border-color: rgba(150, 190, 175, 0.15);
+}
+html[data-theme="scuro"] #tile-deploy,
+html[data-theme="scuro"] #tile-lines {
+  background: rgba(37, 63, 53, 0.34);
+  border-color: rgba(150, 190, 175, 0.24);
+}
+
+html[data-theme="scuro"] .hero-note {
+  color: var(--ink);
+  background: rgba(11, 20, 15, 0.86);
+  border-color: rgba(150, 190, 175, 0.18);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.44);
+}
+html[data-theme="scuro"] .hero-note span { color: rgba(212, 228, 221, 0.58); }
+html[data-theme="scuro"] .marquee-band {
+  background: rgba(12, 22, 16, 0.62);
+  border-top-color: rgba(150, 190, 175, 0.14);
+  border-bottom-color: rgba(150, 190, 175, 0.14);
+}
+
+html[data-theme="scuro"] .news-filter-chip {
+  border-color: rgba(150, 190, 175, 0.18);
+  color: var(--ink-soft);
+  background: rgba(16, 27, 21, 0.82);
+}
+html[data-theme="scuro"] .news-filter-chip:hover,
+html[data-theme="scuro"] .news-filter-chip.on {
+  color: #e8f2ec;
+  background: var(--marsh);
+}
+html[data-theme="scuro"] .news-status,
+html[data-theme="scuro"] .post-meta,
+html[data-theme="scuro"] .post-featured__excerpt,
+html[data-theme="scuro"] .post-card__excerpt,
+html[data-theme="scuro"] .festa-tribute p,
+html[data-theme="scuro"] .festa-baracca p,
+html[data-theme="scuro"] .side-list a,
+html[data-theme="scuro"] .news-empty,
+html[data-theme="scuro"] .community-panel p,
+html[data-theme="scuro"] .community-item span,
+html[data-theme="scuro"] .fn-card-desc,
+html[data-theme="scuro"] .stack-note,
+html[data-theme="scuro"] .number-tile .label,
+html[data-theme="scuro"] .live-since,
+html[data-theme="scuro"] .release-date-text,
+html[data-theme="scuro"] .release-commit-row .rel-msg,
+html[data-theme="scuro"] .release-commits-list .row-top,
+html[data-theme="scuro"] .release-commits-list .row-files,
+html[data-theme="scuro"] .release-changes-list li { color: var(--ink-soft); }
+html[data-theme="scuro"] .news-empty strong,
+html[data-theme="scuro"] .fn-card-title,
+html[data-theme="scuro"] .stack-name,
+html[data-theme="scuro"] .number-tile .num,
+html[data-theme="scuro"] .release-vname,
+html[data-theme="scuro"] .release-commits-list .row-msg,
+html[data-theme="scuro"] .stat-pill strong { color: var(--ink); }
+html[data-theme="scuro"] .side-list a,
+html[data-theme="scuro"] .contact-line { border-top-color: rgba(150, 190, 175, 0.14); }
+
+html[data-theme="scuro"] .release-v-badge {
+  color: var(--water);
+  background: rgba(61, 138, 132, 0.14);
+  border-color: rgba(61, 138, 132, 0.28);
+}
+html[data-theme="scuro"] .release-commit-row {
+  background: rgba(37, 63, 53, 0.26);
+}
+html[data-theme="scuro"] .release-commit-row a,
+html[data-theme="scuro"] .release-commits-list .row-top code { color: var(--water); }
+html[data-theme="scuro"] .live-dot-badge {
+  color: var(--ok);
+  background: rgba(76, 175, 138, 0.12);
+  border-color: rgba(76, 175, 138, 0.28);
+}
+html[data-theme="scuro"] .live-dot-badge::before,
+html[data-theme="scuro"] .number-tile[data-live]::after {
+  color: var(--ok);
+  background: var(--ok);
+}
+
+html[data-theme="scuro"] .ok,
+html[data-theme="scuro"] .badge-ok { color: var(--ok); }
+html[data-theme="scuro"] .err,
+html[data-theme="scuro"] .badge-err { color: var(--err); }
+html[data-theme="scuro"] .badge-ok { background: rgba(76, 175, 138, 0.14); }
+html[data-theme="scuro"] .badge-err { background: rgba(224, 112, 112, 0.14); }
+html[data-theme="scuro"] .badge-skip,
+html[data-theme="scuro"] .pending { color: var(--ink-soft); }
+
+html[data-theme="scuro"] [style*="color:#2E7D32"],
+html[data-theme="scuro"] [style*="color:#2e7d32"],
+html[data-theme="scuro"] [style*="color:#4a9e7c"] { color: var(--ok) !important; }
+html[data-theme="scuro"] [style*="color:#b94747"],
+html[data-theme="scuro"] [style*="color:#B94747"] { color: var(--err) !important; }
+
 /* ── 19. Footer dark-on-dark (regolazione) ── */
 html[data-theme="scuro"] .footer        { background: #070e0a; }
 html[data-theme="scuro"] .footer-bottom { border-color: rgba(150, 190, 175, 0.09); }
@@ -481,6 +656,69 @@ html[data-theme] .card,
 html[data-theme] .pcard { transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
 
 
+
+/* ================================================================
+   TEXT SIZE FALLBACKS — html[data-fontsize]
+   ================================================================ */
+html[data-fontsize="sm"] { font-size: 14px; }
+html[data-fontsize="md"] { font-size: 16px; }
+html[data-fontsize="lg"] { font-size: 18px; }
+html[data-fontsize="xl"] { font-size: 20px; }
+
+/* ================================================================
+   HIGH CONTRAST — html[data-contrast="high"]
+   ================================================================ */
+html[data-contrast="high"] {
+  --ink: #06130d;
+  --ink-soft: #1c3429;
+  --line: rgba(6, 19, 13, 0.34);
+  --shadow-card: 0 2px 22px rgba(6, 19, 13, 0.16), 0 0 0 1px rgba(6, 19, 13, 0.18);
+}
+html[data-theme="scuro"][data-contrast="high"] {
+  --ink: #f2fff8;
+  --ink-soft: #c7ded3;
+  --cream: #07100b;
+  --paper: #0c1710;
+  --mist: #12251b;
+  --water: #65d1c7;
+  --reed: #e7c879;
+  --line: rgba(214, 246, 232, 0.28);
+  --shadow-card: 0 2px 22px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(214, 246, 232, 0.16);
+}
+html[data-contrast="high"] body { color: var(--ink); }
+html[data-contrast="high"] .nav-island,
+html[data-contrast="high"] .bcard,
+html[data-contrast="high"] .bc,
+html[data-contrast="high"] .card,
+html[data-contrast="high"] .pcard,
+html[data-contrast="high"] .post-card,
+html[data-contrast="high"] .dash-card,
+html[data-contrast="high"] .toc,
+html[data-contrast="high"] .modal,
+html[data-contrast="high"] .fn-card,
+html[data-contrast="high"] .stack-item,
+html[data-contrast="high"] .number-tile,
+html[data-contrast="high"] .release-card,
+html[data-contrast="high"] .contact-card,
+html[data-contrast="high"] .community-panel,
+html[data-contrast="high"] .community-item { border-color: var(--line) !important; }
+html[data-contrast="high"] .pref-row-sub,
+html[data-contrast="high"] .field .hint,
+html[data-contrast="high"] .brand-name span { color: var(--ink-soft) !important; }
+html[data-contrast="high"] input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="submit"]):not([type="color"]),
+html[data-contrast="high"] textarea,
+html[data-contrast="high"] select,
+html[data-contrast="high"] .pref-select {
+  border-color: var(--line) !important;
+}
+html[data-contrast="high"] .btn-primary,
+html[data-contrast="high"] .btn-main,
+html[data-contrast="high"] .profile-btn,
+html[data-contrast="high"] .pref-chip.on { box-shadow: none !important; }
+html[data-contrast="high"] *:focus-visible {
+  outline: 3px solid var(--water) !important;
+  outline-offset: 3px;
+}
 /* ================================================================
    DENSITY COMPACT — html[data-density="compact"]
    ================================================================ */
