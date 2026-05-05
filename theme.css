@@ -700,6 +700,168 @@ html[data-theme="scuro"] .section-num               { color: var(--reed); }
 
 
 /* ================================================================
+   INDEX — NOTTE TRA LE PALUDI E NEL MINCIO
+   Atmosfera: acqua scura, canneti, foschia lunare, fuochi lontani.
+   ================================================================ */
+
+/* ── 33.a. Sfondo body — acqua notturna profonda ── */
+html[data-theme="scuro"] body {
+  background:
+    radial-gradient(ellipse at 8% 0%,   rgba(29, 74, 68, 0.38), transparent 36rem),
+    radial-gradient(ellipse at 96% 18%,  rgba(12, 28, 22, 0.90), transparent 42rem),
+    radial-gradient(circle  at 52% 72%, rgba(47, 107, 103, 0.08), transparent 32rem),
+    linear-gradient(170deg, #060c09 0%, #080f0c 40%, #050b08 70%, #060e0a 100%);
+  color: var(--ink);
+}
+
+/* ── 33.b. Hero — nebbia sul fiume ── */
+html[data-theme="scuro"] .hero::before {
+  background: transparent;
+}
+html[data-theme="scuro"] .hero {
+  background:
+    radial-gradient(ellipse at 18% 50%, rgba(37, 63, 53, 0.28), transparent 54%),
+    radial-gradient(ellipse at 82% 20%, rgba(29, 74, 68, 0.22), transparent 42%),
+    linear-gradient(160deg, #060c09 0%, #0a1610 55%, #060e0a 100%);
+}
+html[data-theme="scuro"] .wave-back,
+html[data-theme="scuro"] .wave-front { fill: #060c09; }
+html[data-theme="scuro"] .img-banner-wave svg path { fill: #060c09; }
+html[data-theme="scuro"] .section-lead        { color: var(--ink-soft); }
+html[data-theme="scuro"] .marquee-track       { color: rgba(138, 171, 158, 0.56); }
+html[data-theme="scuro"] .marquee-band        {
+  background: rgba(6, 12, 9, 0.72);
+  border-top-color:    rgba(61, 138, 132, 0.10);
+  border-bottom-color: rgba(61, 138, 132, 0.10);
+}
+
+/* ── 33.c. Atlas — pannelli di vetro scuro ── */
+html[data-theme="scuro"] .atlas-panel {
+  background: rgba(6, 14, 10, 0.82);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 32px 72px rgba(0, 0, 0, 0.52);
+}
+html[data-theme="scuro"] .atlas-panel-inner {
+  background: rgba(10, 20, 14, 0.90);
+  box-shadow: inset 0 1px 0 rgba(150, 190, 175, 0.07);
+}
+html[data-theme="scuro"] .atlas-copy p        { color: var(--ink-soft); }
+html[data-theme="scuro"] .fact {
+  background: rgba(14, 26, 19, 0.72);
+  border: 1px solid rgba(61, 138, 132, 0.10);
+}
+html[data-theme="scuro"] .fact span           { color: var(--ink-soft); }
+
+/* ── 33.d. Stack cards — carte galleggianti nell'acqua ── */
+html[data-theme="scuro"] .stack-card {
+  background: rgba(6, 14, 10, 0.82);
+  border-color: rgba(61, 138, 132, 0.13);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.56);
+}
+html[data-theme="scuro"] .stack-card-inner    { background: #0b1610; }
+html[data-theme="scuro"] .stack-card-copy p   { color: var(--ink-soft); }
+html[data-theme="scuro"] .tag {
+  background: rgba(61, 138, 132, 0.14);
+  color: var(--water);
+}
+
+/* ── 33.e. Gallery rail ── */
+html[data-theme="scuro"] .rail-item {
+  background: rgba(6, 14, 10, 0.78);
+  border-color: rgba(61, 138, 132, 0.12);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.46);
+}
+
+/* ── 33.f. Sezione Festa — fuochi nella notte palustre ── */
+html[data-theme="scuro"] .festa-section::before {
+  background:
+    radial-gradient(circle at 12% 22%, rgba(198, 164, 98, 0.18), transparent 44%),
+    radial-gradient(circle at 88% 10%, rgba(184, 102, 63, 0.14), transparent 38%),
+    linear-gradient(150deg, #0c1208 0%, #111a0d 50%, #0d1509 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(198, 164, 98, 0.10),
+    0 24px 64px rgba(0, 0, 0, 0.48);
+}
+html[data-theme="scuro"] .festa-menu {
+  background: rgba(10, 19, 13, 0.92);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.48);
+}
+html[data-theme="scuro"] .festa-menu-head p   { color: var(--ink-soft); }
+html[data-theme="scuro"] .festa-menu-head strong { color: var(--water); }
+html[data-theme="scuro"] .festa-menu-list > li { border-top-color: rgba(150, 190, 175, 0.10); }
+html[data-theme="scuro"] .festa-menu-list > li:hover { color: var(--water); }
+html[data-theme="scuro"] .festa-menu-tag      { color: rgba(138, 171, 158, 0.48); }
+html[data-theme="scuro"] .festa-menu-name     { color: var(--ink); }
+html[data-theme="scuro"] .festa-poster-frame {
+  background: rgba(10, 19, 13, 0.88);
+  border-color: rgba(61, 138, 132, 0.18);
+}
+html[data-theme="scuro"] .festa-tribute,
+html[data-theme="scuro"] .festa-baracca {
+  background: rgba(10, 19, 13, 0.88);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.44);
+}
+html[data-theme="scuro"] .festa-tribute       { border-left-color: var(--clay); }
+html[data-theme="scuro"] .festa-tribute p,
+html[data-theme="scuro"] .festa-baracca p     { color: var(--ink-soft); }
+html[data-theme="scuro"] .festa-baracca strong { color: var(--water); }
+
+/* ── 33.g. Newsletter — notte verde ── */
+html[data-theme="scuro"] .newsletter {
+  background:
+    radial-gradient(circle at 14% 50%, rgba(198, 164, 98, 0.12), transparent 40%),
+    linear-gradient(140deg, #060e0a 0%, #0a1610 60%, #060c09 100%);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .newsletter p        { color: var(--ink-soft); }
+html[data-theme="scuro"] .newsletter-form {
+  background: rgba(6, 14, 10, 0.72);
+  border-color: rgba(61, 138, 132, 0.18);
+}
+html[data-theme="scuro"] .newsletter-form-inner {
+  background: rgba(10, 20, 14, 0.96);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .newsletter-form-inner .field label { color: rgba(138, 171, 158, 0.62); }
+html[data-theme="scuro"] .newsletter-form-inner .field input {
+  background: rgba(6, 14, 10, 0.88);
+  border-color: rgba(61, 138, 132, 0.20);
+  color: var(--ink);
+}
+
+/* ── 33.h. .section.dark — profilo versione notte ── */
+html[data-theme="scuro"] .section.dark {
+  background:
+    radial-gradient(circle at 86% 14%, rgba(184, 102, 63, 0.14), transparent 28rem),
+    linear-gradient(145deg, #050c08 0%, #09140e 55%, #060b09 100%);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .section.dark .eyebrow,
+html[data-theme="scuro"] .section.dark .section-kicker,
+html[data-theme="scuro"] .section.dark .section-lead { color: var(--ink-soft); }
+
+/* ── 33.i. Community panel — notte ── */
+html[data-theme="scuro"] .community-panel {
+  background: rgba(6, 14, 10, 0.72);
+  border-color: rgba(61, 138, 132, 0.16);
+}
+html[data-theme="scuro"] .community-item {
+  background: rgba(10, 20, 14, 0.72);
+  border-color: rgba(61, 138, 132, 0.14);
+}
+
+/* ── 33.j. Back-to-top ── */
+html[data-theme="scuro"] .back-to-top {
+  background: rgba(37, 63, 53, 0.88);
+  border-color: rgba(61, 138, 132, 0.28);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .back-to-top:hover { background: var(--marsh); }
+
+
+/* ================================================================
    TEXT SIZE FALLBACKS — html[data-fontsize]
    ================================================================ */
 html[data-fontsize="sm"] { font-size: 14px; }
