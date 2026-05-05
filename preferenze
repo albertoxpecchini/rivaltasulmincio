@@ -279,6 +279,48 @@
       cursor: pointer; min-width: 130px; transition: border-color .18s, box-shadow .18s;
     }
     .pref-select:focus { outline: none; border-color: var(--marsh); box-shadow: 0 0 0 3px rgba(37,63,53,.1); }
+    .pref-panel { display: grid; gap: 14px; }
+    .pref-note {
+      display: grid; gap: 4px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(37,63,53,.05);
+    }
+    .pref-note strong { font-size: .88rem; color: var(--ink); }
+    .pref-note span { font-size: .78rem; color: var(--ink-soft); line-height: 1.5; }
+    .pref-row-block { display: grid; gap: 10px; padding: 4px 0 2px; }
+    .pref-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pref-chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: rgba(255,250,240,.72);
+      color: var(--ink-soft);
+      font: inherit;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .pref-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(37,63,53,.24);
+      background: rgba(37,63,53,.08);
+      color: var(--ink);
+    }
+    .pref-chip.on {
+      background: var(--marsh);
+      color: var(--paper);
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(37,63,53,.18);
+    }
+    .pref-chip:focus-visible {
+      outline: none;
+      border-color: var(--marsh);
+      box-shadow: 0 0 0 3px rgba(37,63,53,.12);
+    }
+    .pref-chip-sub { font-size: .76rem; color: var(--ink-soft); }
 
     /* ── Buttons ── */
     .btn {
@@ -333,6 +375,8 @@
       .grid-2 { grid-template-columns: 1fr; }
       .grid-3 { grid-template-columns: 1fr; }
       .col-span-2 { grid-column: span 1; }
+      .pref-row { align-items: stretch; flex-direction: column; }
+      .pref-select { width: 100%; min-width: 0; }
       .site-header { top: 10px; }
       .nav-island { border-radius: 28px; }
     }
@@ -507,6 +551,63 @@
   </div>
 
   <!-- ── SEZIONE ACCOUNT ── -->
+  <div class="section-label">Funzioni personalizzabili</div>
+
+  <div class="bcard">
+    <div class="bcard-label">Esperienza e comunita</div>
+    <div class="pref-panel">
+      <div class="pref-note">
+        <strong>Decidi come vuoi interagire</strong>
+        <span>Qui controlli commenti, notifiche e i temi che vuoi tenere piu vicini. Le preferenze vengono salvate nel tuo profilo e restano modificabili in qualsiasi momento.</span>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-row-label">Privacy commenti</div>
+          <div class="pref-row-sub">Scegli chi puo commentare i tuoi articoli</div>
+        </div>
+        <select class="pref-select" id="pref-comment-privacy">
+          <option value="all">Tutti</option>
+          <option value="members">Solo membri</option>
+          <option value="none">Disattivati</option>
+        </select>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-row-label">Frequenza notifiche</div>
+          <div class="pref-row-sub">Quanto spesso vuoi ricevere aggiornamenti</div>
+        </div>
+        <select class="pref-select" id="pref-notif-frequency">
+          <option value="instant">Immediata</option>
+          <option value="daily">Giornaliera</option>
+          <option value="weekly">Settimanale</option>
+          <option value="off">Nessuna</option>
+        </select>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-row-label">Email operative</div>
+          <div class="pref-row-sub">Autorizza l'uso dell'email per notifiche legate al tuo account</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="pref-notif-email" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="pref-row-block">
+        <div>
+          <div class="pref-row-label">Categorie preferite</div>
+          <div class="pref-row-sub">Salva i temi che ti interessano di piu per personalizzare la tua esperienza</div>
+        </div>
+        <div class="pref-chip-row" id="pref-category-chips"></div>
+        <div class="pref-chip-sub" id="pref-category-summary">Nessuna categoria selezionata: il sito restera neutro su tutti i temi.</div>
+      </div>
+      <div class="save-row">
+        <button class="btn btn-primary" id="save-custom-btn">Salva personalizzazioni</button>
+        <span class="status-msg" id="custom-status"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label">Account</div>
 
   <div class="grid-2">
@@ -589,7 +690,18 @@
   const EMOJIS = ['🌿','🌊','🦢','🚣','🎣','🌾','🏞️','🦆','🌙','✨','🧭','📍','🍃','🏰','🌸','🛶','🦋','🌤️','📸','🧡'];
   const COLORS = ['#253f35','#2f6b67','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
 
-  const defaultPrefs = { theme: 'chiaro', language: 'it', uiDensity: 'comfortable', fontsize: 'md', contrast: false };
+  const CATEGORY_OPTIONS = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+  const defaultPrefs = {
+    theme: 'chiaro',
+    language: 'it',
+    uiDensity: 'comfortable',
+    fontsize: 'md',
+    contrast: false,
+    commentPrivacy: 'all',
+    notifFrequency: 'daily',
+    notifEmail: false,
+    preferredCategories: []
+  };
 
   let currentUser = null;
   let currentProfile = null;
@@ -611,6 +723,65 @@
     const sizeMap = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
     root.style.fontSize = sizeMap[prefs.fontsize || 'md'] || '16px';
     root.style.filter = prefs.contrast ? 'contrast(1.16)' : '';
+  }
+  function isMissingSettingsError(error) {
+    const msg = String(error?.message || '').toLowerCase();
+    return error?.code === '42P01'
+      || error?.code === 'PGRST205'
+      || msg.includes('does not exist')
+      || msg.includes('could not find the table');
+  }
+  function normalizePreferredCategories(input) {
+    const values = Array.isArray(input) ? input : [];
+    const aliases = {
+      'eventi': 'Eventi',
+      'territorio': 'Territorio',
+      'vita locale': 'Vita locale',
+      'avvisi': 'Avvisi',
+      'richieste': 'Richieste',
+      'storie': 'Storie',
+      'il luccio': 'Storie',
+      'fauna': 'Territorio',
+      'ambiente': 'Territorio',
+      'ecoturismo': 'Territorio',
+      'storia': 'Storie'
+    };
+    const allowed = new Set(CATEGORY_OPTIONS);
+    const seen = new Set();
+    const normalized = [];
+    values.forEach((value) => {
+      const raw = String(value || '').trim();
+      const next = aliases[raw.toLowerCase()] || raw;
+      if (!next || !allowed.has(next) || seen.has(next)) return;
+      seen.add(next);
+      normalized.push(next);
+    });
+    return normalized;
+  }
+  function getSelectedPreferredCategories() {
+    const wrap = $('pref-category-chips');
+    if (!wrap) return [];
+    return Array.from(wrap.querySelectorAll('.pref-chip.on'))
+      .map((node) => String(node.dataset.category || '').trim())
+      .filter(Boolean);
+  }
+  function syncPreferredCategorySummary() {
+    const summary = $('pref-category-summary');
+    if (!summary) return;
+    const selected = getSelectedPreferredCategories();
+    summary.textContent = selected.length
+      ? ('Categorie selezionate: ' + selected.join(', ') + '.')
+      : 'Nessuna categoria selezionata: il sito restera neutro su tutti i temi.';
+  }
+  function renderPreferredCategoryChips(selected) {
+    const wrap = $('pref-category-chips');
+    if (!wrap) return;
+    const chosen = new Set(normalizePreferredCategories(selected));
+    wrap.innerHTML = CATEGORY_OPTIONS.map((category) => {
+      const active = chosen.has(category) ? ' on' : '';
+      return '<button type="button" class="pref-chip' + active + '" data-category="' + category + '">' + category + '</button>';
+    }).join('');
+    syncPreferredCategorySummary();
   }
 
   /* ── Status helpers ── */
@@ -747,9 +918,7 @@
     if (btn) btn.disabled = false;
 
     if (error) {
-      const msg = String(error.message || '').toLowerCase();
-      const missing = error.code === '42P01' || error.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table');
-      if (missing) {
+      if (isMissingSettingsError(error)) {
         setStatus('ui-status', 'Preferenze locali salvate. Per il sync cloud applica supabase-security.sql.', 'ok');
       } else {
         setStatus('ui-status', 'Locale salvato, sync cloud fallita: ' + error.message, 'err');
@@ -757,6 +926,43 @@
       return;
     }
     setStatus('ui-status', 'Aspetto salvato.', 'ok');
+  }
+
+  async function saveCustomPreferences() {
+    if (!currentUser) return;
+    setStatus('custom-status', '', '');
+
+    const next = loadPrefs();
+    next.commentPrivacy = $('pref-comment-privacy')?.value || 'all';
+    next.notifFrequency = $('pref-notif-frequency')?.value || 'daily';
+    next.notifEmail = !!$('pref-notif-email')?.checked;
+    next.preferredCategories = getSelectedPreferredCategories();
+    savePrefs(next);
+
+    const btn = $('save-custom-btn');
+    if (btn) btn.disabled = true;
+
+    const { error } = await sb.from('user_settings').upsert({
+      user_id: currentUser.id,
+      comment_privacy: next.commentPrivacy,
+      notif_frequency: next.notifFrequency,
+      notif_email: next.notifEmail,
+      preferred_categories: next.preferredCategories,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_id' });
+
+    if (btn) btn.disabled = false;
+
+    if (error) {
+      if (isMissingSettingsError(error)) {
+        setStatus('custom-status', 'Personalizzazioni salvate in locale. Per il sync cloud applica supabase-security.sql.', 'ok');
+      } else {
+        setStatus('custom-status', 'Salvataggio non riuscito: ' + error.message, 'err');
+      }
+      return;
+    }
+
+    setStatus('custom-status', 'Personalizzazioni salvate.', 'ok');
   }
 
   /* ── Nav dropdown ── */
@@ -851,15 +1057,21 @@
     buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#253f35');
     syncPreview();
 
+    renderPreferredCategoryChips([]);
+
     /* Load UI prefs */
     const prefs = loadPrefs();
 
     const { data: remote } = await sb.from('user_settings')
-      .select('accessibility_fontsize,accessibility_high_contrast')
+      .select('comment_privacy,notif_frequency,notif_email,preferred_categories,accessibility_fontsize,accessibility_high_contrast')
       .eq('user_id', currentUser.id)
       .maybeSingle();
 
     if (remote) {
+      if (remote.comment_privacy) prefs.commentPrivacy = remote.comment_privacy;
+      if (remote.notif_frequency) prefs.notifFrequency = remote.notif_frequency;
+      if (typeof remote.notif_email === 'boolean') prefs.notifEmail = remote.notif_email;
+      if (Array.isArray(remote.preferred_categories)) prefs.preferredCategories = normalizePreferredCategories(remote.preferred_categories);
       if (remote.accessibility_fontsize) prefs.fontsize = remote.accessibility_fontsize;
       if (typeof remote.accessibility_high_contrast === 'boolean') prefs.contrast = remote.accessibility_high_contrast;
       savePrefs(prefs);
@@ -870,6 +1082,10 @@
     if ($('pref-density'))  $('pref-density').value  = prefs.uiDensity || 'comfortable';
     if ($('pref-fontsize')) $('pref-fontsize').value = prefs.fontsize || 'md';
     if ($('pref-contrast')) $('pref-contrast').checked = !!prefs.contrast;
+    if ($('pref-comment-privacy')) $('pref-comment-privacy').value = prefs.commentPrivacy || 'all';
+    if ($('pref-notif-frequency')) $('pref-notif-frequency').value = prefs.notifFrequency || 'daily';
+    if ($('pref-notif-email')) $('pref-notif-email').checked = !!prefs.notifEmail;
+    renderPreferredCategoryChips(prefs.preferredCategories || []);
 
     applyUiPrefs(prefs);
 
@@ -877,6 +1093,7 @@
     $('save-profile-btn')?.addEventListener('click', saveProfile);
     $('save-avatar-btn')?.addEventListener('click', saveAvatar);
     $('save-ui-btn')?.addEventListener('click', saveUiPreferences);
+    $('save-custom-btn')?.addEventListener('click', saveCustomPreferences);
     $('logout-btn')?.addEventListener('click', async () => {
       await sb.auth.signOut();
       location.href = '/';
@@ -906,6 +1123,12 @@
       const live = loadPrefs();
       live.language = $('pref-language')?.value || live.language;
       savePrefs(live);
+    });
+    $('pref-category-chips')?.addEventListener('click', (event) => {
+      const btn = event.target.closest('.pref-chip');
+      if (!btn) return;
+      btn.classList.toggle('on');
+      syncPreferredCategorySummary();
     });
   }
 
