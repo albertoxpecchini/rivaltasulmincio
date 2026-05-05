@@ -116,7 +116,7 @@ Viene scritto `security.client.js`: rate limiting client-side (5 tentativi / 10 
 - **Tema**: chiaro / scuro / auto (segue sistema)
 - **Dimensione testo**: sm (14px) / md (16px) / lg (18px) / xl (20px)
 - **Densità UI**: compatta / normale / spaziosa
-- **Alto contrasto**: filtro `contrast(1.16)`
+- **Alto contrasto**: attributo `data-contrast="high"` con palette e focus rinforzati
 - **Privacy commenti**: pubblica / solo membri / disabilitata
 - **Notifiche**: mai / settimanale / immediata
 - Persistenza via `localStorage` con chiave `rsm_prefs_v1`
