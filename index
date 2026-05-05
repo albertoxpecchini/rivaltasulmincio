@@ -212,8 +212,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body.menu-open { overflow: hidden; }
-
     body::before {
       content: none;
     }
@@ -333,59 +331,7 @@
       font-weight: 600;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .nav-links a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 38px;
-      padding: 0 13px;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: rgba(23, 34, 29, 0.68);
-      transition: color 420ms var(--ease), background 420ms var(--ease), transform 420ms var(--ease);
-    }
-
-    .nav-mobile-login {
-      display: none !important;
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible,
-    .nav-links a.active {
-      color: var(--ink);
-      background: rgba(255, 250, 240, 0.84);
-      transform: translateY(-1px);
-    }
-
-    .nav-actions {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #nav-auth {
-      opacity: 0;
-      transition: opacity 220ms var(--ease);
-    }
-    #nav-auth.auth-ready { opacity: 1; }
-
-    .nav-mobile-login {
-      opacity: 0;
-      transition: opacity 220ms var(--ease);
-    }
-    .nav-mobile-login.auth-ready { opacity: 1; }
-
-    .nav-login,
-    .profile-btn,
-    .nav-toggle {
+    .profile-btn {
       border: 0;
       border-radius: 999px;
       background: var(--marsh);
@@ -401,42 +347,16 @@
       transition: transform 420ms var(--ease), background 420ms var(--ease), box-shadow 420ms var(--ease);
     }
 
-    .nav-login:hover,
-    .profile-btn:hover,
-    .nav-toggle:hover {
+    .profile-btn:hover {
       transform: translateY(-1px);
       background: #1f362e;
       box-shadow: 0 14px 30px rgba(23, 34, 29, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20);
     }
 
-    .nav-login:active,
     .profile-btn:active,
-    .nav-toggle:active,
     .button:active {
       transform: scale(0.98);
     }
-
-    .nav-toggle {
-      display: none;
-      width: 44px;
-      padding: 0;
-      position: relative;
-    }
-
-    .nav-toggle span {
-      position: absolute;
-      width: 17px;
-      height: 2px;
-      border-radius: 999px;
-      background: currentColor;
-      transition: transform 500ms var(--ease), opacity 500ms var(--ease);
-    }
-
-    .nav-toggle span:first-child { transform: translateY(-5px); }
-    .nav-toggle span:last-child { transform: translateY(5px); }
-    .nav-toggle.open span:first-child { transform: rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .nav-toggle.open span:last-child { transform: rotate(-45deg); }
 
     .profile-menu {
       position: relative;
@@ -2223,48 +2143,7 @@
         grid-row: 1;
       }
 
-      .nav-actions {
-        margin-left: auto;
-        justify-self: end;
-      }
 
-      .nav-links {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        position: fixed;
-        inset: 78px 14px auto 14px;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 16px;
-        border-radius: 30px;
-        background: rgba(247, 240, 228, 0.94);
-        border: 1px solid rgba(255, 250, 240, 0.7);
-        box-shadow: var(--shadow-strong);
-        backdrop-filter: blur(24px);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px) scale(0.98);
-        transition: opacity 420ms var(--ease), transform 420ms var(--ease), visibility 420ms var(--ease);
-      }
-
-      .nav-links.open {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
-      }
-
-      .nav-links a {
-        min-height: 50px;
-        justify-content: center;
-      }
-
-      .nav-toggle {
-        display: inline-flex !important;
-        flex: 0 0 44px;
-        opacity: 1;
-        visibility: visible;
-      }
       .hero-layout,
       .atlas-grid,
       .experience-grid,
@@ -2310,14 +2189,7 @@
       .nav-island { border-radius: 28px; }
       .brand-name span { display: none; }
       .brand-name strong { font-size: 0.92rem; }
-      .nav-actions #nav-auth { display: none; }
-      .nav-mobile-login { display: inline-flex !important; }
-      .nav-toggle {
-        position: absolute;
-        right: clamp(10px, calc(100vw - 380px), 96px);
-        top: 8px;
-      }
-      .nav-login { min-height: 40px; padding: 0 12px; }
+
 
       .hero {
         padding: 78px 0;
@@ -2464,41 +2336,7 @@
 <body>
   <a class="skip-link" href="#main">Salta al contenuto</a>
 
-  <header class="site-header" id="navbar">
-    <div class="nav-island">
-      <a class="brand" href="#home" aria-label="Pro Loco Rivalta sul Mincio">
-        <div class="logo-mark">
-          <img src="/img/favicon.png" alt="Logo Rivalta sul Mincio" width="40" height="40">
-        </div>
-        <span class="brand-name">
-          <strong>Rivalta sul Mincio</strong>
-          <span>Parco del Mincio &middot; Mantova</span>
-        </span>
-      </a>
-
-      <nav class="nav-links" id="navList" aria-label="Navigazione principale">
-        <a href="#home" class="active">Home</a>
-        <a href="#esperienze">Esperienze</a>
-        <a href="#galleria">Galleria</a>
-        <a href="#valli">Valli</a>
-        <a href="#luccio">Festa del Pesce</a>
-        <a href="#news">News</a>
-        <a href="#contatti">Contatti</a>
-        <a href="login" class="nav-mobile-login">Accedi</a>
-      </nav>
-
-      <div class="nav-actions">
-        <div id="nav-auth">
-          <a href="login" class="nav-login">Accedi</a>
-        </div>
-        <button class="nav-toggle" id="navToggle" type="button" aria-label="Apri menu" aria-expanded="false" aria-controls="navList">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </div>
-  </header>
+  <!--PARTIAL:nav-->
 
   <main id="main" class="page-shell">
 
@@ -2979,50 +2817,7 @@
       categoryHref: categoryHref
     };
 
-    function initNav() {
-      var toggle = $('#navToggle');
-      var nav = $('#navList');
-      if (!toggle || !nav) return;
-
-      function closeMenu() {
-        nav.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('menu-open');
-      }
-
-      toggle.addEventListener('click', function () {
-        var open = !nav.classList.contains('open');
-        nav.classList.toggle('open', open);
-        toggle.classList.toggle('open', open);
-        toggle.setAttribute('aria-expanded', String(open));
-        document.body.classList.toggle('menu-open', open);
-      });
-
-      $all('a[href^="#"]', nav).forEach(function (link) {
-        link.addEventListener('click', closeMenu);
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeMenu();
-      });
-
-      var sectionIds = ['home', 'esperienze', 'galleria', 'valli', 'luccio', 'news', 'chi-siamo', 'dove-siamo', 'contatti'];
-      var links = $all('a[href^="#"]', nav);
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          links.forEach(function (link) {
-            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-          });
-        });
-      }, { rootMargin: '-42% 0px -52% 0px', threshold: 0.01 });
-
-      sectionIds.forEach(function (id) {
-        var section = document.getElementById(id);
-        if (section) observer.observe(section);
-      });
-    }
+    function initNav() { /* nav ora gestito da partial */ }
 
     function initReveal() {
       var items = $all('[data-reveal]');
@@ -3299,8 +3094,6 @@
         if (!session) {
           nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
           nav.classList.add('auth-ready');
-          var ml = document.querySelector('.nav-mobile-login');
-          if (ml) ml.classList.add('auth-ready');
           return;
         }
 
@@ -3313,8 +3106,6 @@
             var username = profile.username || (session.user.email || 'profilo').split('@')[0];
             nav.innerHTML = buildMenu(username, profile.avatar_color || '#2f6b67', profile.avatar_emoji || '🌿');
             nav.classList.add('auth-ready');
-            var ml = document.querySelector('.nav-mobile-login');
-            if (ml) ml.classList.add('auth-ready');
             bindMenu();
           });
       }
