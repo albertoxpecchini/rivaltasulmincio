@@ -9,8 +9,9 @@
    FOOTER CANONICO — stili base condivisi
    ================================================================ */
 .footer {
-  color: rgba(255, 250, 240, 0.72);
-  background: #101c18;
+  color: rgba(255, 255, 255, 0.68);
+  background: #0b1510;
+  border-top: 2px solid rgba(61, 138, 132, 0.40);
   padding: 72px 0 34px;
   font-family: var(--sans, "Cabinet Grotesk", system-ui, sans-serif);
   position: relative;
@@ -26,7 +27,7 @@
   gap: clamp(24px, 5vw, 76px);
   align-items: start;
 }
-.footer h3, .footer h4 { margin: 0 0 16px; color: var(--paper, #fffaf0); letter-spacing: -0.02em; }
+.footer h3, .footer h4 { margin: 0 0 16px; color: #fff; letter-spacing: -0.02em; }
 .footer h3 {
   max-width: 520px;
   font-family: var(--serif, "Fraunces", Georgia, serif);
@@ -36,12 +37,13 @@
 }
 .footer p { max-width: 540px; line-height: 1.66; }
 .footer-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.footer-links a { color: rgba(255, 250, 240, 0.68); font-weight: 750; text-decoration: none; }
-.footer-links a:hover { color: var(--paper, #fffaf0); }
+.footer-links a { color: rgba(255, 255, 255, 0.58); font-weight: 750; text-decoration: none; transition: color 0.18s; }
+.footer-links a:hover { color: #fff; }
 .footer-bottom {
   display: flex; justify-content: space-between; flex-wrap: wrap;
   gap: 14px; margin-top: 64px; padding-top: 24px;
-  border-top: 1px solid rgba(255, 250, 240, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.42);
   font-size: 0.86rem;
 }
 @media (max-width: 760px) {
@@ -616,8 +618,8 @@ html[data-theme="scuro"] [style*="color:#b94747"],
 html[data-theme="scuro"] [style*="color:#B94747"] { color: var(--err) !important; }
 
 /* ── 19. Footer dark-on-dark (regolazione) ── */
-html[data-theme="scuro"] .footer        { background: #070e0a; }
-html[data-theme="scuro"] .footer-bottom { border-color: rgba(150, 190, 175, 0.09); }
+html[data-theme="scuro"] .footer        { background: #050d09; border-top-color: rgba(61, 138, 132, 0.28); }
+html[data-theme="scuro"] .footer-bottom { border-color: rgba(255, 255, 255, 0.07); }
 
 /* ── 20. Scrollbar webkit ── */
 html[data-theme="scuro"] ::-webkit-scrollbar        { width: 8px; }
