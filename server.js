@@ -9,10 +9,11 @@ const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 // ── Partial injection ──────────────────────────────────────────────────────
 const _partialCache = Object.create(null);
 
-// footer: estratto live dal file index (fonte della verità).
+// footer e nav: estratti live dal file index (fonte della verità).
 // Gli altri partial vengono letti da partials/<name>.html.
 function loadPartial(name) {
-  if (name === 'footer') return extractFooterFromIndex();
+  if (name === 'footer') return extractBlockFromIndex('footer');
+  if (name === 'nav')    return extractBlockFromIndex('nav');
   if (!(name in _partialCache)) {
     const p = path.join(ROOT, 'partials', `${name}.html`);
     try {
@@ -24,19 +25,22 @@ function loadPartial(name) {
   return _partialCache[name];
 }
 
-let _footerCache = null;
-function extractFooterFromIndex() {
-  if (!_footerCache) {
-    try {
-      const src = fs.readFileSync(path.join(ROOT, 'index'), 'utf8');
-      // Estrai <footer ...>...</footer> + eventuale <script> anno
-      const m = src.match(/<footer\b[\s\S]*?<\/footer>\s*(?:<script>[^<]*year[^<]*<\/script>)?/);
-      _footerCache = m ? m[0].trim() : '<!-- footer not found -->';
-    } catch (_) {
-      _footerCache = '<!-- footer not found -->';
+const _blockCache = Object.create(null);
+function extractBlockFromIndex(block) {
+  if (_blockCache[block]) return _blockCache[block];
+  try {
+    const src = fs.readFileSync(path.join(ROOT, 'index'), 'utf8');
+    let m;
+    if (block === 'footer') {
+      m = src.match(/<footer\b[\s\S]*?<\/footer>\s*(?:<script>[^<]*year[^<]*<\/script>)?/);
+    } else if (block === 'nav') {
+      m = src.match(/<header\b[^>]*class="[^"]*site-header[^"]*"[\s\S]*?<\/header>/);
     }
+    _blockCache[block] = m ? m[0].trim() : `<!-- ${block} not found in index -->`;
+  } catch (_) {
+    _blockCache[block] = `<!-- ${block} not found in index -->`;
   }
-  return _footerCache;
+  return _blockCache[block];
 }
 
 function injectPartials(html) {
