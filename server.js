@@ -8,7 +8,11 @@ const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 
 // ── Partial injection ──────────────────────────────────────────────────────
 const _partialCache = Object.create(null);
+
+// footer: estratto live dal file index (fonte della verità).
+// Gli altri partial vengono letti da partials/<name>.html.
 function loadPartial(name) {
+  if (name === 'footer') return extractFooterFromIndex();
   if (!(name in _partialCache)) {
     const p = path.join(ROOT, 'partials', `${name}.html`);
     try {
@@ -19,6 +23,22 @@ function loadPartial(name) {
   }
   return _partialCache[name];
 }
+
+let _footerCache = null;
+function extractFooterFromIndex() {
+  if (!_footerCache) {
+    try {
+      const src = fs.readFileSync(path.join(ROOT, 'index'), 'utf8');
+      // Estrai <footer ...>...</footer> + eventuale <script> anno
+      const m = src.match(/<footer\b[\s\S]*?<\/footer>\s*(?:<script>[^<]*year[^<]*<\/script>)?/);
+      _footerCache = m ? m[0].trim() : '<!-- footer not found -->';
+    } catch (_) {
+      _footerCache = '<!-- footer not found -->';
+    }
+  }
+  return _footerCache;
+}
+
 function injectPartials(html) {
   return html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name));
 }
