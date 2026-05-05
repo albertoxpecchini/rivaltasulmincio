@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'};if(p.theme&&p.theme!=='auto')r.dataset.theme=p.theme;if(p.fontsize)r.style.fontSize=s[p.fontsize]||'16px';if(p.uiDensity)r.dataset.density=p.uiDensity;if(p.contrast)r.style.filter='contrast(1.16)';}catch(e){}}();</script>
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preferenze – Rivalta sul Mincio</title>
@@ -631,50 +631,7 @@
 
 </main>
 
-  <footer class="footer" id="contatti">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h3>Pro Loco Rivalta sul Mincio</h3>
-          <p>Ecoturismo, cultura locale, eventi, Sagra del Luccio e promozione ambientale nel cuore del Parco Regionale del Mincio.</p>
-        </div>
-        <nav aria-label="Sezioni">
-          <h4>Esplora</h4>
-          <ul class="footer-links">
-            <li><a href="#esperienze">Esperienze</a></li>
-            <li><a href="#galleria">Galleria</a></li>
-            <li><a href="#valli">Valli</a></li>
-            <li><a href="#news">News</a></li>
-            <li><a href="/storia">Storia del sito</a></li>
-          </ul>
-        </nav>
-        <nav aria-label="Area utente">
-          <h4>Area</h4>
-          <ul class="footer-links">
-            <li><a href="login">Accedi</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="write">Scrivi</a></li>
-            <li><a href="profile">Profili</a></li>
-          </ul>
-        </nav>
-        <nav aria-label="Legale e social">
-          <h4>Link</h4>
-          <ul class="footer-links">
-            <li><a href="privacy">Privacy</a></li>
-            <li><a href="cookie">Cookie</a></li>
-            <li><a href="note-legali">Note legali</a></li>
-            <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-            <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; <span id="year"></span> Pro Loco Rivalta sul Mincio A.P.S.</span>
-        <span>Via Porto, 31 - 46040 Rivalta sul Mincio (MN)</span>
-      </div>
-    </div>
-  </footer>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+  <!--PARTIAL:footer-->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
@@ -707,22 +664,45 @@
   let currentProfile = null;
 
   /* ── Prefs helpers ── */
-  function loadPrefs() {
-    try { return Object.assign({}, defaultPrefs, JSON.parse(localStorage.getItem(PREF_KEY)) || {}); }
-    catch { return Object.assign({}, defaultPrefs); }
+  const FONT_SIZE_MAP = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
+  const UI_OPTIONS = {
+    theme: new Set(['auto', 'chiaro', 'scuro']),
+    uiDensity: new Set(['comfortable', 'compact']),
+    fontsize: new Set(['sm', 'md', 'lg', 'xl'])
+  };
+  const systemThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function normalizeUiPrefs(prefs) {
+    const next = Object.assign({}, defaultPrefs, prefs || {});
+    next.theme = UI_OPTIONS.theme.has(next.theme) ? next.theme : defaultPrefs.theme;
+    next.uiDensity = UI_OPTIONS.uiDensity.has(next.uiDensity) ? next.uiDensity : defaultPrefs.uiDensity;
+    next.fontsize = UI_OPTIONS.fontsize.has(next.fontsize) ? next.fontsize : defaultPrefs.fontsize;
+    next.language = next.language === 'en' ? 'en' : 'it';
+    next.contrast = !!next.contrast;
+    next.preferredCategories = normalizePreferredCategories(next.preferredCategories);
+    return next;
   }
-  function savePrefs(prefs) { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }
+  function resolveThemePreference(theme) {
+    const pref = UI_OPTIONS.theme.has(theme) ? theme : defaultPrefs.theme;
+    if (pref !== 'auto') return pref;
+    return systemThemeQuery?.matches ? 'scuro' : 'chiaro';
+  }
+  function loadPrefs() {
+    try { return normalizeUiPrefs(JSON.parse(localStorage.getItem(PREF_KEY)) || {}); }
+    catch { return normalizeUiPrefs({}); }
+  }
+  function savePrefs(prefs) { localStorage.setItem(PREF_KEY, JSON.stringify(normalizeUiPrefs(prefs))); }
   function applyUiPrefs(prefs) {
+    const next = normalizeUiPrefs(prefs);
     const root = document.documentElement;
-    if (prefs.theme === 'auto') {
-      root.dataset.theme = window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'chiaro' : 'scuro';
-    } else {
-      root.dataset.theme = prefs.theme || 'chiaro';
-    }
-    root.dataset.density = prefs.uiDensity || 'comfortable';
-    const sizeMap = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
-    root.style.fontSize = sizeMap[prefs.fontsize || 'md'] || '16px';
-    root.style.filter = prefs.contrast ? 'contrast(1.16)' : '';
+    root.dataset.theme = resolveThemePreference(next.theme);
+    root.dataset.themePref = next.theme;
+    root.dataset.density = next.uiDensity;
+    root.dataset.fontsize = next.fontsize;
+    root.style.fontSize = FONT_SIZE_MAP[next.fontsize] || FONT_SIZE_MAP.md;
+    root.style.filter = '';
+    if (next.contrast) root.dataset.contrast = 'high';
+    else delete root.dataset.contrast;
   }
   function isMissingSettingsError(error) {
     const msg = String(error?.message || '').toLowerCase();
@@ -1088,6 +1068,14 @@
     renderPreferredCategoryChips(prefs.preferredCategories || []);
 
     applyUiPrefs(prefs);
+    if (systemThemeQuery) {
+      const syncSystemTheme = () => {
+        const live = loadPrefs();
+        if (live.theme === 'auto') applyUiPrefs(live);
+      };
+      if (systemThemeQuery.addEventListener) systemThemeQuery.addEventListener('change', syncSystemTheme);
+      else if (systemThemeQuery.addListener) systemThemeQuery.addListener(syncSystemTheme);
+    }
 
     /* Bind save buttons */
     $('save-profile-btn')?.addEventListener('click', saveProfile);

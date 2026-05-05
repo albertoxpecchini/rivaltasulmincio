@@ -5,6 +5,23 @@ const path = require('path');
 const PORT = Number(process.env.PORT) ||3001;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
+
+// ── Partial injection ──────────────────────────────────────────────────────
+const _partialCache = Object.create(null);
+function loadPartial(name) {
+  if (!(name in _partialCache)) {
+    const p = path.join(ROOT, 'partials', `${name}.html`);
+    try {
+      _partialCache[name] = fs.readFileSync(p, 'utf8');
+    } catch (_) {
+      _partialCache[name] = `<!-- partial "${name}" not found -->`;
+    }
+  }
+  return _partialCache[name];
+}
+function injectPartials(html) {
+  return html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name));
+}
 const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
 const HTML_PAGES = new Set([
   'write',
@@ -262,19 +279,20 @@ function handler(req, res) {
     ? (isPage ? 'no-store' : 'public, max-age=86400')
     : 'no-store';
 
-  fs.readFile(filePath, (err, data) => {
+  fs.readFile(filePath, isPage ? 'utf8' : null, (err, data) => {
     if (err) {
       res.writeHead(404, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
       res.end('404 Not Found');
       return;
     }
 
+    const body = isPage ? injectPartials(data) : data;
     res.writeHead(200, {
       ...SECURITY_HEADERS,
       'Content-Type': isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream'),
       'Cache-Control': cacheControl
     });
-    res.end(data);
+    res.end(body);
   });
 }
 
