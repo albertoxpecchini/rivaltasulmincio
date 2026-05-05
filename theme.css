@@ -693,6 +693,9 @@ html[data-theme="scuro"] .discussion-msg             { background: rgba(37,63,53
 
 /* ── 31. Preferenze ── */
 html[data-theme="scuro"] .pref-chip                  { background: rgba(21,36,29,0.85); color: var(--ink-soft); border-color: rgba(150,190,175,0.14); }
+html[data-theme="scuro"] .pref-chip:hover             { background: rgba(37,63,53,0.22); color: var(--ink); }
+html[data-theme="scuro"] .pref-chip.on               { background: var(--marsh-2); color: #e8f2ec; border-color: transparent; box-shadow: 0 4px 16px rgba(0,0,0,0.30); }
+html[data-theme="scuro"] .pref-note                  { background: rgba(14,24,19,0.72); border-color: rgba(150,190,175,0.13); }
 html[data-theme="scuro"] .motto-text                 { color: var(--ink); }
 
 /* ── 32. Pagine legali (privacy / cookie / note-legali) ── */
@@ -704,15 +707,7 @@ html[data-theme="scuro"] .section-num               { color: var(--reed); }
    Atmosfera: acqua scura, canneti, foschia lunare, fuochi lontani.
    ================================================================ */
 
-/* ── 33.a. Sfondo body — acqua notturna profonda ── */
-html[data-theme="scuro"] body {
-  background:
-    radial-gradient(ellipse at 8% 0%,   rgba(29, 74, 68, 0.38), transparent 36rem),
-    radial-gradient(ellipse at 96% 18%,  rgba(12, 28, 22, 0.90), transparent 42rem),
-    radial-gradient(circle  at 52% 72%, rgba(47, 107, 103, 0.08), transparent 32rem),
-    linear-gradient(170deg, #060c09 0%, #080f0c 40%, #050b08 70%, #060e0a 100%);
-  color: var(--ink);
-}
+/* ── 33.a. Hero page — acqua notturna profonda (solo index, scoped via .hero) ── */
 
 /* ── 33.b. Hero — nebbia sul fiume ── */
 html[data-theme="scuro"] .hero::before {
