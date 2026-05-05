@@ -224,12 +224,6 @@ html[data-theme="scuro"] .bcard:hover,
 html[data-theme="scuro"] .bc:hover,
 html[data-theme="scuro"] .pcard:hover { box-shadow: 0 14px 36px rgba(0,0,0,.40); }
 
-/* Card reset (già-scure, lasciale) */
-html[data-theme="scuro"] .bc-stat  { /* gradient scuro — ok così */ }
-html[data-theme="scuro"] .bc-motto { /* gradient scuro — ok così */ }
-html[data-theme="scuro"] .compose-bar { /* gradient scuro — ok così */ }
-html[data-theme="scuro"] .bcard-highlight { /* gradient scuro — ok così */ }
-
 /* ── 9. Dashboard ── */
 
 /* Bento hero card — sfondo con radial gradient */
@@ -655,6 +649,52 @@ html[data-theme] .bc,
 html[data-theme] .card,
 html[data-theme] .pcard { transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
 
+
+/* ================================================================
+   DARK MODE — CONFLITTI PER-PAGINA (audit approfondito)
+   ================================================================ */
+
+/* ── 25. Storia ── */
+html[data-theme="scuro"] .hero-title                 { color: var(--ink); }
+html[data-theme="scuro"] .timeline-heading           { color: var(--ink); }
+html[data-theme="scuro"] .timeline-dot               { background: var(--water) !important; border-color: var(--water); }
+html[data-theme="scuro"] .timeline-dot.milestone     { background: var(--clay) !important; border-color: var(--clay); }
+html[data-theme="scuro"] .commit-block               { background: rgba(61,99,83,0.28); color: var(--ink-soft); border-color: rgba(150,190,175,0.14); }
+html[data-theme="scuro"] .swatch                     { background: rgba(21,36,29,0.80); border-color: var(--line); }
+html[data-theme="scuro"] .swatch-name                { color: var(--ink-soft); }
+
+/* ── 26. Index ── */
+html[data-theme="scuro"] .eyebrow                    { color: var(--water); }
+html[data-theme="scuro"] .hero-copy                  { color: var(--ink-soft); }
+
+/* ── 27. Login / Profile — hero-eyebrow e step ── */
+html[data-theme="scuro"] .hero-eyebrow               { color: var(--water); }
+html[data-theme="scuro"] .bcard-highlight .bnum      { color: var(--ink); }
+html[data-theme="scuro"] .view-step                  { color: var(--water); }
+
+/* ── 28. Dashboard ── */
+html[data-theme="scuro"] .kpi-value                  { color: var(--water); }
+html[data-theme="scuro"] .hero-stat                  { background: rgba(37,63,53,0.25); }
+html[data-theme="scuro"] .chart-wrap                 { background: rgba(14,24,19,0.80); border-color: var(--line); }
+html[data-theme="scuro"] .empty-state                { background: rgba(21,36,29,0.70); color: var(--ink-soft); }
+html[data-theme="scuro"] .mobile-nav button,
+html[data-theme="scuro"] .mobile-nav a               { background: rgba(21,36,29,0.85); }
+
+/* ── 29. Write — dropdown section labels e img label ── */
+html[data-theme="scuro"] .stat-tile-num.pub          { color: var(--water); }
+html[data-theme="scuro"] .compose-dropdown-section   { color: rgba(212,228,221,0.45) !important; }
+html[data-theme="scuro"] .compose-img-label          { color: rgba(212,228,221,0.45); }
+
+/* ── 30. Post ── */
+html[data-theme="scuro"] .community-rules strong     { color: var(--ink); }
+html[data-theme="scuro"] .discussion-msg             { background: rgba(37,63,53,0.15); color: var(--ink-soft); border-color: var(--line); }
+
+/* ── 31. Preferenze ── */
+html[data-theme="scuro"] .pref-chip                  { background: rgba(21,36,29,0.85); color: var(--ink-soft); border-color: rgba(150,190,175,0.14); }
+html[data-theme="scuro"] .motto-text                 { color: var(--ink); }
+
+/* ── 32. Pagine legali (privacy / cookie / note-legali) ── */
+html[data-theme="scuro"] .section-num               { color: var(--reed); }
 
 
 /* ================================================================
