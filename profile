@@ -108,7 +108,7 @@
     .brand-name strong { font-size: 0.98rem; font-weight: 800; }
     .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
 
-    #user-menu-wrap { display: flex; align-items: center; }
+    #nav-auth { display: flex; align-items: center; }
 
     .profile-btn {
       border: 0;
@@ -420,21 +420,7 @@
   <linearGradient id="grad-deep" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2f3a"/><stop offset="100%" stop-color="#030d12"/></linearGradient>
 </defs></svg>
 
-<header class="site-header">
-  <div class="nav-island">
-    <a class="brand" href="/">
-      <span class="brand-mark">
-        <img src="/img/favicon.png" alt="Rivalta sul Mincio" />
-      </span>
-      <span class="brand-name">
-        <strong>Rivalta sul Mincio</strong>
-        <span>Parco del Mincio · Mantova</span>
-      </span>
-    </a>
-    <div></div>
-    <div id="user-menu-wrap"></div>
-  </div>
-</header>
+<!--PARTIAL:nav-->
 
 <div class="page">
 
@@ -531,7 +517,7 @@ const un = new URLSearchParams(location.search).get('u');
 
   /* ── Build user dropdown ── */
   (function buildUserMenu() {
-    const wrap = document.getElementById('user-menu-wrap');
+    const wrap = document.getElementById('nav-auth');
     if (!wrap) return;
     if (!session || !viewer) {
       wrap.innerHTML = `<a href="login" style="font-family:var(--sans);font-size:.82rem;font-weight:700;color:var(--paper);background:var(--marsh);border:none;border-radius:999px;padding:8px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🔑 Accedi</a>`;

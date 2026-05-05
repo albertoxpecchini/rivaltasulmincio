@@ -100,7 +100,7 @@
     .brand-name { display: grid; line-height: 1.02; letter-spacing: -0.02em; }
     .brand-name strong { font-size: 0.98rem; font-weight: 800; }
     .brand-name span { font-size: 0.72rem; color: rgba(23, 34, 29, 0.55); font-weight: 600; }
-    #user-menu-wrap { display: flex; align-items: center; }
+    #nav-auth { display: flex; align-items: center; }
 
     .profile-btn {
       border: 0; border-radius: 999px;
@@ -398,21 +398,7 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div class="nav-island">
-    <a class="brand" href="/">
-      <div class="logo-mark">
-        <img src="/img/favicon.png" alt="Rivalta sul Mincio" width="42" height="42" />
-      </div>
-      <span class="brand-name">
-        <strong>Rivalta sul Mincio</strong>
-        <span>Parco del Mincio &middot; Mantova</span>
-      </span>
-    </a>
-    <div></div>
-    <div id="user-menu-wrap"></div>
-  </div>
-</header>
+<!--PARTIAL:nav-->
 
 <main class="page">
 
@@ -947,7 +933,7 @@
 
   /* ── Nav dropdown ── */
   function buildUserMenu(profile) {
-    const wrap = $('user-menu-wrap');
+    const wrap = $('nav-auth');
     if (!wrap) return;
     const username = profile.username || 'utente';
     const emoji    = profile.avatar_emoji || '🌿';
