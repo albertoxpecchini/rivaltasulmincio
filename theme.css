@@ -1,0 +1,186 @@
+/*
+ * theme.css — dark mode + density compact per Rivalta sul Mincio
+ * Incluso in tutte le pagine. L'attributo data-theme / data-density
+ * viene impostato dall'inline FOUC script in <head> leggendo localStorage.
+ */
+
+/* ================================================================
+   VARIABILI DARK — override di :root quando html[data-theme="scuro"]
+   ================================================================ */
+html[data-theme="scuro"] {
+  --ink:         #d4e4dd;
+  --ink-soft:    #8aab9e;
+  --cream:       #0f1d17;
+  --paper:       #152118;
+  --mist:        #1c2e26;
+  --white:       #152118;
+  --marsh:       #253f35;
+  --marsh-2:     #3d6353;
+  --water:       #3d8a84;
+  --reed:        #c6a462;
+  --line:        rgba(150, 190, 175, 0.14);
+  --ok:          #4caf8a;
+  --err:         #e07070;
+  --warn:        #d4945a;
+  --shadow-card: 0 2px 24px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(150, 190, 175, 0.06);
+
+  color-scheme: dark;
+}
+
+/* ── Body background ── */
+html[data-theme="scuro"] body {
+  background:
+    radial-gradient(circle at 14% 8%, rgba(47, 107, 103, 0.22), transparent 28rem),
+    radial-gradient(circle at 88% 2%, rgba(37, 63, 53, 0.38), transparent 34rem),
+    linear-gradient(135deg, #0d1812, #101e16 54%, #0c1511);
+  color: var(--ink);
+}
+
+/* Dimmer dot texture */
+html[data-theme="scuro"] body::before { opacity: 0.06 !important; }
+
+/* ── Nav island ── */
+html[data-theme="scuro"] .nav-island {
+  background: rgba(13, 24, 18, 0.88);
+  border-color: rgba(150, 190, 175, 0.11);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="scuro"] .brand { color: var(--ink); }
+html[data-theme="scuro"] .brand-name span { color: rgba(212, 228, 221, 0.48); }
+
+/* ── Nav links mobile panel ── */
+html[data-theme="scuro"] .nav-links {
+  background: rgba(13, 24, 18, 0.97);
+  border-color: rgba(150, 190, 175, 0.1);
+  box-shadow: 0 42px 110px rgba(0, 0, 0, 0.42);
+}
+html[data-theme="scuro"] .nav-links a { color: rgba(212, 228, 221, 0.7); }
+html[data-theme="scuro"] .nav-links a:hover,
+html[data-theme="scuro"] .nav-links a.active {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Profile dropdown ── */
+html[data-theme="scuro"] .profile-dropdown {
+  background: rgba(13, 24, 18, 0.97);
+  border-color: rgba(150, 190, 175, 0.1);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.4);
+}
+html[data-theme="scuro"] .profile-dropdown a,
+html[data-theme="scuro"] .profile-dropdown button { color: var(--ink); }
+html[data-theme="scuro"] .profile-dropdown__section-title { color: rgba(212, 228, 221, 0.42); }
+html[data-theme="scuro"] .profile-dropdown__sep { background: rgba(150, 190, 175, 0.12); }
+html[data-theme="scuro"] .profile-dropdown .danger { color: #e07070; }
+html[data-theme="scuro"] .profile-dropdown a:hover,
+html[data-theme="scuro"] .profile-dropdown button:hover { background: rgba(150, 190, 175, 0.07); }
+
+/* ── Login button in nav ── */
+html[data-theme="scuro"] .nav-login { background: var(--marsh); color: var(--paper); }
+
+/* ── Links ── */
+html[data-theme="scuro"] a { color: var(--water); }
+html[data-theme="scuro"] a:hover { color: #5db8b2; }
+
+/* ── Buttons ── */
+html[data-theme="scuro"] .btn {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+html[data-theme="scuro"] .btn:hover { background: var(--mist); }
+html[data-theme="scuro"] .btn-primary {
+  background: var(--marsh);
+  color: #e8f2ec;
+  border-color: transparent;
+}
+html[data-theme="scuro"] .btn-primary:hover { background: #1c3028; }
+html[data-theme="scuro"] .btn-ghost {
+  background: rgba(150, 190, 175, 0.08);
+  color: var(--ink-soft);
+}
+html[data-theme="scuro"] .btn-danger {
+  background: rgba(224, 112, 112, 0.1);
+  color: #e07070;
+}
+
+/* ── Form inputs / selects / textareas ── */
+html[data-theme="scuro"] input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="submit"]),
+html[data-theme="scuro"] textarea,
+html[data-theme="scuro"] select {
+  background: rgba(18, 30, 24, 0.9);
+  color: var(--ink);
+  border-color: rgba(150, 190, 175, 0.16);
+}
+html[data-theme="scuro"] input::placeholder,
+html[data-theme="scuro"] textarea::placeholder { color: var(--ink-soft); opacity: 0.6; }
+
+/* ── Toggle switch (preferenze) ── */
+html[data-theme="scuro"] .toggle-track { background: rgba(150, 190, 175, 0.2); }
+
+/* ── Cards — vari nomi usati nelle pagine ── */
+html[data-theme="scuro"] .bcard,
+html[data-theme="scuro"] .bc,
+html[data-theme="scuro"] .card,
+html[data-theme="scuro"] .post-card,
+html[data-theme="scuro"] .article-card,
+html[data-theme="scuro"] .stat-card,
+html[data-theme="scuro"] .event-card,
+html[data-theme="scuro"] .dash-card { background: var(--paper); }
+
+/* ── Sezioni a sfondo chiaro dentro index / storia ── */
+html[data-theme="scuro"] .section-alt,
+html[data-theme="scuro"] .section-light { background: var(--mist); }
+
+/* ── Sidebar (dashboard) ── */
+html[data-theme="scuro"] .sidebar {
+  background: rgba(12, 20, 16, 0.95);
+  border-color: rgba(150, 190, 175, 0.1);
+}
+html[data-theme="scuro"] .sb-link { color: rgba(212, 228, 221, 0.7); }
+html[data-theme="scuro"] .sb-link:hover,
+html[data-theme="scuro"] .sb-link.active { color: var(--ink); background: rgba(150, 190, 175, 0.08); }
+
+/* ── Footer rimane scuro — piccola regolazione ── */
+html[data-theme="scuro"] .footer { background: #080f0b; }
+html[data-theme="scuro"] .footer-bottom { border-color: rgba(150, 190, 175, 0.1); }
+
+/* ── Scrollbar (webkit) ── */
+html[data-theme="scuro"] ::-webkit-scrollbar-track { background: #0d1812; }
+html[data-theme="scuro"] ::-webkit-scrollbar-thumb { background: rgba(150, 190, 175, 0.2); border-radius: 4px; }
+html[data-theme="scuro"] ::-webkit-scrollbar-thumb:hover { background: rgba(150, 190, 175, 0.35); }
+
+/* ================================================================
+   DENSITY COMPACT — html[data-density="compact"]
+   ================================================================ */
+html[data-density="compact"] .bcard,
+html[data-density="compact"] .bc { padding: 15px 18px !important; gap: 10px !important; }
+
+html[data-density="compact"] .page,
+html[data-density="compact"] .layout-main { gap: 8px; }
+
+html[data-density="compact"] .section-label { padding: 12px 0 5px; }
+
+html[data-density="compact"] .pref-row { padding: 5px 0; }
+
+html[data-density="compact"] .preview-avatar {
+  width: 64px !important;
+  height: 64px !important;
+  font-size: 2rem !important;
+}
+
+html[data-density="compact"] .emoji-grid label {
+  padding: 4px;
+  font-size: 1.2rem;
+}
+
+html[data-density="compact"] .btn {
+  padding: 8px 20px;
+  font-size: 0.84rem;
+}
+
+html[data-density="compact"] .page-header h1 { font-size: 1.6rem; }
+html[data-density="compact"] .page-header { margin-bottom: 14px; }
+
+html[data-density="compact"] .nav-island { padding: 5px 8px 5px 10px; }
