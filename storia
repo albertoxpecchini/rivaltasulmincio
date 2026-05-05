@@ -1357,7 +1357,7 @@
 
   </div><!-- /page-wrap -->
 
-  <footer class="footer" id="contatti">
+    <footer class="footer" id="contatti">
     <div class="container">
       <div class="footer-grid">
         <div>
@@ -1377,18 +1377,18 @@
         <nav aria-label="Area utente">
           <h4>Area</h4>
           <ul class="footer-links">
-            <li><a href="/login">Accedi</a></li>
+            <li><a href="login">Accedi</a></li>
             <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/write">Scrivi</a></li>
-            <li><a href="/profile">Profili</a></li>
+            <li><a href="write">Scrivi</a></li>
+            <li><a href="profile">Profili</a></li>
           </ul>
         </nav>
         <nav aria-label="Legale e social">
           <h4>Link</h4>
           <ul class="footer-links">
-            <li><a href="/privacy">Privacy</a></li>
-            <li><a href="/cookie">Cookie</a></li>
-            <li><a href="/note-legali">Note legali</a></li>
+            <li><a href="privacy">Privacy</a></li>
+            <li><a href="cookie">Cookie</a></li>
+            <li><a href="note-legali">Note legali</a></li>
             <li><a href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
             <li><a href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer">Instagram</a></li>
           </ul>
@@ -1400,6 +1400,7 @@
       </div>
     </div>
   </footer>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
 
   <a class="back-to-top" href="#" aria-label="Torna su">&uarr;</a>
 
