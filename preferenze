@@ -337,6 +337,49 @@
       .nav-island { border-radius: 28px; }
     }
 
+    /* ── Dark mode ── */
+    [data-theme="scuro"] {
+      --ink:      #dde8e3;
+      --ink-soft: #8eada2;
+      --cream:    #0f1d18;
+      --paper:    #162118;
+      --mist:     #1d2e27;
+      --line:     rgba(150, 190, 175, 0.14);
+      --ok:       #4caf8a;
+      --err:      #e07070;
+    }
+    [data-theme="scuro"] body {
+      background:
+        radial-gradient(circle at 14% 8%, rgba(47, 107, 103, 0.24), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(37, 63, 53, 0.38), transparent 34rem),
+        linear-gradient(135deg, #0d1811, #10201a 54%, #0c1610);
+    }
+    [data-theme="scuro"] .nav-island {
+      background: rgba(14, 26, 20, 0.88);
+      border-color: rgba(150, 190, 175, 0.12);
+    }
+    [data-theme="scuro"] .bcard,
+    [data-theme="scuro"] .motto-card { background: rgba(20, 32, 26, 0.96); }
+    [data-theme="scuro"] .motto-card { background: #0e1c16; }
+    [data-theme="scuro"] .field input,
+    [data-theme="scuro"] .field textarea,
+    [data-theme="scuro"] .field select,
+    [data-theme="scuro"] .pref-select { background: rgba(20, 32, 26, 0.9); color: var(--ink); }
+    [data-theme="scuro"] .profile-dropdown { background: rgba(14, 26, 20, 0.96); }
+    [data-theme="scuro"] .profile-dropdown a,
+    [data-theme="scuro"] .profile-dropdown button { color: var(--ink); }
+    [data-theme="scuro"] .toggle-track { background: rgba(150, 190, 175, 0.22); }
+    [data-theme="scuro"] body::before { opacity: 0.08; }
+
+    /* ── Density compact ── */
+    [data-density="compact"] .bcard { padding: 15px 18px; gap: 10px; }
+    [data-density="compact"] .pref-row { padding: 5px 0; }
+    [data-density="compact"] .page { gap: 7px; }
+    [data-density="compact"] .section-label { padding: 14px 0 5px; }
+    [data-density="compact"] .preview-avatar { width: 64px; height: 64px; font-size: 2rem; }
+    [data-density="compact"] .emoji-grid label { padding: 4px; font-size: 1.2rem; }
+    [data-density="compact"] .btn { padding: 8px 20px; font-size: .84rem; }
+
     /* ── Footer ── */
     .footer { color: rgba(255,250,240,.72); background: #101c18; padding: 72px 0 34px; font-family: var(--sans); position: relative; z-index: 1; }
     .footer-container { width: min(100% - 44px, 1400px); margin: 0 auto; }
@@ -887,16 +930,23 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
       syncPreview();
     });
 
-    /* Live UI preview on select change */
+    /* Live UI preview on select change — also persists immediately to localStorage */
     ['pref-theme','pref-density','pref-fontsize','pref-contrast'].forEach((id) => {
       $(id)?.addEventListener('change', () => {
         const live = loadPrefs();
         live.theme     = $('pref-theme')?.value || live.theme;
+        live.language  = $('pref-language')?.value || live.language;
         live.uiDensity = $('pref-density')?.value || live.uiDensity;
         live.fontsize  = $('pref-fontsize')?.value || live.fontsize;
         live.contrast  = !!$('pref-contrast')?.checked;
+        savePrefs(live);
         applyUiPrefs(live);
       });
+    });
+    $('pref-language')?.addEventListener('change', () => {
+      const live = loadPrefs();
+      live.language = $('pref-language')?.value || live.language;
+      savePrefs(live);
     });
   }
 
