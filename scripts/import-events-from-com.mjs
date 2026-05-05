@@ -40,6 +40,10 @@ const AUTHOR_USERNAME        = process.env.AUTHOR_USERNAME || 'proloco';
 const STORAGE_BUCKET         = 'post-images';
 const IMPORT_CATEGORY        = 'Eventi';
 const FETCH_TIMEOUT_MS       = 15_000;
+const MAX_TITLE_LENGTH       = 120;
+const MAX_EXCERPT_LENGTH     = 200;
+const MIN_TITLE_LENGTH       = 3;
+const MIN_CONTENT_LENGTH     = 10;
 
 // ── Helpers generici ────────────────────────────────────────────────────────
 
@@ -280,8 +284,10 @@ async function fetchHtmlFallback() {
 
   log(`Scraping HTML da: ${usedUrl}`);
 
-  // Estrai tutti i link ad articoli/eventi dalla pagina archivio
-  const linkRegex = /href="(https?:\/\/[^"]*rivaltasulmincio\.com\/[a-z0-9\-\/]+\/?)"[^>]*>/gi;
+  // Estrai tutti i link ad articoli/eventi dalla pagina archivio.
+  // Costruisci il pattern dell'host dalla SOURCE_SITE_URL configurata.
+  const sourceHost = new URL(SOURCE_SITE_URL).host.replace(/\./g, '\\.');
+  const linkRegex = new RegExp(`href="(https?://${sourceHost}/[a-z0-9\\-/]+/?)"[^>]*>`, 'gi');
   const seen = new Set();
   const postLinks = [];
   let m;
@@ -331,7 +337,7 @@ async function scrapePostPage(url) {
   const titleFromTitle = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '';
   const title = stripHtml(titleFromOg || titleFromH1 || titleFromTitle).split('|')[0].split('–')[0].trim();
 
-  if (!title || title.length < 3) return null;
+  if (!title || title.length < MIN_TITLE_LENGTH) return null;
 
   // Descrizione: meta description o og:description
   const descMatch =
@@ -349,7 +355,7 @@ async function scrapePostPage(url) {
   contentHtml = (articleMatch || mainMatch || entryMatch || [])[1] || '';
 
   const content = htmlToMarkdown(contentHtml).trim() || excerpt;
-  if (!content || content.length < 10) return null;
+  if (!content || content.length < MIN_CONTENT_LENGTH) return null;
 
   // Data: og:article:published_time, time[datetime], meta[itemprop=datePublished]
   const dateMatch =
@@ -570,13 +576,13 @@ async function main() {
     }
 
     // Normalizza contenuto: assicurati che rispetti i vincoli del trigger
-    const title   = (raw.title || '').slice(0, 120).trim();
-    const excerpt = (raw.excerpt || '').slice(0, 200).trim() || null;
+    const title   = (raw.title || '').slice(0, MAX_TITLE_LENGTH).trim();
+    const excerpt = (raw.excerpt || '').slice(0, MAX_EXCERPT_LENGTH).trim() || null;
     let content   = (raw.content || excerpt || title).trim();
-    if (content.length < 10) content = title + '\n\n' + (excerpt || '');
+    if (content.length < MIN_CONTENT_LENGTH) content = title + '\n\n' + (excerpt || '');
 
     // Tronca titolo troppo corto/lungo
-    if (title.length < 3) {
+    if (title.length < MIN_TITLE_LENGTH) {
       warn('  Titolo troppo breve. Skip.');
       errors++;
       continue;
