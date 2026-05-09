@@ -147,14 +147,14 @@
   align-items: center;
   justify-content: center;
   min-height: 38px;
-  padding: 0 15px;
+  padding: 0 11px;
   border-radius: 999px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.03);
   color: rgba(212, 230, 255, 0.8);
   text-decoration: none;
   font-family: 'Syne', var(--sans, system-ui), sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   transition:
@@ -195,18 +195,6 @@
   transform: scaleX(1);
 }
 
-.nav-link--write {
-  color: #dcfff0;
-  background: linear-gradient(135deg, rgba(44, 190, 119, 0.22), rgba(84, 112, 255, 0.12));
-  border-color: rgba(96, 227, 153, 0.26);
-}
-
-.nav-link--write:hover,
-.nav-link--write.active {
-  color: #f0fff8;
-  background: linear-gradient(135deg, rgba(44, 190, 119, 0.34), rgba(84, 112, 255, 0.16));
-  border-color: rgba(124, 236, 170, 0.42);
-}
 
 .nav-actions {
   display: flex;
