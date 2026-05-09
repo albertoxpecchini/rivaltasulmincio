@@ -1,0 +1,914 @@
+/*
+ * theme.css — Rivalta sul Mincio
+ * Footer canonico + dark mode completo + density compact.
+ * Incluso in ogni pagina prima di </head>.
+ * data-theme / data-density / data-fontsize / data-contrast impostati dall'inline FOUC script leggendo localStorage.
+ */
+
+/* ================================================================
+   FOOTER CANONICO — stili base condivisi
+   ================================================================ */
+.footer {
+  color: rgba(255, 255, 255, 0.68);
+  background: #0b1510;
+  border-top: 2px solid rgba(61, 138, 132, 0.40);
+  padding: 72px 0 34px;
+  font-family: var(--sans, "Cabinet Grotesk", system-ui, sans-serif);
+  position: relative;
+  z-index: 1;
+}
+.footer .container {
+  width: min(100% - 44px, 1400px);
+  margin: 0 auto;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) repeat(3, minmax(140px, 0.22fr));
+  gap: clamp(24px, 5vw, 76px);
+  align-items: start;
+}
+.footer h3, .footer h4 { margin: 0 0 16px; color: #fff; letter-spacing: -0.02em; }
+.footer h3 {
+  max-width: 520px;
+  font-family: var(--serif, "Fraunces", Georgia, serif);
+  font-size: clamp(2rem, 4vw, 4.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+}
+.footer p { max-width: 540px; line-height: 1.66; }
+.footer-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.footer-links a { color: rgba(255, 255, 255, 0.58); font-weight: 750; text-decoration: none; transition: color 0.18s; }
+.footer-links a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 14px; margin-top: 64px; padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.86rem;
+}
+@media (max-width: 760px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 6px; }
+}
+
+
+/* ================================================================
+   DARK MODE — html[data-theme="scuro"]
+   Palette: forest/marsh night mantenendo l'identità verde-naturale.
+   ================================================================ */
+
+/* ── 1. CSS Custom Properties ── */
+html[data-theme="scuro"] {
+  --ink:         #d4e4dd;
+  --ink-soft:    #8aab9e;
+  --cream:       #0f1d17;
+  --paper:       #152118;
+  --mist:        #1d2e26;
+  --fog:         rgba(11, 19, 14, 0.72);
+  --white:       #152118;
+  --marsh:       #253f35;
+  --marsh-2:     #3d6353;
+  --water:       #3d8a84;
+  --clay:        #c87a55;
+  --reed:        #c6a462;
+  --line:        rgba(150, 190, 175, 0.13);
+  --line-dark:   rgba(150, 190, 175, 0.20);
+  --ok:          #4caf8a;
+  --err:         #e07070;
+  --warn:        #d4945a;
+  --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(150, 190, 175, 0.07);
+  --shadow:      0 26px 80px rgba(0, 0, 0, 0.44);
+  --shadow-strong: 0 44px 118px rgba(0, 0, 0, 0.58);
+  color-scheme:  dark;
+}
+
+/* ── 2. Body & sfondo ── */
+html[data-theme="scuro"] body {
+  background:
+    radial-gradient(circle at 14% 8%,  rgba(47, 107, 103, 0.20), transparent 28rem),
+    radial-gradient(circle at 88% 2%,  rgba(37,  63,  53,  0.36), transparent 34rem),
+    linear-gradient(135deg, #0d1812, #101e16 54%, #0c1511);
+  color: var(--ink);
+}
+html[data-theme="scuro"] body::before { opacity: 0.05 !important; }
+
+/* Nav links (desktop hover + active) */
+html[data-theme="scuro"] .nav-links a { color: rgba(212, 228, 221, 0.65); }
+html[data-theme="scuro"] .nav-links a:hover,
+html[data-theme="scuro"] .nav-links a.active {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Nav links mobile panel */
+html[data-theme="scuro"] .nav-links[style*="position: fixed"],
+html[data-theme="scuro"] .nav-links.open,
+html[data-theme="scuro"] .nav-links {
+  background: rgba(11, 20, 15, 0.97);
+  border-color: rgba(150, 190, 175, 0.09);
+  box-shadow: 0 42px 110px rgba(0, 0, 0, 0.52);
+}
+
+/* Toggle hamburger */
+html[data-theme="scuro"] .nav-toggle { background: var(--marsh); color: var(--cream); }
+
+/* ── 3. Links ── */
+html[data-theme="scuro"] a              { color: var(--water); }
+html[data-theme="scuro"] a:hover        { color: #5dbfb8; }
+html[data-theme="scuro"] .content a    { color: var(--water); border-bottom-color: rgba(61, 138, 132, 0.30); }
+html[data-theme="scuro"] .content a:hover { color: #5dbfb8; }
+
+/* ── 4. Buttons ── */
+html[data-theme="scuro"] .btn {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: rgba(150, 190, 175, 0.15);
+}
+html[data-theme="scuro"] .btn:hover { background: var(--mist); }
+
+html[data-theme="scuro"] .btn-primary,
+html[data-theme="scuro"] .btn-main {
+  background: var(--marsh);
+  color: #e8f2ec;
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.30);
+}
+html[data-theme="scuro"] .btn-primary:hover,
+html[data-theme="scuro"] .btn-main:hover  { background: #1c3028; box-shadow: 0 8px 26px rgba(0,0,0,.44); }
+html[data-theme="scuro"] .btn-primary:disabled,
+html[data-theme="scuro"] .btn-main:disabled { opacity: 0.45; }
+
+html[data-theme="scuro"] .btn-ghost { background: rgba(150, 190, 175, 0.08); color: var(--ink-soft); border-color: transparent; }
+html[data-theme="scuro"] .btn-ghost:hover { background: rgba(150, 190, 175, 0.15); }
+
+html[data-theme="scuro"] .btn-danger { background: rgba(224, 112, 112, 0.10); color: #e07070; border-color: transparent; }
+html[data-theme="scuro"] .btn-danger:hover { background: rgba(224, 112, 112, 0.18); }
+
+html[data-theme="scuro"] .btn-read {
+  color: var(--water);
+  border-color: rgba(61, 138, 132, 0.30);
+}
+html[data-theme="scuro"] .btn-read:hover { background: rgba(61, 138, 132, 0.10); }
+
+html[data-theme="scuro"] .switch-btn { background: var(--mist); color: var(--ink-soft); }
+html[data-theme="scuro"] .switch-btn.on { background: var(--marsh); color: #e8f2ec; }
+
+/* ── 7. Form elements ── */
+html[data-theme="scuro"] input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="submit"]):not([type="color"]),
+html[data-theme="scuro"] textarea,
+html[data-theme="scuro"] select,
+html[data-theme="scuro"] .pref-select {
+  background: rgba(15, 26, 20, 0.92);
+  color: var(--ink);
+  border-color: rgba(150, 190, 175, 0.16);
+}
+html[data-theme="scuro"] input:focus:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="submit"]),
+html[data-theme="scuro"] textarea:focus,
+html[data-theme="scuro"] select:focus,
+html[data-theme="scuro"] .pref-select:focus {
+  border-color: var(--water);
+  box-shadow: 0 0 0 3px rgba(61, 138, 132, 0.18);
+}
+html[data-theme="scuro"] input::placeholder,
+html[data-theme="scuro"] textarea::placeholder { color: var(--ink-soft); opacity: 0.55; }
+html[data-theme="scuro"] label { color: var(--ink-soft); }
+
+/* Toggle switch (preferenze) */
+html[data-theme="scuro"] .toggle-track                       { background: rgba(150, 190, 175, 0.18); }
+html[data-theme="scuro"] input:checked + .toggle-track       { background: var(--marsh); }
+html[data-theme="scuro"] .toggle-track::after                { box-shadow: 0 1px 4px rgba(0,0,0,.40); }
+
+/* ── 8. Cards generiche ── */
+html[data-theme="scuro"] .bcard,
+html[data-theme="scuro"] .bc,
+html[data-theme="scuro"] .card,
+html[data-theme="scuro"] .kpi,
+html[data-theme="scuro"] .toc,
+html[data-theme="scuro"] .auth-card,
+html[data-theme="scuro"] .compose-card,
+html[data-theme="scuro"] .stat-tile,
+html[data-theme="scuro"] .pcard,
+html[data-theme="scuro"] .post-card,
+html[data-theme="scuro"] .comment-card,
+html[data-theme="scuro"] .article-card,
+html[data-theme="scuro"] .event-card,
+html[data-theme="scuro"] .dash-card,
+html[data-theme="scuro"] .modal { background: var(--paper); }
+
+/* Card hover shadow */
+html[data-theme="scuro"] .bcard:hover,
+html[data-theme="scuro"] .bc:hover,
+html[data-theme="scuro"] .pcard:hover { box-shadow: 0 14px 36px rgba(0,0,0,.40); }
+
+/* ── 9. Dashboard ── */
+
+/* Bento hero card — sfondo con radial gradient */
+html[data-theme="scuro"] .bc-hero {
+  background: var(--paper);
+  background-image: radial-gradient(circle at 86% 14%, rgba(61, 138, 132, 0.15), transparent 40%);
+}
+
+/* Chip / pill piccolo */
+html[data-theme="scuro"] .chip {
+  background: rgba(21, 36, 29, 0.95);
+  color: var(--ink-soft);
+  border-color: rgba(150, 190, 175, 0.10);
+}
+html[data-theme="scuro"] .chip-admin {
+  background: rgba(198, 164, 98, 0.10);
+  color: var(--reed);
+  border-color: rgba(198, 164, 98, 0.25);
+}
+html[data-theme="scuro"] .chip.on,
+html[data-theme="scuro"] .chip[class*="on"] { background: var(--marsh); color: #e8f2ec; }
+
+/* Status pill (bozza / pubblicato) */
+html[data-theme="scuro"] .pill,
+html[data-theme="scuro"] .status-pill { background: var(--mist); color: var(--ink-soft); }
+
+html[data-theme="scuro"] .pill.draft,
+html[data-theme="scuro"] .status-pill.draft,
+html[data-theme="scuro"] .pill[class*="draft"],
+html[data-theme="scuro"] [class*="pill-draft"] { background: rgba(177, 107, 18, 0.18); color: var(--warn); }
+
+html[data-theme="scuro"] .pill.pub,
+html[data-theme="scuro"] .status-pill.pub,
+html[data-theme="scuro"] .pill[class*="pub"],
+html[data-theme="scuro"] [class*="pill-pub"] { background: rgba(47, 107, 103, 0.20); color: var(--ok); }
+
+/* Grafici delta */
+html[data-theme="scuro"] .delta.up   { color: var(--ok); }
+html[data-theme="scuro"] .delta.down { color: var(--err); }
+html[data-theme="scuro"] .delta.same { color: var(--ink-soft); }
+
+/* Mobile nav bar (dashboard) */
+html[data-theme="scuro"] .mobile-nav {
+  background: rgba(10, 18, 13, 0.95);
+  border-color: rgba(150, 190, 175, 0.09);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.36);
+}
+html[data-theme="scuro"] .mobile-nav button { color: var(--ink-soft); }
+html[data-theme="scuro"] .mobile-nav button.on { background: var(--marsh); color: #e8f2ec; }
+
+/* Sidebar (dashboard) */
+html[data-theme="scuro"] .sidebar {
+  background: rgba(10, 18, 13, 0.96);
+  border-color: rgba(150, 190, 175, 0.09);
+}
+html[data-theme="scuro"] .sb-brand,
+html[data-theme="scuro"] .sb-link          { color: rgba(212, 228, 221, 0.66); }
+html[data-theme="scuro"] .sb-link:hover,
+html[data-theme="scuro"] .sb-link.active   { color: var(--ink); background: rgba(150, 190, 175, 0.08); }
+html[data-theme="scuro"] .sb-section-title { color: rgba(212, 228, 221, 0.36); }
+
+/* Modal */
+html[data-theme="scuro"] .modal-backdrop { background: rgba(0, 0, 0, 0.60) !important; backdrop-filter: blur(3px); }
+html[data-theme="scuro"] .modal {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.60);
+}
+
+/* Toast */
+html[data-theme="scuro"] .toast {
+  background: var(--mist);
+  color: var(--ink);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40);
+}
+html[data-theme="scuro"] .toast.ok  { border-color: rgba(76, 175, 138, 0.35); color: var(--ok); }
+html[data-theme="scuro"] .toast.err { border-color: rgba(224, 112, 112, 0.35); color: var(--err); }
+
+/* ── 10. Login ── */
+html[data-theme="scuro"] .notice.info    { background: rgba(150, 190, 175, 0.10); color: var(--ink-soft); border-color: rgba(150,190,175,.18); }
+html[data-theme="scuro"] .notice.success { background: rgba(76, 175, 138, 0.12);  color: var(--ok); border-color: rgba(76,175,138,.22); }
+html[data-theme="scuro"] .notice.error   { background: rgba(224, 112, 112, 0.10); color: var(--err); border-color: rgba(224,112,112,.22); }
+
+html[data-theme="scuro"] .identity-preview { background: rgba(21, 34, 27, 0.95); }
+html[data-theme="scuro"] .email-pill       { background: rgba(37, 63, 53, 0.35); color: var(--ink-soft); }
+html[data-theme="scuro"] .verify-box {
+  background: linear-gradient(155deg, rgba(37, 63, 53, 0.30), rgba(47, 107, 103, 0.18));
+}
+
+/* ── 11. Write (editor) ── */
+html[data-theme="scuro"] .compose-dropdown-menu {
+  background: rgba(10, 18, 14, 0.98);
+  border-color: rgba(150, 190, 175, 0.10);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.50);
+}
+html[data-theme="scuro"] .compose-dropdown-item         { color: var(--ink); }
+html[data-theme="scuro"] .compose-dropdown-item:hover   { background: rgba(150, 190, 175, 0.08); }
+html[data-theme="scuro"] .compose-dropdown-item.selected { background: rgba(37, 63, 53, 0.30); color: var(--ink); }
+
+html[data-theme="scuro"] .compose-title { color: var(--ink); }
+html[data-theme="scuro"] .compose-title::placeholder { color: var(--ink-soft); opacity: 0.5; }
+html[data-theme="scuro"] .compose-body  { color: var(--ink); }
+html[data-theme="scuro"] .compose-body::placeholder  { color: var(--ink-soft); opacity: 0.5; }
+html[data-theme="scuro"] .compose-meta { color: var(--ink-soft); }
+
+/* ── 12. Post (articolo) ── */
+html[data-theme="scuro"] .post-hero   { color: var(--ink); }
+html[data-theme="scuro"] .post-lead   { color: var(--ink-soft); border-left-color: var(--water); }
+html[data-theme="scuro"] .post-meta   { color: var(--ink-soft); }
+
+html[data-theme="scuro"] .badge-default { background: rgba(61, 138, 132, 0.18); color: var(--water); }
+html[data-theme="scuro"] .badge-green   { background: rgba(46, 125, 50, 0.18);  color: #6fcf97; }
+html[data-theme="scuro"] .badge-clay    { background: rgba(200, 122, 85, 0.15); color: var(--clay); }
+
+html[data-theme="scuro"] .like-btn {
+  background: rgba(21, 34, 27, 0.80);
+  color: var(--ink-soft);
+  border-color: rgba(150, 190, 175, 0.14);
+}
+html[data-theme="scuro"] .like-btn:hover { background: rgba(37, 63, 53, 0.40); }
+html[data-theme="scuro"] .like-btn.on    { background: rgba(192, 0, 42, 0.14); color: #f08080; border-color: rgba(192,0,42,.22); }
+html[data-theme="scuro"] .like-count     { background: rgba(37, 63, 53, 0.22); color: var(--ink); }
+
+html[data-theme="scuro"] .community-rules {
+  background: rgba(47, 107, 103, 0.12);
+  border-color: rgba(47, 107, 103, 0.22);
+}
+html[data-theme="scuro"] .discussion-msg.err { background: rgba(181, 56, 56, 0.12); color: var(--err); border-color: rgba(181,56,56,.22); }
+html[data-theme="scuro"] .discussion-msg.ok  { background: rgba(46, 125, 50, 0.12);  color: var(--ok);  border-color: rgba(46,125,50,.22); }
+
+/* ── 13. Category ── */
+html[data-theme="scuro"] .chip:not(.on) {
+  background: rgba(21, 36, 29, 0.90);
+  color: var(--ink-soft);
+  border-color: rgba(150, 190, 175, 0.12);
+}
+html[data-theme="scuro"] .chip.on {
+  background: var(--marsh);
+  color: #e8f2ec;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.30);
+}
+
+html[data-theme="scuro"] .badge         { background: var(--marsh); color: #e8f2ec; }
+html[data-theme="scuro"] .badge.green   { background: #1e5c22; color: #a5d6a7; }
+html[data-theme="scuro"] .badge.clay    { background: rgba(200,122,85,.18); color: var(--clay); }
+
+html[data-theme="scuro"] .pcard-img  { background: rgba(37, 63, 53, 0.20); }
+html[data-theme="scuro"] .pcard-cat  { background: rgba(15, 25, 20, 0.92); color: var(--ink); border-color: rgba(150,190,175,.12); }
+html[data-theme="scuro"] .empty      { color: var(--ink-soft); border-color: rgba(150,190,175,.18); }
+html[data-theme="scuro"] .empty-state { color: var(--ink-soft); border-color: rgba(150,190,175,.18); }
+
+/* ── 14. Profilo utente ── */
+html[data-theme="scuro"] .card-hero { background: var(--paper); }
+html[data-theme="scuro"] .avatar    { background: rgba(37, 63, 53, 0.25); }
+html[data-theme="scuro"] .card-articles .num { color: var(--marsh-2); }
+html[data-theme="scuro"] .card-since .num    { color: var(--water); }
+
+/* ── 15. Modifica-profilo / Preferenze ── */
+html[data-theme="scuro"] .emoji-grid label          { background: rgba(37, 63, 53, 0.14); }
+html[data-theme="scuro"] .emoji-grid label:hover    { background: rgba(37, 63, 53, 0.26); }
+html[data-theme="scuro"] .emoji-grid input:checked + label {
+  background: rgba(37, 63, 53, 0.28);
+  border-color: var(--water);
+}
+html[data-theme="scuro"] .color-grid input:checked + label {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--water);
+}
+
+html[data-theme="scuro"] .pref-row   { border-bottom-color: rgba(150, 190, 175, 0.10); }
+html[data-theme="scuro"] .motto-card { background: #0d1c14; }
+html[data-theme="scuro"] .section-label { color: var(--ink-soft); }
+
+html[data-theme="scuro"] .preview-profile-link { color: var(--water); }
+
+/* ── 16. Reset password ── */
+html[data-theme="scuro"] .strength-bar .seg { background: rgba(37, 63, 53, 0.28); }
+html[data-theme="scuro"] .err-banner {
+  background: rgba(181, 56, 56, 0.12);
+  color: var(--err);
+  border-color: rgba(181, 56, 56, 0.24);
+}
+html[data-theme="scuro"] [class*="spinner"],
+html[data-theme="scuro"] [class*="loader"] { border-color: rgba(37, 63, 53, 0.25); border-top-color: var(--water); }
+
+/* ── 17. Documenti legali (cookie, privacy, note-legali) ── */
+html[data-theme="scuro"] .toc a         { color: var(--ink); }
+html[data-theme="scuro"] .toc a:hover   { color: var(--water); }
+html[data-theme="scuro"] .highlight-box,
+html[data-theme="scuro"] .info-box {
+  background: rgba(47, 107, 103, 0.12);
+  border-left-color: var(--water);
+  color: var(--ink);
+}
+html[data-theme="scuro"] table          { border-color: var(--line); }
+html[data-theme="scuro"] table th       { background: rgba(37, 63, 53, 0.22); color: var(--ink-soft); border-color: var(--line); }
+html[data-theme="scuro"] table td       { border-color: var(--line); color: var(--ink); }
+html[data-theme="scuro"] table tr:hover td { background: rgba(37, 63, 53, 0.10); }
+html[data-theme="scuro"] .placeholder   { background: rgba(198, 164, 98, 0.08); color: var(--reed); border-color: rgba(198,164,98,.20); }
+
+/* ── 18. Index — sezioni speciali ── */
+html[data-theme="scuro"] .section-alt   { background: var(--mist); }
+html[data-theme="scuro"] .section-light { background: var(--mist); }
+
+/* Post cards nella home */
+html[data-theme="scuro"] .post-featured { background: var(--paper); }
+html[data-theme="scuro"] .post-card__footer,
+html[data-theme="scuro"] .post-featured__footer { border-top-color: var(--line); }
+
+/* Input newsletter */
+html[data-theme="scuro"] .newsletter-input {
+  background: rgba(15, 26, 20, 0.92);
+  color: var(--ink);
+  border-color: rgba(150, 190, 175, 0.18);
+}
+
+/* Categorie chip nella home */
+html[data-theme="scuro"] .cat-chip { background: rgba(21, 36, 29, 0.90); color: var(--ink-soft); border-color: rgba(150,190,175,.12); }
+html[data-theme="scuro"] .cat-chip:hover,
+html[data-theme="scuro"] .cat-chip.active { background: var(--marsh); color: #e8f2ec; }
+
+/* ── 18.b. Componenti trasversali non coperti ── */
+html[data-theme="scuro"] .nav-home-btn,
+html[data-theme="scuro"] .run-btn {
+  background: var(--marsh);
+  color: #e8f2ec;
+}
+html[data-theme="scuro"] .run-btn { border-color: rgba(150, 190, 175, 0.18); }
+html[data-theme="scuro"] .nav-home-btn:hover,
+html[data-theme="scuro"] .run-btn:hover {
+  background: #1c3028;
+  color: #e8f2ec;
+}
+
+html[data-theme="scuro"] .link-btn,
+html[data-theme="scuro"] .mini-btn { color: var(--water); }
+html[data-theme="scuro"] .link-btn:hover,
+html[data-theme="scuro"] .mini-btn:hover { color: #5dbfb8; }
+
+html[data-theme="scuro"] .btn-outline {
+  background: rgba(150, 190, 175, 0.08);
+  border-color: rgba(150, 190, 175, 0.24);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .btn-outline:hover {
+  background: rgba(150, 190, 175, 0.16);
+  border-color: rgba(150, 190, 175, 0.34);
+}
+html[data-theme="scuro"] .eye-btn { color: var(--ink-soft); }
+html[data-theme="scuro"] .eye-btn:hover { color: var(--ink); }
+html[data-theme="scuro"] .back-link { color: var(--ink-soft); }
+html[data-theme="scuro"] .back-link:hover { color: var(--ink); }
+
+html[data-theme="scuro"] .field > span,
+html[data-theme="scuro"] .group-label { color: rgba(212, 228, 221, 0.58); }
+html[data-theme="scuro"] .field input::placeholder,
+html[data-theme="scuro"] .field textarea::placeholder { color: rgba(212, 228, 221, 0.44); }
+html[data-theme="scuro"] .steps span { background: rgba(150, 190, 175, 0.22); }
+html[data-theme="scuro"] .steps span.active { background: var(--water); }
+html[data-theme="scuro"] .input-action {
+  background: rgba(150, 190, 175, 0.12);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .input-action:hover { background: rgba(150, 190, 175, 0.20); }
+html[data-theme="scuro"] .inline-actions .link-btn { border-bottom-color: rgba(150, 190, 175, 0.36); }
+html[data-theme="scuro"] .inline-actions .link-btn:hover { border-bottom-color: rgba(150, 190, 175, 0.60); }
+
+html[data-theme="scuro"] .button.secondary {
+  color: var(--ink);
+  background: rgba(150, 190, 175, 0.10);
+  border-color: rgba(150, 190, 175, 0.20);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+html[data-theme="scuro"] .button.secondary .button-icon {
+  background: var(--marsh);
+  color: #e8f2ec;
+}
+html[data-theme="scuro"] .photo-frame,
+html[data-theme="scuro"] .news-main,
+html[data-theme="scuro"] .map-plate,
+html[data-theme="scuro"] .contact-card,
+html[data-theme="scuro"] .release-card,
+html[data-theme="scuro"] .community-panel,
+html[data-theme="scuro"] .community-item {
+  background: rgba(11, 20, 15, 0.78);
+  border-color: rgba(150, 190, 175, 0.15);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
+}
+html[data-theme="scuro"] .news-inner,
+html[data-theme="scuro"] .fn-card,
+html[data-theme="scuro"] .stack-item,
+html[data-theme="scuro"] .number-tile,
+html[data-theme="scuro"] .uptime-unit,
+html[data-theme="scuro"] .release-commits-list li {
+  background: rgba(14, 24, 19, 0.90);
+  border-color: rgba(150, 190, 175, 0.15);
+}
+html[data-theme="scuro"] #tile-deploy,
+html[data-theme="scuro"] #tile-lines {
+  background: rgba(37, 63, 53, 0.34);
+  border-color: rgba(150, 190, 175, 0.24);
+}
+
+html[data-theme="scuro"] .hero-note {
+  color: var(--ink);
+  background: rgba(11, 20, 15, 0.86);
+  border-color: rgba(150, 190, 175, 0.18);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.44);
+}
+html[data-theme="scuro"] .hero-note span { color: rgba(212, 228, 221, 0.58); }
+html[data-theme="scuro"] .marquee-band {
+  background: rgba(12, 22, 16, 0.62);
+  border-top-color: rgba(150, 190, 175, 0.14);
+  border-bottom-color: rgba(150, 190, 175, 0.14);
+}
+
+html[data-theme="scuro"] .news-filter-chip {
+  border-color: rgba(150, 190, 175, 0.18);
+  color: var(--ink-soft);
+  background: rgba(16, 27, 21, 0.82);
+}
+html[data-theme="scuro"] .news-filter-chip:hover,
+html[data-theme="scuro"] .news-filter-chip.on {
+  color: #e8f2ec;
+  background: var(--marsh);
+}
+html[data-theme="scuro"] .news-status,
+html[data-theme="scuro"] .post-meta,
+html[data-theme="scuro"] .post-featured__excerpt,
+html[data-theme="scuro"] .post-card__excerpt,
+html[data-theme="scuro"] .festa-tribute p,
+html[data-theme="scuro"] .festa-baracca p,
+html[data-theme="scuro"] .side-list a,
+html[data-theme="scuro"] .news-empty,
+html[data-theme="scuro"] .community-panel p,
+html[data-theme="scuro"] .community-item span,
+html[data-theme="scuro"] .fn-card-desc,
+html[data-theme="scuro"] .stack-note,
+html[data-theme="scuro"] .number-tile .label,
+html[data-theme="scuro"] .live-since,
+html[data-theme="scuro"] .release-date-text,
+html[data-theme="scuro"] .release-commit-row .rel-msg,
+html[data-theme="scuro"] .release-commits-list .row-top,
+html[data-theme="scuro"] .release-commits-list .row-files,
+html[data-theme="scuro"] .release-changes-list li { color: var(--ink-soft); }
+html[data-theme="scuro"] .news-empty strong,
+html[data-theme="scuro"] .fn-card-title,
+html[data-theme="scuro"] .stack-name,
+html[data-theme="scuro"] .number-tile .num,
+html[data-theme="scuro"] .release-vname,
+html[data-theme="scuro"] .release-commits-list .row-msg,
+html[data-theme="scuro"] .stat-pill strong { color: var(--ink); }
+html[data-theme="scuro"] .side-list a,
+html[data-theme="scuro"] .contact-line { border-top-color: rgba(150, 190, 175, 0.14); }
+
+html[data-theme="scuro"] .release-v-badge {
+  color: var(--water);
+  background: rgba(61, 138, 132, 0.14);
+  border-color: rgba(61, 138, 132, 0.28);
+}
+html[data-theme="scuro"] .release-commit-row {
+  background: rgba(37, 63, 53, 0.26);
+}
+html[data-theme="scuro"] .release-commit-row a,
+html[data-theme="scuro"] .release-commits-list .row-top code { color: var(--water); }
+html[data-theme="scuro"] .live-dot-badge {
+  color: var(--ok);
+  background: rgba(76, 175, 138, 0.12);
+  border-color: rgba(76, 175, 138, 0.28);
+}
+html[data-theme="scuro"] .live-dot-badge::before,
+html[data-theme="scuro"] .number-tile[data-live]::after {
+  color: var(--ok);
+  background: var(--ok);
+}
+
+html[data-theme="scuro"] .ok,
+html[data-theme="scuro"] .badge-ok { color: var(--ok); }
+html[data-theme="scuro"] .err,
+html[data-theme="scuro"] .badge-err { color: var(--err); }
+html[data-theme="scuro"] .badge-ok { background: rgba(76, 175, 138, 0.14); }
+html[data-theme="scuro"] .badge-err { background: rgba(224, 112, 112, 0.14); }
+html[data-theme="scuro"] .badge-skip,
+html[data-theme="scuro"] .pending { color: var(--ink-soft); }
+
+html[data-theme="scuro"] [style*="color:#2E7D32"],
+html[data-theme="scuro"] [style*="color:#2e7d32"],
+html[data-theme="scuro"] [style*="color:#4a9e7c"] { color: var(--ok) !important; }
+html[data-theme="scuro"] [style*="color:#b94747"],
+html[data-theme="scuro"] [style*="color:#B94747"] { color: var(--err) !important; }
+
+/* ── 19. Footer dark-on-dark (regolazione) ── */
+html[data-theme="scuro"] .footer        { background: #050d09; border-top-color: rgba(61, 138, 132, 0.28); }
+html[data-theme="scuro"] .footer-bottom { border-color: rgba(255, 255, 255, 0.07); }
+
+/* ── 20. Scrollbar webkit ── */
+html[data-theme="scuro"] ::-webkit-scrollbar        { width: 8px; }
+html[data-theme="scuro"] ::-webkit-scrollbar-track  { background: #0d1812; }
+html[data-theme="scuro"] ::-webkit-scrollbar-thumb  { background: rgba(150, 190, 175, 0.22); border-radius: 4px; }
+html[data-theme="scuro"] ::-webkit-scrollbar-thumb:hover { background: rgba(150, 190, 175, 0.38); }
+
+/* ── 21. Focus ring ── */
+html[data-theme="scuro"] *:focus-visible {
+  outline-color: var(--water);
+  outline-offset: 2px;
+}
+
+/* ── 22. Selezione testo ── */
+html[data-theme="scuro"] ::selection {
+  background: rgba(61, 138, 132, 0.35);
+  color: var(--ink);
+}
+
+/* ── 23. Storia — elementi specifici ── */
+html[data-theme="scuro"] .skip-link { background: var(--ink); color: var(--cream); }
+
+/* ── 24. Transizione smooth al cambio tema ── */
+html { transition: background-color 0.25s ease, color 0.25s ease; }
+html[data-theme] body,
+html[data-theme] .bcard,
+html[data-theme] .bc,
+html[data-theme] .card,
+html[data-theme] .pcard { transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+
+
+/* ================================================================
+   DARK MODE — CONFLITTI PER-PAGINA (audit approfondito)
+   ================================================================ */
+
+/* ── 25. Storia ── */
+html[data-theme="scuro"] .hero-title                 { color: var(--ink); }
+html[data-theme="scuro"] .timeline-heading           { color: var(--ink); }
+html[data-theme="scuro"] .timeline-dot               { background: var(--water) !important; border-color: var(--water); }
+html[data-theme="scuro"] .timeline-dot.milestone     { background: var(--clay) !important; border-color: var(--clay); }
+html[data-theme="scuro"] .commit-block               { background: rgba(61,99,83,0.28); color: var(--ink-soft); border-color: rgba(150,190,175,0.14); }
+html[data-theme="scuro"] .swatch                     { background: rgba(21,36,29,0.80); border-color: var(--line); }
+html[data-theme="scuro"] .swatch-name                { color: var(--ink-soft); }
+
+/* ── 26. Index ── */
+html[data-theme="scuro"] .eyebrow                    { color: var(--water); }
+html[data-theme="scuro"] .hero-copy                  { color: var(--ink-soft); }
+
+/* ── 27. Login / Profile — hero-eyebrow e step ── */
+html[data-theme="scuro"] .hero-eyebrow               { color: var(--water); }
+html[data-theme="scuro"] .bcard-highlight .bnum      { color: var(--ink); }
+html[data-theme="scuro"] .view-step                  { color: var(--water); }
+
+/* ── 28. Dashboard ── */
+html[data-theme="scuro"] .kpi-value                  { color: var(--water); }
+html[data-theme="scuro"] .hero-stat                  { background: rgba(37,63,53,0.25); }
+html[data-theme="scuro"] .chart-wrap                 { background: rgba(14,24,19,0.80); border-color: var(--line); }
+html[data-theme="scuro"] .empty-state                { background: rgba(21,36,29,0.70); color: var(--ink-soft); }
+html[data-theme="scuro"] .mobile-nav button,
+html[data-theme="scuro"] .mobile-nav a               { background: rgba(21,36,29,0.85); }
+
+/* ── 29. Write — dropdown section labels e img label ── */
+html[data-theme="scuro"] .stat-tile-num.pub          { color: var(--water); }
+html[data-theme="scuro"] .compose-dropdown-section   { color: rgba(212,228,221,0.45) !important; }
+html[data-theme="scuro"] .compose-img-label          { color: rgba(212,228,221,0.45); }
+
+/* ── 30. Post ── */
+html[data-theme="scuro"] .community-rules strong     { color: var(--ink); }
+html[data-theme="scuro"] .discussion-msg             { background: rgba(37,63,53,0.15); color: var(--ink-soft); border-color: var(--line); }
+
+/* ── 31. Preferenze ── */
+html[data-theme="scuro"] .pref-chip                  { background: rgba(21,36,29,0.85); color: var(--ink-soft); border-color: rgba(150,190,175,0.14); }
+html[data-theme="scuro"] .pref-chip:hover             { background: rgba(37,63,53,0.22); color: var(--ink); }
+html[data-theme="scuro"] .pref-chip.on               { background: var(--marsh-2); color: #e8f2ec; border-color: transparent; box-shadow: 0 4px 16px rgba(0,0,0,0.30); }
+html[data-theme="scuro"] .pref-note                  { background: rgba(14,24,19,0.72); border-color: rgba(150,190,175,0.13); }
+html[data-theme="scuro"] .motto-text                 { color: var(--ink); }
+
+/* ── 32. Pagine legali (privacy / cookie / note-legali) ── */
+html[data-theme="scuro"] .section-num               { color: var(--reed); }
+
+
+/* ================================================================
+   INDEX — NOTTE TRA LE PALUDI E NEL MINCIO
+   Atmosfera: acqua scura, canneti, foschia lunare, fuochi lontani.
+   ================================================================ */
+
+/* ── 33.a. Hero page — acqua notturna profonda (solo index, scoped via .hero) ── */
+
+/* ── 33.b. Hero — nebbia sul fiume ── */
+html[data-theme="scuro"] .hero::before {
+  background: transparent;
+}
+html[data-theme="scuro"] .hero {
+  background:
+    radial-gradient(ellipse at 18% 50%, rgba(37, 63, 53, 0.28), transparent 54%),
+    radial-gradient(ellipse at 82% 20%, rgba(29, 74, 68, 0.22), transparent 42%),
+    linear-gradient(160deg, #060c09 0%, #0a1610 55%, #060e0a 100%);
+}
+html[data-theme="scuro"] .wave-back,
+html[data-theme="scuro"] .wave-front { fill: #060c09; }
+html[data-theme="scuro"] .img-banner-wave svg path { fill: #060c09; }
+html[data-theme="scuro"] .section-lead        { color: var(--ink-soft); }
+html[data-theme="scuro"] .marquee-track       { color: rgba(138, 171, 158, 0.56); }
+html[data-theme="scuro"] .marquee-band        {
+  background: rgba(6, 12, 9, 0.72);
+  border-top-color:    rgba(61, 138, 132, 0.10);
+  border-bottom-color: rgba(61, 138, 132, 0.10);
+}
+
+/* ── 33.c. Atlas — pannelli di vetro scuro ── */
+html[data-theme="scuro"] .atlas-panel {
+  background: rgba(6, 14, 10, 0.82);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 32px 72px rgba(0, 0, 0, 0.52);
+}
+html[data-theme="scuro"] .atlas-panel-inner {
+  background: rgba(10, 20, 14, 0.90);
+  box-shadow: inset 0 1px 0 rgba(150, 190, 175, 0.07);
+}
+html[data-theme="scuro"] .atlas-copy p        { color: var(--ink-soft); }
+html[data-theme="scuro"] .fact {
+  background: rgba(14, 26, 19, 0.72);
+  border: 1px solid rgba(61, 138, 132, 0.10);
+}
+html[data-theme="scuro"] .fact span           { color: var(--ink-soft); }
+
+/* ── 33.d. Stack cards — carte galleggianti nell'acqua ── */
+html[data-theme="scuro"] .stack-card {
+  background: rgba(6, 14, 10, 0.82);
+  border-color: rgba(61, 138, 132, 0.13);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.56);
+}
+html[data-theme="scuro"] .stack-card-inner    { background: #0b1610; }
+html[data-theme="scuro"] .stack-card-copy p   { color: var(--ink-soft); }
+html[data-theme="scuro"] .tag {
+  background: rgba(61, 138, 132, 0.14);
+  color: var(--water);
+}
+
+/* ── 33.e. Gallery rail ── */
+html[data-theme="scuro"] .rail-item {
+  background: rgba(6, 14, 10, 0.78);
+  border-color: rgba(61, 138, 132, 0.12);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.46);
+}
+
+/* ── 33.f. Sezione Festa — fuochi nella notte palustre ── */
+html[data-theme="scuro"] .festa-section::before {
+  background:
+    radial-gradient(circle at 12% 22%, rgba(198, 164, 98, 0.18), transparent 44%),
+    radial-gradient(circle at 88% 10%, rgba(184, 102, 63, 0.14), transparent 38%),
+    linear-gradient(150deg, #0c1208 0%, #111a0d 50%, #0d1509 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(198, 164, 98, 0.10),
+    0 24px 64px rgba(0, 0, 0, 0.48);
+}
+html[data-theme="scuro"] .festa-menu {
+  background: rgba(10, 19, 13, 0.92);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.48);
+}
+html[data-theme="scuro"] .festa-menu-head p   { color: var(--ink-soft); }
+html[data-theme="scuro"] .festa-menu-head strong { color: var(--water); }
+html[data-theme="scuro"] .festa-menu-list > li { border-top-color: rgba(150, 190, 175, 0.10); }
+html[data-theme="scuro"] .festa-menu-list > li:hover { color: var(--water); }
+html[data-theme="scuro"] .festa-menu-tag      { color: rgba(138, 171, 158, 0.48); }
+html[data-theme="scuro"] .festa-menu-name     { color: var(--ink); }
+html[data-theme="scuro"] .festa-poster-frame {
+  background: rgba(10, 19, 13, 0.88);
+  border-color: rgba(61, 138, 132, 0.18);
+}
+html[data-theme="scuro"] .festa-tribute,
+html[data-theme="scuro"] .festa-baracca {
+  background: rgba(10, 19, 13, 0.88);
+  border-color: rgba(61, 138, 132, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.44);
+}
+html[data-theme="scuro"] .festa-tribute       { border-left-color: var(--clay); }
+html[data-theme="scuro"] .festa-tribute p,
+html[data-theme="scuro"] .festa-baracca p     { color: var(--ink-soft); }
+html[data-theme="scuro"] .festa-baracca strong { color: var(--water); }
+
+/* ── 33.g. Newsletter — notte verde ── */
+html[data-theme="scuro"] .newsletter {
+  background:
+    radial-gradient(circle at 14% 50%, rgba(198, 164, 98, 0.12), transparent 40%),
+    linear-gradient(140deg, #060e0a 0%, #0a1610 60%, #060c09 100%);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .newsletter p        { color: var(--ink-soft); }
+html[data-theme="scuro"] .newsletter-form {
+  background: rgba(6, 14, 10, 0.72);
+  border-color: rgba(61, 138, 132, 0.18);
+}
+html[data-theme="scuro"] .newsletter-form-inner {
+  background: rgba(10, 20, 14, 0.96);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .newsletter-form-inner .field label { color: rgba(138, 171, 158, 0.62); }
+html[data-theme="scuro"] .newsletter-form-inner .field input {
+  background: rgba(6, 14, 10, 0.88);
+  border-color: rgba(61, 138, 132, 0.20);
+  color: var(--ink);
+}
+
+/* ── 33.h. .section.dark — profilo versione notte ── */
+html[data-theme="scuro"] .section.dark {
+  background:
+    radial-gradient(circle at 86% 14%, rgba(184, 102, 63, 0.14), transparent 28rem),
+    linear-gradient(145deg, #050c08 0%, #09140e 55%, #060b09 100%);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .section.dark .eyebrow,
+html[data-theme="scuro"] .section.dark .section-kicker,
+html[data-theme="scuro"] .section.dark .section-lead { color: var(--ink-soft); }
+
+/* ── 33.i. Community panel — notte ── */
+html[data-theme="scuro"] .community-panel {
+  background: rgba(6, 14, 10, 0.72);
+  border-color: rgba(61, 138, 132, 0.16);
+}
+html[data-theme="scuro"] .community-item {
+  background: rgba(10, 20, 14, 0.72);
+  border-color: rgba(61, 138, 132, 0.14);
+}
+
+/* ── 33.j. Back-to-top ── */
+html[data-theme="scuro"] .back-to-top {
+  background: rgba(37, 63, 53, 0.88);
+  border-color: rgba(61, 138, 132, 0.28);
+  color: var(--ink);
+}
+html[data-theme="scuro"] .back-to-top:hover { background: var(--marsh); }
+
+
+/* ================================================================
+   TEXT SIZE FALLBACKS — html[data-fontsize]
+   ================================================================ */
+html[data-fontsize="sm"] { font-size: 14px; }
+html[data-fontsize="md"] { font-size: 16px; }
+html[data-fontsize="lg"] { font-size: 18px; }
+html[data-fontsize="xl"] { font-size: 20px; }
+
+/* ================================================================
+   HIGH CONTRAST — html[data-contrast="high"]
+   ================================================================ */
+html[data-contrast="high"] {
+  --ink: #06130d;
+  --ink-soft: #1c3429;
+  --line: rgba(6, 19, 13, 0.34);
+  --shadow-card: 0 2px 22px rgba(6, 19, 13, 0.16), 0 0 0 1px rgba(6, 19, 13, 0.18);
+}
+html[data-theme="scuro"][data-contrast="high"] {
+  --ink: #f2fff8;
+  --ink-soft: #c7ded3;
+  --cream: #07100b;
+  --paper: #0c1710;
+  --mist: #12251b;
+  --water: #65d1c7;
+  --reed: #e7c879;
+  --line: rgba(214, 246, 232, 0.28);
+  --shadow-card: 0 2px 22px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(214, 246, 232, 0.16);
+}
+html[data-contrast="high"] body { color: var(--ink); }
+html[data-contrast="high"] .bcard,
+html[data-contrast="high"] .bc,
+html[data-contrast="high"] .card,
+html[data-contrast="high"] .pcard,
+html[data-contrast="high"] .post-card,
+html[data-contrast="high"] .dash-card,
+html[data-contrast="high"] .toc,
+html[data-contrast="high"] .modal,
+html[data-contrast="high"] .fn-card,
+html[data-contrast="high"] .stack-item,
+html[data-contrast="high"] .number-tile,
+html[data-contrast="high"] .release-card,
+html[data-contrast="high"] .contact-card,
+html[data-contrast="high"] .community-panel,
+html[data-contrast="high"] .community-item { border-color: var(--line) !important; }
+html[data-contrast="high"] .pref-row-sub,
+html[data-contrast="high"] .field .hint { color: var(--ink-soft) !important; }
+html[data-contrast="high"] input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="submit"]):not([type="color"]),
+html[data-contrast="high"] textarea,
+html[data-contrast="high"] select,
+html[data-contrast="high"] .pref-select {
+  border-color: var(--line) !important;
+}
+html[data-contrast="high"] .btn-primary,
+html[data-contrast="high"] .btn-main,
+html[data-contrast="high"] .pref-chip.on { box-shadow: none !important; }
+html[data-contrast="high"] *:focus-visible {
+  outline: 3px solid var(--water) !important;
+  outline-offset: 3px;
+}
+/* ================================================================
+   DENSITY COMPACT — html[data-density="compact"]
+   ================================================================ */
+html[data-density="compact"] .bcard,
+html[data-density="compact"] .bc         { padding: 15px 18px !important; gap: 10px !important; }
+
+html[data-density="compact"] .page,
+html[data-density="compact"] .layout-main { gap: 8px; }
+
+html[data-density="compact"] .section-label { padding: 12px 0 5px; }
+html[data-density="compact"] .pref-row       { padding: 5px 0; }
+
+html[data-density="compact"] .preview-avatar {
+  width: 64px !important; height: 64px !important; font-size: 2rem !important;
+}
+html[data-density="compact"] .emoji-grid label { padding: 4px; font-size: 1.2rem; }
+
+html[data-density="compact"] .btn           { padding: 8px 20px; font-size: 0.84rem; }
+html[data-density="compact"] .page-header h1 { font-size: 1.6rem; }
+html[data-density="compact"] .page-header   { margin-bottom: 14px; }
+
+html[data-density="compact"] .stat-tile,
+html[data-density="compact"] .kpi           { padding: 16px 18px; }
+html[data-density="compact"] .compose-card  { padding: 16px; }
+html[data-density="compact"] .post-card     { border-radius: 14px; }
+html[data-density="compact"] .pcard         { border-radius: 14px; }

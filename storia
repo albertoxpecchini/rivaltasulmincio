@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Storia del Sito — Rivalta sul Mincio</title>
+  <meta name="description" content="La cronologia completa del sito ufficiale della Pro Loco di Rivalta sul Mincio: funzioni, versioni, tecnologie e deployment in costante crescita." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/supabase.config.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #17221d;
+      --ink-soft: #31453b;
+      --cream:    #f7f0e4;
+      --paper:    #fffaf0;
+      --marsh:    #253f35;
+      --water:    #2f6b67;
+      --clay:     #b8663f;
+      --reed:     #c6a462;
+      --line:         rgba(37, 63, 53, 0.15);
+      --sans:         "Cabinet Grotesk", system-ui, sans-serif;
+      --serif:        "Fraunces", Georgia, serif;
+      --ease:         cubic-bezier(0.32, 0.72, 0, 1);
+      --shadow-strong: 0 42px 110px rgba(23, 34, 29, 0.28);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 10% 5%,  rgba(198, 164, 98, 0.24), transparent 30rem),
+        radial-gradient(circle at 90% 10%, rgba(47, 107, 103, 0.18), transparent 36rem),
+        radial-gradient(circle at 50% 80%, rgba(37, 63, 53, 0.10), transparent 40rem),
+        linear-gradient(150deg, var(--cream), #efe5d2 50%, #f8f2e8);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.78;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.14;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23,34,29,0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23,34,29,0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+
+    a { color: var(--marsh); text-decoration: none; }
+    a:hover { color: var(--water); text-decoration: underline; }
+
+    .skip-link {
+      position: fixed; left: 16px; top: 12px; z-index: 90;
+      padding: 10px 14px; border-radius: 999px;
+      background: var(--ink); color: var(--paper);
+      transform: translateY(-160%);
+      transition: transform 360ms var(--ease);
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 128px 24px 56px;
+      text-align: center; overflow: hidden;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--clay);
+      background: rgba(184,102,63,0.10);
+      border: 1px solid rgba(184,102,63,0.22);
+      padding: 5px 14px; border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--clay);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+    .hero-title {
+      font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 4.4rem);
+      font-weight: 650; line-height: 1.08; color: var(--marsh);
+      margin-bottom: 14px; letter-spacing: -0.02em;
+    }
+    .hero-title em { font-style: italic; color: var(--water); }
+    .hero-subtitle {
+      max-width: 600px; margin: 0 auto 30px;
+      font-size: 1rem; color: var(--ink-soft); line-height: 1.62;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 0;
+    }
+    .stat-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(37,63,53,0.07);
+      border: 1px solid rgba(37,63,53,0.15);
+      border-radius: 999px; padding: 7px 14px;
+      font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
+    }
+    .stat-pill strong { color: var(--marsh); font-size: 0.98rem; font-weight: 800; }
+    .stat-pill .sep { opacity: 0.3; }
+
+    /* ── Wrapper ── */
+    .page-wrap {
+      position: relative; z-index: 1;
+      width: min(100% - 48px, 1160px);
+      margin: 0 auto;
+      padding-bottom: 88px;
+    }
+
+    /* ── Section title ── */
+    .section-label {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--clay);
+      margin-bottom: 18px; padding-top: 38px;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+    .section-label::before { max-width: 32px; }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+      max-width: 720px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 10px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--reed), var(--water) 50%, var(--marsh));
+      border-radius: 2px;
+    }
+
+    .timeline-entry {
+      position: relative; margin-bottom: 40px;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .timeline-entry.visible { opacity: 1; transform: none; }
+
+    .timeline-dot {
+      position: absolute; left: -30px; top: 6px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--cream);
+      border: 2.5px solid var(--reed);
+      box-shadow: 0 0 0 4px rgba(198,164,98,0.18);
+    }
+    .timeline-dot.milestone {
+      width: 18px; height: 18px; left: -32px;
+      border-color: var(--marsh);
+      background: var(--marsh);
+      box-shadow: 0 0 0 5px rgba(37,63,53,0.16);
+    }
+
+    .timeline-date {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--reed);
+      margin-bottom: 6px;
+    }
+    .timeline-heading {
+      font-family: var(--serif); font-size: 1.22rem; font-weight: 650;
+      color: var(--marsh); line-height: 1.22; margin-bottom: 8px;
+    }
+    .timeline-body {
+      color: var(--ink-soft); font-size: 0.92rem; line-height: 1.72;
+    }
+    .timeline-body p + p { margin-top: 10px; }
+
+    /* ── Card funzioni ── */
+    .functions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .fn-card--wide { grid-column: span 2; }
+    .fn-card {
+      background: rgba(255,250,240,0.72);
+      border: 1px solid rgba(37,63,53,0.12);
+      border-radius: 16px;
+      padding: 18px 18px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .fn-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(37,63,53,0.12);
+      border-color: rgba(37,63,53,0.22);
+    }
+    .fn-card-icon {
+      font-size: 1.6rem; margin-bottom: 10px; line-height: 1;
+    }
+    .fn-card-title {
+      font-weight: 800; font-size: 0.9rem; color: var(--marsh);
+      margin-bottom: 4px; letter-spacing: -0.01em;
+    }
+    .fn-card-route {
+      font-size: 0.72rem; font-weight: 600; font-family: monospace;
+      color: var(--water); background: rgba(47,107,103,0.10);
+      border-radius: 4px; padding: 1px 6px;
+      display: inline-block; margin-bottom: 8px;
+    }
+    .fn-card-desc {
+      font-size: 0.82rem; color: var(--ink-soft); line-height: 1.65;
+    }
+    .fn-card-lines {
+      margin-top: 10px; font-size: 0.72rem; color: var(--reed);
+      font-weight: 600;
+    }
+
+    /* ── Stack table ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin-top: 8px;
+    }
+    .stack-item {
+      background: rgba(255,250,240,0.65);
+      border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .stack-layer {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--clay);
+    }
+    .stack-name {
+      font-weight: 800; font-size: 0.95rem; color: var(--marsh);
+    }
+    .stack-note {
+      font-size: 0.78rem; color: var(--ink-soft);
+    }
+
+    /* ── Commit block ── */
+    .commit-block {
+      background: var(--marsh);
+      color: var(--cream);
+      border-radius: 18px;
+      padding: 32px 36px;
+      font-family: monospace;
+      position: relative; overflow: hidden;
+      margin: 8px 0;
+    }
+    .commit-block::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(198,164,98,0.14), transparent 60%);
+      pointer-events: none;
+    }
+    .commit-line { font-size: 0.82rem; line-height: 2; opacity: 0.85; }
+    .commit-line .key { color: var(--reed); }
+    .commit-line .val { color: #d4f0d4; }
+    .commit-line .hash { color: #a8d8b0; font-size: 0.78rem; }
+
+    /* ── Numbers bento ── */
+    .numbers-bento {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin-top: 8px;
+    }
+    .number-tile {
+      background: rgba(255,250,240,0.7);
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 22px 20px; text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .number-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(37,63,53,0.10);
+      border-color: rgba(37,63,53,0.20);
+    }
+    .number-tile .num {
+      font-family: var(--serif); font-size: 2.4rem; font-weight: 650;
+      color: var(--marsh); line-height: 1; display: block;
+      font-variant-numeric: tabular-nums;
+    }
+    .number-tile .label {
+      font-size: 0.72rem; font-weight: 700; color: var(--ink-soft);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-top: 8px;
+    }
+    /* Bento grid positions */
+    #tile-deploy { grid-column: 1; grid-row: 1 / 3;
+      background: rgba(37,63,53,0.07); border-color: rgba(37,63,53,0.18); }
+    #tile-deploy .num { font-size: 4.2rem; }
+    #tile-lines  { grid-column: 2 / 4; grid-row: 1;
+      background: rgba(47,107,103,0.07); border-color: rgba(47,107,103,0.18); }
+    #tile-lines .num  { font-size: 3.2rem; }
+    #tile-files  { grid-column: 4; grid-row: 1; }
+    #tile-pages  { grid-column: 2; grid-row: 2; }
+    #tile-videos { grid-column: 3; grid-row: 2; }
+    #tile-images { grid-column: 4; grid-row: 2; }
+    #tile-posts  { grid-column: 1 / 3; grid-row: 3; }
+    #tile-posts .num  { font-size: 3rem; }
+    #tile-members { grid-column: 3; grid-row: 3; }
+    #tile-npm    { grid-column: 4; grid-row: 3; }
+    #tile-words  { grid-column: 1 / 3; grid-row: 4; }
+    #tile-words .num  { font-size: 3rem; }
+    #tile-comments { grid-column: 3; grid-row: 4; }
+    #tile-likes  { grid-column: 4; grid-row: 4; }
+
+    /* ── Security list ── */
+    .security-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 10px;
+    }
+    .security-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6;
+    }
+    .security-list li::before {
+      content: '↳';
+      color: var(--clay); font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    }
+
+    /* ── Color swatches ── */
+    .color-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-top: 8px;
+    }
+    .swatch {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,250,240,0.7);
+      border: 1px solid var(--line); border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .swatch-dot {
+      width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .swatch-info { display: flex; flex-direction: column; gap: 1px; }
+    .swatch-name { font-weight: 700; font-size: 0.82rem; color: var(--marsh); }
+    .swatch-hex  { font-family: monospace; font-size: 0.75rem; color: var(--ink-soft); }
+    .swatch-use  { font-size: 0.72rem; color: var(--reed); }
+
+    .container {
+      width: min(100% - 44px, 1400px);
+      margin: 0 auto;
+    }
+
+    /* ── Release card ── */
+    .release-card {
+      background: rgba(255,250,240,0.75);
+      border: 1px solid rgba(37,63,53,0.13);
+      border-radius: 20px;
+      padding: 28px 30px 24px;
+      backdrop-filter: blur(8px);
+      transition: box-shadow 0.2s;
+    }
+    .release-card:hover {
+      box-shadow: 0 8px 36px rgba(37,63,53,0.10);
+    }
+    .release-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; flex-wrap: wrap;
+      gap: 12px; margin-bottom: 14px;
+    }
+    .release-version-block {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .release-v-badge {
+      font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--water);
+      background: rgba(47,107,103,0.11);
+      border: 1px solid rgba(47,107,103,0.22);
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .release-vname {
+      font-family: var(--serif); font-size: 1.55rem; font-weight: 650;
+      color: var(--marsh); line-height: 1;
+    }
+    .release-date-text {
+      font-size: 0.8rem; font-weight: 600; color: var(--ink-soft);
+      padding-top: 4px;
+    }
+    .release-commit-row {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 9px 14px;
+      background: rgba(37,63,53,0.055);
+      border-radius: 10px; margin-bottom: 20px;
+      font-size: 0.82rem;
+    }
+    .release-commit-row code {
+      font-family: monospace; font-weight: 700;
+      color: var(--water); font-size: 0.8rem;
+    }
+    .release-commit-row .rel-msg {
+      color: var(--ink-soft); flex: 1; min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .release-commit-row .rel-author {
+      color: var(--reed); font-weight: 600; font-size: 0.78rem;
+    }
+    .release-commit-row a {
+      color: var(--marsh); font-weight: 800;
+      flex-shrink: 0; font-size: 0.9rem;
+    }
+    .release-commit-row a:hover { color: var(--water); text-decoration: none; }
+    .release-changes-title {
+      font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--clay); margin-bottom: 12px;
+    }
+    .release-changes-list {
+      list-style: none; padding: 0; margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px;
+    }
+    .release-changes-list li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.87rem; color: var(--ink-soft); line-height: 1.55;
+    }
+    .release-changes-list li::before {
+      content: '+'; color: var(--water); font-weight: 800;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .release-commits-list {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .release-commits-list li {
+      border: 1px solid rgba(37, 63, 53, 0.18);
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 4px;
+    }
+    .release-commits-list .row-top {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+    }
+    .release-commits-list .row-top code {
+      color: var(--water);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .release-commits-list .row-msg {
+      font-size: 0.87rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .release-commits-list .row-files {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      opacity: 0.85;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .release-skeleton {
+      color: var(--reed); font-size: 0.82rem; font-style: italic; opacity: 0.65;
+    }
+
+    /* ── Live ── */
+    .live-bar {
+      display: flex; align-items: center; gap: 14px;
+      flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .live-dot-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em;
+      text-transform: uppercase; color: #2a7a3b;
+      background: rgba(42,122,59,0.10);
+      border: 1px solid rgba(42,122,59,0.24);
+      padding: 5px 13px; border-radius: 999px;
+    }
+    .live-dot-badge::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: #2a7a3b;
+      animation: blink-live 1s step-start infinite;
+    }
+    @keyframes blink-live {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .live-since {
+      font-size: 0.82rem; color: var(--ink-soft); font-weight: 600;
+    }
+
+    .uptime-row {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      align-items: center; margin-bottom: 36px;
+    }
+    .uptime-unit {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(255,250,240,0.72);
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px 18px; min-width: 76px;
+    }
+    .uptime-unit .u-val {
+      font-family: var(--serif); font-size: 2rem; font-weight: 650;
+      color: var(--marsh); line-height: 1;
+      font-variant-numeric: tabular-nums;
+      min-width: 2ch; text-align: center;
+    }
+    .uptime-unit .u-lbl {
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.10em; color: var(--ink-soft); margin-top: 5px;
+    }
+    .uptime-sep {
+      font-family: var(--serif); font-size: 1.8rem; font-weight: 650;
+      color: var(--reed); line-height: 1; padding-bottom: 10px;
+      user-select: none;
+    }
+
+    .number-tile[data-live] { position: relative; overflow: visible; }
+    .number-tile[data-live]::after {
+      content: '●';
+      position: absolute; top: 8px; right: 10px;
+      font-size: 0.5rem; color: #2a7a3b;
+      animation: blink-live 1s step-start infinite;
+    }
+    .number-tile .num.loading { color: var(--reed); font-size: 1rem; }
+
+    /* ── Footer ── */
+    .footer {
+      color: rgba(255, 250, 240, 0.72);
+      background: #101c18;
+      padding: 72px 0 34px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) repeat(3, minmax(140px, 0.22fr));
+      gap: clamp(24px, 5vw, 76px);
+      align-items: start;
+    }
+
+    .footer h3,
+    .footer h4 {
+      margin: 0 0 16px;
+      color: var(--paper);
+      letter-spacing: -0.02em;
+    }
+
+    .footer h3 {
+      max-width: 520px;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 4.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .footer p {
+      max-width: 540px;
+      line-height: 1.66;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 250, 240, 0.68);
+      font-weight: 750;
+    }
+
+    .footer-links a:hover { color: var(--paper); text-decoration: none; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 250, 240, 0.12);
+      font-size: 0.86rem;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--marsh);
+      color: var(--paper);
+      box-shadow: 0 26px 80px rgba(37, 63, 53, 0.16);
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      transition: transform 420ms var(--ease), background 420ms var(--ease);
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      background: #1f362e;
+      color: var(--paper);
+      text-decoration: none;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 760px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { display: grid; }
+      .numbers-bento { grid-template-columns: repeat(2, 1fr); }
+      #tile-deploy, #tile-lines, #tile-files, #tile-pages,
+      #tile-videos, #tile-images, #tile-posts, #tile-members,
+      #tile-npm, #tile-words, #tile-comments, #tile-likes {
+        grid-column: auto; grid-row: auto;
+      }
+      #tile-deploy .num, #tile-lines .num { font-size: 2.8rem; }
+      #tile-posts .num, #tile-words .num  { font-size: 2.4rem; }
+      .functions-grid { grid-template-columns: repeat(2, 1fr); }
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+      .color-row  { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 112px 16px 42px; }
+      .commit-block { padding: 22px 20px; }
+      .functions-grid { grid-template-columns: 1fr; }
+      .fn-card--wide { grid-column: auto; }
+    }
+  </style>
+  <link rel="stylesheet" href="/theme.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Salta al contenuto</a>
+
+<!--PARTIAL:nav-->
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">Archivio del progetto</div>
+    <h1 class="hero-title">La <em>storia</em> del sito</h1>
+    <p class="hero-subtitle">
+      Come un sito per un piccolo borgo sul Mincio è diventato una piattaforma community completa —
+      con <span id="sub-pages">…</span> pagine, <span id="sub-lines">…</span> righe di codice e <span id="sub-deploy">…</span> deployment.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-pill"><strong id="pill-deploy">…</strong><span class="sep">·</span> deployment Vercel</div>
+      <div class="stat-pill"><strong id="pill-lines">…</strong><span class="sep">·</span> righe di codice</div>
+      <div class="stat-pill"><strong id="pill-files">…</strong><span class="sep">·</span> file nel repository</div>
+      <div class="stat-pill"><strong id="pill-pages">…</strong><span class="sep">·</span> pagine pubblicate</div>
+      <div class="stat-pill"><strong id="pill-launch">…</strong><span class="sep">·</span> prima release</div>
+      <div class="stat-pill"><strong>11</strong><span class="sep">·</span> sezioni guidate</div>
+    </div>
+  </section>
+
+  <div class="page-wrap">
+
+    <!-- Ultimo aggiornamento -->
+    <div class="section-label">Ultimo aggiornamento</div>
+    <div class="release-card" id="releaseCard">
+      <div class="release-header">
+        <div class="release-version-block">
+          <span class="release-v-badge">versione</span>
+          <span class="release-vname" id="rel-vname"><span class="release-skeleton">caricamento…</span></span>
+        </div>
+        <span class="release-date-text" id="rel-date"></span>
+      </div>
+      <div class="release-commit-row" id="rel-commit-row">
+        <code id="rel-hash">—</code>
+        <span class="rel-msg" id="rel-msg">—</span>
+        <span class="rel-author" id="rel-author"></span>
+        <a id="rel-link" href="#" target="_blank" rel="noopener" aria-label="Apri commit su GitHub" style="display:none">↗</a>
+      </div>
+      <div class="release-changes-title">Cosa è stato aggiunto</div>
+      <ul class="release-changes-list" id="rel-changes">
+        <li><span class="release-skeleton">caricamento…</span></li>
+      </ul>
+      <div class="release-changes-title" style="margin-top:18px;">Ultimi push e commit</div>
+      <ul class="release-commits-list" id="rel-commits">
+        <li><span class="release-skeleton">caricamento…</span></li>
+      </ul>
+    </div>
+
+    <!-- I numeri -->
+    <div class="section-label">In diretta</div>
+    <div class="live-bar">
+      <span class="live-dot-badge">Live</span>
+      <span class="live-since">Attivo dal <span id="txt-launch-since">4 maggio 2026, ore 22:11:56</span></span>
+    </div>
+    <div class="uptime-row" id="uptimeRow">
+      <div class="uptime-unit"><span class="u-val" id="u-days">--</span><span class="u-lbl">Giorni</span></div>
+      <span class="uptime-sep">:</span>
+      <div class="uptime-unit"><span class="u-val" id="u-hours">--</span><span class="u-lbl">Ore</span></div>
+      <span class="uptime-sep">:</span>
+      <div class="uptime-unit"><span class="u-val" id="u-min">--</span><span class="u-lbl">Minuti</span></div>
+      <span class="uptime-sep">:</span>
+      <div class="uptime-unit"><span class="u-val" id="u-sec">--</span><span class="u-lbl">Secondi</span></div>
+    </div>
+
+    <div class="section-label">In cifre</div>
+    <div class="numbers-bento" id="numbersRow">
+      <div class="number-tile" data-live id="tile-deploy"><span class="num loading">…</span><span class="label">Deployment</span></div>
+      <div class="number-tile" data-live id="tile-files"><span class="num loading">…</span><span class="label">File</span></div>
+      <div class="number-tile" data-live id="tile-lines"><span class="num loading">…</span><span class="label">Righe codice</span></div>
+      <div class="number-tile" data-live id="tile-pages"><span class="num loading">…</span><span class="label">Pagine</span></div>
+      <div class="number-tile" data-live id="tile-videos"><span class="num loading">…</span><span class="label">Video</span></div>
+      <div class="number-tile" data-live id="tile-images"><span class="num loading">…</span><span class="label">Immagini</span></div>
+      <div class="number-tile" data-live id="tile-npm"><span class="num loading">…</span><span class="label">Dipendenze npm</span></div>
+      <div class="number-tile" data-live id="tile-words"><span class="num loading">…</span><span class="label">Parole filtrate</span></div>
+      <div class="number-tile" data-live id="tile-posts"><span class="num loading">…</span><span class="label">Post pubblicati</span></div>
+      <div class="number-tile" data-live id="tile-members"><span class="num loading">…</span><span class="label">Iscritti</span></div>
+      <div class="number-tile" data-live id="tile-comments"><span class="num loading">…</span><span class="label">Commenti</span></div>
+      <div class="number-tile" data-live id="tile-likes"><span class="num loading">…</span><span class="label">Mi piace</span></div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-label">Cronologia</div>
+    <div class="timeline" id="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Aprile 2026 — Inizio</div>
+        <h2 class="timeline-heading">Nasce il progetto</h2>
+        <div class="timeline-body">
+          <p>La Pro Loco di Rivalta sul Mincio decide di costruire un sito che faccia davvero giustizia al borgo e alle sue Valli. Nessun template, nessun CMS, nessun framework JavaScript. Il progetto parte da zero: HTML puro, CSS custom scritto a mano, JavaScript vanilla. La scelta non è per pigrizia — è una dichiarazione di intenzioni: ogni dettaglio visivo e ogni millisecondo di prestazione devono essere controllati.</p>
+          <p>Il design system viene definito subito: una palette di sei colori ispirati alla natura locale (verde palude, acqua, terracotta, canna, crema, inchiostro scuro), due famiglie tipografiche (Cabinet Grotesk per i testi, Fraunces per i titoli), e un linguaggio visivo che evoca il paesaggio lagunare del Parco del Mincio.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Aprile 2026 — Homepage</div>
+        <h2 class="timeline-heading">La homepage prende vita</h2>
+        <div class="timeline-body">
+          <p><span id="txt-lines-index">3.641</span> righe per la pagina più importante: un'esperienza visiva immersiva con video MP4 delle Valli del Mincio in fullscreen, con fallback GIF per i browser che non supportano l'autoplay. Il carousel fotografico usa Swiper.js v12 — quattro foto nella sezione hero, cinque in galleria, altre quattro per "Le Valli".</p>
+          <p>Le sezioni si strutturano: introduzione alle Valli (1.500+ ettari, 260+ specie di uccelli), tre esperienze ("Dal livello dell'acqua", "La valle a pedali", "Aironi e fauna"), la Festa del Pesce alla sua 40ª edizione (luglio 2025 — tradizione attiva dal 1985), news, contatti completi.</p>
+          <p>La SEO viene curata con attenzione: markup Schema.org JSON-LD con quattro tipi (Organization, WebSite, TouristDestination, Festival), Open Graph, Twitter Cards, meta geografici con coordinate 45.181°N 10.665°E, tag canonici.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Aprile–Maggio 2026 — Backend</div>
+        <h2 class="timeline-heading">Integrazione Supabase: il sito diventa una piattaforma</h2>
+        <div class="timeline-body">
+          <p>La decisione cambia tutto: Supabase come backend completo. PostgreSQL come database, autenticazione JWT, Row-Level Security su ogni tabella sensibile. Il sito non è più solo una vetrina — diventa una community platform.</p>
+          <p>Nascono le pagine per gli utenti registrati: login con autenticazione Supabase, dashboard personale, editor di post con upload immagini, profilo pubblico, modifica profilo. Le funzioni SQL <code>is_admin()</code> e <code>is_member()</code> gestiscono i livelli di autorizzazione. Il trigger automatico per <code>updated_at</code> viene implementato su tutte le tabelle che lo richiedono.</p>
+          <p>La tabella <code>user_settings</code> raccoglie le preferenze di ogni utente: privacy dei commenti, frequenza delle notifiche, categorie preferite, impostazioni di accessibilità.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Maggio 2026 — Sicurezza</div>
+        <h2 class="timeline-heading">Il sistema di sicurezza</h2>
+        <div class="timeline-body">
+          <p>Viene scritto <code>security.client.js</code> — <span id="txt-sec-lines">254</span> righe di protezione lato client. Il rate limiter blocca l'account dopo <span id="txt-rl-attempts">5</span> tentativi in <span id="txt-rl-window">10</span> minuti, con lock di <span id="txt-rl-lock">15</span> minuti. Il sistema usa localStorage con fallback in memoria per evitare crash in ambienti con storage disabilitato.</p>
+          <p>Il filtro contenuti inappropriati blocca <span id="txt-words-tl">11</span> termini in italiano. Il server Node.js viene corazzato con security headers HTTP: <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>, <code>Permissions-Policy</code> che disabilita geolocation, microfono e camera. Protezione contro path traversal implementata nel routing.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Maggio 2026 — Accessibilità</div>
+        <h2 class="timeline-heading">Preferenze utente e accessibilità</h2>
+        <div class="timeline-body">
+          <p>Il sistema di preferenze utente è una delle funzioni più curate: quattro dimensioni di testo (14px, 16px, 18px, 20px), tema chiaro/scuro/automatico, tre livelli di densità dell'interfaccia, modalità alto contrasto. Le preferenze vengono applicate immediatamente senza refresh grazie a uno script inline nel <code>&lt;head&gt;</code> che legge localStorage prima che il DOM sia pronto.</p>
+          <p>La chiave di storage <code>rsm_prefs_v1</code> è versionata per permettere future migrazioni senza rompere i dati esistenti.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Maggio 2026 — Pagine legali</div>
+        <h2 class="timeline-heading">Compliance e documentazione</h2>
+        <div class="timeline-body">
+          <p>Vengono redatte e messe online tre pagine legali: Privacy Policy (676 righe, GDPR-compliant), Cookie Policy (644 righe, con spiegazione dei tipi di cookie e modalità di gestione), Note Legali (582 righe, termini e condizioni d'uso). Tutte con markup <code>noindex</code> per non frammentare il posizionamento SEO.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot milestone"></div>
+        <div class="timeline-date">Lunedì 4 maggio 2026, ore 22:11:56 CEST — Prima release</div>
+        <h2 class="timeline-heading">Versione 1.0 — Il primo commit ufficiale</h2>
+        <div class="timeline-body">
+          <p>Dopo settimane di sviluppo, la versione 1.0 viene committata nel repository Git e deployata su Vercel. <span id="txt-files-tl">45</span> file, <span id="txt-lines-tl">16.630</span> righe di codice inserite in un singolo commit. Il progetto entra in produzione su <strong>www.rivaltasulmincio.it</strong>.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot milestone"></div>
+        <div class="timeline-date">4 maggio 2026 — Oggi</div>
+        <h2 class="timeline-heading"><span id="txt-deploy-h">…</span> deployment su Vercel</h2>
+        <div class="timeline-body">
+          <p>Il sito raggiunge <span id="txt-deploy-t">…</span> deployment su Vercel. Ogni deployment è una versione migliorata, rifinita, corretta. Il ciclo di sviluppo continua: nuove funzioni, ottimizzazioni, contenuti aggiornati. Il borgo di Rivalta sul Mincio ha ora una presenza online all'altezza della sua storia e dei suoi paesaggi.</p>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <!-- Il commit storico -->
+    <div class="section-label">Il commit storico</div>
+    <div class="commit-block">
+      <div class="commit-line"><span class="key">commit </span><span class="hash">ab399aa7927720ae882630460e11079a57d82902</span></div>
+      <div class="commit-line"><span class="key">Author:</span> <span class="val">Alberto Pecchini &lt;pzkko@yahoo.com&gt;</span></div>
+      <div class="commit-line"><span class="key">Date:  </span> <span class="val">Mon May 4 22:11:56 2026 +0200</span></div>
+      <div class="commit-line" style="margin-top:12px; padding-left: 16px;"><span class="val">versione 04052026</span></div>
+      <div class="commit-line" style="margin-top:12px; opacity:0.5; font-size:0.75rem;">45 files changed, 16630 insertions(+)</div>
+    </div>
+
+    <!-- Pagine e funzioni -->
+    <div class="section-label">Tutte le pagine</div>
+    <div class="functions-grid">
+
+      <div class="fn-card fn-card--wide">
+        <div class="fn-card-icon">🏡</div>
+        <div class="fn-card-title">Homepage</div>
+        <div class="fn-card-route">/</div>
+        <div class="fn-card-desc">Hero video in fullscreen (MP4+GIF), carousel Swiper, sezioni esperienze, galleria fotografica, Festa del Pesce, news, contatti. SEO Schema.org completo.</div>
+        <div class="fn-card-lines"><span id="fc-index">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">🔐</div>
+        <div class="fn-card-title">Login</div>
+        <div class="fn-card-route">/login</div>
+        <div class="fn-card-desc">Autenticazione con Supabase Auth. Rate limiting attivo: <span id="fc-rl-a">5</span> tentativi / <span id="fc-rl-w">10</span> min, blocco <span id="fc-rl-l">15</span> min. Gestione errori, redirect post-login.</div>
+        <div class="fn-card-lines"><span id="fc-login">…</span> righe</div>
+      </div>
+
+      <div class="fn-card fn-card--wide">
+        <div class="fn-card-icon">📊</div>
+        <div class="fn-card-title">Dashboard</div>
+        <div class="fn-card-route">/dashboard</div>
+        <div class="fn-card-desc">Area personale dell'utente autenticato. Gestione contenuti, visualizzazione post, impostazioni rapide. Alias accessibile da <code>/me</code>.</div>
+        <div class="fn-card-lines"><span id="fc-dashboard">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">✍️</div>
+        <div class="fn-card-title">Scrivi</div>
+        <div class="fn-card-route">/write</div>
+        <div class="fn-card-desc">Editor per la creazione di post e articoli. Supporto upload immagini, salvataggio su Supabase, anteprima in tempo reale.</div>
+        <div class="fn-card-lines"><span id="fc-write">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">📄</div>
+        <div class="fn-card-title">Post</div>
+        <div class="fn-card-route">/post</div>
+        <div class="fn-card-desc">Visualizzazione di un singolo articolo. Contenuto formattato, autore, data, sezione commenti con controllo privacy.</div>
+        <div class="fn-card-lines"><span id="fc-post">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">👤</div>
+        <div class="fn-card-title">Profilo</div>
+        <div class="fn-card-route">/profile</div>
+        <div class="fn-card-desc">Profilo pubblico dell'utente. Dati anagrafici, bio, storico articoli pubblicati.</div>
+        <div class="fn-card-lines"><span id="fc-profile">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">✏️</div>
+        <div class="fn-card-title">Modifica Profilo</div>
+        <div class="fn-card-route">/modifica-profilo</div>
+        <div class="fn-card-desc">Modifica dei dati personali, avatar, bio. Salvataggio diretto su Supabase con feedback visivo.</div>
+        <div class="fn-card-lines"><span id="fc-modifica">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">⚙️</div>
+        <div class="fn-card-title">Preferenze</div>
+        <div class="fn-card-route">/preferenze</div>
+        <div class="fn-card-desc">Tema chiaro/scuro/auto, 4 dimensioni testo, densità UI, alto contrasto, privacy commenti (pubblica/membri/off), frequenza notifiche.</div>
+        <div class="fn-card-lines"><span id="fc-preferenze">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">🏷️</div>
+        <div class="fn-card-title">Categorie</div>
+        <div class="fn-card-route">/category</div>
+        <div class="fn-card-desc">Browsing dei contenuti per categoria. Filtro dinamico, lista articoli, navigazione rapida per argomento.</div>
+        <div class="fn-card-lines"><span id="fc-category">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">🔑</div>
+        <div class="fn-card-title">Reset Password</div>
+        <div class="fn-card-route">/reset</div>
+        <div class="fn-card-desc">Recupero credenziali via email. Flusso completo: richiesta link, verifica token, nuova password.</div>
+        <div class="fn-card-lines"><span id="fc-reset">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">🛡️</div>
+        <div class="fn-card-title">Privacy Policy</div>
+        <div class="fn-card-route">/privacy</div>
+        <div class="fn-card-desc">Informativa privacy GDPR completa. Tipologie di dati raccolti, finalità, durata di conservazione, diritti dell'interessato.</div>
+        <div class="fn-card-lines"><span id="fc-privacy">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">🍪</div>
+        <div class="fn-card-title">Cookie Policy</div>
+        <div class="fn-card-route">/cookie</div>
+        <div class="fn-card-desc">Informativa cookie. Distinzione tra cookie tecnici, analitici e di terze parti. Modalità di gestione e consenso.</div>
+        <div class="fn-card-lines"><span id="fc-cookie">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">📋</div>
+        <div class="fn-card-title">Note Legali</div>
+        <div class="fn-card-route">/note-legali</div>
+        <div class="fn-card-desc">Termini e condizioni d'uso del sito. Limitazioni di responsabilità, proprietà intellettuale, legge applicabile.</div>
+        <div class="fn-card-lines"><span id="fc-note-legali">…</span> righe</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-icon">📖</div>
+        <div class="fn-card-title">Storia</div>
+        <div class="fn-card-route">/storia</div>
+        <div class="fn-card-desc">Questa pagina. Cronologia completa del progetto, funzioni, stack tecnologico, numeri e identità visiva.</div>
+        <div class="fn-card-lines">— la stai leggendo —</div>
+      </div>
+
+    </div>
+
+    <!-- Stack tecnico -->
+    <div class="section-label">Stack tecnico</div>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <span class="stack-layer">Server</span>
+        <span class="stack-name">Node.js</span>
+        <span class="stack-note">HTTP nativo, zero framework, porta 3001</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Frontend</span>
+        <span class="stack-name">HTML + CSS + JS</span>
+        <span class="stack-note">Vanilla, ES5/ES6+, nessun bundler</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Database</span>
+        <span class="stack-name">PostgreSQL</span>
+        <span class="stack-note">Via Supabase, RLS attivo</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Auth</span>
+        <span class="stack-name">Supabase Auth</span>
+        <span class="stack-note">JWT, sessioni persistenti</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Animazioni</span>
+        <span class="stack-name">Anime.js v<span id="v-animejs">…</span></span>
+        <span class="stack-note">Transizioni e micro-interazioni</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Carousel</span>
+        <span class="stack-name">Swiper.js v<span id="v-swiper">…</span></span>
+        <span class="stack-note">Hero, galleria, sezione valli</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Deployment</span>
+        <span class="stack-name">Vercel</span>
+        <span class="stack-note">Serverless, <span id="txt-deploy-stack">…</span> deploy</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Tipografia</span>
+        <span class="stack-name">Cabinet Grotesk</span>
+        <span class="stack-note">+ Fraunces per i titoli</span>
+      </div>
+    </div>
+
+    <!-- Sicurezza -->
+    <div class="section-label">Sicurezza</div>
+    <ul class="security-list">
+      <li>Rate limiting client-side: blocco dopo <span id="txt-rl-sec-a">…</span> tentativi in <span id="txt-rl-sec-w">…</span> minuti, lock <span id="txt-rl-sec-l">…</span> minuti — storage in localStorage con fallback in memoria</li>
+      <li>Filtro parole inappropriate in italiano: <span id="txt-words-sec">…</span> termini bloccati nei contenuti generati dagli utenti</li>
+      <li>Row-Level Security (RLS) PostgreSQL su tutte le tabelle sensibili</li>
+      <li>Autorizzazione a due livelli: <code>is_admin()</code> e <code>is_member()</code> come funzioni SQL</li>
+      <li>Security headers HTTP: X-Content-Type-Options, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (geo/mic/camera disabilitati)</li>
+      <li>Protezione path traversal: ogni richiesta al server viene validata e normalizzata prima dell'accesso al file system</li>
+      <li>Redirect 308 permanente per URL legacy con estensione .html — nessuna URL injection possibile</li>
+      <li>Cache Control: le pagine HTML sono sempre <code>no-store</code>; solo gli asset statici (immagini, video) vengono cachati 24h in produzione</li>
+    </ul>
+
+    <!-- Identità visiva -->
+    <div class="section-label">Identità visiva</div>
+    <div class="color-row">
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#253f35;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--marsh</span>
+          <span class="swatch-hex">#253f35</span>
+          <span class="swatch-use">Colore primario, nav, titoli</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#2f6b67;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--water</span>
+          <span class="swatch-hex">#2f6b67</span>
+          <span class="swatch-use">Link, hover, interazioni</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#b8663f;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--clay</span>
+          <span class="swatch-hex">#b8663f</span>
+          <span class="swatch-use">Accenti, etichette, avvisi</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#c6a462;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--reed</span>
+          <span class="swatch-hex">#c6a462</span>
+          <span class="swatch-use">Timeline, dettagli, canne</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#f7f0e4; border-color: rgba(0,0,0,0.12);"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--cream</span>
+          <span class="swatch-hex">#f7f0e4</span>
+          <span class="swatch-use">Sfondi, superfici chiare</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#17221d;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">--ink</span>
+          <span class="swatch-hex">#17221d</span>
+          <span class="swatch-use">Testo, corpo, leggibilità</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Il server -->
+    <div class="section-label">Come funziona il server</div>
+    <div class="timeline" style="margin-top: 0;">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Routing</div>
+        <h2 class="timeline-heading">Clean URL senza estensione</h2>
+        <div class="timeline-body">
+          <p>Il server Node.js gestisce 14 pagine HTML senza estensione <code>.html</code>. Ogni richiesta a un URL del tipo <code>/pagina.html</code> viene reindirizzata automaticamente con un redirect 308 (permanente) verso <code>/pagina</code>. La homepage è accessibile solo da <code>/</code> — <code>/index</code> fa redirect. La dashboard è raggiungibile anche da <code>/me</code> per comodità.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Vercel</div>
+        <h2 class="timeline-heading">Deployment serverless</h2>
+        <div class="timeline-body">
+          <p>Tutta l'infrastruttura è su Vercel in modalità serverless. La configurazione in <code>vercel.json</code> fa sì che ogni richiesta passi per <code>server.js</code>. I file inclusi nel bundle di deployment includono tutte le pagine, le immagini, i video, i file JavaScript client e le dipendenze npm necessarie.</p>
+          <p>In produzione, gli asset statici (immagini, video) vengono cachati per 24 ore (<code>max-age=86400</code>). Le pagine HTML restano sempre fresche (<code>no-store</code>) per garantire che gli utenti vedano sempre l'ultima versione.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Contatti -->
+    <div class="section-label">Pro Loco</div>
+    <div class="commit-block">
+      <div class="commit-line"><span class="key">Nome:     </span><span class="val">Pro Loco Rivalta sul Mincio</span></div>
+      <div class="commit-line"><span class="key">Sede:     </span><span class="val">Via Porto, 31 — Rivalta sul Mincio, 46040 (MN)</span></div>
+      <div class="commit-line"><span class="key">Email:    </span><span class="val">info@prolocorivalta.mn.it</span></div>
+      <div class="commit-line"><span class="key">Telefono: </span><span class="val">+39 339 899 5680</span></div>
+      <div class="commit-line"><span class="key">Web:      </span><span class="val">www.rivaltasulmincio.it</span></div>
+      <div class="commit-line"><span class="key">Geo:      </span><span class="val">45.181°N, 10.665°E — Parco Regionale del Mincio</span></div>
+      <div class="commit-line"><span class="key">Social:   </span><span class="val">Facebook · Instagram @prolocrivalta</span></div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <!--PARTIAL:footer-->
+
+  <a class="back-to-top" href="#" aria-label="Torna su">&uarr;</a>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Anno footer ── */
+      var yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      /* ── Timeline reveal ── */
+      var entries = document.querySelectorAll('.timeline-entry');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (obs) {
+          obs.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        entries.forEach(function (el) { io.observe(el); });
+      } else {
+        entries.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      /* ── Counter animato per tile statici ── */
+      function animateCounter(el, target, duration) {
+        var start = 0, step = target / (duration / 16);
+        var t = setInterval(function () {
+          start += step;
+          if (start >= target) { start = target; clearInterval(t); }
+          el.textContent = Math.round(start).toLocaleString('it-IT');
+        }, 16);
+      }
+      var tileObserver = new IntersectionObserver(function (obs) {
+        obs.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var num = e.target.querySelector('.num');
+          if (!num || num.classList.contains('loading')) return;
+          var raw = num.textContent.replace(/\./g, '').replace(/,/g, '');
+          var val = parseInt(raw, 10);
+          if (!isNaN(val) && val > 1) animateCounter(num, val, 900);
+          tileObserver.unobserve(e.target);
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('.number-tile:not([data-live])').forEach(function (t) { tileObserver.observe(t); });
+
+      /* ══════════════════════════════════════════
+         UPTIME — aggiorna ogni secondo
+      ══════════════════════════════════════════ */
+      var LAUNCH = new Date('2026-05-04T22:11:56+02:00');
+
+      function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+      var elDays  = document.getElementById('u-days');
+      var elHours = document.getElementById('u-hours');
+      var elMin   = document.getElementById('u-min');
+      var elSec   = document.getElementById('u-sec');
+
+      function tickUptime() {
+        var diff = Math.max(0, Date.now() - LAUNCH.getTime());
+        var totalSeconds = Math.floor(diff / 1000);
+        var days    = Math.floor(totalSeconds / 86400);
+        var hours   = Math.floor((totalSeconds % 86400) / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        var seconds = totalSeconds % 60;
+        if (elDays)  elDays.textContent  = days;
+        if (elHours) elHours.textContent = pad2(hours);
+        if (elMin)   elMin.textContent   = pad2(minutes);
+        if (elSec)   elSec.textContent   = pad2(seconds);
+      }
+
+      tickUptime();
+      setInterval(tickUptime, 1000);
+
+      /* ══════════════════════════════════════════
+         SUPABASE — site_stats + contatori live
+         Aggiorna ogni 60 secondi
+      ══════════════════════════════════════════ */
+      function numIT(n) {
+        return Number(n).toLocaleString('it-IT');
+      }
+
+      function setTileValue(id, rawValue) {
+        var tile = document.getElementById(id);
+        if (!tile) return;
+        var num = tile.querySelector('.num');
+        if (!num) return;
+        var next = Number(rawValue);
+        if (isNaN(next)) { num.textContent = '–'; num.classList.remove('loading'); return; }
+        var wasLoading = num.classList.contains('loading');
+        num.classList.remove('loading');
+        if (wasLoading) {
+          animateCounter(num, next, 700);
+        } else {
+          num.textContent = numIT(next);
+        }
+      }
+
+      function fetchStats() {
+        if (!window.supabase || typeof SUPABASE_URL === 'undefined') return;
+        var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        /* ── site_stats: deployment, file, righe, pagine, video, immagini, ecc. ── */
+        db.from('site_stats').select('key, value').then(function (r) {
+          if (!r.data) return;
+          var s = {};
+          r.data.forEach(function (row) { s[row.key] = row.value; });
+
+          function n(v)  { return v || '–'; }
+          function ni(v) { return v ? numIT(v) : '–'; }
+
+          /* ── Tiles (cifre) ── */
+          setTileValue('tile-deploy', s.deployments);
+          setTileValue('tile-files',  s.files);
+          setTileValue('tile-lines',  s.lines_of_code);
+          setTileValue('tile-pages',  s.pages);
+          setTileValue('tile-videos', s.videos);
+          setTileValue('tile-images', s.images);
+          setTileValue('tile-npm',    s.npm_deps);
+          setTileValue('tile-words',  s.filtered_words);
+
+          /* ── Hero pills ── */
+          setText('pill-deploy', n(s.deployments));
+          setText('pill-lines',  ni(s.lines_of_code));
+          setText('pill-files',  n(s.files));
+          setText('pill-pages',  n(s.pages));
+          setText('pill-launch', n(s.launch_date));
+
+          /* ── Hero subtitle ── */
+          setText('sub-pages',  n(s.pages));
+          setText('sub-lines',  ni(s.lines_of_code));
+          setText('sub-deploy', n(s.deployments));
+
+          /* ── Testo "Attivo dal..." ── */
+          setText('txt-launch-since', n(s.launch_label));
+
+          /* ── Timeline inline ── */
+          setText('txt-lines-index', ni(s.lines_index));
+          setText('txt-sec-lines',   n(s.sec_client_lines));
+          setText('txt-rl-attempts', n(s.rate_limit_attempts));
+          setText('txt-rl-window',   n(s.rate_limit_window));
+          setText('txt-rl-lock',     n(s.rate_limit_lock));
+          setText('txt-words-tl',    n(s.filtered_words));
+          setText('txt-files-tl',    n(s.files));
+          setText('txt-lines-tl',    ni(s.lines_of_code));
+          setText('txt-deploy-h',    n(s.deployments));
+          setText('txt-deploy-t',    n(s.deployments));
+
+          /* ── Fn-card righe per pagina ── */
+          setText('fc-index',       ni(s.lines_index));
+          setText('fc-login',       ni(s.lines_login));
+          setText('fc-dashboard',   ni(s.lines_dashboard));
+          setText('fc-write',       ni(s.lines_write));
+          setText('fc-post',        ni(s.lines_post));
+          setText('fc-profile',     ni(s.lines_profile));
+          setText('fc-modifica',    ni(s.lines_modifica_profilo));
+          setText('fc-preferenze',  ni(s.lines_preferenze));
+          setText('fc-category',    ni(s.lines_category));
+          setText('fc-reset',       ni(s.lines_reset));
+          setText('fc-privacy',     ni(s.lines_privacy));
+          setText('fc-cookie',      ni(s.lines_cookie));
+          setText('fc-note-legali', ni(s.lines_note_legali));
+
+          /* ── Fn-card rate limiting ── */
+          setText('fc-rl-a', n(s.rate_limit_attempts));
+          setText('fc-rl-w', n(s.rate_limit_window));
+          setText('fc-rl-l', n(s.rate_limit_lock));
+
+          /* ── Stack versioni + deploy ── */
+          setText('v-animejs',        n(s.animejs_version));
+          setText('v-swiper',         n(s.swiper_version));
+          setText('txt-deploy-stack', n(s.deployments));
+
+          /* ── Security list ── */
+          setText('txt-rl-sec-a',  n(s.rate_limit_attempts));
+          setText('txt-rl-sec-w',  n(s.rate_limit_window));
+          setText('txt-rl-sec-l',  n(s.rate_limit_lock));
+          setText('txt-words-sec', n(s.filtered_words));
+        });
+
+        /* ── Contatori live da tabelle applicazione ── */
+        db.from('posts').select('*', { count: 'exact', head: true }).eq('published', true)
+          .then(function (r) { setTileValue('tile-posts', r.count); });
+
+        db.from('profiles').select('*', { count: 'exact', head: true })
+          .then(function (r) { setTileValue('tile-members', r.count); });
+
+        db.from('comments').select('*', { count: 'exact', head: true }).eq('is_hidden', false)
+          .then(function (r) { setTileValue('tile-comments', r.count); });
+
+        db.from('post_likes').select('*', { count: 'exact', head: true })
+          .then(function (r) { setTileValue('tile-likes', r.count); });
+      }
+
+      fetchStats();
+      setInterval(fetchStats, 60000);
+
+      /* ══════════════════════════════════════════
+         ULTIMO AGGIORNAMENTO
+         — /api/changelog: commit info + AI changelog
+         — Supabase site_releases: nome versione
+      ══════════════════════════════════════════ */
+      var MONTHS_IT = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+
+      function formatDateIT(iso) {
+        var d = new Date(iso);
+        return d.getDate() + ' ' + MONTHS_IT[d.getMonth()] + ' ' + d.getFullYear() +
+          ' · ' + String(d.getHours()).padStart(2, '0') + ':' +
+          String(d.getMinutes()).padStart(2, '0') + ':' +
+          String(d.getSeconds()).padStart(2, '0');
+      }
+
+      function setText(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = val;
+      }
+      function setHTML(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = val;
+      }
+      function esc(str) {
+        return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+      function renderChangelogFallback(message) {
+        setText('rel-hash', '—');
+        setText('rel-msg', message || 'Changelog non disponibile');
+        setText('rel-author', '');
+        setText('rel-date', '');
+        setHTML('rel-changes', '<li style="opacity:.6">Dettagli non disponibili al momento.</li>');
+        setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
+      }
+
+      // /api/changelog — commit info + AI changelog generato dal server
+      fetch('/api/changelog', { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('http-' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data || (typeof data !== 'object')) {
+            renderChangelogFallback('Changelog non disponibile');
+            return;
+          }
+
+          setText('rel-hash',   data.sha     || '—');
+          var topMsg = data.message || '—';
+          var topFiles = Number(data.files_changed || 0);
+          setText('rel-msg', topMsg);
+          setText('rel-author', (data.author || '') + (topFiles ? (' · ' + topFiles + ' file') : ''));
+          if (data.date) setText('rel-date', formatDateIT(data.date));
+
+          var linkEl = document.getElementById('rel-link');
+          if (linkEl && data.url) { linkEl.href = data.url; linkEl.style.display = 'inline'; }
+
+          var changes = Array.isArray(data.changes) ? data.changes : [];
+          if (changes.length) {
+            setHTML('rel-changes', changes.map(function (c) {
+              return '<li>' + esc(c) + '</li>';
+            }).join(''));
+          } else {
+            setHTML('rel-changes', '<li style="opacity:.5">Nessuna nota disponibile.</li>');
+          }
+
+          var recentCommits = Array.isArray(data.recent_commits) ? data.recent_commits : [];
+          if (recentCommits.length) {
+            setHTML('rel-commits', recentCommits.map(function (c) {
+              var when = c.date ? formatDateIT(c.date) : 'data non disponibile';
+              var fileLabel = Number(c.files_changed || 0) + ' file cambiati';
+              var fileList = Array.isArray(c.changed_files) && c.changed_files.length
+                ? c.changed_files.join(', ')
+                : 'Nessun dettaglio file disponibile';
+              return '<li>' +
+                '<div class="row-top"><code>' + esc(c.short_sha || c.sha || '—') + '</code><span>' + esc(when) + '</span></div>' +
+                '<div class="row-msg">' + esc(c.message || 'Aggiornamento sito') + '</div>' +
+                '<div class="row-files">' + esc(fileLabel + ' · ' + fileList) + '</div>' +
+              '</li>';
+            }).join(''));
+          } else {
+            setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
+          }
+        })
+        .catch(function () {
+          renderChangelogFallback('Changelog non raggiungibile');
+        });
+
+      // Supabase site_releases — solo nome versione (etichetta manuale)
+      (function () {
+        if (!window.supabase || typeof SUPABASE_URL === 'undefined') return;
+        var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        db.from('site_releases')
+          .select('version')
+          .order('released_at', { ascending: false })
+          .limit(1)
+          .then(function (r) {
+            var v = r.data && r.data[0] && r.data[0].version;
+            setHTML('rel-vname', v
+              ? v
+              : '<span style="opacity:.5">—</span>');
+          })
+          .catch(function () {
+            setHTML('rel-vname', '<span style="opacity:.5">—</span>');
+          });
+      })();
+
+    })();
+  </script>
+
+</body>
+</html>

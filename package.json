@@ -1,0 +1,14 @@
+{
+  "name": "rivaltasulmincio",
+  "version": "9.526",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "update:site-stats": "node scripts/update-site-stats.mjs"
+  },
+  "dependencies": {
+    "animejs": "^4.4.1",
+    "swiper": "^12.1.4"
+  }
+}

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profilo – Rivalta sul Mincio</title>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:        #17221d;
+      --ink-soft:   #31453b;
+      --cream:      #f7f0e4;
+      --paper:      #fffaf0;
+      --mist:       #e4ddcf;
+      --marsh:      #253f35;
+      --marsh-2:    #3d6353;
+      --water:      #2f6b67;
+      --clay:       #b8663f;
+      --reed:       #c6a462;
+      --white:      #fffdf8;
+      --line:       rgba(37, 63, 53, 0.15);
+      --ok:         #2f6b67;
+      --err:        #b83232;
+      --radius:     14px;
+      --shadow-card: 0 2px 24px rgba(37, 63, 53, 0.09), 0 0 0 1px rgba(37, 63, 53, 0.07);
+      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
+      --serif:      "Fraunces", Georgia, serif;
+      --transition: 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.28), transparent 28rem),
+        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.16), transparent 34rem),
+        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+      color: var(--ink);
+      min-height: 100vh;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
+        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
+      background-size: 23px 23px, 31px 31px;
+      mix-blend-mode: multiply;
+    }
+
+    a { color: var(--marsh); text-decoration: none; }
+    a:hover { color: var(--water); }
+
+    
+
+    /* ── Page ── */
+    .page {
+      position: relative; z-index: 1;
+      padding: 88px 20px 64px;
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+
+    .page-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .page-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,250,240,.74);
+      color: var(--ink-soft);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    /* ── Bento grid ── */
+    .bento {
+      display: grid; width: 100%; max-width: 660px;
+      gap: 6px; grid-template-columns: 1fr 1fr;
+      grid-template-areas: "hero hero" "articles since";
+    }
+
+    /* ── Card base ── */
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 14px 18px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    /* ── Hero card ── */
+    .card-hero {
+      grid-area: hero;
+      flex-direction: row; align-items: flex-start; gap: 18px;
+      padding: 18px 18px;
+    }
+
+    .card-hero::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--marsh), var(--reed), var(--water));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .avatar {
+      width: 72px; height: 72px; border-radius: 16px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; background: rgba(37,63,53,.1);
+    }
+    .avatar.skel { font-size: 0; }
+
+    .hero-info { flex: 1; min-width: 0; }
+
+    .hero-eyebrow {
+      font-size: 10px; font-weight: 700; color: var(--marsh);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px;
+    }
+
+    .hero-username {
+      font-family: var(--serif); font-size: 22px; font-weight: 650;
+      color: var(--ink); letter-spacing: -.02em; line-height: 1.1; margin-bottom: 3px;
+    }
+
+    .hero-displayname {
+      font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; font-weight: 500;
+    }
+
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+
+    .chip {
+      border: 1px solid var(--line); border-radius: 999px;
+      font-size: 11px; font-weight: 600; color: var(--ink-soft);
+      padding: 3px 9px; background: rgba(37,63,53,.05);
+    }
+
+    .chip-admin {
+      color: var(--reed); border-color: rgba(198,164,98,.4);
+      background: rgba(198,164,98,.1);
+    }
+
+    .hero-bio { font-size: 13px; color: var(--ink-soft); line-height: 1.55; max-width: 320px; }
+
+    /* ── Stat cards ── */
+    .card-articles { grid-area: articles; }
+    .card-since    { grid-area: since; }
+    .card-articles .num { font-size: 2.4rem; color: var(--marsh); }
+    .card-since .num    { font-size: 1.3rem; color: var(--water); }
+
+    .num {
+      font-family: var(--serif); font-weight: 650;
+      letter-spacing: -.03em; line-height: 1; margin-bottom: 4px;
+    }
+
+    .stat-label { font-size: 12px; color: var(--ink-soft); font-weight: 500; line-height: 1.3; }
+
+    /* ── Posts section ── */
+    .posts-section { width: 100%; max-width: 900px; }
+
+    .posts-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; gap: 10px;
+    }
+
+    .posts-header h2 {
+      font-family: var(--serif); font-size: 22px; font-weight: 650;
+      color: var(--ink); letter-spacing: -.02em;
+    }
+
+    .posts-count-tag { font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+
+    .grid-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 8px;
+    }
+
+    /* ── Post card ── */
+    .pcard {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
+      overflow: hidden; transition: box-shadow .2s, transform .2s;
+    }
+    .pcard:hover { box-shadow: 0 14px 36px rgba(37,63,53,.14); transform: translateY(-3px); }
+
+    .pcard-img {
+      height: 130px;
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: rgba(37,63,53,.06);
+    }
+    .pcard-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .pcard-img svg { width: 100%; height: 100%; display: block; }
+
+    .pcard-cat {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,250,240,.92); backdrop-filter: blur(4px);
+      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+      letter-spacing: .07em; text-transform: uppercase;
+      border: 1px solid var(--line); color: var(--ink);
+    }
+
+    .pcard-body { padding: 14px 16px; }
+    .pcard-meta { font-size: 11px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+
+    .pcard-title {
+      font-family: var(--serif); font-size: 15px; font-weight: 650;
+      color: var(--ink); line-height: 1.35; margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    .pcard-title a { color: var(--ink); transition: color .15s; }
+    .pcard-title a:hover { color: var(--marsh); }
+
+    .pcard-exc {
+      font-size: 12px; color: var(--ink-soft); line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; margin-bottom: 12px;
+    }
+
+    .pcard-foot { padding-top: 10px; border-top: 1px solid var(--line); }
+
+    .btn-read {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--sans); font-size: 12px; font-weight: 700;
+      color: var(--marsh); text-decoration: none; transition: gap .15s;
+    }
+    .btn-read:hover { gap: 8px; color: var(--water); }
+
+    /* ── Empty ── */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 48px 20px;
+      border: 1px dashed var(--line); border-radius: var(--radius);
+    }
+    .empty-state span { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+    .empty-state p { font-size: 13px; color: var(--ink-soft); }
+
+    /* ── Skeleton ── */
+    .skel {
+      background: linear-gradient(90deg, rgba(37,63,53,.06) 25%, rgba(37,63,53,.1) 50%, rgba(37,63,53,.06) 75%);
+      background-size: 400% 100%; animation: shimmer 1.4s ease-in-out infinite; border-radius: 8px;
+    }
+    @keyframes shimmer { to { background-position: -400% 0; } }
+
+    /* ── Responsive ── */
+    @media (max-width: 560px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas: "hero" "articles" "since";
+      }
+      .card-hero { flex-direction: column; align-items: flex-start; }
+      .page { padding: 100px 14px 60px; }
+      .brand-name { display: none; }
+    }
+
+    /* ── Footer ── */
+    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
+    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
+    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
+    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
+    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
+    .footer p { max-width:540px; line-height:1.66; }
+    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
+    .footer-links a:hover { color:var(--paper); }
+    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
+    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
+  </style>
+  <link rel="stylesheet" href="/theme.css" />
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="grad-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d8b89"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
+  <linearGradient id="grad-marsh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5fb085"/><stop offset="100%" stop-color="#15433a"/></linearGradient>
+  <linearGradient id="grad-sunset" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0c084"/><stop offset="100%" stop-color="#c0392b"/></linearGradient>
+  <linearGradient id="grad-spring" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a8d8a8"/><stop offset="100%" stop-color="#2d8b60"/></linearGradient>
+  <linearGradient id="grad-deep" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2f3a"/><stop offset="100%" stop-color="#030d12"/></linearGradient>
+</defs></svg>
+
+<!--PARTIAL:nav-->
+
+<div class="page">
+
+  <div class="page-summary" aria-label="Struttura profilo pubblico">
+    <span class="page-chip">profilo + articoli</span>
+    <span class="page-chip">statistiche in alto</span>
+    <span class="page-chip">feed sotto</span>
+  </div>
+
+  <div class="bento">
+
+    <!-- Hero: avatar + info -->
+    <div class="card card-hero">
+      <div class="avatar skel" id="avatar"></div>
+      <div class="hero-info">
+        <div class="hero-eyebrow">Profilo autore</div>
+        <div class="hero-username skel" id="username" style="width:160px;height:22px;margin-bottom:5px"></div>
+        <div class="hero-displayname skel" id="displayname" style="width:110px;height:13px;margin-bottom:14px"></div>
+        <div class="chips" id="chips"></div>
+        <div class="hero-bio" id="bio"></div>
+      </div>
+    </div>
+
+    <!-- Articles count -->
+    <div class="card card-articles">
+      <div class="num skel" id="stat-posts" style="width:48px;height:38px"></div>
+      <div class="stat-label">Articoli pubblicati</div>
+    </div>
+
+    <!-- Member since -->
+    <div class="card card-since">
+      <div class="num skel" id="stat-since" style="width:90px;height:24px"></div>
+      <div class="stat-label">Membro da</div>
+    </div>
+
+  </div>
+
+  <!-- Posts section -->
+  <div class="posts-section">
+    <div class="posts-header">
+      <h2>Articoli</h2>
+      <span class="posts-count-tag" id="posts-count"></span>
+    </div>
+    <div class="grid-posts" id="posts-grid"></div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.config.js"></script>
+<script src="categories.client.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+const fmt  = iso => new Date(iso).toLocaleDateString('it-IT', {day:'numeric', month:'short', year:'numeric'});
+const fmtY = iso => new Date(iso).toLocaleDateString('it-IT', {month:'long', year:'numeric'});
+const canonicalCategory  = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.canonical(v)   : String(v||'').trim();
+const categoryHref       = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.categoryHref(v) : ('category?name='+encodeURIComponent(canonicalCategory(v)));
+const badgeColorByCategory = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(v) : 'default';
+const escapeHtml = v => String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const isValidHttpsUrl = v => {
+  if (!v || typeof v !== 'string') return false;
+  try { return new URL(v).protocol === 'https:'; } catch (_) { return false; }
+};
+
+const ILL = {
+  festival:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-sunset)"/><g fill="#143B43" opacity=".85"><rect x="40" y="72" width="60" height="58"/><polygon points="32,72 70,44 108,72"/><rect x="100" y="58" width="80" height="72"/><polygon points="92,58 140,24 188,58"/><rect x="240" y="52" width="70" height="78"/><polygon points="232,52 275,18 318,52"/></g></svg>`,
+  heron:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-marsh)"/><rect x="0" y="82" width="400" height="48" fill="url(#grad-water)"/><g transform="translate(180 10)"><path d="M22 64 L20 100" stroke="#0F2A30" stroke-width="2.5" stroke-linecap="round"/><path d="M5 48 Q25 34 60 46 Q80 52 90 62 Q82 72 65 70 L30 72 Q10 68 5 48Z" fill="#0F2A30"/><path d="M55 50 Q45 22 50 3" stroke="#0F2A30" stroke-width="6" stroke-linecap="round" fill="none"/><ellipse cx="52" cy="0" rx="9" ry="6" fill="#0F2A30" transform="rotate(-15 52 0)"/><path d="M58 -1 L76 -4" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round"/></g></svg>`,
+  cycling:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-spring)"/><path d="M0,92 Q200,114 400,92 L400,130 L0,130Z" fill="url(#grad-water)"/><g transform="translate(170 52)"><circle cx="0" cy="20" r="13" fill="none" stroke="#0F2A30" stroke-width="2.5"/><circle cx="40" cy="20" r="13" fill="none" stroke="#0F2A30" stroke-width="2.5"/><path d="M0,20 L15,-2 L30,20 L40,20" stroke="#0F2A30" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="-20" r="6" fill="#0F2A30"/></g></svg>`,
+  village:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-deep)"/><circle cx="320" cy="26" r="18" fill="#EAF4F4" opacity=".8"/><circle cx="313" cy="22" r="16" fill="#0F2A30"/><g fill="#0F2A30"><rect x="30" y="82" width="50" height="48"/><polygon points="22,82 55,56 88,82"/><rect x="148" y="44" width="22" height="86"/><polygon points="142,44 159,22 176,44"/><rect x="170" y="92" width="50" height="38"/><polygon points="162,92 195,66 228,92"/></g></svg>`,
+  reeds:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-marsh)"/><rect x="0" y="84" width="400" height="46" fill="url(#grad-water)"/><g stroke="#143B43" stroke-width="2.5" stroke-linecap="round" fill="none"><path d="M20,130 L20,60"/><path d="M50,130 L50,52"/><path d="M80,130 L80,66"/><path d="M310,130 L310,72"/><path d="M340,130 L340,56"/><path d="M370,130 L370,64"/></g><g fill="#5b3a1f"><ellipse cx="20" cy="58" rx="3" ry="8"/><ellipse cx="50" cy="50" rx="3" ry="8"/><ellipse cx="80" cy="64" rx="3" ry="8"/><ellipse cx="340" cy="54" rx="3" ry="8"/></g></svg>`,
+  nature:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-water)"/><ellipse cx="100" cy="118" rx="38" ry="8" fill="#43A047"/><ellipse cx="220" cy="92" rx="45" ry="9" fill="#43A047"/><ellipse cx="360" cy="122" rx="40" ry="8" fill="#43A047"/></svg>`,
+  fishing:`<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="130" fill="url(#grad-deep)"/><g transform="translate(80 54)"><path d="M0,0 L100,0 L92,22 L8,22Z" fill="#0F2A30"/><g transform="translate(40 -38)"><circle cx="5" cy="0" r="6" fill="#0F2A30"/><path d="M-2,5 L-5,30 L0,38 L8,38 L12,30 L8,5Z" fill="#0F2A30"/><path d="M8,12 L40,-15" stroke="#5b3a1f" stroke-width="2" stroke-linecap="round"/></g></g><rect x="0" y="84" width="400" height="46" fill="url(#grad-water)"/></svg>`,
+};
+
+const un = new URLSearchParams(location.search).get('u');
+
+(async function () {
+  /* Redirect to own profile if ?u= is missing */
+  if (!un) {
+    try {
+      const { data: { session: s } } = await sb.auth.getSession();
+      if (s?.user) {
+        const { data: me } = await sb.from('profiles').select('username').eq('id', s.user.id).single();
+        if (me?.username) { location.replace('profile?u=' + me.username); return; }
+      }
+    } catch (_) {}
+    location.href = 'login';
+    return;
+  }
+
+  let session = null;
+  let viewer  = null;
+  try {
+    const {data} = await sb.auth.getSession();
+    session = data?.session || null;
+    if (session?.user?.id) {
+      const {data: vd} = await sb.from('profiles')
+        .select('username,avatar_emoji,avatar_color')
+        .eq('id', session.user.id).single();
+      viewer = vd;
+    }
+  } catch (_) {}
+
+  const {data:prof, error:pe} = await sb.from('profiles').select('*').eq('username', un).single();
+  if (pe || !prof) {
+    document.querySelector('.bento').innerHTML = '<div class="card" style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-soft)">Profilo non trovato.</div>';
+    return;
+  }
+  document.title = `@${prof.username} – Rivalta sul Mincio`;
+
+  /* Avatar (static) */
+  const av = $('avatar');
+  av.classList.remove('skel');
+  av.style.background = prof.avatar_color || '#253f35';
+  av.textContent = prof.avatar_emoji || '🌿';
+
+  /* Name */
+  $('username').outerHTML  = `<div class="hero-username"  id="username">@${escapeHtml(prof.username)}</div>`;
+  $('displayname').outerHTML = `<div class="hero-displayname">${escapeHtml(prof.display_name || prof.username)}</div>`;
+
+  /* Chips */
+  const roleLabels = { admin:'⚙️ Admin', user:'👤 Utente', reader:'👁 Lettore' };
+  const chipsHtml = [];
+  if (prof.comune) chipsHtml.push(`<span class="chip">📍 ${escapeHtml(prof.comune)}</span>`);
+  chipsHtml.push(`<span class="chip ${prof.role === 'admin' ? 'chip-admin' : ''}">${roleLabels[prof.role] || '👤 Utente'}</span>`);
+  $('chips').innerHTML = chipsHtml.join('');
+  if (prof.bio) $('bio').textContent = prof.bio;
+
+  /* Stats */
+  const {count} = await sb.from('posts').select('id', {count:'exact', head:true}).eq('user_id', prof.id).eq('published', true);
+  const pe2 = $('stat-posts'); pe2.classList.remove('skel'); pe2.style = ''; pe2.textContent = count || 0;
+  const se  = $('stat-since'); se.classList.remove('skel');  se.style  = ''; se.textContent  = fmtY(prof.created_at);
+
+  /* Posts */
+  const {data:posts} = await sb.from('posts')
+    .select('id,title,excerpt,category,image_type,image_url,published_at')
+    .eq('user_id', prof.id).eq('published', true)
+    .order('published_at', {ascending: false});
+
+  const grid = $('posts-grid');
+  if (!posts || posts.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><span>📝</span><p>Nessun articolo pubblicato ancora.</p></div>';
+    return;
+  }
+  $('posts-count').textContent = `${posts.length} articol${posts.length === 1 ? 'o' : 'i'}`;
+
+  grid.innerHTML = posts.map(p => {
+    const cat = canonicalCategory(p.category) || 'Territorio';
+    const banner = isValidHttpsUrl(p.image_url)
+      ? `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.title || 'Articolo')}" loading="lazy">`
+      : (ILL[p.image_type] || ILL.nature);
+    return `<article class="pcard">
+      <div class="pcard-img">
+        <a class="pcard-cat" href="${categoryHref(cat)}">${escapeHtml(cat)}</a>
+        ${banner}
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-meta">${fmt(p.published_at)}</div>
+        <div class="pcard-title"><a href="post?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></div>
+        ${p.excerpt ? `<div class="pcard-exc">${escapeHtml(p.excerpt)}</div>` : ''}
+        <div class="pcard-foot"><a href="post?id=${p.id}" class="btn-read">Leggi →</a></div>
+      </div>
+    </article>`;
+  }).join('');
+})();
+</script>
+
+  <!--PARTIAL:footer-->
+</body>
+</html>

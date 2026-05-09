@@ -1,0 +1,61 @@
+<header class="site-header" data-rsm-topbar>
+  <div class="nav-island">
+    <a class="brand" href="/">
+      <div class="logo-mark">
+        <img src="/img/favicon.png" alt="Rivalta sul Mincio" width="34" height="34">
+      </div>
+      <span class="brand-name">
+        <strong>Rivalta</strong><em>sul Mincio</em>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="Navigazione principale">
+      <a href="/category" class="nav-link">Esplora</a>
+      <a href="/#valli" class="nav-link">Valli</a>
+      <a href="/#atlante" class="nav-link">Atlante</a>
+      <a href="/write" class="nav-link nav-link--write">Scrivi</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="search-toggle" id="searchToggle" type="button"
+              aria-label="Apri ricerca" aria-expanded="false" aria-controls="searchPanel">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+             stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="6.5" cy="6.5" r="5.2"/>
+          <line x1="10.7" y1="10.7" x2="14.2" y2="14.2"/>
+        </svg>
+        <span class="search-toggle-label">Cerca</span>
+        <kbd class="search-kbd">/</kbd>
+      </button>
+      <div id="nav-auth"></div>
+    </div>
+  </div>
+
+  <div class="search-panel" id="searchPanel" aria-hidden="true">
+    <div class="search-panel-inner">
+      <div class="search-row">
+        <svg class="search-row-icon" width="18" height="18" viewBox="0 0 16 16" fill="none"
+             aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="6.5" cy="6.5" r="5.2"/>
+          <line x1="10.7" y1="10.7" x2="14.2" y2="14.2"/>
+        </svg>
+        <input class="search-input" id="searchInput" type="search"
+               placeholder="Cerca luoghi, storie, persone…"
+               autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
+        <kbd class="search-esc-kbd">ESC</kbd>
+      </div>
+
+      <div class="search-chips">
+        <button class="search-chip" type="button" data-q="Parco del Mincio">Parco del Mincio</button>
+        <button class="search-chip" type="button" data-q="Valli">Valli</button>
+        <button class="search-chip" type="button" data-q="Atlante">Atlante vivo</button>
+        <button class="search-chip" type="button" data-q="Sentieri">Sentieri</button>
+        <button class="search-chip" type="button" data-q="Festival">Festival</button>
+        <button class="search-chip" type="button" data-q="Mappa">Mappa</button>
+        <button class="search-chip" type="button" data-q="Comunità">Comunità</button>
+      </div>
+
+      <ul class="search-results-list" id="searchResults" role="listbox" aria-label="Risultati ricerca"></ul>
+    </div>
+  </div>
+</header>

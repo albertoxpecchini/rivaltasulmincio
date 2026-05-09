@@ -1,0 +1,44 @@
+name: Update Site Stats
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync-stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update Supabase site stats
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL || 'https://tljwxymcavgpzntksjtx.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SERVICE_KEY || vars.SUPABASE_SERVICE_ROLE_KEY }} 
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "::error::Missing SUPABASE_URL (repo secret or repo variable)."
+            exit 1
+          fi
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::warning::Missing SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_KEY). Skip update-site-stats."
+            exit 0
+          fi
+          node scripts/update-site-stats.mjs
