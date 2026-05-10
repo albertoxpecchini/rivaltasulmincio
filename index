@@ -125,766 +125,6 @@
   <link rel="stylesheet" href="/theme.css" />
 
   <style>
-    /* =========================================================
-       RSM DESIGN SYSTEM v2 — Figma-friendly tokens
-       Tutti i token sono CSS Custom Properties con prefisso --rsm-*
-       Importabili in Figma con Tokens Studio o Variables Plugin.
-       ========================================================= */
-    :root {
-      /* === COLORI · SURFACES (bianchi puliti) === */
-      --rsm-bg:            #ffffff;
-      --rsm-paper:         #fbfbfd;
-      --rsm-surface:       #f5f5fa;
-      --rsm-surface-2:     #eeeef4;
-      --rsm-mist:          #e4e4ec;
-
-      /* === COLORI · INK (testo) === */
-      --rsm-ink:           #0b0d14;
-      --rsm-ink-2:         #1d2030;
-      --rsm-ink-3:         #4d5266;
-      --rsm-ink-4:         #828799;
-      --rsm-ink-5:         #b1b5c4;
-
-      /* === COLORI · BRAND (sfumati: verde/azzurro/viola) === */
-      --rsm-emerald:       #1fbf7d;
-      --rsm-emerald-2:     #5fd29c;
-      --rsm-emerald-3:     #b8edd2;
-      --rsm-emerald-4:     #e6faf0;
-
-      --rsm-azure:         #4a9bff;
-      --rsm-azure-2:       #7fb6ff;
-      --rsm-azure-3:       #c2dcff;
-      --rsm-azure-4:       #ebf3ff;
-
-      --rsm-violet:        #8b5cf6;
-      --rsm-violet-2:      #a78bfa;
-      --rsm-violet-3:      #d4c8fb;
-      --rsm-violet-4:      #f1ecff;
-
-      /* === COLORI · LINE === */
-      --rsm-line:          rgba(11, 13, 20, 0.08);
-      --rsm-line-2:        rgba(11, 13, 20, 0.14);
-      --rsm-line-3:        rgba(11, 13, 20, 0.22);
-
-      /* === COLORI · STATI === */
-      --rsm-success:       #16a34a;
-      --rsm-warning:       #f59e0b;
-      --rsm-danger:        #ef4444;
-      --rsm-info:          #4a9bff;
-
-      /* === TIPOGRAFIA · FAMIGLIE === */
-      --rsm-font-display:  "Fraunces", "Times New Roman", Georgia, serif;
-      --rsm-font-sans:     "Cabinet Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-      --rsm-font-mono:     "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-
-      /* === TIPOGRAFIA · SCALA === */
-      --rsm-text-d1:       clamp(3rem, 7vw, 7rem);
-      --rsm-text-d2:       clamp(2.4rem, 5vw, 4.6rem);
-      --rsm-text-h1:       clamp(2rem, 3.6vw, 3.4rem);
-      --rsm-text-h2:       clamp(1.6rem, 2.6vw, 2.4rem);
-      --rsm-text-h3:       clamp(1.25rem, 1.7vw, 1.55rem);
-      --rsm-text-h4:       1.125rem;
-      --rsm-text-body-lg:  1.125rem;
-      --rsm-text-body:     1rem;
-      --rsm-text-small:    0.875rem;
-      --rsm-text-eyebrow:  0.78rem;
-      --rsm-text-tiny:     0.72rem;
-
-      --rsm-tracking-tight:   -0.04em;
-      --rsm-tracking-normal:  0;
-      --rsm-tracking-loose:   0.04em;
-      --rsm-tracking-wide:    0.16em;
-
-      --rsm-leading-tight:    0.96;
-      --rsm-leading-snug:     1.18;
-      --rsm-leading-normal:   1.5;
-      --rsm-leading-relaxed:  1.66;
-
-      /* === SPACING (4px scale) === */
-      --rsm-s-0:   0px;
-      --rsm-s-1:   4px;
-      --rsm-s-2:   8px;
-      --rsm-s-3:   12px;
-      --rsm-s-4:   16px;
-      --rsm-s-5:   20px;
-      --rsm-s-6:   24px;
-      --rsm-s-7:   28px;
-      --rsm-s-8:   32px;
-      --rsm-s-10:  40px;
-      --rsm-s-12:  48px;
-      --rsm-s-14:  56px;
-      --rsm-s-16:  64px;
-      --rsm-s-20:  80px;
-      --rsm-s-24:  96px;
-      --rsm-s-32:  128px;
-      --rsm-s-40:  160px;
-
-      /* === RADIUS === */
-      --rsm-r-xs:   4px;
-      --rsm-r-sm:   8px;
-      --rsm-r-md:   14px;
-      --rsm-r-lg:   20px;
-      --rsm-r-xl:   28px;
-      --rsm-r-2xl:  36px;
-      --rsm-r-3xl:  48px;
-      --rsm-r-pill: 999px;
-
-      /* === SHADOWS === */
-      --rsm-sh-xs:  0 1px 2px rgba(11, 13, 20, 0.04);
-      --rsm-sh-sm:  0 2px 6px rgba(11, 13, 20, 0.06), 0 1px 2px rgba(11, 13, 20, 0.04);
-      --rsm-sh-md:  0 8px 22px rgba(11, 13, 20, 0.08), 0 3px 8px rgba(11, 13, 20, 0.04);
-      --rsm-sh-lg:  0 18px 44px rgba(11, 13, 20, 0.10), 0 6px 14px rgba(11, 13, 20, 0.05);
-      --rsm-sh-xl:  0 36px 86px rgba(11, 13, 20, 0.14), 0 12px 28px rgba(11, 13, 20, 0.07);
-      --rsm-sh-glow-emerald: 0 18px 60px rgba(31, 191, 125, 0.28);
-      --rsm-sh-glow-azure:   0 18px 60px rgba(74, 155, 255, 0.28);
-      --rsm-sh-glow-violet:  0 18px 60px rgba(139, 92, 246, 0.28);
-
-      /* === GRID === */
-      --rsm-container:        min(100% - 40px, 1320px);
-      --rsm-container-narrow: min(100% - 40px, 920px);
-      --rsm-container-wide:   min(100% - 40px, 1480px);
-      --rsm-gutter:           clamp(16px, 2vw, 28px);
-
-      /* === MOTION === */
-      --rsm-ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
-      --rsm-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
-      --rsm-ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
-      --rsm-ease-quick:   cubic-bezier(0.32, 0.72, 0, 1);
-      --rsm-dur-fast:     200ms;
-      --rsm-dur-base:     360ms;
-      --rsm-dur-slow:     560ms;
-      --rsm-dur-loop:     9000ms;
-
-      /* === Z-INDEX === */
-      --rsm-z-base:    0;
-      --rsm-z-aurora:  1;
-      --rsm-z-content: 5;
-      --rsm-z-sticky:  20;
-      --rsm-z-nav:     70;
-      --rsm-z-modal:   100;
-
-      /* === BACKDROP / GLASS === */
-      --rsm-glass:        rgba(255, 255, 255, 0.62);
-      --rsm-glass-strong: rgba(255, 255, 255, 0.88);
-      --rsm-blur-sm: blur(10px);
-      --rsm-blur-md: blur(22px);
-      --rsm-blur-lg: blur(40px);
-
-      /* === LEGACY ALIAS (compat con topbar/footbar partials) === */
-      --ink:           var(--rsm-ink);
-      --ink-soft:      var(--rsm-ink-3);
-      --paper:         var(--rsm-paper);
-      --paper-recycled:var(--rsm-paper);
-      --cream:         var(--rsm-paper);
-      --mist:          var(--rsm-surface);
-      --marsh:         var(--rsm-emerald);
-      --marsh-2:       var(--rsm-emerald-2);
-      --water:         var(--rsm-azure);
-      --clay:          var(--rsm-violet);
-      --reed:          var(--rsm-emerald-3);
-      --line:          var(--rsm-line);
-      --line-dark:     rgba(255, 255, 255, 0.18);
-      --shadow:        var(--rsm-sh-md);
-      --shadow-strong: var(--rsm-sh-xl);
-      --ease:          var(--rsm-ease-quick);
-      --ease-soft:     var(--rsm-ease-out);
-      --sans:          var(--rsm-font-sans);
-      --serif:          var(--rsm-font-display);
-      --container:     var(--rsm-container);
-      --white:         var(--rsm-bg);
-      --fog:           var(--rsm-glass);
-
-      color-scheme: light;
-    }
-
-    /* =========================================================
-       RESET & BASE
-       ========================================================= */
-    *, *::before, *::after { box-sizing: border-box; }
-    html {
-      scroll-behavior: smooth;
-      background: var(--rsm-bg);
-    }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      font-family: var(--rsm-font-sans);
-      font-weight: 500;
-      color: var(--rsm-ink);
-      background: var(--rsm-bg);
-      line-height: var(--rsm-leading-normal);
-      overflow-x: hidden;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button, input, textarea, select { font: inherit; color: inherit; }
-    button { cursor: pointer; }
-    img, svg, video { display: block; max-width: 100%; }
-    ::selection {
-      background: rgba(139, 92, 246, 0.22);
-      color: var(--rsm-ink);
-    }
-
-    .skip-link {
-      position: fixed;
-      left: 16px;
-      top: 14px;
-      z-index: 200;
-      padding: 10px 14px;
-      border-radius: var(--rsm-r-pill);
-      background: var(--rsm-ink);
-      color: #fff;
-      transform: translateY(-160%);
-      transition: transform 360ms var(--rsm-ease-out);
-    }
-    .skip-link:focus { transform: translateY(0); }
-
-    /* =========================================================
-       AURORA BACKGROUND — bianco pulito + 3 blob blurrati
-       ========================================================= */
-    .rsm-aurora {
-      position: fixed;
-      inset: 0;
-      z-index: var(--rsm-z-aurora);
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .rsm-aurora__blob {
-      position: absolute;
-      width: 60vmax;
-      height: 60vmax;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.55;
-      will-change: transform;
-      animation: rsm-aurora-float 28s ease-in-out infinite;
-    }
-    .rsm-aurora__blob--emerald {
-      top: -22vmax;
-      left: -18vmax;
-      background: radial-gradient(circle, rgba(31, 191, 125, 0.55), rgba(31, 191, 125, 0) 65%);
-      animation-delay: -2s;
-    }
-    .rsm-aurora__blob--azure {
-      top: 10vmax;
-      right: -22vmax;
-      background: radial-gradient(circle, rgba(74, 155, 255, 0.50), rgba(74, 155, 255, 0) 65%);
-      animation-delay: -10s;
-      animation-duration: 32s;
-    }
-    .rsm-aurora__blob--violet {
-      bottom: -22vmax;
-      left: 30vmax;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.42), rgba(139, 92, 246, 0) 65%);
-      animation-delay: -16s;
-      animation-duration: 36s;
-    }
-    .rsm-aurora::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 90%),
-        linear-gradient(180deg, rgba(255,255,255,0.30), rgba(255,255,255,0.10));
-    }
-    @keyframes rsm-aurora-float {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-      33%      { transform: translate3d(8vmax, 4vmax, 0) rotate(60deg) scale(1.08); }
-      66%      { transform: translate3d(-6vmax, 8vmax, 0) rotate(-30deg) scale(0.94); }
-    }
-
-    /* =========================================================
-       LAYOUT
-       ========================================================= */
-    main { position: relative; z-index: var(--rsm-z-content); }
-
-    .rsm-container {
-      width: var(--rsm-container);
-      margin: 0 auto;
-    }
-    .rsm-container--narrow { width: var(--rsm-container-narrow); margin: 0 auto; }
-    .rsm-container--wide   { width: var(--rsm-container-wide);   margin: 0 auto; }
-
-    /* compat: il vecchio .container alias */
-    .container { width: var(--rsm-container); margin: 0 auto; }
-
-    .rsm-section {
-      position: relative;
-      padding: clamp(72px, 9vw, 140px) 0;
-    }
-    .rsm-section--compact { padding: clamp(48px, 6vw, 96px) 0; }
-    .rsm-section--tight   { padding: clamp(32px, 4vw, 64px) 0; }
-
-    .rsm-section-head {
-      display: grid;
-      gap: var(--rsm-s-5);
-      margin-bottom: var(--rsm-s-12);
-      max-width: 920px;
-    }
-
-    /* =========================================================
-       TIPOGRAFIA
-       ========================================================= */
-    .rsm-display-1,
-    .rsm-display-2,
-    .rsm-h1, .rsm-h2, .rsm-h3, .rsm-h4 {
-      color: var(--rsm-ink);
-      margin: 0;
-    }
-    .rsm-display-1 {
-      font-family: var(--rsm-font-display);
-      font-weight: 600;
-      font-size: var(--rsm-text-d1);
-      line-height: var(--rsm-leading-tight);
-      letter-spacing: var(--rsm-tracking-tight);
-      text-wrap: balance;
-    }
-    .rsm-display-2 {
-      font-family: var(--rsm-font-display);
-      font-weight: 600;
-      font-size: var(--rsm-text-d2);
-      line-height: var(--rsm-leading-tight);
-      letter-spacing: var(--rsm-tracking-tight);
-      text-wrap: balance;
-    }
-    .rsm-h1 {
-      font-family: var(--rsm-font-display);
-      font-weight: 600;
-      font-size: var(--rsm-text-h1);
-      line-height: var(--rsm-leading-snug);
-      letter-spacing: -0.03em;
-    }
-    .rsm-h2 {
-      font-family: var(--rsm-font-sans);
-      font-weight: 800;
-      font-size: var(--rsm-text-h2);
-      line-height: var(--rsm-leading-snug);
-      letter-spacing: -0.02em;
-    }
-    .rsm-h3 {
-      font-family: var(--rsm-font-sans);
-      font-weight: 800;
-      font-size: var(--rsm-text-h3);
-      line-height: 1.25;
-      letter-spacing: -0.015em;
-    }
-    .rsm-h4 {
-      font-family: var(--rsm-font-sans);
-      font-weight: 800;
-      font-size: var(--rsm-text-h4);
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-    }
-    .rsm-lead {
-      font-family: var(--rsm-font-sans);
-      font-size: var(--rsm-text-body-lg);
-      font-weight: 500;
-      color: var(--rsm-ink-3);
-      line-height: var(--rsm-leading-relaxed);
-      margin: 0;
-      max-width: 65ch;
-    }
-    .rsm-body  { font-size: var(--rsm-text-body); line-height: var(--rsm-leading-normal); margin: 0; }
-    .rsm-small { font-size: var(--rsm-text-small); color: var(--rsm-ink-3); }
-
-    .rsm-display-1 em,
-    .rsm-display-2 em,
-    .rsm-h1 em,
-    .rsm-festa__title em,
-    .rsm-valli__drop em {
-      font-style: italic;
-      display: inline-block;
-      color: var(--rsm-emerald);
-    }
-
-    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-      .rsm-display-1 em,
-      .rsm-display-2 em,
-      .rsm-h1 em,
-      .rsm-display-1 em .word,
-      .rsm-display-1 em .char,
-      .rsm-display-2 em .word,
-      .rsm-display-2 em .char,
-      .rsm-h1 em .word,
-      .rsm-h1 em .char,
-      .rsm-festa__title em,
-      .rsm-festa__title em .word,
-      .rsm-festa__title em .char,
-      .rsm-valli__drop em,
-      .rsm-valli__drop em .word,
-      .rsm-valli__drop em .char {
-        background-image: linear-gradient(120deg, var(--rsm-emerald) 0%, var(--rsm-azure) 50%, var(--rsm-violet) 100%);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-      }
-    }
-
-    .rsm-kicker {
-      font-family: var(--rsm-font-mono);
-      font-weight: 500;
-      font-size: var(--rsm-text-eyebrow);
-      letter-spacing: var(--rsm-tracking-wide);
-      text-transform: uppercase;
-      color: var(--rsm-ink-3);
-      display: inline-flex;
-      align-items: center;
-      gap: var(--rsm-s-2);
-      margin: 0;
-    }
-    .rsm-kicker::before {
-      content: "";
-      width: 28px;
-      height: 1px;
-      background: currentColor;
-      opacity: 0.5;
-    }
-    .rsm-kicker--center { justify-content: center; }
-    .rsm-kicker--center::before { display: none; }
-
-    /* gradient text accent */
-    .rsm-grad {
-      background: linear-gradient(120deg, var(--rsm-emerald) 0%, var(--rsm-azure) 50%, var(--rsm-violet) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    /* =========================================================
-       BUTTONS
-       ========================================================= */
-    .rsm-btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--rsm-s-3);
-      min-height: 54px;
-      padding: 8px 8px 8px 22px;
-      border: 1px solid transparent;
-      border-radius: var(--rsm-r-pill);
-      font-family: var(--rsm-font-sans);
-      font-size: var(--rsm-text-body);
-      font-weight: 800;
-      letter-spacing: -0.01em;
-      color: #fff;
-      background: var(--rsm-ink);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 36px rgba(11,13,20,0.18);
-      transition: transform var(--rsm-dur-base) var(--rsm-ease-out),
-                  background var(--rsm-dur-base) var(--rsm-ease-out),
-                  box-shadow var(--rsm-dur-base) var(--rsm-ease-out);
-      overflow: hidden;
-      will-change: transform;
-      cursor: pointer;
-    }
-    .rsm-btn::before {
-      content: "";
-      position: absolute;
-      inset: -50%;
-      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
-                  rgba(255,255,255,0.22), transparent 38%);
-      opacity: 0;
-      transition: opacity var(--rsm-dur-base) var(--rsm-ease-out);
-      pointer-events: none;
-    }
-    .rsm-btn > span:not(.rsm-btn-icon) { position: relative; z-index: 1; }
-    .rsm-btn-icon {
-      position: relative;
-      z-index: 1;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--rsm-ink);
-      background: #fff;
-      transition: transform var(--rsm-dur-base) var(--rsm-ease-out);
-      font-weight: 700;
-    }
-    .rsm-btn:hover {
-      transform: translateY(-2px);
-      background: #1a1d2c;
-      box-shadow: 0 24px 56px rgba(11,13,20,0.22), inset 0 1px 0 rgba(255,255,255,0.12);
-    }
-    .rsm-btn:hover::before { opacity: 1; }
-    .rsm-btn:hover .rsm-btn-icon { transform: translate(3px, -1px); }
-    .rsm-btn:active { transform: translateY(0) scale(0.98); }
-    .rsm-btn:focus-visible {
-      outline: 2px solid var(--rsm-azure);
-      outline-offset: 3px;
-    }
-
-    .rsm-btn--ghost {
-      color: var(--rsm-ink);
-      background: rgba(255,255,255,0.6);
-      border-color: var(--rsm-line-2);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--rsm-sh-sm);
-      backdrop-filter: var(--rsm-blur-sm);
-      -webkit-backdrop-filter: var(--rsm-blur-sm);
-    }
-    .rsm-btn--ghost .rsm-btn-icon { background: var(--rsm-ink); color: #fff; }
-    .rsm-btn--ghost:hover {
-      background: #fff;
-      box-shadow: var(--rsm-sh-md);
-    }
-
-    .rsm-btn--brand {
-      background: linear-gradient(120deg, var(--rsm-emerald) 0%, var(--rsm-azure) 50%, var(--rsm-violet) 100%);
-      box-shadow: var(--rsm-sh-glow-violet);
-    }
-    .rsm-btn--brand:hover {
-      filter: brightness(1.04);
-      box-shadow: 0 24px 80px rgba(139, 92, 246, 0.36), 0 8px 24px rgba(74, 155, 255, 0.28);
-    }
-    .rsm-btn--brand .rsm-btn-icon { color: var(--rsm-violet); }
-
-    .rsm-btn--sm { min-height: 44px; padding: 6px 6px 6px 16px; font-size: var(--rsm-text-small); }
-    .rsm-btn--sm .rsm-btn-icon { width: 32px; height: 32px; }
-
-    .rsm-button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--rsm-s-3);
-      margin-top: var(--rsm-s-6);
-    }
-
-    /* compat alias: il vecchio .button */
-    .button, .button.secondary { font-family: var(--rsm-font-sans); }
-    .button { all: unset; }
-
-    /* =========================================================
-       INPUT & FORM
-       ========================================================= */
-    .rsm-field {
-      display: grid;
-      gap: var(--rsm-s-2);
-    }
-    .rsm-field > label,
-    .rsm-field-label {
-      font-family: var(--rsm-font-mono);
-      font-size: var(--rsm-text-eyebrow);
-      letter-spacing: var(--rsm-tracking-wide);
-      text-transform: uppercase;
-      color: var(--rsm-ink-3);
-      font-weight: 500;
-    }
-    .rsm-input,
-    .rsm-textarea,
-    .rsm-select {
-      width: 100%;
-      min-height: 56px;
-      padding: 0 22px;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: var(--rsm-r-pill);
-      background: rgba(255,255,255,0.78);
-      color: var(--rsm-ink);
-      font-family: var(--rsm-font-sans);
-      font-size: var(--rsm-text-body);
-      font-weight: 500;
-      transition: border-color var(--rsm-dur-fast) var(--rsm-ease-out),
-                  box-shadow var(--rsm-dur-fast) var(--rsm-ease-out),
-                  background var(--rsm-dur-fast) var(--rsm-ease-out);
-      backdrop-filter: var(--rsm-blur-sm);
-      -webkit-backdrop-filter: var(--rsm-blur-sm);
-    }
-    .rsm-textarea {
-      min-height: 144px;
-      padding: 16px 22px;
-      border-radius: var(--rsm-r-xl);
-      resize: vertical;
-    }
-    .rsm-input::placeholder,
-    .rsm-textarea::placeholder { color: var(--rsm-ink-4); }
-
-    .rsm-input:hover,
-    .rsm-textarea:hover { border-color: var(--rsm-line-3); }
-
-    .rsm-input:focus,
-    .rsm-textarea:focus,
-    .rsm-select:focus {
-      outline: none;
-      border-color: var(--rsm-azure);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(74, 155, 255, 0.18);
-    }
-
-    .rsm-input--lg { min-height: 64px; font-size: var(--rsm-text-body-lg); }
-
-    .rsm-form-status {
-      font-family: var(--rsm-font-mono);
-      font-size: var(--rsm-text-small);
-      color: var(--rsm-ink-3);
-      margin: 0;
-      min-height: 1em;
-    }
-
-    /* =========================================================
-       CARDS
-       ========================================================= */
-    .rsm-card {
-      position: relative;
-      padding: var(--rsm-s-8);
-      border: 1px solid var(--rsm-line);
-      border-radius: var(--rsm-r-2xl);
-      background: rgba(255,255,255,0.85);
-      box-shadow: var(--rsm-sh-md);
-      backdrop-filter: var(--rsm-blur-sm);
-      -webkit-backdrop-filter: var(--rsm-blur-sm);
-      transition: transform var(--rsm-dur-base) var(--rsm-ease-out),
-                  box-shadow var(--rsm-dur-base) var(--rsm-ease-out),
-                  border-color var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-    .rsm-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--rsm-sh-lg);
-    }
-    .rsm-card--glass {
-      background: var(--rsm-glass);
-      backdrop-filter: var(--rsm-blur-md);
-      -webkit-backdrop-filter: var(--rsm-blur-md);
-    }
-    .rsm-card--flat {
-      background: var(--rsm-paper);
-      box-shadow: none;
-    }
-    .rsm-card--ink {
-      background: var(--rsm-ink);
-      color: #fff;
-      border-color: rgba(255,255,255,0.08);
-    }
-    .rsm-card--ink .rsm-kicker { color: rgba(255,255,255,0.6); }
-
-    /* =========================================================
-       TAGS & BADGE & CHIP
-       ========================================================= */
-    .rsm-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: var(--rsm-r-pill);
-      background: rgba(255,255,255,0.66);
-      backdrop-filter: var(--rsm-blur-sm);
-      font-family: var(--rsm-font-mono);
-      font-size: var(--rsm-text-tiny);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--rsm-ink-2);
-      text-transform: uppercase;
-    }
-    .rsm-tag--emerald { background: var(--rsm-emerald-4); border-color: rgba(31,191,125,0.30); color: #0c6c47; }
-    .rsm-tag--azure   { background: var(--rsm-azure-4);   border-color: rgba(74,155,255,0.30); color: #1f4f99; }
-    .rsm-tag--violet  { background: var(--rsm-violet-4);  border-color: rgba(139,92,246,0.30); color: #5b3aaa; }
-
-    .rsm-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: var(--rsm-r-pill);
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: var(--rsm-blur-sm);
-      font-family: var(--rsm-font-sans);
-      font-size: var(--rsm-text-small);
-      font-weight: 700;
-      color: var(--rsm-ink-2);
-      cursor: pointer;
-      transition: background var(--rsm-dur-fast), border-color var(--rsm-dur-fast), transform var(--rsm-dur-fast);
-    }
-    .rsm-chip:hover { background: #fff; border-color: var(--rsm-line-3); transform: translateY(-1px); }
-    .rsm-chip[aria-pressed="true"], .rsm-chip.is-active, .rsm-chip.on {
-      background: var(--rsm-ink);
-      border-color: var(--rsm-ink);
-      color: #fff;
-    }
-
-    .rsm-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 10px;
-      border-radius: var(--rsm-r-pill);
-      font-family: var(--rsm-font-mono);
-      font-size: var(--rsm-text-tiny);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: var(--rsm-surface);
-      color: var(--rsm-ink-2);
-    }
-    .rsm-badge.green,
-    .rsm-badge--emerald { background: var(--rsm-emerald-4); color: #0c6c47; }
-    .rsm-badge--azure   { background: var(--rsm-azure-4);   color: #1f4f99; }
-    .rsm-badge--violet  { background: var(--rsm-violet-4);  color: #5b3aaa; }
-
-    /* compat alias usati dai post-card legacy */
-    .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: var(--rsm-r-pill); font-family: var(--rsm-font-mono); font-size: var(--rsm-text-tiny); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--rsm-surface); color: var(--rsm-ink-2); }
-    .badge.green { background: var(--rsm-emerald-4); color: #0c6c47; }
-    .tag { display: inline-flex; align-items: center; padding: 5px 12px; border-radius: var(--rsm-r-pill); border: 1px solid var(--rsm-line-2); background: rgba(255,255,255,0.66); font-family: var(--rsm-font-mono); font-size: var(--rsm-text-tiny); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rsm-ink-2); }
-
-    /* =========================================================
-       MODAL
-       ========================================================= */
-    .rsm-modal {
-      position: fixed;
-      inset: 0;
-      z-index: var(--rsm-z-modal);
-      display: grid;
-      place-items: center;
-      padding: var(--rsm-s-6);
-      background: rgba(11, 13, 20, 0.42);
-      backdrop-filter: var(--rsm-blur-md);
-      -webkit-backdrop-filter: var(--rsm-blur-md);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--rsm-dur-base) var(--rsm-ease-out),
-                  visibility var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-    .rsm-modal.is-open { opacity: 1; visibility: visible; }
-    .rsm-modal[hidden] { display: grid; }
-    .rsm-modal__panel {
-      position: relative;
-      width: min(560px, 100%);
-      padding: var(--rsm-s-12) var(--rsm-s-10);
-      border: 1px solid var(--rsm-line);
-      border-radius: var(--rsm-r-3xl);
-      background: rgba(255,255,255,0.94);
-      box-shadow: var(--rsm-sh-xl);
-      transform: translateY(20px) scale(0.96);
-      opacity: 0;
-      transition: transform var(--rsm-dur-base) var(--rsm-ease-spring),
-                  opacity var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-    .rsm-modal.is-open .rsm-modal__panel { transform: translateY(0) scale(1); opacity: 1; }
-    .rsm-modal__close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--rsm-line-2);
-      background: #fff;
-      font-size: 20px;
-      color: var(--rsm-ink);
-      cursor: pointer;
-    }
-    .rsm-modal__title {
-      margin: 0 0 var(--rsm-s-3);
-      font-family: var(--rsm-font-display);
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-    }
 
     /* =========================================================
        NAV — nessun override: stile gestito da /partials/topbar.css
@@ -998,6 +238,90 @@
     }
 
     /* =========================================================
+       SECTION 0 — BANNER VIDEO
+       ========================================================= */
+    .rsm-banner {
+      position: relative;
+      height: 80vh;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rsm-banner__video-wrap {
+      position: absolute;
+      inset: 0;
+    }
+    .rsm-banner__video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .rsm-banner__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(7,58,45,0.55) 0%,
+        rgba(9,45,94,0.45) 50%,
+        rgba(75,28,118,0.55) 100%
+      );
+    }
+    .rsm-banner__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      padding: 0 clamp(20px, 5vw, 80px);
+      max-width: 900px;
+    }
+    .rsm-banner__kicker {
+      color: rgba(255,255,255,0.9);
+    }
+    .rsm-banner__title {
+      color: #fff;
+      font-size: clamp(3.5rem, 12vw, 10rem);
+      margin: var(--rsm-s-4) 0 var(--rsm-s-5);
+      text-shadow: 0 4px 40px rgba(0,0,0,0.3);
+      line-height: 0.95;
+    }
+    .rsm-banner__title em {
+      color: var(--rsm-emerald-2);
+    }
+    .rsm-banner__sub {
+      color: rgba(255,255,255,0.8);
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      margin-bottom: var(--rsm-s-8);
+      max-width: 72ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .rsm-banner__cta {
+      display: inline-flex;
+    }
+    .rsm-banner__scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .rsm-banner__scroll-line {
+      display: block;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.7));
+      margin: 0 auto;
+      animation: rsm-scroll-hint 2s ease-in-out infinite;
+    }
+    @keyframes rsm-scroll-hint {
+      0%, 100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* =========================================================
        SECTION 2 — MAPPA DELLA PAGINA
        ========================================================= */
     .rsm-compass {
@@ -1078,6 +402,10 @@
     .rsm-festa {
       position: relative;
       padding: clamp(80px, 10vw, 160px) 0;
+      background:
+        radial-gradient(ellipse at 0% 50%, rgba(31,191,125,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 100% 50%, rgba(74,155,255,0.06) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(31,191,125,0.04) 0%, transparent 40%, rgba(74,155,255,0.04) 100%);
     }
     .rsm-festa__head {
       display: grid;
@@ -1293,7 +621,12 @@
     /* =========================================================
        SECTION 4 — EVENTI (NEWS / Supabase)
        ========================================================= */
-    .rsm-events { position: relative; }
+    .rsm-events {
+      position: relative;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(139,92,246,0.07) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(74,155,255,0.04) 0%, transparent 100%);
+    }
 
     .news-filter-row,
     .rsm-events__filters {
@@ -1465,7 +798,12 @@
     /* =========================================================
        SECTION 5 — GALLERIA
        ========================================================= */
-    .rsm-gallery { position: relative; }
+    .rsm-gallery {
+      position: relative;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(74,155,255,0.06) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(139,92,246,0.03) 0%, transparent 100%);
+    }
     .rsm-gallery__stage {
       position: relative;
       border-radius: var(--rsm-r-3xl);
@@ -1567,7 +905,13 @@
     /* =========================================================
        SECTION 6 — TERRITORIO (Atlante + Valli + Esperienze)
        ========================================================= */
-    .rsm-territory { position: relative; }
+    .rsm-territory {
+      position: relative;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(31,191,125,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 0%, rgba(139,92,246,0.05) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(31,191,125,0.04) 0%, transparent 100%);
+    }
 
     .rsm-atlas-grid {
       display: grid;
@@ -1764,7 +1108,11 @@
     /* =========================================================
        SECTION 7 — CONTATTI
        ========================================================= */
-    .rsm-contact { position: relative; }
+    .rsm-contact {
+      position: relative;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(74,155,255,0.06) 0%, transparent 55%);
+    }
     .rsm-contact__grid {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -2065,6 +1413,31 @@
   <main id="main">
 
     <!-- ─────────────────────────────────────────────────────────
+         00 · BANNER VIDEO
+         ───────────────────────────────────────────────────────── -->
+    <section class="rsm-banner" id="banner" aria-label="Benvenuto a Rivalta sul Mincio">
+      <div class="rsm-banner__video-wrap">
+        <video class="rsm-banner__video" src="/video/banner.mp4"
+               muted autoplay loop playsinline preload="metadata"></video>
+        <div class="rsm-banner__overlay"></div>
+      </div>
+      <div class="rsm-banner__content">
+        <p class="rsm-kicker rsm-banner__kicker"><span class="festa-pulse" aria-hidden="true"></span>Pro Loco Rivalta sul Mincio · Mantova</p>
+        <h1 class="rsm-display-1 rsm-banner__title" style="margin-top: var(--rsm-s-5)">
+          Rivalta<br/>sul <em>Mincio</em>.
+        </h1>
+        <p class="rsm-banner__sub">Valli, borghi, tradizioni. Nel cuore del Parco del Mincio.</p>
+        <a class="rsm-btn rsm-btn--brand magnetic rsm-banner__cta" href="#intro">
+          <span>Scopri il borgo</span>
+          <span class="rsm-btn-icon" aria-hidden="true">↓</span>
+        </a>
+      </div>
+      <div class="rsm-banner__scroll-hint" aria-hidden="true">
+        <span class="rsm-banner__scroll-line"></span>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
          01 · INTRO (HERO)
          ───────────────────────────────────────────────────────── -->
     <section class="rsm-section rsm-hero" id="intro" aria-labelledby="intro-title" data-component="section/hero">
@@ -2311,6 +1684,66 @@
                 <div class="slide-bg-blur" style="background-image:url('/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg')"></div>
                 <img class="slide-img" src="/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg" alt="Fiori di loto nel Parco del Mincio" loading="lazy">
               </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/Garzetta - Mssimo Brambilla.jpg')"></div>
+                <img class="slide-img" src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/corte-mincio-storica.jpg')"></div>
+                <img class="slide-img" src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/museo-etnografico.jpg')"></div>
+                <img class="slide-img" src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/mantua-g7c7ae163b_1920.jpg')"></div>
+                <img class="slide-img" src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/CRED-PARCO-DEL-MINCIO.webp')"></div>
+                <img class="slide-img" src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg')"></div>
+                <img class="slide-img" src="/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg" alt="Parco Naturale di Albufera" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/paulis-veduta1.webp')"></div>
+                <img class="slide-img" src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclabile-borghetto-peschiera.webp')"></div>
+                <img class="slide-img" src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto–Peschiera" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclovia-del-mincio-1.webp')"></div>
+                <img class="slide-img" src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/Fal%C3%B2%20delle%20befana.jpg')"></div>
+                <img class="slide-img" src="/img/atlante/Fal%C3%B2%20delle%20befana.jpg" alt="Falò delle Befana" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp')"></div>
+                <img class="slide-img" src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/20190822_104621.jpg')"></div>
+                <img class="slide-img" src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/3eb85a6da2459a72bb33081648900153.webp')"></div>
+                <img class="slide-img" src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/OIP.webp')"></div>
+                <img class="slide-img" src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
+              </div>
+              <div class="swiper-slide rsm-slide">
+                <div class="slide-bg-blur" style="background-image:url('/img/atlante/R.jpg')"></div>
+                <img class="slide-img" src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
+              </div>
             </div>
             <div class="swiper-pagination"></div>
             <button class="swiper-button-prev" aria-label="Foto precedente"></button>
@@ -2376,6 +1809,34 @@
                 <div class="swiper-slide rsm-slide">
                   <div class="slide-bg-blur" style="background-image:url('/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp')"></div>
                   <img class="slide-img" src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/Garzetta - Mssimo Brambilla.jpg')"></div>
+                  <img class="slide-img" src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/corte-mincio-storica.jpg')"></div>
+                  <img class="slide-img" src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/museo-etnografico.jpg')"></div>
+                  <img class="slide-img" src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/20190822_104621.jpg')"></div>
+                  <img class="slide-img" src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/3eb85a6da2459a72bb33081648900153.webp')"></div>
+                  <img class="slide-img" src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/OIP.webp')"></div>
+                  <img class="slide-img" src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
+                </div>
+                <div class="swiper-slide rsm-slide">
+                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/R.jpg')"></div>
+                  <img class="slide-img" src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
                 </div>
               </div>
               <div class="swiper-pagination"></div>
@@ -2568,6 +2029,7 @@
   <script src="/supabase.config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
   <script>
   (function () {
     'use strict';
@@ -2881,11 +2343,54 @@
         });
     }
 
-    /* ─── GSAP scroll triggers ─── */
+    /* ─── GSAP scroll triggers + Lenis smooth scroll ─── */
     function initGsap() {
       if (reduceMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
       gsap.registerPlugin(ScrollTrigger);
 
+      /* Lenis smooth scroll */
+      if (typeof Lenis !== 'undefined') {
+        var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      /* Banner video parallax + overlay fade */
+      var bannerVideo = $('.rsm-banner__video');
+      if (bannerVideo) {
+        gsap.fromTo(bannerVideo, { scale: 1.1 }, {
+          scale: 0.95, ease: 'none',
+          scrollTrigger: { trigger: '.rsm-banner', start: 'top top', end: 'bottom top', scrub: 1 }
+        });
+      }
+      var bannerOverlay = $('.rsm-banner__overlay');
+      if (bannerOverlay) {
+        gsap.fromTo(bannerOverlay, { opacity: 0.55 }, {
+          opacity: 0.78, ease: 'none',
+          scrollTrigger: { trigger: '.rsm-banner', start: 'top top', end: 'bottom top', scrub: 1.2 }
+        });
+      }
+
+      /* Section backgrounds: color wash al enter/leave */
+      var sections = [
+        { el: '.rsm-festa', color1: 'rgba(31,191,125,0.05)', color2: 'rgba(31,191,125,0.12)' },
+        { el: '.rsm-events', color1: 'rgba(139,92,246,0.04)', color2: 'rgba(139,92,246,0.10)' },
+        { el: '.rsm-gallery', color1: 'rgba(74,155,255,0.03)', color2: 'rgba(74,155,255,0.09)' },
+        { el: '.rsm-territory', color1: 'rgba(31,191,125,0.04)', color2: 'rgba(31,191,125,0.12)' },
+        { el: '.rsm-contact', color1: 'rgba(74,155,255,0.04)', color2: 'rgba(74,155,255,0.10)' }
+      ];
+      sections.forEach(function (sec) {
+        var el = $(sec.el);
+        if (el) {
+          gsap.fromTo(el, { filter: 'brightness(1)' }, {
+            filter: 'brightness(1.02)', ease: 'none',
+            scrollTrigger: { trigger: el, start: 'top 60%', end: 'top -60%', scrub: 1 }
+          });
+        }
+      });
+
+      /* Parallax profondo su elementi dati */
       gsap.utils.toArray('[data-parallax]').forEach(function (el) {
         var amount = parseFloat(el.getAttribute('data-parallax') || '0.1') * 240;
         gsap.to(el, { y: amount, ease: 'none',
@@ -2893,22 +2398,106 @@
         });
       });
 
+      /* Photo slots: zoom-pan su scroll */
       gsap.utils.toArray('.photo-slot').forEach(function (slot) {
         gsap.fromTo(slot, { scale: 0.96 }, {
-          scale: 1.04, ease: 'none',
+          scale: 1.08, ease: 'none',
           scrollTrigger: { trigger: slot, start: 'top bottom', end: 'bottom top', scrub: 1.4 }
         });
       });
 
+      /* Gallery stage: scale + Y parallax cinematico */
+      var galleryStage = $('.rsm-gallery__stage');
+      if (galleryStage) {
+        gsap.fromTo(galleryStage, { scale: 0.94, opacity: 0.8 }, {
+          scale: 1.02, opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: galleryStage, start: 'top 70%', end: 'top 30%', scrub: 1.5 }
+        });
+      }
+
+      /* Territory swiper: slow horizontal pan effect */
+      var atlasPhoto = $('.rsm-atlas-photo');
+      if (atlasPhoto) {
+        gsap.to(atlasPhoto, { x: 40, ease: 'none',
+          scrollTrigger: { trigger: atlasPhoto, start: 'top bottom', end: 'bottom top', scrub: 1.8 }
+        });
+      }
+
+      /* Festa menu items: stagger entrance on scroll */
+      var menuItems = $all('.rsm-festa__menu-list li');
+      if (menuItems.length) {
+        gsap.fromTo(menuItems, { opacity: 0, x: -40 }, {
+          opacity: 1, x: 0, ease: 'power2.out',
+          scrollTrigger: { trigger: '.rsm-festa__grid', start: 'top 65%', end: 'top 35%' },
+          stagger: 0.08
+        });
+      }
+
+      /* Festa dates: bottom entrance */
+      var dateItems = $all('.rsm-festa__day');
+      if (dateItems.length) {
+        gsap.fromTo(dateItems, { opacity: 0, y: 20 }, {
+          opacity: 1, y: 0, ease: 'back.out(1.4)',
+          scrollTrigger: { trigger: '.rsm-festa__dates', start: 'top 65%', end: 'top 35%' },
+          stagger: 0.05
+        });
+      }
+
+      /* Experience cards: 3D tilt on scroll */
+      var xpCards = $all('.rsm-xp-card');
+      if (xpCards.length) {
+        gsap.fromTo(xpCards, { rotateY: -5, opacity: 0.8 }, {
+          rotateY: 0, opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: '.rsm-xp-grid', start: 'top 70%', end: 'top 30%', scrub: 1 },
+          stagger: 0.1
+        });
+      }
+
+      /* Back-to-top button: fade on scroll position */
+      var backToTop = $('.back-to-top');
+      if (backToTop) {
+        gsap.to(backToTop, {
+          opacity: 0, pointerEvents: 'none',
+          scrollTrigger: { trigger: 'body', start: 'top bottom', onUpdate: function (self) {
+            backToTop.style.opacity = self.getVelocity() > 0 && window.scrollY > window.innerHeight ? 1 : 0;
+            backToTop.style.pointerEvents = self.getVelocity() > 0 && window.scrollY > window.innerHeight ? 'auto' : 'none';
+          }}
+        });
+      }
+
       ScrollTrigger.refresh();
     }
 
-    /* ─── Anime.js entrance + hover ─── */
+    /* ─── Anime.js entrance + hover + banner effects ─── */
     function initAnimeJs() {
       if (reduceMotion || typeof anime === 'undefined' || typeof anime.animate !== 'function') return;
 
+      /* Nav entrance */
       anime.animate('.nav-island', { translateY: [-28, 0], opacity: [0, 1], duration: 880, ease: 'out(4)' });
 
+      /* Banner entrance: all elements cascade */
+      anime.animate('.rsm-banner__kicker', {
+        translateY: [20, 0], opacity: [0, 1],
+        duration: 700, delay: 200, ease: 'out(3)'
+      });
+      anime.animate('.rsm-banner__title', {
+        translateY: [40, 0], scale: [0.92, 1], opacity: [0, 1],
+        duration: 1100, delay: 300, ease: 'out(4)'
+      });
+      anime.animate('.rsm-banner__sub', {
+        translateY: [20, 0], opacity: [0, 0.8],
+        duration: 800, delay: 600, ease: 'out(3)'
+      });
+      anime.animate('.rsm-banner__cta', {
+        scale: [0.85, 1], opacity: [0, 1],
+        duration: 600, delay: 800, ease: 'out(4)'
+      });
+      anime.animate('.rsm-banner__scroll-hint', {
+        opacity: [0, 1],
+        duration: 1200, delay: 1200, ease: 'out(2)'
+      });
+
+      /* Hero section entrance */
       anime.animate('.rsm-hero__main > *', {
         translateY: [30, 0], opacity: [0, 1],
         delay: anime.stagger(95, { start: 140 }),
@@ -2926,20 +2515,50 @@
         duration: 760, ease: 'out(3)'
       });
 
+      /* Gallery marquee: breathing pulsing loop */
       anime.animate('.rsm-gallery__marquee-track', {
         opacity: [0.4, 1], duration: 1700,
         direction: 'alternate', loop: true, ease: 'inOut(2)'
       });
 
-      var interactiveCards = $all('.stack-card, .post-card, .rsm-card, .festa-day, .rsm-festa__poster');
+      /* Festa poster: spin + scale entrance */
+      anime.animate('.rsm-festa__poster', {
+        rotate: [-8, 0], scale: [0.9, 1], opacity: [0, 1],
+        duration: 1100, ease: 'out(4)'
+      });
+
+      /* Section headings: stagger words */
+      var sectionHeadings = $all('.rsm-section-head h2');
+      sectionHeadings.forEach(function (heading) {
+        if (heading.closest('[data-reveal]')) return;
+        var words = heading.querySelectorAll('.word');
+        if (words.length) {
+          anime.fromTo(words, { opacity: 0, translateY: 12 }, {
+            opacity: 1, translateY: 0, duration: 600,
+            delay: anime.stagger(40, { start: 200 }), ease: 'out(3)'
+          });
+        }
+      });
+
+      /* Interactive cards: rich hover effects */
+      var interactiveCards = $all('.stack-card, .post-card, .rsm-card, .festa-day, .rsm-festa__poster, .rsm-valli');
       interactiveCards.forEach(function (card) {
         card.addEventListener('pointerenter', function () {
-          anime.animate(card, { scale: 1.012, translateY: -4, duration: 360, ease: 'out(3)' });
+          anime.animate(card, { scale: 1.015, translateY: -6, duration: 420, ease: 'out(3)' });
         });
         card.addEventListener('pointerleave', function () {
-          anime.animate(card, { scale: 1, translateY: 0, duration: 420, ease: 'out(3)' });
+          anime.animate(card, { scale: 1, translateY: 0, duration: 480, ease: 'out(3)' });
         });
       });
+
+      /* Newsletter form: reveal on view */
+      var newsletterForm = $('.rsm-newsletter');
+      if (newsletterForm) {
+        anime.animate(newsletterForm, {
+          scale: [0.92, 1], opacity: [0, 1],
+          duration: 900, ease: 'out(4)', delay: 200
+        });
+      }
     }
 
     /* ─── Splitting.js: typewriter sui titoli ─── */
