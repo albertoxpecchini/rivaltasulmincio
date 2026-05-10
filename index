@@ -1119,7 +1119,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       gap: clamp(20px, 3vw, 40px);
-      align-items: stretch;
+      align-items: start;
     }
     .rsm-contact__map {
       border-radius: var(--rsm-r-3xl);

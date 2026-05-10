@@ -542,8 +542,12 @@
 
   .rsm-footer__bottom {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 12px;
+  }
+
+  .rsm-footer__top-link {
+    align-self: flex-start;
   }
 
   .rsm-footer__contact-line {
