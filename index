@@ -242,6 +242,8 @@
        ========================================================= */
     .rsm-banner {
       position: relative;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
       height: 80vh;
       min-height: 520px;
       overflow: hidden;
