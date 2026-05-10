@@ -1274,6 +1274,7 @@ html[data-theme="scuro"] .skip-link { background: var(--ink); color: var(--cream
 
 /* ── 24. Transizione smooth al cambio tema ── */
 html { transition: background-color 0.25s ease, color 0.25s ease; }
+body { overflow-x: clip; }
 html[data-theme] body,
 html[data-theme] .bcard,
 html[data-theme] .bc,
