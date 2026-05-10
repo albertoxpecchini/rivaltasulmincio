@@ -126,7 +126,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.38fr) repeat(3, minmax(170px, 0.82fr));
   gap: clamp(16px, 2vw, 24px);
-  align-items: stretch;
+  align-items: start;
   margin-bottom: clamp(20px, 3vw, 32px);
 }
 
@@ -136,9 +136,8 @@
   display: grid;
   gap: 18px;
   min-width: 0;
-  height: 100%;
   padding: clamp(20px, 2.4vw, 28px);
-  border-radius: 24px;
+  border-radius: 22px;
   align-content: start;
   border: 1px solid rgba(123, 181, 255, 0.24);
   background: linear-gradient(180deg, rgba(8, 20, 48, 0.98), rgba(8, 14, 34, 0.96));
@@ -274,12 +273,12 @@
 
 .rsm-footer__contact-line {
   display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 14px;
-  align-items: baseline;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: center;
   padding: 12px 14px;
   border: 1px solid rgba(146, 198, 255, 0.26);
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
   color: rgba(214, 231, 255, 0.84);
   text-decoration: none;
@@ -442,8 +441,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 18px clamp(20px, 2.4vw, 28px);
+  gap: clamp(12px, 2vw, 18px);
+  padding: 16px clamp(20px, 2.4vw, 28px);
   border: 1px solid rgba(123, 181, 255, 0.24);
   border-radius: 20px;
   background: linear-gradient(180deg, rgba(8, 20, 48, 0.98), rgba(8, 14, 34, 0.96));
@@ -543,13 +542,14 @@
 
   .rsm-footer__bottom {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: stretch;
+    gap: 12px;
   }
 
   .rsm-footer__contact-line {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: 6px;
+    padding: 10px 12px;
   }
 }
 
