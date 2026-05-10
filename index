@@ -1621,26 +1621,22 @@
       transform: translate(0, 4px) !important;
     }
 
-    /* Scroll hint editorial */
-    .rsm-banner__scroll-hint {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .rsm-banner__scroll-hint::before {
-      content: "Scroll";
-      font-family: 'Space Grotesk', system-ui, sans-serif;
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: rgba(220, 234, 255, 0.62);
-    }
+    /* Scroll hint — solo linea, senza testo */
     .rsm-banner__scroll-line {
       width: 1px !important;
       height: 56px !important;
       background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.86)) !important;
+    }
+
+    /* CTA banner: niente underline */
+    .rsm-banner__cta,
+    .rsm-banner__cta:hover,
+    .rsm-banner__cta:focus,
+    .rsm-banner__cta:active {
+      text-decoration: none !important;
+    }
+    .rsm-banner__cta span {
+      text-decoration: none !important;
     }
 
     /* ═════════════════ HERO (intro) — editorial premium ═════════════════ */
@@ -2056,6 +2052,324 @@
       .rsm-edit-band-group { gap: 20px; padding-right: 20px; }
     }
 
+    /* ════════════════════════════════════════════════════════════
+       FIX TYPOGRAPHY GLOBALE — Syne ovunque + no Times fallback
+       ════════════════════════════════════════════════════════════ */
+    .rsm-h1,
+    .rsm-h2,
+    .rsm-h3,
+    .rsm-h4,
+    .rsm-display-1,
+    .rsm-display-2,
+    .rsm-festa__title,
+    .rsm-newsletter h2,
+    .rsm-modal__title,
+    .rsm-xp-card h3,
+    .rsm-xp-body h3,
+    .rsm-atlas-copy h3,
+    .post-featured__title,
+    .news-empty strong {
+      font-family: 'Syne', 'Cabinet Grotesk', system-ui, -apple-system, sans-serif !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.025em !important;
+      line-height: 1.04 !important;
+      text-wrap: balance;
+      word-spacing: 0.02em;
+    }
+
+    /* Em italic accents — Fraunces con gradient, padding anti-clip */
+    .rsm-h1 em,
+    .rsm-h2 em,
+    .rsm-h3 em,
+    .rsm-display-1 em,
+    .rsm-display-2 em,
+    .rsm-festa__title em,
+    .rsm-newsletter h2 em,
+    .rsm-banner__title em,
+    .rsm-hero__title em,
+    .rsm-compass__copy .rsm-h1 em {
+      font-family: 'Fraunces', Georgia, serif !important;
+      font-style: italic !important;
+      font-weight: 500 !important;
+      padding: 0 0.06em !important;
+      margin: 0 -0.02em !important;
+      display: inline-block;
+    }
+
+    /* Titoli h1 — più aria, no taglio */
+    .rsm-h1 {
+      font-size: clamp(2rem, 4vw, 3.6rem) !important;
+      letter-spacing: -0.02em !important;
+    }
+    .rsm-h2 {
+      font-size: clamp(1.5rem, 2.6vw, 2.4rem) !important;
+      letter-spacing: -0.015em !important;
+    }
+    .rsm-h3 {
+      font-size: clamp(1.2rem, 1.7vw, 1.55rem) !important;
+      letter-spacing: -0.01em !important;
+    }
+    .rsm-festa__title {
+      font-size: clamp(2rem, 4.4vw, 4rem) !important;
+      letter-spacing: -0.025em !important;
+    }
+    .rsm-banner__title {
+      font-size: clamp(3rem, 9vw, 8rem) !important;
+      letter-spacing: -0.04em !important;
+    }
+    .rsm-hero__title {
+      font-size: clamp(2.2rem, 4.6vw, 4.4rem) !important;
+      letter-spacing: -0.025em !important;
+    }
+    .rsm-compass__copy .rsm-h1 {
+      font-size: clamp(1.8rem, 3.4vw, 3rem) !important;
+    }
+
+    /* Body fonts forced sans (no serif fallback ovunque) */
+    .rsm-lead,
+    .rsm-body,
+    p:not(.rsm-kicker),
+    .rsm-newsletter p,
+    .rsm-newsletter label,
+    .rsm-newsletter .privacy-note {
+      font-family: 'Space Grotesk', 'Cabinet Grotesk', system-ui, -apple-system, sans-serif !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       BOTTONI: zero frecce, più in rilievo
+       ════════════════════════════════════════════════════════════ */
+    .rsm-btn .rsm-btn-icon,
+    .rsm-btn-icon {
+      display: none !important;
+    }
+    .rsm-btn {
+      min-height: 56px !important;
+      padding: 0 26px !important;
+      font-family: 'Syne', 'Cabinet Grotesk', system-ui, sans-serif !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.005em !important;
+      box-shadow:
+        0 18px 38px rgba(11, 13, 20, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+      transition:
+        transform 320ms var(--rsm-edit-ease-spring),
+        box-shadow 320ms var(--rsm-edit-ease),
+        background 320ms var(--rsm-edit-ease) !important;
+    }
+    .rsm-btn:hover {
+      transform: translateY(-3px) !important;
+      box-shadow:
+        0 26px 52px rgba(11, 13, 20, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+    }
+    .rsm-btn:active {
+      transform: translateY(-1px) scale(0.98) !important;
+    }
+
+    .rsm-btn--brand {
+      background: linear-gradient(120deg, #1fbf7d 0%, #4a9bff 50%, #8b5cf6 100%) !important;
+      background-size: 220% 100% !important;
+      background-position: 0% 50% !important;
+      color: #fff !important;
+      box-shadow:
+        0 22px 50px rgba(74, 155, 255, 0.34),
+        0 8px 18px rgba(139, 92, 246, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    }
+    .rsm-btn--brand:hover {
+      background-position: 100% 50% !important;
+      box-shadow:
+        0 30px 64px rgba(74, 155, 255, 0.42),
+        0 12px 24px rgba(139, 92, 246, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    }
+
+    .rsm-btn--ghost {
+      background: rgba(255, 255, 255, 0.85) !important;
+      border: 1px solid rgba(11, 13, 20, 0.16) !important;
+      color: var(--rsm-ink) !important;
+      backdrop-filter: blur(12px);
+    }
+    .rsm-btn--ghost:hover {
+      background: #fff !important;
+      border-color: var(--rsm-ink) !important;
+    }
+
+    /* Bottoni dentro newsletter scura: ghost variant adattato */
+    .rsm-newsletter .rsm-btn--ghost {
+      background: rgba(255, 255, 255, 0.10) !important;
+      border-color: rgba(255, 255, 255, 0.22) !important;
+      color: #fff !important;
+    }
+    .rsm-newsletter .rsm-btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.20) !important;
+      border-color: rgba(255, 255, 255, 0.46) !important;
+    }
+
+    /* Banner CTA: override colore testo per leggibilità su gradient */
+    .rsm-banner__cta.rsm-btn--brand {
+      color: #fff !important;
+    }
+
+    /* "Leggi →" arrow nei post-card: nascondi span con freccia */
+    .btn-read span[aria-hidden="true"] {
+      display: none !important;
+    }
+    .btn-read {
+      gap: 0 !important;
+      font-family: 'Syne', system-ui, sans-serif !important;
+      font-weight: 700 !important;
+      padding: 8px 16px !important;
+      border-radius: 999px !important;
+      background: rgba(11, 13, 20, 0.06) !important;
+      transition: background 240ms var(--rsm-edit-ease), color 240ms var(--rsm-edit-ease) !important;
+    }
+    .btn-read:hover {
+      background: var(--rsm-ink) !important;
+      color: #fff !important;
+    }
+
+    /* Compass link: niente più freccia ↗ */
+    .rsm-compass__link::after {
+      display: none !important;
+    }
+    .rsm-compass__link {
+      grid-template-columns: 44px 1fr !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       EVENTI: più cards visibili (grid più compatto)
+       ════════════════════════════════════════════════════════════ */
+    .post-card-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+      gap: 16px !important;
+    }
+    @media (min-width: 1100px) {
+      .post-card-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+    }
+    @media (min-width: 1400px) {
+      .post-card-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+      }
+    }
+    .post-card__body {
+      padding: 16px !important;
+      gap: 8px !important;
+    }
+    .post-card__title {
+      font-size: 1rem !important;
+      line-height: 1.22 !important;
+    }
+    .post-card__excerpt {
+      font-size: 0.85rem !important;
+      line-height: 1.45 !important;
+    }
+    .post-card__media,
+    .post-card .news-card__media {
+      aspect-ratio: 16 / 11;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       NEWSLETTER (Resta in contatto): typography + spacing fix
+       ════════════════════════════════════════════════════════════ */
+    .rsm-newsletter {
+      margin-top: 0 !important;
+      padding: clamp(48px, 6vw, 80px) 0 clamp(48px, 6vw, 72px) !important;
+    }
+    .rsm-newsletter h2 {
+      font-family: 'Syne', system-ui, sans-serif !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.025em !important;
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem) !important;
+      line-height: 1.04 !important;
+    }
+    .rsm-newsletter h2 em {
+      font-family: 'Fraunces', Georgia, serif !important;
+      font-style: italic !important;
+      font-weight: 500 !important;
+      padding: 0 0.06em !important;
+    }
+    .rsm-newsletter .rsm-kicker {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.22em !important;
+    }
+    .rsm-newsletter label {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+      font-size: 0.7rem !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase !important;
+      color: rgba(255, 255, 255, 0.62) !important;
+    }
+    .rsm-newsletter .rsm-input {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+    }
+    .rsm-newsletter .privacy-note,
+    .rsm-newsletter .privacy-note a {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       DOVE SIAMO (07): typography fix + contact lines
+       ════════════════════════════════════════════════════════════ */
+    .rsm-contact h2,
+    .rsm-contact .rsm-h1,
+    .rsm-contact .rsm-h2 {
+      font-family: 'Syne', system-ui, sans-serif !important;
+    }
+    .rsm-contact .rsm-h2 em,
+    .rsm-contact .rsm-h1 em {
+      font-family: 'Fraunces', Georgia, serif !important;
+      padding: 0 0.06em !important;
+    }
+    .rsm-contact__line strong {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+      font-size: 0.7rem !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase !important;
+      color: var(--rsm-ink-3) !important;
+    }
+    .rsm-contact__line a,
+    .rsm-contact__line span {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+    }
+
+    /* No spazio bianco tra contact e newsletter (è dentro la stessa section) */
+    .rsm-contact .rsm-newsletter {
+      margin-top: clamp(40px, 5vw, 64px) !important;
+    }
+
+    /* No gap fra newsletter e footer (footer ha già il proprio spacing) */
+    .rsm-section.rsm-contact { padding-bottom: 0 !important; }
+    .rsm-foot { margin-top: 0 !important; }
+
+    /* ════════════════════════════════════════════════════════════
+       FIX KICKER GLOBALE — niente serif, niente lineetta lunga
+       ════════════════════════════════════════════════════════════ */
+    .rsm-kicker {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+      font-size: 0.72rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.22em !important;
+      text-transform: uppercase !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       FESTA-DAY chips — fix font Times
+       ════════════════════════════════════════════════════════════ */
+    .rsm-festa__day,
+    .festa-day,
+    .rsm-festa__day strong,
+    .rsm-festa__day span {
+      font-family: 'Space Grotesk', 'Cabinet Grotesk', system-ui, sans-serif !important;
+    }
+    .rsm-festa__day strong {
+      font-family: 'Syne', system-ui, sans-serif !important;
+      font-weight: 800 !important;
+    }
+
     /* ═════════════════ REDUCED MOTION ═════════════════ */
     @media (prefers-reduced-motion: reduce) {
       .rsm-banner__blob,
@@ -2078,15 +2392,8 @@
   </style>
 </head>
 <body data-page="home">
-  <a class="skip-link" href="#main">Salta al contenuto</a>
 
 <!--PARTIAL:nav-->
-
-  <div class="rsm-aurora" aria-hidden="true">
-    <span class="rsm-aurora__blob rsm-aurora__blob--emerald"></span>
-    <span class="rsm-aurora__blob rsm-aurora__blob--azure"></span>
-    <span class="rsm-aurora__blob rsm-aurora__blob--violet"></span>
-  </div>
 
   <main id="main">
 
@@ -2113,14 +2420,12 @@
           <span>Mantova</span>
         </p>
         <h1 class="rsm-display-1 rsm-banner__title" style="margin-top: var(--rsm-s-5)">
-          <span class="rsm-edit-line">Rivalta</span>
-          <span class="rsm-edit-line">sul <em>Mincio</em>.</span>
+          <span class="rsm-edit-line">Rivalta sul <em>Mincio</em></span>
         </h1>
         <p class="rsm-banner__sub rsm-edit-line">Valli, borghi, tradizioni. Nel cuore del Parco del Mincio.</p>
         <span class="rsm-edit-line" style="display:block;margin-top:var(--rsm-s-7);">
           <a class="rsm-btn rsm-btn--brand magnetic rsm-banner__cta" href="#intro">
             <span>Scopri il borgo</span>
-            <span class="rsm-btn-icon" aria-hidden="true">↓</span>
           </a>
         </span>
       </div>
@@ -2144,8 +2449,7 @@
               <span>Mantova</span>
             </p>
             <h1 class="rsm-display-1 rsm-hero__title" id="intro-title" style="margin-top: var(--rsm-s-5)">
-              <span class="rsm-edit-line">Rivalta sul Mincio,</span>
-              <span class="rsm-edit-line">dove l&rsquo;<em>acqua</em> diventa <em>paese</em>.</span>
+              <span class="rsm-edit-line">Dove l&rsquo;<em>acqua</em> diventa <em>paese</em></span>
             </h1>
             <p class="rsm-lead">Un borgo di pescatori nel cuore del Parco del Mincio: canneti, chiari, aironi, ciclabili lente e una cucina d&rsquo;acqua che tiene insieme memoria e futuro.</p>
             <div class="rsm-button-row">
@@ -2228,7 +2532,7 @@
         <div class="rsm-compass__inner" data-reveal>
           <div class="rsm-compass__copy">
             <p class="rsm-kicker">02 · Mappa della pagina</p>
-            <h2 class="rsm-h1" id="mappa-title">Sei tappe chiare,<br/>nessuno scroll <em>infinito</em>.</h2>
+            <h2 class="rsm-h1" id="mappa-title">Sei tappe chiare, nessuno scroll <em>infinito</em></h2>
             <p class="rsm-lead">Se preferisci orientarti prima di leggere, qui sotto c&rsquo;&egrave; la sequenza completa della home: cosa accade ora, cosa vedere, cosa fare e dove arrivare alla fine.</p>
             <div class="rsm-compass__meta">
               <span class="rsm-tag rsm-tag--emerald">7 sezioni</span>
@@ -2256,7 +2560,7 @@
         <header class="rsm-festa__head">
           <div data-reveal>
             <p class="rsm-kicker"><span class="festa-pulse" aria-hidden="true"></span>03 · 40&deg; edizione · 1985 — 2025</p>
-            <h2 class="rsm-festa__title" id="festa-title">Festa del Pesce e del <em>Luccio alla Rivaltese</em>.</h2>
+            <h2 class="rsm-festa__title" id="festa-title">Festa del Pesce e del <em>Luccio alla Rivaltese</em></h2>
             <p class="rsm-lead">Quarant&rsquo;anni di cucina d&rsquo;acqua dolce all&rsquo;Area Feste Platana, ai margini del canneto delle Valli del Mincio. Cucine aperte dalle 19:30, servizio al tavolo a cura dei volontari della Pro Loco.</p>
             <div class="rsm-button-row">
               <a class="rsm-btn rsm-btn--brand magnetic" href="#eventi"><span>Tutto il programma</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
@@ -2287,7 +2591,7 @@
           <article class="rsm-card" data-reveal data-component="card/menu">
             <header>
               <p class="rsm-kicker">Il men&ugrave; 2025</p>
-              <h3 class="rsm-h2" style="margin-top:12px">Quarant&rsquo;anni di ricette d&rsquo;acqua dolce.</h3>
+              <h3 class="rsm-h2" style="margin-top:12px">Quarant&rsquo;anni di ricette d&rsquo;acqua dolce</h3>
               <p class="rsm-body" style="color:var(--rsm-ink-3);margin-top:10px">Le specialit&agrave; storiche della Pro Loco. <strong>Luccio in salsa</strong> e <strong>Luccio in bianco</strong> sono Prodotti Agroalimentari Tradizionali (PAT) e De.Co. comunale.</p>
             </header>
             <ol class="rsm-festa__menu-list" aria-label="Piatti della 40° edizione">
@@ -2341,7 +2645,7 @@
         <div class="rsm-section-head">
           <div data-reveal>
             <p class="rsm-kicker">04 · Eventi e iniziative</p>
-            <h2 class="rsm-h1" id="eventi-title">Tutto quello che <em>succede</em> a Rivalta.</h2>
+            <h2 class="rsm-h1" id="eventi-title">Tutto quello che <em>succede</em> a Rivalta</h2>
           </div>
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Eventi, escursioni, avvisi e racconti caricati dalla redazione tramite Supabase. Filtra per categoria o sfoglia gli ultimi articoli pubblicati.</p>
         </div>
@@ -2373,7 +2677,7 @@
         <div class="rsm-section-head">
           <div data-reveal>
             <p class="rsm-kicker">05 · Galleria</p>
-            <h2 class="rsm-h1" id="galleria-title">Foto del borgo, delle <em>valli</em> e degli eventi.</h2>
+            <h2 class="rsm-h1" id="galleria-title">Foto del borgo, delle <em>valli</em> e degli eventi</h2>
           </div>
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Un carosello pulito, automatico e consultabile. Sostituibile in pochi click con immagini fornite dalla redazione o da Figma.</p>
         </div>
@@ -2497,7 +2801,7 @@
         <div class="rsm-section-head">
           <div data-reveal>
             <p class="rsm-kicker">06 · Atlante vivo · Sito Ramsar</p>
-            <h2 class="rsm-h1" id="territorio-title">Le <em>Valli del Mincio</em>, oasi d&rsquo;acqua e silenzio.</h2>
+            <h2 class="rsm-h1" id="territorio-title">Le <em>Valli del Mincio</em>, oasi d&rsquo;acqua e silenzio</h2>
           </div>
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Tra Rivalta e Borgo Angeli il fiume rallenta e diventa un mosaico di canneti, chiari e praterie a carice. Una zona umida riconosciuta dalla Convenzione di Ramsar e dalla rete Natura 2000.</p>
         </div>
@@ -2575,7 +2879,7 @@
           </article>
 
           <div class="rsm-atlas-copy" data-reveal style="--delay: 140ms">
-            <h3 class="rsm-h2">Acqua, canneti, paese.</h3>
+            <h3 class="rsm-h2">Acqua, canneti, paese</h3>
             <p class="rsm-lead">Il Mincio rallenta in <strong>oltre 1.000 ettari di acqua, canneti e ninfee</strong>: una riserva tra Rivalta e Mantova riconosciuta da <span class="kw" data-kw="ramsar">Ramsar</span> e dalla rete Natura 2000.</p>
             <div class="rsm-fact-grid">
               <div class="fact"><strong data-count="260">0</strong><span>specie di uccelli censite</span></div>
@@ -2592,13 +2896,13 @@
         <!-- Esperienze -->
         <div class="rsm-section-head" data-reveal>
           <p class="rsm-kicker">Tre modi per entrare</p>
-          <h3 class="rsm-h2">Acqua, bici, osservazione lenta.</h3>
+          <h3 class="rsm-h2">Acqua, bici, osservazione lenta</h3>
         </div>
         <div class="rsm-xp-grid">
           <article class="stack-card rsm-xp-card is-emerald" data-reveal data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-boat" style="--photo:url('/img/waterbike-mincio.jpg')" role="img" aria-label="Escursione in barca nelle Valli del Mincio"></div>
             <div class="rsm-xp-body stack-card-copy">
-              <h3>Dal livello dell&rsquo;acqua.</h3>
+              <h3>Dal livello dell&rsquo;acqua</h3>
               <p>Partenze dagli imbarcaderi, canali stretti, silenzio dei canneti e un punto di vista che cambia il modo di leggere la valle.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--emerald">barca</span>
@@ -2610,7 +2914,7 @@
           <article class="stack-card rsm-xp-card is-azure" data-reveal style="--delay: 120ms" data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-bike" style="--photo:url('/img/mantova-laghi-aerea.jpg')" role="img" aria-label="Ciclabile nei pressi di Rivalta"></div>
             <div class="rsm-xp-body stack-card-copy">
-              <h3>La valle a pedali.</h3>
+              <h3>La valle a pedali</h3>
               <p>Rivalta &egrave; tappa ideale tra Mantova e Peschiera del Garda, con deviazioni lente verso argini, pontili e scorci d&rsquo;acqua.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--azure">cicloturismo</span>
@@ -2622,7 +2926,7 @@
           <article class="stack-card rsm-xp-card is-violet" data-reveal style="--delay: 240ms" data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-birdwatching" style="--photo:url('/img/museo-etnografico-tramonto.jpg')" role="img" aria-label="Birdwatching nelle Valli del Mincio"></div>
             <div class="rsm-xp-body stack-card-copy">
-              <h3>Aironi, chiari, canneti.</h3>
+              <h3>Aironi, chiari, canneti</h3>
               <p>La zona umida &egrave; un archivio naturale aperto: specie migratrici, nidificazioni, fioriture estive e tracce da osservare con rispetto.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--violet">fauna</span>
@@ -2668,7 +2972,7 @@
         <div class="rsm-section-head">
           <div data-reveal>
             <p class="rsm-kicker">07 · Dove siamo</p>
-            <h2 class="rsm-h1" id="contatti-title">Arrivare a Rivalta &egrave; gi&agrave; <em>parte del viaggio</em>.</h2>
+            <h2 class="rsm-h1" id="contatti-title">Arrivare a Rivalta &egrave; gi&agrave; <em>parte del viaggio</em></h2>
           </div>
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Rivalta sul Mincio &egrave; frazione del Comune di Rodigo, a circa 10 km da Mantova. L&rsquo;ufficio turistico Pro Loco si trova in Via Porto, 31.</p>
         </div>
@@ -2717,7 +3021,7 @@
           <div class="rsm-newsletter__grid">
             <div>
               <p class="rsm-kicker">Resta in contatto</p>
-              <h2>Il <em>Mincio</em> nella tua casella di posta.</h2>
+              <h2>Il <em>Mincio</em> nella tua casella di posta</h2>
               <p>Una mail al mese con eventi, sagre, escursioni e racconti dalle Valli del Mincio. Niente rumore, solo cose utili.</p>
             </div>
             <form class="rsm-field" id="newsletter-form" novalidate>
@@ -2740,7 +3044,7 @@
     <div class="rsm-modal__panel">
       <button class="rsm-modal__close" type="button" data-modal-close aria-label="Chiudi">×</button>
       <p class="rsm-kicker">Pro Loco · Newsletter</p>
-      <h3 class="rsm-modal__title" id="newsletter-modal-title">Ti avvisiamo noi quando inizia.</h3>
+      <h3 class="rsm-modal__title" id="newsletter-modal-title">Ti avvisiamo noi quando inizia</h3>
       <p class="rsm-lead" style="margin-bottom:20px">Lasciaci la tua email: ti scriviamo solo per la Festa del Pesce e per gli eventi importanti della Pro Loco.</p>
       <form class="rsm-field" id="newsletter-modal-form" novalidate>
         <label for="newsletter-modal-email">Email</label>
