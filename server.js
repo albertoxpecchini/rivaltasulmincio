@@ -296,13 +296,23 @@ async function handleChangelog(req, res) {
 
 // ── Keyword Wikipedia → Wikipedia title map ─────────────────────────────────
 const KW_WIKI_TITLES = {
-  'lago-di-garda':    'Lago di Garda',
-  'ramsar':           'Convenzione di Ramsar',
-  'uccelli-acquatici':'Airone cenerino',
-  'pianura-padana':   'Pianura Padana',
-  'canneti':          'Phragmites australis',
-  'canne-palustri':   'Phragmites australis',
-  'martin-pescatore': 'Alcedo atthis',
+  'lago-di-garda':     'Lago di Garda',
+  'ramsar':            'Convenzione di Ramsar',
+  'natura-2000':       'Natura 2000',
+  'mincio':            'Mincio',
+  'zona-umida':        'Zona umida',
+  'biodiversita':      'Biodiversità',
+  'uccelli-acquatici': 'Uccelli acquatici',
+  'airone-cenerino':   'Airone cenerino',
+  'garzetta':          'Garzetta',
+  'nitticora':         'Nitticora',
+  'pianura-padana':    'Pianura Padana',
+  'canneti':           'Phragmites australis',
+  'fitodepurazione':   'Fitodepurazione',
+  'eutrofizzazione':   'Eutrofizzazione',
+  'canne-palustri':    'Phragmites australis',
+  'arelle':            'Stuoia',
+  'martin-pescatore':  'Alcedo atthis',
 };
 
 // In-memory cache: kwKey → { wiki, claude, ts }

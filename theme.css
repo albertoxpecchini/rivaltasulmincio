@@ -341,6 +341,7 @@ html[data-theme="scuro"] {
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--rsm-text-on-dark);
+  text-decoration: none;
   background: var(--rsm-panel-dark);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 36px rgba(11,13,20,0.18);
   transition: transform var(--rsm-dur-base) var(--rsm-ease-out),
@@ -389,8 +390,9 @@ html[data-theme="scuro"] {
 }
 
 .rsm-btn--ghost {
-  color: var(--rsm-text-strong);
-  background: rgba(255,255,255,0.6);
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(255,255,255,0.08);
   border-color: var(--rsm-line-2);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--rsm-sh-sm);
   backdrop-filter: var(--rsm-blur-sm);
@@ -398,15 +400,21 @@ html[data-theme="scuro"] {
 }
 .rsm-btn--ghost .rsm-btn-icon { background: var(--rsm-panel-dark); color: var(--rsm-text-on-dark); }
 .rsm-btn--ghost:hover {
-  background: #fff;
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(255,255,255,0.16);
   box-shadow: var(--rsm-sh-md);
 }
 
 .rsm-btn--brand {
+  color: #0a0a0a;
+  text-decoration: none;
   background: var(--rsm-accent-grad-strong);
   box-shadow: var(--rsm-sh-glow-violet);
 }
 .rsm-btn--brand:hover {
+  color: #0a0a0a;
+  text-decoration: none;
   filter: brightness(1.04);
   box-shadow: 0 24px 80px rgba(139, 92, 246, 0.36), 0 8px 24px rgba(74, 155, 255, 0.28);
 }

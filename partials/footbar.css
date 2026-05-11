@@ -347,6 +347,10 @@
     box-shadow 260ms var(--rsm-foot-ease);
 }
 
+.rsm-foot__news-cta {
+  display: none;
+}
+
 .rsm-foot__news-row:focus-within {
   border-color: rgba(180, 220, 255, 0.64);
   background: rgba(8, 18, 36, 0.78);
@@ -430,6 +434,30 @@
 .rsm-foot__news-btn-icon svg {
   width: 16px;
   height: 16px;
+}
+
+body[data-page="home"] .rsm-foot__news-row {
+  grid-template-columns: 1fr;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-page="home"] .rsm-foot__news-icon,
+body[data-page="home"] .rsm-foot__news-input,
+body[data-page="home"] .rsm-foot__news-btn,
+body[data-page="home"] .rsm-foot__news-ok {
+  display: none;
+}
+
+body[data-page="home"] .rsm-foot__news-cta {
+  display: inline-flex;
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  padding-inline: 22px;
 }
 
 .rsm-foot__news-ok {
@@ -939,11 +967,32 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
   gap: 10px;
 }
 
-.rsm-foot__credit em {
+.rsm-foot__credit {
+  flex-wrap: wrap;
+}
+
+.rsm-foot__author {
   font-family: 'Fraunces', Georgia, serif;
   font-style: italic;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--rsm-foot-ink-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.rsm-foot__author-soon {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border: 1px solid var(--rsm-foot-line-strong);
+  border-radius: 999px;
+  background: var(--rsm-foot-glass);
+  color: var(--rsm-foot-ink);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .rsm-foot__copy-sep {
@@ -1200,6 +1249,11 @@ html[data-contrast="high"] .rsm-foot__contact-val,
 html[data-contrast="high"] .rsm-foot__copy,
 html[data-contrast="high"] .rsm-foot__credit {
   color: var(--rsm-foot-ink) !important;
+}
+
+html[data-contrast="high"] .rsm-foot__author-soon {
+  border-color: var(--rsm-foot-ink) !important;
+  background: transparent;
 }
 
 /* Density compact */

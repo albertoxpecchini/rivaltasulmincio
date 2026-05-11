@@ -12,8 +12,8 @@
   --rsm-topbar-accent: var(--rsm-accent-grad);
   position: fixed;
   inset: 0 0 auto;
-  z-index: 70;
-  overflow: clip;
+  z-index: 2147483000;
+  overflow: visible;
   isolation: isolate;
   background: linear-gradient(
     116deg,
@@ -53,7 +53,7 @@
 
 .nav-island {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -157,7 +157,7 @@
   border-radius: 999px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.03);
-  color: var(--rsm-topbar-text-soft);
+  color: #ffffff;
   text-decoration: none;
   font-family: 'Syne', var(--sans, system-ui), sans-serif;
   font-size: 0.82rem;
@@ -172,23 +172,12 @@
 }
 
 .nav-link::after {
-  content: "";
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 7px;
-  height: 1px;
-  border-radius: 999px;
-  background: var(--rsm-topbar-accent);
-  transform: scaleX(0.18);
-  transform-origin: center;
-  opacity: 0;
-  transition: transform 180ms ease, opacity 180ms ease;
+  display: none;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: var(--rsm-topbar-text);
+  color: #0a0a0a;
   background: rgba(255, 255, 255, 0.14);
   border-color: rgba(168, 208, 255, 0.22);
   box-shadow:
@@ -199,8 +188,8 @@
 
 .nav-link:hover::after,
 .nav-link.active::after {
-  opacity: 1;
-  transform: scaleX(1);
+  opacity: 0;
+  transform: none;
 }
 
 
@@ -219,7 +208,7 @@
   border-radius: 12px;
   border: 1px solid rgba(146, 198, 255, 0.26);
   background: var(--rsm-topbar-glass);
-  color: var(--rsm-topbar-text-soft);
+  color: #ffffff;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.84rem;
   font-weight: 500;
@@ -237,12 +226,12 @@
 .search-toggle:hover {
   background: var(--rsm-topbar-glass-strong);
   border-color: rgba(176, 219, 255, 0.4);
-  color: var(--rsm-topbar-text);
+  color: #0a0a0a;
   transform: translateY(-1px);
 }
 
 .search-toggle[aria-expanded="true"] {
-  color: var(--rsm-topbar-text);
+  color: #0a0a0a;
   border-color: rgba(152, 204, 255, 0.56);
   background: var(--rsm-topbar-glass-strong);
   box-shadow:
@@ -287,7 +276,7 @@
   border-radius: 12px;
   border: 1px solid rgba(146, 198, 255, 0.28);
   background: var(--rsm-topbar-glass);
-  color: var(--rsm-topbar-text-soft);
+  color: #ffffff;
   text-decoration: none;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.84rem;
@@ -304,7 +293,7 @@
 
 .nav-login:hover,
 .profile-btn:hover {
-  color: var(--rsm-topbar-text);
+  color: #0a0a0a;
   text-decoration: none;
   transform: translateY(-1px);
   border-color: rgba(175, 219, 255, 0.44);
@@ -320,6 +309,7 @@
 
 .profile-menu {
   position: relative;
+  z-index: 12;
 }
 
 .profile-avatar {
@@ -339,7 +329,9 @@
   position: absolute;
   right: 0;
   top: calc(100% + 12px);
-  width: 240px;
+  width: 232px;
+  box-sizing: border-box;
+  overflow: hidden;
   padding: 10px;
   border: 1px solid rgba(123, 181, 255, 0.24);
   border-radius: 20px;
@@ -359,6 +351,37 @@
     opacity 300ms cubic-bezier(0.32, 0.72, 0, 1),
     transform 300ms cubic-bezier(0.32, 0.72, 0, 1),
     visibility 300ms;
+  z-index: 2147483001;
+}
+
+.profile-dropdown__meta {
+  padding: 7px 10px 8px;
+  border: 1px solid rgba(136, 190, 255, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.profile-dropdown__meta strong {
+  display: block;
+  margin-bottom: 2px;
+  font-family: 'Syne', var(--sans, system-ui), sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--rsm-topbar-text);
+}
+
+.profile-dropdown__meta span {
+  display: block;
+  font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--rsm-topbar-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile-dropdown.open {
@@ -368,11 +391,11 @@
 }
 
 .profile-dropdown__section-title {
-  padding: 6px 10px;
+  padding: 5px 10px;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--rsm-topbar-text-dim);
 }
@@ -380,30 +403,48 @@
 .profile-dropdown a,
 .profile-dropdown button {
   width: 100%;
-  min-height: 39px;
-  padding: 0 11px;
+  box-sizing: border-box;
+  min-height: 33px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 0;
   border-radius: 12px;
   background: transparent;
-  color: var(--rsm-topbar-text-soft);
+  color: #ffffff;
   text-align: left;
   text-decoration: none;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
+.profile-dropdown a span:first-child,
+.profile-dropdown button span:first-child {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-dropdown a span:last-child,
+.profile-dropdown button span:last-child {
+  flex: 0 0 auto;
+  margin-left: 8px;
+  line-height: 1;
+}
+
 .profile-dropdown a:hover,
 .profile-dropdown button:hover,
 .profile-dropdown .active {
-  color: var(--rsm-topbar-text);
+  color: #0a0a0a;
   background: rgba(255, 255, 255, 0.1);
-  transform: translateX(1px);
+  text-decoration: none;
+  transform: none;
 }
 
 .profile-dropdown .danger {
@@ -423,6 +464,7 @@
 
 .search-panel {
   position: relative;
+  z-index: 2;
   overflow: hidden;
   height: 0;
   border-top: 1px solid transparent;
@@ -655,6 +697,13 @@
     padding: 0 11px;
     gap: 0;
   }
+
+  .profile-dropdown {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    top: calc(100% + 10px);
+  }
 }
 
 @media (max-width: 480px) {
@@ -691,7 +740,7 @@ html[data-theme="scuro"] .brand:hover {
 
 html[data-theme="scuro"] .nav-login,
 html[data-theme="scuro"] .profile-btn {
-  color: var(--rsm-topbar-text-soft);
+  color: #ffffff;
 }
 
 html[data-contrast="high"] .site-header {

@@ -2,7 +2,6 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Pro Loco Rivalta sul Mincio | Valli del Mincio, Festa del Pesce, Ecoturismo</title>
@@ -12,6 +11,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="canonical" href="https://www.rivaltasulmincio.it/" />
   <meta name="theme-color" content="#ffffff" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';t=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.theme=t;r.dataset.themePref=ok?p.theme:'chiaro';r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;var themeColorMeta=document.querySelector('meta[name="theme-color"]');if(themeColorMeta)themeColorMeta.content=t==='scuro'?'#0a0c14':'#ffffff';}catch(e){}}();</script>
 
   <meta name="geo.region" content="IT-MN" />
   <meta name="geo.placename" content="Rivalta sul Mincio, Rodigo" />
@@ -120,7 +120,6 @@
   <link rel="shortcut icon" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css" />
   <link rel="stylesheet" href="/theme.css" />
 
@@ -415,7 +414,12 @@
       font-weight: 600;
       line-height: 0.96;
       letter-spacing: -0.04em;
+      color: var(--rsm-text-on-dark);
       margin: var(--rsm-s-4) 0 var(--rsm-s-5);
+    }
+    .rsm-festa__title .word,
+    .rsm-festa__title .char {
+      color: inherit;
     }
     .rsm-festa__title em {
     }
@@ -439,9 +443,9 @@
     .rsm-festa__poster {
       position: relative;
       width: 100%;
-      max-width: 380px;
-      aspect-ratio: 3 / 4;
-      max-height: clamp(320px, 48vh, 480px);
+      max-width: clamp(280px, 30vw, 384px);
+      aspect-ratio: 768 / 960;
+      max-height: none;
       margin-left: auto;
       border-radius: var(--rsm-r-2xl);
       overflow: visible;
@@ -454,41 +458,88 @@
       object-position: center;
       border-radius: inherit;
     }
-    .rsm-festa__badge {
+    .rsm-festa__seal {
+      --seal-size: clamp(108px, 13.4vw, 144px);
       position: absolute;
-      bottom: -22px;
-      right: -16px;
-      width: clamp(86px, 12vw, 110px);
-      height: clamp(86px, 12vw, 110px);
+      right: clamp(-24px, -2vw, -12px);
+      bottom: clamp(-30px, -3.2vw, -18px);
+      width: var(--seal-size);
+      height: var(--seal-size);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      isolation: isolate;
+      transform: rotate(-7deg);
+      background:
+        radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.96) 0%, rgba(236, 245, 255, 0.84) 58%, rgba(214, 229, 252, 0.76) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.56);
+      box-shadow:
+        0 20px 52px rgba(63, 108, 188, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88),
+        inset 0 -14px 28px rgba(128, 156, 214, 0.20);
+      backdrop-filter: blur(10px) saturate(125%);
+      -webkit-backdrop-filter: blur(10px) saturate(125%);
+    }
+    .rsm-festa__seal::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(36, 74, 125, 0.16);
+      pointer-events: none;
+    }
+    .rsm-festa__seal-orbit {
+      position: absolute;
+      inset: 6%;
+      width: 88%;
+      height: 88%;
+      overflow: visible;
+      animation: rsm-festa-seal-spin 22s linear infinite;
+      transform-origin: 50% 50%;
+    }
+    .rsm-festa__seal-orbit text {
+      fill: #1e4a88;
+      font-family: var(--rsm-font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .rsm-festa__seal-core {
+      position: relative;
+      z-index: 1;
+      width: 54%;
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
       display: grid;
       place-items: center;
       text-align: center;
-      font-family: var(--rsm-font-display);
-      background: #fff;
-      border: 1px solid var(--rsm-line);
-      box-shadow: var(--rsm-sh-glow-violet);
-      animation: rsm-spin 32s linear infinite;
+      padding-top: 3px;
+      background:
+        linear-gradient(145deg, rgba(92, 235, 206, 0.96) 0%, rgba(111, 174, 255, 0.96) 52%, rgba(116, 133, 255, 0.92) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      box-shadow:
+        0 10px 24px rgba(44, 84, 160, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.54);
     }
-    .rsm-festa__badge strong {
-      font-size: clamp(1.9rem, 3vw, 2.6rem);
+    .rsm-festa__seal-core strong {
+      font-family: 'Syne', var(--rsm-font-sans);
+      font-size: clamp(1.15rem, 1.8vw, 1.6rem);
       line-height: 1;
-      font-weight: 600;
-      background: linear-gradient(120deg, var(--rsm-emerald), var(--rsm-azure), var(--rsm-violet));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      letter-spacing: -0.02em;
+      color: #041226;
     }
-    .rsm-festa__badge span {
+    .rsm-festa__seal-core small {
+      margin-top: 1px;
       font-family: var(--rsm-font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
+      font-size: 0.48rem;
+      line-height: 1;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--rsm-ink-3);
-      margin-top: 4px;
-      display: block;
+      color: rgba(4, 18, 38, 0.74);
     }
-    @keyframes rsm-spin {
+    @keyframes rsm-festa-seal-spin {
       to { transform: rotate(360deg); }
     }
 
@@ -589,22 +640,22 @@
       color: var(--rsm-ink-3);
     }
 
-    .rsm-festa__wines ul {
+    .rsm-festa__wines ul:not(.rsm-festa__menu-list) {
       list-style: none;
       padding: 0;
       margin: var(--rsm-s-5) 0 0;
       display: grid;
       gap: var(--rsm-s-2);
     }
-    .rsm-festa__wines li {
+    .rsm-festa__wines ul:not(.rsm-festa__menu-list) li {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       padding: 12px 16px;
       border-bottom: 1px dashed var(--rsm-line-2);
     }
-    .rsm-festa__wines li strong { font-weight: 800; }
-    .rsm-festa__wines li span { color: var(--rsm-ink-3); }
+    .rsm-festa__wines ul:not(.rsm-festa__menu-list) li strong { font-weight: 800; }
+    .rsm-festa__wines ul:not(.rsm-festa__menu-list) li span { color: var(--rsm-ink-3); }
 
     .rsm-festa__foot {
       display: grid;
@@ -807,12 +858,23 @@
       isolation: isolate;
     }
     .rsm-swiper {
+      position: relative;
+      overflow: hidden;
       width: 100%;
       aspect-ratio: 16 / 9;
       max-height: clamp(280px, 56vh, 560px);
       min-height: 240px;
     }
+    .rsm-swiper .swiper-wrapper {
+      display: flex;
+      height: 100%;
+      will-change: transform;
+      transition: transform 520ms var(--rsm-ease-out);
+    }
     .rsm-swiper .swiper-slide {
+      flex: 0 0 100%;
+      min-width: 100%;
+      height: 100%;
       background-color: var(--rsm-surface);
       background-size: cover;
       background-position: center;
@@ -837,6 +899,10 @@
     }
     .rsm-swiper .swiper-button-prev,
     .rsm-swiper .swiper-button-next {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      border: 0;
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -844,26 +910,64 @@
       backdrop-filter: var(--rsm-blur-sm);
       box-shadow: var(--rsm-sh-md);
       color: var(--rsm-ink);
+      cursor: pointer;
+      transform: translateY(-50%);
       transition: transform var(--rsm-dur-fast), background var(--rsm-dur-fast);
     }
+    .rsm-swiper .swiper-button-prev { left: 14px; }
+    .rsm-swiper .swiper-button-next { right: 14px; }
     .rsm-swiper .swiper-button-prev::after,
     .rsm-swiper .swiper-button-next::after {
+      content: "";
       font-size: 16px;
       font-weight: 800;
       color: var(--rsm-ink);
     }
+    .rsm-swiper .swiper-button-prev::after { content: "\2039"; }
+    .rsm-swiper .swiper-button-next::after { content: "\203A"; }
+    .rsm-swiper .swiper-button-prev[hidden],
+    .rsm-swiper .swiper-button-next[hidden] {
+      display: none;
+    }
     .rsm-swiper .swiper-button-prev:hover,
     .rsm-swiper .swiper-button-next:hover {
       background: #fff;
-      transform: scale(1.06);
+      transform: translateY(-50%) scale(1.06);
+    }
+    .rsm-swiper .swiper-button-prev:disabled,
+    .rsm-swiper .swiper-button-next:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .rsm-swiper .swiper-pagination {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateX(-50%);
+    }
+    .rsm-swiper .swiper-pagination[hidden] {
+      display: none;
     }
     .rsm-swiper .swiper-pagination-bullet {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      appearance: none;
+      cursor: pointer;
       background: rgba(255,255,255,0.9);
       opacity: 0.6;
+      transition: transform var(--rsm-dur-fast), opacity var(--rsm-dur-fast);
     }
     .rsm-swiper .swiper-pagination-bullet-active {
       background: linear-gradient(120deg, var(--rsm-emerald), var(--rsm-azure), var(--rsm-violet));
       opacity: 1;
+      transform: scale(1.16);
     }
 
     /* gallery scroll marquee */
@@ -898,95 +1002,182 @@
     }
 
     /* =========================================================
+       FRAME KIT — CORNICI SOBRIE + DIVISORIE LEGGERE
+       ========================================================= */
+    .rsm-frame-kit {
+      --rsm-frame-radius: var(--rsm-r-2xl);
+      --rsm-frame-bg: rgba(255,255,255,0.03);
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-frame-radius);
+      background: var(--rsm-frame-bg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .rsm-frame-kit--pad {
+      padding: clamp(16px, 2.3vw, 28px);
+    }
+    .rsm-frame-kit--soft {
+      --rsm-frame-radius: var(--rsm-r-xl);
+    }
+    .rsm-divider-kit > * + * {
+      padding-top: var(--rsm-s-4);
+      border-top: 1px solid var(--rsm-line);
+    }
+
+    .rsm-compass__inner.rsm-frame-kit > .rsm-compass__copy {
+      padding-right: clamp(14px, 2vw, 26px);
+      border-right: 1px solid var(--rsm-line);
+    }
+    .rsm-compass__inner.rsm-frame-kit > .rsm-compass__nav {
+      padding-left: clamp(14px, 2vw, 26px);
+    }
+
+    .rsm-newsletter__grid.rsm-frame-kit > :first-child {
+      padding-right: clamp(14px, 2vw, 26px);
+      border-right: 1px solid var(--rsm-line);
+    }
+    .rsm-newsletter__grid.rsm-frame-kit > :last-child {
+      padding-left: clamp(14px, 2vw, 26px);
+    }
+
+    /* =========================================================
        SECTION 6 — TERRITORIO (Atlante + Valli + Esperienze)
        ========================================================= */
     .rsm-territory {
       position: relative;
-      background:
-        radial-gradient(ellipse at 0% 100%, rgba(31,191,125,0.08) 0%, transparent 55%),
-        radial-gradient(ellipse at 100% 0%, rgba(139,92,246,0.05) 0%, transparent 50%),
-        linear-gradient(180deg, rgba(31,191,125,0.04) 0%, transparent 100%);
+      background: transparent;
+      border-top: 1px solid var(--rsm-line);
+      border-bottom: 1px solid var(--rsm-line);
+    }
+
+    .rsm-territory .rsm-section-head {
+      max-width: 980px;
     }
 
     .rsm-atlas-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: clamp(20px, 3vw, 40px);
-      margin-bottom: var(--rsm-s-16);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(20px, 2.8vw, 34px);
+      align-items: start;
+      margin-bottom: var(--rsm-s-10);
     }
     .rsm-atlas-photo {
       position: relative;
       width: 100%;
       aspect-ratio: 4 / 5;
-      max-height: clamp(420px, 60vh, 640px);
-      border-radius: var(--rsm-r-3xl);
+      max-height: clamp(420px, 58vh, 620px);
+      border-radius: var(--rsm-r-2xl);
       overflow: hidden;
-      box-shadow: var(--rsm-sh-xl);
+      border: 1px solid var(--rsm-line);
+      background: rgba(255,255,255,0.03);
     }
     .rsm-swiper--atlas { width: 100%; height: 100%; aspect-ratio: auto; max-height: none; }
     .rsm-swiper--atlas .swiper-slide { aspect-ratio: auto; height: 100%; }
     .rsm-swiper--atlas .slide-img { object-position: center; }
 
     .rsm-atlas-copy {
-      align-self: center;
       display: grid;
-      gap: var(--rsm-s-5);
+      gap: var(--rsm-s-4);
+      align-content: start;
     }
-    .rsm-fact-grid {
+    .rsm-atlas-note {
+      margin: 0;
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-body);
+      line-height: 1.68;
+      color: var(--rsm-text);
+    }
+    .rsm-atlas-note strong {
+      color: var(--rsm-text-strong);
+      font-weight: 700;
+    }
+    .rsm-atlas-guide {
+      margin: 0;
+      font-family: var(--rsm-font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rsm-ink-4);
+    }
+    .rsm-atlas-bullets {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--rsm-s-3);
-      margin-top: var(--rsm-s-5);
+      gap: 10px;
     }
-    .fact, .rsm-fact {
-      padding: var(--rsm-s-5);
+    .rsm-atlas-bullets li {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+    .rsm-atlas-bullets li > span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      font-family: var(--rsm-font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
       border: 1px solid var(--rsm-line);
-      border-radius: var(--rsm-r-xl);
-      background: rgba(255,255,255,0.78);
-      backdrop-filter: var(--rsm-blur-sm);
+      color: var(--rsm-ink-3);
     }
-    .fact strong, .rsm-fact strong {
-      font-family: var(--rsm-font-display);
-      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.04em;
-      line-height: 1;
+    .rsm-atlas-bullets p {
+      margin: 0;
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-small);
+      line-height: 1.62;
+      color: var(--rsm-text);
+    }
+    .rsm-territory-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: var(--rsm-s-3);
+    }
+    .rsm-territory-stat {
+      padding: var(--rsm-s-4);
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-lg);
+      background: rgba(255,255,255,0.03);
+    }
+    .rsm-territory-stat strong {
       display: block;
-      color: var(--rsm-ink);
+      font-family: var(--rsm-font-sans);
+      font-size: clamp(1.45rem, 2vw, 1.9rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--rsm-text-strong);
     }
-    .fact span, .rsm-fact span {
+    .rsm-territory-stat span {
       display: block;
       margin-top: 8px;
+      font-family: var(--rsm-font-sans);
       font-size: var(--rsm-text-small);
-      color: var(--rsm-ink-3);
       line-height: 1.5;
+      color: var(--rsm-text-soft);
     }
-    .fact:nth-child(1) strong { color: var(--rsm-emerald); }
-    .fact:nth-child(2) strong { color: var(--rsm-azure); }
-    .fact:nth-child(3) strong { color: var(--rsm-violet); }
 
-    /* Esperienze cards (3) */
     .rsm-xp-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: var(--rsm-s-5);
-      margin-bottom: var(--rsm-s-16);
+      margin-bottom: var(--rsm-s-8);
     }
     .stack-card, .rsm-xp-card {
       position: relative;
       display: grid;
       grid-template-rows: auto 1fr;
       border: 1px solid var(--rsm-line);
-      border-radius: var(--rsm-r-2xl);
+      border-radius: var(--rsm-r-xl);
       overflow: hidden;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: var(--rsm-blur-sm);
-      box-shadow: var(--rsm-sh-md);
+      background: rgba(255,255,255,0.03);
       transition: transform var(--rsm-dur-base), box-shadow var(--rsm-dur-base);
     }
     .stack-card:hover, .rsm-xp-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--rsm-sh-lg);
+      transform: translateY(-2px);
     }
     .photo-slot, .rsm-xp-photo {
       position: relative;
@@ -1000,29 +1191,37 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 60%, rgba(11,13,20,0.18) 100%);
-    }
-    .stack-card-inner, .rsm-xp-card-inner {
-      display: contents;
+      background: linear-gradient(180deg, transparent 52%, rgba(11,13,20,0.22) 100%);
     }
     .stack-card-copy, .rsm-xp-body {
       padding: var(--rsm-s-6);
       display: grid;
       gap: var(--rsm-s-3);
       align-content: start;
+      border-top: 1px solid var(--rsm-line);
+    }
+    .rsm-xp-step {
+      margin: 0;
+      font-family: var(--rsm-font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rsm-ink-3);
     }
     .stack-card-copy h3, .rsm-xp-body h3 {
+      margin: 0;
       font-family: var(--rsm-font-sans);
-      font-size: 1.3rem;
+      font-size: 1.26rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin: 0;
+      color: var(--rsm-text-strong);
     }
     .stack-card-copy p, .rsm-xp-body p {
-      color: var(--rsm-ink-3);
-      font-size: var(--rsm-text-small);
-      line-height: 1.55;
       margin: 0;
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-small);
+      line-height: 1.62;
+      color: var(--rsm-text);
     }
     .stack-meta, .rsm-xp-meta {
       display: flex;
@@ -1030,71 +1229,150 @@
       gap: 6px;
       margin-top: 4px;
     }
-    .rsm-xp-card.is-emerald .photo-slot::before { background: linear-gradient(180deg, rgba(31,191,125,0.20), transparent 50%); content: ""; position:absolute; inset:0; mix-blend-mode: multiply; }
-    .rsm-xp-card.is-azure .photo-slot::before   { background: linear-gradient(180deg, rgba(74,155,255,0.20), transparent 50%); content: ""; position:absolute; inset:0; mix-blend-mode: multiply; }
-    .rsm-xp-card.is-violet .photo-slot::before  { background: linear-gradient(180deg, rgba(139,92,246,0.20), transparent 50%); content: ""; position:absolute; inset:0; mix-blend-mode: multiply; }
 
-    /* Valli narrative */
     .rsm-valli {
-      padding: clamp(40px, 5vw, 72px) 0;
-      margin-top: var(--rsm-s-12);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,255,255,0.88));
+      padding: 0;
+      margin-top: var(--rsm-s-8);
+      background: transparent;
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-2xl);
+      color: var(--rsm-text-strong);
+      overflow: hidden;
+    }
+    .rsm-valli-frame {
+      padding: clamp(22px, 3.6vw, 42px);
+      display: grid;
+      gap: var(--rsm-s-6);
     }
     .rsm-valli__drop {
-      font-family: var(--rsm-font-display);
-      font-size: clamp(1.8rem, 3.5vw, 3rem);
-      font-weight: 600;
-      line-height: 1.05;
-      letter-spacing: -0.035em;
       margin: 0;
-      max-width: 22ch;
+      max-width: 42ch;
+      font-family: var(--rsm-font-sans);
+      font-size: clamp(1.28rem, 2.2vw, 1.95rem);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.012em;
+      color: var(--rsm-text-strong);
     }
     .rsm-valli__drop em {
+      font-family: var(--rsm-font-display);
+      font-style: italic;
+      font-weight: 520;
+    }
+    .rsm-valli__drop .word {
+      display: inline-block;
+      padding-bottom: 0.04em;
     }
     .rsm-valli__row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: var(--rsm-s-5);
-      margin: var(--rsm-s-10) 0;
-      padding: var(--rsm-s-7) 0;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--rsm-s-4);
+      padding: var(--rsm-s-5) 0;
       border-top: 1px solid var(--rsm-line);
       border-bottom: 1px solid var(--rsm-line);
     }
     .rsm-valli__fact strong {
-      font-family: var(--rsm-font-display);
-      font-size: 2rem;
-      font-weight: 600;
-      letter-spacing: -0.04em;
       display: block;
+      font-family: var(--rsm-font-sans);
+      font-size: clamp(1.4rem, 2vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--rsm-text-strong);
     }
     .rsm-valli__fact span {
-      font-family: var(--rsm-font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
+      display: block;
+      margin-top: 7px;
+      font-family: var(--rsm-font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--rsm-ink-3);
+      color: var(--rsm-text-soft);
     }
     .rsm-valli__summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--rsm-s-6);
-      margin: var(--rsm-s-7) 0;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--rsm-s-5);
     }
-    .rsm-valli__summary article p { color: var(--rsm-ink-3); line-height: 1.66; }
+    .rsm-valli__summary article {
+      padding-top: var(--rsm-s-3);
+      border-top: 1px solid var(--rsm-line);
+    }
     .rsm-valli__summary article h3 {
-      font-family: var(--rsm-font-display);
-      font-weight: 600;
-      font-size: 1.5rem;
-      letter-spacing: -0.02em;
       margin: 0 0 12px;
+      font-family: var(--rsm-font-sans);
+      font-size: 1.14rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--rsm-text-strong);
     }
+    .rsm-valli__summary article p {
+      margin: 0;
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-small);
+      line-height: 1.64;
+      color: var(--rsm-text);
+    }
+
+    @media (max-width: 980px) {
+      .rsm-atlas-grid {
+        grid-template-columns: 1fr;
+      }
+      .rsm-atlas-photo {
+        max-height: clamp(320px, 56vh, 520px);
+      }
+
+      .rsm-compass__inner.rsm-frame-kit > .rsm-compass__copy {
+        padding-right: 0;
+        border-right: 0;
+        padding-bottom: var(--rsm-s-4);
+        border-bottom: 1px solid var(--rsm-line);
+      }
+      .rsm-compass__inner.rsm-frame-kit > .rsm-compass__nav {
+        padding-left: 0;
+        padding-top: var(--rsm-s-4);
+      }
+
+      .rsm-newsletter__grid.rsm-frame-kit > :first-child {
+        padding-right: 0;
+        border-right: 0;
+        padding-bottom: var(--rsm-s-4);
+        border-bottom: 1px solid var(--rsm-line);
+      }
+      .rsm-newsletter__grid.rsm-frame-kit > :last-child {
+        padding-left: 0;
+        padding-top: var(--rsm-s-4);
+      }
+    }
+    @media (max-width: 700px) {
+      .rsm-territory-stats {
+        grid-template-columns: 1fr;
+      }
+      .rsm-atlas-bullets li {
+        grid-template-columns: 28px minmax(0, 1fr);
+      }
+      .rsm-valli-frame {
+        padding: var(--rsm-s-5);
+      }
+    }
+
     .kw {
       position: relative;
+      display: inline;
+      font-family: inherit;
+      font-weight: 600;
+      color: var(--rsm-text-strong);
       cursor: help;
-      background: linear-gradient(180deg, transparent 60%, rgba(139,92,246,0.18) 60%);
+      background: linear-gradient(180deg, transparent 62%, rgba(139,92,246,0.24) 62%);
+      border-bottom: 1px dashed rgba(139,92,246,0.62);
       padding: 0 2px;
       border-radius: 2px;
+      text-decoration: none;
+    }
+    .kw:hover,
+    .kw:focus-visible {
+      background: linear-gradient(180deg, transparent 56%, rgba(139,92,246,0.36) 56%);
+      border-bottom-color: rgba(139,92,246,0.9);
+      outline: none;
     }
 
     /* =========================================================
@@ -1311,6 +1589,10 @@
       .rsm-festa__head {
         grid-template-columns: 1fr;
       }
+      .rsm-festa__poster {
+        width: min(100%, 384px);
+        margin-inline: auto;
+      }
       .rsm-festa__grid {
         grid-template-columns: 1fr;
       }
@@ -1333,6 +1615,9 @@
     }
 
     @media (max-width: 600px) {
+      .rsm-festa__poster {
+        width: min(100%, 352px);
+      }
       .rsm-compass__nav { grid-template-columns: 1fr; }
       .rsm-festa__dates { grid-template-columns: repeat(2, 1fr); }
       .rsm-contact__line { grid-template-columns: 1fr; }
@@ -1546,7 +1831,12 @@
       letter-spacing: -0.055em !important;
       color: #fff !important;
       text-shadow: 0 8px 60px rgba(0, 0, 0, 0.45) !important;
-      line-height: 0.92 !important;
+      line-height: 0.98 !important;
+      max-width: 11ch;
+      margin: 0;
+      position: relative;
+      z-index: 2;
+      padding-bottom: 0.06em;
     }
 
     .rsm-banner__title em,
@@ -1561,6 +1851,9 @@
       -webkit-text-fill-color: transparent;
       color: transparent !important;
       animation: rsm-edit-grad-flow 9s ease-in-out infinite alternate;
+      display: inline-block;
+      padding: 0.03em 0.02em 0.08em;
+      line-height: 1.08;
     }
 
     @keyframes rsm-edit-grad-flow {
@@ -2047,7 +2340,11 @@
 
     /* ═════════════════ RESPONSIVE ═════════════════ */
     @media (max-width: 600px) {
-      .rsm-banner__title { font-size: clamp(2.6rem, 14vw, 4.4rem) !important; }
+      .rsm-banner__title {
+        font-size: clamp(2.6rem, 14vw, 4.4rem) !important;
+        max-width: 10ch;
+        line-height: 1.02 !important;
+      }
       .rsm-banner__sub { font-size: 0.96rem !important; }
       .rsm-edit-band-group { gap: 20px; padding-right: 20px; }
     }
@@ -2148,67 +2445,122 @@
       font-family: 'Syne', 'Cabinet Grotesk', system-ui, sans-serif !important;
       font-weight: 700 !important;
       letter-spacing: -0.005em !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      color: var(--rsm-text-strong) !important;
+      backdrop-filter: blur(16px) saturate(135%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
       box-shadow:
-        0 18px 38px rgba(11, 13, 20, 0.20),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26) !important;
       transition:
         transform 320ms var(--rsm-edit-ease-spring),
         box-shadow 320ms var(--rsm-edit-ease),
         background 320ms var(--rsm-edit-ease) !important;
     }
     .rsm-btn:hover {
-      transform: translateY(-3px) !important;
+      transform: translateY(-2px) !important;
       box-shadow:
-        0 26px 52px rgba(11, 13, 20, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+        0 24px 54px rgba(11, 13, 20, 0.18),
+        0 10px 22px rgba(74, 155, 255, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
     }
     .rsm-btn:active {
       transform: translateY(-1px) scale(0.98) !important;
     }
 
     .rsm-btn--brand {
-      background: linear-gradient(120deg, #1fbf7d 0%, #4a9bff 50%, #8b5cf6 100%) !important;
-      background-size: 220% 100% !important;
-      background-position: 0% 50% !important;
-      color: #fff !important;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)) padding-box,
+        linear-gradient(120deg, rgba(47, 224, 188, 0.95) 0%, rgba(74, 155, 255, 0.95) 52%, rgba(90, 129, 255, 0.95) 100%) border-box !important;
+      color: #07111f !important;
+      text-shadow: none !important;
       box-shadow:
-        0 22px 50px rgba(74, 155, 255, 0.34),
-        0 8px 18px rgba(139, 92, 246, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+        0 18px 42px rgba(74, 155, 255, 0.24),
+        0 10px 24px rgba(31, 191, 125, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
     }
     .rsm-btn--brand:hover {
-      background-position: 100% 50% !important;
       box-shadow:
-        0 30px 64px rgba(74, 155, 255, 0.42),
-        0 12px 24px rgba(139, 92, 246, 0.32),
-        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+        0 26px 58px rgba(74, 155, 255, 0.28),
+        0 14px 30px rgba(31, 191, 125, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42) !important;
+    }
+    .rsm-btn--brand .rsm-btn-icon {
+      background: rgba(255, 255, 255, 0.26) !important;
+      color: #07111f !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+    }
+    .rsm-btn--brand > span:not(.rsm-btn-icon),
+    .rsm-btn--brand .rsm-btn-icon {
+      position: relative;
+      z-index: 1;
     }
 
     .rsm-btn--ghost {
-      background: rgba(255, 255, 255, 0.85) !important;
-      border: 1px solid rgba(11, 13, 20, 0.16) !important;
-      color: var(--rsm-ink) !important;
-      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.22) !important;
+      border: 1px solid rgba(255, 255, 255, 0.26) !important;
+      color: #ffffff !important;
+      backdrop-filter: blur(18px) saturate(120%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+      box-shadow:
+        0 14px 32px rgba(11, 13, 20, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
     }
     .rsm-btn--ghost:hover {
-      background: #fff !important;
-      border-color: var(--rsm-ink) !important;
+      background: rgba(255, 255, 255, 0.30) !important;
+      border-color: rgba(255, 255, 255, 0.40) !important;
+      box-shadow:
+        0 18px 40px rgba(11, 13, 20, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
     }
 
     /* Bottoni dentro newsletter scura: ghost variant adattato */
     .rsm-newsletter .rsm-btn--ghost {
-      background: rgba(255, 255, 255, 0.10) !important;
-      border-color: rgba(255, 255, 255, 0.22) !important;
-      color: #fff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      color: var(--rsm-text-on-dark) !important;
     }
     .rsm-newsletter .rsm-btn--ghost:hover {
-      background: rgba(255, 255, 255, 0.20) !important;
-      border-color: rgba(255, 255, 255, 0.46) !important;
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: rgba(255, 255, 255, 0.30) !important;
+    }
+    .rsm-banner .rsm-btn--ghost,
+    .rsm-contact .rsm-btn--ghost,
+    .rsm-newsletter .rsm-btn--ghost {
+      color: #ffffff !important;
+    }
+    .rsm-banner .rsm-btn--ghost .rsm-btn-icon,
+    .rsm-contact .rsm-btn--ghost .rsm-btn-icon,
+    .rsm-newsletter .rsm-btn--ghost .rsm-btn-icon {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+    }
+    .rsm-banner .rsm-btn,
+    .rsm-hero .rsm-btn,
+    .rsm-festa .rsm-btn,
+    .rsm-events .rsm-btn,
+    .rsm-contact .rsm-btn,
+    .rsm-newsletter .rsm-btn,
+    .btn-read {
+      color: #ffffff !important;
+    }
+    .rsm-banner .rsm-btn--brand,
+    .rsm-hero .rsm-btn--brand,
+    .rsm-festa .rsm-btn--brand,
+    .rsm-events .rsm-btn--brand,
+    .rsm-contact .rsm-btn--brand,
+    .rsm-newsletter .rsm-btn--brand {
+      color: #07111f !important;
     }
 
     /* Banner CTA: override colore testo per leggibilità su gradient */
     .rsm-banner__cta.rsm-btn--brand {
-      color: #fff !important;
+      color: #07111f !important;
     }
 
     /* "Leggi →" arrow nei post-card: nascondi span con freccia */
@@ -2336,13 +2688,8 @@
       font-family: 'Space Grotesk', system-ui, sans-serif !important;
     }
 
-    /* No spazio bianco tra contact e newsletter (è dentro la stessa section) */
-    .rsm-contact .rsm-newsletter {
-      margin-top: var(--rsm-home-section-space, 30px) !important;
-    }
-
-    /* No gap fra newsletter e footer (footer ha già il proprio spacing) */
-    .rsm-section.rsm-contact { padding-bottom: var(--rsm-home-section-space, 30px) !important; }
+    /* Contact verso footer: elimina spazio vuoto dopo rimozione newsletter inline */
+    .rsm-section.rsm-contact { padding-bottom: 0 !important; }
     .rsm-foot { margin-top: 0 !important; }
 
     /* ════════════════════════════════════════════════════════════
@@ -2380,6 +2727,20 @@
         linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%);
       background-repeat: no-repeat;
       background-attachment: fixed;
+
+      /* Sfondo home scuro → ribaltiamo le ink-vars a varianti chiare */
+      --rsm-ink:    var(--rsm-text-on-dark);
+      --rsm-ink-2:  var(--rsm-text-on-dark-soft);
+      --rsm-ink-3:  var(--rsm-text-on-dark-soft);
+      --rsm-ink-4:  var(--rsm-text-on-dark-dim);
+      --rsm-ink-5:  rgba(255, 255, 255, 0.22);
+      --rsm-text-strong: var(--rsm-text-on-dark);
+      --rsm-text:        var(--rsm-text-on-dark-soft);
+      --rsm-text-soft:   var(--rsm-text-on-dark-soft);
+      --rsm-text-faint:  var(--rsm-text-on-dark-dim);
+      --rsm-line:   rgba(255, 255, 255, 0.10);
+      --rsm-line-2: rgba(255, 255, 255, 0.18);
+      --rsm-line-3: rgba(255, 255, 255, 0.30);
     }
 
     .rsm-hero,
@@ -2394,15 +2755,13 @@
       padding-bottom: var(--rsm-home-section-space) !important;
     }
 
-    .rsm-valli,
-    .rsm-contact .rsm-newsletter {
+    .rsm-valli {
       margin-top: var(--rsm-home-section-space) !important;
     }
 
     /* ═════════════════ FLAT SECTION SURFACES ═════════════════
-       Le sezioni restano pronte per un fondo unico dietro il contenuto:
-       basta valorizzare --rsm-flat-section-bg sul root interessato.
-       Tutte le superfici interne restano neutre e sullo stesso piano. */
+       Sfondo home unico (dark) dietro tutte le sezioni: ai pannelli interni
+       diamo un riquadro glass-dark per riportare contrasto ai testi bianchi. */
     .rsm-hero,
     .rsm-compass,
     .rsm-festa,
@@ -2414,10 +2773,10 @@
     .rsm-valli {
       --rsm-flat-section-bg: transparent;
       --rsm-flat-section-border: transparent;
-      --rsm-flat-panel-bg: transparent;
-      --rsm-flat-panel-border: var(--rsm-line);
-      --rsm-flat-panel-shadow: none;
-      --rsm-flat-panel-filter: none;
+      --rsm-flat-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      --rsm-flat-panel-border: rgba(255, 255, 255, 0.12);
+      --rsm-flat-panel-shadow: 0 18px 40px rgba(4, 10, 34, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --rsm-flat-panel-filter: blur(18px) saturate(140%);
       background: var(--rsm-flat-section-bg) !important;
       border-top-color: var(--rsm-flat-section-border) !important;
       border-bottom-color: var(--rsm-flat-section-border) !important;
@@ -2443,7 +2802,7 @@
     .rsm-newsletter .privacy-note,
     .rsm-newsletter .privacy-note a,
     .rsm-newsletter .rsm-form-status {
-      color: var(--rsm-ink-3) !important;
+      color: var(--rsm-text-on-dark-soft) !important;
     }
 
     .rsm-compass,
@@ -2452,14 +2811,13 @@
     .rsm-newsletter h2,
     .rsm-contact .rsm-h2,
     .rsm-contact .rsm-h1 {
-      color: var(--rsm-ink) !important;
+      color: var(--rsm-text-on-dark) !important;
     }
 
     .rsm-compass__meta .rsm-tag,
     .rsm-compass__link,
     .rsm-gallery__stage,
     .rsm-compass__link strong,
-    .rsm-festa__badge,
     .rsm-festa__dates,
     .rsm-festa__day,
     .festa-day,
@@ -2492,7 +2850,6 @@
     .rsm-atlas-photo,
     .rsm-contact__map,
     .rsm-valli,
-    .rsm-festa__badge,
     .rsm-contact__card,
     .post-featured,
     .post-card,
@@ -2507,7 +2864,7 @@
     .rsm-contact .rsm-btn,
     .rsm-newsletter .rsm-btn,
     .btn-read {
-      color: var(--rsm-ink-2) !important;
+      color: var(--rsm-text-on-dark-soft) !important;
     }
 
     .rsm-compass__link:hover,
@@ -2523,15 +2880,15 @@
     .rsm-contact .rsm-btn:hover,
     .rsm-newsletter .rsm-btn:hover,
     .btn-read:hover {
-      background: transparent !important;
-      box-shadow: none !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05)) !important;
+      box-shadow: 0 22px 48px rgba(4, 10, 34, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     }
 
     .rsm-compass__link strong,
     .news-filter-chip.on,
     .rsm-contact .rsm-btn--brand,
     .rsm-newsletter .rsm-btn--brand {
-      color: var(--rsm-ink) !important;
+      color: var(--rsm-text-on-dark) !important;
     }
 
     .rsm-newsletter .rsm-input:focus {
@@ -2544,6 +2901,111 @@
     .rsm-atlas-photo,
     .rsm-festa__poster {
       background-color: transparent !important;
+    }
+
+    /* ═════════════════ ELEMENTI DI RILIEVO SU SFONDO SCURO ═════════════════
+       Pulsanti/chip pieni che usavano var(--rsm-ink) come fondo scuro: ora
+       che ink è chiaro, li manteniamo riempiti con una superficie scura. */
+    body[data-page="home"] .news-filter-chip.on,
+    body[data-page="home"] .btn-read:hover,
+    body[data-page="home"] .back-to-top {
+      background: rgba(11, 13, 20, 0.78) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      color: var(--rsm-text-on-dark) !important;
+    }
+
+    body[data-page="home"] .back-to-top:hover {
+      background: rgba(11, 13, 20, 0.92) !important;
+    }
+
+    /* Newsletter input glass su sfondo scuro */
+    body[data-page="home"] .rsm-newsletter .rsm-input {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      color: var(--rsm-text-on-dark) !important;
+    }
+    body[data-page="home"] .rsm-newsletter .rsm-input::placeholder {
+      color: var(--rsm-text-on-dark-dim) !important;
+    }
+
+    /* Disco 40° edizione — contrasto e glow calibrati sul fondo home */
+    body[data-page="home"] .rsm-festa__seal {
+      border-color: rgba(255, 255, 255, 0.64) !important;
+      box-shadow:
+        0 22px 58px rgba(96, 83, 182, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -14px 26px rgba(128, 156, 214, 0.26) !important;
+    }
+    body[data-page="home"] .rsm-festa__seal-orbit text {
+      fill: #26568f;
+    }
+
+    /* News status / news empty: testo soft chiaro */
+    body[data-page="home"] .news-status,
+    body[data-page="home"] .news-empty {
+      color: var(--rsm-text-on-dark-soft) !important;
+    }
+
+    /* Marquee band sotto l'hero: striscia glass chiara con testo soft */
+    body[data-page="home"] .rsm-edit-band {
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 50%, transparent 100%);
+      border-top-color: rgba(255, 255, 255, 0.10);
+      border-bottom-color: rgba(255, 255, 255, 0.10);
+    }
+    body[data-page="home"] .rsm-edit-band-group {
+      color: var(--rsm-text-on-dark-soft);
+    }
+
+    /* Tutti i kicker della home ereditano lo stile "02 · Mappa della pagina":
+       font Space Grotesk, 0.72rem, tracking ampio, stesso colore bluish-white. */
+    body[data-page="home"] .rsm-kicker {
+      font-family: 'Space Grotesk', system-ui, sans-serif !important;
+      font-size: 0.72rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.22em !important;
+      text-transform: uppercase !important;
+      color: var(--rsm-text-on-dark-soft) !important;
+    }
+
+    /* Modal: il pannello resta chiaro → ripristiniamo le ink-vars scure */
+    body[data-page="home"] .rsm-modal__panel {
+      --rsm-ink:   #0b0d14;
+      --rsm-ink-2: #1d2030;
+      --rsm-ink-3: #4d5266;
+      --rsm-ink-4: #828799;
+      --rsm-ink-5: #b1b5c4;
+      --rsm-text-strong: #0b0d14;
+      --rsm-text:        #1d2030;
+      --rsm-text-soft:   #4d5266;
+      --rsm-text-faint:  #828799;
+      --rsm-line:   rgba(11, 13, 20, 0.08);
+      --rsm-line-2: rgba(11, 13, 20, 0.14);
+      --rsm-line-3: rgba(11, 13, 20, 0.22);
+    }
+
+    /* Tippy popover: ricostruiamo il fondo scuro */
+    body[data-page="home"] .tippy-box[data-theme~="rsm"] {
+      background: #0b0d14 !important;
+      color: #fff !important;
+    }
+    body[data-page="home"] .tippy-box[data-theme~="rsm"] .tippy-arrow {
+      color: #0b0d14 !important;
+    }
+
+    /* Kicker "em" e link colorati restano leggibili (sono già accent) */
+    body[data-page="home"] .rsm-festa__menu-name em {
+      color: var(--rsm-violet-2);
+    }
+    body[data-page="home"] .kw {
+      color: var(--rsm-text-on-dark) !important;
+      background: linear-gradient(180deg, transparent 60%, rgba(167, 139, 250, 0.34) 60%);
+      border-bottom-color: rgba(193, 169, 255, 0.92);
+      text-shadow: 0 0 1px rgba(11, 13, 20, 0.45);
+    }
+    body[data-page="home"] .kw:hover,
+    body[data-page="home"] .kw:focus-visible {
+      background: linear-gradient(180deg, transparent 54%, rgba(167, 139, 250, 0.48) 54%);
+      border-bottom-color: rgba(216, 198, 255, 0.98);
     }
 
     /* ═════════════════ REDUCED MOTION ═════════════════ */
@@ -2578,8 +3040,8 @@
          ───────────────────────────────────────────────────────── -->
     <section class="rsm-banner" id="banner" aria-label="Benvenuto a Rivalta sul Mincio" data-rsm-edit-banner>
       <div class="rsm-banner__video-wrap">
-        <video class="rsm-banner__video" src="/video/banner.mp4"
-               muted autoplay loop playsinline preload="metadata"></video>
+        <img class="rsm-banner__video" src="/img/mantova-laghi-aerea.jpg"
+             alt="Veduta aerea di Rivalta sul Mincio" loading="eager" decoding="async" fetchpriority="high">
         <div class="rsm-banner__overlay"></div>
       </div>
       <div class="rsm-banner__aurora" aria-hidden="true">
@@ -2705,7 +3167,7 @@
         <span class="rsm-compass__blob rsm-compass__blob--b"></span>
       </div>
       <div class="rsm-container">
-        <div class="rsm-compass__inner" data-reveal>
+        <div class="rsm-compass__inner rsm-frame-kit rsm-frame-kit--pad" data-reveal>
           <div class="rsm-compass__copy">
             <p class="rsm-kicker">02 · Mappa della pagina</p>
             <h2 class="rsm-h1" id="mappa-title">Sei tappe chiare, nessuno scroll <em>infinito</em></h2>
@@ -2746,14 +3208,24 @@
 
           <aside class="rsm-festa__poster festa-poster-frame" data-reveal style="--delay: 160ms" aria-label="Manifesto della 40° Festa del Pesce">
             <img src="/img/festa-pesce-2025.jpg" alt="Manifesto Festa del Pesce e del Luccio alla Rivaltese 2025" loading="lazy" />
-            <span class="rsm-festa__badge" aria-hidden="true">
-              <strong>40</strong>
-              <span>1985 — 2025</span>
+            <span class="rsm-festa__seal" aria-hidden="true">
+              <svg class="rsm-festa__seal-orbit" viewBox="0 0 120 120" focusable="false" aria-hidden="true">
+                <defs>
+                  <path id="rsm-festa-seal-path" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"></path>
+                </defs>
+                <text>
+                  <textPath href="#rsm-festa-seal-path">40° edizione · 1985 — 2025 · 40° edizione · 1985 — 2025 · </textPath>
+                </text>
+              </svg>
+              <span class="rsm-festa__seal-core">
+                <strong>40°</strong>
+                <small>1985 — 2025</small>
+              </span>
             </span>
           </aside>
         </header>
 
-        <div class="rsm-festa__dates" data-reveal style="--delay: 80ms" aria-label="Date Festa del Pesce 2025">
+        <div class="rsm-festa__dates rsm-frame-kit" data-reveal style="--delay: 80ms" aria-label="Date Festa del Pesce 2025">
           <div class="rsm-festa__day festa-day"><strong>Ven 4</strong><span>Luglio</span></div>
           <div class="rsm-festa__day festa-day"><strong>Sab 5</strong><span>Luglio</span></div>
           <div class="rsm-festa__day festa-day"><strong>Dom 6</strong><span>Luglio</span></div>
@@ -2764,7 +3236,7 @@
         </div>
 
         <div class="rsm-festa__grid">
-          <article class="rsm-card" data-reveal data-component="card/menu">
+          <article class="rsm-card rsm-frame-kit rsm-frame-kit--soft" data-reveal data-component="card/menu">
             <header>
               <p class="rsm-kicker">Il men&ugrave; 2025</p>
               <h3 class="rsm-h2" style="margin-top:12px">Quarant&rsquo;anni di ricette d&rsquo;acqua dolce</h3>
@@ -2783,27 +3255,27 @@
             </ol>
           </article>
 
-          <aside class="rsm-card rsm-festa__wines" data-reveal style="--delay: 140ms" data-component="card/wines">
+          <aside class="rsm-card rsm-festa__wines rsm-frame-kit rsm-frame-kit--soft" data-reveal style="--delay: 140ms" data-component="card/wines">
             <p class="rsm-kicker">In abbinamento</p>
             <h3 class="rsm-h2" style="margin-top:12px">Cantina Ricchi · Monzambano</h3>
             <p class="rsm-body" style="color:var(--rsm-ink-3);margin-top:10px">Etichette dell&rsquo;Alto Mantovano selezionate per armonizzarsi con i piatti a base di pesce di fiume.</p>
-            <ul>
-              <li><strong>Chiaretto</strong><span>&ldquo;La Casina&rdquo;</span></li>
-              <li><strong>Bianco</strong><span>&ldquo;La Casina&rdquo;</span></li>
-              <li><strong>Bianco</strong><span>&ldquo;Brioso&rdquo;</span></li>
-              <li><strong>Spumante brut</strong><span>&ldquo;Espressioni 8&rdquo;</span></li>
-              <li><strong>Spumante dolce</strong><span>&ldquo;Aroma 85&rdquo;</span></li>
-            </ul>
+            <ol class="rsm-festa__menu-list rsm-festa__wines-list" aria-label="Vini in abbinamento">
+              <li><span class="rsm-festa__menu-num">01</span><span class="rsm-festa__menu-name">Chiaretto</span><span class="rsm-festa__menu-tag">&ldquo;La Casina&rdquo;</span></li>
+              <li><span class="rsm-festa__menu-num">02</span><span class="rsm-festa__menu-name">Bianco</span><span class="rsm-festa__menu-tag">&ldquo;La Casina&rdquo;</span></li>
+              <li><span class="rsm-festa__menu-num">03</span><span class="rsm-festa__menu-name">Bianco</span><span class="rsm-festa__menu-tag">&ldquo;Brioso&rdquo;</span></li>
+              <li><span class="rsm-festa__menu-num">04</span><span class="rsm-festa__menu-name">Spumante brut</span><span class="rsm-festa__menu-tag">&ldquo;Espressioni 8&rdquo;</span></li>
+              <li><span class="rsm-festa__menu-num">05</span><span class="rsm-festa__menu-name">Spumante dolce</span><span class="rsm-festa__menu-tag">&ldquo;Aroma 85&rdquo;</span></li>
+            </ol>
           </aside>
         </div>
 
         <div class="rsm-festa__foot">
-          <article class="rsm-card" data-reveal>
+          <article class="rsm-card rsm-frame-kit rsm-frame-kit--soft" data-reveal>
             <p class="rsm-kicker">In ricordo</p>
             <h4 class="rsm-h3" style="margin-top:10px">Luciano Soave</h4>
             <p style="color:var(--rsm-ink-3);margin-top:10px;line-height:1.6">La 40&deg; edizione &egrave; dedicata a Luciano, volontario storico della Pro Loco. Per anni ha curato i risotti della festa e, d&rsquo;inverno, il vin brul&eacute; della comunit&agrave;.</p>
           </article>
-          <article class="rsm-card" data-reveal style="--delay: 120ms">
+          <article class="rsm-card rsm-frame-kit rsm-frame-kit--soft" data-reveal style="--delay: 120ms">
             <p class="rsm-kicker">In concomitanza</p>
             <h4 class="rsm-h3" style="margin-top:10px">BARACCA dei NOTT-AMBULI 2025</h4>
             <p style="color:var(--rsm-ink-3);margin-top:10px;line-height:1.6">Quarta edizione: panini con porchetta, hot dog, cipperone, aperitivi e birre artigianali, con <strong>6 concerti live</strong> nell&rsquo;area eventi adiacente.</p>
@@ -2826,7 +3298,7 @@
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Eventi, escursioni, avvisi e racconti caricati dalla redazione tramite Supabase. Filtra per categoria o sfoglia gli ultimi articoli pubblicati.</p>
         </div>
 
-        <div data-reveal>
+        <div class="rsm-frame-kit rsm-frame-kit--pad" data-reveal>
           <div class="news-filter-row" id="news-filter-row" aria-label="Filtra news per categoria"></div>
           <div class="news-status" id="news-status">Caricamento articoli in corso.</div>
           <article class="post-featured skeleton" id="post-featured" style="display:none"></article>
@@ -2858,7 +3330,7 @@
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Un carosello pulito, automatico e consultabile. Sostituibile in pochi click con immagini fornite dalla redazione o da Figma.</p>
         </div>
 
-        <div class="rsm-gallery__stage" data-reveal data-parallax="0.06">
+        <div class="rsm-gallery__stage rsm-frame-kit" data-reveal data-parallax="0.06">
           <div class="swiper rsm-swiper" role="region" aria-label="Galleria fotografica di Rivalta sul Mincio">
             <div class="swiper-wrapper">
               <div class="swiper-slide rsm-slide">
@@ -2977,12 +3449,12 @@
         <div class="rsm-section-head">
           <div data-reveal>
             <p class="rsm-kicker">06 · Atlante vivo · Sito Ramsar</p>
-            <h2 class="rsm-h1" id="territorio-title">Le <em>Valli del Mincio</em>, oasi d&rsquo;acqua e silenzio</h2>
+            <h2 class="rsm-h1" id="territorio-title">Le <em>Valli del Mincio</em> come atlante ecologico del territorio</h2>
           </div>
-          <p class="rsm-lead" data-reveal style="--delay: 120ms">Tra Rivalta e Borgo Angeli il fiume rallenta e diventa un mosaico di canneti, chiari e praterie a carice. Una zona umida riconosciuta dalla Convenzione di Ramsar e dalla rete Natura 2000.</p>
+          <p class="rsm-lead" data-reveal style="--delay: 120ms">Tra Rivalta e Borgo Angeli il fiume rallenta, deposita sedimenti e crea chiari, prati umidi e fasce di vegetazione anfibia. Questo mosaico rientra nella convenzione <span class="kw" data-kw="ramsar">Ramsar</span> e nella rete <span class="kw" data-kw="natura-2000">Natura 2000</span>, due riferimenti internazionali per la tutela delle zone umide.</p>
         </div>
 
-        <!-- Atlante: foto + dati -->
+        <!-- Atlante: foto + lessico -->
         <div class="rsm-atlas-grid">
           <article class="rsm-atlas-photo" data-reveal data-parallax="0.05">
             <div class="swiper rsm-swiper rsm-swiper--atlas" role="region" aria-label="Galleria fotografica del territorio">
@@ -3054,14 +3526,22 @@
             </div>
           </article>
 
-          <div class="rsm-atlas-copy" data-reveal style="--delay: 140ms">
-            <h3 class="rsm-h2">Acqua, canneti, paese</h3>
-            <p class="rsm-lead">Il Mincio rallenta in <strong>oltre 1.000 ettari di acqua, canneti e ninfee</strong>: una riserva tra Rivalta e Mantova riconosciuta da <span class="kw" data-kw="ramsar">Ramsar</span> e dalla rete Natura 2000.</p>
-            <div class="rsm-fact-grid">
-              <div class="fact"><strong data-count="260">0</strong><span>specie di uccelli censite</span></div>
-              <div class="fact"><strong data-count="1100">0</strong><span>ettari di riserva</span></div>
-              <div class="fact"><strong data-count="43">0</strong><span>chilometri di Mincio dal Garda al Po</span></div>
-              <div class="fact"><strong data-count="172">0</strong><span>paesi firmatari Ramsar</span></div>
+          <div class="rsm-atlas-copy rsm-frame-kit rsm-frame-kit--pad rsm-divider-kit" data-reveal style="--delay: 140ms">
+            <h3 class="rsm-h2">Parole chiave per leggere il paesaggio</h3>
+            <p class="rsm-atlas-note">Il <span class="kw" data-kw="mincio">Mincio</span> attraversa la pianura in un tratto a bassa pendenza: rallentando, forma una <span class="kw" data-kw="zona-umida">zona umida</span> ampia e continua che sostiene alta <span class="kw" data-kw="biodiversita">biodiversita</span> e funzioni ecologiche essenziali.</p>
+            <p class="rsm-atlas-guide">Passa il mouse sulle parole evidenziate: trovi un estratto sintetico da Wikipedia e una nota locale per capire il ruolo del concetto nelle Valli.</p>
+            <ul class="rsm-atlas-bullets" aria-label="Punti chiave del territorio">
+              <li><span>01</span><p>Il corridoio ecologico collega il <span class="kw" data-kw="lago-di-garda">Lago di Garda</span>, i laghi di Mantova e il Po, creando continuita per acqua, sedimenti e specie.</p></li>
+              <li><span>02</span><p>Nei <span class="kw" data-kw="canneti">canneti</span> si concentrano rifugio e nidificazione per avifauna specialistica: <span class="kw" data-kw="airone-cenerino">airone cenerino</span>, <span class="kw" data-kw="garzetta">garzetta</span> e <span class="kw" data-kw="nitticora">nitticora</span>.</p></li>
+              <li><span>03</span><p>Le piante acquatiche e ripariali favoriscono <span class="kw" data-kw="fitodepurazione">fitodepurazione</span>, rallentano i nutrienti in eccesso e limitano fenomeni di <span class="kw" data-kw="eutrofizzazione">eutrofizzazione</span>.</p></li>
+              <li><span>04</span><p>La cultura locale nasce da pesca, taglio delle <span class="kw" data-kw="canne-palustri">canne palustri</span> e intreccio delle <span class="kw" data-kw="arelle">arelle</span>, pratiche che raccontano l&apos;economia d&apos;acqua del borgo.</p></li>
+            </ul>
+            <div class="rsm-territory-stats">
+              <article class="rsm-territory-stat"><strong data-count="260">0</strong><span>specie di uccelli censite</span></article>
+              <article class="rsm-territory-stat"><strong data-count="1100">0</strong><span>ettari di riserva</span></article>
+              <article class="rsm-territory-stat"><strong data-count="43">0</strong><span>chilometri di Mincio dal Garda al Po</span></article>
+              <article class="rsm-territory-stat"><strong data-count="172">0</strong><span>paesi firmatari Ramsar</span></article>
+              <article class="rsm-territory-stat"><strong data-count="1984">0</strong><span>anno di istituzione della riserva</span></article>
             </div>
             <div class="rsm-button-row">
               <a class="rsm-btn rsm-btn--ghost magnetic" href="/storia"><span>Storia di Rivalta</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
@@ -3071,15 +3551,16 @@
 
         <!-- Esperienze -->
         <div class="rsm-section-head" data-reveal>
-          <p class="rsm-kicker">Tre modi per entrare</p>
-          <h3 class="rsm-h2">Acqua, bici, osservazione lenta</h3>
+          <p class="rsm-kicker">Itinerari lenti</p>
+          <h3 class="rsm-h2">Tre letture pratiche del territorio</h3>
         </div>
         <div class="rsm-xp-grid">
           <article class="stack-card rsm-xp-card is-emerald" data-reveal data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-boat" style="--photo:url('/img/waterbike-mincio.jpg')" role="img" aria-label="Escursione in barca nelle Valli del Mincio"></div>
             <div class="rsm-xp-body stack-card-copy">
+              <p class="rsm-xp-step">Percorso 01</p>
               <h3>Dal livello dell&rsquo;acqua</h3>
-              <p>Partenze dagli imbarcaderi, canali stretti, silenzio dei canneti e un punto di vista che cambia il modo di leggere la valle.</p>
+              <p>In barca il <span class="kw" data-kw="mincio">Mincio</span> si osserva nel suo funzionamento reale: correnti lente, margini vegetati, successione di habitat e zone dove la <span class="kw" data-kw="fitodepurazione">fitodepurazione</span> naturale migliora la qualita dell&apos;acqua.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--emerald">barca</span>
                 <span class="rsm-tag rsm-tag--emerald">canoa</span>
@@ -3090,8 +3571,9 @@
           <article class="stack-card rsm-xp-card is-azure" data-reveal style="--delay: 120ms" data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-bike" style="--photo:url('/img/mantova-laghi-aerea.jpg')" role="img" aria-label="Ciclabile nei pressi di Rivalta"></div>
             <div class="rsm-xp-body stack-card-copy">
+              <p class="rsm-xp-step">Percorso 02</p>
               <h3>La valle a pedali</h3>
-              <p>Rivalta &egrave; tappa ideale tra Mantova e Peschiera del Garda, con deviazioni lente verso argini, pontili e scorci d&rsquo;acqua.</p>
+              <p>L&apos;itinerario ciclabile mostra come il paesaggio sia un sistema continuo: argini, golene e aree in rete <span class="kw" data-kw="natura-2000">Natura 2000</span>. Rivalta funziona come nodo intermedio tra percorsi turistici e zone di tutela.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--azure">cicloturismo</span>
                 <span class="rsm-tag rsm-tag--azure">argini</span>
@@ -3102,8 +3584,9 @@
           <article class="stack-card rsm-xp-card is-violet" data-reveal style="--delay: 240ms" data-component="card/experience">
             <div class="photo-slot" data-photo-slot="experience-birdwatching" style="--photo:url('/img/museo-etnografico-tramonto.jpg')" role="img" aria-label="Birdwatching nelle Valli del Mincio"></div>
             <div class="rsm-xp-body stack-card-copy">
-              <h3>Aironi, chiari, canneti</h3>
-              <p>La zona umida &egrave; un archivio naturale aperto: specie migratrici, nidificazioni, fioriture estive e tracce da osservare con rispetto.</p>
+              <p class="rsm-xp-step">Percorso 03</p>
+              <h3>Avifauna e stagioni</h3>
+              <p>Il birdwatching qui permette di leggere dinamiche stagionali e trofiche: colonie di <span class="kw" data-kw="airone-cenerino">airone cenerino</span>, presenze di <span class="kw" data-kw="garzetta">garzetta</span>, passaggi di <span class="kw" data-kw="martin-pescatore">martin pescatore</span> e attivita crepuscolare della <span class="kw" data-kw="nitticora">nitticora</span>.</p>
               <div class="stack-meta rsm-xp-meta">
                 <span class="rsm-tag rsm-tag--violet">fauna</span>
                 <span class="rsm-tag rsm-tag--violet">Ramsar</span>
@@ -3113,31 +3596,35 @@
           </article>
         </div>
 
-      </div>
+        <!-- Valli narrative -->
+        <article class="rsm-valli" data-reveal>
+          <div class="rsm-valli-frame">
+            <p class="rsm-kicker">Scheda territoriale · idrologia, habitat, cultura</p>
+            <p class="rsm-valli__drop">Nelle Valli il paesaggio non &egrave; sfondo: &egrave; un sistema idraulico vivo, con equilibri tra <em>acqua, vegetazione e comunit&agrave;</em>.</p>
+            <div class="rsm-valli__row">
+              <div class="rsm-valli__fact"><strong data-count="1081">0</strong><span>ettari protetti</span></div>
+              <div class="rsm-valli__fact"><strong data-count="260">0</strong><span>specie di uccelli</span></div>
+              <div class="rsm-valli__fact"><strong data-count="172">0</strong><span>stati aderenti Ramsar</span></div>
+              <div class="rsm-valli__fact"><strong data-count="2009">0</strong><span>riconoscimento Eden Project</span></div>
+            </div>
+            <div class="rsm-valli__summary">
+              <article>
+                <h3>Idrologia e habitat</h3>
+                <p>La riserva funziona come spugna territoriale: laminazione delle piene, ritenzione dei sedimenti, filtrazione biologica e riduzione del rischio di <span class="kw" data-kw="eutrofizzazione">eutrofizzazione</span>. I <span class="kw" data-kw="canneti">canneti</span> sono un elemento strutturale, non solo scenografico.</p>
+              </article>
+              <article>
+                <h3>Avifauna e stagionalita</h3>
+                <p>Tra inverno e primavera cambiano densita e comportamento delle specie: aree di alimentazione, roost notturni e siti di nidificazione si distribuiscono in modo dinamico. Il monitoraggio di <span class="kw" data-kw="airone-cenerino">airone cenerino</span>, <span class="kw" data-kw="garzetta">garzetta</span> e <span class="kw" data-kw="nitticora">nitticora</span> aiuta a leggere la qualita ecologica complessiva.</p>
+              </article>
+              <article>
+                <h3>Memoria economica locale</h3>
+                <p>Per secoli l&apos;economia di Rivalta ha ruotato attorno a pesca, trasporto fluviale e lavorazione delle <span class="kw" data-kw="canne-palustri">canne palustri</span>. Le <span class="kw" data-kw="arelle">arelle</span>, intrecciate a mano, sono la traccia materiale di quel sapere e spiegano il legame profondo tra pratiche produttive e ambiente umido.</p>
+              </article>
+            </div>
+          </div>
+        </article>
 
-      <!-- Valli narrative -->
-      <article class="rsm-valli" data-reveal>
-        <div class="rsm-container">
-          <p class="rsm-kicker">Riserva naturale · 1984</p>
-          <p class="rsm-valli__drop">C&rsquo;&egrave; un posto in Lombardia dove il tempo si misura in <em>voli di aironi</em>.</p>
-          <div class="rsm-valli__row">
-            <div class="rsm-valli__fact"><strong data-count="1081">0</strong><span>ettari protetti</span></div>
-            <div class="rsm-valli__fact"><strong data-count="260">0</strong><span>specie di uccelli</span></div>
-            <div class="rsm-valli__fact"><strong data-count="172">0</strong><span>paesi firmatari Ramsar</span></div>
-            <div class="rsm-valli__fact"><strong data-count="2009">0</strong><span>Eden Project — EU Excellence</span></div>
-          </div>
-          <div class="rsm-valli__summary">
-            <article>
-              <h3>Paesaggio</h3>
-              <p>Quattro comuni si dividono il territorio e otto chilometri di fiume diventano palude, chiari e <span class="kw" data-kw="canneti">canneti</span>. Il cielo occupa tutto, l&rsquo;acqua lo ripete, e il paesaggio resta leggibile anche in poche soste.</p>
-            </article>
-            <article>
-              <h3>Gente d&rsquo;acqua</h3>
-              <p>Per secoli qui si viveva di pesca, canne palustri, reti e <span class="kw" data-kw="arelle"><em>arelle</em></span>. Oggi quella memoria sopravvive a <strong>Corte Mincio</strong>, dove il Museo Etnografico conserva mestieri e oggetti reali del borgo.</p>
-            </article>
-          </div>
-        </div>
-      </article>
+      </div>
     </section>
 
     <!-- ─────────────────────────────────────────────────────────
@@ -3166,7 +3653,7 @@
               <button class="swiper-button-next" aria-label="Slide successiva"></button>
             </div>
           </figure>
-          <article class="rsm-contact__card" data-reveal style="--delay: 120ms" data-component="card/contact">
+          <article class="rsm-contact__card rsm-frame-kit rsm-divider-kit" data-reveal style="--delay: 120ms" data-component="card/contact">
             <div>
               <p class="rsm-kicker">Pro Loco · Ufficio turistico</p>
               <h3 class="rsm-h2" style="margin-top:10px">Via Porto, 31</h3>
@@ -3182,33 +3669,10 @@
               <a class="rsm-btn rsm-btn--brand magnetic" href="https://www.google.com/maps/dir/?api=1&destination=Via+Porto+31,+46040+Rivalta+sul+Mincio+MN" target="_blank" rel="noopener">
                 <span>Apri percorso su Maps</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
               </a>
-              <button class="rsm-btn rsm-btn--ghost magnetic" type="button" data-modal-open="newsletter-modal">
-                <span>Iscriviti alla newsletter</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-              </button>
             </div>
           </article>
         </div>
 
-      </div>
-
-      <!-- Newsletter inline -->
-      <div class="rsm-newsletter" data-reveal style="--delay: 120ms">
-        <div class="rsm-container">
-          <div class="rsm-newsletter__grid">
-            <div>
-              <p class="rsm-kicker">Resta in contatto</p>
-              <h2>Il <em>Mincio</em> nella tua casella di posta</h2>
-              <p>Una mail al mese con eventi, sagre, escursioni e racconti dalle Valli del Mincio. Niente rumore, solo cose utili.</p>
-            </div>
-            <form class="rsm-field" id="newsletter-form" novalidate>
-              <label for="newsletter-email">Email</label>
-              <input class="rsm-input rsm-input--lg" id="newsletter-email" type="email" name="email" autocomplete="email" placeholder="nome@email.it" required />
-              <p class="rsm-form-status" id="newsletter-status" role="status"></p>
-              <button class="rsm-btn rsm-btn--brand magnetic" type="submit" style="margin-top:6px"><span>Iscrivimi</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></button>
-              <p class="privacy-note">Iscrivendoti accetti la <a href="/privacy">privacy policy</a>. Puoi disiscriverti in qualsiasi momento.</p>
-            </form>
-          </div>
-        </div>
       </div>
     </section>
   </main>
@@ -3238,7 +3702,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="/node_modules/animejs/dist/bundles/anime.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="/supabase.config.js"></script>
@@ -3363,7 +3826,7 @@
       });
     }
 
-    /* ─── Newsletter form (inline + modal) ─── */
+    /* ─── Newsletter form (modal) ─── */
     function bindNewsletter(formId, inputId, statusId) {
       var form = $('#' + formId);
       var input = $('#' + inputId);
@@ -3384,7 +3847,6 @@
       });
     }
     function initNewsletter() {
-      bindNewsletter('newsletter-form', 'newsletter-email', 'newsletter-status');
       bindNewsletter('newsletter-modal-form', 'newsletter-modal-email', 'newsletter-modal-status');
     }
 
@@ -3418,33 +3880,136 @@
       });
     }
 
-    /* ─── Carousels (Swiper) ─── */
-    function initCarousel() {
-      if (typeof Swiper === 'undefined') return;
-      document.querySelectorAll('.rsm-swiper:not(.rsm-swiper--hero)').forEach(function (el) {
-        var slideCount = el.querySelectorAll('.swiper-slide').length;
-        var hasMultipleSlides = slideCount > 1;
-        new Swiper(el, {
-          loop: hasMultipleSlides, grabCursor: true, spaceBetween: 20,
-          effect: 'fade', fadeEffect: { crossFade: true },
-          autoplay: hasMultipleSlides ? { delay: 4500, disableOnInteraction: false } : false,
-          pagination: { el: el.querySelector('.swiper-pagination'), clickable: true, dynamicBullets: true },
-          navigation: { nextEl: el.querySelector('.swiper-button-next'), prevEl: el.querySelector('.swiper-button-prev') },
-          keyboard: { enabled: true }
-        });
-      });
-    }
+    /* ─── Carousels semplici (vanilla, senza Swiper) ─── */
+    function initSimpleCarousels() {
+      $all('.rsm-swiper').forEach(function (el) {
+        var wrapper = el.querySelector('.swiper-wrapper');
+        var slides = wrapper ? $all('.swiper-slide', wrapper) : [];
+        if (!wrapper || !slides.length) return;
 
-    function initHeroVideoSwiper() {
-      var heroEl = document.querySelector('.rsm-swiper--hero');
-      if (!heroEl || typeof Swiper === 'undefined') return;
-      new Swiper(heroEl, {
-        loop: true, grabCursor: true,
-        effect: 'fade', fadeEffect: { crossFade: true },
-        autoplay: { delay: 4200, disableOnInteraction: false },
-        pagination: { el: heroEl.querySelector('.swiper-pagination'), clickable: true, dynamicBullets: true },
-        navigation: { nextEl: heroEl.querySelector('.swiper-button-next'), prevEl: heroEl.querySelector('.swiper-button-prev') },
-        keyboard: { enabled: true }
+        var disableAnimation = el.classList.contains('rsm-swiper--atlas');
+
+        var prev = el.querySelector('.swiper-button-prev');
+        var next = el.querySelector('.swiper-button-next');
+        var pagination = el.querySelector('.swiper-pagination');
+        var dots = [];
+        var total = slides.length;
+        var index = 0;
+        var timer = null;
+        var delay = 0;
+
+        if (total > 1) {
+          if (disableAnimation) delay = 0;
+          else if (el.classList.contains('rsm-swiper--hero')) delay = 4200;
+          else delay = 4600;
+        }
+
+        if (pagination) {
+          pagination.innerHTML = '';
+          if (total > 1) {
+            slides.forEach(function (_, i) {
+              var dot = document.createElement('button');
+              dot.type = 'button';
+              dot.className = 'swiper-pagination-bullet';
+              dot.setAttribute('aria-label', 'Vai alla slide ' + (i + 1));
+              dot.addEventListener('click', function () {
+                goTo(i, true);
+              });
+              pagination.appendChild(dot);
+              dots.push(dot);
+            });
+            pagination.hidden = false;
+          } else {
+            pagination.hidden = true;
+          }
+        }
+
+        function setActive(noTransition) {
+          if (noTransition || disableAnimation) {
+            wrapper.style.transition = 'none';
+          } else {
+            wrapper.style.transition = '';
+          }
+
+          wrapper.style.transform = 'translate3d(' + (-index * 100) + '%, 0, 0)';
+          slides.forEach(function (slide, i) {
+            var active = i === index;
+            slide.classList.toggle('is-active', active);
+            slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+          });
+
+          dots.forEach(function (dot, i) {
+            var active = i === index;
+            dot.classList.toggle('swiper-pagination-bullet-active', active);
+            dot.setAttribute('aria-current', active ? 'true' : 'false');
+          });
+        }
+
+        function goTo(nextIndex, fromUser) {
+          if (total < 2) return;
+          index = (nextIndex + total) % total;
+          setActive(false);
+          if (fromUser) restartAutoplay();
+        }
+
+        function stopAutoplay() {
+          if (!timer) return;
+          clearInterval(timer);
+          timer = null;
+        }
+
+        function startAutoplay() {
+          if (!delay || total < 2) return;
+          stopAutoplay();
+          timer = setInterval(function () {
+            goTo(index + 1, false);
+          }, delay);
+        }
+
+        function restartAutoplay() {
+          stopAutoplay();
+          startAutoplay();
+        }
+
+        if (prev) {
+          prev.hidden = total < 2;
+          prev.addEventListener('click', function () {
+            goTo(index - 1, true);
+          });
+        }
+        if (next) {
+          next.hidden = total < 2;
+          next.addEventListener('click', function () {
+            goTo(index + 1, true);
+          });
+        }
+
+        el.setAttribute('tabindex', '0');
+        el.addEventListener('keydown', function (event) {
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            goTo(index - 1, true);
+          }
+          if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            goTo(index + 1, true);
+          }
+        });
+
+        el.addEventListener('mouseenter', stopAutoplay);
+        el.addEventListener('mouseleave', startAutoplay);
+        el.addEventListener('focusin', stopAutoplay);
+        el.addEventListener('focusout', function (event) {
+          if (!el.contains(event.relatedTarget)) startAutoplay();
+        });
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) stopAutoplay();
+          else startAutoplay();
+        });
+
+        setActive(true);
+        startAutoplay();
       });
     }
 
@@ -3630,12 +4195,10 @@
         });
       }
 
-      /* Territory swiper: slow horizontal pan effect */
+      /* Territory swiper: slow horizontal pan effect (disattivato per atlas) */
       var atlasPhoto = $('.rsm-atlas-photo');
       if (atlasPhoto) {
-        gsap.to(atlasPhoto, { x: 40, ease: 'none',
-          scrollTrigger: { trigger: atlasPhoto, start: 'top bottom', end: 'bottom top', scrub: 1.8 }
-        });
+        gsap.set(atlasPhoto, { x: 0 });
       }
 
       /* Festa menu items: stagger entrance on scroll */
@@ -3809,15 +4372,24 @@
 
     /* ─── Tippy popups (.kw) ─── */
     var KW_FALLBACK = {
-      'lago-di-garda':    { title: 'Lago di Garda',                   body: 'Il Mincio nasce dal suo angolo meridionale e alimenta le Valli.' },
-      'anno-1984':        { title: 'Riserva dal 1984',                body: 'Istituita con D.C.R. 1739 dell\'11 ottobre 1984, superficie 1.081 ha.' },
-      'ramsar':           { title: 'Convenzione di Ramsar',           body: 'Trattato del 1971 che protegge le zone umide di importanza internazionale.' },
-      'uccelli-acquatici':{ title: 'Uccelli acquatici',                body: 'Oltre 260 specie censite nelle Valli: aironi, garzette, nitticore, svassi.' },
-      'pianura-padana':   { title: 'Pianura Padana',                   body: 'Le Valli del Mincio sono una delle ultime oasi umide intatte della pianura.' },
-      'canneti':          { title: 'Canneto (Phragmites australis)',   body: 'Specie dominante: crea habitat per nidificazione di aironi e tarabusi.' },
-      'canne-palustri':   { title: 'Raccolta delle canne',             body: 'Fino agli anni 60 le canne venivano tagliate e vendute per coperture.' },
-      'arelle':           { title: 'Arelle',                            body: 'Stuoie intrecciate con giunchi, documentate al Museo Etnografico di Corte Mincio.' },
-      'martin-pescatore': { title: 'Martin pescatore (Alcedo atthis)',  body: 'Specie protetta, indicatore di qualità dell\'acqua.' }
+      'lago-di-garda':     { title: 'Lago di Garda',                    body: 'Il Mincio nasce dall\'uscita meridionale del Garda e alimenta il sistema delle Valli.' },
+      'anno-1984':         { title: 'Riserva dal 1984',                 body: 'La Riserva Naturale Valli del Mincio viene istituita nel 1984 con tutela regionale specifica.' },
+      'ramsar':            { title: 'Convenzione di Ramsar',            body: 'Trattato internazionale del 1971 per la tutela e l\'uso razionale delle zone umide.' },
+      'natura-2000':       { title: 'Rete Natura 2000',                 body: 'Rete europea di siti protetti per habitat e specie, fondata sulle direttive Uccelli e Habitat.' },
+      'mincio':            { title: 'Mincio',                            body: 'Fiume emissario del Garda che attraversa Mantova e crea un corridoio idraulico-ecologico unico.' },
+      'zona-umida':        { title: 'Zona umida',                        body: 'Ambiente di transizione tra terra e acqua, fondamentale per biodiversita, depurazione naturale e mitigazione idraulica.' },
+      'biodiversita':      { title: 'Biodiversita',                      body: 'Varieta di geni, specie ed ecosistemi: nelle Valli indica la ricchezza biologica del mosaico acquatico.' },
+      'uccelli-acquatici': { title: 'Uccelli acquatici',                 body: 'Nelle Valli si osservano specie stanziali e migratrici legate a canneti, chiari e acque basse.' },
+      'airone-cenerino':   { title: 'Airone cenerino',                   body: 'Ardeide comune nelle zone umide europee, predatore di pesci, anfibi e piccoli vertebrati.' },
+      'garzetta':          { title: 'Garzetta',                           body: 'Piccolo airone bianco, specie tipica di acque basse e rive fangose ricche di prede.' },
+      'nitticora':         { title: 'Nitticora',                          body: 'Airone crepuscolare e notturno: nelle zone umide usa canneti e alberature ripariali per riposo e nidificazione.' },
+      'pianura-padana':    { title: 'Pianura Padana',                    body: 'Grande pianura alluvionale dell\'Italia settentrionale, dove le Valli sono uno dei principali sistemi umidi residui.' },
+      'canneti':           { title: 'Canneto (Phragmites australis)',    body: 'Formazione vegetale dominante nei margini d\'acqua: stabilizza sponde e ospita molte specie di avifauna.' },
+      'fitodepurazione':   { title: 'Fitodepurazione',                    body: 'Processo in cui piante, microrganismi e substrato contribuiscono alla riduzione degli inquinanti in acqua.' },
+      'eutrofizzazione':   { title: 'Eutrofizzazione',                    body: 'Arricchimento eccessivo di nutrienti che puo alterare equilibrio ecologico e ossigenazione delle acque.' },
+      'canne-palustri':    { title: 'Raccolta delle canne',              body: 'Pratica storica locale per ottenere materiale da copertura e intreccio legato all\'economia del fiume.' },
+      'arelle':            { title: 'Arelle',                             body: 'Stuoie intrecciate in canna o giunco, testimonianza artigianale della cultura materiale delle Valli.' },
+      'martin-pescatore':  { title: 'Martin pescatore (Alcedo atthis)',   body: 'Specie indicatrice della qualita dell\'acqua, visibile lungo rive tranquille e canali secondari.' }
     };
     var _kwClientCache = Object.create(null);
     function buildKwPopupHtml(key, data) {
@@ -3859,8 +4431,7 @@
       initMagneticButtons();
       initNewsletter();
       initModals();
-      initCarousel();
-      initHeroVideoSwiper();
+      initSimpleCarousels();
       initPosts();
       initGsap();
       initAnimeJs();
@@ -3869,7 +4440,6 @@
     });
   })();
   </script>
-
   <!-- ════════════════════════════════════════════════════════════
        PREMIUM EDITORIAL LAYER — JS (stagger + mouse-tracking)
        ════════════════════════════════════════════════════════════ -->
@@ -3877,56 +4447,53 @@
   (function(){
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    function revealStaggerBlock(node) {
+      if (!node) return;
+      node.classList.add('is-visible');
+      node.querySelectorAll('.rsm-edit-line').forEach(function(line){ line.classList.add('is-in'); });
+    }
+
     /* ── Stagger reveal ── */
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if (e.isIntersecting) {
-            var lines = e.target.querySelectorAll('.rsm-edit-line');
-            lines.forEach(function(line, i){
-              setTimeout(function(){ line.classList.add('is-in'); }, reduced ? 0 : i * 90);
-            });
-            io.unobserve(e.target);
-          }
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          revealStaggerBlock(entry.target);
+          io.unobserve(entry.target);
         });
       }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
-      document.querySelectorAll('[data-rsm-edit-stagger]').forEach(function(n){ io.observe(n); });
+
+      document.querySelectorAll('[data-rsm-edit-stagger]').forEach(function(n){
+        io.observe(n);
+        var rect = n.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+          revealStaggerBlock(n);
+        }
+      });
     } else {
-      document.querySelectorAll('.rsm-edit-line').forEach(function(n){ n.classList.add('is-in'); });
+      document.querySelectorAll('[data-rsm-edit-stagger]').forEach(function(n){ revealStaggerBlock(n); });
     }
 
     /* Banner: trigger immediato (sopra il fold) */
     var banner = document.querySelector('[data-rsm-edit-banner]');
     if (banner) {
-      requestAnimationFrame(function(){
-        banner.querySelectorAll('.rsm-edit-line').forEach(function(line, i){
-          setTimeout(function(){ line.classList.add('is-in'); }, reduced ? 0 : 80 + i * 110);
-        });
-      });
+      banner.querySelectorAll('.rsm-edit-line').forEach(function(n){ n.classList.add('is-in'); });
     }
 
     if (reduced) return;
 
     /* ── Mouse-tracking aurora (banner + compass) ── */
     function bindAurora(scope, auroraEl){
-      if (!auroraEl) return;
-      var rect = null, raf = 0, x = 0.5, y = 0.5;
-      var onMove = function(ev){
-        if (!rect) rect = scope.getBoundingClientRect();
-        x = (ev.clientX - rect.left) / rect.width;
-        y = (ev.clientY - rect.top) / rect.height;
-        if (!raf) raf = requestAnimationFrame(apply);
-      };
-      var apply = function(){
-        raf = 0;
-        auroraEl.style.setProperty('--mx', (x * 100).toFixed(2) + '%');
-        auroraEl.style.setProperty('--my', (y * 100).toFixed(2) + '%');
-      };
-      var onLeave = function(){ rect = null; auroraEl.style.removeProperty('--mx'); auroraEl.style.removeProperty('--my'); };
-      var onResize = function(){ rect = null; };
-      scope.addEventListener('mousemove', onMove, { passive: true });
-      scope.addEventListener('mouseleave', onLeave);
-      window.addEventListener('resize', onResize);
+      if (!scope || !auroraEl) return;
+
+      scope.addEventListener('pointermove', function(e){
+        var rect = scope.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+        auroraEl.style.setProperty('--mx', x.toFixed(2) + '%');
+        auroraEl.style.setProperty('--my', y.toFixed(2) + '%');
+      }, { passive: true });
     }
 
     var bannerScope = document.querySelector('[data-rsm-edit-banner]');

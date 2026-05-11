@@ -40,18 +40,22 @@
   function closeDropdown() {
     var dropdown = $('#profileDropdown');
     var button = $('#profileBtn');
+    var header = $('[data-rsm-topbar]');
     if (dropdown) dropdown.classList.remove('open');
     if (button) button.setAttribute('aria-expanded', 'false');
+    if (header) header.classList.remove('menu-open');
   }
 
   function item(label, href, active, primary) {
     return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + label + '</span><span aria-hidden="true">&rarr;</span></a>';
   }
 
-  function buildMenu(username, color, emoji) {
+  function buildMenu(username, color, emoji, email) {
     var current = getCurrentPath();
     var queryUser = new URLSearchParams(window.location.search).get('u');
     var safeUsername = escapeHtml(username || 'utente');
+    var safeEmail = escapeHtml(email || 'account attivo');
+    var safePage = escapeHtml((window.location.pathname || '/').replace(/^\//, '') || 'home');
     var profileHref = 'profile?u=' + encodeURIComponent(username || 'utente');
     var isProfile = current.indexOf('profile') >= 0;
     var isDashboard = current.indexOf('/dashboard') >= 0 || current.indexOf('/me') >= 0;
@@ -60,6 +64,10 @@
     var isPreferences = current.indexOf('preferenze') >= 0;
     var isReset = current.indexOf('reset') >= 0;
     var isEditProfile = current.indexOf('modifica-profilo') >= 0;
+    var isStoria = current.indexOf('storia') >= 0;
+    var isPrivacy = current.indexOf('privacy') >= 0;
+    var isCookie = current.indexOf('cookie') >= 0;
+    var isNoteLegali = current.indexOf('note-legali') >= 0;
     var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
     var accent = escapeHtml(color || '#2f6b67');
     var avatar = escapeHtml(emoji || '🌿');
@@ -73,6 +81,8 @@
       + '<span>@' + safeUsername + '</span>'
       + '</button>'
       + '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'
+      + '<div class="profile-dropdown__meta"><strong>@' + safeUsername + '</strong><span>' + safeEmail + '</span><span>Pagina: ' + safePage + '</span></div>'
+      + '<div class="profile-dropdown__sep"></div>'
       + '<div class="profile-dropdown__section-title">Navigazione</div>'
       + item('Profilo', profileHref, isProfile && !isEditProfile, false)
       + item('Dashboard', '/dashboard', isDashboard, false)
@@ -82,24 +92,74 @@
       + item('Aspetto', 'preferenze', isPreferences, false)
       + item('Reimposta Password', 'reset', isReset, false)
       + '<div class="profile-dropdown__sep"></div>'
+      + '<div class="profile-dropdown__section-title">Sito</div>'
+      + item('Storia', '/storia', isStoria, false)
+      + item('Privacy', '/privacy', isPrivacy, false)
+      + item('Cookie', '/cookie', isCookie, false)
+      + item('Note legali', '/note-legali', isNoteLegali, false)
+      + '<div class="profile-dropdown__sep"></div>'
       + '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'
       + '</div></div>';
   }
 
   function bindMenu(client) {
+    var menu = $('#profileMenu');
     var button = $('#profileBtn');
     var dropdown = $('#profileDropdown');
-    if (!button || !dropdown) return;
+    var header = $('[data-rsm-topbar]');
+    if (!menu || !button || !dropdown) return;
+
+    var autoCloseTimer = null;
+    var leaveTimer = null;
+
+    function clearAutoCloseTimer() {
+      if (!autoCloseTimer) return;
+      clearTimeout(autoCloseTimer);
+      autoCloseTimer = null;
+    }
+
+    function scheduleAutoClose() {
+      clearAutoCloseTimer();
+      autoCloseTimer = setTimeout(function () {
+        closeDropdown();
+      }, 10000);
+    }
+
+    function openDropdown() {
+      dropdown.classList.add('open');
+      button.setAttribute('aria-expanded', 'true');
+      if (header) header.classList.add('menu-open');
+      scheduleAutoClose();
+    }
+
+    function clearLeaveTimer() {
+      if (!leaveTimer) return;
+      clearTimeout(leaveTimer);
+      leaveTimer = null;
+    }
 
     button.addEventListener('click', function (event) {
+      /* apertura solo hover, niente toggle su click */
+      event.preventDefault();
       event.stopPropagation();
-      var open = !dropdown.classList.contains('open');
-      dropdown.classList.toggle('open', open);
-      button.setAttribute('aria-expanded', String(open));
+    });
+
+    menu.addEventListener('mouseenter', function () {
+      clearLeaveTimer();
+      openDropdown();
+    });
+
+    menu.addEventListener('mouseleave', function () {
+      clearLeaveTimer();
+      leaveTimer = setTimeout(function () {
+        clearAutoCloseTimer();
+        closeDropdown();
+      }, 120);
     });
 
     $all('[data-action="logout"]', dropdown).forEach(function (logoutButton) {
       logoutButton.addEventListener('click', function () {
+        clearAutoCloseTimer();
         client.auth.signOut().then(function () {
           window.location.reload();
         });
@@ -119,7 +179,7 @@
   function renderSession(nav, session, profile) {
     var emailName = String(session.user && session.user.email || 'profilo').split('@')[0] || 'profilo';
     var username = (profile && profile.username) || emailName;
-    nav.innerHTML = buildMenu(username, profile && profile.avatar_color, profile && profile.avatar_emoji);
+    nav.innerHTML = buildMenu(username, profile && profile.avatar_color, profile && profile.avatar_emoji, session.user && session.user.email);
   }
 
   /* ── Ricerca ───────────────────────────────────────────────── */
