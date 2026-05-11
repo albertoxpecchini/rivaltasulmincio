@@ -7,7 +7,7 @@ const zlib = require('zlib');
 const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
-const PARTIAL_ASSET_RE = /((?:href|src)=["'])(\/partials\/[^"']+\.(?:css|js))(?:\?[^"']*)?(["'])/gi;
+const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|theme\.css))(?:\?[^"']*)?(["'])/gi;
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
 const BROTLI_OPTIONS = {
   params: {
@@ -28,8 +28,8 @@ function versionedAssetPath(assetPath) {
   return `${assetPath}?v=${getAssetVersion(assetPath)}`;
 }
 
-function versionPartialAssetUrls(html) {
-  return html.replace(PARTIAL_ASSET_RE, (_, prefix, assetPath, suffix) => {
+function versionHtmlAssetUrls(html) {
+  return html.replace(HTML_ASSET_VERSION_RE, (_, prefix, assetPath, suffix) => {
     return `${prefix}${versionedAssetPath(assetPath)}${suffix}`;
   });
 }
@@ -87,7 +87,7 @@ function loadPartial(name) {
     : (name === 'nav' ? 'topbar' : name);
   const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
   try {
-    return versionPartialAssetUrls(fs.readFileSync(p, 'utf8'));
+    return versionHtmlAssetUrls(fs.readFileSync(p, 'utf8'));
   } catch (_) {
     return `<!-- partial "${name}" not found -->`;
   }
@@ -130,7 +130,9 @@ function injectTopbarAssets(html) {
 }
 
 function injectPartials(html) {
-  const withPartials = html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name));
+  const withPartials = versionHtmlAssetUrls(
+    html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name))
+  );
   return injectTopbarAssets(withPartials);
 }
 const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
