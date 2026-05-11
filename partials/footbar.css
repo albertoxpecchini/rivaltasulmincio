@@ -1003,6 +1003,74 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
   color: #061a2a;
 }
 
+/* Flat footer surfaces: keep the footer separate with lines and spacing,
+   not with background panels or lifted cards. */
+.rsm-foot {
+  background: transparent;
+  border-top-color: var(--rsm-foot-line-strong);
+  box-shadow: none;
+}
+
+.rsm-foot__aurora,
+.rsm-foot__grain,
+.rsm-foot__hairline {
+  display: none;
+}
+
+.rsm-foot__band {
+  background: transparent;
+}
+
+.rsm-foot__news,
+.rsm-foot__news-row,
+.rsm-foot__contact,
+.rsm-foot__social,
+.rsm-foot__top,
+.rsm-foot__logo,
+.rsm-foot__contact-glyph,
+.rsm-foot__news-btn-icon {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.rsm-foot__news::before,
+.rsm-foot__contact::before,
+.rsm-foot__logo::after {
+  display: none;
+}
+
+.rsm-foot__news,
+.rsm-foot__news-row,
+.rsm-foot__contact,
+.rsm-foot__social,
+.rsm-foot__top,
+.rsm-foot__logo,
+.rsm-foot__contact-glyph {
+  border-color: var(--rsm-foot-line);
+}
+
+.rsm-foot__news-row:focus-within,
+a.rsm-foot__contact:hover,
+.rsm-foot__social:hover,
+.rsm-foot__top:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.rsm-foot__lockup:hover .rsm-foot__logo,
+a.rsm-foot__contact:hover,
+.rsm-foot__social:hover,
+.rsm-foot__top:hover {
+  transform: none;
+}
+
+a.rsm-foot__contact:hover .rsm-foot__contact-glyph,
+.rsm-foot__top:hover .rsm-foot__top-icon {
+  background: transparent;
+}
+
 /* ════════════════════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════════════════════ */

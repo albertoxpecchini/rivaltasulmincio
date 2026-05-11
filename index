@@ -2338,11 +2338,11 @@
 
     /* No spazio bianco tra contact e newsletter (è dentro la stessa section) */
     .rsm-contact .rsm-newsletter {
-      margin-top: clamp(40px, 5vw, 64px) !important;
+      margin-top: var(--rsm-home-section-space, 30px) !important;
     }
 
     /* No gap fra newsletter e footer (footer ha già il proprio spacing) */
-    .rsm-section.rsm-contact { padding-bottom: 0 !important; }
+    .rsm-section.rsm-contact { padding-bottom: var(--rsm-home-section-space, 30px) !important; }
     .rsm-foot { margin-top: 0 !important; }
 
     /* ════════════════════════════════════════════════════════════
@@ -2368,6 +2368,182 @@
     .rsm-festa__day strong {
       font-family: 'Syne', system-ui, sans-serif !important;
       font-weight: 800 !important;
+    }
+
+    /* ═════════════════ FIXED SECTION SPACING ═════════════════ */
+    body[data-page="home"] {
+      --rsm-home-section-space: 30px;
+      background:
+        radial-gradient(ellipse at 14% -10%, rgba(102, 255, 214, 0.18), transparent 38%),
+        radial-gradient(ellipse at 80% -8%, rgba(126, 188, 255, 0.22), transparent 42%),
+        radial-gradient(ellipse at 100% 100%, rgba(196, 122, 255, 0.20), transparent 48%),
+        linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .rsm-hero,
+    .rsm-compass,
+    .rsm-festa,
+    .rsm-gallery,
+    .rsm-contact,
+    .rsm-valli,
+    .rsm-newsletter,
+    .rsm-edit-band {
+      padding-top: var(--rsm-home-section-space) !important;
+      padding-bottom: var(--rsm-home-section-space) !important;
+    }
+
+    .rsm-valli,
+    .rsm-contact .rsm-newsletter {
+      margin-top: var(--rsm-home-section-space) !important;
+    }
+
+    /* ═════════════════ FLAT SECTION SURFACES ═════════════════
+       Le sezioni restano pronte per un fondo unico dietro il contenuto:
+       basta valorizzare --rsm-flat-section-bg sul root interessato.
+       Tutte le superfici interne restano neutre e sullo stesso piano. */
+    .rsm-hero,
+    .rsm-compass,
+    .rsm-festa,
+    .rsm-events,
+    .rsm-gallery,
+    .rsm-territory,
+    .rsm-contact,
+    .rsm-newsletter,
+    .rsm-valli {
+      --rsm-flat-section-bg: transparent;
+      --rsm-flat-section-border: transparent;
+      --rsm-flat-panel-bg: transparent;
+      --rsm-flat-panel-border: var(--rsm-line);
+      --rsm-flat-panel-shadow: none;
+      --rsm-flat-panel-filter: none;
+      background: var(--rsm-flat-section-bg) !important;
+      border-top-color: var(--rsm-flat-section-border) !important;
+      border-bottom-color: var(--rsm-flat-section-border) !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .rsm-hero__accent,
+    .rsm-compass::before,
+    .rsm-compass__hairline,
+    .rsm-compass__aurora,
+    .rsm-compass__blob,
+    .rsm-compass__link::before {
+      display: none !important;
+    }
+
+    .rsm-compass__copy .rsm-kicker,
+    .rsm-compass__copy .rsm-lead,
+    .rsm-newsletter .rsm-kicker,
+    .rsm-newsletter p,
+    .rsm-newsletter label,
+    .rsm-newsletter .privacy-note,
+    .rsm-newsletter .privacy-note a,
+    .rsm-newsletter .rsm-form-status {
+      color: var(--rsm-ink-3) !important;
+    }
+
+    .rsm-compass,
+    .rsm-newsletter,
+    .rsm-compass__copy .rsm-h1,
+    .rsm-newsletter h2,
+    .rsm-contact .rsm-h2,
+    .rsm-contact .rsm-h1 {
+      color: var(--rsm-ink) !important;
+    }
+
+    .rsm-compass__meta .rsm-tag,
+    .rsm-compass__link,
+    .rsm-gallery__stage,
+    .rsm-compass__link strong,
+    .rsm-festa__badge,
+    .rsm-festa__dates,
+    .rsm-festa__day,
+    .festa-day,
+    .rsm-festa__menu-list li,
+    .rsm-festa .rsm-card,
+    .news-filter-chip,
+    .post-featured,
+    .post-card,
+    .news-empty,
+    .fact,
+    .rsm-fact,
+    .stack-card,
+    .rsm-xp-card,
+    .rsm-contact__card,
+    .rsm-contact__map,
+    .rsm-newsletter .rsm-input,
+    .rsm-contact .rsm-btn,
+    .rsm-newsletter .rsm-btn,
+    .btn-read {
+      background: var(--rsm-flat-panel-bg) !important;
+      background-image: none !important;
+      border-color: var(--rsm-flat-panel-border) !important;
+      box-shadow: var(--rsm-flat-panel-shadow) !important;
+      backdrop-filter: var(--rsm-flat-panel-filter) !important;
+      -webkit-backdrop-filter: var(--rsm-flat-panel-filter) !important;
+    }
+
+    .rsm-festa__poster,
+    .rsm-gallery__stage,
+    .rsm-atlas-photo,
+    .rsm-contact__map,
+    .rsm-valli,
+    .rsm-festa__badge,
+    .rsm-contact__card,
+    .post-featured,
+    .post-card,
+    .stack-card,
+    .rsm-xp-card {
+      box-shadow: none !important;
+    }
+
+    .rsm-compass__link,
+    .rsm-compass__meta .rsm-tag,
+    .news-filter-chip,
+    .rsm-contact .rsm-btn,
+    .rsm-newsletter .rsm-btn,
+    .btn-read {
+      color: var(--rsm-ink-2) !important;
+    }
+
+    .rsm-compass__link:hover,
+    .rsm-festa__day:hover,
+    .festa-day:hover,
+    .rsm-festa__menu-list li:hover,
+    .news-filter-chip:hover,
+    .news-filter-chip.on,
+    .post-featured:hover,
+    .post-card:hover,
+    .stack-card:hover,
+    .rsm-xp-card:hover,
+    .rsm-contact .rsm-btn:hover,
+    .rsm-newsletter .rsm-btn:hover,
+    .btn-read:hover {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .rsm-compass__link strong,
+    .news-filter-chip.on,
+    .rsm-contact .rsm-btn--brand,
+    .rsm-newsletter .rsm-btn--brand {
+      color: var(--rsm-ink) !important;
+    }
+
+    .rsm-newsletter .rsm-input:focus {
+      background: transparent !important;
+      box-shadow: none !important;
+      border-color: var(--rsm-line-3) !important;
+    }
+
+    .rsm-contact__map,
+    .rsm-atlas-photo,
+    .rsm-festa__poster {
+      background-color: transparent !important;
     }
 
     /* ═════════════════ REDUCED MOTION ═════════════════ */
