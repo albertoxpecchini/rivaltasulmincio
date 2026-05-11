@@ -4,6 +4,12 @@
    ================================================================ */
 
 .site-header {
+  --rsm-topbar-text: var(--rsm-text-on-dark);
+  --rsm-topbar-text-soft: var(--rsm-text-on-dark-soft);
+  --rsm-topbar-text-dim: var(--rsm-text-on-dark-dim);
+  --rsm-topbar-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  --rsm-topbar-glass-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  --rsm-topbar-accent: var(--rsm-accent-grad);
   position: fixed;
   inset: 0 0 auto;
   z-index: 70;
@@ -15,12 +21,12 @@
     rgba(9, 45, 94, 0.76) 44%,
     rgba(75, 28, 118, 0.78) 100%
   );
-  backdrop-filter: blur(30px) saturate(185%);
-  -webkit-backdrop-filter: blur(30px) saturate(185%);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
   border-bottom: 1px solid rgba(160, 208, 255, 0.16);
   box-shadow:
     0 1px 0 rgba(222, 240, 255, 0.08),
-    0 22px 52px rgba(4, 10, 34, 0.18);
+    0 18px 42px rgba(4, 10, 34, 0.16);
 }
 
 .site-header::before,
@@ -68,7 +74,7 @@
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: #fff;
+  color: var(--rsm-topbar-text);
 }
 
 .brand:hover {
@@ -119,7 +125,7 @@
   font-size: 1.14rem;
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: #fff;
+  color: var(--rsm-topbar-text);
   text-wrap: nowrap;
 }
 
@@ -130,7 +136,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(197, 223, 255, 0.72);
+  color: var(--rsm-topbar-text-soft);
   text-wrap: nowrap;
 }
 
@@ -151,7 +157,7 @@
   border-radius: 999px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.03);
-  color: rgba(212, 230, 255, 0.8);
+  color: var(--rsm-topbar-text-soft);
   text-decoration: none;
   font-family: 'Syne', var(--sans, system-ui), sans-serif;
   font-size: 0.82rem;
@@ -173,7 +179,7 @@
   bottom: 7px;
   height: 1px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(139, 255, 214, 0.88), rgba(156, 199, 255, 0.92), rgba(204, 151, 255, 0.88));
+  background: var(--rsm-topbar-accent);
   transform: scaleX(0.18);
   transform-origin: center;
   opacity: 0;
@@ -182,10 +188,12 @@
 
 .nav-link:hover,
 .nav-link.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
+  color: var(--rsm-topbar-text);
+  background: rgba(255, 255, 255, 0.14);
   border-color: rgba(168, 208, 255, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px rgba(4, 10, 34, 0.12);
   text-decoration: none;
 }
 
@@ -210,8 +218,8 @@
   padding: 0 14px;
   border-radius: 12px;
   border: 1px solid rgba(146, 198, 255, 0.26);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  color: rgba(214, 231, 255, 0.84);
+  background: var(--rsm-topbar-glass);
+  color: var(--rsm-topbar-text-soft);
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.84rem;
   font-weight: 500;
@@ -227,19 +235,20 @@
 }
 
 .search-toggle:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  background: var(--rsm-topbar-glass-strong);
   border-color: rgba(176, 219, 255, 0.4);
-  color: #fff;
+  color: var(--rsm-topbar-text);
   transform: translateY(-1px);
 }
 
 .search-toggle[aria-expanded="true"] {
-  color: #fff;
+  color: var(--rsm-topbar-text);
   border-color: rgba(152, 204, 255, 0.56);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  background: var(--rsm-topbar-glass-strong);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 0 3px rgba(93, 159, 255, 0.18);
+    0 0 0 3px rgba(93, 159, 255, 0.18),
+    0 10px 26px rgba(4, 10, 34, 0.14);
 }
 
 .search-kbd,
@@ -252,7 +261,7 @@
 }
 
 .search-kbd {
-  color: rgba(180, 208, 255, 0.6);
+  color: var(--rsm-topbar-text-dim);
   border: 1px solid rgba(140, 185, 255, 0.22);
   border-radius: 6px;
   padding: 1px 6px;
@@ -277,8 +286,8 @@
   gap: 8px;
   border-radius: 12px;
   border: 1px solid rgba(146, 198, 255, 0.28);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
-  color: rgba(221, 237, 255, 0.92);
+  background: var(--rsm-topbar-glass);
+  color: var(--rsm-topbar-text-soft);
   text-decoration: none;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.84rem;
@@ -295,11 +304,11 @@
 
 .nav-login:hover,
 .profile-btn:hover {
-  color: #fff;
+  color: var(--rsm-topbar-text);
   text-decoration: none;
   transform: translateY(-1px);
   border-color: rgba(175, 219, 255, 0.44);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  background: var(--rsm-topbar-glass-strong);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 10px 24px rgba(4, 10, 34, 0.16);
@@ -334,9 +343,12 @@
   padding: 10px;
   border: 1px solid rgba(123, 181, 255, 0.24);
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(8, 20, 48, 0.98), rgba(8, 14, 34, 0.96));
-  backdrop-filter: blur(24px) saturate(170%);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  background:
+    linear-gradient(180deg, rgba(8, 20, 48, 0.98), rgba(8, 14, 34, 0.96)),
+    radial-gradient(circle at top left, rgba(102, 255, 214, 0.08), transparent 34%),
+    radial-gradient(circle at top right, rgba(196, 122, 255, 0.08), transparent 38%);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   box-shadow:
     0 24px 72px rgba(4, 10, 40, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -362,7 +374,7 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(159, 199, 255, 0.5);
+  color: var(--rsm-topbar-text-dim);
 }
 
 .profile-dropdown a,
@@ -376,7 +388,7 @@
   border: 0;
   border-radius: 12px;
   background: transparent;
-  color: rgba(219, 236, 255, 0.9);
+  color: var(--rsm-topbar-text-soft);
   text-align: left;
   text-decoration: none;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
@@ -389,8 +401,8 @@
 .profile-dropdown a:hover,
 .profile-dropdown button:hover,
 .profile-dropdown .active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.09);
+  color: var(--rsm-topbar-text);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateX(1px);
 }
 
@@ -414,7 +426,7 @@
   overflow: hidden;
   height: 0;
   border-top: 1px solid transparent;
-  background: linear-gradient(180deg, rgba(10, 20, 52, 0.14), rgba(7, 18, 46, 0.22));
+  background: linear-gradient(180deg, rgba(8, 18, 42, 0.18), rgba(7, 18, 46, 0.28));
   transition:
     height 340ms cubic-bezier(0.32, 0.72, 0, 1),
     border-color 340ms ease;
@@ -451,14 +463,14 @@
   padding: 11px 16px;
   border: 1px solid rgba(136, 190, 255, 0.24);
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+  background: var(--rsm-topbar-glass);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .search-row:focus-within {
   border-color: rgba(149, 206, 255, 0.56);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  background: var(--rsm-topbar-glass-strong);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 0 0 3px rgba(80, 150, 255, 0.16);
@@ -466,7 +478,7 @@
 
 .search-row-icon {
   flex-shrink: 0;
-  color: rgba(160, 205, 255, 0.72);
+  color: var(--rsm-topbar-text-soft);
 }
 
 .search-input {
@@ -475,14 +487,14 @@
   border: 0;
   outline: none;
   background: transparent;
-  color: #fff;
+  color: var(--rsm-topbar-text);
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 1rem;
   font-weight: 500;
 }
 
 .search-input::placeholder {
-  color: rgba(174, 207, 255, 0.44);
+  color: var(--rsm-topbar-text-dim);
 }
 
 .search-input::-webkit-search-cancel-button,
@@ -491,7 +503,7 @@
 }
 
 .search-esc-kbd {
-  color: rgba(176, 208, 255, 0.52);
+  color: var(--rsm-topbar-text-dim);
   border: 1px solid rgba(130, 180, 255, 0.22);
   border-radius: 6px;
   padding: 2px 6px;
@@ -511,7 +523,7 @@
   border-radius: 999px;
   border: 1px solid rgba(136, 190, 255, 0.22);
   background: rgba(255, 255, 255, 0.07);
-  color: rgba(195, 222, 255, 0.8);
+  color: var(--rsm-topbar-text-soft);
   cursor: pointer;
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.78rem;
@@ -524,7 +536,7 @@
 }
 
 .search-chip:hover {
-  color: #fff;
+  color: var(--rsm-topbar-text);
   background: rgba(106, 166, 255, 0.22);
   border-color: rgba(150, 201, 255, 0.46);
   transform: translateY(-1px);
@@ -545,7 +557,7 @@
   gap: 12px;
   padding: 10px 12px;
   border-radius: 12px;
-  color: rgba(218, 236, 255, 0.9);
+  color: var(--rsm-topbar-text-soft);
   text-decoration: none;
   cursor: pointer;
   transition: background 150ms ease, color 150ms ease, transform 150ms ease;
@@ -553,7 +565,7 @@
 
 .search-result-item:hover,
 .search-result-item.focused {
-  color: #fff;
+  color: var(--rsm-topbar-text);
   background: rgba(255, 255, 255, 0.1);
   transform: translateX(2px);
   text-decoration: none;
@@ -590,7 +602,7 @@
 
 .search-result-desc {
   display: block;
-  color: rgba(172, 206, 255, 0.58);
+  color: var(--rsm-topbar-text-dim);
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.75rem;
   white-space: nowrap;
@@ -600,14 +612,14 @@
 
 .search-result-arrow {
   flex-shrink: 0;
-  color: rgba(165, 204, 255, 0.42);
+  color: var(--rsm-topbar-text-dim);
   font-size: 0.9rem;
 }
 
 .search-empty {
   padding: 20px 12px;
   text-align: center;
-  color: rgba(171, 205, 255, 0.52);
+  color: var(--rsm-topbar-text-dim);
   font-family: 'Space Grotesk', var(--sans, system-ui), sans-serif;
   font-size: 0.84rem;
 }
@@ -674,12 +686,12 @@ html[data-theme="scuro"] .site-header {
 
 html[data-theme="scuro"] .brand,
 html[data-theme="scuro"] .brand:hover {
-  color: #fff;
+  color: var(--rsm-topbar-text);
 }
 
 html[data-theme="scuro"] .nav-login,
 html[data-theme="scuro"] .profile-btn {
-  color: rgba(221, 237, 255, 0.92);
+  color: var(--rsm-topbar-text-soft);
 }
 
 html[data-contrast="high"] .site-header {

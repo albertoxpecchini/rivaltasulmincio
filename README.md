@@ -181,13 +181,7 @@ rivaltasulmincio/
 ```bash
 npm install
 npm run dev
-# → http://localhost:3001
-```
-
-Porta configurabile via variabile d'ambiente:
-
-```bash
-PORT=8080 npm run dev
+# → http://localhost:2858
 ```
 
 ### Collegamento rapido a Supabase

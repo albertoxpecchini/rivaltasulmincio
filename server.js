@@ -1,10 +1,84 @@
 const http = require('http');
+const crypto = require('crypto');
 const fs   = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
-const PORT = Number(process.env.PORT) || 3000;
+const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
+const PARTIAL_ASSET_RE = /((?:href|src)=["'])(\/partials\/[^"']+\.(?:css|js))(?:\?[^"']*)?(["'])/gi;
+const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
+const BROTLI_OPTIONS = {
+  params: {
+    [zlib.constants.BROTLI_PARAM_QUALITY]: 4
+  }
+};
+
+function getAssetVersion(assetPath) {
+  const diskPath = path.join(ROOT, assetPath.replace(/^\//, ''));
+  try {
+    return Math.floor(fs.statSync(diskPath).mtimeMs).toString(36);
+  } catch (_) {
+    return '1';
+  }
+}
+
+function versionedAssetPath(assetPath) {
+  return `${assetPath}?v=${getAssetVersion(assetPath)}`;
+}
+
+function versionPartialAssetUrls(html) {
+  return html.replace(PARTIAL_ASSET_RE, (_, prefix, assetPath, suffix) => {
+    return `${prefix}${versionedAssetPath(assetPath)}${suffix}`;
+  });
+}
+
+function createEntityTag(body) {
+  const bytes = Buffer.isBuffer(body) ? body : Buffer.from(body);
+  const hash = crypto.createHash('sha1').update(bytes).digest('base64').replace(/[+/=]/g, '').slice(0, 16);
+  return `W/"${hash}"`;
+}
+
+function getCacheControl(rawUrl, isPage) {
+  if (process.env.NODE_ENV !== 'production') return 'no-store';
+
+  if (isPage) {
+    return 'public, max-age=0, must-revalidate';
+  }
+
+  const requestUrl = new URL(rawUrl || '/', 'http://localhost');
+  if (requestUrl.searchParams.has('v')) {
+    return 'public, max-age=31536000, immutable';
+  }
+
+  return 'public, max-age=86400, stale-while-revalidate=3600';
+}
+
+function compressBody(req, contentType, body) {
+  const accepts = String(req.headers['accept-encoding'] || '');
+  const bytes = Buffer.isBuffer(body) ? body : Buffer.from(body);
+
+  if (!COMPRESSIBLE_TYPE_RE.test(contentType || '') || bytes.length < 1024) {
+    return { body: bytes };
+  }
+
+  if (accepts.includes('br')) {
+    return {
+      body: zlib.brotliCompressSync(bytes, BROTLI_OPTIONS),
+      encoding: 'br'
+    };
+  }
+
+  if (accepts.includes('gzip')) {
+    return {
+      body: zlib.gzipSync(bytes, { level: 6 }),
+      encoding: 'gzip'
+    };
+  }
+
+  return { body: bytes };
+}
 
 // ── Partial injection ──────────────────────────────────────────────────────
 function loadPartial(name) {
@@ -13,7 +87,7 @@ function loadPartial(name) {
     : (name === 'nav' ? 'topbar' : name);
   const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
   try {
-    return fs.readFileSync(p, 'utf8');
+    return versionPartialAssetUrls(fs.readFileSync(p, 'utf8'));
   } catch (_) {
     return `<!-- partial "${name}" not found -->`;
   }
@@ -42,7 +116,7 @@ function injectTopbarAssets(html) {
       headInjections.push('  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" />');
     }
     if (!hasTopbarCss) {
-      headInjections.push('  <link rel="stylesheet" href="/partials/topbar.css?v=3" />');
+      headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath('/partials/topbar.css')}" />`);
     }
 
     if (headInjections.length) {
@@ -50,7 +124,7 @@ function injectTopbarAssets(html) {
     }
   }
   if (!hasTopbarJs && result.includes('</body>')) {
-    result = result.replace('</body>', '  <script src="/partials/topbar.client.js?v=3"></script>\n</body>');
+    result = result.replace('</body>', `  <script src="${versionedAssetPath('/partials/topbar.client.js')}" defer></script>\n</body>`);
   }
   return result;
 }
@@ -80,10 +154,13 @@ const HTML_PAGES = new Set([
 const MIME = {
   '.css':  'text/css',
   '.js':   'application/javascript',
+  '.gif':  'image/gif',
+  '.mp4':  'video/mp4',
   '.png':  'image/png',
   '.jpg':  'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.svg':  'image/svg+xml',
+  '.webp': 'image/webp',
   '.ico':  'image/x-icon',
   '.woff2':'font/woff2',
 };
@@ -403,9 +480,7 @@ function handler(req, res) {
 
   const ext       = path.extname(filePath).toLowerCase();
   const isPage    = isHtmlPage(filePath);
-  const cacheControl = process.env.NODE_ENV === 'production'
-    ? (isPage ? 'no-store' : 'public, max-age=86400')
-    : 'no-store';
+  const cacheControl = getCacheControl(req.url, isPage);
 
   fs.readFile(filePath, isPage ? 'utf8' : null, (err, data) => {
     if (err) {
@@ -415,12 +490,35 @@ function handler(req, res) {
     }
 
     const body = isPage ? injectPartials(data) : data;
-    res.writeHead(200, {
+    const contentType = isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream');
+    const etag = createEntityTag(body);
+
+    if (req.headers['if-none-match'] === etag) {
+      res.writeHead(304, {
+        ...SECURITY_HEADERS,
+        'Cache-Control': cacheControl,
+        ETag: etag
+      });
+      res.end();
+      return;
+    }
+
+    const compressed = compressBody(req, contentType, body);
+    const headers = {
       ...SECURITY_HEADERS,
-      'Content-Type': isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream'),
-      'Cache-Control': cacheControl
-    });
-    res.end(body);
+      'Content-Type': contentType,
+      'Cache-Control': cacheControl,
+      ETag: etag,
+      'Content-Length': String(compressed.body.length)
+    };
+
+    if (compressed.encoding) {
+      headers['Content-Encoding'] = compressed.encoding;
+      headers.Vary = 'Accept-Encoding';
+    }
+
+    res.writeHead(200, headers);
+    res.end(compressed.body);
   });
 }
 
@@ -428,11 +526,11 @@ module.exports = handler;
 
 // Avvio server locale solo se eseguito direttamente (non in Vercel serverless)
 if (require.main === module) {
-  http.createServer(handler).listen(PORT, () => {
-    console.log(`Server avviato -> http://localhost:${PORT}`);
+  http.createServer(handler).listen(LOCAL_PORT, () => {
+    console.log(`Server avviato -> http://localhost:${LOCAL_PORT}`);
   }).on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`Porta ${PORT} gia in uso. Chiudi il processo esistente o usa una porta diversa con PORT=<numero>.`);
+      console.error(`Porta ${LOCAL_PORT} gia in uso. Chiudi il processo esistente.`);
       process.exit(1);
     } else {
       throw err;

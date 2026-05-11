@@ -14,22 +14,22 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --ink:        #17221d;
-      --ink-soft:   #31453b;
-      --cream:      #f7f0e4;
-      --paper:      #fffaf0;
-      --mist:       #e4ddcf;
-      --marsh:      #253f35;
-      --marsh-2:    #3d6353;
-      --water:      #2f6b67;
-      --clay:       #b8663f;
-      --reed:       #c6a462;
-      --white:      #fffdf8;
-      --line:       rgba(37, 63, 53, 0.15);
-      --ok:         #2f6b67;
+      --ink:        #10192b;
+      --ink-soft:   #5a6882;
+      --cream:      #f4f7ff;
+      --paper:      #fbfdff;
+      --mist:       #dde7f7;
+      --marsh:      #12203a;
+      --marsh-2:    #233a66;
+      --water:      #4a9bff;
+      --clay:       #8b5cf6;
+      --reed:       #1fbf7d;
+      --white:      #f9fbff;
+      --line:       rgba(18, 32, 58, 0.14);
+      --ok:         #1fbf7d;
       --err:        #b83232;
       --radius:     14px;
-      --shadow-card: 0 2px 24px rgba(37, 63, 53, 0.09), 0 0 0 1px rgba(37, 63, 53, 0.07);
+      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
       --sans:       "Cabinet Grotesk", system-ui, sans-serif;
       --serif:      "Fraunces", Georgia, serif;
       --ease:       cubic-bezier(0.32, 0.72, 0, 1);
@@ -38,9 +38,10 @@
     body {
       font-family: var(--sans);
       background:
-        radial-gradient(circle at 14% 8%, rgba(198, 164, 98, 0.28), transparent 28rem),
-        radial-gradient(circle at 88% 2%, rgba(47, 107, 103, 0.16), transparent 34rem),
-        linear-gradient(135deg, var(--cream), #efe5d2 54%, #f8f2e8);
+        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
+        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
       color: var(--ink);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
@@ -56,8 +57,8 @@
       background-size: 23px 23px, 31px 31px;
       mix-blend-mode: multiply;
     }
-    a { color: var(--marsh); text-decoration: none; }
-    a:hover { color: var(--water); }
+    a { color: var(--water); text-decoration: none; }
+    a:hover { color: var(--clay); }
 
     
     .btn { display: inline-flex; align-items: center; gap: 6px;
