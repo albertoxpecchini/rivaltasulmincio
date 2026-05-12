@@ -204,23 +204,6 @@
       color: var(--rsm-ink-3);
     }
 
-    /* hero swiper (GIF) */
-    .rsm-swiper--hero {
-      width: 100%;
-      height: 100%;
-    }
-    .rsm-swiper--hero .swiper-slide {
-      overflow: hidden;
-      border-radius: var(--rsm-r-3xl);
-    }
-    .rsm-swiper--hero img,
-    .rsm-swiper--hero video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
     /* hero accent ring */
     .rsm-hero__accent {
       position: absolute;
@@ -860,119 +843,6 @@
       box-shadow: var(--rsm-sh-xl);
       isolation: isolate;
     }
-    .rsm-swiper {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      max-height: clamp(280px, 56vh, 560px);
-      min-height: 240px;
-    }
-    .rsm-swiper .swiper-wrapper {
-      display: flex;
-      height: 100%;
-      will-change: transform;
-      transition: transform 520ms var(--rsm-ease-out);
-    }
-    .rsm-swiper .swiper-slide {
-      flex: 0 0 100%;
-      min-width: 100%;
-      height: 100%;
-      background-color: var(--rsm-surface);
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .rsm-slide .slide-bg-blur {
-      position: absolute;
-      inset: -8%;
-      background-size: cover;
-      background-position: center;
-      filter: blur(36px) saturate(1.1);
-      opacity: 0.65;
-      transform: scale(1.1);
-    }
-    .rsm-slide .slide-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .rsm-swiper .swiper-button-prev,
-    .rsm-swiper .swiper-button-next {
-      position: absolute;
-      top: 50%;
-      z-index: 4;
-      border: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: var(--rsm-blur-sm);
-      box-shadow: var(--rsm-sh-md);
-      color: var(--rsm-ink);
-      cursor: pointer;
-      transform: translateY(-50%);
-      transition: transform var(--rsm-dur-fast), background var(--rsm-dur-fast);
-    }
-    .rsm-swiper .swiper-button-prev { left: 14px; }
-    .rsm-swiper .swiper-button-next { right: 14px; }
-    .rsm-swiper .swiper-button-prev::after,
-    .rsm-swiper .swiper-button-next::after {
-      content: "";
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--rsm-ink);
-    }
-    .rsm-swiper .swiper-button-prev::after { content: "\2039"; }
-    .rsm-swiper .swiper-button-next::after { content: "\203A"; }
-    .rsm-swiper .swiper-button-prev[hidden],
-    .rsm-swiper .swiper-button-next[hidden] {
-      display: none;
-    }
-    .rsm-swiper .swiper-button-prev:hover,
-    .rsm-swiper .swiper-button-next:hover {
-      background: #fff;
-      transform: translateY(-50%) scale(1.06);
-    }
-    .rsm-swiper .swiper-button-prev:disabled,
-    .rsm-swiper .swiper-button-next:disabled {
-      opacity: 0.45;
-      cursor: default;
-    }
-    .rsm-swiper .swiper-pagination {
-      position: absolute;
-      left: 50%;
-      bottom: 12px;
-      z-index: 4;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transform: translateX(-50%);
-    }
-    .rsm-swiper .swiper-pagination[hidden] {
-      display: none;
-    }
-    .rsm-swiper .swiper-pagination-bullet {
-      width: 9px;
-      height: 9px;
-      padding: 0;
-      border: 0;
-      border-radius: 999px;
-      appearance: none;
-      cursor: pointer;
-      background: rgba(255,255,255,0.9);
-      opacity: 0.6;
-      transition: transform var(--rsm-dur-fast), opacity var(--rsm-dur-fast);
-    }
-    .rsm-swiper .swiper-pagination-bullet-active {
-      background: linear-gradient(120deg, var(--rsm-emerald), var(--rsm-azure), var(--rsm-violet));
-      opacity: 1;
-      transform: scale(1.16);
-    }
-
     /* gallery scroll marquee */
     .rsm-gallery__marquee {
       margin-top: var(--rsm-s-8);
@@ -1073,10 +943,6 @@
       border: 1px solid var(--rsm-line);
       background: rgba(255,255,255,0.03);
     }
-    .rsm-swiper--atlas { width: 100%; height: 100%; aspect-ratio: auto; max-height: none; }
-    .rsm-swiper--atlas .swiper-slide { aspect-ratio: auto; height: 100%; }
-    .rsm-swiper--atlas .slide-img { object-position: center; }
-
     .rsm-atlas-copy {
       display: grid;
       gap: var(--rsm-s-4);
@@ -1400,19 +1266,6 @@
       max-height: clamp(320px, 50vh, 480px);
       background: var(--rsm-surface);
       margin: 0;
-    }
-    .rsm-contact__map .swiper,
-    .rsm-contact__map .rsm-swiper {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: auto;
-      max-height: none;
-      min-height: 0;
-    }
-    .rsm-contact__map .swiper-slide { height: 100%; }
-    .rsm-contact__map .swiper-slide video,
-    .rsm-contact__map .swiper-slide img {
-      width: 100%; height: 100%; object-fit: cover;
     }
     .rsm-contact__card {
       padding: var(--rsm-s-10);
@@ -3113,21 +2966,10 @@
           </div>
 
           <div class="rsm-hero__media" data-reveal style="--delay: 180ms" data-component="component/photo-frame">
-            <div class="swiper rsm-swiper rsm-swiper--hero" role="region" aria-label="Galleria animata di Rivalta">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <img src="/video/mincio-1.gif" alt="Mantova e i laghi del Mincio" loading="eager" decoding="async">
-                </div>
-                <div class="swiper-slide">
-                  <img src="/video/mincio-2.gif" alt="Rivalta sul Mincio al tramonto" loading="lazy" decoding="async">
-                </div>
-                <div class="swiper-slide">
-                  <img src="/video/mincio-3.gif" alt="Le valli del Mincio tra i canneti" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-              <button class="swiper-button-prev" aria-label="Slide precedente"></button>
-              <button class="swiper-button-next" aria-label="Slide successiva"></button>
+            <div data-rsm-carousel data-autoplay="4200" role="region" aria-label="Galleria animata di Rivalta">
+              <img src="/video/mincio-1.gif" alt="Mantova e i laghi del Mincio" loading="eager" decoding="async">
+              <img src="/video/mincio-2.gif" alt="Rivalta sul Mincio al tramonto" loading="lazy" decoding="async">
+              <img src="/video/mincio-3.gif" alt="Le valli del Mincio tra i canneti" loading="lazy" decoding="async">
             </div>
           </div>
         </div>
@@ -3334,104 +3176,30 @@
         </div>
 
         <div class="rsm-gallery__stage rsm-frame-kit" data-reveal data-parallax="0.06">
-          <div class="swiper rsm-swiper" role="region" aria-label="Galleria fotografica di Rivalta sul Mincio">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/mantova-laghi-aerea.jpg')"></div>
-                <img class="slide-img" src="/img/mantova-laghi-aerea.jpg" alt="Mantova e i laghi del Mincio, vista aerea" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/festa-pesce.jpg')"></div>
-                <img class="slide-img" src="/img/festa-pesce.jpg" alt="Festa del Pesce e del Luccio all&rsquo;Area Feste Platana" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/luccio-in-salsa.jpg')"></div>
-                <img class="slide-img" src="/img/luccio-in-salsa.jpg" alt="Luccio in salsa alla rivaltese, prodotto PAT" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/gong-bath-parco.jpg')"></div>
-                <img class="slide-img" src="/img/gong-bath-parco.jpg" alt="Gong Bath al Parco della Corte di Rivalta" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/waterbike-mincio.jpg')"></div>
-                <img class="slide-img" src="/img/waterbike-mincio.jpg" alt="Waterbike sul fiume Mincio tra i canneti" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/museo-etnografico-tramonto.jpg')"></div>
-                <img class="slide-img" src="/img/museo-etnografico-tramonto.jpg" alt="Porto storico di Rivalta al tramonto" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/sunset-ga646351d3_1920.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/sunset-ga646351d3_1920.jpg" alt="Tramonto sul Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg" alt="Fiori di loto nel Parco del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/Garzetta - Mssimo Brambilla.jpg')"></div>
-                <img class="slide-img" src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/corte-mincio-storica.jpg')"></div>
-                <img class="slide-img" src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/museo-etnografico.jpg')"></div>
-                <img class="slide-img" src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/mantua-g7c7ae163b_1920.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/CRED-PARCO-DEL-MINCIO.webp')"></div>
-                <img class="slide-img" src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg" alt="Parco Naturale di Albufera" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/paulis-veduta1.webp')"></div>
-                <img class="slide-img" src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclabile-borghetto-peschiera.webp')"></div>
-                <img class="slide-img" src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto–Peschiera" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclovia-del-mincio-1.webp')"></div>
-                <img class="slide-img" src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/Fal%C3%B2%20delle%20befana.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/Fal%C3%B2%20delle%20befana.jpg" alt="Falò delle Befana" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp')"></div>
-                <img class="slide-img" src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/20190822_104621.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/3eb85a6da2459a72bb33081648900153.webp')"></div>
-                <img class="slide-img" src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/OIP.webp')"></div>
-                <img class="slide-img" src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
-              </div>
-              <div class="swiper-slide rsm-slide">
-                <div class="slide-bg-blur" style="background-image:url('/img/atlante/R.jpg')"></div>
-                <img class="slide-img" src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
-              </div>
-            </div>
-            <div class="swiper-pagination"></div>
-            <button class="swiper-button-prev" aria-label="Foto precedente"></button>
-            <button class="swiper-button-next" aria-label="Foto successiva"></button>
+          <div data-rsm-carousel data-autoplay="4600" data-aspect="16/9" role="region" aria-label="Galleria fotografica di Rivalta sul Mincio">
+            <img src="/img/mantova-laghi-aerea.jpg" alt="Mantova e i laghi del Mincio, vista aerea" loading="lazy">
+            <img src="/img/festa-pesce.jpg" alt="Festa del Pesce e del Luccio all&rsquo;Area Feste Platana" loading="lazy">
+            <img src="/img/luccio-in-salsa.jpg" alt="Luccio in salsa alla rivaltese, prodotto PAT" loading="lazy">
+            <img src="/img/gong-bath-parco.jpg" alt="Gong Bath al Parco della Corte di Rivalta" loading="lazy">
+            <img src="/img/waterbike-mincio.jpg" alt="Waterbike sul fiume Mincio tra i canneti" loading="lazy">
+            <img src="/img/museo-etnografico-tramonto.jpg" alt="Porto storico di Rivalta al tramonto" loading="lazy">
+            <img src="/img/atlante/sunset-ga646351d3_1920.jpg" alt="Tramonto sul Mincio" loading="lazy">
+            <img src="/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg" alt="Fiori di loto nel Parco del Mincio" loading="lazy">
+            <img src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
+            <img src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
+            <img src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
+            <img src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy">
+            <img src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio" loading="lazy">
+            <img src="/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg" alt="Parco Naturale di Albufera" loading="lazy">
+            <img src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio" loading="lazy">
+            <img src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto&ndash;Peschiera" loading="lazy">
+            <img src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy">
+            <img src="/img/atlante/Fal%C3%B2%20delle%20befana.jpg" alt="Falò delle Befana" loading="lazy">
+            <img src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
+            <img src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
+            <img src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
+            <img src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
+            <img src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
           </div>
         </div>
 
@@ -3460,72 +3228,22 @@
         <!-- Atlante: foto + lessico -->
         <div class="rsm-atlas-grid">
           <article class="rsm-atlas-photo" data-reveal data-parallax="0.05">
-            <div class="swiper rsm-swiper rsm-swiper--atlas" role="region" aria-label="Galleria fotografica del territorio">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/mantua-g7c7ae163b_1920.jpg')"></div>
-                  <img class="slide-img" src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/CRED-PARCO-DEL-MINCIO.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg')"></div>
-                  <img class="slide-img" src="/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg" alt="Parco Naturale" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/paulis-veduta1.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclabile-borghetto-peschiera.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto–Peschiera" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/ciclovia-del-mincio-1.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/Fal%C3%B2%20delle%20befana.jpg')"></div>
-                  <img class="slide-img" src="/img/atlante/Fal%C3%B2%20delle%20befana.jpg" alt="Falò delle Befana" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/Garzetta - Mssimo Brambilla.jpg')"></div>
-                  <img class="slide-img" src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/corte-mincio-storica.jpg')"></div>
-                  <img class="slide-img" src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/museo-etnografico.jpg')"></div>
-                  <img class="slide-img" src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/20190822_104621.jpg')"></div>
-                  <img class="slide-img" src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/3eb85a6da2459a72bb33081648900153.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/OIP.webp')"></div>
-                  <img class="slide-img" src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
-                </div>
-                <div class="swiper-slide rsm-slide">
-                  <div class="slide-bg-blur" style="background-image:url('/img/atlante/R.jpg')"></div>
-                  <img class="slide-img" src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-              <button class="swiper-button-prev" aria-label="Foto precedente"></button>
-              <button class="swiper-button-next" aria-label="Foto successiva"></button>
+            <div data-rsm-carousel data-autoplay="5200" role="region" aria-label="Galleria fotografica del territorio">
+              <img src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy">
+              <img src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio" loading="lazy">
+              <img src="/img/atlante/Parco-Naturale-di-Albufera-scaled.jpg" alt="Parco Naturale" loading="lazy">
+              <img src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio" loading="lazy">
+              <img src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto&ndash;Peschiera" loading="lazy">
+              <img src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy">
+              <img src="/img/atlante/Fal%C3%B2%20delle%20befana.jpg" alt="Falò delle Befana" loading="lazy">
+              <img src="/img/atlante/taniamuserfloraldesignerverona-taniamuserfloraldesigner-taniamuserflowerdesigneritalia-fioridiloto-fiorituralotomincio-fiorituralotomantova-fioridilotomincio-viaggiispirazione-natura-ibarcaiolidelm.webp" alt="Fiori di loto sul Mincio" loading="lazy">
+              <img src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nel Parco del Mincio" loading="lazy">
+              <img src="/img/corte-mincio-storica.jpg" alt="Corte Mincio storica" loading="lazy">
+              <img src="/img/museo-etnografico.jpg" alt="Museo etnografico di Rivalta" loading="lazy">
+              <img src="/img/atlante/20190822_104621.jpg" alt="Veduta del Mincio" loading="lazy">
+              <img src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Natura nel Parco del Mincio" loading="lazy">
+              <img src="/img/atlante/OIP.webp" alt="Scena del Parco del Mincio" loading="lazy">
+              <img src="/img/atlante/R.jpg" alt="Veduta del territorio" loading="lazy">
             </div>
           </article>
 
@@ -3645,15 +3363,8 @@
 
         <div class="rsm-contact__grid">
           <figure class="rsm-contact__map" data-reveal data-component="component/map-plate">
-            <div class="swiper rsm-swiper rsm-swiper--map" role="region" aria-label="Carosello del territorio">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide rsm-slide">
-                  <video src="/video/dove-siamo-1.mp4" muted loop autoplay playsinline preload="metadata" aria-label="Veduta animata di Rivalta"></video>
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-              <button class="swiper-button-prev" aria-label="Slide precedente"></button>
-              <button class="swiper-button-next" aria-label="Slide successiva"></button>
+            <div data-rsm-carousel data-autoplay="0" role="region" aria-label="Carosello del territorio">
+              <video src="/video/dove-siamo-1.mp4" muted loop autoplay playsinline preload="metadata" aria-label="Veduta animata di Rivalta"></video>
             </div>
           </figure>
           <article class="rsm-contact__card rsm-frame-kit rsm-divider-kit" data-reveal style="--delay: 120ms" data-component="card/contact">
@@ -3711,6 +3422,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+  <script src="/partials/carousel.js" defer></script>
   <script>
   (function () {
     'use strict';
@@ -3880,139 +3592,6 @@
       document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') return;
         $all('.rsm-modal.is-open').forEach(close);
-      });
-    }
-
-    /* ─── Carousels semplici (vanilla, senza Swiper) ─── */
-    function initSimpleCarousels() {
-      $all('.rsm-swiper').forEach(function (el) {
-        var wrapper = el.querySelector('.swiper-wrapper');
-        var slides = wrapper ? $all('.swiper-slide', wrapper) : [];
-        if (!wrapper || !slides.length) return;
-
-        var disableAnimation = el.classList.contains('rsm-swiper--atlas');
-
-        var prev = el.querySelector('.swiper-button-prev');
-        var next = el.querySelector('.swiper-button-next');
-        var pagination = el.querySelector('.swiper-pagination');
-        var dots = [];
-        var total = slides.length;
-        var index = 0;
-        var timer = null;
-        var delay = 0;
-
-        if (total > 1) {
-          if (disableAnimation) delay = 0;
-          else if (el.classList.contains('rsm-swiper--hero')) delay = 4200;
-          else delay = 4600;
-        }
-
-        if (pagination) {
-          pagination.innerHTML = '';
-          if (total > 1) {
-            slides.forEach(function (_, i) {
-              var dot = document.createElement('button');
-              dot.type = 'button';
-              dot.className = 'swiper-pagination-bullet';
-              dot.setAttribute('aria-label', 'Vai alla slide ' + (i + 1));
-              dot.addEventListener('click', function () {
-                goTo(i, true);
-              });
-              pagination.appendChild(dot);
-              dots.push(dot);
-            });
-            pagination.hidden = false;
-          } else {
-            pagination.hidden = true;
-          }
-        }
-
-        function setActive(noTransition) {
-          if (noTransition || disableAnimation) {
-            wrapper.style.transition = 'none';
-          } else {
-            wrapper.style.transition = '';
-          }
-
-          wrapper.style.transform = 'translate3d(' + (-index * 100) + '%, 0, 0)';
-          slides.forEach(function (slide, i) {
-            var active = i === index;
-            slide.classList.toggle('is-active', active);
-            slide.setAttribute('aria-hidden', active ? 'false' : 'true');
-          });
-
-          dots.forEach(function (dot, i) {
-            var active = i === index;
-            dot.classList.toggle('swiper-pagination-bullet-active', active);
-            dot.setAttribute('aria-current', active ? 'true' : 'false');
-          });
-        }
-
-        function goTo(nextIndex, fromUser) {
-          if (total < 2) return;
-          index = (nextIndex + total) % total;
-          setActive(false);
-          if (fromUser) restartAutoplay();
-        }
-
-        function stopAutoplay() {
-          if (!timer) return;
-          clearInterval(timer);
-          timer = null;
-        }
-
-        function startAutoplay() {
-          if (!delay || total < 2) return;
-          stopAutoplay();
-          timer = setInterval(function () {
-            goTo(index + 1, false);
-          }, delay);
-        }
-
-        function restartAutoplay() {
-          stopAutoplay();
-          startAutoplay();
-        }
-
-        if (prev) {
-          prev.hidden = total < 2;
-          prev.addEventListener('click', function () {
-            goTo(index - 1, true);
-          });
-        }
-        if (next) {
-          next.hidden = total < 2;
-          next.addEventListener('click', function () {
-            goTo(index + 1, true);
-          });
-        }
-
-        el.setAttribute('tabindex', '0');
-        el.addEventListener('keydown', function (event) {
-          if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            goTo(index - 1, true);
-          }
-          if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            goTo(index + 1, true);
-          }
-        });
-
-        el.addEventListener('mouseenter', stopAutoplay);
-        el.addEventListener('mouseleave', startAutoplay);
-        el.addEventListener('focusin', stopAutoplay);
-        el.addEventListener('focusout', function (event) {
-          if (!el.contains(event.relatedTarget)) startAutoplay();
-        });
-
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) stopAutoplay();
-          else startAutoplay();
-        });
-
-        setActive(true);
-        startAutoplay();
       });
     }
 
@@ -4434,7 +4013,6 @@
       initMagneticButtons();
       initNewsletter();
       initModals();
-      initSimpleCarousels();
       initPosts();
       initGsap();
       initAnimeJs();

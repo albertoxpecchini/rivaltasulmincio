@@ -2,1036 +2,1735 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
-  <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Accedi | Rivalta sul Mincio</title>
+  <meta name="theme-color" content="#ffffff" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';t=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.theme=t;r.dataset.themePref=ok?p.theme:'chiaro';r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=t==='scuro'?'#0a0c14':'#ffffff';}catch(e){}}();</script>
+
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/theme.css" />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink:        #10192b;
-      --ink-soft:   #5a6882;
-      --cream:      #f4f7ff;
-      --paper:      #fbfdff;
-      --mist:       #dde7f7;
-      --marsh:      #12203a;
-      --marsh-2:    #233a66;
-      --water:      #4a9bff;
-      --clay:       #8b5cf6;
-      --reed:       #1fbf7d;
-      --white:      #f9fbff;
-      --line:       rgba(18, 32, 58, 0.14);
-      --ok:         #1fbf7d;
-      --err:        #b83232;
-      --warn:       #b45309;
-      --radius:     14px;
-      --radius-sm:  10px;
-      --shadow:     0 26px 80px rgba(18, 32, 58, 0.14);
-      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
-      --ease:       cubic-bezier(0.32, 0.72, 0, 1);
-      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:      "Fraunces", Georgia, serif;
-      --transition: 0.22s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    html, body { min-height: 100%; }
-
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      line-height: 1.6;
-      font-size: 15px;
-      -webkit-font-smoothing: antialiased;
+    body[data-page="login"] {
+      position: relative;
+      font-family: 'Syne', var(--rsm-font-sans);
+      color: var(--rsm-text);
       overflow-x: hidden;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.16), transparent 30%),
+        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.16), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.14), transparent 36%),
+        linear-gradient(180deg, var(--rsm-bg) 0%, var(--rsm-paper) 48%, var(--rsm-bg) 100%);
     }
 
-    body::before {
-      content: '';
+    .rsm-login-page,
+    .rsm-login-page *,
+    .rsm-login-page *::before,
+    .rsm-login-page *::after {
+      box-sizing: border-box;
+    }
+
+    body[data-page="login"] button,
+    body[data-page="login"] input,
+    body[data-page="login"] select,
+    body[data-page="login"] textarea {
+      font: inherit;
+    }
+
+    body[data-page="login"]::before,
+    body[data-page="login"]::after {
+      content: "";
       position: fixed;
       inset: 0;
-      z-index: 0;
       pointer-events: none;
-      opacity: 0.16;
+      z-index: 0;
+    }
+
+    body[data-page="login"]::before {
+      opacity: 0.18;
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(16, 25, 43, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(16, 25, 43, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
+      background-size: 24px 24px, 36px 36px;
+      background-position: 0 0, 12px 14px;
       mix-blend-mode: multiply;
     }
 
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); }
+    body[data-page="login"]::after {
+      opacity: 0.9;
+      background:
+        radial-gradient(ellipse at 22% 24%, rgba(31, 191, 125, 0.14), transparent 42%),
+        radial-gradient(ellipse at 74% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
+        radial-gradient(ellipse at 66% 78%, rgba(139, 92, 246, 0.10), transparent 46%);
+      animation: rsm-login-aurora 26s ease-in-out infinite;
+    }
 
-    .container {
-      width: min(1180px, 100% - 36px);
-      margin-inline: auto;
+    .rsm-login-page {
       position: relative;
       z-index: 1;
     }
 
-    /* ===== NAV ISLAND (identica a index) ===== */
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      flex: 0 0 42px;
-      border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    body[data-page="login"] .rsm-foot {
+      margin-top: 0 !important;
+      background:
+        radial-gradient(ellipse at 14% -10%, rgba(102, 255, 214, 0.18), transparent 38%),
+        radial-gradient(ellipse at 80% -8%, rgba(126, 188, 255, 0.22), transparent 42%),
+        radial-gradient(ellipse at 100% 100%, rgba(196, 122, 255, 0.20), transparent 48%),
+        linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%);
     }
 
-    .brand-mark img {
-      width: 42px;
-      height: 42px;
+    .rsm-login-hero {
+      position: relative;
+      min-height: 100dvh;
+      padding: clamp(72px, 7vw, 104px) 0 clamp(18px, 2.4vw, 30px);
+      overflow: hidden;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+    }
+
+    .rsm-login-hero > .rsm-container {
+      width: min(100% - 40px, 1460px);
+      margin-block: auto;
+    }
+
+    .rsm-login-hero .rsm-hero__accent {
+      position: absolute;
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 18% 22%, rgba(46, 224, 170, 0.18), transparent 48%),
+        radial-gradient(ellipse at 82% 78%, rgba(167, 119, 255, 0.18), transparent 48%),
+        radial-gradient(ellipse at 50% 50%, rgba(86, 156, 255, 0.10), transparent 60%);
+      animation: rsm-login-float 30s ease-in-out infinite;
+    }
+
+    .rsm-hero__layout.rsm-login-hero__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(240px, 0.64fr) minmax(340px, 420px);
+      align-items: center;
+      gap: clamp(14px, 2vw, 22px);
+    }
+
+    .rsm-login-story {
+      display: contents;
+      min-width: 0;
+    }
+
+    .rsm-login-story,
+    .rsm-login-copy,
+    .rsm-login-support,
+    .rsm-login-panel,
+    .rsm-login-panel__card,
+    .rsm-login-panel__card > *,
+    .view,
+    .rsm-login-form,
+    .rsm-login-form .rsm-field,
+    .input-with-action {
+      min-width: 0;
+    }
+
+    .rsm-login-copy,
+    .rsm-login-compass,
+    .rsm-login-fact,
+    .rsm-login-panel__card {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .rsm-login-copy::before,
+    .rsm-login-compass::before,
+    .rsm-login-panel__card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+      opacity: 0.8;
+    }
+
+    .rsm-login-copy,
+    .rsm-login-compass,
+    .rsm-login-panel__card {
+      padding: clamp(18px, 2vw, 26px);
+    }
+
+    .rsm-login-copy:hover,
+    .rsm-login-compass:hover,
+    .rsm-login-fact:hover,
+    .rsm-login-panel__card:hover {
+      transform: none;
+    }
+
+    .rsm-login-copy {
+      display: grid;
+      grid-column: 1;
+      grid-auto-rows: max-content;
+      gap: 14px;
+      align-content: start;
+      height: auto;
+    }
+
+    .rsm-login-copy > * {
+      margin: 0;
+    }
+
+    .rsm-login-copy .rsm-edit-line {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .rsm-login-kicker {
+      font-family: var(--rsm-font-mono);
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-login-kicker::before {
+      display: none;
+    }
+
+    .rsm-login-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rsm-emerald);
+      box-shadow: 0 0 0 4px rgba(31, 191, 125, 0.18);
+      animation: rsm-login-pulse 2.8s ease-in-out infinite;
+    }
+
+    .rsm-login-title {
+      display: grid;
+      gap: 0.05em;
+      max-width: 8ch;
+      font-family: var(--rsm-font-display);
+      font-size: clamp(2.45rem, 4vw, 4.65rem);
+      font-weight: 700;
+      line-height: 0.93;
+      letter-spacing: -0.05em;
+    }
+
+    .rsm-login-title em,
+    .rsm-login-compass__head h2 em,
+    .rsm-login-view__head h2 em {
+      font-style: italic;
+      font-family: var(--rsm-font-display);
+      font-weight: 500;
+      background: linear-gradient(95deg, var(--rsm-emerald) 0%, var(--rsm-azure) 50%, var(--rsm-violet) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: rsm-login-grad-flow 9s ease-in-out infinite alternate;
+    }
+
+    .rsm-login-copy .rsm-lead {
+      max-width: 48ch;
+      font-family: inherit;
+      font-size: clamp(0.96rem, 1vw, 1.08rem);
+      line-height: 1.46;
+      color: var(--rsm-text);
+    }
+
+    .rsm-login-copy .rsm-button-row {
+      gap: 12px;
+      margin-top: 0;
+    }
+
+    .rsm-hero__metrics.rsm-login-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--rsm-line);
+    }
+
+    .rsm-metric {
+      display: grid;
+      gap: 6px;
+    }
+
+    .rsm-metric strong {
+      display: block;
+      font-family: var(--rsm-font-display);
+      font-size: clamp(1.65rem, 2vw, 2.2rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--rsm-text-strong);
+    }
+
+    .rsm-metric span {
+      display: block;
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-tiny);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-login-support {
+      grid-column: 2;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-content: start;
+      align-self: stretch;
+    }
+
+    .rsm-login-compass {
+      display: grid;
+      grid-auto-rows: max-content;
+      gap: 14px;
+      align-content: start;
+      height: 100%;
+    }
+
+    .rsm-login-compass__head {
+      margin-bottom: 0;
+      max-width: none;
+      gap: 10px;
+    }
+
+    .rsm-login-compass__head .rsm-h2 {
+      font-family: var(--rsm-font-display);
+      font-size: clamp(1.3rem, 1.45vw, 1.72rem);
+      line-height: 1;
+    }
+
+    .rsm-login-compass__head .rsm-kicker {
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-login-paths {
+      display: grid;
+      gap: 8px;
+    }
+
+    .rsm-login-path {
+      display: grid;
+      gap: 4px;
+      width: 100%;
+      min-height: 56px;
+      padding: 16px 18px;
+      border: 1px solid var(--rsm-line);
+      border-radius: 999px;
+      background: var(--rsm-glass);
+      color: var(--rsm-text);
+      text-align: left;
+      cursor: pointer;
+      box-shadow:
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+      transition:
+        transform 320ms var(--rsm-ease-spring),
+        border-color 320ms var(--rsm-ease-out),
+        box-shadow 320ms var(--rsm-ease-out),
+        background 320ms var(--rsm-ease-out);
+      -webkit-backdrop-filter: blur(16px) saturate(135%);
+      backdrop-filter: blur(16px) saturate(135%);
+    }
+
+    .rsm-login-path strong {
+      font-family: var(--rsm-font-display);
+      font-size: 0.94rem;
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--rsm-text-strong);
+    }
+
+    .rsm-login-path span {
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--rsm-text-soft);
+      line-height: 1.35;
+    }
+
+    .rsm-login-path:hover,
+    .rsm-login-path[aria-pressed="true"] {
+      transform: translateY(-2px);
+      border-color: var(--rsm-line-3);
+      box-shadow: var(--rsm-sh-md);
+      background: var(--rsm-glass-strong);
+    }
+
+    .rsm-login-path.rsm-login-path--brand,
+    .rsm-login-path.rsm-login-path--ghost {
+      padding: 16px 18px;
+      border-radius: 999px;
+      gap: 6px;
+      box-shadow:
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+      transition:
+        transform 320ms var(--rsm-ease-spring),
+        box-shadow 320ms var(--rsm-ease-out),
+        background 320ms var(--rsm-ease-out),
+        border-color 320ms var(--rsm-ease-out);
+    }
+
+    .rsm-login-path.rsm-login-path--brand strong,
+    .rsm-login-path.rsm-login-path--ghost strong {
+      font-family: 'Syne', 'Cabinet Grotesk', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      line-height: 1.02;
+    }
+
+    .rsm-login-path.rsm-login-path--brand span,
+    .rsm-login-path.rsm-login-path--ghost span {
+      font-family: 'Syne', var(--rsm-font-sans);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .rsm-login-path.rsm-login-path--brand {
+      border-color: rgba(255, 255, 255, 0.22);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)) padding-box,
+        linear-gradient(120deg, rgba(47, 224, 188, 0.95) 0%, rgba(74, 155, 255, 0.95) 52%, rgba(90, 129, 255, 0.95) 100%) border-box;
+      color: #07111f;
+      text-shadow: none;
+      box-shadow:
+        0 18px 42px rgba(74, 155, 255, 0.24),
+        0 10px 24px rgba(31, 191, 125, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+    }
+
+    .rsm-login-path.rsm-login-path--brand strong {
+      color: #07111f;
+    }
+
+    .rsm-login-path.rsm-login-path--brand span {
+      color: rgba(7, 17, 31, 0.74);
+    }
+
+    .rsm-login-path.rsm-login-path--brand:hover,
+    .rsm-login-path.rsm-login-path--brand[aria-pressed="true"] {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.24);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)) padding-box,
+        linear-gradient(120deg, rgba(47, 224, 188, 0.98) 0%, rgba(74, 155, 255, 0.98) 52%, rgba(90, 129, 255, 0.98) 100%) border-box;
+      box-shadow:
+        0 26px 58px rgba(74, 155, 255, 0.28),
+        0 14px 30px rgba(31, 191, 125, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .rsm-login-path.rsm-login-path--ghost {
+      border-color: rgba(255, 255, 255, 0.08);
+      background: var(--rsm-panel-dark);
+      color: #ffffff;
+      backdrop-filter: blur(16px) saturate(135%);
+      -webkit-backdrop-filter: blur(16px) saturate(135%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 16px 36px rgba(11,13,20,0.18);
+    }
+
+    .rsm-login-path.rsm-login-path--ghost strong {
+      color: #ffffff;
+    }
+
+    .rsm-login-path.rsm-login-path--ghost span {
+      color: var(--rsm-text-on-dark-soft);
+    }
+
+    .rsm-login-path.rsm-login-path--ghost:hover,
+    .rsm-login-path.rsm-login-path--ghost[aria-pressed="true"] {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.12);
+      background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96));
+      box-shadow:
+        0 24px 56px rgba(11,13,20,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .rsm-login-showcase {
+      display: none;
+      gap: 10px;
+    }
+
+    .rsm-hero__media.rsm-login-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 2.7;
+      min-height: 156px;
+      max-width: none;
+      max-height: none;
+      margin-inline: 0;
+      border-radius: var(--rsm-r-3xl);
+      overflow: hidden;
+      box-shadow: var(--rsm-sh-xl);
+      isolation: isolate;
+    }
+
+    .rsm-hero__media.rsm-login-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.32);
+      pointer-events: none;
+    }
+
+    .rsm-login-media img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    /* ===== PAGE ===== */
-    .page { padding-block: 88px 52px; }
+    .rsm-login-media__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8, 11, 18, 0.06), rgba(8, 11, 18, 0.7));
+    }
 
-    /* ===== AUTH LAYOUT ===== */
-    .auth-layout {
+    .rsm-login-media__content {
+      position: absolute;
+      inset: auto 0 0 0;
       display: grid;
-      grid-template-columns: 1fr minmax(260px, 340px);
-      gap: 18px;
-      align-items: start;
+      gap: 4px;
+      padding: 14px;
+      color: var(--rsm-text-on-dark);
     }
 
-    /* ===== BENTO PANEL ===== */
-    .bento-panel {
-      order: 2;
-      position: sticky;
-      top: 84px;
+    .rsm-login-media__content .rsm-kicker {
+      color: var(--rsm-text-on-dark-dim);
     }
 
-    .auth-summary {
+    .rsm-login-media__content strong {
+      font-family: var(--rsm-font-display);
+      font-size: 1.05rem;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+
+    .rsm-login-media__content span {
+      font-size: 0.82rem;
+      color: var(--rsm-text-on-dark-soft);
+      line-height: 1.4;
+    }
+
+    .rsm-login-facts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .rsm-login-fact {
+      display: grid;
+      gap: 6px;
+      min-height: 100%;
+      padding: 14px;
+    }
+
+    .rsm-login-fact .rsm-kicker {
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-login-fact strong {
+      font-family: var(--rsm-font-display);
+      font-size: 0.92rem;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--rsm-text-strong);
+    }
+
+    .rsm-login-fact p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--rsm-text-soft);
+      line-height: 1.35;
+    }
+
+    .rsm-login-panel {
+      grid-column: 3;
+      position: static;
+      top: auto;
+      align-self: stretch;
+    }
+
+    .rsm-login-panel__card {
+      display: grid;
+      grid-auto-rows: max-content;
+      gap: 16px;
+      width: 100%;
+      max-width: 100%;
+      max-height: calc(100dvh - 144px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      align-content: start;
+      justify-items: stretch;
+      scrollbar-gutter: stable;
+      box-shadow: 0 24px 72px rgba(11, 13, 20, 0.16), var(--rsm-sh-md);
+    }
+
+    .rsm-login-panel__top {
+      display: grid;
+      gap: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rsm-line);
+    }
+
+    .rsm-login-panel__eyebrow {
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-login-panel__chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 10px;
     }
 
-    .auth-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+    .view {
+      display: none;
+      gap: 14px;
     }
 
-    .bento-grid {
+    .view.is-active {
       display: grid;
-      gap: 6px;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "hero      hero"
-        "posts     members"
-        "likes     comuni"
-        "cats      highlight"
-        "quote     quote";
+      animation: rsm-login-view-in var(--rsm-dur-base) var(--rsm-ease-out);
     }
 
-    .bcard {
-      background: var(--paper);
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      box-shadow: 0 2px 12px rgba(37, 63, 53, 0.06);
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
+    .rsm-login-view__head {
+      display: grid;
+      gap: 8px;
     }
 
-    .bnum {
-      font-family: var(--serif);
-      font-weight: 650;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 4px;
+    .rsm-login-view__head .rsm-h1 {
+      font-family: var(--rsm-font-display);
+      font-size: clamp(1.45rem, 1.8vw, 2rem);
+      line-height: 0.98;
     }
 
-    .blabel {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink-soft);
-      line-height: 1.3;
+    .rsm-login-view__head .rsm-body,
+    .rsm-login-view__head p {
+      margin: 0;
+      color: var(--rsm-text-soft);
     }
 
-    .bcard-hero {
-      grid-area: hero;
-      padding: 18px 20px 16px;
+    .msg-slot {
+      min-height: 0;
     }
-
-    .bcard-hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--marsh), var(--reed), var(--water));
-      border-radius: var(--radius) var(--radius) 0 0;
-    }
-
-    .hero-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .logo-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 1px solid var(--line);
-    }
-
-    .logo-mark img {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .logo-copy { line-height: 1.15; }
-
-    .logo-name {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-    }
-
-    .logo-sub {
-      font-size: 0.66rem;
-      color: rgba(23, 34, 29, 0.46);
-      font-style: italic;
-      margin-top: 2px;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.66rem;
-      font-weight: 800;
-      color: var(--marsh);
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      margin-bottom: 7px;
-    }
-
-    .hero-tagline {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 650;
-      color: var(--ink);
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-    }
-
-    .hero-tagline-muted {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 650;
-      color: rgba(23, 34, 29, 0.34);
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-    }
-
-    .hero-date {
-      font-size: 10px;
-      font-weight: 600;
-      color: rgba(23, 34, 29, 0.38);
-      margin-top: 10px;
-      letter-spacing: 0.05em;
-    }
-
-    .bcard-posts     { grid-area: posts; }
-    .bcard-members   { grid-area: members; }
-    .bcard-likes     { grid-area: likes; }
-    .bcard-comuni    { grid-area: comuni; }
-    .bcard-cats      { grid-area: cats; }
-
-    .bcard-highlight {
-      grid-area: highlight;
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(150deg, var(--marsh) 0%, var(--water) 55%, #4a9e7c 100%);
-      border-color: transparent;
-      padding: 14px 10px;
-    }
-
-    .bcard-highlight .bnum {
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--paper);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 4px;
-    }
-
-    .bcard-highlight .blabel { font-size: 11px; color: rgba(255, 250, 240, 0.75); font-weight: 600; }
-    .bcard-highlight .bsub   { font-size: 10px; color: rgba(255, 250, 240, 0.42); margin-top: 4px; }
-
-    .bcard-quote {
-      grid-area: quote;
-      background: var(--paper);
-      padding: 18px 22px;
-    }
-
-    .bcard-quote::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--marsh), var(--reed));
-      border-radius: var(--radius) 0 0 var(--radius);
-    }
-
-    .quote-text {
-      font-family: var(--serif);
-      font-size: 15px;
-      font-weight: 500;
-      font-style: italic;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-      line-height: 1.48;
-    }
-
-    .quote-text em { color: var(--water); font-style: normal; font-weight: 650; }
-
-    /* ===== AUTH PANEL ===== */
-    .auth-panel { order: 1; min-width: 0; }
-
-    .auth-card {
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      background: var(--paper);
-      box-shadow: var(--shadow-card);
-      padding: 24px 26px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .auth-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--marsh), var(--reed));
-      border-radius: 20px 20px 0 0;
-    }
-
-    .view { display: none; animation: fadeIn 0.24s var(--ease); }
-    .view.is-active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    .view-head { margin-bottom: 16px; }
-
-    .view-step {
-      font-size: 0.66rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--marsh);
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .view-head h2 {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 650;
-      line-height: 1.05;
-      margin-bottom: 8px;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-    }
-
-    .view-head p {
-      font-size: 0.86rem;
-      color: var(--ink-soft);
-    }
-
-    .link-btn {
-      appearance: none;
-      border: none;
-      background: none;
-      font: inherit;
-      font-size: 0.86rem;
-      color: var(--water);
-      font-weight: 700;
-      cursor: pointer;
-      padding: 0;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .link-btn:hover { color: var(--marsh); }
-
-    .msg-slot { min-height: 6px; margin-bottom: 10px; }
 
     .notice {
-      border-radius: 10px;
-      border: 1px solid transparent;
-      padding: 10px 13px;
-      font-size: 0.82rem;
+      padding: 10px 12px;
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-lg);
+      font-size: 0.8rem;
+      font-weight: 600;
       line-height: 1.5;
+      box-shadow: var(--rsm-sh-sm);
     }
 
-    .notice.info    { background: rgba(37, 63, 53, 0.07);  border-color: rgba(37, 63, 53, 0.2);  color: var(--marsh); }
-    .notice.success { background: rgba(47, 107, 103, 0.07); border-color: rgba(47, 107, 103, 0.2); color: var(--water); }
-    .notice.error   { background: rgba(184, 50, 50, 0.06);  border-color: rgba(184, 50, 50, 0.18); color: var(--err); }
-
-    form { display: grid; gap: 13px; }
-    .field { display: grid; gap: 5px; }
-
-    .field > span,
-    .group-label {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(23, 34, 29, 0.48);
-      font-weight: 800;
+    .notice.info {
+      background: rgba(74, 155, 255, 0.08);
+      border-color: rgba(74, 155, 255, 0.18);
+      color: #1f4f99;
     }
 
-    .field input,
-    .field textarea,
-    .field select {
+    .notice.success {
+      background: rgba(31, 191, 125, 0.10);
+      border-color: rgba(31, 191, 125, 0.22);
+      color: #0c6c47;
+    }
+
+    .notice.error {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.18);
+      color: #a12f2f;
+    }
+
+    .rsm-login-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rsm-login-form .rsm-input,
+    .rsm-login-form .rsm-select,
+    .rsm-login-form .rsm-textarea {
       width: 100%;
-      border-radius: 10px;
-      border: 1.5px solid rgba(37, 63, 53, 0.15);
-      background: var(--cream);
-      color: var(--ink);
-      font-size: 0.88rem;
-      font-family: var(--sans);
-      padding: 10px 13px;
-      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
-      -webkit-appearance: none;
+      max-width: 100%;
     }
 
-    .field select option { background: var(--paper); color: var(--ink); }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 80px;
-      line-height: 1.5;
+    .rsm-login-form .rsm-field,
+    .rsm-login-form .group-label {
+      display: grid;
+      gap: var(--rsm-s-2);
     }
 
-    .field input::placeholder,
-    .field textarea::placeholder { color: rgba(23, 34, 29, 0.26); }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      outline: none;
-      border-color: var(--water);
-      box-shadow: 0 0 0 3px rgba(47, 107, 103, 0.13);
-      background: var(--paper);
+    .rsm-login-form .group-label {
+      margin: 0;
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-eyebrow);
+      font-weight: 500;
+      letter-spacing: var(--rsm-tracking-wide);
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
     }
 
-    .field small { color: var(--ink-soft); font-size: 0.73rem; }
+    .rsm-login-form small {
+      color: var(--rsm-text-soft);
+      font-size: var(--rsm-text-small);
+      line-height: 1.45;
+    }
 
     .row-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: 12px;
     }
 
-    .input-with-action { position: relative; }
-    .input-with-action input { padding-right: 88px; }
+    .input-with-action {
+      position: relative;
+    }
+
+    .input-with-action .rsm-input {
+      padding-right: 82px;
+    }
 
     .input-action {
       position: absolute;
-      right: 8px;
       top: 50%;
+      right: 8px;
       transform: translateY(-50%);
-      border: none;
-      background: rgba(37, 63, 53, 0.1);
-      color: var(--marsh);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-pill);
+      background: var(--rsm-glass-strong);
+      color: var(--rsm-text-strong);
+      font-family: var(--rsm-font-mono);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      border-radius: 8px;
-      padding: 5px 8px;
       cursor: pointer;
-      font-family: var(--sans);
+      transition:
+        transform var(--rsm-dur-fast) var(--rsm-ease-out),
+        border-color var(--rsm-dur-fast) var(--rsm-ease-out),
+        background var(--rsm-dur-fast) var(--rsm-ease-out);
+      -webkit-backdrop-filter: var(--rsm-blur-sm);
+      backdrop-filter: var(--rsm-blur-sm);
     }
 
-    .input-action:hover { background: rgba(37, 63, 53, 0.17); }
+    .input-action:hover {
+      transform: translateY(calc(-50% - 1px));
+      border-color: var(--rsm-line-3);
+      background: rgba(255,255,255,0.94);
+    }
 
-    .btn {
-      appearance: none;
-      border: none;
+    .rsm-login-button-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .rsm-login-button-row--hero-match {
+      gap: var(--rsm-s-3);
+    }
+
+    .rsm-login-button-row .rsm-btn {
+      width: 100%;
+      min-height: 46px;
+      padding: 6px 6px 6px 16px;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn {
+      min-height: 56px !important;
+      padding: 0 26px !important;
+      gap: 0 !important;
+      font-family: 'Syne', 'Cabinet Grotesk', system-ui, sans-serif !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.005em !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      color: var(--rsm-text-strong) !important;
+      backdrop-filter: blur(16px) saturate(135%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+      box-shadow:
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26) !important;
+      transition:
+        transform 320ms var(--rsm-ease-spring),
+        box-shadow 320ms var(--rsm-ease-out),
+        background 320ms var(--rsm-ease-out) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn:hover {
+      transform: translateY(-2px) !important;
+      box-shadow:
+        0 24px 54px rgba(11, 13, 20, 0.18),
+        0 10px 22px rgba(74, 155, 255, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn:active {
+      transform: translateY(-1px) scale(0.98) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn--brand {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)) padding-box,
+        linear-gradient(120deg, rgba(47, 224, 188, 0.95) 0%, rgba(74, 155, 255, 0.95) 52%, rgba(90, 129, 255, 0.95) 100%) border-box !important;
+      color: #07111f !important;
+      text-shadow: none !important;
+      box-shadow:
+        0 18px 42px rgba(74, 155, 255, 0.24),
+        0 10px 24px rgba(31, 191, 125, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn--brand:hover {
+      box-shadow:
+        0 26px 58px rgba(74, 155, 255, 0.28),
+        0 14px 30px rgba(31, 191, 125, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn--ghost {
+      background: var(--rsm-panel-dark) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+      backdrop-filter: blur(16px) saturate(135%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 16px 36px rgba(11,13,20,0.18) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn--ghost:hover {
+      background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96)) !important;
+      border-color: rgba(255,255,255,0.12) !important;
+      box-shadow:
+        0 24px 56px rgba(11,13,20,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    }
+
+    .rsm-login-button-row--hero-match .rsm-btn .rsm-btn-icon {
+      display: none !important;
+    }
+
+    .rsm-login-page .rsm-btn,
+    .rsm-login-page .rsm-login-link {
+      min-height: 56px;
+      padding: 0 26px;
       border-radius: 999px;
-      font-family: var(--sans);
+      font-family: 'Syne', var(--rsm-font-sans);
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      text-decoration: none;
+      backdrop-filter: blur(16px) saturate(135%);
+      -webkit-backdrop-filter: blur(16px) saturate(135%);
+      box-shadow:
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+      transition:
+        transform 320ms var(--rsm-ease-spring),
+        box-shadow 320ms var(--rsm-ease-out),
+        background 320ms var(--rsm-ease-out);
+    }
+
+    .rsm-login-page .rsm-btn {
+      gap: 0;
+    }
+
+    .rsm-login-page .rsm-btn > span:not(.rsm-btn-icon),
+    .rsm-login-page .rsm-login-link {
+      position: relative;
+      z-index: 1;
+    }
+
+    .rsm-login-page .rsm-btn .rsm-btn-icon {
+      display: none !important;
+    }
+
+    .rsm-login-page .rsm-btn--brand {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)) padding-box,
+        linear-gradient(120deg, rgba(47, 224, 188, 0.95) 0%, rgba(74, 155, 255, 0.95) 52%, rgba(90, 129, 255, 0.95) 100%) border-box;
+      color: #07111f;
+      text-shadow: none;
+      box-shadow:
+        0 18px 42px rgba(74, 155, 255, 0.24),
+        0 10px 24px rgba(31, 191, 125, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+    }
+
+    .rsm-login-page .rsm-btn--brand:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 26px 58px rgba(74, 155, 255, 0.28),
+        0 14px 30px rgba(31, 191, 125, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .rsm-login-page .rsm-btn--ghost,
+    .rsm-login-page .rsm-login-link {
+      background: var(--rsm-panel-dark);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 16px 36px rgba(11,13,20,0.18);
+    }
+
+    .rsm-login-page .rsm-btn--ghost:hover,
+    .rsm-login-page .rsm-login-link:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96));
+      border-color: rgba(255,255,255,0.12);
+      box-shadow:
+        0 24px 56px rgba(11,13,20,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .rsm-login-page .rsm-btn--ghost {
+      color: var(--rsm-text-on-dark);
+      background: var(--rsm-panel-dark);
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 36px rgba(11,13,20,0.18);
+    }
+
+    .rsm-login-page .rsm-btn--ghost .rsm-btn-icon {
+      color: var(--rsm-ink);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .rsm-login-page .rsm-btn--ghost:hover {
+      color: var(--rsm-text-on-dark);
+      background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96));
+      box-shadow: 0 24px 56px rgba(11,13,20,0.22), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .rsm-login-button-row .rsm-btn .rsm-btn-icon,
+    .rsm-login-copy .rsm-btn .rsm-btn-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+
+    .rsm-login-inline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
       font-size: 0.9rem;
-      font-weight: 800;
-      padding: 12px 22px;
+    }
+
+    .rsm-login-link {
       cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      letter-spacing: -0.01em;
+      gap: 0;
+      flex: 0 0 auto;
+      width: fit-content;
     }
 
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    .btn-primary {
-      background: var(--marsh);
-      color: var(--paper);
-      box-shadow: 0 6px 20px rgba(37, 63, 53, 0.26);
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--ink);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px rgba(23, 34, 29, 0.3);
-    }
-
-    .btn-ghost {
-      background: var(--cream);
-      color: var(--ink);
-      border: 1.5px solid var(--line);
-    }
-
-    .btn-ghost:hover:not(:disabled) {
-      border-color: rgba(37, 63, 53, 0.28);
-      background: var(--mist);
-    }
-
-    .btn-row {
+    .rsm-login-steps {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 4px;
     }
 
-    .btn-row .btn { flex: 1 1 0; }
-
-    .steps {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 16px;
+    .rsm-login-steps span {
+      width: 38px;
+      height: 6px;
+      border-radius: var(--rsm-r-pill);
+      background: var(--rsm-surface-2);
     }
 
-    .steps span {
-      width: 14px;
-      height: 3px;
-      border-radius: 2px;
-      background: var(--line);
-      display: inline-block;
-      transition: width var(--transition), background var(--transition);
+    .rsm-login-steps span.active {
+      background: var(--rsm-accent-grad-strong);
+      box-shadow: var(--rsm-sh-glow-azure);
     }
-
-    .steps span.active { width: 28px; background: var(--marsh); }
 
     .email-pill {
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(37, 63, 53, 0.07);
-      color: var(--marsh);
-      padding: 5px 12px;
-      font-size: 0.75rem;
-      margin-bottom: 12px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-weight: 700;
+      width: fit-content;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: var(--rsm-r-pill);
+      border: 1px solid var(--rsm-line);
+      background: var(--rsm-glass);
+      color: var(--rsm-text-strong);
+      font-family: var(--rsm-font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .identity-preview {
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(37, 63, 53, 0.04);
-      padding: 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-2xl);
+      background: var(--rsm-glass);
+      box-shadow: var(--rsm-sh-sm);
+      -webkit-backdrop-filter: var(--rsm-blur-sm);
+      backdrop-filter: var(--rsm-blur-sm);
     }
 
     .preview-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--marsh);
-      color: var(--paper);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(37, 63, 53, 0.28);
-      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      color: #ffffff;
+      box-shadow: var(--rsm-sh-md);
+      background: #1f6f8b;
     }
 
     .preview-name {
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: var(--ink);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--rsm-text-strong);
     }
 
-    .preview-meta { font-size: 0.76rem; color: var(--ink-soft); }
+    .preview-meta {
+      margin-top: 4px;
+      font-size: 0.86rem;
+      color: var(--rsm-text-soft);
+      line-height: 1.45;
+    }
 
-    .emoji-grid {
+    .emoji-grid,
+    .color-grid {
       display: grid;
-      grid-template-columns: repeat(10, minmax(0, 1fr));
-      gap: 4px;
-      margin-bottom: 8px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
     }
 
     .emoji-grid input,
-    .color-grid input { display: none; }
+    .color-grid input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .emoji-grid label,
+    .color-grid label {
+      cursor: pointer;
+      transition:
+        transform var(--rsm-dur-fast) var(--rsm-ease-out),
+        box-shadow var(--rsm-dur-fast) var(--rsm-ease-out),
+        border-color var(--rsm-dur-fast) var(--rsm-ease-out),
+        background var(--rsm-dur-fast) var(--rsm-ease-out);
+    }
 
     .emoji-grid label {
-      aspect-ratio: 1;
-      border-radius: 8px;
-      border: 1.5px solid transparent;
-      background: rgba(37, 63, 53, 0.06);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform var(--transition), border-color var(--transition), background var(--transition);
-      font-size: 1rem;
-    }
-
-    .emoji-grid label:hover { transform: translateY(-1px); background: rgba(37, 63, 53, 0.1); }
-
-    .emoji-grid input:checked + label {
-      border-color: var(--marsh);
-      background: rgba(37, 63, 53, 0.12);
-      transform: scale(1.06);
-    }
-
-    .color-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 8px;
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--rsm-line);
+      border-radius: 18px;
+      background: var(--rsm-glass);
+      font-size: 1.3rem;
+      box-shadow: var(--rsm-sh-sm);
+      -webkit-backdrop-filter: var(--rsm-blur-sm);
+      backdrop-filter: var(--rsm-blur-sm);
     }
 
     .color-grid label {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
+      min-height: 36px;
+      border-radius: 14px;
       border: 2px solid transparent;
-      cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.38), var(--rsm-sh-sm);
     }
 
-    .color-grid label:hover { transform: scale(1.12); }
-
+    .emoji-grid input:checked + label,
     .color-grid input:checked + label {
-      border-color: var(--ink);
-      box-shadow: 0 0 0 2px rgba(37, 63, 53, 0.38);
-      transform: scale(1.1);
+      transform: translateY(-2px);
+      border-color: rgba(74, 155, 255, 0.36);
+      box-shadow: var(--rsm-sh-md);
     }
 
     .check-wrap {
       display: flex;
       align-items: flex-start;
-      gap: 9px;
-      padding: 11px 13px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: rgba(37, 63, 53, 0.03);
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-xl);
+      background: var(--rsm-glass);
+      box-shadow: var(--rsm-sh-sm);
+      -webkit-backdrop-filter: var(--rsm-blur-sm);
+      backdrop-filter: var(--rsm-blur-sm);
     }
 
     .check-wrap input {
-      margin-top: 2px;
-      width: 15px;
-      height: 15px;
-      accent-color: var(--marsh);
-      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      flex: 0 0 18px;
+      accent-color: var(--rsm-azure);
     }
 
-    .check-wrap span { color: var(--ink-soft); font-size: 0.78rem; line-height: 1.5; }
-    .check-wrap strong { color: var(--marsh); }
+    .check-wrap span {
+      line-height: 1.55;
+      color: var(--rsm-text);
+    }
+
+    .check-wrap strong {
+      color: var(--rsm-text-strong);
+    }
 
     .verify-box {
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: linear-gradient(155deg, rgba(37, 63, 53, 0.07), rgba(198, 164, 98, 0.06));
+      display: grid;
+      gap: 10px;
       padding: 18px;
-      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--rsm-r-2xl);
+      background: var(--rsm-panel-dark);
+      color: var(--rsm-text-on-dark);
+      box-shadow: var(--rsm-sh-lg);
     }
 
     .verify-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(37, 63, 53, 0.13);
-      font-size: 1.2rem;
-      margin-bottom: 10px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.12);
+      font-size: 1.25rem;
     }
 
     .verify-box h3 {
-      font-family: var(--serif);
-      font-size: 1.4rem;
-      font-weight: 650;
-      margin-bottom: 7px;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+      margin: 0;
+      font-family: var(--rsm-font-display);
+      font-size: 1.2rem;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
     }
 
-    .verify-box p { color: var(--ink-soft); font-size: 0.86rem; margin-bottom: 5px; }
+    .verify-box p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--rsm-text-on-dark-soft);
+      line-height: 1.45;
+    }
 
     .verify-email {
+      color: #ffffff;
       font-weight: 700;
-      color: var(--water);
-      word-break: break-word;
     }
 
-    .inline-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 14px;
+    .rsm-edit-line {
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        opacity var(--rsm-dur-slow) var(--rsm-ease-out),
+        transform var(--rsm-dur-slow) var(--rsm-ease-out);
     }
 
-    .inline-actions .link-btn {
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(37, 63, 53, 0.26);
-      line-height: 1.35;
+    .rsm-display-1 .rsm-edit-line {
+      display: block;
     }
 
-    .inline-actions .link-btn:hover { border-bottom-color: rgba(37, 63, 53, 0.5); }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 860px) {
-      .auth-layout { grid-template-columns: 1fr; }
-      .bento-panel { position: static; order: 2; }
-      .auth-panel  { order: 1; }
+    .rsm-hero__main.is-visible .rsm-edit-line:nth-child(1),
+    .rsm-login-copy.is-visible .rsm-edit-line:nth-child(1) { transition-delay: 80ms; }
+    .rsm-hero__main.is-visible .rsm-edit-line:nth-child(2),
+    .rsm-login-copy.is-visible .rsm-edit-line:nth-child(2) { transition-delay: 180ms; }
+    .rsm-hero__main.is-visible .rsm-edit-line:nth-child(3),
+    .rsm-login-copy.is-visible .rsm-edit-line:nth-child(3) { transition-delay: 280ms; }
+    .rsm-hero__main.is-visible .rsm-edit-line:nth-child(4),
+    .rsm-login-copy.is-visible .rsm-edit-line:nth-child(4) { transition-delay: 380ms; }
+    .rsm-hero__main.is-visible .rsm-edit-line,
+    .rsm-login-copy.is-visible .rsm-edit-line {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    @media (max-width: 720px) {
-      .container   { width: min(1180px, 100% - 24px); }
-      .auth-card   { padding: 20px; border-radius: 16px; }
-      .row-2       { grid-template-columns: 1fr; }
-      .btn-row     { flex-direction: column; }
-      .emoji-grid  { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity var(--rsm-dur-slow) var(--rsm-ease-out),
+        transform var(--rsm-dur-slow) var(--rsm-ease-out);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes rsm-login-view-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rsm-login-aurora {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(1.5%, -1.5%, 0) scale(1.05); }
+    }
+
+    @keyframes rsm-login-float {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(2%, -2%, 0) scale(1.03); }
+    }
+
+    @keyframes rsm-login-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 4px rgba(31, 191, 125, 0.18); }
+      50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(31, 191, 125, 0.08); }
+    }
+
+    @keyframes rsm-login-grad-flow {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
+    }
+
+    html[data-theme="scuro"] body[data-page="login"] {
+      background:
+        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.12), transparent 30%),
+        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.12), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.10), transparent 36%),
+        linear-gradient(180deg, #090c15 0%, #0f1320 48%, #090c15 100%);
+    }
+
+    html[data-theme="scuro"] body[data-page="login"]::before {
+      opacity: 0.22;
+      mix-blend-mode: screen;
+    }
+
+    html[data-theme="scuro"] .notice.info {
+      background: rgba(74, 155, 255, 0.16);
+      border-color: rgba(74, 155, 255, 0.24);
+      color: #c2dcff;
+    }
+
+    html[data-theme="scuro"] .notice.success {
+      background: rgba(31, 191, 125, 0.16);
+      border-color: rgba(31, 191, 125, 0.26);
+      color: #b8edd2;
+    }
+
+    html[data-theme="scuro"] .notice.error {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.24);
+      color: #fecaca;
+    }
+
+    html[data-theme="scuro"] .input-action:hover {
+      background: rgba(32, 36, 52, 0.96);
+    }
+
+    html[data-theme="scuro"] .rsm-login-media__veil {
+      background: linear-gradient(180deg, rgba(7, 9, 16, 0.08), rgba(7, 9, 16, 0.82));
+    }
+
+    html[data-density="compact"] body[data-page="login"] .rsm-login-copy,
+    html[data-density="compact"] body[data-page="login"] .rsm-login-compass,
+    html[data-density="compact"] body[data-page="login"] .rsm-login-panel__card {
+      padding: 22px;
+    }
+
+    html[data-density="compact"] body[data-page="login"] .rsm-login-fact {
+      padding: 18px;
+    }
+
+    @media (min-width: 1101px) and (max-height: 760px) {
+      .rsm-login-hero {
+        min-height: 100dvh;
+        padding-top: 56px;
+        padding-bottom: 12px;
+      }
+
+      .rsm-login-copy,
+      .rsm-login-compass,
+      .rsm-login-panel__card {
+        padding: 16px;
+      }
+
+      .rsm-login-title {
+        font-size: clamp(2.2rem, 3.3vw, 3.7rem);
+      }
+
+      .rsm-login-copy .rsm-lead {
+        font-size: 0.92rem;
+      }
+
+      .rsm-hero__media.rsm-login-media {
+        min-height: 136px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .rsm-hero__layout.rsm-login-hero__layout,
+      .rsm-login-support {
+        grid-template-columns: 1fr;
+      }
+
+      .rsm-login-panel {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .rsm-login-support {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .rsm-login-copy {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .rsm-login-hero {
+        min-height: auto;
+        display: block;
+        padding: clamp(92px, 14vw, 112px) 0 28px;
+      }
+
+      .rsm-login-panel__card {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .rsm-hero__metrics.rsm-login-metrics,
+      .rsm-login-facts,
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .emoji-grid,
+      .color-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .rsm-login-copy,
+      .rsm-login-compass,
+      .rsm-login-panel__card,
+      .rsm-login-fact {
+        padding: 22px;
+      }
+
+      .rsm-login-title {
+        max-width: none;
+      }
+
+      .rsm-login-path {
+        padding: 14px 16px;
+      }
+
+      .rsm-login-button-row,
+      .rsm-login-inline,
+      .rsm-button-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .rsm-login-inline {
+        align-items: flex-start;
+      }
+
+      .rsm-login-button-row .rsm-btn {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body[data-page="login"]::after,
+      .rsm-login-hero .rsm-hero__accent,
+      .rsm-login-pulse,
+      .rsm-login-title em,
+      .rsm-login-compass__head h2 em,
+      .rsm-login-view__head h2 em {
+        animation: none !important;
+      }
+
+      [data-reveal],
+      .rsm-edit-line,
+      .view.is-active,
+      .rsm-login-path,
+      .rsm-btn,
+      .input-action,
+      .emoji-grid label,
+      .color-grid label {
+        transition: none !important;
+      }
+
+      [data-reveal],
+      .rsm-edit-line {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
   </style>
-  <link rel="stylesheet" href="/theme.css" />
 </head>
-<body>
+<body data-page="login">
 
 <!--PARTIAL:nav-->
 
-  <main class="page">
-    <div class="container auth-layout">
+  <main id="main" class="rsm-login-page">
+    <section class="rsm-section rsm-hero rsm-login-hero" aria-labelledby="login-title">
+      <span class="rsm-hero__accent" aria-hidden="true"></span>
+      <div class="rsm-container">
+        <div class="rsm-hero__layout rsm-login-hero__layout">
+          <div class="rsm-login-story">
+            <div class="rsm-login-copy rsm-card rsm-card--glass rsm-hero__main" data-reveal>
+              <p class="rsm-kicker rsm-login-kicker rsm-edit-line">
+                <span class="rsm-login-pulse" aria-hidden="true"></span>
+                <span>Accesso locale</span>
+                <span aria-hidden="true">&middot;</span>
+                <span>Rivalta sul Mincio</span>
+              </p>
+              <h1 class="rsm-display-1 rsm-login-title" id="login-title">
+                <span class="rsm-edit-line">Entra nel <em>borgo</em></span>
+                <span class="rsm-edit-line">digitale del <em>Mincio</em></span>
+              </h1>
+              <p class="rsm-lead rsm-edit-line">Accesso con password o link magico, registrazione guidata in due passaggi e recupero account dentro una pagina che usa lo stesso linguaggio editoriale della home.</p>
+              <div class="rsm-button-row rsm-edit-line">
+                <button class="rsm-btn rsm-btn--brand magnetic" type="button" data-view-link="login">
+                  <span data-btn-label>Accedi ora</span>
+                  <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                </button>
+                <button class="rsm-btn rsm-btn--ghost magnetic" type="button" data-view-link="register1">
+                  <span data-btn-label>Crea account</span>
+                  <span class="rsm-btn-icon" aria-hidden="true">+</span>
+                </button>
+              </div>
+              <div class="rsm-hero__metrics rsm-login-metrics">
+                <div class="rsm-metric"><strong>3</strong><span>Accessi possibili</span></div>
+                <div class="rsm-metric"><strong>2</strong><span>Step registrazione</span></div>
+                <div class="rsm-metric"><strong>1</strong><span>Profilo locale</span></div>
+              </div>
+            </div>
 
-      <!-- LEFT: Auth panel -->
-      <section class="auth-panel">
-        <div class="auth-summary" aria-label="Struttura accesso account">
-          <span class="auth-chip">3 percorsi</span>
-          <span class="auth-chip">login o registrazione</span>
-          <span class="auth-chip">reset disponibile</span>
+            <div class="rsm-login-support">
+              <section class="rsm-login-compass rsm-card rsm-card--glass" aria-labelledby="login-paths-title" data-reveal>
+                <div class="rsm-section-head rsm-login-compass__head">
+                  <p class="rsm-kicker"><span>Percorsi</span></p>
+                  <h2 class="rsm-h2" id="login-paths-title">Scegli il <em>passaggio</em> giusto</h2>
+                </div>
+                <div class="rsm-login-paths">
+                  <button class="rsm-login-path rsm-login-path--brand" type="button" data-view-link="login">
+                    <strong>Login password</strong>
+                    <span>Email e password per chi ha gia un account verificato.</span>
+                  </button>
+                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="register1">
+                    <strong>Registrazione guidata</strong>
+                    <span>Due passaggi per creare un profilo con identita locale e regole accettate.</span>
+                  </button>
+                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="forgot">
+                    <strong>Reset e recupero</strong>
+                    <span>Invio rapido del link di ripristino se hai perso l'accesso.</span>
+                  </button>
+                </div>
+              </section>
+
+              <div class="rsm-login-showcase" data-reveal>
+                <div class="rsm-hero__media rsm-login-media">
+                  <img src="/img/mantova-laghi-aerea.jpg" alt="Veduta aerea del Mincio e del territorio di Rivalta" loading="eager" decoding="async" />
+                  <div class="rsm-login-media__veil" aria-hidden="true"></div>
+                  <div class="rsm-login-media__content">
+                    <p class="rsm-kicker rsm-kicker--center">Profilo locale</p>
+                    <strong>Un solo accesso per storie, eventi e comunita.</strong>
+                    <span>Forme, superfici e gerarchie arrivano dallo stesso impianto visivo della home.</span>
+                  </div>
+                </div>
+
+                <div class="rsm-login-facts">
+                  <article class="rsm-login-fact rsm-card rsm-card--glass">
+                    <p class="rsm-kicker">Community</p>
+                    <strong>Regole chiare</strong>
+                    <p>Accettazione obbligatoria delle regole della comunita durante la registrazione.</p>
+                  </article>
+                  <article class="rsm-login-fact rsm-card rsm-card--glass">
+                    <p class="rsm-kicker">Verifica</p>
+                    <strong>Email prima di tutto</strong>
+                    <p>Senza conferma dell'email l'account non puo diventare operativo.</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="rsm-login-panel" data-reveal>
+            <div class="rsm-card rsm-card--glass rsm-login-panel__card">
+              <div class="rsm-login-panel__top">
+                <p class="rsm-kicker rsm-login-panel__eyebrow"><span>Accesso account</span></p>
+                <div class="rsm-login-panel__chips" aria-hidden="true">
+                  <span class="rsm-tag rsm-tag--emerald">password</span>
+                  <span class="rsm-tag rsm-tag--azure">magic link</span>
+                  <span class="rsm-tag rsm-tag--violet">verifica</span>
+                </div>
+              </div>
+
+              <section class="view rsm-login-view is-active" id="view-login" aria-label="Login">
+                <div class="rsm-login-view__head">
+                  <p class="rsm-kicker rsm-login-kicker">
+                    <span class="rsm-login-pulse" aria-hidden="true"></span>
+                    <span>Bentornato</span>
+                  </p>
+                  <h2 class="rsm-h1">Accedi al tuo <em>account</em></h2>
+                  <p class="rsm-body">Non hai ancora un account? <button class="rsm-login-link" type="button" id="login-to-register">Registrati ora</button></p>
+                </div>
+
+                <div class="msg-slot" id="msg-login" role="status" aria-live="polite"></div>
+
+                <form id="form-login" class="rsm-login-form" novalidate>
+                  <div class="rsm-field">
+                    <label for="login-email">Email</label>
+                    <input class="rsm-input" type="email" id="login-email" autocomplete="email" placeholder="tu@email.it" required />
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="login-password">Password</label>
+                    <div class="input-with-action">
+                      <input class="rsm-input" type="password" id="login-password" autocomplete="current-password" placeholder="Inserisci la password" required />
+                      <button class="input-action" type="button" data-toggle="login-password">Mostra</button>
+                    </div>
+                  </div>
+
+                  <div class="rsm-button-row rsm-login-button-row">
+                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-login" type="submit" data-default-label="Accedi" data-loading-label="Accesso in corso...">
+                      <span data-btn-label>Accedi</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                    </button>
+                    <button class="rsm-btn rsm-btn--ghost magnetic" id="btn-magic" type="button" data-default-label="Invia link magico" data-loading-label="Invio in corso...">
+                      <span data-btn-label>Invia link magico</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">+</span>
+                    </button>
+                  </div>
+                </form>
+
+                <div class="rsm-login-inline">
+                  <button class="rsm-login-link" type="button" id="login-to-forgot">Password dimenticata?</button>
+                  <a class="rsm-login-link" href="/">Torna alla home</a>
+                </div>
+              </section>
+
+              <section class="view rsm-login-view" id="view-register1" aria-label="Registrazione passo 1">
+                <div class="rsm-login-steps" aria-hidden="true">
+                  <span class="active"></span>
+                  <span></span>
+                </div>
+
+                <div class="rsm-login-view__head">
+                  <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 1 di 2</span></p>
+                  <h2 class="rsm-h1">Crea il tuo <em>account</em></h2>
+                  <p class="rsm-body">Hai gia un profilo? <button class="rsm-login-link" type="button" id="reg1-to-login">Vai al login</button></p>
+                </div>
+
+                <div class="msg-slot" id="msg-reg1" role="status" aria-live="polite"></div>
+
+                <form id="form-reg1" class="rsm-login-form" novalidate>
+                  <div class="rsm-field">
+                    <label for="reg1-email">Email</label>
+                    <input class="rsm-input" type="email" id="reg1-email" autocomplete="email" placeholder="nome@email.it" required />
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="reg1-password">Password</label>
+                    <div class="input-with-action">
+                      <input class="rsm-input" type="password" id="reg1-password" autocomplete="new-password" placeholder="Almeno 6 caratteri" minlength="6" required />
+                      <button class="input-action" type="button" data-toggle="reg1-password">Mostra</button>
+                    </div>
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="reg1-password2">Conferma password</label>
+                    <div class="input-with-action">
+                      <input class="rsm-input" type="password" id="reg1-password2" autocomplete="new-password" placeholder="Ripeti la password" minlength="6" required />
+                      <button class="input-action" type="button" data-toggle="reg1-password2">Mostra</button>
+                    </div>
+                  </div>
+
+                  <div class="rsm-button-row rsm-login-button-row rsm-login-button-row--hero-match">
+                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-reg1-next" type="submit" data-default-label="Continua" data-loading-label="Controllo in corso...">
+                      <span data-btn-label>Continua</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                    </button>
+                    <button class="rsm-btn rsm-btn--ghost magnetic" type="button" id="reg1-back-home">
+                      <span data-btn-label>Annulla</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="view rsm-login-view" id="view-register2" aria-label="Registrazione passo 2">
+                <div class="rsm-login-steps" aria-hidden="true">
+                  <span></span>
+                  <span class="active"></span>
+                </div>
+
+                <div class="rsm-login-view__head">
+                  <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 2 di 2</span></p>
+                  <h2 class="rsm-h1">Completa l'<em>identita</em> locale</h2>
+                  <p class="rsm-body">Username unico, bio, comune e regole accettate sono obbligatori.</p>
+                </div>
+
+                <p class="email-pill" id="reg2-email-pill">Account: -</p>
+                <div class="msg-slot" id="msg-reg2" role="status" aria-live="polite"></div>
+
+                <div class="identity-preview">
+                  <div class="preview-avatar" id="preview-avatar" aria-hidden="true">&#127807;</div>
+                  <div>
+                    <div class="preview-name" id="preview-name">@username</div>
+                    <div class="preview-meta" id="preview-comune">Comune non impostato</div>
+                  </div>
+                </div>
+
+                <form id="form-reg2" class="rsm-login-form" novalidate>
+                  <div class="row-2">
+                    <div class="rsm-field">
+                      <label for="reg2-username">Username unico</label>
+                      <input class="rsm-input" type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
+                      <small>Solo lettere minuscole, numeri e underscore, minimo 3 caratteri.</small>
+                    </div>
+
+                    <div class="rsm-field">
+                      <label for="reg2-display">Nome visualizzato</label>
+                      <input class="rsm-input" type="text" id="reg2-display" maxlength="60" placeholder="Come vuoi comparire" required />
+                    </div>
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="reg2-comune">Comune</label>
+                    <select class="rsm-select" id="reg2-comune" required>
+                      <option value="">Seleziona...</option>
+                      <option value="Rivalta sul Mincio">Rivalta sul Mincio</option>
+                      <option value="Rodigo">Rodigo</option>
+                      <option value="Fossato">Fossato</option>
+                      <option value="Fuori comune">Fuori comune</option>
+                    </select>
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="reg2-bio">Bio breve</label>
+                    <textarea class="rsm-textarea" id="reg2-bio" maxlength="240" placeholder="Racconta in poche righe chi sei e perche sei qui" required></textarea>
+                    <small>Massimo 240 caratteri.</small>
+                  </div>
+
+                  <div class="group-label">Avatar emoji</div>
+                  <div class="emoji-grid" id="avatar-emoji-grid"></div>
+
+                  <div class="group-label">Colore avatar</div>
+                  <div class="color-grid" id="avatar-color-grid"></div>
+
+                  <label class="check-wrap" for="reg2-rules">
+                    <input type="checkbox" id="reg2-rules" />
+                    <span>Dichiaro di accettare le <strong>regole della comunita</strong> (obbligatorio) versione 2026-04.</span>
+                  </label>
+
+                  <div class="rsm-button-row rsm-login-button-row">
+                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-signup" type="submit" data-default-label="Crea account e invia verifica" data-loading-label="Registrazione in corso...">
+                      <span data-btn-label>Crea account e invia verifica</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                    </button>
+                    <button class="rsm-btn rsm-btn--ghost magnetic" id="reg2-back" type="button">
+                      <span data-btn-label>Indietro</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&larr;</span>
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="view rsm-login-view" id="view-forgot" aria-label="Password dimenticata">
+                <div class="rsm-login-view__head">
+                  <p class="rsm-kicker rsm-login-kicker"><span>Recupero account</span></p>
+                  <h2 class="rsm-h1">Reimposta la <em>password</em></h2>
+                  <p class="rsm-body">Ti inviamo una email con il link di reset.</p>
+                </div>
+
+                <div class="msg-slot" id="msg-forgot" role="status" aria-live="polite"></div>
+
+                <form id="form-forgot" class="rsm-login-form" novalidate>
+                  <div class="rsm-field">
+                    <label for="forgot-email">Email</label>
+                    <input class="rsm-input" type="email" id="forgot-email" autocomplete="email" placeholder="tu@email.it" required />
+                  </div>
+
+                  <div class="rsm-button-row rsm-login-button-row">
+                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-forgot" type="submit" data-default-label="Invia email reset" data-loading-label="Invio in corso...">
+                      <span data-btn-label>Invia email reset</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                    </button>
+                    <button class="rsm-btn rsm-btn--ghost magnetic" id="forgot-back-login" type="button">
+                      <span data-btn-label>Torna al login</span>
+                      <span class="rsm-btn-icon" aria-hidden="true">&larr;</span>
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="view rsm-login-view" id="view-verify" aria-label="Verifica email">
+                <div class="verify-box">
+                  <div class="verify-icon" aria-hidden="true">&#9993;&#65039;</div>
+                  <h3>Controlla la tua email</h3>
+                  <p>Abbiamo inviato un link di conferma a: <span class="verify-email" id="verify-email-target">la tua email</span></p>
+                  <p>Finche l'email non e verificata non puoi usare l'account in modo operativo ne pubblicare contenuti.</p>
+                </div>
+
+                <div class="msg-slot" id="msg-verify" role="status" aria-live="polite"></div>
+
+                <div class="rsm-button-row rsm-login-button-row">
+                  <button class="rsm-btn rsm-btn--brand magnetic" id="verify-to-login" type="button">
+                    <span data-btn-label>Ho verificato, torno al login</span>
+                    <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+                  </button>
+                  <button class="rsm-btn rsm-btn--ghost magnetic" id="verify-to-register" type="button">
+                    <span data-btn-label>Usa un'altra email</span>
+                    <span class="rsm-btn-icon" aria-hidden="true">@</span>
+                  </button>
+                </div>
+              </section>
+            </div>
+          </aside>
         </div>
-        <article class="auth-card">
-
-          <!-- VIEW: Login -->
-          <section class="view is-active" id="view-login" aria-label="Login">
-            <div class="view-head">
-              <p class="view-step">Bentornato</p>
-              <h2>Accedi al tuo account</h2>
-              <p>
-                Non hai ancora un account?
-                <button class="link-btn" type="button" id="login-to-register">Registrati ora</button>
-              </p>
-            </div>
-
-            <div class="msg-slot" id="msg-login"></div>
-
-            <form id="form-login" novalidate>
-              <label class="field">
-                <span>Email</span>
-                <input type="email" id="login-email" autocomplete="email" placeholder="tu@email.it" required />
-              </label>
-
-              <label class="field">
-                <span>Password</span>
-                <div class="input-with-action">
-                  <input type="password" id="login-password" autocomplete="current-password" placeholder="Inserisci la password" required />
-                  <button class="input-action" type="button" data-toggle="login-password">Mostra</button>
-                </div>
-              </label>
-
-              <button class="btn btn-primary" id="btn-login" type="submit">Accedi</button>
-              <button class="btn btn-ghost" id="btn-magic" type="button">Invia link magico via email</button>
-            </form>
-
-            <div class="inline-actions">
-              <button class="link-btn" type="button" id="login-to-forgot">Password dimenticata?</button>
-              <a href="/" class="link-btn">Torna alla home</a>
-            </div>
-          </section>
-
-          <!-- VIEW: Register step 1 -->
-          <section class="view" id="view-register1" aria-label="Registrazione passo 1">
-            <div class="steps" aria-hidden="true">
-              <span class="active"></span><span></span>
-            </div>
-
-            <div class="view-head">
-              <p class="view-step">Registrazione 1 di 2</p>
-              <h2>Crea il tuo account</h2>
-              <p>
-                Hai gia un profilo?
-                <button class="link-btn" type="button" id="reg1-to-login">Vai al login</button>
-              </p>
-            </div>
-
-            <div class="msg-slot" id="msg-reg1"></div>
-
-            <form id="form-reg1" novalidate>
-              <label class="field">
-                <span>Email</span>
-                <input type="email" id="reg1-email" autocomplete="email" placeholder="nome@email.it" required />
-              </label>
-
-              <label class="field">
-                <span>Password</span>
-                <div class="input-with-action">
-                  <input type="password" id="reg1-password" autocomplete="new-password" placeholder="Almeno 6 caratteri" minlength="6" required />
-                  <button class="input-action" type="button" data-toggle="reg1-password">Mostra</button>
-                </div>
-              </label>
-
-              <label class="field">
-                <span>Conferma password</span>
-                <div class="input-with-action">
-                  <input type="password" id="reg1-password2" autocomplete="new-password" placeholder="Ripeti la password" minlength="6" required />
-                  <button class="input-action" type="button" data-toggle="reg1-password2">Mostra</button>
-                </div>
-              </label>
-
-              <div class="btn-row">
-                <button class="btn btn-primary" id="btn-reg1-next" type="submit">Continua</button>
-                <button class="btn btn-ghost" type="button" id="reg1-back-home">Annulla</button>
-              </div>
-            </form>
-          </section>
-
-          <!-- VIEW: Register step 2 -->
-          <section class="view" id="view-register2" aria-label="Registrazione passo 2">
-            <div class="steps" aria-hidden="true">
-              <span></span><span class="active"></span>
-            </div>
-
-            <div class="view-head">
-              <p class="view-step">Registrazione 2 di 2</p>
-              <h2>Completa l&rsquo;identita locale</h2>
-              <p>Username unico e regole accettate sono obbligatori.</p>
-            </div>
-
-            <p class="email-pill" id="reg2-email-pill">Account: -</p>
-            <div class="msg-slot" id="msg-reg2"></div>
-
-            <div class="identity-preview">
-              <div class="preview-avatar" id="preview-avatar" aria-hidden="true">&#127807;</div>
-              <div>
-                <div class="preview-name" id="preview-name">@username</div>
-                <div class="preview-meta" id="preview-comune">Comune non impostato</div>
-              </div>
-            </div>
-
-            <form id="form-reg2" novalidate>
-              <div class="row-2">
-                <label class="field">
-                  <span>Username unico</span>
-                  <input type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
-                  <small>Solo lettere minuscole, numeri e underscore, minimo 3.</small>
-                </label>
-
-                <label class="field">
-                  <span>Nome visualizzato</span>
-                  <input type="text" id="reg2-display" maxlength="60" placeholder="Come vuoi comparire" required />
-                </label>
-              </div>
-
-              <label class="field">
-                <span>Comune</span>
-                <select id="reg2-comune" required>
-                  <option value="">Seleziona...</option>
-                  <option value="Rivalta sul Mincio">Rivalta sul Mincio</option>
-                  <option value="Rodigo">Rodigo</option>
-                  <option value="Fossato">Fossato</option>
-                  <option value="Fuori comune">Fuori comune</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Bio breve</span>
-                <textarea id="reg2-bio" maxlength="240" placeholder="Racconta in poche righe chi sei e perche sei qui" required></textarea>
-                <small>Massimo 240 caratteri.</small>
-              </label>
-
-              <div>
-                <p class="group-label">Avatar emoji</p>
-                <div class="emoji-grid" id="avatar-emoji-grid"></div>
-              </div>
-
-              <div>
-                <p class="group-label">Colore avatar</p>
-                <div class="color-grid" id="avatar-color-grid"></div>
-              </div>
-
-              <label class="check-wrap" for="reg2-rules">
-                <input type="checkbox" id="reg2-rules" />
-                <span>
-                  Dichiaro di accettare le <strong>regole della comunita</strong> (obbligatorio) versione 2026-04.
-                </span>
-              </label>
-
-              <div class="btn-row">
-                <button class="btn btn-primary" id="btn-signup" type="submit">Crea account e invia verifica</button>
-                <button class="btn btn-ghost" id="reg2-back" type="button">Indietro</button>
-              </div>
-            </form>
-          </section>
-
-          <!-- VIEW: Forgot password -->
-          <section class="view" id="view-forgot" aria-label="Password dimenticata">
-            <div class="view-head">
-              <p class="view-step">Recupero account</p>
-              <h2>Reimposta la password</h2>
-              <p>Ti inviamo una email con il link di reset.</p>
-            </div>
-
-            <div class="msg-slot" id="msg-forgot"></div>
-
-            <form id="form-forgot" novalidate>
-              <label class="field">
-                <span>Email</span>
-                <input type="email" id="forgot-email" autocomplete="email" placeholder="tu@email.it" required />
-              </label>
-
-              <div class="btn-row">
-                <button class="btn btn-primary" id="btn-forgot" type="submit">Invia email reset</button>
-                <button class="btn btn-ghost" id="forgot-back-login" type="button">Torna al login</button>
-              </div>
-            </form>
-          </section>
-
-          <!-- VIEW: Verify email -->
-          <section class="view" id="view-verify" aria-label="Verifica email">
-            <div class="verify-box">
-              <div class="verify-icon" aria-hidden="true">&#9993;&#65039;</div>
-              <h3>Controlla la tua email</h3>
-              <p>
-                Abbiamo inviato un link di conferma a:
-                <span class="verify-email" id="verify-email-target">la tua email</span>
-              </p>
-              <p>
-                Finche l&rsquo;email non e verificata non puoi usare l&rsquo;account in modo operativo ne pubblicare contenuti.
-              </p>
-            </div>
-
-            <div class="msg-slot" id="msg-verify"></div>
-
-            <div class="btn-row">
-              <button class="btn btn-primary" id="verify-to-login" type="button">Ho verificato, torno al login</button>
-              <button class="btn btn-ghost" id="verify-to-register" type="button">Usa un&rsquo;altra email</button>
-            </div>
-          </section>
-
-        </article>
-      </section>
-
-      <!-- RIGHT: Bento stats panel -->
-      <aside class="bento-panel" aria-label="Community overview">
-        <div class="bento-grid">
-
-          <div class="bcard bcard-hero">
-            <div class="hero-logo">
-              <div class="logo-mark">
-                <img src="/img/favicon.png" alt="Logo Rivalta sul Mincio" width="40" height="40">
-              </div>
-              <div class="logo-copy">
-                <div class="logo-name">Rivalta sul Mincio</div>
-                <div class="logo-sub">Parco del Mincio &middot; Mantova</div>
-              </div>
-            </div>
-            <div class="hero-eyebrow">Territorio &amp; Natura</div>
-            <div class="hero-tagline">Il fiume</div>
-            <div class="hero-tagline">Mincio.</div>
-            <div class="hero-tagline-muted">Dal Garda al Po.</div>
-            <div class="hero-date">Rivalta sul Mincio &middot; Rodigo &middot; Fossato</div>
-          </div>
-
-          <div class="bcard bcard-posts">
-            <div class="bnum" style="font-size:26px;color:var(--marsh)">75 km</div>
-            <div class="blabel">Lunghezza del Mincio</div>
-          </div>
-
-          <div class="bcard bcard-members">
-            <div class="bnum" style="font-size:26px;color:var(--water)">14K ha</div>
-            <div class="blabel">Area Parco del Mincio</div>
-          </div>
-
-          <div class="bcard bcard-likes">
-            <div class="bnum" style="font-size:26px;color:#4a9e7c">200+</div>
-            <div class="blabel">Specie ornitologiche</div>
-          </div>
-
-          <div class="bcard bcard-comuni">
-            <div class="bnum" style="font-size:26px;color:var(--clay)">13</div>
-            <div class="blabel">Comuni lungo il Mincio</div>
-          </div>
-
-          <div class="bcard bcard-cats">
-            <div class="bnum" style="font-size:26px;color:var(--reed)">1984</div>
-            <div class="blabel">Istituzione Parco</div>
-          </div>
-
-          <div class="bcard bcard-highlight">
-            <div class="bnum">Riserva</div>
-            <div class="blabel">Naturale<br>Regionale</div>
-            <div class="bsub">Parco del Mincio</div>
-          </div>
-
-          <div class="bcard bcard-quote">
-            <div class="quote-text">&ldquo;Dove il <em>Garda</em> incontra il <em>Po</em>, nasce una comunita.&rdquo;</div>
-          </div>
-
-        </div>
-      </aside>
-
-    </div>
+      </div>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -1069,6 +1768,12 @@
       return String(value || '').trim().replace(/\s+/g, ' ');
     }
 
+    function syncViewTriggers(viewName) {
+      document.querySelectorAll('[data-view-link]').forEach((control) => {
+        control.setAttribute('aria-pressed', control.getAttribute('data-view-link') === viewName ? 'true' : 'false');
+      });
+    }
+
     function setView(viewName) {
       const views = document.querySelectorAll('.view');
       views.forEach((view) => view.classList.remove('is-active'));
@@ -1076,6 +1781,7 @@
       if (target) {
         target.classList.add('is-active');
         state.view = viewName;
+        syncViewTriggers(viewName);
       }
     }
 
@@ -1103,14 +1809,18 @@
       const button = byId(buttonId);
       if (!button) return;
 
-      if (loading) {
-        button.disabled = true;
-        button.textContent = loadingLabel || 'Attendere...';
+      const labelTarget = button.querySelector('[data-btn-label]');
+      const nextLabel = loading ? (loadingLabel || button.dataset.loadingLabel || 'Attendere...') : (defaultLabel || button.dataset.defaultLabel || '');
+
+      button.disabled = loading;
+      button.setAttribute('aria-busy', loading ? 'true' : 'false');
+
+      if (labelTarget) {
+        labelTarget.textContent = nextLabel;
         return;
       }
 
-      button.disabled = false;
-      button.textContent = defaultLabel;
+      button.textContent = nextLabel;
     }
 
     function humanizeAuthError(error, fallback) {
@@ -1273,6 +1983,10 @@
       return { ok: true, created: true };
     }
 
+    function validEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
     async function submitMagicLink() {
       showMessage('msg-login', 'info', '');
       const email = byId('login-email').value.trim();
@@ -1287,7 +2001,7 @@
         return;
       }
 
-      setButtonLoading('btn-magic', true, 'Invia link magico via email', 'Invio in corso...');
+      setButtonLoading('btn-magic', true, 'Invia link magico', 'Invio in corso...');
 
       const redirectUrl = new URL('profile', window.location.href).toString();
       const { error } = await sb.auth.signInWithOtp({
@@ -1295,7 +2009,7 @@
         options: { emailRedirectTo: redirectUrl, shouldCreateUser: false }
       });
 
-      setButtonLoading('btn-magic', false, 'Invia link magico via email', 'Invio in corso...');
+      setButtonLoading('btn-magic', false, 'Invia link magico', 'Invio in corso...');
 
       if (error) {
         rememberRateFailure('magic_link', email, RATE_LIMITS.magic);
@@ -1361,11 +2075,7 @@
       }
 
       const { data: loginProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
-      window.location.href = loginProf?.username ? 'profile?u=' + loginProf.username : 'profile';
-    }
-
-    function validEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      window.location.href = loginProf && loginProf.username ? 'profile?u=' + loginProf.username : 'profile';
     }
 
     function submitRegisterStep1(event) {
@@ -1578,7 +2288,47 @@
       }
 
       const { data: restoreProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
-      window.location.href = restoreProf?.username ? 'profile?u=' + restoreProf.username : 'profile';
+      window.location.href = restoreProf && restoreProf.username ? 'profile?u=' + restoreProf.username : 'profile';
+    }
+
+    function initReveal() {
+      const nodes = document.querySelectorAll('[data-reveal]');
+      if (!nodes.length) return;
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        nodes.forEach((node) => node.classList.add('is-visible'));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.18, rootMargin: '0px 0px -8%' });
+
+      nodes.forEach((node) => observer.observe(node));
+    }
+
+    function initMagneticButtons() {
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      document.querySelectorAll('.magnetic').forEach((button) => {
+        button.addEventListener('pointermove', (event) => {
+          const rect = button.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 100;
+          const y = ((event.clientY - rect.top) / rect.height) * 100;
+          button.style.setProperty('--mx', x + '%');
+          button.style.setProperty('--my', y + '%');
+        });
+
+        button.addEventListener('pointerleave', () => {
+          button.style.removeProperty('--mx');
+          button.style.removeProperty('--my');
+        });
+      });
     }
 
     function bindEvents() {
@@ -1587,6 +2337,20 @@
       byId('form-reg1').addEventListener('submit', submitRegisterStep1);
       byId('form-reg2').addEventListener('submit', submitRegisterStep2);
       byId('form-forgot').addEventListener('submit', submitForgot);
+
+      document.querySelectorAll('[data-view-link]').forEach((control) => {
+        control.addEventListener('click', () => {
+          clearMessages();
+          const targetView = control.getAttribute('data-view-link');
+          if (targetView === 'forgot') {
+            byId('forgot-email').value = byId('login-email').value.trim();
+          }
+          if (targetView === 'login' && state.verifyEmail) {
+            byId('login-email').value = state.verifyEmail;
+          }
+          setView(targetView);
+        });
+      });
 
       byId('login-to-register').addEventListener('click', () => {
         clearMessages();
@@ -1628,7 +2392,7 @@
       });
 
       byId('reg1-back-home').addEventListener('click', () => {
-        window.location.href = "/";
+        window.location.href = '/';
       });
 
       byId('reg2-username').addEventListener('input', updateIdentityPreview);
@@ -1644,15 +2408,22 @@
     }
 
     function init() {
+      syncViewTriggers(state.view);
       bindEvents();
       buildAvatarPickers();
       updateIdentityPreview();
+      initReveal();
+      document.querySelectorAll('.rsm-login-copy, .rsm-login-support, .rsm-login-panel').forEach((node) => {
+        node.classList.add('is-visible');
+      });
+      initMagneticButtons();
       applyVerifiedQueryMessage();
       restoreActiveSession();
     }
 
     init();
   </script>
-  <!--PARTIAL:footer-->
+
+<!--PARTIAL:footer-->
 </body>
 </html>
