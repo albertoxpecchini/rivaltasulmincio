@@ -1428,6 +1428,30 @@
     }
 
     @media (max-width: 780px) {
+      .rsm-login-story {
+        display: none;
+      }
+
+      .rsm-login-support {
+        grid-row: 2;
+      }
+
+      .rsm-login-panel {
+        grid-row: 1;
+      }
+
+      .rsm-login-hero__layout {
+        grid-template-columns: 1fr;
+      }
+
+      .rsm-login-copy,
+      .rsm-login-support,
+      .rsm-login-panel {
+        order: 0;
+      }
+    }
+
+    @media (max-width: 780px) {
       .rsm-hero__metrics.rsm-login-metrics,
       .rsm-login-facts,
       .row-2 {
