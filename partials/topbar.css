@@ -3,6 +3,15 @@
    Font: Syne (brand/nav) + Space Grotesk (UI) + monospace system (kbd)
    ================================================================ */
 
+:root {
+  --rsm-topbar-offset: 64px;
+  --rsm-topbar-safe-offset: calc(var(--rsm-topbar-offset) + env(safe-area-inset-top, 0px));
+}
+
+html {
+  scroll-padding-top: calc(var(--rsm-topbar-offset) + 16px);
+}
+
 .site-header {
   --rsm-topbar-text: var(--rsm-text-on-dark);
   --rsm-topbar-text-soft: var(--rsm-text-on-dark-soft);
@@ -57,8 +66,8 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 20px;
-  min-height: 64px;
+  gap: clamp(12px, 1.8vw, 20px);
+  min-height: var(--rsm-topbar-offset);
   padding: 0 clamp(16px, 3.5vw, 48px);
   max-width: 1300px;
   margin: 0 auto;
@@ -143,8 +152,18 @@
 .nav-links {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  justify-content: flex-start;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-link {
@@ -152,6 +171,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   min-height: 38px;
   padding: 0 11px;
   border-radius: 999px;
@@ -163,6 +183,7 @@
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.01em;
+  white-space: nowrap;
   transition:
     color 180ms ease,
     background 180ms ease,
@@ -192,11 +213,49 @@
   transform: none;
 }
 
+.nav-link--top {
+  padding-inline: 14px;
+}
+
 
 .nav-actions {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 12px;
+}
+
+@media (max-width: 1320px) {
+  .nav-link {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 0.78rem;
+  }
+
+  .nav-island {
+    padding: 0 clamp(14px, 2vw, 32px);
+  }
+}
+
+@media (max-width: 1280px) {
+  .nav-link--top {
+    display: none;
+  }
+
+  .search-toggle-label,
+  .search-kbd {
+    display: none;
+  }
+
+  .search-toggle {
+    padding: 0 11px;
+    gap: 0;
+  }
+
+  .nav-login,
+  .profile-btn {
+    padding: 0 12px;
+  }
 }
 
 .search-toggle {
@@ -678,6 +737,10 @@
 }
 
 @media (max-width: 760px) {
+  :root {
+    --rsm-topbar-offset: 58px;
+  }
+
   .nav-island {
     min-height: 58px;
     gap: 10px;
@@ -756,6 +819,10 @@ html[data-contrast="high"] .profile-btn {
 
 html[data-theme] .site-header {
   transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+html[data-density="compact"] {
+  --rsm-topbar-offset: 52px;
 }
 
 html[data-density="compact"] .nav-island {

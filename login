@@ -743,9 +743,6 @@
       .row-2       { grid-template-columns: 1fr; }
       .btn-row     { flex-direction: column; }
       .emoji-grid  { grid-template-columns: repeat(8, minmax(0, 1fr)); }
-      .nav-island  { padding: 6px 8px 6px 10px; }
-      .brand-name span { display: none; }
-      .site-header { top: 10px; }
     }
   </style>
   <link rel="stylesheet" href="/theme.css" />

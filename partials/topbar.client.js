@@ -184,15 +184,15 @@
 
   /* ── Ricerca ───────────────────────────────────────────────── */
   var SEARCH_INDEX = [
-    { title: 'Parco del Mincio',      desc: 'Riserva naturale e paesaggi fluviali',   url: '/#parco',    icon: '🌿' },
-    { title: 'Valli del Mincio',      desc: 'Le valli naturalistiche intorno a Rivalta', url: '/#valli',  icon: '🦆' },
-    { title: 'Atlante vivo',          desc: 'Fotografie e storie del territorio',       url: '/#atlante', icon: '📸' },
-    { title: 'Mappa interattiva',     desc: 'Esplora i luoghi su mappa',                url: '/mappe',    icon: '🗺️' },
+    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro',      icon: '🏡' },
+    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa',      icon: '🐟' },
+    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi',     icon: '📅' },
+    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria',   icon: '📸' },
+    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio', icon: '🌿' },
+    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti',   icon: '📍' },
     { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category', icon: '📂' },
     { title: 'Dashboard',             desc: 'Il tuo spazio personale',                  url: '/dashboard',icon: '⚡' },
     { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',              url: '/write',    icon: '✍️' },
-    { title: 'Sentieri naturalistici',desc: 'Percorsi a piedi e in bici nel parco',    url: '/#sentieri',icon: '🥾' },
-    { title: 'Festival e sagre',      desc: 'Sagre, festival ed eventi locali',         url: '/#festival',icon: '🎪' },
     { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',         url: '/category', icon: '🏘️' },
     { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',     url: '/profile',  icon: '👤' },
     { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',         url: '/preferenze',icon: '🎨' },

@@ -243,8 +243,11 @@
       position: relative;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
-      height: 80vh;
-      min-height: 520px;
+      min-height: max(520px, 100vh);
+      min-height: max(520px, 100svh);
+      box-sizing: border-box;
+      padding-top: calc(var(--rsm-topbar-safe-offset) + clamp(24px, 5vw, 56px));
+      padding-bottom: clamp(40px, 6vw, 72px);
       overflow: hidden;
       display: flex;
       align-items: center;

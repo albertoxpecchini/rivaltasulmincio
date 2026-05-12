@@ -280,7 +280,6 @@
       }
       .card-hero { flex-direction: column; align-items: flex-start; }
       .page { padding: 100px 14px 60px; }
-      .brand-name { display: none; }
     }
 
     /* ── Footer ── */
