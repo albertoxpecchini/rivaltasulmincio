@@ -1372,7 +1372,10 @@
       background: var(--rsm-ink);
       color: #fff;
       box-shadow: var(--rsm-sh-glow-violet);
-      font-size: 22px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       transition: transform var(--rsm-dur-base), background var(--rsm-dur-base);
     }
     .back-to-top:hover { transform: translateY(-3px) scale(1.05); }
@@ -3411,7 +3414,7 @@
 
 <!--PARTIAL:footer-->
 
-  <a class="back-to-top" href="#intro" aria-label="Torna su">↑</a>
+  <a class="back-to-top" href="#intro" aria-label="Torna su">Su</a>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>

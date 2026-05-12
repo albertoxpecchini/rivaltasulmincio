@@ -117,7 +117,7 @@
     .rsm-hero__layout.rsm-login-hero__layout {
       display: grid;
       grid-template-columns: minmax(0, 0.96fr) minmax(240px, 0.64fr) minmax(340px, 420px);
-      align-items: center;
+      align-items: stretch;
       gap: clamp(14px, 2vw, 22px);
     }
 
@@ -178,7 +178,7 @@
       grid-auto-rows: max-content;
       gap: 14px;
       align-content: start;
-      height: auto;
+      height: 100%;
     }
 
     .rsm-login-copy > * {
@@ -288,6 +288,7 @@
       gap: 12px;
       align-content: start;
       align-self: stretch;
+      height: 100%;
     }
 
     .rsm-login-compass {
@@ -325,16 +326,15 @@
       width: 100%;
       min-height: 56px;
       padding: 16px 18px;
-      border: 1px solid var(--rsm-line);
+      border: 1px solid rgba(148, 163, 184, 0.34);
       border-radius: 999px;
-      background: var(--rsm-glass);
-      color: var(--rsm-text);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 248, 252, 0.92));
+      color: #111827;
       text-align: left;
       cursor: pointer;
       box-shadow:
-        0 18px 38px rgba(11, 13, 20, 0.16),
-        0 2px 6px rgba(11, 13, 20, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
       transition:
         transform 320ms var(--rsm-ease-spring),
         border-color 320ms var(--rsm-ease-out),
@@ -350,22 +350,36 @@
       font-weight: 700;
       line-height: 1.08;
       letter-spacing: -0.03em;
-      color: var(--rsm-text-strong);
+      color: #0f172a;
     }
 
     .rsm-login-path span {
       font-family: inherit;
       font-size: 0.84rem;
-      color: var(--rsm-text-soft);
+      color: #475569;
       line-height: 1.35;
     }
 
     .rsm-login-path:hover,
     .rsm-login-path[aria-pressed="true"] {
+      border-color: rgba(59, 130, 246, 0.32);
+    }
+
+    .rsm-login-path:hover:not([aria-pressed="true"]) {
       transform: translateY(-2px);
-      border-color: var(--rsm-line-3);
-      box-shadow: var(--rsm-sh-md);
-      background: var(--rsm-glass-strong);
+      box-shadow:
+        0 14px 32px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 249, 252, 0.96));
+    }
+
+    .rsm-login-path[aria-pressed="true"] {
+      transform: translateY(1px);
+      box-shadow:
+        inset 0 2px 6px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 0 0 2px rgba(59, 130, 246, 0.14);
+      background: linear-gradient(180deg, rgba(243, 247, 255, 0.98), rgba(236, 242, 250, 0.96));
     }
 
     .rsm-login-path.rsm-login-path--brand,
@@ -374,9 +388,8 @@
       border-radius: 999px;
       gap: 6px;
       box-shadow:
-        0 18px 38px rgba(11, 13, 20, 0.16),
-        0 2px 6px rgba(11, 13, 20, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
       transition:
         transform 320ms var(--rsm-ease-spring),
         box-shadow 320ms var(--rsm-ease-out),
@@ -401,68 +414,78 @@
     }
 
     .rsm-login-path.rsm-login-path--brand {
-      border-color: rgba(255, 255, 255, 0.22);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)) padding-box,
-        linear-gradient(120deg, rgba(47, 224, 188, 0.95) 0%, rgba(74, 155, 255, 0.95) 52%, rgba(90, 129, 255, 0.95) 100%) border-box;
-      color: #07111f;
+      border-color: rgba(148, 163, 184, 0.34);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(244, 247, 251, 0.94));
+      color: #111827;
       text-shadow: none;
       box-shadow:
-        0 18px 42px rgba(74, 155, 255, 0.24),
-        0 10px 24px rgba(31, 191, 125, 0.12),
-        0 0 0 1px rgba(255, 255, 255, 0.14),
-        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
     }
 
     .rsm-login-path.rsm-login-path--brand strong {
-      color: #07111f;
+      color: #0f172a;
     }
 
     .rsm-login-path.rsm-login-path--brand span {
-      color: rgba(7, 17, 31, 0.74);
+      color: #475569;
     }
 
-    .rsm-login-path.rsm-login-path--brand:hover,
-    .rsm-login-path.rsm-login-path--brand[aria-pressed="true"] {
+    .rsm-login-path.rsm-login-path--brand:hover:not([aria-pressed="true"]) {
       transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.24);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)) padding-box,
-        linear-gradient(120deg, rgba(47, 224, 188, 0.98) 0%, rgba(74, 155, 255, 0.98) 52%, rgba(90, 129, 255, 0.98) 100%) border-box;
+      border-color: rgba(59, 130, 246, 0.32);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 255, 0.97));
       box-shadow:
-        0 26px 58px rgba(74, 155, 255, 0.28),
-        0 14px 30px rgba(31, 191, 125, 0.16),
-        0 0 0 1px rgba(255, 255, 255, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+        0 14px 32px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    }
+
+    .rsm-login-path.rsm-login-path--brand[aria-pressed="true"] {
+      transform: translateY(1px);
+      border-color: rgba(59, 130, 246, 0.36);
+      background: linear-gradient(180deg, rgba(242, 246, 255, 0.99), rgba(233, 240, 250, 0.97));
+      box-shadow:
+        inset 0 2px 6px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        0 0 0 2px rgba(59, 130, 246, 0.14);
     }
 
     .rsm-login-path.rsm-login-path--ghost {
-      border-color: rgba(255, 255, 255, 0.08);
-      background: var(--rsm-panel-dark);
-      color: #ffffff;
+      border-color: rgba(148, 163, 184, 0.34);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(244, 247, 251, 0.94));
+      color: #111827;
       backdrop-filter: blur(16px) saturate(135%);
       -webkit-backdrop-filter: blur(16px) saturate(135%);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        0 16px 36px rgba(11,13,20,0.18);
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
     }
 
     .rsm-login-path.rsm-login-path--ghost strong {
-      color: #ffffff;
+      color: #0f172a;
     }
 
     .rsm-login-path.rsm-login-path--ghost span {
-      color: var(--rsm-text-on-dark-soft);
+      color: #475569;
     }
 
-    .rsm-login-path.rsm-login-path--ghost:hover,
-    .rsm-login-path.rsm-login-path--ghost[aria-pressed="true"] {
+    .rsm-login-path.rsm-login-path--ghost:hover:not([aria-pressed="true"]) {
       transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.12);
-      background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96));
+      border-color: rgba(59, 130, 246, 0.32);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 255, 0.97));
       box-shadow:
-        0 24px 56px rgba(11,13,20,0.22),
-        inset 0 1px 0 rgba(255,255,255,0.12);
+        0 14px 32px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    }
+
+    .rsm-login-path.rsm-login-path--ghost[aria-pressed="true"] {
+      transform: translateY(1px);
+      border-color: rgba(59, 130, 246, 0.36);
+      background: linear-gradient(180deg, rgba(242, 246, 255, 0.99), rgba(233, 240, 250, 0.97));
+      box-shadow:
+        inset 0 2px 6px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        0 0 0 2px rgba(59, 130, 246, 0.14);
     }
 
     .rsm-login-showcase {
@@ -569,6 +592,7 @@
       position: static;
       top: auto;
       align-self: stretch;
+      height: 100%;
     }
 
     .rsm-login-panel__card {
@@ -577,7 +601,9 @@
       gap: 16px;
       width: 100%;
       max-width: 100%;
+      height: 100%;
       max-height: calc(100dvh - 144px);
+      min-height: 0;
       overflow-y: auto;
       overflow-x: hidden;
       align-content: start;
@@ -611,6 +637,10 @@
     .view.is-active {
       display: grid;
       animation: rsm-login-view-in var(--rsm-dur-base) var(--rsm-ease-out);
+    }
+
+    .rsm-login-view.is-active {
+      animation-name: rsm-login-view-fade;
     }
 
     .rsm-login-view__head {
@@ -862,6 +892,27 @@
       gap: 0;
     }
 
+    .rsm-login-page [data-view-link][aria-pressed="true"] {
+      transform: none;
+    }
+
+    .rsm-login-page .rsm-btn[data-view-link][aria-pressed="true"] {
+      box-shadow:
+        0 0 0 2px rgba(74, 155, 255, 0.16),
+        0 18px 38px rgba(11, 13, 20, 0.16),
+        0 2px 6px rgba(11, 13, 20, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    }
+
+    .rsm-login-page .rsm-btn[data-view-link][aria-pressed="true"]:hover,
+    .rsm-login-page .rsm-btn[data-view-link][aria-pressed="true"]:active {
+      transform: none;
+    }
+
+    .rsm-login-page .rsm-btn[data-view-link][aria-pressed="true"] .rsm-btn-icon {
+      transform: none;
+    }
+
     .rsm-login-page .rsm-btn > span:not(.rsm-btn-icon),
     .rsm-login-page .rsm-login-link {
       position: relative;
@@ -912,6 +963,42 @@
       box-shadow:
         0 24px 56px rgba(11,13,20,0.22),
         inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .rsm-login-page .rsm-login-link--text {
+      display: inline-block;
+      width: auto;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+      color: var(--rsm-text-strong);
+      font: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      text-decoration-line: underline;
+      text-decoration-color: currentColor;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 0.18em;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .rsm-login-page .rsm-login-link--text:hover,
+    .rsm-login-page .rsm-login-link--text:active {
+      transform: none;
+      background: none;
+      box-shadow: none;
+      border: 0;
+      color: var(--rsm-azure);
+      text-decoration-thickness: 2px;
+    }
+
+    .rsm-login-page .rsm-login-link--text:focus-visible {
+      outline: 2px solid var(--rsm-azure);
+      outline-offset: 3px;
     }
 
     .rsm-login-page .rsm-btn--ghost {
@@ -1197,11 +1284,18 @@
     @keyframes rsm-login-view-in {
       from {
         opacity: 0;
-        transform: translateY(10px);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+      }
+    }
+
+    @keyframes rsm-login-view-fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
       }
     }
 
@@ -1430,11 +1524,11 @@
               </h1>
               <p class="rsm-lead rsm-edit-line">Accesso con password o link magico, registrazione guidata in due passaggi e recupero account dentro una pagina che usa lo stesso linguaggio editoriale della home.</p>
               <div class="rsm-button-row rsm-edit-line">
-                <button class="rsm-btn rsm-btn--brand magnetic" type="button" data-view-link="login">
+                <button class="rsm-btn rsm-btn--brand magnetic" type="button" data-view-link="login" aria-pressed="true">
                   <span data-btn-label>Accedi ora</span>
                   <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
                 </button>
-                <button class="rsm-btn rsm-btn--ghost magnetic" type="button" data-view-link="register1">
+                <button class="rsm-btn rsm-btn--ghost magnetic" type="button" data-view-link="register1" aria-pressed="false">
                   <span data-btn-label>Crea account</span>
                   <span class="rsm-btn-icon" aria-hidden="true">+</span>
                 </button>
@@ -1453,15 +1547,15 @@
                   <h2 class="rsm-h2" id="login-paths-title">Scegli il <em>passaggio</em> giusto</h2>
                 </div>
                 <div class="rsm-login-paths">
-                  <button class="rsm-login-path rsm-login-path--brand" type="button" data-view-link="login">
+                  <button class="rsm-login-path rsm-login-path--brand" type="button" data-view-link="login" aria-pressed="true">
                     <strong>Login password</strong>
                     <span>Email e password per chi ha gia un account verificato.</span>
                   </button>
-                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="register1">
+                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="register1" aria-pressed="false">
                     <strong>Registrazione guidata</strong>
                     <span>Due passaggi per creare un profilo con identita locale e regole accettate.</span>
                   </button>
-                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="forgot">
+                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="forgot" aria-pressed="false">
                     <strong>Reset e recupero</strong>
                     <span>Invio rapido del link di ripristino se hai perso l'accesso.</span>
                   </button>
@@ -1496,7 +1590,7 @@
           </div>
 
           <aside class="rsm-login-panel" data-reveal>
-            <div class="rsm-card rsm-card--glass rsm-login-panel__card">
+            <div class="rsm-card rsm-card--glass rsm-login-panel__card" id="login-panel-card">
               <div class="rsm-login-panel__top">
                 <p class="rsm-kicker rsm-login-panel__eyebrow"><span>Accesso account</span></p>
                 <div class="rsm-login-panel__chips" aria-hidden="true">
@@ -1513,7 +1607,7 @@
                     <span>Bentornato</span>
                   </p>
                   <h2 class="rsm-h1">Accedi al tuo <em>account</em></h2>
-                  <p class="rsm-body">Non hai ancora un account? <button class="rsm-login-link" type="button" id="login-to-register">Registrati ora</button></p>
+                  <p class="rsm-body">Non hai ancora un account? <button class="rsm-login-link rsm-login-link--text" type="button" id="login-to-register">Registrati ora</button></p>
                 </div>
 
                 <div class="msg-slot" id="msg-login" role="status" aria-live="polite"></div>
@@ -1545,8 +1639,8 @@
                 </form>
 
                 <div class="rsm-login-inline">
-                  <button class="rsm-login-link" type="button" id="login-to-forgot">Password dimenticata?</button>
-                  <a class="rsm-login-link" href="/">Torna alla home</a>
+                  <button class="rsm-login-link rsm-login-link--text" type="button" id="login-to-forgot">Password dimenticata?</button>
+                  <a class="rsm-login-link rsm-login-link--text" href="/">Torna alla home</a>
                 </div>
               </section>
 
@@ -1559,7 +1653,7 @@
                 <div class="rsm-login-view__head">
                   <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 1 di 2</span></p>
                   <h2 class="rsm-h1">Crea il tuo <em>account</em></h2>
-                  <p class="rsm-body">Hai gia un profilo? <button class="rsm-login-link" type="button" id="reg1-to-login">Vai al login</button></p>
+                  <p class="rsm-body">Hai gia un profilo? <button class="rsm-login-link rsm-login-link--text" type="button" id="reg1-to-login">Vai al login</button></p>
                 </div>
 
                 <div class="msg-slot" id="msg-reg1" role="status" aria-live="polite"></div>
@@ -1783,6 +1877,68 @@
         state.view = viewName;
         syncViewTriggers(viewName);
       }
+    }
+
+    let loginPanelHeightFrame = 0;
+
+    function syncLoginPanelHeight() {
+      const card = byId('login-panel-card');
+      if (!card) return;
+
+      const cardWidth = Math.ceil(card.getBoundingClientRect().width);
+      if (!cardWidth) return;
+
+      const views = Array.from(card.querySelectorAll('.view'));
+      if (!views.length) return;
+
+      const measureHost = document.createElement('div');
+      measureHost.setAttribute('aria-hidden', 'true');
+      measureHost.style.position = 'absolute';
+      measureHost.style.left = '-10000px';
+      measureHost.style.top = '0';
+      measureHost.style.width = cardWidth + 'px';
+      measureHost.style.visibility = 'hidden';
+      measureHost.style.pointerEvents = 'none';
+      measureHost.style.overflow = 'visible';
+
+      document.body.appendChild(measureHost);
+
+      let tallest = 0;
+
+      try {
+        views.forEach((view, index) => {
+          const clone = card.cloneNode(true);
+          clone.removeAttribute('id');
+          clone.style.minHeight = '0';
+          clone.style.maxHeight = 'none';
+          clone.style.height = 'auto';
+          clone.style.overflow = 'visible';
+          clone.style.width = cardWidth + 'px';
+          clone.style.margin = '0';
+          clone.style.boxShadow = 'none';
+          clone.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
+          clone.querySelectorAll('.view').forEach((clonedView, clonedIndex) => {
+            clonedView.classList.toggle('is-active', clonedIndex === index);
+          });
+          measureHost.appendChild(clone);
+
+          const height = Math.ceil(clone.getBoundingClientRect().height);
+          if (height > tallest) tallest = height;
+
+          clone.remove();
+        });
+      } finally {
+        measureHost.remove();
+      }
+
+      const viewportCap = Math.max(0, Math.floor(window.innerHeight - 144));
+      const nextHeight = viewportCap > 0 ? Math.min(tallest, viewportCap) : tallest;
+      card.style.minHeight = nextHeight > 0 ? nextHeight + 'px' : '';
+    }
+
+    function scheduleLoginPanelHeightSync() {
+      if (loginPanelHeightFrame) cancelAnimationFrame(loginPanelHeightFrame);
+      loginPanelHeightFrame = requestAnimationFrame(syncLoginPanelHeight);
     }
 
     function showMessage(targetId, type, text) {
@@ -2418,6 +2574,8 @@
       });
       initMagneticButtons();
       applyVerifiedQueryMessage();
+      scheduleLoginPanelHeightSync();
+      window.addEventListener('resize', scheduleLoginPanelHeightSync, { passive: true });
       restoreActiveSession();
     }
 
