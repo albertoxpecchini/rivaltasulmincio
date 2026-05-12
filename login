@@ -726,6 +726,84 @@
       line-height: 1.45;
     }
 
+    .rsm-login-view--register2 {
+      gap: 16px;
+    }
+
+    .rsm-login-view--register2 .rsm-login-view__head {
+      gap: 6px;
+    }
+
+    .rsm-login-view--register2 .rsm-login-view__head .rsm-h1 {
+      font-size: clamp(1.28rem, 1.5vw, 1.78rem);
+    }
+
+    .rsm-login-view--register2 .rsm-body {
+      font-size: 0.92rem;
+    }
+
+    .rsm-login-view--register2 .email-pill {
+      min-height: 30px;
+      padding: 0 10px;
+    }
+
+    .rsm-login-view--register2 .identity-preview {
+      padding: 12px 14px;
+    }
+
+    /* Form: colonna unica, un campo per riga */
+    .rsm-reg2-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .rsm-reg2-layout .rsm-button-row {
+      margin-top: 6px;
+    }
+
+    /* Emoji + colore affiancati — unica eccezione 2 colonne */
+    .rsm-reg2-avatar-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .rsm-login-view--register2 .group-label {
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .rsm-login-view--register2 .rsm-field small {
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .rsm-login-view--register2 .emoji-grid label {
+      min-height: 42px;
+      font-size: 1.2rem;
+    }
+
+    .rsm-login-view--register2 .color-grid label {
+      min-height: 36px;
+    }
+
+    .rsm-login-view--register2 .check-wrap {
+      padding: 12px 14px;
+    }
+
+    .rsm-login-view--register2 .check-wrap span {
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .rsm-login-view--register2 .check-wrap a {
+      color: var(--rsm-text-strong);
+      text-decoration: underline;
+      text-underline-offset: 0.16em;
+      font-weight: 700;
+    }
+
     .row-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1444,6 +1522,10 @@
         grid-template-columns: 1fr;
       }
 
+      .rsm-reg2-avatar-row {
+        grid-template-columns: 1fr;
+      }
+
       .rsm-login-copy,
       .rsm-login-support,
       .rsm-login-panel {
@@ -1454,7 +1536,8 @@
     @media (max-width: 780px) {
       .rsm-hero__metrics.rsm-login-metrics,
       .rsm-login-facts,
-      .row-2 {
+      .row-2,
+      .rsm-reg2-avatar-row {
         grid-template-columns: 1fr;
       }
 
@@ -1465,6 +1548,37 @@
     }
 
     @media (max-width: 600px) {
+      .rsm-login-view--register2 {
+        gap: 8px;
+      }
+
+      .rsm-login-view--register2 .rsm-login-view__head .rsm-h1 {
+        font-size: clamp(1.16rem, 4.2vw, 1.5rem);
+      }
+
+      .rsm-login-view--register2 .rsm-body,
+      .rsm-login-view--register2 .rsm-field small,
+      .rsm-login-view--register2 .check-wrap span {
+        font-size: 0.8rem;
+      }
+
+      .rsm-login-view--register2 .rsm-login-form {
+        gap: 8px;
+      }
+
+      .rsm-login-view--register2 .emoji-grid label {
+        min-height: 34px;
+        font-size: 1rem;
+      }
+
+      .rsm-login-view--register2 .color-grid label {
+        min-height: 30px;
+      }
+
+      .rsm-login-view--register2 .rsm-login-button-row .rsm-btn {
+        min-height: 48px;
+      }
+
       .rsm-login-copy,
       .rsm-login-compass,
       .rsm-login-panel__card,
@@ -1725,11 +1839,11 @@
 
                 <div class="rsm-login-view__head">
                   <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 2 di 2</span></p>
-                  <h2 class="rsm-h1">Completa l'<em>identita</em> locale</h2>
-                  <p class="rsm-body">Username unico, bio, comune e regole accettate sono obbligatori.</p>
+                  <h2 class="rsm-h1">Completa il <em>profilo</em></h2>
+                  <p class="rsm-body">Username, bio, comune e consenso.</p>
                 </div>
 
-                <p class="email-pill" id="reg2-email-pill">Account: -</p>
+                <p class="email-pill" id="reg2-email-pill">Email: -</p>
                 <div class="msg-slot" id="msg-reg2" role="status" aria-live="polite"></div>
 
                 <div class="identity-preview">
@@ -1740,22 +1854,21 @@
                   </div>
                 </div>
 
-                <form id="form-reg2" class="rsm-login-form" novalidate>
-                  <div class="row-2">
-                    <div class="rsm-field">
-                      <label for="reg2-username">Username unico</label>
-                      <input class="rsm-input" type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
-                      <small>Solo lettere minuscole, numeri e underscore, minimo 3 caratteri.</small>
-                    </div>
+                <form id="form-reg2" class="rsm-login-form rsm-reg2-layout" novalidate>
 
-                    <div class="rsm-field">
-                      <label for="reg2-display">Nome visualizzato</label>
-                      <input class="rsm-input" type="text" id="reg2-display" maxlength="60" placeholder="Come vuoi comparire" required />
-                    </div>
+                  <div class="rsm-field">
+                    <label for="reg2-username">Nome utente</label>
+                    <input class="rsm-input" type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
+                    <small>Min 3 caratteri: lettere, numeri, underscore.</small>
                   </div>
 
                   <div class="rsm-field">
-                    <label for="reg2-comune">Comune</label>
+                    <label for="reg2-display">Il tuo nome</label>
+                    <input class="rsm-input" type="text" id="reg2-display" maxlength="60" placeholder="Nome pubblico" required />
+                  </div>
+
+                  <div class="rsm-field">
+                    <label for="reg2-comune">Dove vivi?</label>
                     <select class="rsm-select" id="reg2-comune" required>
                       <option value="">Seleziona...</option>
                       <option value="Rivalta sul Mincio">Rivalta sul Mincio</option>
@@ -1765,26 +1878,31 @@
                     </select>
                   </div>
 
-                  <div class="rsm-field">
-                    <label for="reg2-bio">Bio breve</label>
-                    <textarea class="rsm-textarea" id="reg2-bio" maxlength="240" placeholder="Racconta in poche righe chi sei e perche sei qui" required></textarea>
-                    <small>Massimo 240 caratteri.</small>
+                  <div class="rsm-reg2-avatar-row">
+                    <div>
+                      <div class="group-label">Scegli il tuo simbolo</div>
+                      <div class="emoji-grid" id="avatar-emoji-grid"></div>
+                    </div>
+                    <div>
+                      <div class="group-label">Colore</div>
+                      <div class="color-grid" id="avatar-color-grid"></div>
+                    </div>
                   </div>
 
-                  <div class="group-label">Avatar emoji</div>
-                  <div class="emoji-grid" id="avatar-emoji-grid"></div>
-
-                  <div class="group-label">Colore avatar</div>
-                  <div class="color-grid" id="avatar-color-grid"></div>
+                  <div class="rsm-field">
+                    <label for="reg2-bio">Raccontaci di te</label>
+                    <textarea class="rsm-textarea" id="reg2-bio" maxlength="240" placeholder="Breve descrizione" required></textarea>
+                    <small>Max 240 caratteri.</small>
+                  </div>
 
                   <label class="check-wrap" for="reg2-rules">
                     <input type="checkbox" id="reg2-rules" />
-                    <span>Dichiaro di accettare le <strong>regole della comunita</strong> (obbligatorio) versione 2026-04.</span>
+                    <span>Dichiaro di accettare i <a class="rsm-reg2-terms-link" href="/note-legali">termini e condizioni</a>.</span>
                   </label>
 
                   <div class="rsm-button-row rsm-login-button-row">
-                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-signup" type="submit" data-default-label="Crea account e invia verifica" data-loading-label="Registrazione in corso...">
-                      <span data-btn-label>Crea account e invia verifica</span>
+                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-signup" type="submit" data-default-label="Conferma e chiudi" data-loading-label="Conferma...">
+                      <span data-btn-label>Conferma e chiudi</span>
                       <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
                     </button>
                     <button class="rsm-btn rsm-btn--ghost magnetic" id="reg2-back" type="button">
@@ -2289,7 +2407,7 @@
       state.regAccount.email = email;
       state.regAccount.password = password;
 
-      byId('reg2-email-pill').textContent = 'Account: ' + email;
+      byId('reg2-email-pill').textContent = 'Email: ' + email;
       byId('forgot-email').value = email;
       setView('register2');
     }
@@ -2320,7 +2438,7 @@
       }
 
       if (!displayName) {
-        showMessage('msg-reg2', 'error', 'Inserisci il nome visualizzato.');
+        showMessage('msg-reg2', 'error', 'Inserisci il nome.');
         return;
       }
 
@@ -2330,16 +2448,16 @@
       }
 
       if (!bio || bio.length < 8) {
-        showMessage('msg-reg2', 'error', 'Inserisci una bio breve di almeno 8 caratteri.');
+        showMessage('msg-reg2', 'error', 'Inserisci una bio di almeno 8 caratteri.');
         return;
       }
 
       if (!rulesAccepted) {
-        showMessage('msg-reg2', 'error', 'Per registrarti devi accettare le regole della comunita.');
+        showMessage('msg-reg2', 'error', 'Devi accettare i termini e condizioni.');
         return;
       }
 
-      setButtonLoading('btn-signup', true, 'Crea account e invia verifica', 'Registrazione in corso...');
+      setButtonLoading('btn-signup', true, 'Crea account', 'Creo account...');
 
       const { data: usernameRows, error: usernameCheckError } = await sb
         .from('profiles')
@@ -2348,13 +2466,13 @@
         .limit(1);
 
       if (usernameCheckError) {
-        setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+        setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
         showMessage('msg-reg2', 'error', "Impossibile verificare ora l'username. Riprova tra poco.");
         return;
       }
 
       if (Array.isArray(usernameRows) && usernameRows.length > 0) {
-        setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+        setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
         showMessage('msg-reg2', 'error', 'Username gia in uso. Scegline uno diverso.');
         return;
       }
@@ -2383,7 +2501,7 @@
         }
       });
 
-      setButtonLoading('btn-signup', false, 'Crea account e invia verifica', 'Registrazione in corso...');
+      setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
 
       if (signUpError) {
         showMessage('msg-reg2', 'error', humanizeAuthError(signUpError, 'Registrazione non riuscita.'));
