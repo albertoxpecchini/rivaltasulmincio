@@ -160,22 +160,15 @@
       position: relative;
       width: 100%;
       aspect-ratio: 4 / 5;
-      max-height: clamp(360px, 56vh, 580px);
-      min-height: 320px;
+      max-height: clamp(420px, 64vh, 700px);
+      min-height: 380px;
       margin-inline: auto;
-      max-width: 520px;
-      border-radius: var(--rsm-r-3xl);
-      overflow: hidden;
-      box-shadow: var(--rsm-sh-xl);
+      max-width: 600px;
+      overflow: visible;
       isolation: isolate;
     }
     .rsm-hero__media::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
-      pointer-events: none;
+      display: none;
     }
     .rsm-hero__metrics {
       display: grid;
@@ -855,122 +848,7 @@
     }
     .rsm-gallery__stage {
       position: relative;
-      border-radius: var(--rsm-r-3xl);
-      overflow: hidden;
-      box-shadow: var(--rsm-sh-xl);
       isolation: isolate;
-    }
-    .rsm-swiper {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      max-height: clamp(280px, 56vh, 560px);
-      min-height: 240px;
-    }
-    .rsm-swiper .swiper-wrapper {
-      display: flex;
-      height: 100%;
-      will-change: transform;
-      transition: transform 520ms var(--rsm-ease-out);
-    }
-    .rsm-swiper .swiper-slide {
-      flex: 0 0 100%;
-      min-width: 100%;
-      height: 100%;
-      background-color: var(--rsm-surface);
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .rsm-slide .slide-bg-blur {
-      position: absolute;
-      inset: -8%;
-      background-size: cover;
-      background-position: center;
-      filter: blur(36px) saturate(1.1);
-      opacity: 0.65;
-      transform: scale(1.1);
-    }
-    .rsm-slide .slide-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .rsm-swiper .swiper-button-prev,
-    .rsm-swiper .swiper-button-next {
-      position: absolute;
-      top: 50%;
-      z-index: 4;
-      border: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: var(--rsm-blur-sm);
-      box-shadow: var(--rsm-sh-md);
-      color: var(--rsm-ink);
-      cursor: pointer;
-      transform: translateY(-50%);
-      transition: transform var(--rsm-dur-fast), background var(--rsm-dur-fast);
-    }
-    .rsm-swiper .swiper-button-prev { left: 14px; }
-    .rsm-swiper .swiper-button-next { right: 14px; }
-    .rsm-swiper .swiper-button-prev::after,
-    .rsm-swiper .swiper-button-next::after {
-      content: "";
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--rsm-ink);
-    }
-    .rsm-swiper .swiper-button-prev::after { content: "\2039"; }
-    .rsm-swiper .swiper-button-next::after { content: "\203A"; }
-    .rsm-swiper .swiper-button-prev[hidden],
-    .rsm-swiper .swiper-button-next[hidden] {
-      display: none;
-    }
-    .rsm-swiper .swiper-button-prev:hover,
-    .rsm-swiper .swiper-button-next:hover {
-      background: #fff;
-      transform: translateY(-50%) scale(1.06);
-    }
-    .rsm-swiper .swiper-button-prev:disabled,
-    .rsm-swiper .swiper-button-next:disabled {
-      opacity: 0.45;
-      cursor: default;
-    }
-    .rsm-swiper .swiper-pagination {
-      position: absolute;
-      left: 50%;
-      bottom: 12px;
-      z-index: 4;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transform: translateX(-50%);
-    }
-    .rsm-swiper .swiper-pagination[hidden] {
-      display: none;
-    }
-    .rsm-swiper .swiper-pagination-bullet {
-      width: 9px;
-      height: 9px;
-      padding: 0;
-      border: 0;
-      border-radius: 999px;
-      appearance: none;
-      cursor: pointer;
-      background: rgba(255,255,255,0.9);
-      opacity: 0.6;
-      transition: transform var(--rsm-dur-fast), opacity var(--rsm-dur-fast);
-    }
-    .rsm-swiper .swiper-pagination-bullet-active {
-      background: linear-gradient(120deg, var(--rsm-emerald), var(--rsm-azure), var(--rsm-violet));
-      opacity: 1;
-      transform: scale(1.16);
     }
 
     /* gallery scroll marquee */
@@ -1067,11 +945,8 @@
       position: relative;
       width: 100%;
       aspect-ratio: 4 / 5;
-      max-height: clamp(420px, 58vh, 620px);
-      border-radius: var(--rsm-r-2xl);
-      overflow: hidden;
-      border: 1px solid var(--rsm-line);
-      background: rgba(255,255,255,0.03);
+      max-height: clamp(500px, 66vh, 760px);
+      overflow: visible;
     }
     .rsm-swiper--atlas { width: 100%; height: 100%; aspect-ratio: auto; max-height: none; }
     .rsm-swiper--atlas .swiper-slide { aspect-ratio: auto; height: 100%; }
@@ -1393,12 +1268,9 @@
       align-items: start;
     }
     .rsm-contact__map {
-      border-radius: var(--rsm-r-3xl);
-      overflow: hidden;
-      box-shadow: var(--rsm-sh-xl);
       aspect-ratio: 4 / 3;
-      max-height: clamp(320px, 50vh, 480px);
-      background: var(--rsm-surface);
+      max-height: clamp(380px, 56vh, 620px);
+      overflow: visible;
       margin: 0;
     }
     .rsm-contact__map .swiper,
@@ -3333,7 +3205,7 @@
           <p class="rsm-lead" data-reveal style="--delay: 120ms">Un carosello pulito, automatico e consultabile. Sostituibile in pochi click con immagini fornite dalla redazione o da Figma.</p>
         </div>
 
-        <div class="rsm-gallery__stage rsm-frame-kit" data-reveal data-parallax="0.06">
+        <div class="rsm-gallery__stage" data-reveal data-parallax="0.06">
           <div class="swiper rsm-swiper" role="region" aria-label="Galleria fotografica di Rivalta sul Mincio">
             <div class="swiper-wrapper">
               <div class="swiper-slide rsm-slide">
