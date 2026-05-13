@@ -391,9 +391,11 @@
   color: var(--rsm-foot-ink-soft);
 }
 
-.rsm-foot__news-icon svg {
+.rsm-foot__news-icon i {
   width: 18px;
   height: 18px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .rsm-foot__news-input {
@@ -457,9 +459,11 @@
 
 .rsm-foot__news-btn:hover .rsm-foot__news-btn-icon { transform: translate(2px, -1px); }
 
-.rsm-foot__news-btn-icon svg {
+.rsm-foot__news-btn-icon i {
   width: 16px;
   height: 16px;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .rsm-foot .rsm-foot__news-row {
@@ -739,9 +743,11 @@ a.rsm-foot__contact:hover::before { opacity: 1; }
   transition: background 300ms var(--rsm-foot-ease), color 300ms var(--rsm-foot-ease);
 }
 
-.rsm-foot__contact-glyph svg {
+.rsm-foot__contact-glyph i {
   width: 18px;
   height: 18px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 a.rsm-foot__contact:hover .rsm-foot__contact-glyph {
@@ -815,9 +821,11 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
     transform 280ms var(--rsm-foot-ease-spring);
 }
 
-.rsm-foot__social svg {
+.rsm-foot__social i {
   width: 18px;
   height: 18px;
+  font-size: 17px;
+  line-height: 1;
   transition: transform 280ms var(--rsm-foot-ease);
 }
 
@@ -828,7 +836,7 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
   transform: translateY(-2px);
 }
 
-.rsm-foot__social:hover svg {
+.rsm-foot__social:hover i {
   transform: scale(1.1);
 }
 
@@ -1067,9 +1075,11 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
   transition: transform 320ms var(--rsm-foot-ease-spring), background 320ms var(--rsm-foot-ease);
 }
 
-.rsm-foot__top-icon svg {
+.rsm-foot__top-icon i {
   width: 14px;
   height: 14px;
+  font-size: 12px;
+  line-height: 1;
 }
 
 .rsm-foot__top:hover .rsm-foot__top-icon {

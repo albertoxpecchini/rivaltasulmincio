@@ -10,6 +10,7 @@ const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|theme\.css))(?:\?[^"']*)?(["'])/gi;
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
 const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap';
+const FONT_AWESOME_HREF = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
@@ -103,6 +104,9 @@ function injectTopbarAssets(html) {
   const hasFontsApiPreconnect = /<link[^>]+href=["']https:\/\/fonts\.googleapis\.com["'][^>]*>/i.test(result);
   const hasFontsStaticPreconnect = /<link[^>]+href=["']https:\/\/fonts\.gstatic\.com["'][^>]*>/i.test(result);
   const hasTopbarFonts = result.includes(TOPBAR_FONTS_HREF);
+  const hasCdnjsPreconnect = /<link[^>]+href=["']https:\/\/cdnjs\.cloudflare\.com["'][^>]*>/i.test(result);
+  const hasFontAwesome = /<link[^>]+href=["'][^"']*font-awesome[^"']*\.css(?:\?[^"']*)?["'][^>]*>/i.test(result)
+    || result.includes(FONT_AWESOME_HREF);
 
   if (result.includes('</head>')) {
     const headInjections = [];
@@ -116,6 +120,12 @@ function injectTopbarAssets(html) {
     if (!hasTopbarFonts) {
       headInjections.push(`  <link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" media="print" onload="this.onload=null;this.media='all'" />`);
       headInjections.push(`  <noscript><link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" /></noscript>`);
+    }
+    if (!hasCdnjsPreconnect) {
+      headInjections.push('  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />');
+    }
+    if (!hasFontAwesome) {
+      headInjections.push(`  <link rel="stylesheet" href="${FONT_AWESOME_HREF}" />`);
     }
     if (!hasTopbarCss) {
       headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath('/partials/topbar.css')}" />`);
