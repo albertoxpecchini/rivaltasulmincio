@@ -47,7 +47,7 @@
   }
 
   function item(label, href, active, primary, iconClass) {
-    var icon = iconClass ? '<i class="' + iconClass + '" aria-hidden="true"></i>' : '';
+    var icon = iconClass ? '<i class="' + escapeHtml(iconClass) + '" aria-hidden="true"></i>' : '';
     return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></a>';
   }
 
@@ -71,7 +71,7 @@
     var isNoteLegali = current.indexOf('note-legali') >= 0;
     var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
     var accent = escapeHtml(color || '#2f6b67');
-    var avatar = emoji ? escapeHtml(emoji) : '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+    var avatar = escapeHtml(emoji || '👤');
     var editItem = canEditProfile
       ? item('Modifica profilo', 'modifica-profilo', isEditProfile, false, 'fa-solid fa-user-pen')
       : '';
