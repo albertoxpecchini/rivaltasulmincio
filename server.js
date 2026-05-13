@@ -11,6 +11,7 @@ const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
 const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap';
 const FONT_AWESOME_HREF = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
+const PAGE_ICONS_CLIENT_JS = '/partials/page-icons.client.js';
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
@@ -101,6 +102,7 @@ function injectTopbarAssets(html) {
   let result = html;
   const hasTopbarCss = /<link[^>]+href=["'][^"']*\/partials\/topbar\.css(?:\?[^"']*)?["'][^>]*>/i.test(result);
   const hasTopbarJs = /<script[^>]+src=["'][^"']*\/partials\/topbar\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
+  const hasPageIconsJs = /<script[^>]+src=["'][^"']*\/partials\/page-icons\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
   const hasFontsApiPreconnect = /<link[^>]+href=["']https:\/\/fonts\.googleapis\.com["'][^>]*>/i.test(result);
   const hasFontsStaticPreconnect = /<link[^>]+href=["']https:\/\/fonts\.gstatic\.com["'][^>]*>/i.test(result);
   const hasTopbarFonts = result.includes(TOPBAR_FONTS_HREF);
@@ -137,6 +139,9 @@ function injectTopbarAssets(html) {
   }
   if (!hasTopbarJs && result.includes('</body>')) {
     result = result.replace('</body>', `  <script src="${versionedAssetPath('/partials/topbar.client.js')}" defer></script>\n</body>`);
+  }
+  if (!hasPageIconsJs && result.includes('</body>')) {
+    result = result.replace('</body>', `  <script src="${versionedAssetPath(PAGE_ICONS_CLIENT_JS)}" defer></script>\n</body>`);
   }
   return result;
 }
