@@ -198,206 +198,6 @@ html[data-theme="scuro"] {
   max-width: 920px;
 }
 
-/* ================================================================
-   RSM CAROUSEL FRAME — shell condiviso per tutti i caroselli
-   ================================================================ */
-
-.rsm-swiper {
-  --rsm-carousel-pad: clamp(12px, 1.4vw, 18px);
-  --rsm-carousel-radius: clamp(26px, 3.2vw, 38px);
-  --rsm-carousel-shell-radius: calc(var(--rsm-carousel-radius) + var(--rsm-carousel-pad));
-  --rsm-carousel-shell-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.94), rgba(246, 249, 255, 0.74));
-  --rsm-carousel-shell-border: rgba(255, 255, 255, 0.58);
-  --rsm-carousel-shell-shadow:
-    0 30px 78px rgba(11, 13, 20, 0.18),
-    0 14px 34px rgba(11, 13, 20, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.74);
-  --rsm-carousel-panel:
-    radial-gradient(circle at 16% 18%, rgba(31, 191, 125, 0.18), transparent 32%),
-    radial-gradient(circle at 84% 82%, rgba(74, 155, 255, 0.16), transparent 36%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: clamp(360px, 64vh, 720px);
-  min-height: 320px;
-  padding: var(--rsm-carousel-pad);
-  border: 1px solid var(--rsm-carousel-shell-border);
-  border-radius: var(--rsm-carousel-shell-radius);
-  background: var(--rsm-carousel-shell-bg);
-  box-shadow: var(--rsm-carousel-shell-shadow);
-  isolation: isolate;
-  backdrop-filter: blur(18px) saturate(132%);
-  -webkit-backdrop-filter: blur(18px) saturate(132%);
-}
-.rsm-swiper::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  z-index: 0;
-  border-radius: inherit;
-  background: var(--rsm-carousel-panel);
-  pointer-events: none;
-}
-.rsm-swiper::after {
-  content: "";
-  position: absolute;
-  inset: var(--rsm-carousel-pad);
-  z-index: 3;
-  border-radius: var(--rsm-carousel-radius);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
-  pointer-events: none;
-}
-.rsm-swiper .swiper-wrapper {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  height: 100%;
-  will-change: transform;
-  transition: transform 520ms var(--rsm-ease-out);
-}
-.rsm-swiper .swiper-slide {
-  flex: 0 0 100%;
-  min-width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--rsm-carousel-radius);
-  background-color: var(--rsm-surface);
-  background-position: center;
-  background-size: cover;
-}
-.rsm-swiper .swiper-slide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(11, 13, 20, 0.14) 100%);
-  pointer-events: none;
-}
-.rsm-slide .slide-bg-blur {
-  position: absolute;
-  inset: -10%;
-  z-index: 0;
-  background-position: center;
-  background-size: cover;
-  filter: blur(42px) saturate(1.08);
-  opacity: 0.56;
-  transform: scale(1.18);
-}
-.rsm-swiper .swiper-slide > img,
-.rsm-swiper .swiper-slide > video,
-.rsm-slide .slide-img {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.rsm-swiper .swiper-button-prev,
-.rsm-swiper .swiper-button-next {
-  display: none !important;
-}
-.rsm-swiper .swiper-pagination {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--rsm-carousel-pad) + 14px);
-  z-index: 4;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.36);
-  border-radius: var(--rsm-r-pill);
-  background: rgba(255, 255, 255, 0.36);
-  box-shadow: 0 10px 24px rgba(11, 13, 20, 0.12);
-  transform: translateX(-50%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.rsm-swiper .swiper-pagination[hidden] {
-  display: none;
-}
-.rsm-swiper .swiper-pagination-bullet {
-  width: 10px;
-  height: 10px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  appearance: none;
-  cursor: pointer;
-  background: rgba(11, 13, 20, 0.18);
-  opacity: 1;
-  transition:
-    width var(--rsm-dur-fast),
-    background var(--rsm-dur-fast),
-    transform var(--rsm-dur-fast);
-}
-.rsm-swiper .swiper-pagination-bullet-active {
-  width: 30px;
-  background: var(--rsm-accent-grad-strong);
-  transform: none;
-}
-
-html[data-theme="scuro"] .rsm-swiper {
-  --rsm-carousel-shell-bg: linear-gradient(155deg, rgba(14, 18, 29, 0.96), rgba(19, 24, 37, 0.86));
-  --rsm-carousel-shell-border: rgba(236, 237, 243, 0.14);
-  --rsm-carousel-shell-shadow:
-    0 34px 84px rgba(0, 0, 0, 0.42),
-    0 16px 40px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --rsm-carousel-panel:
-    radial-gradient(circle at 16% 18%, rgba(31, 191, 125, 0.2), transparent 34%),
-    radial-gradient(circle at 84% 82%, rgba(74, 155, 255, 0.18), transparent 38%),
-    linear-gradient(150deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-}
-html[data-theme="scuro"] .rsm-swiper::after {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-html[data-theme="scuro"] .rsm-swiper .swiper-slide::after {
-  background: linear-gradient(180deg, rgba(10, 12, 20, 0) 0%, rgba(4, 7, 12, 0.28) 100%);
-}
-html[data-theme="scuro"] .rsm-swiper .swiper-button-prev,
-html[data-theme="scuro"] .rsm-swiper .swiper-button-next {
-  border-color: rgba(236, 237, 243, 0.14);
-  background: rgba(17, 22, 36, 0.84);
-  box-shadow:
-    0 20px 38px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  color: var(--rsm-text-on-dark);
-}
-html[data-theme="scuro"] .rsm-swiper .swiper-button-prev:hover,
-html[data-theme="scuro"] .rsm-swiper .swiper-button-next:hover {
-  background: rgba(22, 29, 45, 0.96);
-  border-color: rgba(236, 237, 243, 0.22);
-}
-html[data-theme="scuro"] .rsm-swiper .swiper-pagination {
-  border-color: rgba(236, 237, 243, 0.12);
-  background: rgba(14, 18, 28, 0.74);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
-}
-html[data-theme="scuro"] .rsm-swiper .swiper-pagination-bullet {
-  background: rgba(236, 237, 243, 0.28);
-}
-
-@media (max-width: 700px) {
-  .rsm-swiper {
-    --rsm-carousel-pad: 10px;
-    --rsm-carousel-radius: 24px;
-    min-height: 260px;
-  }
-  .rsm-swiper .swiper-pagination {
-    bottom: calc(var(--rsm-carousel-pad) + 12px);
-    padding: 7px 9px;
-  }
-  .rsm-swiper .swiper-pagination-bullet-active {
-    width: 24px;
-  }
-}
-
 .rsm-display-1,
 .rsm-display-2,
 .rsm-h1, .rsm-h2, .rsm-h3, .rsm-h4 {
@@ -540,10 +340,16 @@ html[data-theme="scuro"] .rsm-swiper .swiper-pagination-bullet {
   font-size: var(--rsm-text-body);
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: var(--rsm-text-on-dark);
+  color: var(--rsm-text-strong);
   text-decoration: none;
-  background: var(--rsm-panel-dark);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 36px rgba(11,13,20,0.18);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,248,252,0.92)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.22) 0%, rgba(74,155,255,0.22) 52%, rgba(90,129,255,0.22) 100%) border-box;
+  border-color: rgba(148, 163, 184, 0.34);
+  box-shadow:
+    0 10px 24px rgba(15,23,42,0.08),
+    0 0 0 1px rgba(255,255,255,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.78);
   transition: transform var(--rsm-dur-base) var(--rsm-ease-out),
               background var(--rsm-dur-base) var(--rsm-ease-out),
               box-shadow var(--rsm-dur-base) var(--rsm-ease-out);
@@ -556,7 +362,7 @@ html[data-theme="scuro"] .rsm-swiper .swiper-pagination-bullet {
   position: absolute;
   inset: -50%;
   background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
-              rgba(255,255,255,0.22), transparent 38%);
+              rgba(74,155,255,0.18), transparent 40%);
   opacity: 0;
   transition: opacity var(--rsm-dur-base) var(--rsm-ease-out);
   pointer-events: none;
@@ -572,53 +378,82 @@ html[data-theme="scuro"] .rsm-swiper .swiper-pagination-bullet {
   align-items: center;
   justify-content: center;
   color: var(--rsm-ink);
-  background: var(--rsm-text-on-dark);
+  background: rgba(255,255,255,0.92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
   transition: transform var(--rsm-dur-base) var(--rsm-ease-out);
   font-weight: 700;
 }
 .rsm-btn:hover {
   transform: translateY(-2px);
-  background: linear-gradient(145deg, rgba(14, 18, 30, 0.98), rgba(28, 33, 50, 0.96));
-  box-shadow: 0 24px 56px rgba(11,13,20,0.22), inset 0 1px 0 rgba(255,255,255,0.12);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(247,249,252,0.96)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.26) 0%, rgba(74,155,255,0.26) 52%, rgba(90,129,255,0.26) 100%) border-box;
+  box-shadow:
+    0 14px 32px rgba(15,23,42,0.12),
+    0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.88);
 }
 .rsm-btn:hover::before { opacity: 1; }
 .rsm-btn:hover .rsm-btn-icon { transform: translate(3px, -1px); }
-.rsm-btn:active { transform: translateY(0) scale(0.98); }
+.rsm-btn:active { transform: translateY(1px) scale(0.99); }
 .rsm-btn:focus-visible {
   outline: 2px solid var(--rsm-azure);
   outline-offset: 3px;
 }
 
 .rsm-btn--ghost {
-  color: #ffffff;
+  color: #0f172a;
   text-decoration: none;
-  background: rgba(255,255,255,0.08);
-  border-color: var(--rsm-line-2);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--rsm-sh-sm);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,248,252,0.94)) padding-box,
+    linear-gradient(120deg, rgba(148,163,184,0.22) 0%, rgba(148,163,184,0.18) 100%) border-box;
+  border-color: rgba(148, 163, 184, 0.34);
+  box-shadow:
+    0 10px 24px rgba(15,23,42,0.08),
+    0 0 0 1px rgba(255,255,255,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.78);
   backdrop-filter: var(--rsm-blur-sm);
   -webkit-backdrop-filter: var(--rsm-blur-sm);
 }
-.rsm-btn--ghost .rsm-btn-icon { background: var(--rsm-panel-dark); color: var(--rsm-text-on-dark); }
+.rsm-btn--ghost .rsm-btn-icon { background: rgba(255,255,255,0.92); color: var(--rsm-ink); }
 .rsm-btn--ghost:hover {
-  color: #ffffff;
+  color: #0f172a;
   text-decoration: none;
-  background: rgba(255,255,255,0.16);
-  box-shadow: var(--rsm-sh-md);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(247,249,252,0.96)) padding-box,
+    linear-gradient(120deg, rgba(148,163,184,0.24) 0%, rgba(148,163,184,0.20) 100%) border-box;
+  box-shadow:
+    0 14px 32px rgba(15,23,42,0.12),
+    0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.88);
 }
 
 .rsm-btn--brand {
-  color: #0a0a0a;
+  color: #0f172a;
   text-decoration: none;
-  background: var(--rsm-accent-grad-strong);
-  box-shadow: var(--rsm-sh-glow-violet);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,248,253,0.93)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.78) 0%, rgba(74,155,255,0.82) 52%, rgba(90,129,255,0.82) 100%) border-box;
+  border-color: rgba(148,163,184,0.34);
+  box-shadow:
+    0 10px 24px rgba(74,155,255,0.14),
+    0 10px 24px rgba(31,191,125,0.08),
+    0 0 0 1px rgba(255,255,255,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.78);
 }
 .rsm-btn--brand:hover {
-  color: #0a0a0a;
+  color: #0f172a;
   text-decoration: none;
-  filter: brightness(1.04);
-  box-shadow: 0 24px 80px rgba(139, 92, 246, 0.36), 0 8px 24px rgba(74, 155, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(247,250,255,0.96)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.92) 0%, rgba(74,155,255,0.94) 52%, rgba(90,129,255,0.94) 100%) border-box;
+  box-shadow:
+    0 14px 32px rgba(74,155,255,0.18),
+    0 14px 30px rgba(31,191,125,0.12),
+    0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.88);
 }
-.rsm-btn--brand .rsm-btn-icon { color: var(--rsm-violet); background: rgba(255, 255, 255, 0.92); }
+.rsm-btn--brand .rsm-btn-icon { color: var(--rsm-ink); background: rgba(255, 255, 255, 0.92); }
 
 .rsm-btn--sm { min-height: 44px; padding: 6px 6px 6px 16px; font-size: var(--rsm-text-small); }
 .rsm-btn--sm .rsm-btn-icon { width: 32px; height: 32px; }
@@ -843,11 +678,36 @@ body[data-page="home"] .tag { display: inline-flex; align-items: center; padding
   letter-spacing: -0.03em;
 }
 
-html[data-theme="scuro"] .rsm-btn { color: var(--rsm-ink); background: var(--rsm-surface-2); }
-html[data-theme="scuro"] .rsm-btn:hover { background: #1a1d2c; }
-html[data-theme="scuro"] .rsm-btn-icon { background: var(--rsm-bg); color: var(--rsm-ink); }
-html[data-theme="scuro"] .rsm-btn--ghost { background: rgba(20,22,32,0.6); color: var(--rsm-ink); }
-html[data-theme="scuro"] .rsm-btn--ghost .rsm-btn-icon { background: var(--rsm-ink); color: var(--rsm-bg); }
+html[data-theme="scuro"] .rsm-btn {
+  color: var(--rsm-ink);
+  background:
+    linear-gradient(180deg, rgba(20,22,32,0.98), rgba(28,33,50,0.96)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.16) 0%, rgba(74,155,255,0.16) 52%, rgba(90,129,255,0.16) 100%) border-box;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow:
+    0 16px 36px rgba(11,13,20,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+html[data-theme="scuro"] .rsm-btn:hover { background: linear-gradient(145deg, rgba(14,18,30,0.98), rgba(28,33,50,0.96)); }
+html[data-theme="scuro"] .rsm-btn-icon { background: rgba(255,255,255,0.92); color: var(--rsm-ink); }
+html[data-theme="scuro"] .rsm-btn--ghost {
+  background:
+    linear-gradient(145deg, rgba(14,18,30,0.98), rgba(28,33,50,0.96)) padding-box,
+    linear-gradient(120deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.05) 100%) border-box;
+  color: var(--rsm-ink);
+}
+html[data-theme="scuro"] .rsm-btn--ghost .rsm-btn-icon { background: rgba(255,255,255,0.92); color: var(--rsm-ink); }
+html[data-theme="scuro"] .rsm-btn--brand {
+  background:
+    linear-gradient(145deg, rgba(14,18,30,0.98), rgba(28,33,50,0.96)) padding-box,
+    linear-gradient(120deg, rgba(47,224,188,0.44) 0%, rgba(74,155,255,0.48) 52%, rgba(90,129,255,0.48) 100%) border-box;
+  color: #f4f7ff;
+  box-shadow:
+    0 18px 42px rgba(74,155,255,0.20),
+    0 10px 24px rgba(31,191,125,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+html[data-theme="scuro"] .rsm-btn--brand .rsm-btn-icon { background: rgba(255,255,255,0.92); color: var(--rsm-ink); }
 html[data-theme="scuro"] .rsm-card { background: rgba(8, 12, 20, 0.82); border-color: rgba(255,255,255,0.08); }
 html[data-theme="scuro"] .rsm-card--glass { background: var(--rsm-glass); }
 html[data-theme="scuro"] .rsm-card--ink { background: var(--rsm-ink); color: #fff; border-color: rgba(255,255,255,0.08); }

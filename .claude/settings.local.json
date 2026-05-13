@@ -3,7 +3,8 @@
     "allow": [
       "Bash(Get-ChildItem -Filter \"*.html\")",
       "Bash(Select-Object -ExpandProperty Name)",
-      "Bash(findstr /r \"^\\\\.rsm-\" theme.css partials\\\\*.css)"
+      "Bash(findstr /r \"^\\\\.rsm-\" theme.css partials\\\\*.css)",
+      "Bash(node --check \"c:\\\\Users\\\\alberto\\\\Documents\\\\rivaltasulmincio\\\\partials\\\\carousel.js\")"
     ]
   }
 }
