@@ -192,6 +192,12 @@ html {
     box-shadow 180ms ease;
 }
 
+.nav-link-icon {
+  font-size: 0.78rem;
+  margin-right: 7px;
+  line-height: 1;
+}
+
 .nav-link::after {
   display: none;
 }
@@ -280,6 +286,11 @@ html {
     color 180ms ease,
     transform 180ms ease,
     box-shadow 180ms ease;
+}
+
+.search-toggle-icon {
+  font-size: 0.84rem;
+  line-height: 1;
 }
 
 .search-toggle:hover {
@@ -381,6 +392,25 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   font-size: 0.92rem;
+  line-height: 1;
+}
+
+.profile-avatar--fa::before {
+  content: "\f007";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.profile-avatar i {
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.nav-login i,
+.profile-btn i {
+  font-size: 0.82rem;
   line-height: 1;
 }
 
@@ -490,6 +520,14 @@ html {
   text-overflow: ellipsis;
 }
 
+.profile-dropdown a span:first-child i,
+.profile-dropdown button span:first-child i {
+  width: 14px;
+  margin-right: 8px;
+  text-align: center;
+  font-size: 0.78rem;
+}
+
 .profile-dropdown a span:last-child,
 .profile-dropdown button span:last-child {
   flex: 0 0 auto;
@@ -580,6 +618,8 @@ html {
 .search-row-icon {
   flex-shrink: 0;
   color: var(--rsm-topbar-text-soft);
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
 .search-input {
@@ -682,6 +722,11 @@ html {
   border-radius: 10px;
   background: rgba(104, 168, 255, 0.14);
   font-size: 1rem;
+}
+
+.search-result-icon i {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .search-result-body {

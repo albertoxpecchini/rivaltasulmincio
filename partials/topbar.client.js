@@ -16,6 +16,21 @@
       .replace(/'/g, '&#39;');
   }
 
+  function safeIconClass(value) {
+    var raw = String(value || '').trim();
+    if (!raw) return '';
+    var tokens = raw.split(/\s+/);
+    var valid = tokens.length > 0 && tokens.every(function (token) {
+      return /^fa-[a-z0-9-]+$/i.test(token);
+    });
+    return valid ? tokens.join(' ') : '';
+  }
+
+  function safeColor(value) {
+    var raw = String(value || '').trim();
+    return /^#[0-9a-f]{3,8}$/i.test(raw) ? raw : '#2f6b67';
+  }
+
   /* ── Supabase helpers ──────────────────────────────────────── */
   function canUseSupabase() {
     return typeof supabase !== 'undefined'
@@ -46,8 +61,10 @@
     if (header) header.classList.remove('menu-open');
   }
 
-  function item(label, href, active, primary) {
-    return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + label + '</span><span aria-hidden="true">&rarr;</span></a>';
+  function item(label, href, active, primary, iconClass) {
+    var safeClass = safeIconClass(iconClass);
+    var icon = safeClass ? '<i class="' + safeClass + '" aria-hidden="true"></i>' : '';
+    return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></a>';
   }
 
   function buildMenu(username, color, emoji, email) {
@@ -69,36 +86,37 @@
     var isCookie = current.indexOf('cookie') >= 0;
     var isNoteLegali = current.indexOf('note-legali') >= 0;
     var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
-    var accent = escapeHtml(color || '#2f6b67');
-    var avatar = escapeHtml(emoji || '🌿');
+    var accent = safeColor(color);
+    var hasEmoji = Boolean(emoji);
+    var avatar = hasEmoji ? escapeHtml(emoji) : '';
     var editItem = canEditProfile
-      ? item('Modifica profilo', 'modifica-profilo', isEditProfile, false)
+      ? item('Modifica profilo', 'modifica-profilo', isEditProfile, false, 'fa-solid fa-user-pen')
       : '';
 
     return '<div class="profile-menu" id="profileMenu">'
       + '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'
-      + '<span class="profile-avatar" style="background:' + accent + '">' + avatar + '</span>'
+      + '<span class="profile-avatar' + (hasEmoji ? '' : ' profile-avatar--fa') + '" style="background:' + accent + '">' + avatar + '</span>'
       + '<span>@' + safeUsername + '</span>'
       + '</button>'
       + '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'
       + '<div class="profile-dropdown__meta"><strong>@' + safeUsername + '</strong><span>' + safeEmail + '</span><span>Pagina: ' + safePage + '</span></div>'
       + '<div class="profile-dropdown__sep"></div>'
       + '<div class="profile-dropdown__section-title">Navigazione</div>'
-      + item('Profilo', profileHref, isProfile && !isEditProfile, false)
-      + item('Dashboard', '/dashboard', isDashboard, false)
+      + item('Profilo', profileHref, isProfile && !isEditProfile, false, 'fa-solid fa-user')
+      + item('Dashboard', '/dashboard', isDashboard, false, 'fa-solid fa-gauge-high')
       + editItem
-      + item('Scrivi', 'write', isWrite, true)
-      + item('Categorie', '/category', isCategory, false)
-      + item('Aspetto', 'preferenze', isPreferences, false)
-      + item('Reimposta Password', 'reset', isReset, false)
+      + item('Scrivi', 'write', isWrite, true, 'fa-solid fa-pen-nib')
+      + item('Categorie', '/category', isCategory, false, 'fa-solid fa-folder-open')
+      + item('Aspetto', 'preferenze', isPreferences, false, 'fa-solid fa-palette')
+      + item('Reimposta Password', 'reset', isReset, false, 'fa-solid fa-key')
       + '<div class="profile-dropdown__sep"></div>'
       + '<div class="profile-dropdown__section-title">Sito</div>'
-      + item('Storia', '/storia', isStoria, false)
-      + item('Privacy', '/privacy', isPrivacy, false)
-      + item('Cookie', '/cookie', isCookie, false)
-      + item('Note legali', '/note-legali', isNoteLegali, false)
+      + item('Storia', '/storia', isStoria, false, 'fa-solid fa-landmark')
+      + item('Privacy', '/privacy', isPrivacy, false, 'fa-solid fa-shield-halved')
+      + item('Cookie', '/cookie', isCookie, false, 'fa-solid fa-cookie-bite')
+      + item('Note legali', '/note-legali', isNoteLegali, false, 'fa-solid fa-scale-balanced')
       + '<div class="profile-dropdown__sep"></div>'
-      + '<button type="button" data-action="logout" class="danger" role="menuitem"><span>Esci</span><span aria-hidden="true">&rarr;</span></button>'
+      + '<button type="button" data-action="logout" class="danger" role="menuitem"><span><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i><span>Esci</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></button>'
       + '</div></div>';
   }
 
@@ -173,7 +191,7 @@
 
   /* ── Auth render ───────────────────────────────────────────── */
   function renderGuest(nav) {
-    nav.innerHTML = '<a href="login" class="nav-login">Accedi</a>';
+    nav.innerHTML = '<a href="login" class="nav-login"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i><span>Accedi</span></a>';
   }
 
   function renderSession(nav, session, profile) {
@@ -184,19 +202,19 @@
 
   /* ── Ricerca ───────────────────────────────────────────────── */
   var SEARCH_INDEX = [
-    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro',      icon: '🏡' },
-    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa',      icon: '🐟' },
-    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi',     icon: '📅' },
-    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria',   icon: '📸' },
-    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio', icon: '🌿' },
-    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti',   icon: '📍' },
-    { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category', icon: '📂' },
-    { title: 'Dashboard',             desc: 'Il tuo spazio personale',                  url: '/dashboard',icon: '⚡' },
-    { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',              url: '/write',    icon: '✍️' },
-    { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',         url: '/category', icon: '🏘️' },
-    { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',     url: '/profile',  icon: '👤' },
-    { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',         url: '/preferenze',icon: '🎨' },
-    { title: 'Pro Loco Rivalta',      desc: "L'associazione del territorio",            url: '/',         icon: '🏡' },
+    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro',      icon: 'fa-solid fa-house' },
+    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa',      icon: 'fa-solid fa-fish-fins' },
+    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi',     icon: 'fa-solid fa-calendar-days' },
+    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria',   icon: 'fa-solid fa-camera-retro' },
+    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio', icon: 'fa-solid fa-tree' },
+    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti',   icon: 'fa-solid fa-map-location-dot' },
+    { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category',   icon: 'fa-solid fa-folder-open' },
+    { title: 'Dashboard',             desc: 'Il tuo spazio personale',                   url: '/dashboard',  icon: 'fa-solid fa-gauge-high' },
+    { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',               url: '/write',      icon: 'fa-solid fa-pen-nib' },
+    { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',          url: '/category',   icon: 'fa-solid fa-users' },
+    { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',      url: '/profile',    icon: 'fa-solid fa-user' },
+    { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',          url: '/preferenze', icon: 'fa-solid fa-sliders' },
+    { title: 'Pro Loco Rivalta',      desc: "L'associazione del territorio",             url: '/',           icon: 'fa-solid fa-landmark' },
   ];
 
   function searchItems(query) {
@@ -218,12 +236,12 @@
     }
     list.innerHTML = results.map(function (r) {
       return '<li><a class="search-result-item" href="' + escapeHtml(r.url) + '">'
-        + '<span class="search-result-icon" aria-hidden="true">' + r.icon + '</span>'
+        + '<span class="search-result-icon" aria-hidden="true"><i class="' + escapeHtml(r.icon) + '"></i></span>'
         + '<span class="search-result-body">'
         + '<span class="search-result-title">' + escapeHtml(r.title) + '</span>'
         + '<span class="search-result-desc">' + escapeHtml(r.desc) + '</span>'
         + '</span>'
-        + '<span class="search-result-arrow" aria-hidden="true">→</span>'
+        + '<span class="search-result-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>'
         + '</a></li>';
     }).join('');
   }
