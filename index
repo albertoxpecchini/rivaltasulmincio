@@ -3034,6 +3034,10 @@
                 <span>Mappa della pagina</span>
                 <span class="rsm-btn-icon" aria-hidden="true">&darr;</span>
               </a>
+              <a class="rsm-btn rsm-btn--ghost magnetic" href="/origini" data-component="button/origins">
+                <span>Le origini del borgo</span>
+                <span class="rsm-btn-icon" aria-hidden="true">&#9702;</span>
+              </a>
             </div>
 
             <div class="rsm-hero__metrics">
@@ -3205,6 +3209,12 @@
             <p style="color:var(--rsm-ink-3);margin-top:10px;line-height:1.6">Quarta edizione: panini con porchetta, hot dog, cipperone, aperitivi e birre artigianali, con <strong>6 concerti live</strong> nell&rsquo;area eventi adiacente.</p>
             <a class="rsm-btn rsm-btn--ghost rsm-btn--sm magnetic" href="#eventi" style="margin-top:18px"><span>Programma concerti</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
           </article>
+          <article class="rsm-card rsm-frame-kit rsm-frame-kit--soft" data-reveal style="--delay: 240ms">
+            <p class="rsm-kicker">40 anni di storia</p>
+            <h4 class="rsm-h3" style="margin-top:10px">Dal 1985 al 2025</h4>
+            <p style="color:var(--rsm-ink-3);margin-top:10px;line-height:1.6">La Festa del Pesce nasce nel 1985. Quarant&rsquo;anni di cucina d&rsquo;acqua dolce, volontari, comunità e tradizione. Scopri come tutto &egrave; cominciato.</p>
+            <a class="rsm-btn rsm-btn--ghost rsm-btn--sm magnetic" href="/origini#proloco" style="margin-top:18px"><span>Scopri le origini</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
+          </article>
         </div>
       </div>
     </section>
@@ -3344,7 +3354,8 @@
               <article class="rsm-territory-stat"><strong data-count="1984">0</strong><span>anno di istituzione della riserva</span></article>
             </div>
             <div class="rsm-button-row">
-              <a class="rsm-btn rsm-btn--ghost magnetic" href="/storia"><span>Storia di Rivalta</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
+              <a class="rsm-btn rsm-btn--ghost magnetic" href="/origini"><span>Storia di Rivalta</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
+              <a class="rsm-btn rsm-btn--ghost magnetic" href="/origini#oggi"><span>La riserva naturale</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></a>
             </div>
           </div>
         </div>
@@ -3693,6 +3704,7 @@
           <li><a href="/#eventi"><span>Eventi</span><i aria-hidden="true">↗</i></a></li>
           <li><a href="/#galleria"><span>Galleria</span><i aria-hidden="true">↗</i></a></li>
           <li><a href="/#territorio"><span>Territorio</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/origini"><span>Origini di Rivalta</span><i aria-hidden="true">↗</i></a></li>
           <li><a href="/storia"><span>Storia del sito</span><i aria-hidden="true">↗</i></a></li>
         </ul>
       </nav>
