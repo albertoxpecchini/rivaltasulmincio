@@ -163,7 +163,8 @@ const HTML_PAGES = new Set([
   'privacy',
   'cookie',
   'note-legali',
-  'storia'
+  'storia',
+  'origini'
 ]);
 const MIME = {
   '.css':  'text/css',
