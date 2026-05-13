@@ -557,23 +557,6 @@
     .commit-line .hash { color: rgba(134,255,211,0.92); }
 
     .container { width: min(100% - 40px, 1320px); margin: 0 auto; }
-    .back-to-top {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 60;
-      width: 52px;
-      height: 52px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      color: #fff;
-      background: var(--story-ink);
-      box-shadow: 0 24px 70px rgba(9,17,31,0.2);
-      transition: transform 320ms var(--story-ease), background 320ms var(--story-ease);
-    }
-    .back-to-top:hover { transform: translateY(-4px); background: var(--story-violet); color: #fff; }
 
     html[data-theme="scuro"] body {
       color: #eef4ff;
@@ -1420,11 +1403,6 @@
   }
 })();
 </script>
-
-
-
-  <a class="back-to-top" href="#" aria-label="Torna su">&uarr;</a>
-
   <script>
     (function () {
       'use strict';

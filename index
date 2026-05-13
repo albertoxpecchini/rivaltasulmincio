@@ -1360,30 +1360,6 @@
     .rsm-newsletter .privacy-note a { text-decoration: underline; }
 
     /* =========================================================
-       BACK TO TOP
-       ========================================================= */
-    .back-to-top {
-      position: fixed;
-      bottom: 26px;
-      right: 26px;
-      z-index: var(--rsm-z-sticky);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--rsm-ink);
-      color: #fff;
-      box-shadow: var(--rsm-sh-glow-violet);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: transform var(--rsm-dur-base), background var(--rsm-dur-base);
-    }
-    .back-to-top:hover { transform: translateY(-3px) scale(1.05); }
-
-    /* =========================================================
        REVEAL ANIMATIONS
        ========================================================= */
     [data-reveal] {
@@ -2871,15 +2847,10 @@
        Pulsanti/chip pieni che usavano var(--rsm-ink) come fondo scuro: ora
        che ink è chiaro, li manteniamo riempiti con una superficie scura. */
     body[data-page="home"] .news-filter-chip.on,
-    body[data-page="home"] .btn-read:hover,
-    body[data-page="home"] .back-to-top {
+    body[data-page="home"] .btn-read:hover {
       background: rgba(11, 13, 20, 0.78) !important;
       border-color: rgba(255, 255, 255, 0.18) !important;
       color: var(--rsm-text-on-dark) !important;
-    }
-
-    body[data-page="home"] .back-to-top:hover {
-      background: rgba(11, 13, 20, 0.92) !important;
     }
 
     /* Newsletter input glass su sfondo scuro */
@@ -3833,8 +3804,6 @@
 })();
 </script>
 
-  <a class="back-to-top" href="#intro" aria-label="Torna su">Su</a>
-
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
@@ -4232,18 +4201,6 @@
           rotateY: 0, opacity: 1, ease: 'none',
           scrollTrigger: { trigger: '.rsm-xp-grid', start: 'top 70%', end: 'top 30%', scrub: 1 },
           stagger: 0.1
-        });
-      }
-
-      /* Back-to-top button: fade on scroll position */
-      var backToTop = $('.back-to-top');
-      if (backToTop) {
-        gsap.to(backToTop, {
-          opacity: 0, pointerEvents: 'none',
-          scrollTrigger: { trigger: 'body', start: 'top bottom', onUpdate: function (self) {
-            backToTop.style.opacity = self.getVelocity() > 0 && window.scrollY > window.innerHeight ? 1 : 0;
-            backToTop.style.pointerEvents = self.getVelocity() > 0 && window.scrollY > window.innerHeight ? 'auto' : 'none';
-          }}
         });
       }
 
