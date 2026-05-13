@@ -1598,15 +1598,6 @@ html[data-theme="scuro"] .community-item {
   border-color: rgba(61, 138, 132, 0.14);
 }
 
-/* ── 33.j. Back-to-top ── */
-html[data-theme="scuro"] .back-to-top {
-  background: rgba(37, 63, 53, 0.88);
-  border-color: rgba(61, 138, 132, 0.28);
-  color: var(--ink);
-}
-html[data-theme="scuro"] .back-to-top:hover { background: var(--marsh); }
-
-
 /* ================================================================
    TEXT SIZE FALLBACKS — html[data-fontsize]
    ================================================================ */
