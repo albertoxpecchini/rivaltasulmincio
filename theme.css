@@ -1674,6 +1674,107 @@ html[data-density="compact"] .preview-avatar {
 }
 html[data-density="compact"] .emoji-grid label { padding: 4px; font-size: 1.2rem; }
 
+/* ================================================================
+   RSM ICON RHYTHM — icone per sezioni, titoli e paragrafi
+   ================================================================ */
+
+.rsm-iconized {
+  max-width: 100%;
+}
+
+.rsm-icon-shell {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.58em;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.rsm-inline-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.72em;
+  height: 1.72em;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 155, 255, 0.18);
+  background: linear-gradient(135deg, rgba(74, 155, 255, 0.22), rgba(31, 191, 125, 0.18));
+  color: var(--rsm-ink);
+  box-shadow: 0 10px 24px rgba(74, 155, 255, 0.14);
+  margin-top: 0.08em;
+}
+
+.rsm-inline-icon i {
+  font-size: 0.74em;
+  line-height: 1;
+}
+
+.rsm-icon-text {
+  min-width: 0;
+}
+
+.rsm-iconized[data-rsm-icon-tone="soft"] .rsm-inline-icon {
+  width: 1.5em;
+  height: 1.5em;
+  border-color: rgba(31, 191, 125, 0.18);
+  background: rgba(31, 191, 125, 0.12);
+  color: var(--rsm-emerald);
+  box-shadow: none;
+}
+
+.rsm-iconized[data-rsm-icon-tone="muted"] .rsm-inline-icon {
+  width: 1.42em;
+  height: 1.42em;
+  border-color: rgba(139, 92, 246, 0.16);
+  background: rgba(139, 92, 246, 0.11);
+  color: var(--rsm-violet);
+  box-shadow: none;
+}
+
+.rsm-iconized:is(h1, h2, h3, .rsm-h1, .rsm-h2, .doc-title, .hero-title, .page-title, .rsm-category-title, .rsm-profile-username, .post-title, .rsm-modal__title, .bc-title) .rsm-inline-icon {
+  width: 1.92em;
+  height: 1.92em;
+}
+
+.rsm-iconized:is(h1, h2, h3, .rsm-h1, .rsm-h2, .doc-title, .hero-title, .page-title, .rsm-category-title, .rsm-profile-username, .post-title, .rsm-modal__title, .bc-title) .rsm-inline-icon i {
+  font-size: 0.78em;
+}
+
+html[data-theme="scuro"] .rsm-inline-icon {
+  border-color: rgba(126, 188, 255, 0.26);
+  background: linear-gradient(135deg, rgba(126, 188, 255, 0.28), rgba(102, 255, 214, 0.16));
+  color: #f5f8ff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
+html[data-theme="scuro"] .rsm-iconized[data-rsm-icon-tone="soft"] .rsm-inline-icon {
+  border-color: rgba(102, 255, 214, 0.18);
+  background: rgba(102, 255, 214, 0.12);
+  color: #8bffd7;
+}
+
+html[data-theme="scuro"] .rsm-iconized[data-rsm-icon-tone="muted"] .rsm-inline-icon {
+  border-color: rgba(196, 122, 255, 0.2);
+  background: rgba(196, 122, 255, 0.12);
+  color: #d9b4ff;
+}
+
+@media (max-width: 720px) {
+  .rsm-icon-shell {
+    gap: 0.5em;
+  }
+
+  .rsm-inline-icon {
+    width: 1.58em;
+    height: 1.58em;
+  }
+
+  .rsm-iconized:is(h1, h2, h3, .rsm-h1, .rsm-h2, .doc-title, .hero-title, .page-title, .rsm-category-title, .rsm-profile-username, .post-title, .rsm-modal__title, .bc-title) .rsm-inline-icon {
+    width: 1.72em;
+    height: 1.72em;
+  }
+}
+
 html[data-density="compact"] .btn           { padding: 8px 20px; font-size: 0.84rem; }
 html[data-density="compact"] .page-header h1 { font-size: 1.6rem; }
 html[data-density="compact"] .page-header   { margin-bottom: 14px; }
