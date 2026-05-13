@@ -5,7 +5,7 @@
   var TEXT_CLASS = 'rsm-icon-text';
   var DEFAULT_ICON = 'fa-solid fa-sparkles';
   var MIN_PARAGRAPH_LENGTH = 8;
-  var route = (location.pathname || '/').replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
+  var route = (window.location.pathname || '/').replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
   var pageKey = route === '/' ? 'home' : route.slice(1);
 
   var PAGE_ICONS = {
@@ -169,5 +169,14 @@
     });
   });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+  [
+    document.querySelector('main'),
+    document.querySelector('.doc-wrap'),
+    document.querySelector('.hero'),
+    document.querySelector('.page-wrap'),
+    document.querySelector('#newsletter-modal'),
+    document.querySelector('#wrap')
+  ].filter(Boolean).forEach(function (root) {
+    observer.observe(root, { childList: true, subtree: true });
+  });
 }());
