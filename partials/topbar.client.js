@@ -382,4 +382,97 @@
 
   initSearch();
   initTopbar();
+
+  /* ── Newsletter modal & global modals ─────────────────────────── */
+  (function () {
+    /* Guard: avoid double-initialisation if the page's own script already ran */
+    if (window.__RSM_MODALS_BOUND__) return;
+    window.__RSM_MODALS_BOUND__ = true;
+
+    function closeModal(modal) {
+      modal.classList.remove('is-open');
+      setTimeout(function () { modal.setAttribute('hidden', ''); }, 380);
+    }
+
+    function openModal(modal) {
+      modal.removeAttribute('hidden');
+      requestAnimationFrame(function () {
+        modal.classList.add('is-open');
+        var first = modal.querySelector('input, textarea, select, button:not([data-modal-close])');
+        if (first) setTimeout(function () { first.focus(); }, 200);
+      });
+    }
+
+    /* Open triggers */
+    $all('[data-modal-open]').forEach(function (trigger) {
+      trigger.addEventListener('click', function () {
+        var id = trigger.getAttribute('data-modal-open');
+        var modal = document.getElementById(id);
+        if (modal) openModal(modal);
+      });
+    });
+
+    /* Close on backdrop click or [data-modal-close] */
+    $all('.rsm-modal').forEach(function (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal || (e.target.closest && e.target.closest('[data-modal-close]'))) {
+          closeModal(modal);
+        }
+      });
+    });
+
+    /* Close on Escape */
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      $all('.rsm-modal.is-open').forEach(closeModal);
+    });
+
+    /* Newsletter form submit */
+    var form   = document.getElementById('newsletter-modal-form');
+    var input  = document.getElementById('newsletter-modal-email');
+    var status = document.getElementById('newsletter-modal-status');
+    var btn    = document.getElementById('newsletter-modal-btn');
+    var panel  = form && form.closest('.rsm-nw-modal__panel');
+
+    if (form && input && status) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var email = input.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          status.textContent = 'Inserisci un indirizzo email valido.';
+          status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
+          input.focus();
+          return;
+        }
+
+        /* Loading state */
+        if (btn) btn.disabled = true;
+        status.textContent = '';
+        status.className = 'rsm-nw-modal__status';
+
+        fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data && data.ok) {
+              form.reset();
+              if (panel) panel.classList.add('is-success');
+            } else {
+              status.textContent = (data && data.error) || 'Errore durante l\'iscrizione. Riprova.';
+              status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
+              if (btn) btn.disabled = false;
+            }
+          })
+          .catch(function () {
+            status.textContent = 'Errore di rete. Controlla la connessione e riprova.';
+            status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
+            if (btn) btn.disabled = false;
+          });
+      });
+    }
+  }());
 })();
