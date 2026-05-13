@@ -71,14 +71,15 @@
     var isNoteLegali = current.indexOf('note-legali') >= 0;
     var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
     var accent = escapeHtml(color || '#2f6b67');
-    var avatar = escapeHtml(emoji || '👤');
+    var hasEmoji = Boolean(emoji);
+    var avatar = hasEmoji ? escapeHtml(emoji) : '';
     var editItem = canEditProfile
       ? item('Modifica profilo', 'modifica-profilo', isEditProfile, false, 'fa-solid fa-user-pen')
       : '';
 
     return '<div class="profile-menu" id="profileMenu">'
       + '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'
-      + '<span class="profile-avatar" style="background:' + accent + '">' + avatar + '</span>'
+      + '<span class="profile-avatar' + (hasEmoji ? '' : ' profile-avatar--fa') + '" style="background:' + accent + '">' + avatar + '</span>'
       + '<span>@' + safeUsername + '</span>'
       + '</button>'
       + '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'

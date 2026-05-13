@@ -395,6 +395,14 @@ html {
   line-height: 1;
 }
 
+.profile-avatar--fa::before {
+  content: "\f007";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
 .profile-avatar i {
   font-size: 0.78rem;
   line-height: 1;
