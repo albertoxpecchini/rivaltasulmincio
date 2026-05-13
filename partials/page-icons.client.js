@@ -4,7 +4,7 @@
   var ICON_CLASS = 'rsm-inline-icon';
   var TEXT_CLASS = 'rsm-icon-text';
   var MIN_PARAGRAPH_LENGTH = 8;
-  var route = (location.pathname || '/').replace(/\/+$/, '') || '/';
+  var route = (location.pathname || '/').replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
   var pageKey = route === '/' ? 'home' : route.slice(1);
 
   var PAGE_ICONS = {
@@ -148,20 +148,23 @@
     document.querySelectorAll(TARGET_SELECTOR).forEach(decorate);
   }
 
+  function decorateTree(node) {
+    if (!node || node.nodeType !== 1) return;
+    if (typeof node.matches === 'function' && node.matches(TARGET_SELECTOR)) {
+      decorate(node);
+    }
+    if (typeof node.querySelectorAll === 'function') {
+      node.querySelectorAll(TARGET_SELECTOR).forEach(decorate);
+    }
+  }
+
   decorateAll();
 
-  var frame = null;
   var observer = new MutationObserver(function (mutations) {
-    var hasAddedElement = mutations.some(function (mutation) {
-      return Array.prototype.some.call(mutation.addedNodes || [], function (node) {
-        return node && node.nodeType === 1;
+    mutations.forEach(function (mutation) {
+      Array.prototype.forEach.call(mutation.addedNodes || [], function (node) {
+        decorateTree(node);
       });
-    });
-    if (!hasAddedElement) return;
-    if (frame) cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(function () {
-      decorateAll();
-      frame = null;
     });
   });
 
