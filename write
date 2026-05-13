@@ -11,220 +11,349 @@
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/theme.css" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --ink:        #10192b;
-      --ink-soft:   #5a6882;
-      --cream:      #f4f7ff;
-      --paper:      #fbfdff;
-      --mist:       #dde7f7;
-      --marsh:      #12203a;
-      --marsh-2:    #233a66;
-      --water:      #4a9bff;
-      --clay:       #8b5cf6;
-      --reed:       #1fbf7d;
-      --white:      #f9fbff;
-      --line:       rgba(18, 32, 58, 0.14);
-      --ok:         #1fbf7d;
-      --err:        #b83232;
-      --warn:       #b16b12;
-      --radius:     14px;
-      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
-      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:      "Fraunces", Georgia, serif;
-      --ease:       cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      min-height: 100vh;
+    body[data-page="write"] {
       position: relative;
+      font-family: 'Syne', var(--rsm-font-sans, "Cabinet Grotesk", system-ui, sans-serif);
+      color: var(--rsm-text, #10192b);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.16), transparent 30%),
+        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.16), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.14), transparent 36%),
+        linear-gradient(180deg, var(--rsm-bg, #f8fbff) 0%, var(--rsm-paper, #eef4ff) 48%, var(--rsm-bg, #f8fbff) 100%);
+      min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      opacity: 0.16;
+    .rsm-write-page,
+    .rsm-write-page *,
+    .rsm-write-page *::before,
+    .rsm-write-page *::after,
+    .toast,
+    .toast::before,
+    .toast::after {
+      box-sizing: border-box;
+    }
+
+    body[data-page="write"] button,
+    body[data-page="write"] input,
+    body[data-page="write"] select,
+    body[data-page="write"] textarea {
+      font: inherit;
+    }
+
+    body[data-page="write"]::before,
+    body[data-page="write"]::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body[data-page="write"]::before {
+      opacity: 0.18;
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(16, 25, 43, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(16, 25, 43, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
+      background-size: 24px 24px, 36px 36px;
+      background-position: 0 0, 12px 14px;
       mix-blend-mode: multiply;
     }
 
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); }
-
-    
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      border-radius: 999px; border: 1px solid var(--line);
-      background: var(--paper); color: var(--ink);
-      font-family: var(--sans); font-size: .82rem; font-weight: 700;
-      padding: 8px 18px; cursor: pointer; text-decoration: none; transition: all .15s;
-    }
-    .btn:hover { background: var(--mist); }
-    .btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-primary {
-      border-color: transparent;
-      background: var(--marsh);
-      color: var(--paper); box-shadow: 0 4px 16px rgba(37,63,53,.28);
-    }
-    .btn-primary:hover { background: #1f362e; box-shadow: 0 6px 22px rgba(37,63,53,.4); border-color: transparent; }
-    .btn-ghost { color: var(--ink-soft); }
-    .btn-danger { color: var(--err); border-color: rgba(184,50,50,.22); }
-    .btn-danger:hover { background: rgba(184,50,50,.05); }
-
-    /* ── Page ── */
-    .page {
-      position: relative; z-index: 1;
-      max-width: 920px; margin: 0 auto;
-      padding: 88px 16px 64px;
-      display: grid; gap: 14px;
+    body[data-page="write"]::after {
+      opacity: 0.9;
+      background:
+        radial-gradient(ellipse at 22% 24%, rgba(31, 191, 125, 0.14), transparent 42%),
+        radial-gradient(ellipse at 74% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
+        radial-gradient(ellipse at 66% 78%, rgba(139, 92, 246, 0.10), transparent 46%);
+      animation: rsm-write-aurora 26s ease-in-out infinite;
     }
 
-    .page-summary {
+    .rsm-write-page {
+      --write-ink: var(--rsm-text, #10192b);
+      --write-muted: var(--rsm-muted, #5a6882);
+      --write-line: rgba(18, 32, 58, 0.14);
+      --write-paper: rgba(255,255,255,0.72);
+      --write-paper-strong: rgba(255,255,255,0.9);
+      --write-brand: #1fbf7d;
+      --write-water: #4a9bff;
+      --write-violet: #8b5cf6;
+      --write-shadow: 0 24px 70px rgba(18, 32, 58, 0.16), 0 0 0 1px rgba(255,255,255,0.72) inset;
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      padding: clamp(76px, 7vw, 108px) 0 clamp(30px, 5vw, 76px);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .rsm-write-page a { color: inherit; text-decoration: none; }
+
+    .rsm-write__accent {
+      position: absolute;
+      width: 132%;
+      height: 132%;
+      top: -16%;
+      left: -16%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 18% 22%, rgba(46, 224, 170, 0.18), transparent 48%),
+        radial-gradient(ellipse at 82% 78%, rgba(167, 119, 255, 0.18), transparent 48%),
+        radial-gradient(ellipse at 50% 50%, rgba(86, 156, 255, 0.10), transparent 60%);
+      animation: rsm-write-float 30s ease-in-out infinite;
+    }
+
+    .rsm-write__container {
+      width: min(100% - 40px, 1460px);
+      margin: 0 auto;
+    }
+
+    .rsm-write__layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.58fr) minmax(420px, 1fr) minmax(260px, 0.54fr);
+      gap: clamp(14px, 2vw, 22px);
+      align-items: stretch;
+    }
+
+    .rsm-write__intro,
+    .compose-card,
+    .rsm-write__side-card,
+    .compose-status,
+    .stat-tile {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border: 1px solid rgba(255,255,255,0.62);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)),
+        radial-gradient(ellipse at 0% 0%, rgba(31, 191, 125, 0.10), transparent 52%);
+      box-shadow: var(--write-shadow);
+      backdrop-filter: blur(22px) saturate(1.15);
+      -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    }
+
+    .rsm-write__intro::before,
+    .compose-card::before,
+    .rsm-write__side-card::before,
+    .compose-status::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.85), transparent);
+      opacity: 0.9;
+    }
+
+    .rsm-write__intro {
+      min-height: 100%;
+      border-radius: 34px;
+      padding: clamp(24px, 3.4vw, 42px);
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
     }
 
-    .page-chip {
+    .page-eyebrow,
+    .rsm-write__kicker,
+    .compose-img-label,
+    .compose-dropdown-section,
+    .stat-tile-label,
+    .status-num-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .page-eyebrow,
+    .rsm-write__kicker {
       display: inline-flex;
+      width: max-content;
       align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+      gap: 9px;
+      color: rgba(16, 25, 43, 0.66);
     }
 
-    .page-eyebrow {
-      font-size: 10px; font-weight: 800; color: var(--water);
-      text-transform: uppercase; letter-spacing: .12em; margin-bottom: 5px;
+    .page-eyebrow::before,
+    .rsm-write__kicker::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--write-brand), var(--write-water));
+      box-shadow: 0 0 0 7px rgba(31, 191, 125, 0.12);
     }
 
     .page-title {
-      font-family: var(--serif);
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 650; letter-spacing: -.03em; line-height: 1.1;
-      color: var(--ink);
+      max-width: 9ch;
+      margin-top: 16px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(3rem, 7vw, 6.7rem);
+      font-weight: 850;
+      line-height: 0.86;
+      letter-spacing: -0.08em;
+      color: var(--write-ink);
     }
 
-    .page-sub { font-size: .84rem; color: var(--ink-soft); margin-top: 4px; }
+    .page-title::after {
+      content: "";
+      display: block;
+      width: min(180px, 55%);
+      height: 10px;
+      margin-top: 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--write-brand), var(--write-water), var(--write-violet));
+    }
 
-    /* ── Compose Card ── */
+    .page-sub {
+      max-width: 31rem;
+      margin-top: 20px;
+      font-size: clamp(1rem, 1.3vw, 1.18rem);
+      line-height: 1.55;
+      color: var(--write-muted);
+    }
+
+    .page-summary {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .page-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+      padding: 0 16px;
+      border: 1px solid rgba(18, 32, 58, 0.10);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.50);
+      color: rgba(16, 25, 43, 0.74);
+      font-weight: 850;
+      letter-spacing: -0.01em;
+    }
+
+    .page-chip::after {
+      content: "↗";
+      color: var(--write-water);
+      font-weight: 900;
+    }
+
+    .rsm-write__note {
+      display: grid;
+      gap: 10px;
+      padding: 18px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(5, 28, 44, 0.92), rgba(42, 17, 71, 0.88));
+      color: rgba(255,255,255,0.78);
+      box-shadow: 0 18px 44px rgba(5, 28, 44, 0.22);
+    }
+
+    .rsm-write__note strong {
+      color: #fff;
+      font-size: 1.04rem;
+      letter-spacing: -0.03em;
+    }
+
+    .rsm-write__note span {
+      line-height: 1.5;
+    }
+
+    .rsm-write__editor {
+      min-width: 0;
+      display: grid;
+      gap: 14px;
+    }
+
     .compose-card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      box-shadow: var(--shadow-card);
-      overflow: visible;
+      min-height: clamp(620px, 74vh, 840px);
+      border-radius: 34px;
       display: flex;
       flex-direction: column;
-    }
-
-    .compose-card::before {
-      content: '';
-      display: block;
-      height: 3px;
-      background: linear-gradient(90deg, var(--marsh), var(--water), var(--reed));
-      border-radius: 20px 20px 0 0;
-      flex-shrink: 0;
     }
 
     .compose-inputs {
-      padding: 18px 22px 0;
+      padding: clamp(22px, 3vw, 34px) clamp(20px, 3vw, 34px) 0;
       display: flex;
       flex-direction: column;
     }
 
-    .compose-title {
-      font-family: var(--serif);
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
-      font-weight: 650;
-      color: var(--ink);
-      letter-spacing: -.03em;
-      border: none;
-      outline: none;
-      background: transparent;
+    .compose-title,
+    .compose-excerpt,
+    .compose-body {
       width: 100%;
-      padding: 0 0 10px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 4px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--write-ink);
     }
-    .compose-title::placeholder { color: rgba(23,34,29,.22); }
 
-    .compose-hint {
-      font-size: .66rem;
-      color: rgba(23,34,29,.28);
-      text-align: right;
-      margin-bottom: 10px;
+    .compose-title {
+      min-height: 108px;
+      padding: 0 0 16px;
+      border-bottom: 1px solid rgba(18, 32, 58, 0.11);
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2.1rem, 4.7vw, 4.9rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.075em;
     }
 
     .compose-excerpt {
-      font-family: var(--sans);
-      font-size: .88rem;
-      color: var(--ink);
-      border: none;
-      outline: none;
-      background: transparent;
-      width: 100%;
-      padding: 0 0 10px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 4px;
+      padding: 13px 0 15px;
+      border-bottom: 1px solid rgba(18, 32, 58, 0.10);
+      font-size: clamp(1rem, 1.2vw, 1.12rem);
+      font-weight: 650;
+      color: rgba(16, 25, 43, 0.74);
     }
-    .compose-excerpt::placeholder { color: rgba(23,34,29,.3); }
 
     .compose-body {
-      font-family: var(--sans);
-      font-size: .94rem;
-      line-height: 1.75;
-      color: var(--ink);
-      border: none;
-      outline: none;
-      background: transparent;
-      width: 100%;
-      min-height: 220px;
+      flex: 1;
+      min-height: 320px;
       resize: vertical;
-      padding: 16px 22px;
+      padding: 24px clamp(20px, 3vw, 34px);
+      font-family: var(--rsm-font-sans, "Cabinet Grotesk", system-ui, sans-serif);
+      font-size: 1.08rem;
+      line-height: 1.78;
     }
-    .compose-body::placeholder { color: rgba(23,34,29,.28); }
+
+    .compose-title::placeholder,
+    .compose-excerpt::placeholder,
+    .compose-body::placeholder { color: rgba(16, 25, 43, 0.28); }
+
+    .compose-hint {
+      min-height: 22px;
+      margin-top: -12px;
+      margin-bottom: 4px;
+      text-align: right;
+      color: rgba(16, 25, 43, 0.36);
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
 
     .compose-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 10px 16px;
-      background: linear-gradient(148deg, #0e1f19, #1a3328, #253f35);
+      gap: 12px;
+      padding: 14px;
+      margin: 0 14px 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(102, 255, 214, 0.18), transparent 40%),
+        radial-gradient(ellipse at 86% 100%, rgba(196, 122, 255, 0.18), transparent 42%),
+        linear-gradient(135deg, rgba(5, 28, 44, 0.96), rgba(8, 38, 73, 0.94) 52%, rgba(42, 17, 71, 0.94));
+      box-shadow: 0 20px 54px rgba(5, 28, 44, 0.24);
       flex-wrap: wrap;
-      flex-shrink: 0;
     }
 
-    .compose-bar-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
+    .compose-bar-left,
     .compose-bar-right {
       display: flex;
       align-items: center;
@@ -232,235 +361,318 @@
       flex-wrap: wrap;
     }
 
-    /* ── Custom dropdowns in compose bar ── */
-    .compose-dropdown { position: relative; }
-
+    .btn,
     .compose-dropdown-btn {
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.75);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-family: var(--sans);
-      font-size: .78rem;
-      font-weight: 600;
-      cursor: pointer;
-      outline: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: background .15s, color .15s;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.82);
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
       white-space: nowrap;
     }
-    .compose-dropdown-btn:hover,
-    .compose-dropdown-btn.open { background: rgba(255,255,255,.16); color: #fff; }
 
-    .compose-dropdown-btn .caret {
-      opacity: .55;
-      font-size: .65rem;
-      transition: transform .2s;
+    .btn:hover,
+    .compose-dropdown-btn:hover,
+    .compose-dropdown-btn.open {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.17);
+      color: #fff;
     }
-    .compose-dropdown-btn.open .caret { transform: rotate(180deg); }
+
+    .btn:disabled { opacity: 0.48; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #2ee0aa, #4a9bff 54%, #a777ff);
+      color: #07111f;
+      box-shadow: 0 12px 34px rgba(74, 155, 255, 0.32);
+    }
+
+    .btn-primary:hover { color: #07111f; box-shadow: 0 16px 42px rgba(74, 155, 255, 0.42); }
+    .btn-danger { color: #ffd7d7; border-color: rgba(255, 168, 168, 0.30); }
+    .btn-ghost { color: rgba(255,255,255,0.64); }
+
+    .compose-char {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.58);
+      font-size: 0.78rem;
+      font-weight: 850;
+    }
+
+    .compose-dropdown { position: relative; }
+    .compose-dropdown-btn .caret { opacity: 0.65; font-size: 0.72rem; }
 
     .compose-dropdown-menu {
       position: absolute;
-      top: calc(100% + 10px);
       left: 0;
-      min-width: 196px;
-      padding: 8px;
-      border: 1px solid rgba(37,63,53,.12);
+      bottom: calc(100% + 10px);
+      z-index: 20;
+      min-width: 230px;
+      max-height: 310px;
+      overflow: auto;
+      padding: 10px;
       border-radius: 22px;
-      background: rgba(255,250,240,.97);
-      box-shadow: 0 24px 60px rgba(37,63,53,.18), 0 2px 8px rgba(37,63,53,.08);
-      backdrop-filter: blur(20px);
-      z-index: 80;
-      visibility: hidden;
+      border: 1px solid rgba(255,255,255,0.66);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 24px 58px rgba(18, 32, 58, 0.22);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       opacity: 0;
-      transform: translateY(8px) scale(.98);
-      transition: opacity .22s var(--ease), transform .22s var(--ease), visibility .22s var(--ease);
-    }
-    .compose-dropdown-menu.open {
-      visibility: visible;
-      opacity: 1;
-      transform: none;
+      visibility: hidden;
+      transform: translateY(8px) scale(0.98);
+      transform-origin: bottom left;
+      transition: opacity 160ms ease, visibility 160ms ease, transform 160ms ease;
     }
 
-    .compose-dropdown-menu--img {
-      min-width: 310px;
-      max-width: 340px;
-    }
+    .compose-dropdown-menu.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .compose-dropdown-menu--img { width: min(380px, calc(100vw - 40px)); }
 
-    .compose-dropdown-section {
-      font-size: .62rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      color: rgba(23,34,29,.38);
-      padding: 6px 10px 4px;
+    .compose-dropdown-section,
+    .compose-img-label {
+      margin: 4px 6px 9px;
+      color: rgba(16,25,43,0.46);
     }
 
     .compose-dropdown-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       width: 100%;
-      padding: 9px 10px;
-      border-radius: 14px;
-      font-size: .84rem;
-      font-weight: 600;
-      color: var(--ink);
-      cursor: pointer;
-      transition: background .15s, transform .12s;
       border: 0;
+      border-radius: 14px;
       background: transparent;
+      color: rgba(16,25,43,0.76);
+      padding: 11px 12px;
       text-align: left;
-      font-family: var(--sans);
-    }
-    .compose-dropdown-item:hover { background: rgba(37,63,53,.07); transform: translateX(2px); }
-    .compose-dropdown-item.selected { color: var(--marsh); font-weight: 750; background: rgba(37,63,53,.05); }
-    .compose-dropdown-item.selected::after { content: '✓'; font-size: .8rem; color: var(--marsh); }
-
-    .compose-img-label {
-      font-size: .62rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: rgba(23,34,29,.38);
-      padding: 4px 4px 10px;
+      font-weight: 850;
+      cursor: pointer;
     }
 
-    .compose-char {
-      font-size: .72rem;
-      color: rgba(255,255,255,.38);
-      font-weight: 600;
+    .compose-dropdown-item:hover,
+    .compose-dropdown-item.selected { background: rgba(74,155,255,0.12); color: #10192b; }
+
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
     }
 
-    /* ── Stats strip ── */
+    .img-opt {
+      display: grid;
+      gap: 7px;
+      padding: 8px;
+      border: 1px solid rgba(18,32,58,0.10);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.62);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .img-opt input { position: absolute; opacity: 0; pointer-events: none; }
+    .img-opt:hover,
+    .img-opt.selected { transform: translateY(-1px); border-color: rgba(74,155,255,0.42); box-shadow: 0 14px 28px rgba(18,32,58,0.12); }
+    .img-thumb { overflow: hidden; border-radius: 13px; line-height: 0; }
+    .img-thumb svg { width: 100%; height: auto; display: block; }
+    .img-label { color: rgba(16,25,43,0.74); font-size: 0.82rem; font-weight: 850; }
+
+    .err-msg {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(184,50,50,0.20);
+      background: rgba(184,50,50,0.08);
+      color: #8f2020;
+      font-weight: 850;
+    }
+
+    .err-msg:not(:empty) { display: block; }
+
+    .rsm-write__side {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .rsm-write__side-card,
+    .compose-status {
+      border-radius: 30px;
+      padding: 22px;
+    }
+
+    .rsm-write__side-title {
+      margin: 10px 0 6px;
+      color: var(--write-ink);
+      font-size: clamp(1.5rem, 2vw, 2.2rem);
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+    }
+
+    .rsm-write__side-text {
+      color: var(--write-muted);
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .compose-status {
+      display: none;
+      gap: 16px;
+      flex-direction: column;
+    }
+
+    .compose-status.visible { display: flex; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,32,58,0.12);
+      background: rgba(255,255,255,0.54);
+      color: var(--write-muted);
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+    .status-pill.draft { color: #9a5a0c; border-color: rgba(177,107,18,.25); background: rgba(177,107,18,.10); }
+    .status-pill.pub { color: #08764d; border-color: rgba(31,191,125,.28); background: rgba(31,191,125,.10); }
+    .status-date { color: var(--write-muted); font-size: 0.84rem; font-weight: 700; }
+    .status-num { color: var(--write-ink); font-size: 2.35rem; line-height: 1; font-weight: 950; letter-spacing: -0.07em; }
+    .status-num-label { color: var(--write-muted); }
+
     .stats-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .stat-tile {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      box-shadow: var(--shadow-card);
-      padding: 16px 18px;
+      min-height: 138px;
+      border-radius: 26px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .stat-tile::after {
+      content: "";
+      position: absolute;
+      width: 94px;
+      height: 94px;
+      top: -42px;
+      right: -34px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(74,155,255,0.22), transparent 66%);
+      z-index: -1;
     }
 
     .stat-tile-num {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 650;
-      letter-spacing: -.03em;
-      line-height: 1;
-    }
-    .stat-tile-num.pub   { color: var(--marsh); }
-    .stat-tile-num.draft { color: var(--err); }
-    .stat-tile-num.total { color: var(--water); }
-    .stat-tile-num.top   { font-size: .94rem; color: var(--ok); min-height: 1.8rem; display: flex; align-items: center; }
-
-    .stat-tile-label {
-      font-size: .72rem;
-      color: var(--ink-soft);
-      font-weight: 600;
+      color: var(--write-ink);
+      font-size: clamp(1.55rem, 3vw, 2.5rem);
+      font-weight: 950;
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+      overflow-wrap: anywhere;
     }
 
-    /* ── Compose status (edit mode) ── */
-    .compose-status {
-      display: none;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      box-shadow: var(--shadow-card);
-      padding: 14px 20px;
-      flex-direction: row;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .compose-status.visible { display: flex; }
+    .stat-tile-num.pub { color: #0f9f6e; }
+    .stat-tile-num.draft { color: #9a5a0c; }
+    .stat-tile-num.total { color: #2476d4; }
+    .stat-tile-num.top { color: #6840d7; font-size: clamp(1.15rem, 2.1vw, 1.7rem); }
+    .stat-tile-label { color: rgba(16,25,43,0.48); }
 
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      border-radius: 999px; font-size: .72rem; font-weight: 700;
-      padding: 4px 10px; border: 1px solid var(--line);
-    }
-    .status-pill.draft { color: var(--warn); border-color: rgba(177,107,18,.3); background: rgba(177,107,18,.1); }
-    .status-pill.pub   { color: var(--ok);  border-color: rgba(47,107,103,.3);  background: rgba(47,107,103,.1); }
-    .status-date { font-size: .76rem; color: var(--ink-soft); }
-    .status-num {
-      font-family: var(--serif); font-size: 1.6rem; font-weight: 650;
-      letter-spacing: -.03em; line-height: 1; color: var(--marsh);
-    }
-    .status-num-label { font-size: .72rem; color: var(--ink-soft); font-weight: 500; }
-
-    /* ── Image picker ── */
-    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 6px; }
-    .img-opt {
-      border: 2px solid var(--line); border-radius: 12px;
-      cursor: pointer; overflow: hidden; transition: border-color .15s, transform .15s;
-    }
-    .img-opt:hover { transform: translateY(-2px); border-color: var(--marsh); }
-    .img-opt.selected { border-color: var(--marsh); box-shadow: 0 0 0 3px rgba(37,63,53,.18); }
-    .img-opt input { display: none; }
-    .img-thumb { height: 44px; overflow: hidden; }
-    .img-thumb svg { width: 100%; height: 100%; display: block; }
-    .img-label { font-size: .6rem; font-weight: 700; color: var(--ink-soft); text-align: center; padding: 3px 2px 5px; }
-
-    /* ── Misc ── */
-    .err-msg { color: var(--err); font-size: .8rem; min-height: 16px; padding: 0 2px; }
     .toast {
-      position: fixed; bottom: 22px; right: 22px; z-index: 200;
-      border: 1px solid var(--line); border-radius: 14px;
-      background: var(--paper); color: var(--ink);
-      padding: 10px 16px; font-family: var(--sans); font-size: .82rem; font-weight: 700;
-      transform: translateY(12px); opacity: 0; transition: all .22s;
-      pointer-events: none; box-shadow: 0 8px 24px rgba(37,63,53,.18);
+      position: fixed;
+      left: 50%;
+      bottom: 26px;
+      z-index: 1000;
+      max-width: min(520px, calc(100vw - 32px));
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.62);
+      background: rgba(16,25,43,0.88);
+      color: #fff;
+      box-shadow: 0 20px 46px rgba(16,25,43,0.28);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-weight: 850;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, 14px);
+      transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
     }
-    .toast.show { opacity: 1; transform: none; }
-    .toast.err { color: var(--err); }
-    .toast.ok  { color: var(--ok); }
 
-    @media (max-width: 700px) {
-      .stats-strip {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .compose-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .compose-bar-left, .compose-bar-right {
-        justify-content: space-between;
-      }
-      .page { padding: 88px 12px 60px; }
+    .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .toast.err { background: rgba(127,29,29,0.92); }
+    .toast.ok { background: rgba(6,95,70,0.92); }
+
+    @keyframes rsm-write-aurora {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); }
+      45% { transform: translate3d(-1.6%, 1%, 0) scale(1.03); }
+      72% { transform: translate3d(1.4%, -1.2%, 0) scale(1.02); }
+    }
+
+    @keyframes rsm-write-float {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(5deg) scale(1.04); }
+    }
+
+    @media (max-width: 1180px) {
+      .rsm-write__layout { grid-template-columns: minmax(0, 1fr) minmax(340px, 0.86fr); }
+      .rsm-write__intro { grid-column: 1 / -1; min-height: auto; }
+      .page-title { max-width: 12ch; }
+      .page-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px) {
+      .rsm-write-page { padding-top: 86px; }
+      .rsm-write__container { width: min(100% - 28px, 1460px); }
+      .rsm-write__layout { grid-template-columns: 1fr; }
+      .page-summary,
+      .stats-strip { grid-template-columns: 1fr; }
+      .compose-card { min-height: 620px; }
+      .compose-title { min-height: 84px; }
+      .compose-bar { align-items: stretch; }
+      .compose-bar-left,
+      .compose-bar-right { width: 100%; justify-content: space-between; }
+      .compose-dropdown-menu { bottom: auto; top: calc(100% + 10px); transform-origin: top left; }
+    }
+
+    @media (max-width: 560px) {
+      .rsm-write__intro,
+      .compose-card,
+      .rsm-write__side-card,
+      .compose-status { border-radius: 24px; }
+      .compose-bar-left,
+      .compose-bar-right { display: grid; grid-template-columns: 1fr; }
+      .btn,
+      .compose-dropdown-btn,
+      .compose-char { width: 100%; }
+      .img-grid { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .ps-card, .ps-bar { animation: none; transition: none; }
+      body[data-page="write"]::after,
+      .rsm-write__accent { animation: none; }
+      .btn,
+      .compose-dropdown-btn,
+      .img-opt { transition: none; }
     }
-
-    /* ── Footer ── */
-    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
-    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
-    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
-    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
-    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
-    .footer p { max-width:540px; line-height:1.66; }
-    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
-    .footer-links a:hover { color:var(--paper); }
-    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
-    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
   </style>
-  <link rel="stylesheet" href="/theme.css" />
 </head>
-<body>
+<body data-page="write">
 
 <!-- SVG gradient defs for illustration thumbnails -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -473,106 +685,120 @@
 
 <!--PARTIAL:nav-->
 
-<main class="page">
-
-  <div>
-    <div class="page-eyebrow">Rivalta sul Mincio</div>
-    <div class="page-title" id="page-title">Scrivi un post</div>
-    <div class="page-sub"   id="page-sub">Crea un nuovo contenuto per la comunit&agrave;.</div>
-  </div>
-
-  <div class="page-summary" aria-label="Struttura editor post">
-    <span class="page-chip">titolo + estratto</span>
-    <span class="page-chip">testo centrale</span>
-    <span class="page-chip">bozza o pubblicazione</span>
-  </div>
-
-  <div class="err-msg" id="err-msg"></div>
-
-  <!-- Editor in primo piano -->
-  <div class="compose-card">
-    <div class="compose-inputs">
-      <input id="f-title" class="compose-title" type="text" maxlength="120" placeholder="Titolo del post..." />
-      <div class="compose-hint"><span id="title-count">0 / 120</span></div>
-      <input id="f-excerpt" class="compose-excerpt" type="text" maxlength="200" placeholder="Breve descrizione (facoltativa)..." />
-      <div class="compose-hint"><span id="excerpt-count">0 / 200</span></div>
-    </div>
-    <textarea id="f-content" class="compose-body" placeholder="Inizia a scrivere...&#10;&#10;Racconta di Rivalta, degli eventi, della natura del Mincio..."></textarea>
-    <div class="compose-bar">
-      <div class="compose-bar-left">
-        <!-- Categoria custom dropdown -->
-        <div class="compose-dropdown" id="cat-wrap">
-          <button class="compose-dropdown-btn" id="cat-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-            <span id="cat-label">Categoria</span><span class="caret" aria-hidden="true">▾</span>
-          </button>
-          <div class="compose-dropdown-menu" id="cat-menu" role="listbox"></div>
+<main class="rsm-write-page">
+  <div class="rsm-write__accent" aria-hidden="true"></div>
+  <div class="rsm-write__container">
+    <div class="rsm-write__layout">
+      <section class="rsm-write__intro" aria-labelledby="page-title">
+        <div>
+          <div class="page-eyebrow">Rivalta sul Mincio</div>
+          <h1 class="page-title" id="page-title">Scrivi un post</h1>
+          <p class="page-sub" id="page-sub">Crea un nuovo contenuto per la comunit&agrave;, con lo stesso respiro luminoso della pagina di accesso.</p>
         </div>
-        <select id="f-category" style="display:none" aria-hidden="true" tabindex="-1"></select>
-        <!-- Illustrazione custom dropdown -->
-        <div class="compose-dropdown" id="img-wrap">
-          <button class="compose-dropdown-btn" id="compose-img-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
-            <span id="img-btn-label">Illustrazione</span><span class="caret" aria-hidden="true">▾</span>
-          </button>
-          <div class="compose-dropdown-menu compose-dropdown-menu--img" id="img-menu" role="listbox">
-            <div class="compose-img-label">Scegli illustrazione</div>
-            <div class="img-grid" id="img-grid"></div>
+
+        <div class="page-summary" aria-label="Struttura editor post">
+          <span class="page-chip">titolo + estratto</span>
+          <span class="page-chip">testo centrale</span>
+          <span class="page-chip">bozza o pubblicazione</span>
+        </div>
+
+        <div class="rsm-write__note">
+          <strong>Un editor pi&ugrave; editoriale</strong>
+          <span>Scrivi, scegli categoria e illustrazione, poi salva come bozza o pubblica quando il racconto &egrave; pronto.</span>
+        </div>
+      </section>
+
+      <section class="rsm-write__editor" aria-label="Editor post">
+        <div class="err-msg" id="err-msg"></div>
+
+        <div class="compose-card">
+          <div class="compose-inputs">
+            <input id="f-title" class="compose-title" type="text" maxlength="120" placeholder="Titolo del post..." />
+            <div class="compose-hint"><span id="title-count">0 / 120</span></div>
+            <input id="f-excerpt" class="compose-excerpt" type="text" maxlength="200" placeholder="Breve descrizione (facoltativa)..." />
+            <div class="compose-hint"><span id="excerpt-count">0 / 200</span></div>
+          </div>
+          <textarea id="f-content" class="compose-body" placeholder="Inizia a scrivere...&#10;&#10;Racconta di Rivalta, degli eventi, della natura del Mincio..."></textarea>
+          <div class="compose-bar">
+            <div class="compose-bar-left">
+              <div class="compose-dropdown" id="cat-wrap">
+                <button class="compose-dropdown-btn" id="cat-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="cat-label">Categoria</span><span class="caret" aria-hidden="true">▾</span>
+                </button>
+                <div class="compose-dropdown-menu" id="cat-menu" role="listbox"></div>
+              </div>
+              <select id="f-category" style="display:none" aria-hidden="true" tabindex="-1"></select>
+              <div class="compose-dropdown" id="img-wrap">
+                <button class="compose-dropdown-btn" id="compose-img-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="img-btn-label">Illustrazione</span><span class="caret" aria-hidden="true">▾</span>
+                </button>
+                <div class="compose-dropdown-menu compose-dropdown-menu--img" id="img-menu" role="listbox">
+                  <div class="compose-img-label">Scegli illustrazione</div>
+                  <div class="img-grid" id="img-grid"></div>
+                </div>
+              </div>
+              <span class="compose-char" id="content-count">0 car.</span>
+            </div>
+            <div class="compose-bar-right">
+              <a class="btn btn-ghost" href="/dashboard">Annulla</a>
+              <button class="btn" id="btn-draft" type="button">Bozza</button>
+              <button class="btn btn-primary" id="btn-publish" type="button">Pubblica</button>
+            </div>
           </div>
         </div>
-        <span class="compose-char" id="content-count">0 car.</span>
-      </div>
-      <div class="compose-bar-right">
-        <a class="btn" href="/dashboard" style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.78rem;padding:6px 14px;min-height:0">Annulla</a>
-        <button class="btn" id="btn-draft" type="button" style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-size:.78rem;padding:6px 14px;min-height:0">Bozza</button>
-        <button class="btn btn-primary" id="btn-publish" type="button" style="font-size:.78rem;padding:6px 18px;min-height:0">Pubblica</button>
-      </div>
+      </section>
+
+      <aside class="rsm-write__side" aria-label="Statistiche e stato post">
+        <div class="rsm-write__side-card">
+          <div class="rsm-write__kicker">Dashboard</div>
+          <h2 class="rsm-write__side-title">Dati rapidi</h2>
+          <p class="rsm-write__side-text">Una vista compatta sui contenuti creati e sulla categoria pi&ugrave; usata.</p>
+        </div>
+
+        <div class="compose-status" id="card-status">
+          <div>
+            <span class="status-pill" id="status-pill">Bozza</span>
+            <div class="status-date" id="status-date"></div>
+          </div>
+          <div>
+            <span class="status-num" id="status-num">0</span>
+            <span class="status-num-label" id="status-num-label">caratteri</span>
+          </div>
+          <div class="rsm-write__side-text">
+            <span id="meta-username" style="font-weight:900;color:var(--write-ink)">@...</span>
+            <span id="meta-displayname"></span>
+          </div>
+          <div id="actions-label" class="rsm-write__side-text"></div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-tile">
+            <div class="stat-tile-num pub" id="ps-published">0</div>
+            <div class="stat-tile-label">Pubblicati</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-num draft" id="ps-drafts">0</div>
+            <div class="stat-tile-label">Bozze</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-num total" id="ps-total">0</div>
+            <div class="stat-tile-label">Totali</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-num top" id="ps-top-category">–</div>
+            <div class="stat-tile-label">Categoria top</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div aria-hidden="true" style="display:none">
+      <div id="ps-bars"></div>
+      <div id="ps-chart-growth"></div>
+      <div id="ps-meta"></div>
+      <div id="ps-date"></div>
     </div>
   </div>
-
-  <!-- Stato post (visibile solo in modalità modifica) -->
-  <div class="compose-status" id="card-status">
-    <div>
-      <span class="status-pill" id="status-pill">Bozza</span>
-      <div class="status-date" id="status-date" style="margin-top:4px"></div>
-    </div>
-    <div style="display:flex;align-items:baseline;gap:5px">
-      <span class="status-num" id="status-num">0</span>
-      <span class="status-num-label" id="status-num-label">caratteri</span>
-    </div>
-    <div style="font-size:.82rem;color:var(--ink-soft)">
-      <span id="meta-username" style="font-weight:700;color:var(--marsh)">@...</span>
-      <span id="meta-displayname" style="margin-left:4px"></span>
-    </div>
-    <div id="actions-label" style="font-size:.82rem;color:var(--ink-soft)"></div>
-  </div>
-
-  <!-- Statistiche (in fondo) -->
-  <div class="stats-strip">
-    <div class="stat-tile">
-      <div class="stat-tile-num pub" id="ps-published">0</div>
-      <div class="stat-tile-label">Pubblicati</div>
-    </div>
-    <div class="stat-tile">
-      <div class="stat-tile-num draft" id="ps-drafts">0</div>
-      <div class="stat-tile-label">Bozze</div>
-    </div>
-    <div class="stat-tile">
-      <div class="stat-tile-num total" id="ps-total">0</div>
-      <div class="stat-tile-label">Totali</div>
-    </div>
-    <div class="stat-tile">
-      <div class="stat-tile-num top" id="ps-top-category">–</div>
-      <div class="stat-tile-label">Categoria top</div>
-    </div>
-  </div>
-
-  <!-- Nodi nascosti necessari al JS delle statistiche -->
-  <div aria-hidden="true" style="display:none">
-    <div id="ps-bars"></div>
-    <div id="ps-chart-growth"></div>
-    <div id="ps-meta"></div>
-    <div id="ps-date"></div>
-  </div>
-
 </main>
 
 <div class="toast" id="toast"></div>
