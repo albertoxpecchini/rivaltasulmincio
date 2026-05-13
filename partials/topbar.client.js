@@ -16,6 +16,21 @@
       .replace(/'/g, '&#39;');
   }
 
+  function safeIconClass(value) {
+    var raw = String(value || '').trim();
+    if (!raw) return '';
+    var tokens = raw.split(/\s+/);
+    var valid = tokens.length > 0 && tokens.every(function (token) {
+      return /^fa-[a-z0-9-]+$/i.test(token);
+    });
+    return valid ? tokens.join(' ') : '';
+  }
+
+  function safeColor(value) {
+    var raw = String(value || '').trim();
+    return /^#[0-9a-f]{3,8}$/i.test(raw) ? raw : '#2f6b67';
+  }
+
   /* ── Supabase helpers ──────────────────────────────────────── */
   function canUseSupabase() {
     return typeof supabase !== 'undefined'
@@ -47,7 +62,8 @@
   }
 
   function item(label, href, active, primary, iconClass) {
-    var icon = iconClass ? '<i class="' + escapeHtml(iconClass) + '" aria-hidden="true"></i>' : '';
+    var safeClass = safeIconClass(iconClass);
+    var icon = safeClass ? '<i class="' + safeClass + '" aria-hidden="true"></i>' : '';
     return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></a>';
   }
 
@@ -70,7 +86,7 @@
     var isCookie = current.indexOf('cookie') >= 0;
     var isNoteLegali = current.indexOf('note-legali') >= 0;
     var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
-    var accent = escapeHtml(color || '#2f6b67');
+    var accent = safeColor(color);
     var hasEmoji = Boolean(emoji);
     var avatar = hasEmoji ? escapeHtml(emoji) : '';
     var editItem = canEditProfile
