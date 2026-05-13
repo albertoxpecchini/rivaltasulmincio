@@ -4,6 +4,10 @@ const fs   = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
+// Supabase connection constants (same project used by supabase.config.js client-side)
+const SUPABASE_PROJECT_URL = 'https://tljwxymcavgpzntksjtx.supabase.co';
+const SUPABASE_ANON_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsand4eW1jYXZncHpudGtzanR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyODM2MzksImV4cCI6MjA5Mjg1OTYzOX0.4mLVUxTO2SGeVWDDn7Vw0NuSDB82T3v6IWO-BVlrzC0';
+
 const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
@@ -146,11 +150,19 @@ function injectTopbarAssets(html) {
   return result;
 }
 
+function injectNewsletterModal(html) {
+  // Inject the newsletter modal partial into every page that does not already include it.
+  if (html.includes('id="newsletter-modal"')) return html;
+  if (!html.includes('</body>')) return html;
+  const modal = loadPartial('newsletter-modal');
+  return html.replace('</body>', modal + '\n</body>');
+}
+
 function injectPartials(html) {
   const withPartials = versionHtmlAssetUrls(
     html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name))
   );
-  return injectTopbarAssets(withPartials);
+  return injectNewsletterModal(injectTopbarAssets(withPartials));
 }
 const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
 const HTML_PAGES = new Set([
@@ -410,6 +422,193 @@ async function handleKwContext(req, res) {
   res.end(JSON.stringify({ wiki: wikiExtract, claude: claudeSentence }));
 }
 
+const MAX_REQUEST_BODY_SIZE = 4096; // bytes
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    req.on('data', chunk => {
+      data += chunk;
+      if (data.length > MAX_REQUEST_BODY_SIZE) {
+        req.destroy();
+        reject(new Error('payload-too-large'));
+      }
+    });
+    req.on('end', () => {
+      try { resolve(JSON.parse(data)); } catch (_) { resolve({}); }
+    });
+    req.on('error', reject);
+  });
+}
+
+function isValidEmail(str) {
+  return typeof str === 'string' &&
+    str.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str.trim());
+}
+
+async function handleNewsletterSubscribe(req, res) {
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+
+  const email = String(body.email || '').trim().toLowerCase();
+  if (!isValidEmail(email)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Inserisci un indirizzo email valido.' }));
+    return;
+  }
+
+  // Use the service role key when available (bypasses RLS), otherwise the anon key
+  // (RLS policy allows INSERT for anon on newsletter_subscribers).
+  const apiKey = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
+
+  try {
+    const sbRes = await fetch(`${SUPABASE_PROJECT_URL}/rest/v1/newsletter_subscribers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': apiKey,
+        'Authorization': `Bearer ${apiKey}`,
+        'Prefer': 'resolution=ignore-duplicates,return=minimal'
+      },
+      body: JSON.stringify({ email, source: 'web' })
+    });
+
+    if (!sbRes.ok && sbRes.status !== 409) {
+      const errText = await sbRes.text().catch(() => '');
+      throw new Error(`supabase-${sbRes.status}: ${errText}`);
+    }
+
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify({ ok: true }));
+  } catch (e) {
+    console.error('[newsletter/subscribe]', e.message);
+    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Errore interno. Riprova tra poco.' }));
+  }
+}
+
+async function handleNewsletterSend(req, res) {
+  // Admin-only endpoint: requires NEWSLETTER_ADMIN_SECRET env var.
+  // Sends a newsletter to all active subscribers via SMTP (SMTP_* env vars)
+  // or via the Resend API (RESEND_API_KEY env var).
+  const adminSecret = process.env.NEWSLETTER_ADMIN_SECRET;
+  if (!adminSecret) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Newsletter send not configured (NEWSLETTER_ADMIN_SECRET missing).' }));
+    return;
+  }
+
+  const authHeader = req.headers['authorization'] || '';
+  if (authHeader !== `Bearer ${adminSecret}`) {
+    res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Non autorizzato.' }));
+    return;
+  }
+
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+
+  const subject = String(body.subject || '').trim();
+  const htmlContent = String(body.html || '').trim();
+  const textContent = String(body.text || '').trim();
+
+  if (!subject || (!htmlContent && !textContent)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Fornisci subject e html (o text).' }));
+    return;
+  }
+
+  // Fetch all active subscribers using service role key
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'SUPABASE_SERVICE_ROLE_KEY non configurata.' }));
+    return;
+  }
+
+  let subscribers;
+  try {
+    const sbRes = await fetch(
+      `${SUPABASE_PROJECT_URL}/rest/v1/newsletter_subscribers?is_active=eq.true&select=email`,
+      {
+        headers: {
+          'apikey': serviceKey,
+          'Authorization': `Bearer ${serviceKey}`
+        }
+      }
+    );
+    if (!sbRes.ok) throw new Error(`supabase-${sbRes.status}`);
+    subscribers = await sbRes.json();
+  } catch (e) {
+    console.error('[newsletter/send] fetch-subscribers', e.message);
+    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Impossibile recuperare gli iscritti.' }));
+    return;
+  }
+
+  if (!Array.isArray(subscribers) || subscribers.length === 0) {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true, sent: 0, message: 'Nessun iscritto attivo.' }));
+    return;
+  }
+
+  const emails = subscribers.map(s => s.email).filter(Boolean);
+  const fromName  = process.env.NEWSLETTER_FROM_NAME  || 'Pro Loco Rivalta sul Mincio';
+  const fromEmail = process.env.NEWSLETTER_FROM_EMAIL || 'info@prolocorivalta.mn.it';
+
+  // Try Resend API first, then log error if not configured
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      ok: false,
+      error: 'Email provider non configurato. Imposta RESEND_API_KEY nelle variabili d\'ambiente.',
+      subscribers: emails.length
+    }));
+    return;
+  }
+
+  // Send via Resend (https://resend.com) – free tier: 3,000 emails/month
+  // BCC approach: each batch is sent as one API call with recipients in BCC
+  // so each subscriber receives only their own address in headers.
+  let sent = 0;
+  const errors = [];
+  // Send in batches of 50 to respect rate limits
+  const BATCH = 50;
+  for (let i = 0; i < emails.length; i += BATCH) {
+    const batch = emails.slice(i, i + BATCH);
+    try {
+      const rRes = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${resendKey}`
+        },
+        body: JSON.stringify({
+          from: `${fromName} <${fromEmail}>`,
+          bcc: batch,
+          to: fromEmail,
+          subject,
+          html: htmlContent || undefined,
+          text: textContent || undefined
+        })
+      });
+      if (rRes.ok) {
+        sent += batch.length;
+      } else {
+        const errBody = await rRes.text().catch(() => '');
+        errors.push(`batch-${i}: ${rRes.status} ${errBody}`);
+      }
+    } catch (e) {
+      errors.push(`batch-${i}: ${e.message}`);
+    }
+  }
+
+  const ok = errors.length === 0;
+  res.writeHead(ok ? 200 : 207, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ ok, sent, errors: errors.length ? errors : undefined }));
+}
+
 function getSafeFilePath(rawUrl) {
   const requestPath = (rawUrl || '/').split('?')[0].split('#')[0] || '/';
   let decodedPath;
@@ -491,13 +690,23 @@ function handler(req, res) {
     return;
   }
 
- if (req.method === 'GET' && requestPathLower === '/api/changelog') {
-  handleChangelog(req, res);
-  return;
-}
+  if (req.method === 'GET' && requestPathLower === '/api/changelog') {
+    handleChangelog(req, res);
+    return;
+  }
 
   if (req.method === 'GET' && requestPathLower === '/api/kw-context') {
     handleKwContext(req, res);
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/newsletter/subscribe') {
+    handleNewsletterSubscribe(req, res);
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/newsletter/send') {
+    handleNewsletterSend(req, res);
     return;
   }
 

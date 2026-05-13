@@ -3483,21 +3483,8 @@
 
   <!-- ─────────────────────────────────────────────────────────
        MODAL · Newsletter / Promemoria evento
+       (injected via partials/newsletter-modal.html)
        ───────────────────────────────────────────────────────── -->
-  <div class="rsm-modal" id="newsletter-modal" role="dialog" aria-modal="true" aria-labelledby="newsletter-modal-title" hidden>
-    <div class="rsm-modal__panel">
-      <button class="rsm-modal__close" type="button" data-modal-close aria-label="Chiudi">×</button>
-      <p class="rsm-kicker">Pro Loco · Newsletter</p>
-      <h3 class="rsm-modal__title" id="newsletter-modal-title">Ti avvisiamo noi quando inizia</h3>
-      <p class="rsm-lead" style="margin-bottom:20px">Lasciaci la tua email: ti scriviamo solo per la Festa del Pesce e per gli eventi importanti della Pro Loco.</p>
-      <form class="rsm-field" id="newsletter-modal-form" novalidate>
-        <label for="newsletter-modal-email">Email</label>
-        <input class="rsm-input" id="newsletter-modal-email" type="email" placeholder="nome@email.it" required />
-        <p class="rsm-form-status" id="newsletter-modal-status" role="status"></p>
-        <button class="rsm-btn rsm-btn--brand magnetic" type="submit" style="margin-top:10px"><span>Avvisami</span><span class="rsm-btn-icon" aria-hidden="true">&rarr;</span></button>
-      </form>
-    </div>
-  </div>
 <link rel="stylesheet" href="/partials/footbar.css?v=12" />
 <style data-rsm-foot-critical>
   .rsm-foot {
@@ -3944,60 +3931,6 @@
       });
     }
 
-    /* ─── Newsletter form (modal) ─── */
-    function bindNewsletter(formId, inputId, statusId) {
-      var form = $('#' + formId);
-      var input = $('#' + inputId);
-      var status = $('#' + statusId);
-      if (!form || !input || !status) return;
-      form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        var value = input.value.trim();
-        if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          status.textContent = 'Inserisci un indirizzo email valido.';
-          status.style.color = 'var(--rsm-danger)';
-          input.focus();
-          return;
-        }
-        status.textContent = 'Grazie, iscrizione registrata in questa sessione.';
-        status.style.color = 'var(--rsm-success)';
-        form.reset();
-      });
-    }
-    function initNewsletter() {
-      bindNewsletter('newsletter-modal-form', 'newsletter-modal-email', 'newsletter-modal-status');
-    }
-
-    /* ─── Modal handling ─── */
-    function initModals() {
-      $all('[data-modal-open]').forEach(function (trigger) {
-        trigger.addEventListener('click', function () {
-          var id = trigger.getAttribute('data-modal-open');
-          var modal = document.getElementById(id);
-          if (!modal) return;
-          modal.removeAttribute('hidden');
-          requestAnimationFrame(function () { modal.classList.add('is-open'); });
-          var firstInput = modal.querySelector('input, button:not([data-modal-close])');
-          if (firstInput) setTimeout(function(){ firstInput.focus(); }, 200);
-        });
-      });
-      function close(modal) {
-        modal.classList.remove('is-open');
-        setTimeout(function () { modal.setAttribute('hidden', ''); }, 360);
-      }
-      $all('.rsm-modal').forEach(function (modal) {
-        modal.addEventListener('click', function (e) {
-          if (e.target === modal || (e.target.closest && e.target.closest('[data-modal-close]'))) {
-            close(modal);
-          }
-        });
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key !== 'Escape') return;
-        $all('.rsm-modal.is-open').forEach(close);
-      });
-    }
-
     /* ─── Helpers per news ─── */
     function isValidHttpsUrl(url) {
       if (!url || typeof url !== 'string') return false;
@@ -4402,8 +4335,6 @@
       initReveal();
       initCounters();
       initMagneticButtons();
-      initNewsletter();
-      initModals();
       initPosts();
       initGsap();
       initAnimeJs();
