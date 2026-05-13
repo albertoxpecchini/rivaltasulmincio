@@ -28,6 +28,7 @@
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   margin-top: 0 !important;
+  margin-top: 0;
   padding: 0;
   font-family: 'Space Grotesk', 'Cabinet Grotesk', system-ui, -apple-system, sans-serif;
   color: var(--rsm-foot-ink-soft);
@@ -1086,6 +1087,8 @@ a.rsm-foot__contact:hover .rsm-foot__contact-arrow {
     radial-gradient(ellipse at 100% 100%, rgba(196, 122, 255, 0.20), transparent 48%),
     linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%) !important;
   border-top-color: var(--rsm-foot-line-strong) !important;
+    linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%);
+  border-top-color: var(--rsm-foot-line-strong);
   box-shadow: none;
   color: var(--rsm-foot-ink-soft) !important;
 }
