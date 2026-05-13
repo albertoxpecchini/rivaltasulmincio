@@ -57,13 +57,34 @@
     { selector: '.timeline-entry', icon: 'fa-solid fa-code-branch' }
   ];
 
+  var BASE_TARGETS = [
+    'h1', 'h2', 'h3', 'p',
+    '.rsm-h1', '.rsm-h2', '.rsm-kicker', '.rsm-lead', '.rsm-body',
+    '.rsm-banner__title', '.rsm-banner__sub', '.rsm-modal__title',
+    '.page-title', '.page-eyebrow', '.page-sub',
+    '.card-title', '.section-title', '.section-kicker', '.section-label',
+    '.timeline-heading', '.timeline-date',
+    '.hero-eyebrow', '.hero-title', '.hero-subtitle',
+    '.bc-kicker', '.bc-title', '.bc-sub', '.bc-stat-label', '.bc-stat-sub', '.bc-kpi-lbl', '.bc-kpi-meta',
+    '.post-title', '.post-lead', '.reading-kicker', '.discussion-note', '.note-line',
+    '.rsm-category-title', '.rsm-profile-username',
+    '.rsm-write__kicker', '.rsm-write__side-title', '.rsm-write__side-text',
+    '.rsm-atlas-note', '.rsm-atlas-guide', '.rsm-valli__drop',
+    '.release-changes-title', '.release-vname', '.release-date-text', '.rel-msg', '.rel-author',
+    '.fn-card-title', '.error-wrap h2', '.error-wrap p'
+  ];
+  var DOC_TARGETS = ['h1', 'h2', 'h3', 'p', '.doc-eyebrow', '.doc-title', '.doc-meta', '.toc-title', '.section-title', '.highlight-box'];
+  var HERO_TARGETS = ['h1', 'p', '.hero-eyebrow', '.hero-title', '.hero-subtitle'];
+  var PAGE_WRAP_TARGETS = ['p', '.section-label', '.timeline-heading', '.timeline-date', '.fn-card-title', '.release-changes-title', '.release-vname', '.release-date-text', '.rel-msg', '.rel-author'];
+  var NEWSLETTER_TARGETS = ['.rsm-kicker', '.rsm-modal__title', '.rsm-lead'];
+  var POST_TARGETS = ['h1', 'h2', 'h3', 'p', '.post-title', '.post-lead', '.reading-kicker', '.discussion-note'];
   var TARGET_SELECTOR = [
-    'main :is(h1, h2, h3, p, .rsm-h1, .rsm-h2, .rsm-kicker, .rsm-lead, .rsm-body, .rsm-banner__title, .rsm-banner__sub, .rsm-modal__title, .page-title, .page-eyebrow, .page-sub, .card-title, .section-title, .section-kicker, .section-label, .timeline-heading, .timeline-date, .hero-eyebrow, .hero-title, .hero-subtitle, .bc-kicker, .bc-title, .bc-sub, .bc-stat-label, .bc-stat-sub, .bc-kpi-lbl, .bc-kpi-meta, .post-title, .post-lead, .reading-kicker, .discussion-note, .note-line, .rsm-category-title, .rsm-profile-username, .rsm-write__kicker, .rsm-write__side-title, .rsm-write__side-text, .rsm-atlas-note, .rsm-atlas-guide, .rsm-valli__drop, .release-changes-title, .release-vname, .release-date-text, .rel-msg, .rel-author, .fn-card-title, .error-wrap h2, .error-wrap p)',
-    '.doc-wrap :is(h1, h2, h3, p, .doc-eyebrow, .doc-title, .doc-meta, .toc-title, .section-title, .highlight-box)',
-    '.hero :is(h1, p, .hero-eyebrow, .hero-title, .hero-subtitle)',
-    '.page-wrap :is(p, .section-label, .timeline-heading, .timeline-date, .fn-card-title, .release-changes-title, .release-vname, .release-date-text, .rel-msg, .rel-author)',
-    '#newsletter-modal :is(.rsm-kicker, .rsm-modal__title, .rsm-lead)',
-    '#wrap :is(h1, h2, h3, p, .post-title, .post-lead, .reading-kicker, .discussion-note)'
+    'main :is(' + BASE_TARGETS.join(', ') + ')',
+    '.doc-wrap :is(' + DOC_TARGETS.join(', ') + ')',
+    '.hero :is(' + HERO_TARGETS.join(', ') + ')',
+    '.page-wrap :is(' + PAGE_WRAP_TARGETS.join(', ') + ')',
+    '#newsletter-modal :is(' + NEWSLETTER_TARGETS.join(', ') + ')',
+    '#wrap :is(' + POST_TARGETS.join(', ') + ')'
   ].join(', ');
 
   function resolveIcon(node) {
