@@ -3,6 +3,7 @@
   var SHELL_CLASS = 'rsm-icon-shell';
   var ICON_CLASS = 'rsm-inline-icon';
   var TEXT_CLASS = 'rsm-icon-text';
+  var MIN_PARAGRAPH_LENGTH = 8;
   var route = (location.pathname || '/').replace(/\/+$/, '') || '/';
   var pageKey = route === '/' ? 'home' : route.slice(1);
 
@@ -88,7 +89,7 @@
     if (node.querySelector('input, textarea, select, button')) return false;
     var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
     if (!text) return false;
-    if (node.matches('p') && text.length < 8) return false;
+    if (node.matches('p') && text.length < MIN_PARAGRAPH_LENGTH) return false;
     return true;
   }
 
