@@ -9,6 +9,7 @@ const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|theme\.css))(?:\?[^"']*)?(["'])/gi;
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
+const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap';
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
@@ -101,7 +102,7 @@ function injectTopbarAssets(html) {
   const hasTopbarJs = /<script[^>]+src=["'][^"']*\/partials\/topbar\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
   const hasFontsApiPreconnect = /<link[^>]+href=["']https:\/\/fonts\.googleapis\.com["'][^>]*>/i.test(result);
   const hasFontsStaticPreconnect = /<link[^>]+href=["']https:\/\/fonts\.gstatic\.com["'][^>]*>/i.test(result);
-  const hasTopbarFonts = /<link[^>]+href=["'][^"']*family=Syne:wght@500;600;700;800&family=Space\+Grotesk:wght@400;500;600;700&display=swap["'][^>]*>/i.test(result);
+  const hasTopbarFonts = result.includes(TOPBAR_FONTS_HREF);
 
   if (result.includes('</head>')) {
     const headInjections = [];
@@ -113,7 +114,8 @@ function injectTopbarAssets(html) {
       headInjections.push('  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />');
     }
     if (!hasTopbarFonts) {
-      headInjections.push('  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" />');
+      headInjections.push(`  <link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" media="print" onload="this.onload=null;this.media='all'" />`);
+      headInjections.push(`  <noscript><link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" /></noscript>`);
     }
     if (!hasTopbarCss) {
       headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath('/partials/topbar.css')}" />`);
