@@ -10,294 +10,496 @@
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/theme.css" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --ink:        #10192b;
-      --ink-soft:   #5a6882;
-      --cream:      #f4f7ff;
-      --paper:      #fbfdff;
-      --mist:       #dde7f7;
-      --marsh:      #12203a;
-      --marsh-2:    #233a66;
-      --water:      #4a9bff;
-      --clay:       #8b5cf6;
-      --reed:       #1fbf7d;
-      --white:      #f9fbff;
-      --line:       rgba(18, 32, 58, 0.14);
-      --ok:         #1fbf7d;
-      --err:        #b83232;
-      --radius:     14px;
-      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
-      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:      "Fraunces", Georgia, serif;
-      --transition: 0.22s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      min-height: 100vh;
+    /* ── Background & page shell ── */
+    body[data-page="profile"] {
       position: relative;
-      -webkit-font-smoothing: antialiased;
+      color: var(--rsm-text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.16), transparent 30%),
+        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.16), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.14), transparent 36%),
+        linear-gradient(180deg, var(--rsm-bg) 0%, var(--rsm-paper) 48%, var(--rsm-bg) 100%);
     }
 
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      opacity: 0.16;
+    body[data-page="profile"]::before,
+    body[data-page="profile"]::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body[data-page="profile"]::before {
+      opacity: 0.18;
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(16, 25, 43, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(16, 25, 43, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
+        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
+      background-size: 24px 24px, 36px 36px;
+      background-position: 0 0, 12px 14px;
       mix-blend-mode: multiply;
     }
 
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); }
-
-    
-
-    /* ── Page ── */
-    .page {
-      position: relative; z-index: 1;
-      padding: 88px 20px 64px;
-      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    body[data-page="profile"]::after {
+      opacity: 0.9;
+      background:
+        radial-gradient(ellipse at 22% 24%, rgba(31, 191, 125, 0.14), transparent 42%),
+        radial-gradient(ellipse at 74% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
+        radial-gradient(ellipse at 66% 78%, rgba(139, 92, 246, 0.10), transparent 46%);
+      animation: prof-aurora 26s ease-in-out infinite;
     }
 
-    .page-summary {
+    @keyframes prof-aurora {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50%       { transform: translate3d(1.5%, -1.5%, 0) scale(1.05); }
+    }
+
+    .rsm-profile-page {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Hero section ── */
+    .rsm-profile-hero {
+      min-height: 100dvh;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      width: 100%;
-      max-width: 900px;
+      align-items: center;
+      padding: clamp(88px, 10vw, 120px) 0 clamp(40px, 5vw, 64px);
     }
 
-    .page-chip {
+    .rsm-profile-hero__inner {
+      width: min(100% - 40px, 680px);
+      margin: 0 auto;
+    }
+
+    /* ── Profile glass card ── */
+    .rsm-profile-card {
+      position: relative;
+      display: grid;
+      gap: var(--rsm-s-6);
+      padding: clamp(24px, 3.5vw, 40px);
+    }
+
+    .rsm-profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+      opacity: 0.8;
+    }
+
+    /* ── Identity row ── */
+    .rsm-profile-identity {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--rsm-s-5);
+    }
+
+    .rsm-profile-avatar {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 2.4rem;
+      background: rgba(31, 191, 125, 0.10);
+      box-shadow: var(--rsm-sh-md);
+    }
+
+    .rsm-profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* hide the kicker ::before line when inside profile card */
+    .rsm-profile-card .rsm-kicker::before {
+      display: none;
+    }
+
+    .rsm-profile-pulse {
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--rsm-emerald);
+      box-shadow: 0 0 0 4px rgba(31, 191, 125, 0.18);
+      animation: prof-pulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes prof-pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(31, 191, 125, 0.18); }
+      50%       { box-shadow: 0 0 0 8px rgba(31, 191, 125, 0.07); }
+    }
+
+    .rsm-profile-username {
+      font-family: var(--rsm-font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      margin: var(--rsm-s-2) 0 var(--rsm-s-1);
+      color: var(--rsm-text-strong);
+    }
+
+    .rsm-profile-username em {
+      font-style: italic;
+      background: linear-gradient(95deg, var(--rsm-emerald) 0%, var(--rsm-azure) 52%, var(--rsm-violet) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: prof-grad 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes prof-grad {
+      from { background-position: 0% 50%; }
+      to   { background-position: 100% 50%; }
+    }
+
+    .rsm-profile-displayname {
+      font-size: var(--rsm-text-small);
+      color: var(--rsm-text-soft);
+      margin-bottom: var(--rsm-s-3);
+      font-weight: 500;
+    }
+
+    .rsm-profile-bio {
+      font-size: 0.9rem;
+      color: var(--rsm-text);
+      line-height: 1.5;
+      margin-bottom: var(--rsm-s-3);
+      max-width: 38ch;
+    }
+
+    .rsm-profile-chips {
+      display: flex;
+      gap: var(--rsm-s-2);
+      flex-wrap: wrap;
+    }
+
+    .rsm-pchip {
       display: inline-flex;
       align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: var(--rsm-r-pill);
+      border: 1px solid var(--rsm-line-2);
+      background: var(--rsm-glass);
+      font-family: var(--rsm-font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--rsm-text-soft);
+      backdrop-filter: var(--rsm-blur-sm);
+      -webkit-backdrop-filter: var(--rsm-blur-sm);
     }
 
-    /* ── Bento grid ── */
-    .bento {
-      display: grid; width: 100%; max-width: 660px;
-      gap: 6px; grid-template-columns: 1fr 1fr;
-      grid-template-areas: "hero hero" "articles since";
+    .rsm-pchip--admin {
+      color: var(--rsm-emerald);
+      border-color: rgba(31, 191, 125, 0.28);
+      background: rgba(31, 191, 125, 0.08);
     }
 
-    /* ── Card base ── */
-    .card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-card);
-      padding: 14px 18px;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative; overflow: hidden;
+    /* ── Metrics ── */
+    .rsm-profile-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--rsm-s-5);
+      padding-top: var(--rsm-s-5);
+      border-top: 1px solid var(--rsm-line);
     }
 
-    /* ── Hero card ── */
-    .card-hero {
-      grid-area: hero;
-      flex-direction: row; align-items: flex-start; gap: 18px;
-      padding: 18px 18px;
+    .rsm-profile-metric strong {
+      display: block;
+      font-family: var(--rsm-font-display);
+      font-size: clamp(2rem, 4.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--rsm-text-strong);
+      margin-bottom: var(--rsm-s-1);
     }
 
-    .card-hero::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--marsh), var(--reed), var(--water));
-      border-radius: var(--radius) var(--radius) 0 0;
+    .rsm-profile-metric span {
+      display: block;
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-tiny);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
     }
-
-    .avatar {
-      width: 72px; height: 72px; border-radius: 16px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; background: rgba(37,63,53,.1);
-    }
-    .avatar.skel { font-size: 0; }
-
-    .hero-info { flex: 1; min-width: 0; }
-
-    .hero-eyebrow {
-      font-size: 10px; font-weight: 700; color: var(--marsh);
-      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px;
-    }
-
-    .hero-username {
-      font-family: var(--serif); font-size: 22px; font-weight: 650;
-      color: var(--ink); letter-spacing: -.02em; line-height: 1.1; margin-bottom: 3px;
-    }
-
-    .hero-displayname {
-      font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; font-weight: 500;
-    }
-
-    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-
-    .chip {
-      border: 1px solid var(--line); border-radius: 999px;
-      font-size: 11px; font-weight: 600; color: var(--ink-soft);
-      padding: 3px 9px; background: rgba(37,63,53,.05);
-    }
-
-    .chip-admin {
-      color: var(--reed); border-color: rgba(198,164,98,.4);
-      background: rgba(198,164,98,.1);
-    }
-
-    .hero-bio { font-size: 13px; color: var(--ink-soft); line-height: 1.55; max-width: 320px; }
-
-    /* ── Stat cards ── */
-    .card-articles { grid-area: articles; }
-    .card-since    { grid-area: since; }
-    .card-articles .num { font-size: 2.4rem; color: var(--marsh); }
-    .card-since .num    { font-size: 1.3rem; color: var(--water); }
-
-    .num {
-      font-family: var(--serif); font-weight: 650;
-      letter-spacing: -.03em; line-height: 1; margin-bottom: 4px;
-    }
-
-    .stat-label { font-size: 12px; color: var(--ink-soft); font-weight: 500; line-height: 1.3; }
 
     /* ── Posts section ── */
-    .posts-section { width: 100%; max-width: 900px; }
-
-    .posts-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px; gap: 10px;
+    .rsm-profile-posts {
+      padding: var(--rsm-s-12) 0 var(--rsm-s-20);
     }
 
-    .posts-header h2 {
-      font-family: var(--serif); font-size: 22px; font-weight: 650;
-      color: var(--ink); letter-spacing: -.02em;
+    .rsm-profile-posts__inner {
+      width: min(100% - 40px, 1200px);
+      margin: 0 auto;
     }
 
-    .posts-count-tag { font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+    .rsm-profile-posts-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--rsm-s-4);
+      margin-bottom: var(--rsm-s-6);
+    }
 
-    .grid-posts {
+    .rsm-profile-posts-head .rsm-h2 em {
+      font-style: italic;
+      font-family: var(--rsm-font-display);
+      background: linear-gradient(95deg, var(--rsm-emerald) 0%, var(--rsm-azure) 52%, var(--rsm-violet) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .rsm-profile-posts-head .rsm-kicker::before { display: none; }
+
+    .rsm-profile-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--rsm-s-3);
     }
 
     /* ── Post card ── */
-    .pcard {
-      background: var(--paper); border-radius: var(--radius);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow-card);
-      overflow: hidden; transition: box-shadow .2s, transform .2s;
+    .rsm-pcard {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: var(--rsm-r-2xl);
+      border: 1px solid var(--rsm-line);
+      background: var(--rsm-glass-strong);
+      box-shadow: var(--rsm-sh-md);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      transition:
+        transform 280ms var(--rsm-ease-spring),
+        box-shadow 280ms var(--rsm-ease-out);
     }
-    .pcard:hover { box-shadow: 0 14px 36px rgba(37,63,53,.14); transform: translateY(-3px); }
 
-    .pcard-img {
-      height: 130px;
+    .rsm-pcard::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .rsm-pcard:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--rsm-sh-xl);
+    }
+
+    .rsm-pcard-img {
+      height: 140px;
       overflow: hidden;
       position: relative;
       display: grid;
       place-items: center;
-      background: rgba(37,63,53,.06);
+      background: rgba(31, 191, 125, 0.05);
     }
-    .pcard-img img {
+
+    .rsm-pcard-img img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
     }
-    .pcard-img svg { width: 100%; height: 100%; display: block; }
 
-    .pcard-cat {
-      position: absolute; top: 10px; left: 10px;
-      background: rgba(255,250,240,.92); backdrop-filter: blur(4px);
-      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
-      letter-spacing: .07em; text-transform: uppercase;
-      border: 1px solid var(--line); color: var(--ink);
+    .rsm-pcard-img svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
-    .pcard-body { padding: 14px 16px; }
-    .pcard-meta { font-size: 11px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
-
-    .pcard-title {
-      font-family: var(--serif); font-size: 15px; font-weight: 650;
-      color: var(--ink); line-height: 1.35; margin-bottom: 8px; letter-spacing: -.01em;
+    .rsm-pcard-cat {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--rsm-glass-strong);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: var(--rsm-font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--rsm-r-pill);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.36);
+      color: var(--rsm-text-strong);
+      text-decoration: none;
+      z-index: 1;
     }
-    .pcard-title a { color: var(--ink); transition: color .15s; }
-    .pcard-title a:hover { color: var(--marsh); }
 
-    .pcard-exc {
-      font-size: 12px; color: var(--ink-soft); line-height: 1.55;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; margin-bottom: 12px;
+    .rsm-pcard-body {
+      padding: var(--rsm-s-4) var(--rsm-s-5);
     }
 
-    .pcard-foot { padding-top: 10px; border-top: 1px solid var(--line); }
-
-    .btn-read {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-family: var(--sans); font-size: 12px; font-weight: 700;
-      color: var(--marsh); text-decoration: none; transition: gap .15s;
+    .rsm-pcard-meta {
+      font-family: var(--rsm-font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
+      margin-bottom: var(--rsm-s-2);
     }
-    .btn-read:hover { gap: 8px; color: var(--water); }
 
-    /* ── Empty ── */
-    .empty-state {
-      grid-column: 1 / -1; text-align: center; padding: 48px 20px;
-      border: 1px dashed var(--line); border-radius: var(--radius);
+    .rsm-pcard-title {
+      font-family: var(--rsm-font-display);
+      font-size: 1rem;
+      font-weight: 650;
+      color: var(--rsm-text-strong);
+      line-height: 1.25;
+      margin-bottom: var(--rsm-s-2);
+      letter-spacing: -0.02em;
     }
-    .empty-state span { font-size: 2.5rem; display: block; margin-bottom: 10px; }
-    .empty-state p { font-size: 13px; color: var(--ink-soft); }
+
+    .rsm-pcard-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .rsm-pcard-title a:hover { color: var(--rsm-azure); }
+
+    .rsm-pcard-exc {
+      font-size: 0.84rem;
+      color: var(--rsm-text-soft);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: var(--rsm-s-3);
+    }
+
+    .rsm-pcard-foot {
+      padding-top: var(--rsm-s-3);
+      border-top: 1px solid var(--rsm-line);
+    }
+
+    .rsm-pcard-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--rsm-font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--rsm-emerald);
+      text-decoration: none;
+      transition: gap 0.15s, color 0.15s;
+    }
+
+    .rsm-pcard-read:hover { gap: 8px; color: var(--rsm-azure); }
+
+    /* ── Empty state ── */
+    .rsm-profile-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: var(--rsm-s-16) var(--rsm-s-5);
+      border: 1px dashed var(--rsm-line-2);
+      border-radius: var(--rsm-r-2xl);
+      color: var(--rsm-text-soft);
+    }
+
+    .rsm-profile-empty span {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: var(--rsm-s-3);
+    }
+
+    .rsm-profile-empty p { font-size: 0.9rem; }
 
     /* ── Skeleton ── */
-    .skel {
-      background: linear-gradient(90deg, rgba(37,63,53,.06) 25%, rgba(37,63,53,.1) 50%, rgba(37,63,53,.06) 75%);
-      background-size: 400% 100%; animation: shimmer 1.4s ease-in-out infinite; border-radius: 8px;
+    .rsm-skel {
+      background: linear-gradient(90deg,
+        rgba(37, 63, 53, 0.06) 25%,
+        rgba(37, 63, 53, 0.12) 50%,
+        rgba(37, 63, 53, 0.06) 75%
+      );
+      background-size: 400% 100%;
+      animation: prof-shimmer 1.4s ease-in-out infinite;
+      border-radius: 8px;
     }
-    @keyframes shimmer { to { background-position: -400% 0; } }
+
+    @keyframes prof-shimmer { to { background-position: -400% 0; } }
+
+    /* ── Reveal animation ── */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity 0.55s var(--rsm-ease-out),
+        transform 0.55s var(--rsm-ease-out);
+    }
+
+    [data-reveal].is-visible { opacity: 1; transform: none; }
 
     /* ── Responsive ── */
     @media (max-width: 560px) {
-      .bento {
-        grid-template-columns: 1fr;
-        grid-template-areas: "hero" "articles" "since";
-      }
-      .card-hero { flex-direction: column; align-items: flex-start; }
-      .page { padding: 100px 14px 60px; }
+      .rsm-profile-identity { flex-direction: column; }
+      .rsm-profile-hero { align-items: flex-start; }
     }
 
-    /* ── Footer ── */
-    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
-    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
-    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
-    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
-    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
-    .footer p { max-width:540px; line-height:1.66; }
-    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
-    .footer-links a:hover { color:var(--paper); }
-    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
-    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
+    /* ── Dark mode ── */
+    html[data-theme="scuro"] body[data-page="profile"] {
+      background:
+        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.12), transparent 30%),
+        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.12), transparent 34%),
+        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.10), transparent 36%),
+        linear-gradient(180deg, #090c15 0%, #0f1320 48%, #090c15 100%);
+    }
+
+    html[data-theme="scuro"] body[data-page="profile"]::before {
+      opacity: 0.22;
+      mix-blend-mode: screen;
+    }
+
+    html[data-theme="scuro"] .rsm-pcard-cat {
+      background: rgba(10, 14, 24, 0.86);
+      border-color: rgba(255,255,255,0.10);
+    }
+
+    html[data-theme="scuro"] .rsm-skel {
+      background: linear-gradient(90deg,
+        rgba(150, 190, 175, 0.08) 25%,
+        rgba(150, 190, 175, 0.16) 50%,
+        rgba(150, 190, 175, 0.08) 75%
+      );
+      background-size: 400% 100%;
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      body[data-page="profile"]::after,
+      .rsm-profile-pulse,
+      .rsm-profile-username em,
+      [data-reveal] {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      [data-reveal] { opacity: 1 !important; transform: none !important; }
+    }
+
   </style>
-  <link rel="stylesheet" href="/theme.css" />
 </head>
-<body>
+<body data-page="profile">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="grad-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d8b89"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
@@ -309,52 +511,70 @@
 
 <!--PARTIAL:nav-->
 
-<div class="page">
+<main class="rsm-profile-page">
 
-  <div class="page-summary" aria-label="Struttura profilo pubblico">
-    <span class="page-chip">profilo + articoli</span>
-    <span class="page-chip">statistiche in alto</span>
-    <span class="page-chip">feed sotto</span>
-  </div>
+  <!-- ── Hero ── -->
+  <section class="rsm-profile-hero" aria-labelledby="profile-title">
+    <div class="rsm-profile-hero__inner">
 
-  <div class="bento">
+      <article class="rsm-profile-card rsm-card rsm-card--glass" data-reveal>
 
-    <!-- Hero: avatar + info -->
-    <div class="card card-hero">
-      <div class="avatar skel" id="avatar"></div>
-      <div class="hero-info">
-        <div class="hero-eyebrow">Profilo autore</div>
-        <div class="hero-username skel" id="username" style="width:160px;height:22px;margin-bottom:5px"></div>
-        <div class="hero-displayname skel" id="displayname" style="width:110px;height:13px;margin-bottom:14px"></div>
-        <div class="chips" id="chips"></div>
-        <div class="hero-bio" id="bio"></div>
+        <div class="rsm-profile-identity">
+          <div class="rsm-profile-avatar rsm-skel" id="avatar" aria-hidden="true"></div>
+
+          <div class="rsm-profile-info">
+            <p class="rsm-kicker">
+              <span class="rsm-profile-pulse" aria-hidden="true"></span>
+              <span>Profilo autore</span>
+              <span aria-hidden="true">&middot;</span>
+              <span>Rivalta sul Mincio</span>
+            </p>
+            <h1 class="rsm-profile-username rsm-skel" id="username"
+                style="width:180px;height:30px;margin:8px 0 6px"
+                aria-label="Nome utente"></h1>
+            <p class="rsm-profile-displayname rsm-skel" id="displayname"
+               style="width:120px;height:14px;margin-bottom:12px"></p>
+            <p class="rsm-profile-bio" id="bio"></p>
+            <div class="rsm-profile-chips" id="chips"></div>
+          </div>
+        </div>
+
+        <div class="rsm-profile-metrics" role="list" aria-label="Statistiche profilo">
+          <div class="rsm-profile-metric" role="listitem">
+            <strong class="rsm-skel" id="stat-posts"
+                    style="width:52px;height:42px" aria-label="Articoli pubblicati"></strong>
+            <span>Articoli pubblicati</span>
+          </div>
+          <div class="rsm-profile-metric" role="listitem">
+            <strong class="rsm-skel" id="stat-since"
+                    style="width:130px;height:22px" aria-label="Data iscrizione"></strong>
+            <span>Membro da</span>
+          </div>
+        </div>
+
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Posts ── -->
+  <section class="rsm-profile-posts" aria-labelledby="posts-title">
+    <div class="rsm-profile-posts__inner">
+
+      <div class="rsm-profile-posts-head">
+        <div>
+          <p class="rsm-kicker"><span>Feed autore</span></p>
+          <h2 class="rsm-h2" id="posts-title">Articoli <em>pubblicati</em></h2>
+        </div>
+        <span class="rsm-small" id="posts-count"></span>
       </div>
+
+      <div class="rsm-profile-grid" id="posts-grid"></div>
+
     </div>
+  </section>
 
-    <!-- Articles count -->
-    <div class="card card-articles">
-      <div class="num skel" id="stat-posts" style="width:48px;height:38px"></div>
-      <div class="stat-label">Articoli pubblicati</div>
-    </div>
-
-    <!-- Member since -->
-    <div class="card card-since">
-      <div class="num skel" id="stat-since" style="width:90px;height:24px"></div>
-      <div class="stat-label">Membro da</div>
-    </div>
-
-  </div>
-
-  <!-- Posts section -->
-  <div class="posts-section">
-    <div class="posts-header">
-      <h2>Articoli</h2>
-      <span class="posts-count-tag" id="posts-count"></span>
-    </div>
-    <div class="grid-posts" id="posts-grid"></div>
-  </div>
-
-</div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
@@ -366,7 +586,6 @@ const fmt  = iso => new Date(iso).toLocaleDateString('it-IT', {day:'numeric', mo
 const fmtY = iso => new Date(iso).toLocaleDateString('it-IT', {month:'long', year:'numeric'});
 const canonicalCategory  = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.canonical(v)   : String(v||'').trim();
 const categoryHref       = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.categoryHref(v) : ('category?name='+encodeURIComponent(canonicalCategory(v)));
-const badgeColorByCategory = v => window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(v) : 'default';
 const escapeHtml = v => String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const isValidHttpsUrl = v => {
   if (!v || typeof v !== 'string') return false;
@@ -386,6 +605,12 @@ const ILL = {
 const un = new URLSearchParams(location.search).get('u');
 
 (async function () {
+  /* Reveal animation on scroll */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('[data-reveal]').forEach(el => obs.observe(el));
+
   /* Redirect to own profile if ?u= is missing */
   if (!un) {
     try {
@@ -399,48 +624,35 @@ const un = new URLSearchParams(location.search).get('u');
     return;
   }
 
-  let session = null;
-  let viewer  = null;
-  try {
-    const {data} = await sb.auth.getSession();
-    session = data?.session || null;
-    if (session?.user?.id) {
-      const {data: vd} = await sb.from('profiles')
-        .select('username,avatar_emoji,avatar_color')
-        .eq('id', session.user.id).single();
-      viewer = vd;
-    }
-  } catch (_) {}
-
   const {data:prof, error:pe} = await sb.from('profiles').select('*').eq('username', un).single();
   if (pe || !prof) {
-    document.querySelector('.bento').innerHTML = '<div class="card" style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-soft)">Profilo non trovato.</div>';
+    document.querySelector('.rsm-profile-card').innerHTML = '<p style="padding:48px;text-align:center;color:var(--rsm-text-soft)">Profilo non trovato.</p>';
     return;
   }
   document.title = `@${prof.username} – Rivalta sul Mincio`;
 
-  /* Avatar (static) */
+  /* Avatar */
   const av = $('avatar');
-  av.classList.remove('skel');
-  av.style.background = prof.avatar_color || '#253f35';
+  av.classList.remove('rsm-skel');
+  av.style.background = prof.avatar_color || '#1f3d2e';
   av.textContent = prof.avatar_emoji || '🌿';
 
   /* Name */
-  $('username').outerHTML  = `<div class="hero-username"  id="username">@${escapeHtml(prof.username)}</div>`;
-  $('displayname').outerHTML = `<div class="hero-displayname">${escapeHtml(prof.display_name || prof.username)}</div>`;
+  $('username').outerHTML  = `<h1 class="rsm-profile-username" id="username">@<em>${escapeHtml(prof.username)}</em></h1>`;
+  $('displayname').outerHTML = `<p class="rsm-profile-displayname" id="displayname">${escapeHtml(prof.display_name || prof.username)}</p>`;
 
   /* Chips */
   const roleLabels = { admin:'⚙️ Admin', user:'👤 Utente', reader:'👁 Lettore' };
   const chipsHtml = [];
-  if (prof.comune) chipsHtml.push(`<span class="chip">📍 ${escapeHtml(prof.comune)}</span>`);
-  chipsHtml.push(`<span class="chip ${prof.role === 'admin' ? 'chip-admin' : ''}">${roleLabels[prof.role] || '👤 Utente'}</span>`);
+  if (prof.comune) chipsHtml.push(`<span class="rsm-pchip">📍 ${escapeHtml(prof.comune)}</span>`);
+  chipsHtml.push(`<span class="rsm-pchip ${prof.role === 'admin' ? 'rsm-pchip--admin' : ''}">${roleLabels[prof.role] || '👤 Utente'}</span>`);
   $('chips').innerHTML = chipsHtml.join('');
   if (prof.bio) $('bio').textContent = prof.bio;
 
   /* Stats */
   const {count} = await sb.from('posts').select('id', {count:'exact', head:true}).eq('user_id', prof.id).eq('published', true);
-  const pe2 = $('stat-posts'); pe2.classList.remove('skel'); pe2.style = ''; pe2.textContent = count || 0;
-  const se  = $('stat-since'); se.classList.remove('skel');  se.style  = ''; se.textContent  = fmtY(prof.created_at);
+  const pe2 = $('stat-posts'); pe2.classList.remove('rsm-skel'); pe2.style = ''; pe2.textContent = count || 0;
+  const se  = $('stat-since'); se.classList.remove('rsm-skel');  se.style  = ''; se.textContent  = fmtY(prof.created_at);
 
   /* Posts */
   const {data:posts} = await sb.from('posts')
@@ -450,7 +662,7 @@ const un = new URLSearchParams(location.search).get('u');
 
   const grid = $('posts-grid');
   if (!posts || posts.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><span>📝</span><p>Nessun articolo pubblicato ancora.</p></div>';
+    grid.innerHTML = '<div class="rsm-profile-empty"><span>📝</span><p>Nessun articolo pubblicato ancora.</p></div>';
     return;
   }
   $('posts-count').textContent = `${posts.length} articol${posts.length === 1 ? 'o' : 'i'}`;
@@ -460,22 +672,22 @@ const un = new URLSearchParams(location.search).get('u');
     const banner = isValidHttpsUrl(p.image_url)
       ? `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.title || 'Articolo')}" loading="lazy">`
       : (ILL[p.image_type] || ILL.nature);
-    return `<article class="pcard">
-      <div class="pcard-img">
-        <a class="pcard-cat" href="${categoryHref(cat)}">${escapeHtml(cat)}</a>
+    return `<article class="rsm-pcard">
+      <div class="rsm-pcard-img">
+        <a class="rsm-pcard-cat" href="${categoryHref(cat)}">${escapeHtml(cat)}</a>
         ${banner}
       </div>
-      <div class="pcard-body">
-        <div class="pcard-meta">${fmt(p.published_at)}</div>
-        <div class="pcard-title"><a href="post?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></div>
-        ${p.excerpt ? `<div class="pcard-exc">${escapeHtml(p.excerpt)}</div>` : ''}
-        <div class="pcard-foot"><a href="post?id=${p.id}" class="btn-read">Leggi →</a></div>
+      <div class="rsm-pcard-body">
+        <div class="rsm-pcard-meta">${fmt(p.published_at)}</div>
+        <div class="rsm-pcard-title"><a href="post?id=${p.id}">${escapeHtml(p.title || 'Articolo')}</a></div>
+        ${p.excerpt ? `<div class="rsm-pcard-exc">${escapeHtml(p.excerpt)}</div>` : ''}
+        <div class="rsm-pcard-foot"><a href="post?id=${p.id}" class="rsm-pcard-read">Leggi →</a></div>
       </div>
     </article>`;
   }).join('');
 })();
 </script>
 
-  <!--PARTIAL:footer-->
+<!--PARTIAL:footer-->
 </body>
 </html>
