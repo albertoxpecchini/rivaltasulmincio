@@ -1219,6 +1219,27 @@
 })();
 </script>
 
+<link rel="stylesheet" href="/partials/footbar.css?v=12" />
+<style data-rsm-foot-critical>
+  .rsm-foot {
+    --rsm-foot-bg-1: #051c2c;
+    --rsm-foot-bg-2: #082649;
+    --rsm-foot-bg-3: #2a1147;
+    --rsm-foot-ink: var(--rsm-text-on-dark, #f9fbff);
+    --rsm-foot-ink-soft: var(--rsm-text-on-dark-soft, rgba(222, 236, 255, 0.78));
+    --rsm-foot-ink-mid: var(--rsm-text-on-dark-dim, rgba(194, 216, 245, 0.58));
+    --rsm-foot-line: rgba(160, 208, 255, 0.16);
+    --rsm-foot-line-strong: rgba(180, 218, 255, 0.34);
+    margin-top: 0 !important;
+    color: var(--rsm-foot-ink-soft) !important;
+    background:
+      radial-gradient(ellipse at 14% -10%, rgba(102, 255, 214, 0.18), transparent 38%),
+      radial-gradient(ellipse at 80% -8%, rgba(126, 188, 255, 0.22), transparent 42%),
+      radial-gradient(ellipse at 100% 100%, rgba(196, 122, 255, 0.20), transparent 48%),
+      linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%) !important;
+    border-top: 1px solid var(--rsm-foot-line-strong) !important;
+  }
+</style>
   <link rel="stylesheet" href="/partials/footbar.css?v=11" />
 <footer class="rsm-foot" role="contentinfo" data-component="section/footer" data-rsm-foot>
   <div class="rsm-foot__aurora" aria-hidden="true">
@@ -1515,6 +1536,7 @@
   }
 })();
 </script>
+
 
 </body>
 </html>
