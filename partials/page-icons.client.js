@@ -3,6 +3,7 @@
   var SHELL_CLASS = 'rsm-icon-shell';
   var ICON_CLASS = 'rsm-inline-icon';
   var TEXT_CLASS = 'rsm-icon-text';
+  var DEFAULT_ICON = 'fa-solid fa-sparkles';
   var MIN_PARAGRAPH_LENGTH = 8;
   var route = (location.pathname || '/').replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
   var pageKey = route === '/' ? 'home' : route.slice(1);
@@ -91,7 +92,7 @@
     for (var i = 0; i < CONTEXT_ICONS.length; i += 1) {
       if (node.closest(CONTEXT_ICONS[i].selector)) return CONTEXT_ICONS[i].icon;
     }
-    return PAGE_ICONS[pageKey] || 'fa-solid fa-sparkles';
+    return PAGE_ICONS[pageKey] || DEFAULT_ICON;
   }
 
   function resolveTone(node) {
