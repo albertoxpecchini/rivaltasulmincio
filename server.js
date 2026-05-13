@@ -416,13 +416,13 @@ async function handleKwContext(req, res) {
   res.end(JSON.stringify({ wiki: wikiExtract, claude: claudeSentence }));
 }
 
-// ── Newsletter handlers ────────────────────────────────────────────────────
+const MAX_REQUEST_BODY_SIZE = 4096; // bytes
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
     let data = '';
     req.on('data', chunk => {
       data += chunk;
-      if (data.length > 4096) {
+      if (data.length > MAX_REQUEST_BODY_SIZE) {
         req.destroy();
         reject(new Error('payload-too-large'));
       }
@@ -562,7 +562,9 @@ async function handleNewsletterSend(req, res) {
     return;
   }
 
-  // Send via Resend (https://resend.com) – free tier: 3 000 email/mese
+  // Send via Resend (https://resend.com) – free tier: 3,000 emails/month
+  // BCC approach: each batch is sent as one API call with recipients in BCC
+  // so each subscriber receives only their own address in headers.
   let sent = 0;
   const errors = [];
   // Send in batches of 50 to respect rate limits
