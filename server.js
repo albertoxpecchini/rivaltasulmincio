@@ -46,7 +46,11 @@ function preferredEncoding(rawHeader) {
 }
 
 function makeResponseCacheKey(rawUrl, encoding) {
-  return `${rawUrl || '/'}::${encoding}`;
+  return JSON.stringify([rawUrl || '/', encoding]);
+}
+
+function isCacheableMethod(method) {
+  return method === 'GET' || method === 'HEAD';
 }
 
 function getCachedResponse(key) {
@@ -65,7 +69,7 @@ function getCachedResponse(key) {
 function setCachedResponse(key, payload) {
   if (!RESPONSE_CACHE_TTL_MS || !payload) return;
   const entryBytes = Number(payload.body?.length || 0);
-  if (entryBytes <= 0 || entryBytes > RESPONSE_CACHE_MAX_ENTRY_BYTES) return;
+  if (entryBytes > RESPONSE_CACHE_MAX_ENTRY_BYTES) return;
 
   const current = RESPONSE_CACHE.get(key);
   if (current) {
@@ -807,7 +811,7 @@ function handler(req, res) {
   const encoding = preferredEncoding(req.headers['accept-encoding']);
   const responseCacheKey = makeResponseCacheKey(req.url, encoding);
 
-  if (req.method === 'GET') {
+  if (isCacheableMethod(req.method)) {
     const cached = getCachedResponse(responseCacheKey);
     if (cached) {
       if (matchesEtag(req.headers['if-none-match'], cached.etag)) {
@@ -820,7 +824,11 @@ function handler(req, res) {
         return;
       }
       res.writeHead(cached.statusCode, cached.headers);
-      res.end(cached.body);
+      if (req.method === 'HEAD') {
+        res.end();
+      } else {
+        res.end(cached.body);
+      }
       return;
     }
   }
@@ -860,7 +868,7 @@ function handler(req, res) {
       headers.Vary = 'Accept-Encoding';
     }
 
-    if (req.method === 'GET') {
+    if (isCacheableMethod(req.method)) {
       setCachedResponse(responseCacheKey, {
         statusCode: 200,
         headers: { ...headers },
@@ -870,7 +878,11 @@ function handler(req, res) {
     }
 
     res.writeHead(200, headers);
-    res.end(compressed.body);
+    if (req.method === 'HEAD') {
+      res.end();
+    } else {
+      res.end(compressed.body);
+    }
   });
 }
 
