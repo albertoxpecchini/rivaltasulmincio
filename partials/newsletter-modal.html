@@ -117,18 +117,6 @@
   padding: 46px 42px 42px;
 }
 
-/* Icon badge */
-.rsm-nw-modal__icon {
-  width: 52px; height: 52px;
-  border-radius: 15px;
-  background: linear-gradient(135deg, rgba(31, 191, 125, 0.16), rgba(74, 155, 255, 0.16));
-  border: 1px solid rgba(74, 155, 255, 0.22);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  color: rgba(100, 200, 255, 0.9);
-  margin-bottom: 18px;
-}
-
 /* Kicker */
 .rsm-nw-modal__kicker {
   font-size: 0.76rem;
@@ -341,16 +329,11 @@
 
     <div class="rsm-nw-modal__body">
 
-      <!-- Icon -->
-      <div class="rsm-nw-modal__icon" aria-hidden="true">
-        <i class="fa-solid fa-envelope-open-text"></i>
-      </div>
-
       <!-- Text -->
       <p class="rsm-nw-modal__kicker">Pro Loco &middot; Newsletter</p>
-      <h3 class="rsm-nw-modal__title" id="newsletter-modal-title">
+      <h2 class="rsm-nw-modal__title" id="newsletter-modal-title">
         Ti avvisiamo noi<br>quando <em>inizia</em>
-      </h3>
+      </h2>
       <p class="rsm-nw-modal__lead">
         Lasciaci la tua email: ti scriviamo solo per la
         <strong>Festa del Pesce</strong> e per gli eventi importanti
@@ -373,7 +356,6 @@
           </div>
           <p class="rsm-nw-modal__status" id="newsletter-modal-status" role="status" aria-live="polite"></p>
           <button class="rsm-nw-modal__submit" type="submit" id="newsletter-modal-btn">
-            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
             <span>Avvisami</span>
           </button>
           <p class="rsm-nw-modal__privacy">
