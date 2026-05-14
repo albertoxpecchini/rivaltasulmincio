@@ -823,7 +823,6 @@
     <div class="functions-grid">
 
       <div class="fn-card fn-card--wide">
-        <div class="fn-card-icon">🏡</div>
         <div class="fn-card-title">Homepage</div>
         <div class="fn-card-route">/</div>
         <div class="fn-card-desc">Hero video in fullscreen (MP4+GIF), carousel Swiper, sezioni esperienze, galleria fotografica, Festa del Pesce, news, contatti. SEO Schema.org completo.</div>
@@ -831,7 +830,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">🔐</div>
         <div class="fn-card-title">Login</div>
         <div class="fn-card-route">/login</div>
         <div class="fn-card-desc">Autenticazione con Supabase Auth. Rate limiting attivo: <span id="fc-rl-a">5</span> tentativi / <span id="fc-rl-w">10</span> min, blocco <span id="fc-rl-l">15</span> min. Gestione errori, redirect post-login.</div>
@@ -839,7 +837,6 @@
       </div>
 
       <div class="fn-card fn-card--wide">
-        <div class="fn-card-icon">📊</div>
         <div class="fn-card-title">Dashboard</div>
         <div class="fn-card-route">/dashboard</div>
         <div class="fn-card-desc">Area personale dell'utente autenticato. Gestione contenuti, visualizzazione post, impostazioni rapide. Alias accessibile da <code>/me</code>.</div>
@@ -847,7 +844,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">✍️</div>
         <div class="fn-card-title">Scrivi</div>
         <div class="fn-card-route">/write</div>
         <div class="fn-card-desc">Editor per la creazione di post e articoli. Supporto upload immagini, salvataggio su Supabase, anteprima in tempo reale.</div>
@@ -855,7 +851,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">📄</div>
         <div class="fn-card-title">Post</div>
         <div class="fn-card-route">/post</div>
         <div class="fn-card-desc">Visualizzazione di un singolo articolo. Contenuto formattato, autore, data, sezione commenti con controllo privacy.</div>
@@ -863,7 +858,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">👤</div>
         <div class="fn-card-title">Profilo</div>
         <div class="fn-card-route">/profile</div>
         <div class="fn-card-desc">Profilo pubblico dell'utente. Dati anagrafici, bio, storico articoli pubblicati.</div>
@@ -871,7 +865,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">✏️</div>
         <div class="fn-card-title">Modifica Profilo</div>
         <div class="fn-card-route">/modifica-profilo</div>
         <div class="fn-card-desc">Modifica dei dati personali, avatar, bio. Salvataggio diretto su Supabase con feedback visivo.</div>
@@ -879,7 +872,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">⚙️</div>
         <div class="fn-card-title">Preferenze</div>
         <div class="fn-card-route">/preferenze</div>
         <div class="fn-card-desc">Tema chiaro/scuro/auto, 4 dimensioni testo, densità UI, alto contrasto, privacy commenti (pubblica/membri/off), frequenza notifiche.</div>
@@ -887,7 +879,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">🏷️</div>
         <div class="fn-card-title">Categorie</div>
         <div class="fn-card-route">/category</div>
         <div class="fn-card-desc">Browsing dei contenuti per categoria. Filtro dinamico, lista articoli, navigazione rapida per argomento.</div>
@@ -895,7 +886,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">🔑</div>
         <div class="fn-card-title">Reset Password</div>
         <div class="fn-card-route">/reset</div>
         <div class="fn-card-desc">Recupero credenziali via email. Flusso completo: richiesta link, verifica token, nuova password.</div>
@@ -903,7 +893,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">🛡️</div>
         <div class="fn-card-title">Privacy Policy</div>
         <div class="fn-card-route">/privacy</div>
         <div class="fn-card-desc">Informativa privacy GDPR completa. Tipologie di dati raccolti, finalità, durata di conservazione, diritti dell'interessato.</div>
@@ -911,7 +900,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">🍪</div>
         <div class="fn-card-title">Cookie Policy</div>
         <div class="fn-card-route">/cookie</div>
         <div class="fn-card-desc">Informativa cookie. Distinzione tra cookie tecnici, analitici e di terze parti. Modalità di gestione e consenso.</div>
@@ -919,7 +907,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">📋</div>
         <div class="fn-card-title">Note Legali</div>
         <div class="fn-card-route">/note-legali</div>
         <div class="fn-card-desc">Termini e condizioni d'uso del sito. Limitazioni di responsabilità, proprietà intellettuale, legge applicabile.</div>
@@ -927,7 +914,6 @@
       </div>
 
       <div class="fn-card">
-        <div class="fn-card-icon">📖</div>
         <div class="fn-card-title">Storia</div>
         <div class="fn-card-route">/storia</div>
         <div class="fn-card-desc">Questa pagina. Cronologia completa del progetto, funzioni, stack tecnologico, numeri e identità visiva.</div>

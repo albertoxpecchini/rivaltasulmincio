@@ -253,7 +253,7 @@
       </label>
     </div>
     <div class="config-actions">
-      <button class="run-btn" type="button" id="save-config">💾 Salva e ricarica</button>
+      <button class="run-btn" type="button" id="save-config">Salva e ricarica</button>
       <button class="btn-inline" type="button" id="reset-config">Ripristina default</button>
       <button class="btn-inline" type="button" id="copy-config-link">Copia link setup</button>
     </div>
@@ -264,7 +264,7 @@
     <span>Esecuzione in corso…</span>
   </div>
 
-  <button class="run-btn" onclick="runAll()">▶ Riesegui tutti i test</button>
+  <button class="run-btn" onclick="runAll()">Riesegui tutti i test</button>
 
   <div class="grid" id="grid"></div>
 </div>
@@ -337,7 +337,7 @@ const TESTS = [
       const { data, error } = await sb.from('categories').select('*').limit(5);
       if (error) {
         if (error.code === '42P01' || error.message?.includes('does not exist')) {
-          return '⚠ Non esiste (le categorie sono gestite lato client — OK)';
+          return 'Non esiste (le categorie sono gestite lato client — OK)';
         }
         throw error;
       }
@@ -352,7 +352,7 @@ const TESTS = [
       const { data, error } = await sb.from('comments').select('id').limit(1);
       if (error) {
         if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
-          return '⚠ Non esiste ancora — funzionalità commenti non attiva';
+          return 'Non esiste ancora — funzionalità commenti non attiva';
         }
         throw error;
       }
@@ -367,7 +367,7 @@ const TESTS = [
       const { data, error } = await sb.from('likes').select('id').limit(1);
       if (error) {
         if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
-          return '⚠ Non esiste ancora — funzionalità like non attiva';
+          return 'Non esiste ancora — funzionalità like non attiva';
         }
         throw error;
       }
@@ -382,7 +382,7 @@ const TESTS = [
       const { data, error } = await sb.from('notifications').select('id').limit(1);
       if (error) {
         if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
-          return '⚠ Non esiste ancora';
+          return 'Non esiste ancora';
         }
         throw error;
       }
@@ -407,7 +407,7 @@ const TESTS = [
     run: async () => {
       const { data, error } = await sb.from('profiles').select('id,username').limit(3);
       if (error) throw error;
-      if (!data || data.length === 0) return '⚠ Nessun profilo o RLS blocca la lettura pubblica';
+      if (!data || data.length === 0) return 'Nessun profilo o RLS blocca la lettura pubblica';
       return `OK — ${data.length} profili leggibili pubblicamente`;
     }
   },
@@ -539,7 +539,7 @@ function updateSummary() {
     <span style="color:#2E7D32;font-weight:700">${passed} PASS</span> &nbsp;|&nbsp;
     <span style="color:#b94747;font-weight:700">${failed} FAIL</span> &nbsp;|&nbsp;
     <span style="color:var(--ink-soft)">${total - done} in attesa</span>
-    ${done === total ? `&nbsp;— <strong>${pct === 100 ? '✅ Tutti i test superati' : `⚠ ${failed} test falliti`}</strong>` : ''}
+    ${done === total ? `&nbsp;— <strong>${pct === 100 ? 'Tutti i test superati' : `${failed} test falliti`}</strong>` : ''}
   `;
 }
 
