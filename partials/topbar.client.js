@@ -63,8 +63,8 @@
 
   function item(label, href, active, primary, iconClass) {
     var safeClass = safeIconClass(iconClass);
-    var icon = safeClass ? '<i class="' + safeClass + '" aria-hidden="true"></i>' : '';
-    return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></a>';
+    var icon = safeClass ? '<i class="' + safeClass + '" aria-hidden="true"></i> ' : '';
+    return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span></a>';
   }
 
   function buildMenu(username, color, emoji, email) {
@@ -116,7 +116,7 @@
       + item('Cookie', '/cookie', isCookie, false, 'fa-solid fa-cookie-bite')
       + item('Note legali', '/note-legali', isNoteLegali, false, 'fa-solid fa-scale-balanced')
       + '<div class="profile-dropdown__sep"></div>'
-      + '<button type="button" data-action="logout" class="danger" role="menuitem"><span><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i><span>Esci</span></span><span aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span></button>'
+      + '<button type="button" data-action="logout" class="danger" role="menuitem"><span><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span>Esci</span></span></button>'
       + '</div></div>';
   }
 
@@ -202,19 +202,19 @@
 
   /* ── Ricerca ───────────────────────────────────────────────── */
   var SEARCH_INDEX = [
-    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro',      icon: 'fa-solid fa-house' },
-    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa',      icon: 'fa-solid fa-fish-fins' },
-    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi',     icon: 'fa-solid fa-calendar-days' },
-    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria',   icon: 'fa-solid fa-camera-retro' },
-    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio', icon: 'fa-solid fa-tree' },
-    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti',   icon: 'fa-solid fa-map-location-dot' },
-    { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category',   icon: 'fa-solid fa-folder-open' },
-    { title: 'Dashboard',             desc: 'Il tuo spazio personale',                   url: '/dashboard',  icon: 'fa-solid fa-gauge-high' },
-    { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',               url: '/write',      icon: 'fa-solid fa-pen-nib' },
-    { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',          url: '/category',   icon: 'fa-solid fa-users' },
-    { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',      url: '/profile',    icon: 'fa-solid fa-user' },
-    { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',          url: '/preferenze', icon: 'fa-solid fa-sliders' },
-    { title: 'Pro Loco Rivalta',      desc: "L'associazione del territorio",             url: '/',           icon: 'fa-solid fa-landmark' },
+    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro' },
+    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa' },
+    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi' },
+    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria' },
+    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio' },
+    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti' },
+    { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category' },
+    { title: 'Dashboard',             desc: 'Il tuo spazio personale',                   url: '/dashboard' },
+    { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',               url: '/write' },
+    { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',          url: '/category' },
+    { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',      url: '/profile' },
+    { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',          url: '/preferenze' },
+    { title: 'Pro Loco Rivalta',      desc: "L'associazione del territorio",             url: '/' },
   ];
 
   function searchItems(query) {
@@ -236,12 +236,10 @@
     }
     list.innerHTML = results.map(function (r) {
       return '<li><a class="search-result-item" href="' + escapeHtml(r.url) + '">'
-        + '<span class="search-result-icon" aria-hidden="true"><i class="' + escapeHtml(r.icon) + '"></i></span>'
         + '<span class="search-result-body">'
         + '<span class="search-result-title">' + escapeHtml(r.title) + '</span>'
         + '<span class="search-result-desc">' + escapeHtml(r.desc) + '</span>'
         + '</span>'
-        + '<span class="search-result-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>'
         + '</a></li>';
     }).join('');
   }
