@@ -371,7 +371,7 @@
       <!-- Navigation buttons -->
       <div class="post-nav">
         <a href="/#news" class="btn btn-ghost btn-sm">← Torna alle notizie</a>
-        <a href="/" class="btn btn-ghost btn-sm">🏠 Home</a>
+        <a href="/" class="btn btn-ghost btn-sm">Home</a>
       </div>
 
       <!-- Content injected here -->
@@ -632,13 +632,11 @@
 
   function syncLikeUi() {
     const btn = document.getElementById('like-btn');
-    const icon = document.getElementById('like-icon');
     const count = document.getElementById('like-count');
     const hint = document.getElementById('like-hint');
-    if (!btn || !icon || !count) return;
+    if (!btn || !count) return;
 
     btn.classList.toggle('on', viewerLikedPost);
-    icon.textContent = viewerLikedPost ? '❤️' : '🤍';
     count.textContent = String(Math.max(0, likesCount));
 
     if (hint) {
@@ -1263,7 +1261,6 @@
     </div>
     <div class="post-reactions">
       <button class="like-btn" id="like-btn" type="button">
-        <span id="like-icon">🤍</span>
         <span>Mi piace</span>
         <span class="like-count" id="like-count">0</span>
       </button>

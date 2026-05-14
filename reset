@@ -200,7 +200,6 @@
     <!-- State: invalid token -->
     <div class="state" id="s-invalid">
       <div class="token-err">
-        <div class="big-icon">🔗</div>
         <div class="success-title" style="color:var(--err)">Link non valido</div>
         <p class="success-sub">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
         <a href="login" class="btn-outline">← Torna al login</a>
@@ -213,14 +212,14 @@
       <p class="card-sub">Scegli una password sicura per il tuo account.</p>
 
       <div class="err-banner" id="err-banner">
-        <span>⚠️</span><span id="err-text"></span>
+        <span id="err-text"></span>
       </div>
 
       <div class="field">
         <label>Nuova password</label>
         <div class="input-wrap">
           <input type="password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password">
-          <button class="eye-btn" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1">👁</button>
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1">Mostra</button>
         </div>
         <div class="strength-bar">
           <div class="seg" id="seg0"></div>
@@ -235,7 +234,7 @@
         <label>Conferma password</label>
         <div class="input-wrap">
           <input type="password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password">
-          <button class="eye-btn" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1">👁</button>
+          <button class="eye-btn" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1">Mostra</button>
         </div>
       </div>
 
@@ -250,7 +249,6 @@
     <!-- State: success -->
     <div class="state" id="s-success">
       <div style="text-align:center;padding:8px 0">
-        <div class="big-icon">✅</div>
         <div class="success-title">Password aggiornata!</div>
         <p class="success-sub">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
         <a href="login" class="btn-outline" style="margin:0 auto">Vai al login →</a>
@@ -290,7 +288,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 function toggleEye(id, btn){
   const el = document.getElementById(id);
   el.type = el.type==='password' ? 'text' : 'password';
-  btn.textContent = el.type==='password' ? '👁' : '🙈';
+  btn.textContent = el.type==='password' ? 'Mostra' : 'Nascondi';
 }
 
 // ── Strength meter ──

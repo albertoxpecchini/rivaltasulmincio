@@ -4,7 +4,6 @@
   var ICON_CLASS = 'rsm-inline-icon';
   var TEXT_CLASS = 'rsm-icon-text';
   var DEFAULT_ICON = 'fa-solid fa-sparkles';
-  var MIN_PARAGRAPH_LENGTH = 8;
   var route = (window.location.pathname || '/').replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
   var pageKey = route === '/' ? 'home' : route.slice(1);
 
@@ -59,26 +58,25 @@
   ];
 
   var BASE_TARGETS = [
-    'h1', 'h2', 'h3', 'p',
-    '.rsm-h1', '.rsm-h2', '.rsm-kicker', '.rsm-lead', '.rsm-body',
-    '.rsm-banner__title', '.rsm-banner__sub', '.rsm-modal__title',
-    '.page-title', '.page-eyebrow', '.page-sub',
-    '.card-title', '.section-title', '.section-kicker', '.section-label',
-    '.timeline-heading', '.timeline-date',
-    '.hero-eyebrow', '.hero-title', '.hero-subtitle',
-    '.bc-kicker', '.bc-title', '.bc-sub', '.bc-stat-label', '.bc-stat-sub', '.bc-kpi-lbl', '.bc-kpi-meta',
-    '.post-title', '.post-lead', '.reading-kicker', '.discussion-note', '.note-line',
+    'h1', 'h2', 'h3',
+    '.rsm-h1', '.rsm-h2',
+    '.rsm-banner__title', '.rsm-modal__title',
+    '.page-title',
+    '.card-title', '.section-title',
+    '.timeline-heading',
+    '.hero-title',
+    '.bc-title',
+    '.post-title',
     '.rsm-category-title', '.rsm-profile-username',
-    '.rsm-write__kicker', '.rsm-write__side-title', '.rsm-write__side-text',
-    '.rsm-atlas-note', '.rsm-atlas-guide', '.rsm-valli__drop',
-    '.release-changes-title', '.release-vname', '.release-date-text', '.rel-msg', '.rel-author',
-    '.fn-card-title', '.error-wrap h2', '.error-wrap p'
+    '.rsm-write__side-title',
+    '.release-vname',
+    '.fn-card-title', '.error-wrap h2'
   ];
-  var DOC_TARGETS = ['h1', 'h2', 'h3', 'p', '.doc-eyebrow', '.doc-title', '.doc-meta', '.toc-title', '.section-title', '.highlight-box'];
-  var HERO_TARGETS = ['h1', 'p', '.hero-eyebrow', '.hero-title', '.hero-subtitle'];
-  var PAGE_WRAP_TARGETS = ['p', '.section-label', '.timeline-heading', '.timeline-date', '.fn-card-title', '.release-changes-title', '.release-vname', '.release-date-text', '.rel-msg', '.rel-author'];
-  var NEWSLETTER_TARGETS = ['.rsm-kicker', '.rsm-modal__title', '.rsm-lead'];
-  var POST_TARGETS = ['h1', 'h2', 'h3', 'p', '.post-title', '.post-lead', '.reading-kicker', '.discussion-note'];
+  var DOC_TARGETS = ['h1', 'h2', 'h3', '.doc-title', '.section-title'];
+  var HERO_TARGETS = ['h1', '.hero-title'];
+  var PAGE_WRAP_TARGETS = ['.timeline-heading', '.fn-card-title', '.release-vname'];
+  var NEWSLETTER_TARGETS = ['.rsm-modal__title'];
+  var POST_TARGETS = ['h1', 'h2', 'h3', '.post-title'];
   var TARGET_SELECTOR = [
     'main :is(' + BASE_TARGETS.join(', ') + ')',
     '.doc-wrap :is(' + DOC_TARGETS.join(', ') + ')',
@@ -96,12 +94,6 @@
   }
 
   function resolveTone(node) {
-    if (node.matches('.rsm-kicker, .doc-eyebrow, .doc-meta, .toc-title, .section-kicker, .section-label, .timeline-date, .hero-eyebrow, .page-eyebrow, .bc-kicker, .bc-stat-label, .bc-kpi-lbl, .bc-kpi-meta, .reading-kicker, .discussion-note, .rsm-write__kicker, .release-changes-title, .release-date-text, .rel-author')) {
-      return 'soft';
-    }
-    if (node.matches('p, .rsm-lead, .rsm-body, .hero-subtitle, .page-sub, .bc-sub, .bc-stat-sub, .post-lead, .note-line, .rsm-write__side-text, .rsm-atlas-note, .rsm-atlas-guide, .rsm-valli__drop, .highlight-box, .rel-msg, .error-wrap p')) {
-      return 'muted';
-    }
     return 'default';
   }
 
@@ -111,7 +103,6 @@
     if (node.querySelector('input, textarea, select, button')) return false;
     var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
     if (!text) return false;
-    if (node.matches('p') && text.length < MIN_PARAGRAPH_LENGTH) return false;
     return true;
   }
 

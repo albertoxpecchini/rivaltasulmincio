@@ -644,10 +644,10 @@ const un = new URLSearchParams(location.search).get('u');
   $('displayname').outerHTML = `<p class="rsm-profile-displayname" id="displayname">${escapeHtml(prof.display_name || prof.username)}</p>`;
 
   /* Chips */
-  const roleLabels = { admin:'⚙️ Admin', user:'👤 Utente', reader:'👁 Lettore' };
+  const roleLabels = { admin:'Admin', user:'Utente', reader:'Lettore' };
   const chipsHtml = [];
-  if (prof.comune) chipsHtml.push(`<span class="rsm-pchip">📍 ${escapeHtml(prof.comune)}</span>`);
-  chipsHtml.push(`<span class="rsm-pchip ${prof.role === 'admin' ? 'rsm-pchip--admin' : ''}">${roleLabels[prof.role] || '👤 Utente'}</span>`);
+  if (prof.comune) chipsHtml.push(`<span class="rsm-pchip">${escapeHtml(prof.comune)}</span>`);
+  chipsHtml.push(`<span class="rsm-pchip ${prof.role === 'admin' ? 'rsm-pchip--admin' : ''}">${roleLabels[prof.role] || 'Utente'}</span>`);
   $('chips').innerHTML = chipsHtml.join('');
   if (prof.bio) $('bio').textContent = prof.bio;
 
@@ -664,7 +664,7 @@ const un = new URLSearchParams(location.search).get('u');
 
   const grid = $('posts-grid');
   if (!posts || posts.length === 0) {
-    grid.innerHTML = '<div class="rsm-profile-empty"><span>📝</span><p>Nessun articolo pubblicato ancora.</p></div>';
+    grid.innerHTML = '<div class="rsm-profile-empty"><p>Nessun articolo pubblicato ancora.</p></div>';
     return;
   }
   $('posts-count').textContent = `${posts.length} articol${posts.length === 1 ? 'o' : 'i'}`;

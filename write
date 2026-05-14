@@ -1061,7 +1061,7 @@
         opt.classList.add('selected');
         selectedImg = opt.dataset.key;
         const btnLbl = $('img-btn-label');
-        if (btnLbl) btnLbl.textContent = '🖼 ' + (opt.querySelector('.img-label')?.textContent || opt.dataset.key);
+        if (btnLbl) btnLbl.textContent = opt.querySelector('.img-label')?.textContent || opt.dataset.key;
         closeDrop('compose-img-toggle', 'img-menu');
       });
     });
