@@ -21,7 +21,7 @@ const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
 const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
 const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
 const RESPONSE_CACHE_TTL_MS = IS_PRODUCTION ? 30 * 1000 : 0;
-const RESPONSE_CACHE_MAX_ENTRIES = 220;
+const RESPONSE_CACHE_MAX_ENTRIES = 256;
 const RESPONSE_CACHE_MAX_ENTRY_BYTES = 512 * 1024;
 const RESPONSE_CACHE_MAX_TOTAL_BYTES = 20 * 1024 * 1024;
 const BROTLI_OPTIONS = {
@@ -96,7 +96,19 @@ function matchesEtag(ifNoneMatchHeader, etag) {
   const header = String(ifNoneMatchHeader || '').trim();
   if (!header) return false;
   if (header === '*') return true;
-  return header.split(',').map(v => v.trim()).includes(etag);
+  const normalize = (value) => {
+    let token = String(value || '').trim();
+    token = token.replace(/^W\//i, '').trim();
+    if (token.startsWith('"') && token.endsWith('"')) {
+      token = token.slice(1, -1);
+    }
+    return token;
+  };
+  const target = normalize(etag);
+  return header.split(',').some(v => {
+    const token = v.trim();
+    return token === '*' || normalize(token) === target;
+  });
 }
 
 function getAssetVersion(assetPath) {
