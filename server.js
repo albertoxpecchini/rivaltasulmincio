@@ -17,10 +17,13 @@ const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@50
 const FONT_AWESOME_HREF = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
 const PAGE_ICONS_CLIENT_JS = '/partials/page-icons.client.js';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? 5 * 60 * 1000 : 1000;
-const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? 5 * 60 * 1000 : 1000;
+const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
+const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
+const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
 const RESPONSE_CACHE_TTL_MS = IS_PRODUCTION ? 30 * 1000 : 0;
 const RESPONSE_CACHE_MAX_ENTRIES = 220;
+const RESPONSE_CACHE_MAX_ENTRY_BYTES = 512 * 1024;
+const RESPONSE_CACHE_MAX_TOTAL_BYTES = 20 * 1024 * 1024;
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
@@ -29,6 +32,7 @@ const BROTLI_OPTIONS = {
 const ASSET_VERSION_CACHE = new Map();
 const PARTIAL_CACHE = new Map();
 const RESPONSE_CACHE = new Map();
+let responseCacheBytes = 0;
 
 function cacheIsFresh(entry, ttlMs) {
   return Boolean(entry) && (Date.now() - entry.ts) < ttlMs;
@@ -49,7 +53,10 @@ function getCachedResponse(key) {
   if (!RESPONSE_CACHE_TTL_MS) return null;
   const entry = RESPONSE_CACHE.get(key);
   if (!cacheIsFresh(entry, RESPONSE_CACHE_TTL_MS)) {
-    if (entry) RESPONSE_CACHE.delete(key);
+    if (entry) {
+      responseCacheBytes -= Number(entry.body?.length || 0);
+      RESPONSE_CACHE.delete(key);
+    }
     return null;
   }
   return entry;
@@ -57,11 +64,35 @@ function getCachedResponse(key) {
 
 function setCachedResponse(key, payload) {
   if (!RESPONSE_CACHE_TTL_MS || !payload) return;
+  const entryBytes = Number(payload.body?.length || 0);
+  if (entryBytes <= 0 || entryBytes > RESPONSE_CACHE_MAX_ENTRY_BYTES) return;
+
+  const current = RESPONSE_CACHE.get(key);
+  if (current) {
+    responseCacheBytes -= Number(current.body?.length || 0);
+  }
+
   RESPONSE_CACHE.set(key, { ...payload, ts: Date.now() });
-  if (RESPONSE_CACHE.size <= RESPONSE_CACHE_MAX_ENTRIES) return;
-  const keys = RESPONSE_CACHE.keys();
-  const oldest = keys.next();
-  if (!oldest.done) RESPONSE_CACHE.delete(oldest.value);
+  responseCacheBytes += entryBytes;
+
+  while (
+    RESPONSE_CACHE.size > RESPONSE_CACHE_MAX_ENTRIES ||
+    responseCacheBytes > RESPONSE_CACHE_MAX_TOTAL_BYTES
+  ) {
+    const keys = RESPONSE_CACHE.keys();
+    const oldest = keys.next();
+    if (oldest.done) break;
+    const stale = RESPONSE_CACHE.get(oldest.value);
+    responseCacheBytes -= Number(stale?.body?.length || 0);
+    RESPONSE_CACHE.delete(oldest.value);
+  }
+}
+
+function matchesEtag(ifNoneMatchHeader, etag) {
+  const header = String(ifNoneMatchHeader || '').trim();
+  if (!header) return false;
+  if (header === '*') return true;
+  return header.split(',').map(v => v.trim()).includes(etag);
 }
 
 function getAssetVersion(assetPath) {
@@ -779,7 +810,7 @@ function handler(req, res) {
   if (req.method === 'GET') {
     const cached = getCachedResponse(responseCacheKey);
     if (cached) {
-      if (req.headers['if-none-match'] === cached.etag) {
+      if (matchesEtag(req.headers['if-none-match'], cached.etag)) {
         res.writeHead(304, {
           ...SECURITY_HEADERS,
           'Cache-Control': cacheControl,
@@ -805,7 +836,7 @@ function handler(req, res) {
     const contentType = isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream');
     const etag = createEntityTag(body);
 
-    if (req.headers['if-none-match'] === etag) {
+    if (matchesEtag(req.headers['if-none-match'], etag)) {
       res.writeHead(304, {
         ...SECURITY_HEADERS,
         'Cache-Control': cacheControl,
