@@ -16,19 +16,66 @@ const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/s
 const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap';
 const FONT_AWESOME_HREF = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
 const PAGE_ICONS_CLIENT_JS = '/partials/page-icons.client.js';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? 5 * 60 * 1000 : 1000;
+const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? 5 * 60 * 1000 : 1000;
+const RESPONSE_CACHE_TTL_MS = IS_PRODUCTION ? 30 * 1000 : 0;
+const RESPONSE_CACHE_MAX_ENTRIES = 220;
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
   }
 };
+const ASSET_VERSION_CACHE = new Map();
+const PARTIAL_CACHE = new Map();
+const RESPONSE_CACHE = new Map();
+
+function cacheIsFresh(entry, ttlMs) {
+  return Boolean(entry) && (Date.now() - entry.ts) < ttlMs;
+}
+
+function preferredEncoding(rawHeader) {
+  const accepts = String(rawHeader || '');
+  if (accepts.includes('br')) return 'br';
+  if (accepts.includes('gzip')) return 'gzip';
+  return 'identity';
+}
+
+function makeResponseCacheKey(rawUrl, encoding) {
+  return `${rawUrl || '/'}::${encoding}`;
+}
+
+function getCachedResponse(key) {
+  if (!RESPONSE_CACHE_TTL_MS) return null;
+  const entry = RESPONSE_CACHE.get(key);
+  if (!cacheIsFresh(entry, RESPONSE_CACHE_TTL_MS)) {
+    if (entry) RESPONSE_CACHE.delete(key);
+    return null;
+  }
+  return entry;
+}
+
+function setCachedResponse(key, payload) {
+  if (!RESPONSE_CACHE_TTL_MS || !payload) return;
+  RESPONSE_CACHE.set(key, { ...payload, ts: Date.now() });
+  if (RESPONSE_CACHE.size <= RESPONSE_CACHE_MAX_ENTRIES) return;
+  const keys = RESPONSE_CACHE.keys();
+  const oldest = keys.next();
+  if (!oldest.done) RESPONSE_CACHE.delete(oldest.value);
+}
 
 function getAssetVersion(assetPath) {
-  const diskPath = path.join(ROOT, assetPath.replace(/^\//, ''));
-  try {
-    return Math.floor(fs.statSync(diskPath).mtimeMs).toString(36);
-  } catch (_) {
-    return '1';
+  const cached = ASSET_VERSION_CACHE.get(assetPath);
+  if (cacheIsFresh(cached, ASSET_VERSION_CACHE_TTL_MS)) {
+    return cached.value;
   }
+  const diskPath = path.join(ROOT, assetPath.replace(/^\//, ''));
+  let version = '1';
+  try {
+    version = Math.floor(fs.statSync(diskPath).mtimeMs).toString(36);
+  } catch (_) {}
+  ASSET_VERSION_CACHE.set(assetPath, { value: version, ts: Date.now() });
+  return version;
 }
 
 function versionedAssetPath(assetPath) {
@@ -48,7 +95,7 @@ function createEntityTag(body) {
 }
 
 function getCacheControl(rawUrl, isPage) {
-  if (process.env.NODE_ENV !== 'production') return 'no-store';
+  if (!IS_PRODUCTION) return 'no-store';
 
   if (isPage) {
     return 'public, max-age=0, must-revalidate';
@@ -62,22 +109,21 @@ function getCacheControl(rawUrl, isPage) {
   return 'public, max-age=86400, stale-while-revalidate=3600';
 }
 
-function compressBody(req, contentType, body) {
-  const accepts = String(req.headers['accept-encoding'] || '');
+function compressBody(contentType, body, encoding) {
   const bytes = Buffer.isBuffer(body) ? body : Buffer.from(body);
 
   if (!COMPRESSIBLE_TYPE_RE.test(contentType || '') || bytes.length < 1024) {
     return { body: bytes };
   }
 
-  if (accepts.includes('br')) {
+  if (encoding === 'br') {
     return {
       body: zlib.brotliCompressSync(bytes, BROTLI_OPTIONS),
       encoding: 'br'
     };
   }
 
-  if (accepts.includes('gzip')) {
+  if (encoding === 'gzip') {
     return {
       body: zlib.gzipSync(bytes, { level: 6 }),
       encoding: 'gzip'
@@ -92,12 +138,19 @@ function loadPartial(name) {
   const resolvedName = name === 'footer'
     ? 'footbar'
     : (name === 'nav' ? 'topbar' : name);
-  const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
-  try {
-    return versionHtmlAssetUrls(fs.readFileSync(p, 'utf8'));
-  } catch (_) {
-    return `<!-- partial "${name}" not found -->`;
+  const cached = PARTIAL_CACHE.get(resolvedName);
+  if (cacheIsFresh(cached, PARTIAL_CACHE_TTL_MS)) {
+    return cached.value;
   }
+  const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
+  let partial;
+  try {
+    partial = versionHtmlAssetUrls(fs.readFileSync(p, 'utf8'));
+  } catch (_) {
+    partial = `<!-- partial "${name}" not found -->`;
+  }
+  PARTIAL_CACHE.set(resolvedName, { value: partial, ts: Date.now() });
+  return partial;
 }
 
 function injectTopbarAssets(html) {
@@ -720,6 +773,26 @@ function handler(req, res) {
   const ext       = path.extname(filePath).toLowerCase();
   const isPage    = isHtmlPage(filePath);
   const cacheControl = getCacheControl(req.url, isPage);
+  const encoding = preferredEncoding(req.headers['accept-encoding']);
+  const responseCacheKey = makeResponseCacheKey(req.url, encoding);
+
+  if (req.method === 'GET') {
+    const cached = getCachedResponse(responseCacheKey);
+    if (cached) {
+      if (req.headers['if-none-match'] === cached.etag) {
+        res.writeHead(304, {
+          ...SECURITY_HEADERS,
+          'Cache-Control': cacheControl,
+          ETag: cached.etag
+        });
+        res.end();
+        return;
+      }
+      res.writeHead(cached.statusCode, cached.headers);
+      res.end(cached.body);
+      return;
+    }
+  }
 
   fs.readFile(filePath, isPage ? 'utf8' : null, (err, data) => {
     if (err) {
@@ -742,7 +815,7 @@ function handler(req, res) {
       return;
     }
 
-    const compressed = compressBody(req, contentType, body);
+    const compressed = compressBody(contentType, body, encoding);
     const headers = {
       ...SECURITY_HEADERS,
       'Content-Type': contentType,
@@ -754,6 +827,15 @@ function handler(req, res) {
     if (compressed.encoding) {
       headers['Content-Encoding'] = compressed.encoding;
       headers.Vary = 'Accept-Encoding';
+    }
+
+    if (req.method === 'GET') {
+      setCachedResponse(responseCacheKey, {
+        statusCode: 200,
+        headers: { ...headers },
+        body: compressed.body,
+        etag
+      });
     }
 
     res.writeHead(200, headers);
