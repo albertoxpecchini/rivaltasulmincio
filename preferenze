@@ -15,409 +15,470 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="/theme.css" />
   <style>
-    /* ───── Preferenze page layout (inline; was preferenze.css) ───── */
+    /* ───────── Preferenze · layout editoriale ───────── */
     .rsm-page {
-      width: min(100% - 32px, 1100px);
+      width: var(--rsm-container);
       margin: 0 auto;
-      padding: clamp(28px, 5vw, 56px) 0 80px;
+      padding: var(--rsm-s-16) 0 var(--rsm-s-24);
       display: flex;
       flex-direction: column;
-      gap: var(--rsm-s-8, 32px);
+      gap: var(--rsm-s-24);
     }
-    .rsm-page-header { display: flex; flex-direction: column; gap: var(--rsm-s-2, 8px); }
-    .rsm-page-header__title {
-      font-family: var(--serif, "Fraunces", Georgia, serif);
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--rsm-text-strong);
-      margin: 0;
+
+    /* HERO */
+    .prefs-hero {
+      display: grid;
+      gap: var(--rsm-s-12);
+      grid-template-columns: 1fr;
+      align-items: end;
     }
-    .rsm-page-header__subtitle {
-      font-size: 16px;
-      color: var(--rsm-text-soft);
-      margin: 0;
+    @media (min-width: 920px) {
+      .prefs-hero {
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: var(--rsm-s-16);
+      }
+    }
+    .prefs-hero__left {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-6);
       max-width: 60ch;
     }
-    .rsm-page-summary {
+    .prefs-hero__tags {
+      list-style: none;
+      padding: 0;
+      margin: var(--rsm-s-2) 0 0;
       display: flex;
       flex-wrap: wrap;
-      gap: var(--rsm-s-2, 8px);
+      gap: var(--rsm-s-2);
     }
-    .rsm-page-chip {
-      display: inline-flex;
+    .prefs-hero__preview {
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      padding: 6px 12px;
-      border-radius: var(--rsm-r-pill, 999px);
-      background: var(--rsm-surface);
-      border: 1px solid var(--rsm-line);
-      font-size: 13px;
-      color: var(--rsm-text-soft);
+      gap: var(--rsm-s-4);
+      text-align: center;
     }
-
-    .rsm-section-label {
-      font-family: var(--serif, "Fraunces", Georgia, serif);
-      font-size: clamp(20px, 3vw, 26px);
-      font-weight: 600;
-      color: var(--rsm-text-strong);
-      margin: var(--rsm-s-6, 24px) 0 0;
-      padding-bottom: var(--rsm-s-2, 8px);
-      border-bottom: 1px solid var(--rsm-line);
-    }
-    .rsm-card-label {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: var(--rsm-text-soft);
-      margin: 0 0 var(--rsm-s-4, 16px);
-    }
-
-    .rsm-grid-2 {
+    .prefs-preview-avatar {
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
       display: grid;
-      gap: var(--rsm-s-4, 16px);
+      place-items: center;
+      font-size: 58px;
+      color: #fff;
+      background: #253f35;
+      box-shadow: var(--rsm-sh-lg);
+      transition: background var(--rsm-dur-base) var(--rsm-ease-out);
+    }
+    .prefs-preview-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+    }
+    .prefs-preview-meta strong {
+      font-family: var(--rsm-font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--rsm-text-strong);
+    }
+    .prefs-preview-meta span {
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-eyebrow);
+      letter-spacing: var(--rsm-tracking-loose);
+      color: var(--rsm-text-soft);
+    }
+
+    /* SECTION HEAD */
+    .prefs-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-8);
+    }
+    .prefs-section__head {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-4);
+      max-width: 60ch;
+    }
+    .prefs-section__head .rsm-lead { color: var(--rsm-text-soft); }
+
+    /* CARD COMPOSITIONS */
+    .prefs-card-head {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-2);
+      margin-bottom: var(--rsm-s-6);
+    }
+    .prefs-grid-profile {
+      display: grid;
+      gap: var(--rsm-s-5);
+      grid-template-columns: 1fr;
+      margin-bottom: var(--rsm-s-5);
+    }
+    @media (min-width: 720px) {
+      .prefs-grid-profile { grid-template-columns: 1fr 1fr; }
+    }
+
+    .prefs-grid-avatar {
+      display: grid;
+      gap: var(--rsm-s-6);
       grid-template-columns: 1fr;
     }
     @media (min-width: 720px) {
-      .rsm-grid-2 { grid-template-columns: 1fr 1fr; }
+      .prefs-grid-avatar { grid-template-columns: 1.6fr 1fr; }
     }
-    .rsm-grid-profile {
-      display: grid;
-      gap: var(--rsm-s-4, 16px);
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 860px) {
-      .rsm-grid-profile { grid-template-columns: minmax(240px, 300px) 1fr; }
-    }
-
-    /* Avatar preview */
-    .rsm-preview-wrap {
+    .prefs-picker {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: var(--rsm-s-3, 12px);
-      padding: var(--rsm-s-4, 16px) 0;
+      gap: var(--rsm-s-3);
     }
-    .rsm-preview-avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-      background: #253f35;
-      color: #fff;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-    }
-    .rsm-preview-username {
-      font-weight: 600;
-      color: var(--rsm-text-strong);
-    }
-    .rsm-preview-display {
-      font-size: 14px;
-      color: var(--rsm-text-soft);
-    }
-    .rsm-preview-profile-link {
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      color: var(--rsm-emerald, #1fbf7d);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .rsm-preview-profile-link:hover { text-decoration: underline; }
 
     /* Emoji + color pickers */
-    .rsm-emoji-grid,
-    .rsm-color-grid {
+    .prefs-emoji-grid,
+    .prefs-color-grid {
       display: grid;
-      gap: var(--rsm-s-2, 8px);
+      gap: var(--rsm-s-2);
     }
-    .rsm-emoji-grid { grid-template-columns: repeat(5, 1fr); }
-    .rsm-color-grid { grid-template-columns: repeat(5, 1fr); }
-    .rsm-emoji-grid input,
-    .rsm-color-grid input { position: absolute; opacity: 0; pointer-events: none; }
-    .rsm-emoji-grid label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .prefs-emoji-grid { grid-template-columns: repeat(5, 1fr); }
+    .prefs-color-grid { grid-template-columns: repeat(5, 1fr); }
+    .prefs-emoji-grid input,
+    .prefs-color-grid input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .prefs-emoji-grid label {
+      display: grid;
+      place-items: center;
       aspect-ratio: 1;
-      border: 1.5px solid var(--rsm-line);
-      border-radius: var(--rsm-r-md, 12px);
+      border: 1px solid var(--rsm-line-2);
+      border-radius: var(--rsm-r-md);
+      background: rgba(255,255,255,0.66);
+      backdrop-filter: var(--rsm-blur-sm);
       cursor: pointer;
       font-size: 22px;
-      background: var(--rsm-surface);
-      transition: border-color 160ms ease, transform 160ms ease;
+      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out),
+                  border-color var(--rsm-dur-fast) var(--rsm-ease-out);
     }
-    .rsm-color-grid label {
+    .prefs-color-grid label {
       display: block;
       aspect-ratio: 1;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
-      transition: transform 160ms ease, border-color 160ms ease;
+      box-shadow: inset 0 0 0 1px var(--rsm-line-2), var(--rsm-sh-sm);
+      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out),
+                  border-color var(--rsm-dur-fast) var(--rsm-ease-out);
     }
-    .rsm-emoji-grid input:checked + label {
-      border-color: var(--rsm-emerald, #1fbf7d);
-      transform: scale(1.05);
+    .prefs-emoji-grid label:hover,
+    .prefs-color-grid label:hover { transform: translateY(-1px); }
+    .prefs-emoji-grid input:checked + label {
+      border-color: var(--rsm-emerald);
+      transform: scale(1.04);
+      box-shadow: var(--rsm-sh-glow-emerald);
     }
-    .rsm-color-grid input:checked + label {
+    .prefs-color-grid input:checked + label {
       border-color: var(--rsm-text-strong);
       transform: scale(1.1);
     }
+    .prefs-emoji-grid input:focus-visible + label,
+    .prefs-color-grid input:focus-visible + label {
+      outline: 2px solid var(--rsm-azure);
+      outline-offset: 3px;
+    }
 
     /* Pref rows */
-    .rsm-pref-row {
+    .prefs-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--rsm-s-4, 16px);
-      padding: var(--rsm-s-3, 12px) 0;
+      gap: var(--rsm-s-5);
+      padding: var(--rsm-s-5) 0;
       border-bottom: 1px solid var(--rsm-line);
     }
-    .rsm-pref-row:last-of-type { border-bottom: none; }
-    .rsm-pref-row-block {
-      display: flex;
-      flex-direction: column;
-      gap: var(--rsm-s-2, 8px);
-      padding: var(--rsm-s-3, 12px) 0;
-      border-bottom: 1px solid var(--rsm-line);
-    }
-    .rsm-pref-row-label {
-      font-weight: 600;
-      color: var(--rsm-text-strong);
-    }
-    .rsm-pref-row-sub {
-      font-size: 13px;
-      color: var(--rsm-text-soft);
-      margin-top: 2px;
-    }
-    .rsm-pref-select {
-      min-width: 160px;
-      padding: 8px 12px;
-      border-radius: var(--rsm-r-sm, 8px);
-      border: 1px solid var(--rsm-line-2);
-      background: var(--rsm-surface);
-      color: var(--rsm-text-strong);
-      font: inherit;
-      cursor: pointer;
-    }
-    .rsm-pref-select:focus-visible {
-      outline: 2px solid var(--rsm-emerald, #1fbf7d);
-      outline-offset: 2px;
-    }
-
-    /* Toggle */
-    .rsm-toggle {
-      position: relative;
-      display: inline-flex;
-      width: 44px;
-      height: 24px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .rsm-toggle input {
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      cursor: pointer;
-    }
-    .rsm-toggle-track {
-      position: absolute;
-      inset: 0;
-      border-radius: 999px;
-      background: var(--rsm-line-2);
-      transition: background 200ms ease;
-      pointer-events: none;
-    }
-    .rsm-toggle-track::after {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      transition: transform 200ms ease;
-    }
-    .rsm-toggle input:checked + .rsm-toggle-track {
-      background: var(--rsm-emerald, #1fbf7d);
-    }
-    .rsm-toggle input:checked + .rsm-toggle-track::after {
-      transform: translateX(20px);
-    }
-    .rsm-toggle input:focus-visible + .rsm-toggle-track {
-      outline: 2px solid var(--rsm-emerald, #1fbf7d);
-      outline-offset: 2px;
-    }
-
-    /* Accessibility summary */
-    .rsm-pref-note {
+    .prefs-row:first-of-type { padding-top: 0; }
+    .prefs-row:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .prefs-row__label {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      padding: var(--rsm-s-3, 12px) var(--rsm-s-4, 16px);
-      margin-bottom: var(--rsm-s-4, 16px);
-      background: var(--rsm-surface);
-      border-radius: var(--rsm-r-md, 12px);
-      border-left: 3px solid var(--rsm-emerald, #1fbf7d);
-      font-size: 14px;
-      color: var(--rsm-text);
+      min-width: 0;
     }
-    .rsm-pref-note strong { color: var(--rsm-text-strong); }
-    .rsm-accessibility-summary {
-      display: grid;
-      gap: var(--rsm-s-2, 8px);
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    .prefs-row__label .rsm-field-label { margin: 0; }
+    .prefs-row__hint {
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-small);
+      color: var(--rsm-text-soft);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
     }
-    .rsm-accessibility-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: var(--rsm-s-2, 8px);
-      padding: 10px 14px;
-      border-radius: var(--rsm-r-sm, 8px);
-      background: var(--rsm-surface);
-      border: 1px solid var(--rsm-line);
-      font-size: 14px;
-    }
-    .rsm-accessibility-item strong { color: var(--rsm-text-strong); font-weight: 600; }
-    .rsm-accessibility-item span { color: var(--rsm-text-soft); }
-    .rsm-accessibility-item[data-active="on"] span { color: var(--rsm-emerald, #1fbf7d); font-weight: 600; }
+    .prefs-row .rsm-select,
+    .prefs-row .rsm-input { min-width: 180px; max-width: 220px; }
 
-    /* Funzioni panel */
-    .rsm-pref-panel { display: flex; flex-direction: column; }
-    .rsm-pref-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--rsm-s-2, 8px);
-      margin-top: var(--rsm-s-2, 8px);
-    }
-    .pref-chip {
-      padding: 6px 14px;
-      border-radius: var(--rsm-r-pill, 999px);
-      border: 1px solid var(--rsm-line-2);
-      background: var(--rsm-surface);
-      color: var(--rsm-text);
+    /* Native select arrow */
+    .rsm-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 48px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%234d5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5l5 5 5-5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 22px center;
       cursor: pointer;
-      font: inherit;
-      font-size: 13px;
-      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
     }
-    .pref-chip:hover { border-color: var(--rsm-text-soft); }
-    .pref-chip.on {
-      background: var(--rsm-emerald, #1fbf7d);
-      color: #fff;
-      border-color: var(--rsm-emerald, #1fbf7d);
-    }
-    .rsm-pref-chip-sub {
-      font-size: 13px;
-      color: var(--rsm-text-soft);
-      margin-top: var(--rsm-s-2, 8px);
+    html[data-theme="scuro"] .rsm-select {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%238d92a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5l5 5 5-5'/></svg>");
     }
 
-    /* Account */
-    .rsm-account-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--rsm-s-3, 12px);
-      margin-bottom: var(--rsm-s-4, 16px);
+    /* Switch toggle */
+    .prefs-switch {
+      position: relative;
+      display: inline-flex;
+      width: 52px;
+      height: 30px;
+      cursor: pointer;
+      flex-shrink: 0;
     }
-    .rsm-account-info { display: flex; flex-direction: column; gap: 2px; }
-    .rsm-account-info strong { color: var(--rsm-text-strong); font-size: 16px; }
-    .rsm-account-info span { color: var(--rsm-text-soft); font-size: 13px; }
-    .rsm-account-avatar {
-      width: 56px;
-      height: 56px;
+    .prefs-switch input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .prefs-switch-track {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--rsm-r-pill);
+      background: var(--rsm-line-2);
+      transition: background var(--rsm-dur-fast) var(--rsm-ease-out);
+      pointer-events: none;
+    }
+    .prefs-switch-track::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      background: #253f35;
-      color: #fff;
+      background: #fff;
+      box-shadow: var(--rsm-sh-sm);
+      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out);
     }
-    .rsm-motto-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 180px;
-      background: linear-gradient(135deg, rgba(31,191,125,0.12), rgba(74,155,255,0.10));
+    .prefs-switch input:checked + .prefs-switch-track {
+      background: var(--rsm-emerald);
     }
-    .rsm-motto-text {
-      font-family: var(--serif, "Fraunces", Georgia, serif);
-      font-size: clamp(20px, 3vw, 26px);
-      font-style: italic;
-      color: var(--rsm-text-strong);
-      line-height: 1.3;
+    .prefs-switch input:checked + .prefs-switch-track::after {
+      transform: translateX(22px);
     }
-    .rsm-motto-text em { color: var(--rsm-emerald, #1fbf7d); font-style: normal; font-weight: 600; }
+    .prefs-switch input:focus-visible + .prefs-switch-track {
+      outline: 2px solid var(--rsm-azure);
+      outline-offset: 3px;
+    }
 
-    /* Save row + status */
-    .rsm-save-row {
+    /* Section actions row */
+    .prefs-actions {
       display: flex;
       align-items: center;
-      gap: var(--rsm-s-3, 12px);
+      gap: var(--rsm-s-4);
       flex-wrap: wrap;
-      margin-top: var(--rsm-s-3, 12px);
+      margin-top: var(--rsm-s-6);
+      padding-top: var(--rsm-s-5);
+      border-top: 1px solid var(--rsm-line);
     }
-    .rsm-status-msg {
-      font-size: 13px;
-      color: var(--rsm-text-soft);
-    }
-    .rsm-status-ok { color: var(--rsm-emerald, #1fbf7d); font-weight: 500; }
-    .rsm-status-err { color: #dc2626; font-weight: 500; }
-
-    /* Buttons (extend theme.css .rsm-btn) */
-    .rsm-btn--primary {
-      background: var(--rsm-emerald, #1fbf7d);
-      color: #fff;
-      border-color: var(--rsm-emerald, #1fbf7d);
-    }
-    .rsm-btn--primary:hover { filter: brightness(0.95); }
-    .rsm-btn--primary:disabled { opacity: 0.6; cursor: not-allowed; }
-    .rsm-btn--danger {
-      background: transparent;
-      color: #dc2626;
-      border: 1px solid #dc2626;
-    }
-    .rsm-btn--danger:hover { background: #dc2626; color: #fff; }
-
-    .rsm-field-hint {
-      display: block;
-      margin-top: 4px;
-      font-size: 12px;
-      color: var(--rsm-text-soft);
-    }
-    .rsm-note {
-      margin: var(--rsm-s-3, 12px) 0 0;
-      font-size: 12px;
-      color: var(--rsm-text-soft);
+    .prefs-note {
+      margin: var(--rsm-s-3) 0 0;
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-tiny);
+      letter-spacing: var(--rsm-tracking-loose);
+      text-transform: uppercase;
+      color: var(--rsm-text-faint);
     }
 
-    /* Dark mode overrides */
-    html[data-theme="scuro"] .rsm-emoji-grid label,
-    html[data-theme="scuro"] .pref-chip,
-    html[data-theme="scuro"] .rsm-pref-select,
-    html[data-theme="scuro"] .rsm-accessibility-item,
-    html[data-theme="scuro"] .rsm-pref-note,
-    html[data-theme="scuro"] .rsm-page-chip {
+    /* Accessibility summary */
+    .prefs-summary {
+      display: grid;
+      gap: var(--rsm-s-3);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: var(--rsm-s-5);
+    }
+    .prefs-summary__tile {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: var(--rsm-s-4) var(--rsm-s-5);
+      border: 1px solid var(--rsm-line);
+      border-radius: var(--rsm-r-lg);
       background: var(--rsm-surface);
+    }
+    .prefs-summary__tile[data-active="on"] {
+      border-color: rgba(31, 191, 125, 0.32);
+      background: var(--rsm-emerald-4);
+    }
+    .prefs-summary__tile strong {
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-eyebrow);
+      letter-spacing: var(--rsm-tracking-wide);
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
+      font-weight: 500;
+    }
+    .prefs-summary__tile span {
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-body-lg);
+      font-weight: 700;
+      color: var(--rsm-text-strong);
+      letter-spacing: -0.01em;
+    }
+    .prefs-summary__tile[data-active="on"] strong { color: rgba(12, 108, 71, 0.86); }
+    .prefs-summary__tile[data-active="on"] span { color: #0c6c47; }
+    html[data-theme="scuro"] .prefs-summary__tile[data-active="on"] {
+      background: rgba(31, 191, 125, 0.14);
+      border-color: rgba(31, 191, 125, 0.34);
+    }
+    html[data-theme="scuro"] .prefs-summary__tile[data-active="on"] strong { color: rgba(143, 240, 197, 0.78); }
+    html[data-theme="scuro"] .prefs-summary__tile[data-active="on"] span { color: #8ff0c5; }
+
+    /* Categories chip row */
+    .prefs-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--rsm-s-2);
+      margin-top: var(--rsm-s-2);
+    }
+    .prefs-chip-row .rsm-chip { font-family: var(--rsm-font-sans); }
+    .prefs-chip-hint {
+      font-family: var(--rsm-font-sans);
+      font-size: var(--rsm-text-small);
+      color: var(--rsm-text-soft);
+      margin: var(--rsm-s-3) 0 0;
+    }
+
+    /* Account block — asymmetric */
+    .prefs-account {
+      display: grid;
+      gap: var(--rsm-s-5);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px) {
+      .prefs-account { grid-template-columns: 1fr 1fr; }
+    }
+    .prefs-account__card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-5);
+    }
+    .prefs-account__chip {
+      display: flex;
+      align-items: center;
+      gap: var(--rsm-s-4);
+    }
+    .prefs-account__chip-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      color: #fff;
+      background: #253f35;
+      flex-shrink: 0;
+    }
+    .prefs-account__chip-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .prefs-account__chip-info strong {
+      font-family: var(--rsm-font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--rsm-text-strong);
+    }
+    .prefs-account__chip-info span {
+      font-family: var(--rsm-font-mono);
+      font-size: var(--rsm-text-eyebrow);
+      letter-spacing: var(--rsm-tracking-loose);
+      color: var(--rsm-text-soft);
+      text-transform: uppercase;
+    }
+    .prefs-account__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--rsm-s-3);
+      margin-top: auto;
+    }
+    .prefs-motto {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      min-height: 220px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.6), rgba(245,248,252,0.7)) padding-box,
+        var(--rsm-accent-grad) border-box;
+      border: 1px solid transparent;
+    }
+    .prefs-motto__text {
+      font-family: var(--rsm-font-display);
+      font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+      max-width: 22ch;
+      color: var(--rsm-text-strong);
+    }
+    .prefs-motto__text em {
+      font-style: italic;
+      background: var(--rsm-accent-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    html[data-theme="scuro"] .prefs-motto {
+      background:
+        linear-gradient(180deg, rgba(14,18,30,0.7), rgba(10,14,24,0.78)) padding-box,
+        var(--rsm-accent-grad) border-box;
+    }
+
+    /* Danger button */
+    .rsm-btn--danger {
+      color: var(--rsm-danger);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(252,238,238,0.94)) padding-box,
+        linear-gradient(120deg, rgba(239,68,68,0.32), rgba(239,68,68,0.18)) border-box;
+      border-color: rgba(239,68,68,0.32);
+    }
+    .rsm-btn--danger .rsm-btn-icon { color: var(--rsm-danger); background: rgba(255,255,255,0.95); }
+    .rsm-btn--danger:hover {
+      color: #fff;
+      background:
+        linear-gradient(180deg, var(--rsm-danger), #d93030) padding-box,
+        linear-gradient(120deg, rgba(239,68,68,0.5), rgba(239,68,68,0.4)) border-box;
+    }
+    .rsm-btn--danger:hover .rsm-btn-icon { color: var(--rsm-danger); }
+    html[data-theme="scuro"] .rsm-btn--danger {
+      background:
+        linear-gradient(180deg, rgba(20,22,32,0.92), rgba(34,18,18,0.92)) padding-box,
+        linear-gradient(120deg, rgba(239,68,68,0.38), rgba(239,68,68,0.24)) border-box;
+    }
+
+    /* Status messages */
+    .rsm-form-status.is-ok { color: var(--rsm-success); }
+    .rsm-form-status.is-err { color: var(--rsm-danger); }
+
+    /* Dark mode tweaks */
+    html[data-theme="scuro"] .prefs-emoji-grid label {
+      background: rgba(20, 22, 32, 0.58);
       border-color: var(--rsm-line-2);
-      color: var(--rsm-text);
     }
-    html[data-theme="scuro"] .rsm-toggle-track { background: var(--rsm-line-3); }
-    html[data-theme="scuro"] .rsm-motto-card {
-      background: linear-gradient(135deg, rgba(31,191,125,0.18), rgba(74,155,255,0.16));
-    }
+
+    /* Density compact: tighten the pref-rows */
+    html[data-density="compact"] .prefs-row { padding: var(--rsm-s-3) 0; }
+    html[data-density="compact"] .rsm-page { gap: var(--rsm-s-16); }
   </style>
 </head>
 <body>
@@ -426,248 +487,579 @@
 
 <main class="rsm-page">
 
-  <div class="rsm-page-header">
-    <h1 class="rsm-page-header__title">Preferenze</h1>
-    <p class="rsm-page-header__subtitle">Personalizza il tuo profilo e l'aspetto del sito</p>
-  </div>
-
-  <div class="rsm-page-summary" aria-label="Struttura delle preferenze">
-    <span class="rsm-page-chip">4 aree</span>
-    <span class="rsm-page-chip">anteprima subito visibile</span>
-    <span class="rsm-page-chip">salvataggio locale</span>
-  </div>
-
-  <!-- ── SEZIONE AVATAR ── -->
-  <h2 class="rsm-section-label">Identità &amp; Avatar</h2>
-
-  <div class="rsm-grid-profile">
-
-    <!-- Anteprima avatar -->
-    <div class="rsm-card">
-      <h3 class="rsm-card-label">Anteprima</h3>
-      <div class="rsm-preview-wrap">
-        <div class="rsm-preview-avatar" id="avatar-preview">🌿</div>
-        <div class="rsm-preview-username" id="prev-username">@...</div>
-        <div class="rsm-preview-display" id="prev-display">—</div>
-        <a href="#" class="rsm-preview-profile-link" id="public-profile-link">
-          <span>Vedi profilo</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-      </div>
+  <!-- ───────── HERO ───────── -->
+  <section class="prefs-hero">
+    <div class="prefs-hero__left">
+      <p class="rsm-kicker"><span>Profilo · Aspetto · Comunità</span></p>
+      <h1 class="rsm-h1">Personalizza la tua <em>esperienza</em>.</h1>
+      <p class="rsm-lead">Tipografia, tema, accessibilità e identità. Ogni scelta resta su questo dispositivo e si propaga su tutte le pagine del sito, senza passare dal cloud.</p>
+      <ul class="prefs-hero__tags" aria-label="Stato corrente">
+        <li class="rsm-tag rsm-tag--emerald" id="hero-tag-theme">Tema · automatico</li>
+        <li class="rsm-tag rsm-tag--azure" id="hero-tag-fontsize">Testo · normale</li>
+        <li class="rsm-tag rsm-tag--violet" id="hero-tag-animations">Animazioni · attive</li>
+      </ul>
     </div>
-
-    <!-- Colonna destra: emoji + colori + campi -->
-    <div style="display:flex;flex-direction:column;gap:var(--rsm-s-4)">
-
-      <!-- Emoji e colore in riga -->
-      <div class="rsm-grid-2">
-        <div class="rsm-card">
-          <h3 class="rsm-card-label">Emoji avatar</h3>
-          <div class="rsm-emoji-grid" id="emoji-grid"></div>
-        </div>
-        <div class="rsm-card">
-          <h3 class="rsm-card-label">Colore sfondo</h3>
-          <div class="rsm-color-grid" id="color-grid"></div>
-          <div class="rsm-save-row" style="margin-top:auto">
-            <button class="rsm-btn rsm-btn--primary" id="save-avatar-btn">Salva avatar</button>
-            <span class="rsm-status-msg" id="avatar-status"></span>
-          </div>
-        </div>
+    <aside class="rsm-card rsm-card--glass prefs-hero__preview" aria-label="Anteprima profilo">
+      <p class="rsm-kicker rsm-kicker--center"><span>Anteprima</span></p>
+      <div class="prefs-preview-avatar" id="avatar-preview">🌿</div>
+      <div class="prefs-preview-meta">
+        <strong id="prev-display">—</strong>
+        <span id="prev-username">@...</span>
       </div>
+      <a href="#" class="rsm-btn rsm-btn--ghost rsm-btn--sm" id="public-profile-link">
+        <span>Vedi profilo</span>
+        <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+      </a>
+    </aside>
+  </section>
 
-      <!-- Dati profilo -->
-      <div class="rsm-card">
-        <h3 class="rsm-card-label">Dati profilo</h3>
-        <div class="rsm-grid-2">
-          <div class="rsm-field">
-            <label for="p-display" class="rsm-field-label">Nome visualizzato</label>
-            <input type="text" id="p-display" class="rsm-input" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
-          </div>
-          <div class="rsm-field">
-            <label for="p-username" class="rsm-field-label">Username</label>
-            <input type="text" id="p-username" class="rsm-input" maxlength="30" placeholder="solo_lettere_e_numeri" autocomplete="off" />
-            <span class="rsm-field-hint">Solo lettere, numeri e _</span>
-          </div>
+  <!-- ───────── 01 · IDENTITÀ ───────── -->
+  <section class="prefs-section">
+    <header class="prefs-section__head">
+      <p class="rsm-kicker"><span>01 · Identità</span></p>
+      <h2 class="rsm-h2">Come ti vedono <span class="rsm-grad">gli altri</span>.</h2>
+      <p class="rsm-lead">Nome, username e biografia restano sul dispositivo. Cambia avatar quando vuoi: anteprima a sinistra in tempo reale.</p>
+    </header>
+
+    <div class="rsm-card">
+      <div class="prefs-grid-profile">
+        <div class="rsm-field">
+          <label for="p-display" class="rsm-field-label">Nome visualizzato</label>
+          <input type="text" id="p-display" class="rsm-input" maxlength="50" placeholder="Mario Rossi" />
         </div>
         <div class="rsm-field">
-          <label for="p-bio" class="rsm-field-label">Bio</label>
-          <textarea id="p-bio" class="rsm-textarea" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
-          <span class="rsm-field-hint">Massimo 200 caratteri</span>
-        </div>
-        <div class="rsm-save-row">
-          <button class="rsm-btn rsm-btn--primary" id="save-profile-btn">Salva profilo</button>
-          <span class="rsm-status-msg" id="profile-status"></span>
+          <label for="p-username" class="rsm-field-label">Username · solo a-z 0-9 _</label>
+          <input type="text" id="p-username" class="rsm-input" maxlength="30" placeholder="lupo_del_mincio" autocomplete="off" />
         </div>
       </div>
-
-    </div>
-  </div>
-
-  <!-- ── SEZIONE ASPETTO UI ── -->
-  <h2 class="rsm-section-label">Aspetto</h2>
-
-  <div class="rsm-card">
-    <div class="rsm-pref-row">
-      <div>
-        <div class="rsm-pref-row-label">Tema</div>
-        <div class="rsm-pref-row-sub">Chiaro, scuro o sistema</div>
+      <div class="rsm-field">
+        <label for="p-bio" class="rsm-field-label">Bio · max 200 caratteri</label>
+        <textarea id="p-bio" class="rsm-textarea" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
       </div>
-      <select class="rsm-pref-select" id="pref-theme">
-        <option value="auto">Automatico</option>
-        <option value="chiaro">Chiaro</option>
-        <option value="scuro">Scuro</option>
-      </select>
-    </div>
-    <div class="rsm-pref-row">
-      <div>
-        <div class="rsm-pref-row-label">Lingua</div>
-        <div class="rsm-pref-row-sub">Lingua dell'interfaccia</div>
+      <div class="prefs-actions">
+        <button type="button" class="rsm-btn rsm-btn--brand" id="save-profile-btn">
+          <span>Salva profilo</span>
+          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+        </button>
+        <span class="rsm-form-status" id="profile-status" aria-live="polite"></span>
       </div>
-      <select class="rsm-pref-select" id="pref-language">
-        <option value="it">Italiano</option>
-        <option value="en">English</option>
-      </select>
     </div>
-    <div class="rsm-pref-row">
-      <div>
-        <div class="rsm-pref-row-label">Densità UI</div>
-        <div class="rsm-pref-row-sub">Spazio tra gli elementi</div>
-      </div>
-      <select class="rsm-pref-select" id="pref-density">
-        <option value="comfortable">Standard</option>
-        <option value="compact">Compatta</option>
-      </select>
-    </div>
-    <div class="rsm-pref-row">
-      <div>
-        <div class="rsm-pref-row-label">Dimensione testo</div>
-        <div class="rsm-pref-row-sub">Grandezza dei caratteri</div>
-      </div>
-      <select class="rsm-pref-select" id="pref-fontsize">
-        <option value="sm">Piccolo</option>
-        <option value="md">Normale</option>
-        <option value="lg">Grande</option>
-        <option value="xl">Molto grande</option>
-      </select>
-    </div>
-    <div class="rsm-pref-row">
-      <label for="pref-contrast" class="rsm-pref-row-label">Contrasto elevato</label>
-      <label class="rsm-toggle">
-        <input type="checkbox" id="pref-contrast" />
-        <span class="rsm-toggle-track"></span>
-      </label>
-    </div>
-    <div class="rsm-pref-row">
-      <label for="pref-animations" class="rsm-pref-row-label">Disabilita animazioni</label>
-      <label class="rsm-toggle">
-        <input type="checkbox" id="pref-animations" />
-        <span class="rsm-toggle-track"></span>
-      </label>
-    </div>
-    <div style="padding-top:var(--rsm-s-3)">
-      <div class="rsm-save-row">
-        <button class="rsm-btn rsm-btn--primary" id="save-ui-btn">Salva aspetto</button>
-        <span class="rsm-status-msg" id="ui-status"></span>
-      </div>
-      <p class="rsm-note">Tutte le preferenze sono salvate solo in locale, su questo dispositivo.</p>
-    </div>
-  </div>
 
-  <!-- ── SEZIONE ACCESSIBILITÀ ── -->
-  <h2 class="rsm-section-label">Accessibilità</h2>
-
-  <div class="rsm-card">
-    <h3 class="rsm-card-label">Impostazioni attive</h3>
-    <div class="rsm-pref-note">
-      <strong>Il tuo profilo accessibile</strong>
-      <span>Queste impostazioni migliorano la tua esperienza secondo le tue preferenze di accessibilità.</span>
-    </div>
-    <div id="accessibility-summary" class="rsm-accessibility-summary">
-      <!-- Dinamicamente compilato da JS -->
-    </div>
-  </div>
-
-  <!-- ── SEZIONE FUNZIONI ── -->
-  <h2 class="rsm-section-label">Funzioni personalizzabili</h2>
-
-  <div class="rsm-card">
-    <h3 class="rsm-card-label">Esperienza e comunita</h3>
-    <div class="rsm-pref-panel">
-      <div class="rsm-pref-note">
-        <strong>Decidi come vuoi interagire</strong>
-        <span>Qui controlli commenti, notifiche e i temi che vuoi tenere piu vicini. Le preferenze vengono salvate sul tuo dispositivo e restano modificabili in qualsiasi momento.</span>
-      </div>
-      <div class="rsm-pref-row">
-        <div>
-          <div class="rsm-pref-row-label">Privacy commenti</div>
-          <div class="rsm-pref-row-sub">Scegli chi puo commentare i tuoi articoli</div>
+    <div class="rsm-card">
+      <header class="prefs-card-head">
+        <p class="rsm-kicker"><span>Avatar</span></p>
+        <h3 class="rsm-h3">Emoji e tinta del cerchio</h3>
+      </header>
+      <div class="prefs-grid-avatar">
+        <div class="prefs-picker">
+          <span class="rsm-field-label">Emoji</span>
+          <div class="prefs-emoji-grid" id="emoji-grid" role="radiogroup" aria-label="Scegli un'emoji"></div>
         </div>
-        <select class="rsm-pref-select" id="pref-comment-privacy">
+        <div class="prefs-picker">
+          <span class="rsm-field-label">Colore</span>
+          <div class="prefs-color-grid" id="color-grid" role="radiogroup" aria-label="Scegli un colore"></div>
+        </div>
+      </div>
+      <div class="prefs-actions">
+        <button type="button" class="rsm-btn rsm-btn--brand" id="save-avatar-btn">
+          <span>Salva avatar</span>
+          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+        </button>
+        <span class="rsm-form-status" id="avatar-status" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── 02 · ASPETTO ───────── -->
+  <section class="prefs-section">
+    <header class="prefs-section__head">
+      <p class="rsm-kicker"><span>02 · Aspetto</span></p>
+      <h2 class="rsm-h2">Tema, dimensione, <span class="rsm-grad">densità</span>.</h2>
+      <p class="rsm-lead">Le modifiche si applicano subito, su questa pagina e su tutte le altre. L'anteprima in alto le rispecchia.</p>
+    </header>
+
+    <div class="rsm-card">
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Tema</span>
+          <span class="prefs-row__hint">Chiaro, scuro o sistema</span>
+        </div>
+        <select class="rsm-select" id="pref-theme">
+          <option value="auto">Automatico</option>
+          <option value="chiaro">Chiaro</option>
+          <option value="scuro">Scuro</option>
+        </select>
+      </div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Lingua</span>
+          <span class="prefs-row__hint">Interfaccia del sito</span>
+        </div>
+        <select class="rsm-select" id="pref-language">
+          <option value="it">Italiano</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Densità UI</span>
+          <span class="prefs-row__hint">Spazio tra gli elementi</span>
+        </div>
+        <select class="rsm-select" id="pref-density">
+          <option value="comfortable">Standard</option>
+          <option value="compact">Compatta</option>
+        </select>
+      </div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Dimensione testo</span>
+          <span class="prefs-row__hint">Si applica a tutto il sito</span>
+        </div>
+        <select class="rsm-select" id="pref-fontsize">
+          <option value="sm">Piccolo</option>
+          <option value="md">Normale</option>
+          <option value="lg">Grande</option>
+          <option value="xl">Molto grande</option>
+        </select>
+      </div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <label for="pref-contrast" class="rsm-field-label">Contrasto elevato</label>
+          <span class="prefs-row__hint">Bordi marcati e focus ring più visibili</span>
+        </div>
+        <label class="prefs-switch">
+          <input type="checkbox" id="pref-contrast" />
+          <span class="prefs-switch-track"></span>
+        </label>
+      </div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <label for="pref-animations" class="rsm-field-label">Disabilita animazioni</label>
+          <span class="prefs-row__hint">Niente transizioni, niente marquee</span>
+        </div>
+        <label class="prefs-switch">
+          <input type="checkbox" id="pref-animations" />
+          <span class="prefs-switch-track"></span>
+        </label>
+      </div>
+
+      <div class="prefs-actions">
+        <button type="button" class="rsm-btn rsm-btn--brand" id="save-ui-btn">
+          <span>Salva aspetto</span>
+          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+        </button>
+        <span class="rsm-form-status" id="ui-status" aria-live="polite"></span>
+      </div>
+      <p class="prefs-note">Salvataggio solo locale · nessun dato lascia il dispositivo</p>
+    </div>
+  </section>
+
+  <!-- ───────── 03 · ACCESSIBILITÀ ───────── -->
+  <section class="prefs-section">
+    <header class="prefs-section__head">
+      <p class="rsm-kicker"><span>03 · Accessibilità</span></p>
+      <h2 class="rsm-h2">Il tuo profilo <span class="rsm-grad">accessibile</span>.</h2>
+      <p class="rsm-lead">Le scelte attive in un colpo d'occhio. Le impostazioni evidenziate sono quelle che hai personalizzato rispetto al default.</p>
+    </header>
+
+    <div class="rsm-card">
+      <div class="prefs-summary" id="accessibility-summary"></div>
+    </div>
+  </section>
+
+  <!-- ───────── 04 · COMUNITÀ ───────── -->
+  <section class="prefs-section">
+    <header class="prefs-section__head">
+      <p class="rsm-kicker"><span>04 · Comunità</span></p>
+      <h2 class="rsm-h2">Commenti, notifiche, <span class="rsm-grad">categorie</span>.</h2>
+      <p class="rsm-lead">Decidi come interagire con il sito e quali temi tenere più vicini. Tutto modificabile in qualsiasi momento.</p>
+    </header>
+
+    <div class="rsm-card">
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Privacy commenti</span>
+          <span class="prefs-row__hint">Chi può commentare i tuoi articoli</span>
+        </div>
+        <select class="rsm-select" id="pref-comment-privacy">
           <option value="all">Tutti</option>
           <option value="members">Solo membri</option>
           <option value="none">Disattivati</option>
         </select>
       </div>
-      <div class="rsm-pref-row">
-        <div>
-          <div class="rsm-pref-row-label">Frequenza notifiche</div>
-          <div class="rsm-pref-row-sub">Quanto spesso vuoi ricevere aggiornamenti</div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <span class="rsm-field-label">Frequenza notifiche</span>
+          <span class="prefs-row__hint">Quanto spesso vuoi aggiornamenti</span>
         </div>
-        <select class="rsm-pref-select" id="pref-notif-frequency">
+        <select class="rsm-select" id="pref-notif-frequency">
           <option value="instant">Immediata</option>
           <option value="daily">Giornaliera</option>
           <option value="weekly">Settimanale</option>
           <option value="off">Nessuna</option>
         </select>
       </div>
-      <div class="rsm-pref-row">
-        <div>
-          <div class="rsm-pref-row-label">Email operative</div>
-          <div class="rsm-pref-row-sub">Autorizza l'uso dell'email per notifiche legate al tuo account</div>
+      <div class="prefs-row">
+        <div class="prefs-row__label">
+          <label for="pref-notif-email" class="rsm-field-label">Email operative</label>
+          <span class="prefs-row__hint">Notifiche tecniche sul tuo account</span>
         </div>
-        <label class="rsm-toggle">
+        <label class="prefs-switch">
           <input type="checkbox" id="pref-notif-email" />
-          <span class="rsm-toggle-track"></span>
+          <span class="prefs-switch-track"></span>
         </label>
       </div>
-      <div class="rsm-pref-row-block">
-        <div>
-          <div class="rsm-pref-row-label">Categorie preferite</div>
-          <div class="rsm-pref-row-sub">Salva i temi che ti interessano di piu per personalizzare la tua esperienza</div>
-        </div>
-        <div class="rsm-pref-chip-row" id="pref-category-chips"></div>
-        <div class="rsm-pref-chip-sub" id="pref-category-summary">Nessuna categoria selezionata: il sito restera neutro su tutti i temi.</div>
-      </div>
-      <div class="rsm-save-row">
-        <button class="rsm-btn rsm-btn--primary" id="save-custom-btn">Salva personalizzazioni</button>
-        <span class="rsm-status-msg" id="custom-status"></span>
-      </div>
-    </div>
-  </div>
 
-  <h2 class="rsm-section-label">Account</h2>
-
-  <div class="rsm-grid-2">
-    <div class="rsm-card">
-      <div class="rsm-account-card">
-        <div class="rsm-account-info">
-          <strong id="user-chip-name">—</strong>
-          <span>Account attivo</span>
+      <div style="padding:var(--rsm-s-5) 0 0">
+        <div class="prefs-row__label" style="margin-bottom:var(--rsm-s-3)">
+          <span class="rsm-field-label">Categorie preferite</span>
+          <span class="prefs-row__hint">I temi che vuoi seguire da vicino</span>
         </div>
-        <span class="rsm-account-avatar" id="user-chip-avatar">🌿</span>
+        <div class="prefs-chip-row" id="pref-category-chips"></div>
+        <p class="prefs-chip-hint" id="pref-category-summary">Nessuna categoria selezionata · il sito resta neutro su tutti i temi.</p>
       </div>
-      <div class="rsm-save-row">
-        <a href="/reset" class="rsm-btn rsm-btn--ghost">Cambia password</a>
-        <button class="rsm-btn rsm-btn--danger" id="logout-btn">Esci</button>
+
+      <div class="prefs-actions">
+        <button type="button" class="rsm-btn rsm-btn--brand" id="save-custom-btn">
+          <span>Salva personalizzazioni</span>
+          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+        </button>
+        <span class="rsm-form-status" id="custom-status" aria-live="polite"></span>
       </div>
     </div>
-    <div class="rsm-card rsm-motto-card">
-      <div class="rsm-motto-text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</div>
+  </section>
+
+  <!-- ───────── 05 · ACCOUNT ───────── -->
+  <section class="prefs-section">
+    <header class="prefs-section__head">
+      <p class="rsm-kicker"><span>05 · Account</span></p>
+      <h2 class="rsm-h2">Sicurezza e <span class="rsm-grad">sessione</span>.</h2>
+    </header>
+
+    <div class="prefs-account">
+      <div class="rsm-card rsm-card--ink prefs-account__card">
+        <div class="prefs-account__chip">
+          <span class="prefs-account__chip-avatar" id="user-chip-avatar">🌿</span>
+          <div class="prefs-account__chip-info">
+            <strong id="user-chip-name">—</strong>
+            <span>Sessione attiva</span>
+          </div>
+        </div>
+        <p class="rsm-body" style="color:rgba(255,255,255,0.78);max-width:32ch">
+          Esci per chiudere la sessione su questo dispositivo. Le preferenze locali restano salvate per il prossimo accesso.
+        </p>
+        <div class="prefs-account__actions">
+          <a href="/reset" class="rsm-btn rsm-btn--ghost rsm-btn--sm">
+            <span>Cambia password</span>
+            <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+          </a>
+          <button type="button" class="rsm-btn rsm-btn--danger rsm-btn--sm" id="logout-btn">
+            <span>Esci</span>
+            <span class="rsm-btn-icon" aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </div>
+      <div class="rsm-card prefs-motto">
+        <p class="prefs-motto__text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</p>
+      </div>
     </div>
-  </div>
+  </section>
 
 </main>
 
+  <link rel="stylesheet" href="/partials/footbar.css?v=11" />
+<footer class="rsm-foot" role="contentinfo" data-component="section/footer" data-rsm-foot>
+  <div class="rsm-foot__aurora" aria-hidden="true">
+    <span class="rsm-foot__blob rsm-foot__blob--a"></span>
+    <span class="rsm-foot__blob rsm-foot__blob--b"></span>
+    <span class="rsm-foot__blob rsm-foot__blob--c"></span>
+  </div>
+  <div class="rsm-foot__grain" aria-hidden="true"></div>
+  <div class="rsm-foot__hairline" aria-hidden="true"></div>
+
+  <div class="rsm-foot__container">
+
+    <section class="rsm-foot__hero" data-rsm-reveal>
+      <div class="rsm-foot__hero-left">
+        <p class="rsm-foot__eyebrow">
+          <span class="rsm-foot__eyebrow-dot" aria-hidden="true"></span>
+          <span>Pro Loco</span>
+          <span class="rsm-foot__eyebrow-sep" aria-hidden="true">·</span>
+          <span>Parco del Mincio</span>
+          <span class="rsm-foot__eyebrow-sep" aria-hidden="true">·</span>
+          <span>Mantova</span>
+        </p>
+        <h2 class="rsm-foot__display">
+          <span class="rsm-foot__display-line">Ecoturismo,</span>
+          <span class="rsm-foot__display-line">cultura,</span>
+          <span class="rsm-foot__display-line"><em class="rsm-foot__display-em">tradizioni d&rsquo;acqua</em>.</span>
+        </h2>
+        <p class="rsm-foot__lead">
+          Promozione turistica, culturale e ambientale del borgo di Rivalta sul Mincio,
+          nel cuore del Parco Regionale del Mincio.
+        </p>
+      </div>
+
+      <form class="rsm-foot__news" aria-label="Iscrizione newsletter" onsubmit="event.preventDefault();this.classList.add('is-sent');">
+        <p class="rsm-foot__news-kicker">
+          <span class="rsm-foot__news-num">01</span>
+          <span>Newsletter</span>
+        </p>
+        <h3 class="rsm-foot__news-title">Resta sulle <em>rive</em>.</h3>
+        <p class="rsm-foot__news-copy">Eventi, sagre e novità dal Mincio. Niente spam, una mail al mese.</p>
+        <div class="rsm-foot__news-row">
+          <button class="rsm-btn rsm-btn--ghost magnetic rsm-foot__news-cta" type="button" data-modal-open="newsletter-modal" aria-label="Iscriviti alla newsletter">
+            <span>Iscriviti alla newsletter</span>
+            <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+          </button>
+          <span class="rsm-foot__news-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="3"/>
+              <path d="M3.5 7.5l8.5 6 8.5-6"/>
+            </svg>
+          </span>
+          <input class="rsm-foot__news-input" type="email" required placeholder="la-tua-email@dominio.it" aria-label="Email" autocomplete="email" />
+          <button class="rsm-foot__news-btn" type="submit" aria-label="Iscriviti alla newsletter">
+            <span class="rsm-foot__news-btn-text">Iscriviti</span>
+            <span class="rsm-foot__news-btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <p class="rsm-foot__news-ok" aria-live="polite">Grazie · ci sentiamo presto.</p>
+      </form>
+    </section>
+
+    <div class="rsm-foot__band" aria-hidden="true">
+      <div class="rsm-foot__band-track">
+        <span class="rsm-foot__band-group">
+          <span class="rsm-foot__band-item">Festa del Pesce</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Valli del Mincio</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Sagra del Luccio</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Ecoturismo</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Borgo storico</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Parco Regionale</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Cucina d&rsquo;acqua dolce</span><span class="rsm-foot__band-dot"></span>
+        </span>
+        <span class="rsm-foot__band-group" aria-hidden="true">
+          <span class="rsm-foot__band-item">Festa del Pesce</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Valli del Mincio</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Sagra del Luccio</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Ecoturismo</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Borgo storico</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Parco Regionale</span><span class="rsm-foot__band-dot"></span>
+          <span class="rsm-foot__band-item">Cucina d&rsquo;acqua dolce</span><span class="rsm-foot__band-dot"></span>
+        </span>
+      </div>
+    </div>
+
+    <section class="rsm-foot__main" data-rsm-reveal>
+
+      <div class="rsm-foot__brand">
+        <a class="rsm-foot__lockup" href="/" aria-label="Home Pro Loco Rivalta sul Mincio">
+          <span class="rsm-foot__logo">
+            <img src="/img/favicon.png" alt="" width="56" height="56" />
+          </span>
+          <span class="rsm-foot__lockup-text">
+            <strong>Rivalta</strong>
+            <em>Sul Mincio · A.P.S.</em>
+          </span>
+        </a>
+
+        <ul class="rsm-foot__contacts">
+          <li>
+            <a class="rsm-foot__contact" href="mailto:info@prolocorivalta.mn.it">
+              <span class="rsm-foot__contact-glyph" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="3"/>
+                  <path d="M3.5 7.5l8.5 6 8.5-6"/>
+                </svg>
+              </span>
+              <span class="rsm-foot__contact-body">
+                <span class="rsm-foot__contact-key">Email</span>
+                <span class="rsm-foot__contact-val">info@prolocorivalta.mn.it</span>
+              </span>
+              <span class="rsm-foot__contact-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="rsm-foot__contact" href="tel:+393398995680">
+              <span class="rsm-foot__contact-glyph" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>
+                </svg>
+              </span>
+              <span class="rsm-foot__contact-body">
+                <span class="rsm-foot__contact-key">Telefono</span>
+                <span class="rsm-foot__contact-val">+39 339 899 5680</span>
+              </span>
+              <span class="rsm-foot__contact-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <div class="rsm-foot__contact rsm-foot__contact--static">
+              <span class="rsm-foot__contact-glyph" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s7-7.6 7-13a7 7 0 0 0-14 0c0 5.4 7 13 7 13z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+              </span>
+              <span class="rsm-foot__contact-body">
+                <span class="rsm-foot__contact-key">Sede</span>
+                <span class="rsm-foot__contact-val">Via Porto, 31 &mdash; 46040 Rivalta sul Mincio (MN)</span>
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="rsm-foot__socials" aria-label="Social">
+          <a class="rsm-foot__social" href="https://www.facebook.com/prolocoamicidirivalta/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.2H8v3h2.5V21h3z"/>
+            </svg>
+            <span class="rsm-foot__social-tip">Facebook</span>
+          </a>
+          <a class="rsm-foot__social" href="https://www.instagram.com/prolocrivalta" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/>
+            </svg>
+            <span class="rsm-foot__social-tip">Instagram</span>
+          </a>
+          <a class="rsm-foot__social" href="mailto:info@prolocorivalta.mn.it" aria-label="Scrivici una email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="3"/>
+              <path d="M3.5 7.5l8.5 6 8.5-6"/>
+            </svg>
+            <span class="rsm-foot__social-tip">Email</span>
+          </a>
+        </div>
+      </div>
+
+      <nav class="rsm-foot__col" aria-label="Esplora">
+        <p class="rsm-foot__col-head">
+          <span class="rsm-foot__col-num">01</span>
+          <span class="rsm-foot__col-title">Esplora</span>
+        </p>
+        <ul class="rsm-foot__links">
+          <li><a href="/"><span>Home</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/#festa"><span>Festa del Pesce</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/#eventi"><span>Eventi</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/#galleria"><span>Galleria</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/#territorio"><span>Territorio</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/storia"><span>Storia del sito</span><i aria-hidden="true">↗</i></a></li>
+        </ul>
+      </nav>
+
+      <nav class="rsm-foot__col" aria-label="Area utente">
+        <p class="rsm-foot__col-head">
+          <span class="rsm-foot__col-num">02</span>
+          <span class="rsm-foot__col-title">Area</span>
+        </p>
+        <ul class="rsm-foot__links">
+          <li><a href="/login"><span>Accedi</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/dashboard"><span>Dashboard</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/write"><span>Scrivi un post</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/profile"><span>Profilo</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/preferenze"><span>Preferenze</span><i aria-hidden="true">↗</i></a></li>
+        </ul>
+      </nav>
+
+      <nav class="rsm-foot__col" aria-label="Legale">
+        <p class="rsm-foot__col-head">
+          <span class="rsm-foot__col-num">03</span>
+          <span class="rsm-foot__col-title">Legale</span>
+        </p>
+        <ul class="rsm-foot__links">
+          <li><a href="/privacy"><span>Privacy</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/cookie"><span>Cookie</span><i aria-hidden="true">↗</i></a></li>
+          <li><a href="/note-legali"><span>Note legali</span><i aria-hidden="true">↗</i></a></li>
+        </ul>
+      </nav>
+    </section>
+
+    <section class="rsm-foot__bottom" data-rsm-reveal>
+      <span class="rsm-foot__copy">
+        &copy; <span data-rsm-year>2026</span>
+        <span class="rsm-foot__copy-sep" aria-hidden="true">·</span>
+        Pro Loco Rivalta sul Mincio A.P.S.
+      </span>
+      <span class="rsm-foot__credit">
+        <span>
+          Creato con cura da
+          <span class="rsm-foot__author">Alberto Pecchini</span>
+          per la comunità rivaltese
+        </span>
+        <span class="rsm-foot__copy-sep" aria-hidden="true">·</span>
+        <span class="rsm-foot__author-soon">sito autore in arrivo</span>
+      </span>
+      <button class="rsm-foot__top" type="button" data-rsm-top aria-label="Torna in cima">
+        <span class="rsm-foot__top-text">In cima</span>
+        <span class="rsm-foot__top-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+          </svg>
+        </span>
+      </button>
+    </section>
+  </div>
+</footer>
+<script>
+(function(){
+  var root = document.querySelector('[data-rsm-foot]');
+  if (!root) return;
+
+  var y = root.querySelector('[data-rsm-year]');
+  if (y) y.textContent = new Date().getFullYear();
+
+  var top = root.querySelector('[data-rsm-top]');
+  if (top) top.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    root.querySelectorAll('[data-rsm-reveal]').forEach(function(n){ io.observe(n); });
+  } else {
+    root.querySelectorAll('[data-rsm-reveal]').forEach(function(n){ n.classList.add('is-in'); });
+  }
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var animDisabled = document.documentElement.dataset.animations === 'disabled';
+  if (!reduced && !animDisabled) {
+    var aurora = root.querySelector('.rsm-foot__aurora');
+    if (aurora) {
+      var rect = null, raf = 0, x = 0.5, y2 = 0.5;
+      var onMove = function(ev){
+        if (!rect) rect = root.getBoundingClientRect();
+        x = (ev.clientX - rect.left) / rect.width;
+        y2 = (ev.clientY - rect.top) / rect.height;
+        if (!raf) raf = requestAnimationFrame(apply);
+      };
+      var apply = function(){
+        raf = 0;
+        aurora.style.setProperty('--mx', (x * 100).toFixed(2) + '%');
+        aurora.style.setProperty('--my', (y2 * 100).toFixed(2) + '%');
+      };
+      var onLeave = function(){ rect = null; aurora.style.removeProperty('--mx'); aurora.style.removeProperty('--my'); };
+      var onResize = function(){ rect = null; };
+      root.addEventListener('mousemove', onMove, { passive: true });
+      root.addEventListener('mouseleave', onLeave);
+      window.addEventListener('resize', onResize);
+    }
+  }
+})();
+</script>
 <!--PARTIAL:footer-->
 
 
@@ -694,20 +1086,11 @@
   };
 
   const defaultPrefs = {
-    theme: 'auto',
-    language: 'it',
-    uiDensity: 'comfortable',
-    fontsize: 'md',
-    contrast: false,
-    animations: false,
-    username: '',
-    displayName: '',
-    bio: '',
-    avatarEmoji: '🌿',
-    avatarColor: '#253f35',
-    commentPrivacy: 'all',
-    notifFrequency: 'daily',
-    notifEmail: false,
+    theme: 'auto', language: 'it', uiDensity: 'comfortable', fontsize: 'md',
+    contrast: false, animations: false,
+    username: '', displayName: '', bio: '',
+    avatarEmoji: '🌿', avatarColor: '#253f35',
+    commentPrivacy: 'all', notifFrequency: 'daily', notifEmail: false,
     preferredCategories: []
   };
 
@@ -716,10 +1099,10 @@
   function normalizePreferredCategories(input) {
     const values = Array.isArray(input) ? input : [];
     const aliases = {
-      'eventi': 'Eventi', 'territorio': 'Territorio', 'vita locale': 'Vita locale',
-      'avvisi': 'Avvisi', 'richieste': 'Richieste', 'storie': 'Storie',
-      'il luccio': 'Storie', 'fauna': 'Territorio', 'ambiente': 'Territorio',
-      'ecoturismo': 'Territorio', 'storia': 'Storie'
+      'eventi':'Eventi','territorio':'Territorio','vita locale':'Vita locale',
+      'avvisi':'Avvisi','richieste':'Richieste','storie':'Storie',
+      'il luccio':'Storie','fauna':'Territorio','ambiente':'Territorio',
+      'ecoturismo':'Territorio','storia':'Storie'
     };
     const allowed = new Set(CATEGORY_OPTIONS);
     const seen = new Set();
@@ -768,9 +1151,7 @@
     try { return normalizePrefs(JSON.parse(localStorage.getItem(PREF_KEY)) || {}); }
     catch (_) { return normalizePrefs({}); }
   }
-  function savePrefs(prefs) {
-    localStorage.setItem(PREF_KEY, JSON.stringify(normalizePrefs(prefs)));
-  }
+  function savePrefs(prefs) { localStorage.setItem(PREF_KEY, JSON.stringify(normalizePrefs(prefs))); }
 
   function applyUiPrefs(prefs) {
     const next = normalizePrefs(prefs);
@@ -786,15 +1167,13 @@
     else delete root.dataset.animations;
   }
 
-  /* ── Status helpers ── */
   function setStatus(id, msg, type) {
     const el = $(id);
     if (!el) return;
     el.textContent = msg || '';
-    el.className = 'rsm-status-msg' + (type ? (' rsm-status-' + type) : '');
+    el.className = 'rsm-form-status' + (type ? (' is-' + type) : '');
   }
 
-  /* ── Avatar preview ── */
   function syncPreview() {
     const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
     const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
@@ -806,10 +1185,9 @@
     if (prev) { prev.textContent = emoji; prev.style.background = color; }
     if (chip) { chip.textContent = emoji; chip.style.background = color; }
     if ($('prev-display')) $('prev-display').textContent = display || '—';
-    if ($('prev-username')) $('prev-username').textContent = username ? ('@' + username) : '—';
+    if ($('prev-username')) $('prev-username').textContent = username ? ('@' + username) : '@...';
   }
 
-  /* ── Build pickers ── */
   function buildPickers(emoji, color) {
     const eg = $('emoji-grid');
     const cg = $('color-grid');
@@ -818,13 +1196,12 @@
       `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
     ).join('');
     cg.innerHTML = COLORS.map((c, i) =>
-      `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}"></label>`
+      `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}" aria-label="${c}"></label>`
     ).join('');
     eg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
     cg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
   }
 
-  /* ── Category chips ── */
   function getSelectedPreferredCategories() {
     const wrap = $('pref-category-chips');
     if (!wrap) return [];
@@ -837,40 +1214,49 @@
     if (!summary) return;
     const selected = getSelectedPreferredCategories();
     summary.textContent = selected.length
-      ? ('Categorie selezionate: ' + selected.join(', ') + '.')
-      : 'Nessuna categoria selezionata: il sito restera neutro su tutti i temi.';
+      ? ('Categorie selezionate · ' + selected.join(', ') + '.')
+      : 'Nessuna categoria selezionata · il sito resta neutro su tutti i temi.';
   }
   function renderPreferredCategoryChips(selected) {
     const wrap = $('pref-category-chips');
     if (!wrap) return;
     const chosen = new Set(normalizePreferredCategories(selected));
     wrap.innerHTML = CATEGORY_OPTIONS.map((category) => {
-      const active = chosen.has(category) ? ' on' : '';
-      return '<button type="button" class="pref-chip' + active + '" data-category="' + category + '">' + category + '</button>';
+      const active = chosen.has(category);
+      return '<button type="button" class="rsm-chip pref-chip' + (active ? ' on' : '') + '" data-category="' + category + '" aria-pressed="' + active + '">' + category + '</button>';
     }).join('');
     syncPreferredCategorySummary();
   }
 
-  /* ── Accessibility summary ── */
+  const THEME_LABELS = { auto: 'Automatico', chiaro: 'Chiaro', scuro: 'Scuro' };
+  const FONT_LABELS  = { sm: 'Piccolo', md: 'Normale', lg: 'Grande', xl: 'Molto grande' };
+  const DENSITY_LABELS = { comfortable: 'Standard', compact: 'Compatta' };
+
   function renderAccessibilitySummary(prefs) {
     const wrap = $('accessibility-summary');
     if (!wrap) return;
-    const fontLabels = { sm: 'Piccolo', md: 'Normale', lg: 'Grande', xl: 'Molto grande' };
-    const themeLabels = { auto: 'Automatico', chiaro: 'Chiaro', scuro: 'Scuro' };
-    const densityLabels = { comfortable: 'Standard', compact: 'Compatta' };
     const items = [
-      { label: 'Tema',             value: themeLabels[prefs.theme] || prefs.theme, active: prefs.theme !== 'auto' },
-      { label: 'Dimensione testo', value: fontLabels[prefs.fontsize] || prefs.fontsize, active: prefs.fontsize !== 'md' },
-      { label: 'Densità UI',       value: densityLabels[prefs.uiDensity] || prefs.uiDensity, active: prefs.uiDensity !== 'comfortable' },
-      { label: 'Contrasto elevato', value: prefs.contrast ? 'Attivo' : 'Disattivato', active: prefs.contrast },
-      { label: 'Animazioni',       value: prefs.animations ? 'Disattivate' : 'Attive', active: prefs.animations }
+      { label: 'Tema',             value: THEME_LABELS[prefs.theme] || prefs.theme,         active: prefs.theme !== 'auto' },
+      { label: 'Dimensione testo', value: FONT_LABELS[prefs.fontsize] || prefs.fontsize,    active: prefs.fontsize !== 'md' },
+      { label: 'Densità UI',       value: DENSITY_LABELS[prefs.uiDensity] || prefs.uiDensity, active: prefs.uiDensity !== 'comfortable' },
+      { label: 'Contrasto elevato', value: prefs.contrast ? 'Attivo' : 'Disattivato',       active: prefs.contrast },
+      { label: 'Animazioni',       value: prefs.animations ? 'Disattivate' : 'Attive',      active: prefs.animations }
     ];
-    wrap.innerHTML = items.map((item) =>
-      '<div class="rsm-accessibility-item" data-active="' + (item.active ? 'on' : 'off') + '">' +
-        '<strong>' + item.label + '</strong>' +
-        '<span>' + item.value + '</span>' +
+    wrap.innerHTML = items.map((it) =>
+      '<div class="prefs-summary__tile" data-active="' + (it.active ? 'on' : 'off') + '">' +
+        '<strong>' + it.label + '</strong>' +
+        '<span>' + it.value + '</span>' +
       '</div>'
     ).join('');
+  }
+
+  function renderHeroTags(prefs) {
+    const t = $('hero-tag-theme');
+    const f = $('hero-tag-fontsize');
+    const a = $('hero-tag-animations');
+    if (t) t.textContent = 'Tema · ' + (THEME_LABELS[prefs.theme] || prefs.theme).toLowerCase();
+    if (f) f.textContent = 'Testo · ' + (FONT_LABELS[prefs.fontsize] || prefs.fontsize).toLowerCase();
+    if (a) a.textContent = 'Animazioni · ' + (prefs.animations ? 'disattivate' : 'attive');
   }
 
   /* ── Save handlers ── */
@@ -894,7 +1280,7 @@
     if ($('user-chip-name')) $('user-chip-name').textContent = '@' + username;
     if ($('public-profile-link')) $('public-profile-link').href = '/profile?u=' + encodeURIComponent(username);
     syncPreview();
-    setStatus('profile-status', 'Profilo aggiornato con successo.', 'ok');
+    setStatus('profile-status', 'Profilo aggiornato.', 'ok');
   }
 
   function saveAvatar() {
@@ -926,6 +1312,7 @@
     savePrefs(next);
     applyUiPrefs(next);
     renderAccessibilitySummary(next);
+    renderHeroTags(next);
     setStatus('ui-status', 'Aspetto salvato.', 'ok');
   }
 
@@ -940,12 +1327,10 @@
     setStatus('custom-status', 'Personalizzazioni salvate.', 'ok');
   }
 
-  /* ── Init ── */
   function init() {
     const prefs = loadPrefs();
 
-    /* Populate account chip */
-    if ($('user-chip-name')) $('user-chip-name').textContent = prefs.username ? ('@' + prefs.username) : '—';
+    if ($('user-chip-name')) $('user-chip-name').textContent = prefs.username ? ('@' + prefs.username) : '@ospite';
     if ($('user-chip-avatar')) {
       $('user-chip-avatar').textContent = prefs.avatarEmoji;
       $('user-chip-avatar').style.background = prefs.avatarColor;
@@ -954,34 +1339,29 @@
       $('public-profile-link').href = prefs.username ? ('/profile?u=' + encodeURIComponent(prefs.username)) : '#';
     }
 
-    /* Profile inputs */
     if ($('p-username')) $('p-username').value = prefs.username;
     if ($('p-display'))  $('p-display').value  = prefs.displayName || prefs.username;
     if ($('p-bio'))      $('p-bio').value      = prefs.bio;
 
-    /* Avatar */
     buildPickers(prefs.avatarEmoji, prefs.avatarColor);
     syncPreview();
 
-    /* UI selects + toggles */
-    if ($('pref-theme'))     $('pref-theme').value    = prefs.theme;
-    if ($('pref-language'))  $('pref-language').value = prefs.language;
-    if ($('pref-density'))   $('pref-density').value  = prefs.uiDensity;
-    if ($('pref-fontsize'))  $('pref-fontsize').value = prefs.fontsize;
-    if ($('pref-contrast'))  $('pref-contrast').checked = prefs.contrast;
+    if ($('pref-theme'))     $('pref-theme').value     = prefs.theme;
+    if ($('pref-language'))  $('pref-language').value  = prefs.language;
+    if ($('pref-density'))   $('pref-density').value   = prefs.uiDensity;
+    if ($('pref-fontsize'))  $('pref-fontsize').value  = prefs.fontsize;
+    if ($('pref-contrast'))  $('pref-contrast').checked  = prefs.contrast;
     if ($('pref-animations'))$('pref-animations').checked = prefs.animations;
 
-    /* Funzioni */
     if ($('pref-comment-privacy')) $('pref-comment-privacy').value = prefs.commentPrivacy;
     if ($('pref-notif-frequency')) $('pref-notif-frequency').value = prefs.notifFrequency;
     if ($('pref-notif-email'))     $('pref-notif-email').checked   = prefs.notifEmail;
     renderPreferredCategoryChips(prefs.preferredCategories);
 
-    /* Apply + accessibility summary */
     applyUiPrefs(prefs);
     renderAccessibilitySummary(prefs);
+    renderHeroTags(prefs);
 
-    /* System theme listener */
     if (systemThemeQuery) {
       const syncSystem = () => {
         const live = loadPrefs();
@@ -991,13 +1371,11 @@
       else if (systemThemeQuery.addListener) systemThemeQuery.addListener(syncSystem);
     }
 
-    /* Save buttons */
     $('save-profile-btn')?.addEventListener('click', saveProfile);
     $('save-avatar-btn')?.addEventListener('click', saveAvatar);
     $('save-ui-btn')?.addEventListener('click', saveUiPreferences);
     $('save-custom-btn')?.addEventListener('click', saveCustomPreferences);
 
-    /* Logout (auth still uses Supabase) */
     $('logout-btn')?.addEventListener('click', async () => {
       try {
         if (typeof supabase !== 'undefined' && typeof SUPABASE_URL !== 'undefined' && !String(SUPABASE_URL).includes('your-project')) {
@@ -1007,14 +1385,12 @@
       location.href = '/login';
     });
 
-    /* Live preview on inputs */
     $('p-display')?.addEventListener('input', syncPreview);
     $('p-username')?.addEventListener('input', function () {
       this.value = sanitizeUsername(this.value);
       syncPreview();
     });
 
-    /* Live UI: apply immediately + persist so other tabs/pages pick it up */
     ['pref-theme','pref-language','pref-density','pref-fontsize','pref-contrast','pref-animations'].forEach((id) => {
       $(id)?.addEventListener('change', () => {
         const live = loadPrefs();
@@ -1027,14 +1403,16 @@
         savePrefs(live);
         applyUiPrefs(live);
         renderAccessibilitySummary(live);
+        renderHeroTags(live);
       });
     });
 
-    /* Category chips toggle */
     $('pref-category-chips')?.addEventListener('click', (event) => {
       const btn = event.target.closest('.pref-chip');
       if (!btn) return;
-      btn.classList.toggle('on');
+      const active = !btn.classList.contains('on');
+      btn.classList.toggle('on', active);
+      btn.setAttribute('aria-pressed', active);
       syncPreferredCategorySummary();
     });
   }
