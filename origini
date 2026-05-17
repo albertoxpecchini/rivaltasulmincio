@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Origini di Rivalta sul Mincio — Storia del borgo</title>
+  <meta name="description" content="La storia di Rivalta sul Mincio: dalle prime civiltà preromane sul Mincio, passando per il Medioevo gonzaghesco, la civiltà dell'acqua e le arelle, fino alla nascita della Pro Loco e della Festa del Pesce." />
+  <meta name="keywords" content="Rivalta sul Mincio storia, origini borgo Mincio, Gonzaga Mincio, civiltà acqua Mincio, arelle, Pro Loco Rivalta 1967, Festa del Pesce 1985, Valli del Mincio storia" />
+  <link rel="canonical" href="https://www.rivaltasulmincio.it/origini" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Le Origini di Rivalta sul Mincio" />
+  <meta property="og:description" content="Millenni di storia sul Mincio: dalle terramare preromane al borgo dei pescatori, dai Gonzaga alla Pro Loco e alla Festa del Pesce." />
+  <meta property="og:url" content="https://www.rivaltasulmincio.it/origini" />
+  <meta property="og:image" content="https://www.rivaltasulmincio.it/img/mantova-laghi-aerea.jpg" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
+  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
+  <link rel="stylesheet" href="/theme.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; }
+
+    :root {
+      --story-bg: #f7fafe;
+      --story-ink: #08111f;
+      --story-ink-2: #172033;
+      --story-muted: #65728a;
+      --story-muted-2: #93a0b4;
+      --story-card: rgba(255, 255, 255, 0.72);
+      --story-card-strong: rgba(255, 255, 255, 0.9);
+      --story-line: rgba(12, 20, 35, 0.12);
+      --story-line-strong: rgba(12, 20, 35, 0.2);
+      --story-emerald: #1fbf7d;
+      --story-azure: #4a9bff;
+      --story-violet: #8b5cf6;
+      --story-amber: #f59e0b;
+      --story-grad: linear-gradient(100deg, var(--story-emerald) 0%, var(--story-azure) 50%, var(--story-violet) 100%);
+      --story-grad-warm: linear-gradient(100deg, #f59e0b 0%, #ef4444 50%, var(--story-violet) 100%);
+      --story-grad-soft: linear-gradient(135deg, rgba(31,191,125,0.14), rgba(74,155,255,0.12), rgba(139,92,246,0.14));
+      --story-shadow: 0 28px 90px rgba(9, 17, 31, 0.12);
+      --story-shadow-soft: 0 14px 42px rgba(9, 17, 31, 0.08);
+      --story-radius-xl: 34px;
+      --story-radius-lg: 24px;
+      --story-radius-md: 16px;
+      --story-sans: "Cabinet Grotesk", var(--rsm-font-sans, system-ui, sans-serif);
+      --story-serif: "Fraunces", var(--rsm-font-display, Georgia, serif);
+      --story-mono: var(--rsm-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+      --story-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--story-sans);
+      color: var(--story-ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(31, 191, 125, 0.22), transparent 28rem),
+        radial-gradient(circle at 85% 12%, rgba(74, 155, 255, 0.24), transparent 30rem),
+        radial-gradient(circle at 72% 82%, rgba(139, 92, 246, 0.18), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, var(--story-bg) 42%, #eef4ff 100%);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.58;
+      background:
+        linear-gradient(90deg, rgba(12,20,35,0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(12,20,35,0.035) 1px, transparent 1px),
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 0.8px, transparent 1.3px);
+      background-size: 72px 72px, 72px 72px, 3px 3px;
+      mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.74) 58%, transparent 100%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: auto -15vw -32vw -15vw;
+      height: 48vw;
+      min-height: 420px;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(closest-side, rgba(74,155,255,0.12), transparent 70%);
+      filter: blur(10px);
+    }
+
+    a { color: var(--story-azure); text-decoration: none; }
+    a:hover { color: var(--story-violet); }
+
+    .skip-link {
+      position: fixed;
+      left: 18px;
+      top: 14px;
+      z-index: 100;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: var(--story-ink);
+      color: #fff;
+      box-shadow: var(--story-shadow-soft);
+      transform: translateY(-180%);
+      transition: transform 360ms var(--story-ease);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      isolation: isolate;
+      width: min(100% - 40px, 1320px);
+      margin: 0 auto;
+      padding: clamp(132px, 16vw, 220px) 0 clamp(64px, 8vw, 110px);
+      text-align: left;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: min(-9vw, -90px);
+      top: 18%;
+      width: min(46vw, 620px);
+      aspect-ratio: 1;
+      z-index: -1;
+      border-radius: 48% 52% 42% 58%;
+      background:
+        radial-gradient(circle at 34% 26%, rgba(255,255,255,0.78), transparent 24%),
+        conic-gradient(from 140deg, rgba(31,191,125,0.22), rgba(74,155,255,0.28), rgba(139,92,246,0.24), rgba(31,191,125,0.22));
+      filter: blur(0.2px);
+      opacity: 0.95;
+      animation: story-orb 18s ease-in-out infinite alternate;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: -9vw;
+      bottom: 9%;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(31,191,125,0.2), transparent 68%);
+      z-index: -1;
+    }
+    @keyframes story-orb {
+      from { transform: translate3d(0, 0, 0) rotate(0deg); border-radius: 48% 52% 42% 58%; }
+      to { transform: translate3d(-18px, 22px, 0) rotate(12deg); border-radius: 56% 44% 60% 40%; }
+    }
+
+    .hero-eyebrow,
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--story-mono);
+      font-size: clamp(0.68rem, 0.78vw, 0.78rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--story-muted);
+    }
+    .hero-eyebrow::before,
+    .section-label::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--story-grad);
+      box-shadow: 0 0 0 7px rgba(74,155,255,0.10);
+    }
+    .hero-eyebrow { margin-bottom: 22px; }
+
+    .hero-title {
+      max-width: 980px;
+      font-family: var(--story-sans);
+      font-size: clamp(4rem, 10vw, 10.5rem);
+      font-weight: 900;
+      line-height: 0.86;
+      letter-spacing: -0.085em;
+      color: var(--story-ink);
+      text-wrap: balance;
+    }
+    .hero-title em {
+      font-family: var(--story-serif);
+      font-weight: 550;
+      font-style: italic;
+      background: var(--story-grad);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: story-grad 8s ease-in-out infinite alternate;
+    }
+    @keyframes story-grad { to { background-position: 100% 50%; } }
+
+    .hero-subtitle {
+      max-width: 760px;
+      margin: clamp(26px, 4vw, 42px) 0 0;
+      font-size: clamp(1.08rem, 1.5vw, 1.34rem);
+      font-weight: 500;
+      line-height: 1.55;
+      color: var(--story-muted);
+    }
+    .hero-subtitle span { color: var(--story-ink-2); font-weight: 900; }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-width: 980px;
+      margin-top: clamp(28px, 4vw, 48px);
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 8px 15px;
+      border: 1px solid rgba(255,255,255,0.68);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.58);
+      color: var(--story-muted);
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 12px 36px rgba(9,17,31,0.06);
+      backdrop-filter: blur(18px);
+    }
+    .stat-pill strong { color: var(--story-ink); font-size: 1.02rem; }
+    .stat-pill .sep { color: var(--story-muted-2); }
+
+    /* ── Page wrap ──────────────────────────────────────────── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      width: min(100% - 40px, 1240px);
+      margin: 0 auto;
+      padding: 0 0 100px;
+    }
+    .section-label {
+      display: flex;
+      margin: clamp(54px, 8vw, 92px) 0 18px;
+    }
+
+    /* ── Internal navigation ───────────────────────────────── */
+    .origini-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: clamp(32px, 5vw, 56px) 0 0;
+      padding: clamp(20px, 3vw, 32px);
+      border: 1px solid var(--story-line);
+      border-radius: var(--story-radius-lg);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)) padding-box,
+        var(--story-grad) border-box;
+      box-shadow: var(--story-shadow-soft);
+      backdrop-filter: blur(20px);
+    }
+    .origini-nav-label {
+      width: 100%;
+      font-family: var(--story-mono);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--story-muted-2);
+      margin-bottom: 4px;
+    }
+    .origini-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 15px;
+      border: 1px solid var(--story-line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.58);
+      color: var(--story-ink-2);
+      font-weight: 800;
+      font-size: 0.86rem;
+      text-decoration: none;
+      transition: background 240ms var(--story-ease), border-color 240ms var(--story-ease), color 240ms var(--story-ease);
+    }
+    .origini-nav a:hover {
+      background: rgba(74,155,255,0.1);
+      border-color: rgba(74,155,255,0.3);
+      color: var(--story-azure);
+    }
+    .origini-nav a .nav-num {
+      font-family: var(--story-mono);
+      font-size: 0.68rem;
+      color: var(--story-muted-2);
+    }
+
+    /* ── Timeline ───────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      max-width: 980px;
+      margin-top: 4px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--story-emerald), var(--story-azure), var(--story-violet));
+      opacity: 0.45;
+    }
+    .timeline-entry {
+      position: relative;
+      padding: 22px 24px 22px 58px;
+      border: 1px solid transparent;
+      border-radius: var(--story-radius-lg);
+      background: rgba(255,255,255,0.52);
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 640ms var(--story-ease), transform 640ms var(--story-ease), background 360ms var(--story-ease), box-shadow 360ms var(--story-ease);
+    }
+    .timeline-entry.visible { opacity: 1; transform: none; }
+    .timeline-entry:hover { background: rgba(255,255,255,0.82); box-shadow: var(--story-shadow-soft); }
+    .timeline-dot {
+      position: absolute;
+      left: 8px;
+      top: 30px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      border: 5px solid var(--story-azure);
+      box-shadow: 0 0 0 8px rgba(74,155,255,0.12);
+      z-index: 1;
+    }
+    .timeline-dot.milestone { border-color: var(--story-emerald); box-shadow: 0 0 0 8px rgba(31,191,125,0.14); }
+    .timeline-dot.amber { border-color: var(--story-amber); box-shadow: 0 0 0 8px rgba(245,158,11,0.14); }
+    .timeline-date { font-family: var(--story-mono); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: var(--story-violet); margin-bottom: 8px; }
+    .timeline-heading { font-family: var(--story-sans); font-size: clamp(1.45rem, 2.3vw, 2.1rem); line-height: 1.04; letter-spacing: -0.04em; color: var(--story-ink); margin-bottom: 12px; }
+    .timeline-body { color: var(--story-muted); font-size: 1rem; font-weight: 500; line-height: 1.72; }
+    .timeline-body p + p { margin-top: 12px; }
+    .timeline-body strong { color: var(--story-ink-2); font-weight: 800; }
+    .timeline-body em { font-family: var(--story-serif); font-style: italic; color: var(--story-ink-2); }
+
+    /* ── Inline back-link button ───────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 9px 16px 9px 14px;
+      border: 1px solid var(--story-line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.58);
+      color: var(--story-azure);
+      font-weight: 800;
+      font-size: 0.86rem;
+      text-decoration: none;
+      transition: background 240ms, border-color 240ms, transform 240ms var(--story-ease);
+      backdrop-filter: blur(12px);
+    }
+    .back-link:hover {
+      background: rgba(74,155,255,0.1);
+      border-color: rgba(74,155,255,0.3);
+      color: var(--story-azure);
+      transform: translateX(3px);
+    }
+    .back-link .arrow { font-style: normal; }
+
+    /* ── Carousel wrapper ──────────────────────────────────── */
+    .carousel-block {
+      margin: clamp(36px, 6vw, 64px) 0;
+      border-radius: var(--story-radius-xl);
+      overflow: hidden;
+      box-shadow: var(--story-shadow);
+    }
+    .carousel-block [data-rsm-carousel] {
+      aspect-ratio: 16 / 7;
+      width: 100%;
+    }
+    .carousel-caption {
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--story-line);
+      border-top: none;
+      border-radius: 0 0 var(--story-radius-xl) var(--story-radius-xl);
+      font-family: var(--story-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--story-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .carousel-caption::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--story-grad);
+      flex: 0 0 auto;
+    }
+
+    /* ── Quote block ───────────────────────────────────────── */
+    .quote-block {
+      position: relative;
+      margin: clamp(28px, 5vw, 48px) 0;
+      padding: clamp(24px, 4vw, 40px) clamp(24px, 4vw, 40px) clamp(24px, 4vw, 40px) clamp(32px, 5vw, 56px);
+      border-radius: var(--story-radius-lg);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)) padding-box,
+        var(--story-grad) border-box;
+      border: 1.5px solid transparent;
+      box-shadow: var(--story-shadow-soft);
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      left: clamp(10px, 2vw, 18px);
+      top: clamp(10px, 2vw, 16px);
+      font-family: var(--story-serif);
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1;
+      background: var(--story-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 550;
+    }
+    .quote-text {
+      font-family: var(--story-serif);
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      font-weight: 550;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--story-ink-2);
+    }
+    .quote-source {
+      margin-top: 14px;
+      font-family: var(--story-mono);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--story-muted);
+    }
+
+    /* ── Fact grid ─────────────────────────────────────────── */
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: clamp(24px, 4vw, 40px) 0;
+    }
+    .fact-card {
+      padding: clamp(18px, 3vw, 28px);
+      border: 1px solid var(--story-line);
+      border-radius: var(--story-radius-md);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)) padding-box,
+        var(--story-grad) border-box;
+      box-shadow: var(--story-shadow-soft);
+      backdrop-filter: blur(16px);
+    }
+    .fact-card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .fact-card-num {
+      font-family: var(--story-sans);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.9;
+      color: var(--story-ink);
+    }
+    .fact-card-num em {
+      font-size: 0.55em;
+      font-style: normal;
+      font-weight: 900;
+      background: var(--story-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .fact-card-label {
+      margin-top: 8px;
+      font-family: var(--story-mono);
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--story-muted);
+      line-height: 1.4;
+    }
+
+    /* ── Section intro (large text) ───────────────────────── */
+    .section-intro {
+      max-width: 860px;
+      margin-bottom: clamp(28px, 5vw, 44px);
+    }
+    .section-intro-heading {
+      font-family: var(--story-sans);
+      font-size: clamp(1.9rem, 3.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      color: var(--story-ink);
+      margin-bottom: 16px;
+    }
+    .section-intro-heading em {
+      font-family: var(--story-serif);
+      font-style: italic;
+      font-weight: 550;
+      background: var(--story-grad);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-intro-body {
+      font-size: clamp(1rem, 1.4vw, 1.18rem);
+      font-weight: 500;
+      line-height: 1.68;
+      color: var(--story-muted);
+    }
+    .section-intro-body strong { color: var(--story-ink-2); font-weight: 800; }
+
+    /* ── Dark callout (like commit-block in storia) ────────── */
+    .dark-callout {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--story-radius-xl);
+      padding: clamp(28px, 5vw, 52px);
+      color: rgba(236, 246, 255, 0.82);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(31,191,125,0.24), transparent 30%),
+        radial-gradient(circle at 92% 0%, rgba(74,155,255,0.25), transparent 34%),
+        radial-gradient(circle at 70% 100%, rgba(139,92,246,0.22), transparent 32%),
+        #08111f;
+      box-shadow: var(--story-shadow);
+      margin: clamp(28px, 5vw, 52px) 0;
+    }
+    .dark-callout::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 100% 28px;
+      pointer-events: none;
+    }
+    .dark-callout > * { position: relative; }
+    .dark-callout-label {
+      font-family: var(--story-mono);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--story-emerald);
+      margin-bottom: 12px;
+    }
+    .dark-callout-heading {
+      font-family: var(--story-sans);
+      font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1.05;
+      color: #f0f8ff;
+      margin-bottom: 16px;
+    }
+    .dark-callout-heading em {
+      font-family: var(--story-serif);
+      font-style: italic;
+      font-weight: 550;
+    }
+    .dark-callout-body {
+      font-size: clamp(1rem, 1.4vw, 1.12rem);
+      font-weight: 500;
+      line-height: 1.68;
+      color: rgba(214, 228, 248, 0.78);
+      max-width: 700px;
+    }
+    .dark-callout-body strong { color: rgba(220, 240, 255, 0.95); }
+    .dark-callout-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .dark-callout-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(220,240,255,0.9);
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 240ms, border-color 240ms;
+      backdrop-filter: blur(8px);
+    }
+    .dark-callout-link:hover {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.35);
+      color: #fff;
+    }
+
+    /* ── Final CTA ─────────────────────────────────────────── */
+    .final-cta {
+      margin: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px);
+      padding: clamp(36px, 6vw, 64px);
+      border: 1px solid var(--story-line);
+      border-radius: var(--story-radius-xl);
+      background:
+        radial-gradient(circle at 10% 80%, rgba(31,191,125,0.14), transparent 44%),
+        radial-gradient(circle at 90% 20%, rgba(74,155,255,0.14), transparent 40%),
+        linear-gradient(145deg, rgba(255,255,255,0.88), rgba(248,250,255,0.68)) padding-box,
+        var(--story-grad) border-box;
+      box-shadow: var(--story-shadow);
+      backdrop-filter: blur(20px);
+      text-align: center;
+    }
+    .final-cta-eyebrow {
+      font-family: var(--story-mono);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--story-muted-2);
+      margin-bottom: 14px;
+    }
+    .final-cta-heading {
+      font-family: var(--story-sans);
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1.05;
+      color: var(--story-ink);
+      margin-bottom: 16px;
+    }
+    .final-cta-heading em {
+      font-family: var(--story-serif);
+      font-style: italic;
+      font-weight: 550;
+      background: var(--story-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .final-cta-body {
+      color: var(--story-muted);
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.62;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .final-cta-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    /* ── Dark mode ─────────────────────────────────────────── */
+    html[data-theme="scuro"] body {
+      color: #eef4ff;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(31, 191, 125, 0.18), transparent 28rem),
+        radial-gradient(circle at 85% 12%, rgba(74, 155, 255, 0.18), transparent 30rem),
+        radial-gradient(circle at 72% 82%, rgba(139, 92, 246, 0.16), transparent 34rem),
+        linear-gradient(180deg, #080d18 0%, #0d1320 52%, #101622 100%) !important;
+    }
+    html[data-theme="scuro"] body::before { opacity: 0.22 !important; }
+    html[data-theme="scuro"] .hero-title,
+    html[data-theme="scuro"] .timeline-heading,
+    html[data-theme="scuro"] .section-intro-heading,
+    html[data-theme="scuro"] .final-cta-heading,
+    html[data-theme="scuro"] .fact-card-num { color: #f6f9ff; }
+    html[data-theme="scuro"] .hero-subtitle,
+    html[data-theme="scuro"] .timeline-body,
+    html[data-theme="scuro"] .section-intro-body,
+    html[data-theme="scuro"] .quote-text { color: rgba(214,225,242,0.74); }
+    html[data-theme="scuro"] .timeline-entry,
+    html[data-theme="scuro"] .stat-pill,
+    html[data-theme="scuro"] .origini-nav,
+    html[data-theme="scuro"] .fact-card,
+    html[data-theme="scuro"] .quote-block,
+    html[data-theme="scuro"] .carousel-caption,
+    html[data-theme="scuro"] .final-cta {
+      background: rgba(17, 24, 39, 0.68);
+      border-color: rgba(255,255,255,0.1);
+      box-shadow: 0 24px 72px rgba(0,0,0,0.28);
+    }
+    html[data-theme="scuro"] .timeline-entry:hover { background: rgba(27, 36, 56, 0.82); }
+    html[data-theme="scuro"] .timeline-dot { background: #101827; }
+    html[data-theme="scuro"] .origini-nav a { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); color: rgba(214,225,242,0.82); }
+    html[data-theme="scuro"] .back-link { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
+    html[data-theme="scuro"] .final-cta-body { color: rgba(214,225,242,0.74); }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.001ms !important; }
+    }
+
+    @media (max-width: 760px) {
+      .hero, .page-wrap { width: min(100% - 28px, 1240px); }
+      .hero { padding-top: 118px; }
+      .hero-title { font-size: clamp(3.25rem, 18vw, 5.2rem); }
+      .hero::before { width: 78vw; opacity: 0.6; }
+      .timeline-entry { padding: 20px 18px 20px 48px; }
+      .timeline::before { left: 13px; }
+      .timeline-dot { left: 5px; }
+      .carousel-block [data-rsm-carousel] { aspect-ratio: 4 / 3; }
+      .fact-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .hero-stats { display: grid; }
+      .stat-pill { justify-content: space-between; }
+      .fact-grid { grid-template-columns: 1fr; }
+      .dark-callout { border-radius: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Salta al contenuto</a>
+
+<!--PARTIAL:nav-->
+
+  <!-- ──────────────────────────────────────────────────────────────
+       HERO
+       ────────────────────────────────────────────────────────────── -->
+  <section class="hero" id="main" aria-labelledby="origini-title">
+    <div class="hero-eyebrow">Storia del borgo · Rivalta sul Mincio</div>
+    <h1 class="hero-title" id="origini-title">Le <em>Origini</em><br>di Rivalta</h1>
+    <p class="hero-subtitle">
+      Millenni di storia sull&rsquo;acqua: dalle <span>prime civilt&agrave; preromane</span> sul Mincio,
+      passando per i <span>Gonzaga</span> e la <span>civilt&agrave; dei pescatori</span>,
+      fino alla nascita della <span>Pro Loco</span> e della <span>Festa del Pesce</span>.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-pill"><strong>~1200&nbsp;a.C.</strong><span class="sep">·</span>prime tracce insediative</div>
+      <div class="stat-pill"><strong>1328</strong><span class="sep">·</span>annessa ai Gonzaga</div>
+      <div class="stat-pill"><strong>1967</strong><span class="sep">·</span>fondazione Pro Loco</div>
+      <div class="stat-pill"><strong>1984</strong><span class="sep">·</span>riserva naturale</div>
+      <div class="stat-pill"><strong>1985</strong><span class="sep">·</span>prima Festa del Pesce</div>
+      <div class="stat-pill"><strong>2009</strong><span class="sep">·</span>Eden Project EU</div>
+    </div>
+  </section>
+
+  <div class="page-wrap">
+
+    <!-- Navigazione interna -->
+    <nav class="origini-nav" aria-label="Naviga tra i capitoli della storia">
+      <span class="origini-nav-label">Capitoli</span>
+      <a href="#antichi"><span class="nav-num">01</span> In principio era l&rsquo;acqua</a>
+      <a href="#medioevo"><span class="nav-num">02</span> Il borgo medievale</a>
+      <a href="#acqua"><span class="nav-num">03</span> La civilt&agrave; dell&rsquo;acqua</a>
+      <a href="#proloco"><span class="nav-num">04</span> La Pro Loco e la Festa</a>
+      <a href="#oggi"><span class="nav-num">05</span> La riserva e oggi</a>
+    </nav>
+
+    <!-- ────────────────────────────────────────────────────────
+         01 · IN PRINCIPIO ERA L'ACQUA
+         ──────────────────────────────────────────────────────── -->
+    <div class="section-label" id="antichi">01 · In principio era l&rsquo;acqua · Preistoria e Roma</div>
+
+    <div class="section-intro">
+      <h2 class="section-intro-heading">Prima del borgo,<br>c&rsquo;era il <em>Mincio</em></h2>
+      <p class="section-intro-body">
+        Il territorio attorno a Rivalta &egrave; abitato da millenni. Il Mincio &mdash; lento, ricco di pesce, circondato da canneti e zone umide &mdash; era una risorsa straordinaria per le popolazioni preistoriche della pianura padana. L&rsquo;acqua non era uno sfondo: era la ragione stessa di ogni insediamento.
+      </p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot amber"></div>
+        <div class="timeline-date">Et&agrave; del Bronzo &middot; 1500–900 a.C.</div>
+        <h3 class="timeline-heading">Le terramare e la pianura padana</h3>
+        <div class="timeline-body">
+          <p>La pianura padana tra il Garda e Mantova fu abitata dalla <strong>civilt&agrave; delle terramare</strong>, una cultura del Bronzo medio-recente che fondava i propri villaggi su palafitte o su piattaforme rialzate a protezione dalle inondazioni. Tra le pi&ugrave; dense concentrazioni di terramare d&rsquo;Italia si trovano nel territorio mantovano, e la prossimit&agrave; al Mincio era fondamentale: il fiume offriva acqua dolce, protezione naturale e abbondante fauna ittica.</p>
+          <p>I canali che ancora oggi scandiscono la campagna intorno a Rivalta rispecchiano antichi percorsi idrografici plasmati in parte gi&agrave; in epoca preistorica. Il rapporto tra l&rsquo;uomo e l&rsquo;acqua di questo territorio &egrave; vecchio di tremila anni.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Et&agrave; romana &middot; I sec. a.C. — V sec. d.C.</div>
+        <h3 class="timeline-heading">Il Mincio di Virgilio</h3>
+        <div class="timeline-body">
+          <p><strong>Publio Virgilio Marone</strong> (70–19 a.C.), nato nei pressi di Mantova nella localit&agrave; di Andes (oggi Pietole), celebr&ograve; il Mincio nelle sue <em>Bucoliche</em> con le parole che pi&ugrave; di tutte hanno definito questo paesaggio: <em>&ldquo;muscosi fontes et somno mollior herba&rdquo;</em> — sorgenti muscose ed erba pi&ugrave; morbida del sonno. Per i Romani il <em>Mincius</em> era una via commerciale che collegava il Lago di Garda alla citt&agrave; di Mantua, nodo della pianura padana.</p>
+          <p>I resti di ville rustiche romane nei dintorni di Mantova confermano un paesaggio agricolo e peschereccio attivo. Le tecniche di pesca sul Mincio non cambieranno sostanzialmente per i successivi quindici secoli: reti calate nelle zone lente, canne e nasse per le anguille, lenze per il luccio.</p>
+          <a class="back-link" href="/#territorio" aria-label="Vai alla sezione Territorio nella homepage">
+            <span class="arrow">&#8592;</span> Esplora le Valli del Mincio in homepage
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Carousel 1 — Paesaggio del Mincio -->
+    <figure class="carousel-block" aria-label="Immagini del paesaggio del Mincio">
+      <div data-rsm-carousel data-autoplay="5000" data-aspect="16/7" role="region" aria-label="Carosello del Mincio storico">
+        <img src="/img/mantova-laghi-aerea.jpg" alt="Veduta aerea dei laghi di Mantova e del Mincio" loading="lazy" />
+        <img src="/img/atlante/mantua-g7c7ae163b_1920.jpg" alt="Mantova e il Mincio" loading="lazy" />
+        <img src="/img/atlante/paulis-veduta1.webp" alt="Veduta del territorio del Mincio" loading="lazy" />
+        <img src="/img/corte-mincio-storica.jpg" alt="Corte storica sul Mincio" loading="lazy" />
+      </div>
+      <figcaption class="carousel-caption">Paesaggio del Mincio tra Rivalta e Mantova · scorri per esplorare</figcaption>
+    </figure>
+
+    <!-- ────────────────────────────────────────────────────────
+         02 · IL BORGO MEDIEVALE
+         ──────────────────────────────────────────────────────── -->
+    <div class="section-label" id="medioevo">02 · Il borgo medievale · Gonzaga e il Mincio</div>
+
+    <div class="section-intro">
+      <h2 class="section-intro-heading">Riva <em>alta</em>: il nome che racconta tutto</h2>
+      <p class="section-intro-body">
+        Il nome <strong>Rivalta</strong> viene dall&rsquo;espressione latina <em>ripa alta</em> &mdash; la riva alta, il lato elevato del fiume. Una descrizione geografica precisa: il borgo sorge sulla sponda destra del Mincio, in un punto dove il terreno si innalza rispetto alla golena alluvionale. Una posizione strategica, mai casuale.
+      </p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot amber"></div>
+        <div class="timeline-date">Medioevo &middot; XI–XIII sec.</div>
+        <h3 class="timeline-heading">Le prime tracce documentali</h3>
+        <div class="timeline-body">
+          <p>I primi riferimenti scritti a un insediamento in questa zona del Mincio risalgono all&rsquo;epoca comunale. La posizione di Rivalta come punto di attraversamento del fiume la rese importante per i traffici tra il Mantovano e i territori a sud del lago di Garda. Il nome <em>&ldquo;Porto&rdquo;</em> nella via principale del borgo &mdash; Via Porto &mdash; non &egrave; una metafora: indica l&rsquo;antico porto fluviale, il luogo dove le barche approdavano e le merci cambiavano mano.</p>
+          <p>In questo periodo sorgono nel borgo la prima cappella dedicata ai santi locali e le prime strutture stabili legate alla pesca e al commercio fluviale. La comunit&agrave; vive dell&rsquo;acqua e per l&rsquo;acqua.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot milestone"></div>
+        <div class="timeline-date">Signoria dei Gonzaga &middot; 1328–1708</div>
+        <h3 class="timeline-heading">Sotto il segno dei Gonzaga</h3>
+        <div class="timeline-body">
+          <p>Nel 1328 Luigi Gonzaga prese il potere a Mantova, dando inizio a una delle pi&ugrave; longeve e influenti signorie del Rinascimento italiano. Il Mincio e le sue valli divennero parte integrante del dominio gonzaghesco: il fiume forniva pesce per la corte, il paesaggio lacustre era riserva di caccia, e le localit&agrave; lungo le sponde erano presidio militare e punto di controllo delle vie d&rsquo;acqua.</p>
+          <p>Per Rivalta, come per gli altri borghi fluviali mantovani, essere sotto i Gonzaga signific&ograve; un lungo periodo di relativa stabilit&agrave;. La famiglia regnante finanziava chiese, proteggeva le arti e governava con una pragmatica attenzione all&rsquo;economia locale. La pesca del luccio &mdash; oggi simbolo della Festa del Pesce &mdash; era gi&agrave; un&rsquo;attivit&agrave; regolamentata e fiscalmente rilevante per la signoria. Le &ldquo;risorgive&rdquo; e i canneti erano beni gestiti collettivamente dalla comunit&agrave; sotto concessione gonzaghesca.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Et&agrave; moderna &middot; XVIII–XIX sec.</div>
+        <h3 class="timeline-heading">Dalla dominazione asburgica all&rsquo;Unit&agrave; d&rsquo;Italia</h3>
+        <div class="timeline-body">
+          <p>Con la fine del dominio gonzaghesco (1708), il Mantovano pass&ograve; sotto la corona asburgica. Le valli del Mincio rimasero un territorio agricolo e peschereccio, relativamente isolato rispetto ai grandi flussi commerciali. L&rsquo;arrivo dell&rsquo;Unit&agrave; d&rsquo;Italia (1866) integr&ograve; il borgo nel nuovo stato nazionale, ma il ritmo di vita non cambi&ograve; bruscamente: la pesca, la coltivazione delle canne e il commercio fluviale continuarono come prima, trasmessi di padre in figlio.</p>
+          <p>La ferrovia, che arriver&agrave; a Mantova nella seconda met&agrave; dell&rsquo;Ottocento, accelerer&agrave; lentamente i cambiamenti, ma Rivalta rester&agrave; per lungo tempo un borgo rurale fuori dai circuiti principali, fedele alla sua identit&agrave; d&rsquo;acqua.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ────────────────────────────────────────────────────────
+         03 · LA CIVILTÀ DELL'ACQUA
+         ──────────────────────────────────────────────────────── -->
+    <div class="section-label" id="acqua">03 · La civilt&agrave; dell&rsquo;acqua · Pesce, canne e arelle</div>
+
+    <div class="section-intro">
+      <h2 class="section-intro-heading">Un&rsquo;economia nata<br>dal <em>paesaggio</em></h2>
+      <p class="section-intro-body">
+        Per secoli l&rsquo;economia di Rivalta &egrave; stata costruita sul Mincio e sulle sue valli. Non si trattava di sfruttare la natura: era un rapporto di conoscenza profonda, di lettura stagionale delle acque, di tecniche tramandate come la pesca del luccio, il taglio delle canne e l&rsquo;intreccio delle <strong>arelle</strong>.
+      </p>
+    </div>
+
+    <div class="fact-grid">
+      <div class="fact-card">
+        <div class="fact-card-num">4<em>+ specie</em></div>
+        <div class="fact-card-label">Pesci storici della cucina rivaltese:<br>luccio, pesce gatto, anguilla, pesina</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-card-num">~5<em>m</em></div>
+        <div class="fact-card-label">Altezza delle canne palustri tagliate ogni inverno per le arelle</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-card-num">43<em>km</em></div>
+        <div class="fact-card-label">Lunghezza del Mincio dal Garda al Po, via d&rsquo;acqua commerciale storica</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-card-num">2<em>PAT</em></div>
+        <div class="fact-card-label">Luccio in salsa e Luccio in bianco: Prodotti Agroalimentari Tradizionali e De.Co.</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Tradizione plurisecolare</div>
+        <h3 class="timeline-heading">La pesca del luccio e la cucina d&rsquo;acqua</h3>
+        <div class="timeline-body">
+          <p>Il <strong>luccio</strong> (<em>Esox lucius</em>) &egrave; sempre stato il re della tavola rivaltese. Predatore apicale delle zone umide del Mincio, veniva pescato con reti a posta e lenze nelle zone a ridosso dei canneti, dove si &ldquo;posta&rdquo; in attesa delle prede. Le tecniche erano raffinate: i pescatori sapevano leggere i movimenti delle acque, le variazioni di stagione, i luoghi dove il luccio si apposta.</p>
+          <p>La ricetta del <em>&ldquo;luccio in salsa alla rivaltese&rdquo;</em> &mdash; pesce lessato servito con una salsa verde di aglio, acciughe, capperi e prezzemolo &mdash; &egrave; probabilmente pi&ugrave; vecchia di qualsiasi documento scritto. Non si conosce il giorno in cui &egrave; stata inventata: &egrave; semplicemente sempre stata l&agrave;, trasmessa nelle cucine di ogni famiglia del borgo. Oggi &egrave; riconosciuta come <strong>Prodotto Agroalimentare Tradizionale (PAT)</strong> dal Ministero dell&rsquo;Agricoltura e come <strong>De.Co.</strong> del Comune di Rodigo.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Artigianato tradizionale</div>
+        <h3 class="timeline-heading">Le arelle: il lavoro dei canneti</h3>
+        <div class="timeline-body">
+          <p>Ogni inverno, quando i livelli dell&rsquo;acqua si abbassano e la vegetazione rallenta, gli abitanti di Rivalta entravano nei <strong>canneti</strong> per tagliare la <em>canna palustre</em> (<em>Phragmites australis</em>), la pianta che domina il paesaggio delle valli. Le canne tagliate venivano poi intrecciate a mano per produrre le <strong>arelle</strong>: stuoie vegetali usate come schermatura, ombreggiatura, recinzione e copertura.</p>
+          <p>Le arelle erano vendute nei mercati di Mantova e della pianura padana: un&rsquo;economia silenziosa ma costante, affidata soprattutto alle mani delle donne della comunit&agrave;. Quella che oggi potremmo definire &ldquo;economia circolare&rdquo; &mdash; usare le risorse naturali rinnovandole con cura &mdash; era semplicemente la vita ordinaria di Rivalta. Il taglio regolare delle canne, inoltre, manteneva in salute gli ecosistemi delle valli.</p>
+          <a class="back-link" href="/#territorio" aria-label="Vai alla sezione Territorio nella homepage">
+            <span class="arrow">&#8592;</span> Scopri le Valli del Mincio in homepage
+          </a>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Commercio fluviale</div>
+        <h3 class="timeline-heading">Via Porto: il battello e la pianura</h3>
+        <div class="timeline-body">
+          <p>Il Mincio non era solo un luogo di pesca: era una <strong>via di comunicazione</strong>. Barconi piatti risalivano il fiume dal Po verso Mantova e poi verso il Garda; altri scendevano carichi di prodotti agricoli, pesce, canne e manufatti. Il porto di Rivalta &mdash; da cui prende nome Via Porto ancora oggi &mdash; era uno dei punti di attracco intermedi, dove le merci venivano sbarcate o ricaricate.</p>
+          <p>Questa funzione di nodo fluviale spiega la posizione del borgo: non in cima a una collina, non al centro di una pianura coltivata, ma esattamente sul bordo dell&rsquo;acqua, dove il terreno pi&ugrave; elevato offriva riparo dalle piene e la riva permetteva di tirare in secco le barche. <em>Riva alta</em>, appunto.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Citazione di Virgilio -->
+    <blockquote class="quote-block">
+      <p class="quote-text">Ille latus niveum molli fultus hyacintho ilice sub nigra pallentis ruminat herbas: &mdash; nascent e viride Mincio ripae.</p>
+      <cite class="quote-source">Virgilio, Bucoliche &middot; ~40 a.C. &middot; Il Mincio dalle rive verdi</cite>
+    </blockquote>
+
+    <!-- Carousel 2 — Le Valli del Mincio -->
+    <figure class="carousel-block" aria-label="Immagini delle Valli del Mincio">
+      <div data-rsm-carousel data-autoplay="4800" data-aspect="16/7" role="region" aria-label="Carosello delle Valli del Mincio">
+        <img src="/img/atlante/ste2447-natura-parco-del-mincio-isola-fiori-di-loto-04-07-14-b.jpg" alt="Fiori di loto nelle Valli del Mincio" loading="lazy" />
+        <img src="/img/atlante/CRED-PARCO-DEL-MINCIO.webp" alt="Parco del Mincio con canneti" loading="lazy" />
+        <img src="/img/atlante/3eb85a6da2459a72bb33081648900153.webp" alt="Zona umida nel Parco del Mincio" loading="lazy" />
+        <img src="/img/Garzetta - Mssimo Brambilla.jpg" alt="Garzetta nelle Valli del Mincio (foto: Massimo Brambilla)" loading="lazy" />
+        <img src="/img/atlante/20190822_104621.jpg" alt="Le valli del Mincio in estate" loading="lazy" />
+      </div>
+      <figcaption class="carousel-caption">Le Valli del Mincio oggi: canneti, zone umide, avifauna · Ramsar &amp; Natura 2000</figcaption>
+    </figure>
+
+    <!-- ────────────────────────────────────────────────────────
+         04 · LA PRO LOCO E LA FESTA
+         ──────────────────────────────────────────────────────── -->
+    <div class="section-label" id="proloco">04 · La Pro Loco e la Festa · 1967 — oggi</div>
+
+    <div class="section-intro">
+      <h2 class="section-intro-heading">Una comunit&agrave; che si <em>racconta</em></h2>
+      <p class="section-intro-body">
+        Nel 1967 un gruppo di rivaltesi decise di fondare la <strong>Pro Loco di Rivalta sul Mincio</strong>. Non era solo un&rsquo;associazione turistica: era la formalizzazione di qualcosa che la comunit&agrave; gi&agrave; sapeva fare da secoli &mdash; valorizzare il territorio, tenere vive le tradizioni, accogliere chi veniva da fuori.
+      </p>
+    </div>
+
+    <!-- Dark callout — La nascita della Pro Loco -->
+    <div class="dark-callout" aria-label="Fondazione della Pro Loco">
+      <div class="dark-callout-label">1967 — Anno di fondazione</div>
+      <h3 class="dark-callout-heading">La Pro Loco:<br><em>57 anni di comunit&agrave;</em></h3>
+      <p class="dark-callout-body">
+        Fondata nel <strong>1967</strong>, la Pro Loco di Rivalta sul Mincio A.P.S. &egrave; l&rsquo;associazione di riferimento per la promozione turistica, culturale e ambientale del borgo. Gestisce eventi, coordina i volontari, cura i rapporti con il Comune di Rodigo e con il Parco del Mincio. &Egrave; la memoria organizzata di una comunit&agrave; che non ha mai smesso di volersi bene.
+      </p>
+      <div class="dark-callout-links">
+        <a class="dark-callout-link" href="/#festa" aria-label="Vai alla sezione Festa del Pesce nella homepage">
+          &#8592; Vai alla Festa del Pesce in homepage
+        </a>
+        <a class="dark-callout-link" href="mailto:info@prolocorivalta.mn.it" aria-label="Scrivi alla Pro Loco">
+          info@prolocorivalta.mn.it
+        </a>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot milestone"></div>
+        <div class="timeline-date">Estate 1985 — Prima edizione</div>
+        <h3 class="timeline-heading">Nasce la Festa del Pesce e del Luccio</h3>
+        <div class="timeline-body">
+          <p>Nel <strong>1985</strong> la Pro Loco organizza la <strong>prima edizione della Festa del Pesce e del Luccio alla Rivaltese</strong>. L&rsquo;idea &egrave; semplice e potente: portare in tavola la tradizione della cucina d&rsquo;acqua dolce che la comunit&agrave; pratica da secoli. Luccio in salsa, luccio in bianco, anguilla ai ferri, pesina fritta: i piatti che ogni famiglia rivaltese conosce diventano l&rsquo;occasione per aprire il borgo a chi viene da fuori.</p>
+          <p>L&rsquo;Area Feste Platana, ai margini del canneto delle Valli, diventa lo scenario naturale: i tavoli sotto le stelle, il rumore dell&rsquo;acqua vicina, il profumo delle cucine aperte. In quarant&rsquo;anni non &egrave; cambiato quasi nulla &mdash; e questa &egrave; la sua forza.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">1985 — 2025 · Quaranta edizioni</div>
+        <h3 class="timeline-heading">Quarant&rsquo;anni di storia, un solo protagonista: il luccio</h3>
+        <div class="timeline-body">
+          <p>In quarant&rsquo;anni la Festa del Pesce ha servito migliaia di porzioni di luccio in salsa, ha visto crescere generazioni di volontari, ha pianto la perdita di qualcuno (come <strong>Luciano Soave</strong>, a cui &egrave; dedicata la 40&deg; edizione, che per anni ha curato i risotti della festa) e ha celebrato i ritorni di chi abita lontano ma ogni luglio torna a Rivalta.</p>
+          <p>La <strong>40&deg; edizione del 2025</strong> coincide con l&rsquo;ingresso della manifestazione nella storia matura del borgo. Non solo una sagra, ma un&rsquo;istituzione: le date 4&ndash;6 e 11&ndash;13 luglio 2025 segnano un traguardo e un inizio. In concomitanza, la <em>Baracca dei Nott-Ambuli</em> porta la quarta edizione del proprio festival di street food e concerti live.</p>
+          <a class="back-link" href="/#festa" aria-label="Vai alla sezione Festa del Pesce nella homepage">
+            <span class="arrow">&#8592;</span> Guarda la 40&deg; edizione in homepage
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ────────────────────────────────────────────────────────
+         05 · LA RISERVA NATURALE E OGGI
+         ──────────────────────────────────────────────────────── -->
+    <div class="section-label" id="oggi">05 · La riserva naturale e oggi · 1984 — futuro</div>
+
+    <div class="section-intro">
+      <h2 class="section-intro-heading">Il territorio riconosciuto<br>dal <em>mondo</em></h2>
+      <p class="section-intro-body">
+        Quello che per i rivaltesi era sempre stato semplicemente &ldquo;casa&rdquo; &mdash; le valli, i canneti, l&rsquo;acqua lenta &mdash; ha cominciato a ricevere riconoscimenti internazionali a partire dagli anni Ottanta. Il paesaggio che la comunit&agrave; aveva gestito con cura per secoli era, scientificamente, uno dei pi&ugrave; importanti ecosistemi umidi d&rsquo;Europa.
+      </p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-dot milestone"></div>
+        <div class="timeline-date">1984 — Istituzione della riserva</div>
+        <h3 class="timeline-heading">Riserva Naturale delle Valli del Mincio</h3>
+        <div class="timeline-body">
+          <p>Nel <strong>1984</strong> viene istituita la <strong>Riserva Naturale delle Valli del Mincio</strong>, con una superficie protetta di circa <strong>1.081 ettari</strong>. La riserva &egrave; una delle prime in Lombardia e copre il tratto del Mincio tra Rivalta e Borgo Angeli, dove il fiume rallenta, forma chiari e prati umidi e crea un mosaico di habitat unico.</p>
+          <p>L&rsquo;istituzione della riserva non ha stravolto la vita del borgo: ne ha piuttosto formalizzato e protetto ci&ograve; che i rivaltesi gi&agrave; sapevano &mdash; che quel territorio &egrave; fragile, prezioso e non sostituibile.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Convenzioni internazionali</div>
+        <h3 class="timeline-heading">Ramsar, Natura 2000 e Eden Project</h3>
+        <div class="timeline-body">
+          <p>Le Valli del Mincio rientrano in tre grandi sistemi di riconoscimento internazionale: la <strong>Convenzione di Ramsar</strong> (che tutela le zone umide di importanza internazionale, firmata da 172 stati), la rete <strong>Natura 2000</strong> dell&rsquo;Unione Europea (Zona di Protezione Speciale e Sito di Interesse Comunitario) e il programma <strong>Eden Project</strong>, che nel <strong>2009</strong> ha riconosciuto le Valli del Mincio tra le destinazioni europee di eccellenza per il turismo sostenibile.</p>
+          <p>Questi riconoscimenti parlano chiaro: ci&ograve; che si vede da una barca sul Mincio, tra aironi cenerini e fiori di loto, &egrave; un patrimonio naturale condiviso dall&rsquo;intera umanit&agrave;. Rivalta ne &egrave; custode, non proprietaria.</p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Oggi · Cicloturismo ed ecoturismo</div>
+        <h3 class="timeline-heading">Il Mincio lento come meta</h3>
+        <div class="timeline-body">
+          <p>Negli ultimi vent&rsquo;anni Rivalta &egrave; entrata nel circuito dell&rsquo;<strong>ecoturismo mantovano</strong>. La <strong>Ciclovia del Mincio</strong> &mdash; che percorre il fiume dal Lago di Garda a Mantova &mdash; passa a pochi chilometri dal borgo, portando ciclisti da tutta Europa che cercano un paesaggio lento, un silenzio raro e una sosta con il luccio in salsa. Le escursioni in barca, il birdwatching, le passeggiate lungo gli argini: attivit&agrave; che non esistevano vent&rsquo;anni fa e che oggi sono parte dell&rsquo;identit&agrave; del borgo.</p>
+          <p>La storia di Rivalta non &egrave; finita. &Egrave; in corso. Le stesse valli che hanno sfamato i pescatori medievali sono oggi presidio ecologico, laboratorio naturale e destinazione turistica. La <em>riva alta</em> guarda ancora il fiume, e il fiume scorre ancora verso il Po, come sempre.</p>
+          <a class="back-link" href="/#territorio" aria-label="Vai alla sezione Territorio nella homepage">
+            <span class="arrow">&#8592;</span> Esplora il territorio in homepage
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Carousel 3 — Rivalta oggi -->
+    <figure class="carousel-block" aria-label="Immagini di Rivalta sul Mincio oggi">
+      <div data-rsm-carousel data-autoplay="4500" data-aspect="16/7" role="region" aria-label="Carosello Rivalta oggi">
+        <img src="/img/museo-etnografico.jpg" alt="Museo Etnografico di Rivalta sul Mincio" loading="lazy" />
+        <img src="/img/atlante/ciclovia-del-mincio-1.webp" alt="Ciclovia del Mincio" loading="lazy" />
+        <img src="/img/waterbike-mincio.jpg" alt="Escursione in barca sul Mincio" loading="lazy" />
+        <img src="/img/atlante/ciclabile-borghetto-peschiera.webp" alt="Ciclabile Borghetto&ndash;Peschiera" loading="lazy" />
+        <img src="/img/museo-etnografico-tramonto.jpg" alt="Museo Etnografico al tramonto" loading="lazy" />
+      </div>
+      <figcaption class="carousel-caption">Rivalta sul Mincio oggi: turismo lento, natura, museo etnografico</figcaption>
+    </figure>
+
+    <!-- ────────────────────────────────────────────────────────
+         FINAL CTA
+         ──────────────────────────────────────────────────────── -->
+    <div class="final-cta" role="complementary" aria-label="Torna alla homepage o scopri gli eventi">
+      <p class="final-cta-eyebrow">Hai letto tutta la storia</p>
+      <h2 class="final-cta-heading">Ora vieni a <em>vivere</em> Rivalta</h2>
+      <p class="final-cta-body">
+        La storia di Rivalta non &egrave; solo nelle pagine &mdash; &egrave; nell&rsquo;acqua del Mincio, nella cucina della Festa del Pesce, nel silenzio dei canneti. Scopri gli eventi, guarda le foto, trova come arrivare.
+      </p>
+      <div class="final-cta-links">
+        <a class="rsm-btn rsm-btn--brand magnetic" href="/" aria-label="Torna alla homepage di Rivalta sul Mincio">
+          <span>Torna alla homepage</span>
+          <span class="rsm-btn-icon" aria-hidden="true">&uarr;</span>
+        </a>
+        <a class="rsm-btn rsm-btn--ghost magnetic" href="/#festa" aria-label="Vai alla Festa del Pesce 2025">
+          <span>Festa del Pesce 2025</span>
+          <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+        </a>
+        <a class="rsm-btn rsm-btn--ghost magnetic" href="/#territorio" aria-label="Esplora le Valli del Mincio">
+          <span>Le Valli del Mincio</span>
+          <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+<!--PARTIAL:footer-->
+
+  <script src="/partials/carousel.js" defer></script>
+  <script>
+    (function () {
+      // Scroll reveal per le timeline entries
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+        document.querySelectorAll('.timeline-entry').forEach(function (n) { io.observe(n); });
+      } else {
+        document.querySelectorAll('.timeline-entry').forEach(function (n) { n.classList.add('visible'); });
+      }
+    })();
+  </script>
+
+</body>
+</html>

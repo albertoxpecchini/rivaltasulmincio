@@ -10,22 +10,18 @@
     </a>
 
     <nav class="nav-links" aria-label="Navigazione principale">
-      <a href="/#festa" class="nav-link">Festa del Pesce</a>
-      <a href="/#eventi" class="nav-link">Eventi</a>
-      <a href="/#galleria" class="nav-link">Galleria</a>
-      <a href="/#territorio" class="nav-link">Territorio</a>
-      <a href="/#contatti" class="nav-link">Contatti</a>
-      <a href="/#banner" class="nav-link nav-link--top">Torna in cima</a>
+      <a href="/#festa" class="nav-link"><i class="fa-solid fa-fish-fins nav-link-icon" aria-hidden="true"></i> Festa del Pesce</a>
+      <a href="/#eventi" class="nav-link"><i class="fa-solid fa-calendar-days nav-link-icon" aria-hidden="true"></i> Eventi</a>
+      <a href="/#galleria" class="nav-link"><i class="fa-solid fa-images nav-link-icon" aria-hidden="true"></i> Galleria</a>
+      <a href="/#territorio" class="nav-link"><i class="fa-solid fa-tree nav-link-icon" aria-hidden="true"></i> Territorio</a>
+      <a href="/#contatti" class="nav-link"><i class="fa-solid fa-map-location-dot nav-link-icon" aria-hidden="true"></i> Contatti</a>
+      <a href="/#banner" class="nav-link nav-link--top"><i class="fa-solid fa-arrow-up nav-link-icon" aria-hidden="true"></i> Torna in cima</a>
     </nav>
 
     <div class="nav-actions">
       <button class="search-toggle" id="searchToggle" type="button"
               aria-label="Apri ricerca" aria-expanded="false" aria-controls="searchPanel">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"
-             stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-          <circle cx="6.5" cy="6.5" r="5.2"/>
-          <line x1="10.7" y1="10.7" x2="14.2" y2="14.2"/>
-        </svg>
+        <i class="fa-solid fa-magnifying-glass search-toggle-icon" aria-hidden="true"></i>
         <span class="search-toggle-label">Cerca</span>
         <kbd class="search-kbd">/</kbd>
       </button>
@@ -34,16 +30,11 @@
   </div>
 
   <div class="search-panel" id="searchPanel" aria-hidden="true">
-    <div class="search-panel-inner">
-      <div class="search-row">
-        <svg class="search-row-icon" width="18" height="18" viewBox="0 0 16 16" fill="none"
-             aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <circle cx="6.5" cy="6.5" r="5.2"/>
-          <line x1="10.7" y1="10.7" x2="14.2" y2="14.2"/>
-        </svg>
-        <input class="search-input" id="searchInput" type="search"
-               placeholder="Cerca luoghi, storie, persone…"
-               autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
+      <div class="search-panel-inner">
+        <div class="search-row">
+          <input class="search-input" id="searchInput" type="search"
+                 placeholder="Cerca luoghi, storie, persone…"
+                 autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
         <kbd class="search-esc-kbd">ESC</kbd>
       </div>
 

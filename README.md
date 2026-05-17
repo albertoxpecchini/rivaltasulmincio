@@ -3,9 +3,9 @@
 Sito ufficiale della **Pro Loco di Rivalta sul Mincio**, frazione di Rodigo (MN).  
 Promozione turistica, culturale e ambientale del borgo nel cuore del **Parco Regionale del Mincio**.
 
-🌐 **[www.rivaltasulmincio.it](https://www.rivaltasulmincio.it)**  
-📍 Via Porto, 31 — Rivalta sul Mincio, 46040 MN  
-📞 +39 339 899 5680 · ✉️ info@prolocorivalta.mn.it
+**[www.rivaltasulmincio.it](https://www.rivaltasulmincio.it)**  
+Via Porto, 31 — Rivalta sul Mincio, 46040 MN  
++39 339 899 5680 · info@prolocorivalta.mn.it
 
 ---
 
