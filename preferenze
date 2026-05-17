@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
+  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preferenze – Rivalta sul Mincio</title>
@@ -13,364 +13,443 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
+  <link rel="stylesheet" href="/theme.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink:        #10192b;
-      --ink-soft:   #5a6882;
-      --cream:      #f4f7ff;
-      --paper:      #fbfdff;
-      --mist:       #dde7f7;
-      --marsh:      #12203a;
-      --marsh-2:    #233a66;
-      --water:      #4a9bff;
-      --clay:       #8b5cf6;
-      --reed:       #1fbf7d;
-      --line:       rgba(18, 32, 58, 0.14);
-      --ok:         #1fbf7d;
-      --err:        #b83232;
-      --radius:     14px;
-      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
-      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:      "Fraunces", Georgia, serif;
-      --ease:       cubic-bezier(0.32, 0.72, 0, 1);
+    /* ───── Preferenze page layout (inline; was preferenze.css) ───── */
+    .rsm-page {
+      width: min(100% - 32px, 1100px);
+      margin: 0 auto;
+      padding: clamp(28px, 5vw, 56px) 0 80px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-8, 32px);
     }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      min-height: 100vh;
-      line-height: 1.5;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+    .rsm-page-header { display: flex; flex-direction: column; gap: var(--rsm-s-2, 8px); }
+    .rsm-page-header__title {
+      font-family: var(--serif, "Fraunces", Georgia, serif);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--rsm-text-strong);
+      margin: 0;
     }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      opacity: 0.16;
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(16, 25, 43, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(16, 25, 43, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
-      mix-blend-mode: multiply;
+    .rsm-page-header__subtitle {
+      font-size: 16px;
+      color: var(--rsm-text-soft);
+      margin: 0;
+      max-width: 60ch;
     }
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); }
-
-    
-
-    /* ── Page ── */
-    .page {
-      position: relative; z-index: 1;
-      max-width: 940px; margin: 0 auto;
-      padding: 88px 20px 64px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-
-    /* ── Page Header ── */
-    .page-header { margin-bottom: 14px; }
-    .page-header h1 { font-family: var(--serif); font-size: 1.9rem; font-weight: 650; letter-spacing: -.03em; color: var(--ink); margin-bottom: 5px; }
-    .page-header p { color: var(--ink-soft); font-size: .88rem; }
-
-    .page-summary {
+    .rsm-page-summary {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: var(--rsm-s-2, 8px);
     }
-
-    .page-chip {
+    .rsm-page-chip {
       display: inline-flex;
       align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+      padding: 6px 12px;
+      border-radius: var(--rsm-r-pill, 999px);
+      background: var(--rsm-surface);
+      border: 1px solid var(--rsm-line);
+      font-size: 13px;
+      color: var(--rsm-text-soft);
     }
 
-    /* ── Section headers ── */
-    .section-label {
-      font-size: .68rem; font-weight: 900; text-transform: uppercase;
-      letter-spacing: .14em; color: var(--ink-soft);
-      padding: 14px 0 6px;
+    .rsm-section-label {
+      font-family: var(--serif, "Fraunces", Georgia, serif);
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 600;
+      color: var(--rsm-text-strong);
+      margin: var(--rsm-s-6, 24px) 0 0;
+      padding-bottom: var(--rsm-s-2, 8px);
+      border-bottom: 1px solid var(--rsm-line);
     }
-    .section-label:first-child { padding-top: 0; }
-
-    /* ── Cards ── */
-    .bcard {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 20px; padding: 18px;
-      display: flex; flex-direction: column; gap: 14px;
-      box-shadow: var(--shadow-card);
-    }
-    .bcard-label {
-      font-size: .68rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .12em; color: var(--ink-soft);
+    .rsm-card-label {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--rsm-text-soft);
+      margin: 0 0 var(--rsm-s-4, 16px);
     }
 
-    /* ── Grid layouts ── */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .grid-profile { display: grid; grid-template-columns: 200px 1fr; gap: 10px; }
-    .col-span-2 { grid-column: span 2; }
+    .rsm-grid-2 {
+      display: grid;
+      gap: var(--rsm-s-4, 16px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) {
+      .rsm-grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .rsm-grid-profile {
+      display: grid;
+      gap: var(--rsm-s-4, 16px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px) {
+      .rsm-grid-profile { grid-template-columns: minmax(240px, 300px) 1fr; }
+    }
 
-    /* ── Avatar Preview ── */
-    .preview-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; justify-content: center; }
-    .preview-avatar {
-      width: 84px; height: 84px;
-      border-radius: 22px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem;
-      transition: background .25s var(--ease), transform .2s var(--ease);
-      flex-shrink: 0;
-      box-shadow: 0 4px 20px rgba(37,63,53,.18);
+    /* Avatar preview */
+    .rsm-preview-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--rsm-s-3, 12px);
+      padding: var(--rsm-s-4, 16px) 0;
     }
-    .preview-avatar:hover { transform: scale(1.04); }
-    .preview-username { font-size: .82rem; font-weight: 700; color: var(--ink-soft); }
-    .preview-display { font-family: var(--serif); font-size: 1.05rem; font-weight: 650; color: var(--ink); }
-    .preview-profile-link {
-      font-size: .75rem; color: var(--water); font-weight: 600;
-      display: inline-flex; align-items: center; gap: 4px;
+    .rsm-preview-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      background: #253f35;
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
     }
-    .preview-profile-link:hover { color: var(--marsh); }
+    .rsm-preview-username {
+      font-weight: 600;
+      color: var(--rsm-text-strong);
+    }
+    .rsm-preview-display {
+      font-size: 14px;
+      color: var(--rsm-text-soft);
+    }
+    .rsm-preview-profile-link {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      color: var(--rsm-emerald, #1fbf7d);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .rsm-preview-profile-link:hover { text-decoration: underline; }
 
-    /* ── Emoji & Color grids ── */
-    .emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .emoji-grid input[type="radio"] { display: none; }
-    .emoji-grid label {
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.35rem; cursor: pointer;
-      border-radius: 10px; border: 2px solid transparent;
-      padding: 6px; transition: all .15s;
-      background: rgba(37,63,53,.04);
+    /* Emoji + color pickers */
+    .rsm-emoji-grid,
+    .rsm-color-grid {
+      display: grid;
+      gap: var(--rsm-s-2, 8px);
     }
-    .emoji-grid label:hover { background: rgba(37,63,53,.1); }
-    .emoji-grid input:checked + label { border-color: var(--marsh); background: rgba(37,63,53,.1); }
-
-    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .color-grid input[type="radio"] { display: none; }
-    .color-grid label {
-      display: block; width: 100%; aspect-ratio: 1;
-      border-radius: 10px; cursor: pointer;
-      border: 3px solid transparent; transition: all .15s;
-    }
-    .color-grid label:hover { transform: scale(1.1); }
-    .color-grid input:checked + label { border-color: var(--ink); box-shadow: 0 0 0 2px var(--marsh); }
-
-    /* ── Form fields ── */
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); }
-    .field input, .field textarea, .field select {
-      background: rgba(255,250,240,.7); border: 1px solid var(--line); border-radius: 12px;
-      color: var(--ink); font-family: var(--sans); font-size: .92rem; padding: 11px 16px;
-      transition: border-color .18s, box-shadow .18s; resize: vertical;
-    }
-    .field input:focus, .field textarea:focus, .field select:focus {
-      outline: none; border-color: var(--marsh); box-shadow: 0 0 0 3px rgba(37,63,53,.1);
-    }
-    .field textarea { min-height: 80px; line-height: 1.5; }
-    .field .hint { font-size: .74rem; color: var(--ink-soft); }
-
-    /* ── Toggle switch ── */
-    .toggle-row {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 4px 0;
-    }
-    .toggle-row label { font-size: .88rem; color: var(--ink); font-weight: 600; cursor: pointer; }
-    .toggle {
-      position: relative; width: 40px; height: 22px; flex-shrink: 0;
-    }
-    .toggle input { opacity: 0; width: 0; height: 0; }
-    .toggle-track {
-      position: absolute; inset: 0;
-      background: rgba(37,63,53,.18); border-radius: 999px;
-      transition: background .2s var(--ease); cursor: pointer;
-    }
-    .toggle-track::after {
-      content: ''; position: absolute;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: white; top: 3px; left: 3px;
-      transition: transform .2s var(--ease);
-      box-shadow: 0 1px 4px rgba(0,0,0,.18);
-    }
-    .toggle input:checked + .toggle-track { background: var(--marsh); }
-    .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
-
-    /* ── Theme / pref selects ── */
-    .pref-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 8px 0; border-bottom: 1px solid var(--line);
-    }
-    .pref-row:last-child { border-bottom: none; }
-    .pref-row-label { font-size: .88rem; font-weight: 600; color: var(--ink); }
-    .pref-row-sub { font-size: .76rem; color: var(--ink-soft); }
-    .pref-select {
-      background: rgba(255,250,240,.7); border: 1px solid var(--line); border-radius: 10px;
-      color: var(--ink); font-family: var(--sans); font-size: .84rem; padding: 7px 12px;
-      cursor: pointer; min-width: 130px; transition: border-color .18s, box-shadow .18s;
-    }
-    .pref-select:focus { outline: none; border-color: var(--marsh); box-shadow: 0 0 0 3px rgba(37,63,53,.1); }
-    .pref-panel { display: grid; gap: 14px; }
-    .pref-note {
-      display: grid; gap: 4px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: rgba(37,63,53,.05);
-    }
-    .pref-note strong { font-size: .88rem; color: var(--ink); }
-    .pref-note span { font-size: .78rem; color: var(--ink-soft); line-height: 1.5; }
-    .pref-row-block { display: grid; gap: 10px; padding: 4px 0 2px; }
-    .pref-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .pref-chip {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 14px;
-      background: rgba(255,250,240,.72);
-      color: var(--ink-soft);
-      font: inherit;
-      font-size: .8rem;
-      font-weight: 700;
+    .rsm-emoji-grid { grid-template-columns: repeat(5, 1fr); }
+    .rsm-color-grid { grid-template-columns: repeat(5, 1fr); }
+    .rsm-emoji-grid input,
+    .rsm-color-grid input { position: absolute; opacity: 0; pointer-events: none; }
+    .rsm-emoji-grid label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      border: 1.5px solid var(--rsm-line);
+      border-radius: var(--rsm-r-md, 12px);
       cursor: pointer;
-      transition: transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
+      font-size: 22px;
+      background: var(--rsm-surface);
+      transition: border-color 160ms ease, transform 160ms ease;
     }
-    .pref-chip:hover {
-      transform: translateY(-1px);
-      border-color: rgba(37,63,53,.24);
-      background: rgba(37,63,53,.08);
-      color: var(--ink);
+    .rsm-color-grid label {
+      display: block;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+      transition: transform 160ms ease, border-color 160ms ease;
     }
+    .rsm-emoji-grid input:checked + label {
+      border-color: var(--rsm-emerald, #1fbf7d);
+      transform: scale(1.05);
+    }
+    .rsm-color-grid input:checked + label {
+      border-color: var(--rsm-text-strong);
+      transform: scale(1.1);
+    }
+
+    /* Pref rows */
+    .rsm-pref-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--rsm-s-4, 16px);
+      padding: var(--rsm-s-3, 12px) 0;
+      border-bottom: 1px solid var(--rsm-line);
+    }
+    .rsm-pref-row:last-of-type { border-bottom: none; }
+    .rsm-pref-row-block {
+      display: flex;
+      flex-direction: column;
+      gap: var(--rsm-s-2, 8px);
+      padding: var(--rsm-s-3, 12px) 0;
+      border-bottom: 1px solid var(--rsm-line);
+    }
+    .rsm-pref-row-label {
+      font-weight: 600;
+      color: var(--rsm-text-strong);
+    }
+    .rsm-pref-row-sub {
+      font-size: 13px;
+      color: var(--rsm-text-soft);
+      margin-top: 2px;
+    }
+    .rsm-pref-select {
+      min-width: 160px;
+      padding: 8px 12px;
+      border-radius: var(--rsm-r-sm, 8px);
+      border: 1px solid var(--rsm-line-2);
+      background: var(--rsm-surface);
+      color: var(--rsm-text-strong);
+      font: inherit;
+      cursor: pointer;
+    }
+    .rsm-pref-select:focus-visible {
+      outline: 2px solid var(--rsm-emerald, #1fbf7d);
+      outline-offset: 2px;
+    }
+
+    /* Toggle */
+    .rsm-toggle {
+      position: relative;
+      display: inline-flex;
+      width: 44px;
+      height: 24px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .rsm-toggle input {
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      cursor: pointer;
+    }
+    .rsm-toggle-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: var(--rsm-line-2);
+      transition: background 200ms ease;
+      pointer-events: none;
+    }
+    .rsm-toggle-track::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 200ms ease;
+    }
+    .rsm-toggle input:checked + .rsm-toggle-track {
+      background: var(--rsm-emerald, #1fbf7d);
+    }
+    .rsm-toggle input:checked + .rsm-toggle-track::after {
+      transform: translateX(20px);
+    }
+    .rsm-toggle input:focus-visible + .rsm-toggle-track {
+      outline: 2px solid var(--rsm-emerald, #1fbf7d);
+      outline-offset: 2px;
+    }
+
+    /* Accessibility summary */
+    .rsm-pref-note {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: var(--rsm-s-3, 12px) var(--rsm-s-4, 16px);
+      margin-bottom: var(--rsm-s-4, 16px);
+      background: var(--rsm-surface);
+      border-radius: var(--rsm-r-md, 12px);
+      border-left: 3px solid var(--rsm-emerald, #1fbf7d);
+      font-size: 14px;
+      color: var(--rsm-text);
+    }
+    .rsm-pref-note strong { color: var(--rsm-text-strong); }
+    .rsm-accessibility-summary {
+      display: grid;
+      gap: var(--rsm-s-2, 8px);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .rsm-accessibility-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--rsm-s-2, 8px);
+      padding: 10px 14px;
+      border-radius: var(--rsm-r-sm, 8px);
+      background: var(--rsm-surface);
+      border: 1px solid var(--rsm-line);
+      font-size: 14px;
+    }
+    .rsm-accessibility-item strong { color: var(--rsm-text-strong); font-weight: 600; }
+    .rsm-accessibility-item span { color: var(--rsm-text-soft); }
+    .rsm-accessibility-item[data-active="on"] span { color: var(--rsm-emerald, #1fbf7d); font-weight: 600; }
+
+    /* Funzioni panel */
+    .rsm-pref-panel { display: flex; flex-direction: column; }
+    .rsm-pref-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--rsm-s-2, 8px);
+      margin-top: var(--rsm-s-2, 8px);
+    }
+    .pref-chip {
+      padding: 6px 14px;
+      border-radius: var(--rsm-r-pill, 999px);
+      border: 1px solid var(--rsm-line-2);
+      background: var(--rsm-surface);
+      color: var(--rsm-text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+    .pref-chip:hover { border-color: var(--rsm-text-soft); }
     .pref-chip.on {
-      background: var(--marsh);
-      color: var(--paper);
-      border-color: transparent;
-      box-shadow: 0 10px 24px rgba(37,63,53,.18);
+      background: var(--rsm-emerald, #1fbf7d);
+      color: #fff;
+      border-color: var(--rsm-emerald, #1fbf7d);
     }
-    .pref-chip:focus-visible {
-      outline: none;
-      border-color: var(--marsh);
-      box-shadow: 0 0 0 3px rgba(37,63,53,.12);
-    }
-    .pref-chip-sub { font-size: .76rem; color: var(--ink-soft); }
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 26px; border-radius: 999px;
-      font-size: .88rem; font-weight: 800; font-family: var(--sans);
-      cursor: pointer; border: none; transition: all .2s;
-    }
-    .btn-primary { background: var(--marsh); color: var(--paper); box-shadow: 0 4px 20px rgba(37,63,53,.3); }
-    .btn-primary:hover { background: #1f362e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,63,53,.45); }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-    .btn-ghost { background: rgba(37,63,53,.07); color: var(--ink-soft); }
-    .btn-ghost:hover { background: rgba(37,63,53,.12); transform: translateY(-1px); }
-    .btn-danger { background: rgba(180,50,50,.08); color: #8f3b28; }
-    .btn-danger:hover { background: rgba(180,50,50,.14); transform: translateY(-1px); }
-
-    /* ── Save rows ── */
-    .save-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .status-msg { font-size: .84rem; }
-    .status-ok { color: var(--ok); }
-    .status-err { color: var(--err); }
-
-    /* ── Motto card ── */
-    .motto-card {
-      background: var(--marsh); border: none;
-      border-radius: 20px; padding: 24px;
-      display: flex; flex-direction: column; justify-content: center;
-      box-shadow: 0 6px 28px rgba(37,63,53,.22);
-    }
-    .motto-text {
-      font-family: var(--serif); font-size: 1.08rem; font-weight: 500;
-      color: var(--cream); letter-spacing: -.01em; line-height: 1.55;
-    }
-    .motto-text em { color: var(--reed); font-style: normal; }
-
-    /* ── Account section ── */
-    .account-card {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 14px;
-    }
-    .account-info { display: flex; flex-direction: column; gap: 3px; }
-    .account-info strong { font-size: .92rem; font-weight: 700; color: var(--ink); }
-    .account-info span { font-size: .78rem; color: var(--ink-soft); }
-
-    /* ── Responsive ── */
-    @media (max-width: 860px) {
-      .grid-profile { grid-template-columns: 1fr; }
-      .grid-3 { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
-      .page { padding: 100px 14px 60px; }
-      .grid-2 { grid-template-columns: 1fr; }
-      .grid-3 { grid-template-columns: 1fr; }
-      .col-span-2 { grid-column: span 1; }
-      .pref-row { align-items: stretch; flex-direction: column; }
-      .pref-select { width: 100%; min-width: 0; }
+    .rsm-pref-chip-sub {
+      font-size: 13px;
+      color: var(--rsm-text-soft);
+      margin-top: var(--rsm-s-2, 8px);
     }
 
-    /* ── Footer ── */
-    .footer { color: rgba(255,250,240,.72); background: #101c18; padding: 72px 0 34px; font-family: var(--sans); position: relative; z-index: 1; }
-    .footer-container { width: min(100% - 44px, 1400px); margin: 0 auto; }
-    .footer-grid { display: grid; grid-template-columns: minmax(0,.72fr) repeat(3,minmax(140px,.22fr)); gap: clamp(24px,5vw,76px); align-items: start; }
-    .footer h3, .footer h4 { margin: 0 0 16px; color: var(--paper); letter-spacing: -.02em; }
-    .footer h3 { font-family: var(--serif); font-size: clamp(2rem,4vw,4.8rem); line-height: .96; letter-spacing: -.055em; }
-    .footer p { max-width: 540px; line-height: 1.66; }
-    .footer-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-    .footer-links a { color: rgba(255,250,240,.68); font-weight: 750; text-decoration: none; }
-    .footer-links a:hover { color: var(--paper); }
-    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-top: 64px; padding-top: 24px; border-top: 1px solid rgba(255,250,240,.12); font-size: .86rem; }
-    @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr; } }
+    /* Account */
+    .rsm-account-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--rsm-s-3, 12px);
+      margin-bottom: var(--rsm-s-4, 16px);
+    }
+    .rsm-account-info { display: flex; flex-direction: column; gap: 2px; }
+    .rsm-account-info strong { color: var(--rsm-text-strong); font-size: 16px; }
+    .rsm-account-info span { color: var(--rsm-text-soft); font-size: 13px; }
+    .rsm-account-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: #253f35;
+      color: #fff;
+    }
+    .rsm-motto-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 180px;
+      background: linear-gradient(135deg, rgba(31,191,125,0.12), rgba(74,155,255,0.10));
+    }
+    .rsm-motto-text {
+      font-family: var(--serif, "Fraunces", Georgia, serif);
+      font-size: clamp(20px, 3vw, 26px);
+      font-style: italic;
+      color: var(--rsm-text-strong);
+      line-height: 1.3;
+    }
+    .rsm-motto-text em { color: var(--rsm-emerald, #1fbf7d); font-style: normal; font-weight: 600; }
+
+    /* Save row + status */
+    .rsm-save-row {
+      display: flex;
+      align-items: center;
+      gap: var(--rsm-s-3, 12px);
+      flex-wrap: wrap;
+      margin-top: var(--rsm-s-3, 12px);
+    }
+    .rsm-status-msg {
+      font-size: 13px;
+      color: var(--rsm-text-soft);
+    }
+    .rsm-status-ok { color: var(--rsm-emerald, #1fbf7d); font-weight: 500; }
+    .rsm-status-err { color: #dc2626; font-weight: 500; }
+
+    /* Buttons (extend theme.css .rsm-btn) */
+    .rsm-btn--primary {
+      background: var(--rsm-emerald, #1fbf7d);
+      color: #fff;
+      border-color: var(--rsm-emerald, #1fbf7d);
+    }
+    .rsm-btn--primary:hover { filter: brightness(0.95); }
+    .rsm-btn--primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .rsm-btn--danger {
+      background: transparent;
+      color: #dc2626;
+      border: 1px solid #dc2626;
+    }
+    .rsm-btn--danger:hover { background: #dc2626; color: #fff; }
+
+    .rsm-field-hint {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--rsm-text-soft);
+    }
+    .rsm-note {
+      margin: var(--rsm-s-3, 12px) 0 0;
+      font-size: 12px;
+      color: var(--rsm-text-soft);
+    }
+
+    /* Dark mode overrides */
+    html[data-theme="scuro"] .rsm-emoji-grid label,
+    html[data-theme="scuro"] .pref-chip,
+    html[data-theme="scuro"] .rsm-pref-select,
+    html[data-theme="scuro"] .rsm-accessibility-item,
+    html[data-theme="scuro"] .rsm-pref-note,
+    html[data-theme="scuro"] .rsm-page-chip {
+      background: var(--rsm-surface);
+      border-color: var(--rsm-line-2);
+      color: var(--rsm-text);
+    }
+    html[data-theme="scuro"] .rsm-toggle-track { background: var(--rsm-line-3); }
+    html[data-theme="scuro"] .rsm-motto-card {
+      background: linear-gradient(135deg, rgba(31,191,125,0.18), rgba(74,155,255,0.16));
+    }
   </style>
-  <link rel="stylesheet" href="/theme.css" />
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<main class="page">
+<main class="rsm-page">
 
-  <div class="page-header">
-    <h1>Preferenze</h1>
-    <p>Personalizza il tuo profilo e l'aspetto del sito</p>
+  <div class="rsm-page-header">
+    <h1 class="rsm-page-header__title">Preferenze</h1>
+    <p class="rsm-page-header__subtitle">Personalizza il tuo profilo e l'aspetto del sito</p>
   </div>
 
-  <div class="page-summary" aria-label="Struttura delle preferenze">
-    <span class="page-chip">4 aree</span>
-    <span class="page-chip">anteprima subito visibile</span>
-    <span class="page-chip">account in chiusura</span>
+  <div class="rsm-page-summary" aria-label="Struttura delle preferenze">
+    <span class="rsm-page-chip">4 aree</span>
+    <span class="rsm-page-chip">anteprima subito visibile</span>
+    <span class="rsm-page-chip">salvataggio locale</span>
   </div>
 
   <!-- ── SEZIONE AVATAR ── -->
-  <div class="section-label">Identità &amp; Avatar</div>
+  <h2 class="rsm-section-label">Identità &amp; Avatar</h2>
 
-  <div class="grid-profile">
+  <div class="rsm-grid-profile">
 
     <!-- Anteprima avatar -->
-    <div class="bcard" style="min-height:220px">
-      <div class="bcard-label">Anteprima</div>
-      <div class="preview-wrap">
-        <div class="preview-avatar" id="avatar-preview" style="background:#253f35">🌿</div>
-        <div class="preview-username" id="prev-username">@...</div>
-        <div class="preview-display" id="prev-display">—</div>
-        <a href="#" class="preview-profile-link" id="public-profile-link">
+    <div class="rsm-card">
+      <h3 class="rsm-card-label">Anteprima</h3>
+      <div class="rsm-preview-wrap">
+        <div class="rsm-preview-avatar" id="avatar-preview">🌿</div>
+        <div class="rsm-preview-username" id="prev-username">@...</div>
+        <div class="rsm-preview-display" id="prev-display">—</div>
+        <a href="#" class="rsm-preview-profile-link" id="public-profile-link">
           <span>Vedi profilo</span>
           <span aria-hidden="true">↗</span>
         </a>
@@ -378,46 +457,46 @@
     </div>
 
     <!-- Colonna destra: emoji + colori + campi -->
-    <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:var(--rsm-s-4)">
 
       <!-- Emoji e colore in riga -->
-      <div class="grid-2">
-        <div class="bcard">
-          <div class="bcard-label">Emoji avatar</div>
-          <div class="emoji-grid" id="emoji-grid"></div>
+      <div class="rsm-grid-2">
+        <div class="rsm-card">
+          <h3 class="rsm-card-label">Emoji avatar</h3>
+          <div class="rsm-emoji-grid" id="emoji-grid"></div>
         </div>
-        <div class="bcard">
-          <div class="bcard-label">Colore sfondo</div>
-          <div class="color-grid" id="color-grid"></div>
-          <div class="save-row" style="margin-top:auto">
-            <button class="btn btn-primary" id="save-avatar-btn">Salva avatar</button>
-            <span class="status-msg" id="avatar-status"></span>
+        <div class="rsm-card">
+          <h3 class="rsm-card-label">Colore sfondo</h3>
+          <div class="rsm-color-grid" id="color-grid"></div>
+          <div class="rsm-save-row" style="margin-top:auto">
+            <button class="rsm-btn rsm-btn--primary" id="save-avatar-btn">Salva avatar</button>
+            <span class="rsm-status-msg" id="avatar-status"></span>
           </div>
         </div>
       </div>
 
       <!-- Dati profilo -->
-      <div class="bcard">
-        <div class="bcard-label">Dati profilo</div>
-        <div class="grid-2">
-          <div class="field">
-            <label for="p-display">Nome visualizzato</label>
-            <input type="text" id="p-display" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
+      <div class="rsm-card">
+        <h3 class="rsm-card-label">Dati profilo</h3>
+        <div class="rsm-grid-2">
+          <div class="rsm-field">
+            <label for="p-display" class="rsm-field-label">Nome visualizzato</label>
+            <input type="text" id="p-display" class="rsm-input" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
           </div>
-          <div class="field">
-            <label for="p-username">Username</label>
-            <input type="text" id="p-username" maxlength="30" placeholder="solo_lettere_e_numeri" autocomplete="off" />
-            <span class="hint">Solo lettere, numeri e _</span>
+          <div class="rsm-field">
+            <label for="p-username" class="rsm-field-label">Username</label>
+            <input type="text" id="p-username" class="rsm-input" maxlength="30" placeholder="solo_lettere_e_numeri" autocomplete="off" />
+            <span class="rsm-field-hint">Solo lettere, numeri e _</span>
           </div>
         </div>
-        <div class="field">
-          <label for="p-bio">Bio</label>
-          <textarea id="p-bio" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
-          <span class="hint">Massimo 200 caratteri</span>
+        <div class="rsm-field">
+          <label for="p-bio" class="rsm-field-label">Bio</label>
+          <textarea id="p-bio" class="rsm-textarea" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
+          <span class="rsm-field-hint">Massimo 200 caratteri</span>
         </div>
-        <div class="save-row">
-          <button class="btn btn-primary" id="save-profile-btn">Salva profilo</button>
-          <span class="status-msg" id="profile-status"></span>
+        <div class="rsm-save-row">
+          <button class="rsm-btn rsm-btn--primary" id="save-profile-btn">Salva profilo</button>
+          <span class="rsm-status-msg" id="profile-status"></span>
         </div>
       </div>
 
@@ -425,144 +504,165 @@
   </div>
 
   <!-- ── SEZIONE ASPETTO UI ── -->
-  <div class="section-label">Aspetto</div>
+  <h2 class="rsm-section-label">Aspetto</h2>
 
-  <div class="bcard">
-    <div class="pref-row">
+  <div class="rsm-card">
+    <div class="rsm-pref-row">
       <div>
-        <div class="pref-row-label">Tema</div>
-        <div class="pref-row-sub">Chiaro, scuro o sistema</div>
+        <div class="rsm-pref-row-label">Tema</div>
+        <div class="rsm-pref-row-sub">Chiaro, scuro o sistema</div>
       </div>
-      <select class="pref-select" id="pref-theme">
+      <select class="rsm-pref-select" id="pref-theme">
         <option value="auto">Automatico</option>
         <option value="chiaro">Chiaro</option>
         <option value="scuro">Scuro</option>
       </select>
     </div>
-    <div class="pref-row">
+    <div class="rsm-pref-row">
       <div>
-        <div class="pref-row-label">Lingua</div>
-        <div class="pref-row-sub">Lingua dell'interfaccia</div>
+        <div class="rsm-pref-row-label">Lingua</div>
+        <div class="rsm-pref-row-sub">Lingua dell'interfaccia</div>
       </div>
-      <select class="pref-select" id="pref-language">
+      <select class="rsm-pref-select" id="pref-language">
         <option value="it">Italiano</option>
         <option value="en">English</option>
       </select>
     </div>
-    <div class="pref-row">
+    <div class="rsm-pref-row">
       <div>
-        <div class="pref-row-label">Densità UI</div>
-        <div class="pref-row-sub">Spazio tra gli elementi</div>
+        <div class="rsm-pref-row-label">Densità UI</div>
+        <div class="rsm-pref-row-sub">Spazio tra gli elementi</div>
       </div>
-      <select class="pref-select" id="pref-density">
+      <select class="rsm-pref-select" id="pref-density">
         <option value="comfortable">Standard</option>
         <option value="compact">Compatta</option>
       </select>
     </div>
-    <div class="pref-row">
+    <div class="rsm-pref-row">
       <div>
-        <div class="pref-row-label">Dimensione testo</div>
-        <div class="pref-row-sub">Grandezza dei caratteri</div>
+        <div class="rsm-pref-row-label">Dimensione testo</div>
+        <div class="rsm-pref-row-sub">Grandezza dei caratteri</div>
       </div>
-      <select class="pref-select" id="pref-fontsize">
+      <select class="rsm-pref-select" id="pref-fontsize">
         <option value="sm">Piccolo</option>
         <option value="md">Normale</option>
         <option value="lg">Grande</option>
         <option value="xl">Molto grande</option>
       </select>
     </div>
-    <div class="pref-row">
-      <label for="pref-contrast" class="pref-row-label" style="cursor:pointer">Contrasto elevato</label>
-      <label class="toggle">
+    <div class="rsm-pref-row">
+      <label for="pref-contrast" class="rsm-pref-row-label">Contrasto elevato</label>
+      <label class="rsm-toggle">
         <input type="checkbox" id="pref-contrast" />
-        <span class="toggle-track"></span>
+        <span class="rsm-toggle-track"></span>
       </label>
     </div>
-    <div style="padding-top:8px">
-      <div class="save-row">
-        <button class="btn btn-primary" id="save-ui-btn">Salva aspetto</button>
-        <span class="status-msg" id="ui-status"></span>
+    <div class="rsm-pref-row">
+      <label for="pref-animations" class="rsm-pref-row-label">Disabilita animazioni</label>
+      <label class="rsm-toggle">
+        <input type="checkbox" id="pref-animations" />
+        <span class="rsm-toggle-track"></span>
+      </label>
+    </div>
+    <div style="padding-top:var(--rsm-s-3)">
+      <div class="rsm-save-row">
+        <button class="rsm-btn rsm-btn--primary" id="save-ui-btn">Salva aspetto</button>
+        <span class="rsm-status-msg" id="ui-status"></span>
       </div>
-      <p style="margin-top:8px;font-size:.75rem;color:var(--ink-soft)">Tema e lingua salvati in locale. Accessibilità sincronizzata su cloud.</p>
+      <p class="rsm-note">Tutte le preferenze sono salvate solo in locale, su questo dispositivo.</p>
     </div>
   </div>
 
-  <!-- ── SEZIONE ACCOUNT ── -->
-  <div class="section-label">Funzioni personalizzabili</div>
+  <!-- ── SEZIONE ACCESSIBILITÀ ── -->
+  <h2 class="rsm-section-label">Accessibilità</h2>
 
-  <div class="bcard">
-    <div class="bcard-label">Esperienza e comunita</div>
-    <div class="pref-panel">
-      <div class="pref-note">
+  <div class="rsm-card">
+    <h3 class="rsm-card-label">Impostazioni attive</h3>
+    <div class="rsm-pref-note">
+      <strong>Il tuo profilo accessibile</strong>
+      <span>Queste impostazioni migliorano la tua esperienza secondo le tue preferenze di accessibilità.</span>
+    </div>
+    <div id="accessibility-summary" class="rsm-accessibility-summary">
+      <!-- Dinamicamente compilato da JS -->
+    </div>
+  </div>
+
+  <!-- ── SEZIONE FUNZIONI ── -->
+  <h2 class="rsm-section-label">Funzioni personalizzabili</h2>
+
+  <div class="rsm-card">
+    <h3 class="rsm-card-label">Esperienza e comunita</h3>
+    <div class="rsm-pref-panel">
+      <div class="rsm-pref-note">
         <strong>Decidi come vuoi interagire</strong>
-        <span>Qui controlli commenti, notifiche e i temi che vuoi tenere piu vicini. Le preferenze vengono salvate nel tuo profilo e restano modificabili in qualsiasi momento.</span>
+        <span>Qui controlli commenti, notifiche e i temi che vuoi tenere piu vicini. Le preferenze vengono salvate sul tuo dispositivo e restano modificabili in qualsiasi momento.</span>
       </div>
-      <div class="pref-row">
+      <div class="rsm-pref-row">
         <div>
-          <div class="pref-row-label">Privacy commenti</div>
-          <div class="pref-row-sub">Scegli chi puo commentare i tuoi articoli</div>
+          <div class="rsm-pref-row-label">Privacy commenti</div>
+          <div class="rsm-pref-row-sub">Scegli chi puo commentare i tuoi articoli</div>
         </div>
-        <select class="pref-select" id="pref-comment-privacy">
+        <select class="rsm-pref-select" id="pref-comment-privacy">
           <option value="all">Tutti</option>
           <option value="members">Solo membri</option>
           <option value="none">Disattivati</option>
         </select>
       </div>
-      <div class="pref-row">
+      <div class="rsm-pref-row">
         <div>
-          <div class="pref-row-label">Frequenza notifiche</div>
-          <div class="pref-row-sub">Quanto spesso vuoi ricevere aggiornamenti</div>
+          <div class="rsm-pref-row-label">Frequenza notifiche</div>
+          <div class="rsm-pref-row-sub">Quanto spesso vuoi ricevere aggiornamenti</div>
         </div>
-        <select class="pref-select" id="pref-notif-frequency">
+        <select class="rsm-pref-select" id="pref-notif-frequency">
           <option value="instant">Immediata</option>
           <option value="daily">Giornaliera</option>
           <option value="weekly">Settimanale</option>
           <option value="off">Nessuna</option>
         </select>
       </div>
-      <div class="pref-row">
+      <div class="rsm-pref-row">
         <div>
-          <div class="pref-row-label">Email operative</div>
-          <div class="pref-row-sub">Autorizza l'uso dell'email per notifiche legate al tuo account</div>
+          <div class="rsm-pref-row-label">Email operative</div>
+          <div class="rsm-pref-row-sub">Autorizza l'uso dell'email per notifiche legate al tuo account</div>
         </div>
-        <label class="toggle">
+        <label class="rsm-toggle">
           <input type="checkbox" id="pref-notif-email" />
-          <span class="toggle-track"></span>
+          <span class="rsm-toggle-track"></span>
         </label>
       </div>
-      <div class="pref-row-block">
+      <div class="rsm-pref-row-block">
         <div>
-          <div class="pref-row-label">Categorie preferite</div>
-          <div class="pref-row-sub">Salva i temi che ti interessano di piu per personalizzare la tua esperienza</div>
+          <div class="rsm-pref-row-label">Categorie preferite</div>
+          <div class="rsm-pref-row-sub">Salva i temi che ti interessano di piu per personalizzare la tua esperienza</div>
         </div>
-        <div class="pref-chip-row" id="pref-category-chips"></div>
-        <div class="pref-chip-sub" id="pref-category-summary">Nessuna categoria selezionata: il sito restera neutro su tutti i temi.</div>
+        <div class="rsm-pref-chip-row" id="pref-category-chips"></div>
+        <div class="rsm-pref-chip-sub" id="pref-category-summary">Nessuna categoria selezionata: il sito restera neutro su tutti i temi.</div>
       </div>
-      <div class="save-row">
-        <button class="btn btn-primary" id="save-custom-btn">Salva personalizzazioni</button>
-        <span class="status-msg" id="custom-status"></span>
+      <div class="rsm-save-row">
+        <button class="rsm-btn rsm-btn--primary" id="save-custom-btn">Salva personalizzazioni</button>
+        <span class="rsm-status-msg" id="custom-status"></span>
       </div>
     </div>
   </div>
 
-  <div class="section-label">Account</div>
+  <h2 class="rsm-section-label">Account</h2>
 
-  <div class="grid-2">
-    <div class="bcard">
-      <div class="account-card">
-        <div class="account-info">
+  <div class="rsm-grid-2">
+    <div class="rsm-card">
+      <div class="rsm-account-card">
+        <div class="rsm-account-info">
           <strong id="user-chip-name">—</strong>
           <span>Account attivo</span>
         </div>
-        <span id="user-chip-avatar" style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:#253f35;flex-shrink:0">🌿</span>
+        <span class="rsm-account-avatar" id="user-chip-avatar">🌿</span>
       </div>
-      <div class="save-row">
-        <a href="reset" class="btn btn-ghost">Cambia password</a>
-        <button class="btn btn-danger" id="logout-btn">Esci</button>
+      <div class="rsm-save-row">
+        <a href="/reset" class="rsm-btn rsm-btn--ghost">Cambia password</a>
+        <button class="rsm-btn rsm-btn--danger" id="logout-btn">Esci</button>
       </div>
     </div>
-    <div class="motto-card">
-      <div class="motto-text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</div>
+    <div class="rsm-card rsm-motto-card">
+      <div class="rsm-motto-text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</div>
     </div>
   </div>
 
@@ -869,108 +969,156 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.config.js"></script>
 <script>
-
 (function () {
-  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
-
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const $ = (id) => document.getElementById(id);
 
   const PREF_KEY = 'rsm_prefs_v1';
   const EMOJIS = ['🌿','🌊','🦢','🚣','🎣','🌾','🏞️','🦆','🌙','✨','🧭','📍','🍃','🏰','🌸','🛶','🦋','🌤️','📸','🧡'];
   const COLORS = ['#253f35','#2f6b67','#2E7D32','#7CB342','#F9A825','#8D6E63','#5C6BC0','#EC407A','#607D8B','#37474F'];
-
   const CATEGORY_OPTIONS = ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
+
+  const FONT_SIZE_MAP = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
+  const UI_OPTIONS = {
+    theme: new Set(['auto', 'chiaro', 'scuro']),
+    language: new Set(['it', 'en']),
+    uiDensity: new Set(['comfortable', 'compact']),
+    fontsize: new Set(['sm', 'md', 'lg', 'xl']),
+    commentPrivacy: new Set(['all', 'members', 'none']),
+    notifFrequency: new Set(['instant', 'daily', 'weekly', 'off'])
+  };
+
   const defaultPrefs = {
-    theme: 'chiaro',
+    theme: 'auto',
     language: 'it',
     uiDensity: 'comfortable',
     fontsize: 'md',
     contrast: false,
+    animations: false,
+    username: '',
+    displayName: '',
+    bio: '',
+    avatarEmoji: '🌿',
+    avatarColor: '#253f35',
     commentPrivacy: 'all',
     notifFrequency: 'daily',
     notifEmail: false,
     preferredCategories: []
   };
 
-  let currentUser = null;
-  let currentProfile = null;
-
-  /* ── Prefs helpers ── */
-  const FONT_SIZE_MAP = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
-  const UI_OPTIONS = {
-    theme: new Set(['auto', 'chiaro', 'scuro']),
-    uiDensity: new Set(['comfortable', 'compact']),
-    fontsize: new Set(['sm', 'md', 'lg', 'xl'])
-  };
   const systemThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
-  function normalizeUiPrefs(prefs) {
+  function normalizePreferredCategories(input) {
+    const values = Array.isArray(input) ? input : [];
+    const aliases = {
+      'eventi': 'Eventi', 'territorio': 'Territorio', 'vita locale': 'Vita locale',
+      'avvisi': 'Avvisi', 'richieste': 'Richieste', 'storie': 'Storie',
+      'il luccio': 'Storie', 'fauna': 'Territorio', 'ambiente': 'Territorio',
+      'ecoturismo': 'Territorio', 'storia': 'Storie'
+    };
+    const allowed = new Set(CATEGORY_OPTIONS);
+    const seen = new Set();
+    const out = [];
+    values.forEach((value) => {
+      const raw = String(value || '').trim();
+      const next = aliases[raw.toLowerCase()] || raw;
+      if (!next || !allowed.has(next) || seen.has(next)) return;
+      seen.add(next);
+      out.push(next);
+    });
+    return out;
+  }
+
+  function sanitizeUsername(v) {
+    return String(v || '').toLowerCase().replace(/[^a-z0-9_]/g, '');
+  }
+
+  function normalizePrefs(prefs) {
     const next = Object.assign({}, defaultPrefs, prefs || {});
     next.theme = UI_OPTIONS.theme.has(next.theme) ? next.theme : defaultPrefs.theme;
+    next.language = UI_OPTIONS.language.has(next.language) ? next.language : defaultPrefs.language;
     next.uiDensity = UI_OPTIONS.uiDensity.has(next.uiDensity) ? next.uiDensity : defaultPrefs.uiDensity;
     next.fontsize = UI_OPTIONS.fontsize.has(next.fontsize) ? next.fontsize : defaultPrefs.fontsize;
-    next.language = next.language === 'en' ? 'en' : 'it';
     next.contrast = !!next.contrast;
+    next.animations = next.animations === true;
+    next.commentPrivacy = UI_OPTIONS.commentPrivacy.has(next.commentPrivacy) ? next.commentPrivacy : defaultPrefs.commentPrivacy;
+    next.notifFrequency = UI_OPTIONS.notifFrequency.has(next.notifFrequency) ? next.notifFrequency : defaultPrefs.notifFrequency;
+    next.notifEmail = !!next.notifEmail;
     next.preferredCategories = normalizePreferredCategories(next.preferredCategories);
+    next.username = sanitizeUsername(next.username);
+    next.displayName = String(next.displayName || '').slice(0, 50);
+    next.bio = String(next.bio || '').slice(0, 200);
+    next.avatarEmoji = EMOJIS.includes(next.avatarEmoji) ? next.avatarEmoji : defaultPrefs.avatarEmoji;
+    next.avatarColor = COLORS.includes(next.avatarColor) ? next.avatarColor : defaultPrefs.avatarColor;
     return next;
   }
+
   function resolveThemePreference(theme) {
     const pref = UI_OPTIONS.theme.has(theme) ? theme : defaultPrefs.theme;
     if (pref !== 'auto') return pref;
-    return systemThemeQuery?.matches ? 'scuro' : 'chiaro';
+    return systemThemeQuery && systemThemeQuery.matches ? 'scuro' : 'chiaro';
   }
+
   function loadPrefs() {
-    try { return normalizeUiPrefs(JSON.parse(localStorage.getItem(PREF_KEY)) || {}); }
-    catch { return normalizeUiPrefs({}); }
+    try { return normalizePrefs(JSON.parse(localStorage.getItem(PREF_KEY)) || {}); }
+    catch (_) { return normalizePrefs({}); }
   }
-  function savePrefs(prefs) { localStorage.setItem(PREF_KEY, JSON.stringify(normalizeUiPrefs(prefs))); }
+  function savePrefs(prefs) {
+    localStorage.setItem(PREF_KEY, JSON.stringify(normalizePrefs(prefs)));
+  }
+
   function applyUiPrefs(prefs) {
-    const next = normalizeUiPrefs(prefs);
+    const next = normalizePrefs(prefs);
     const root = document.documentElement;
     root.dataset.theme = resolveThemePreference(next.theme);
     root.dataset.themePref = next.theme;
     root.dataset.density = next.uiDensity;
     root.dataset.fontsize = next.fontsize;
     root.style.fontSize = FONT_SIZE_MAP[next.fontsize] || FONT_SIZE_MAP.md;
-    root.style.filter = '';
     if (next.contrast) root.dataset.contrast = 'high';
     else delete root.dataset.contrast;
+    if (next.animations) root.dataset.animations = 'disabled';
+    else delete root.dataset.animations;
   }
-  function isMissingSettingsError(error) {
-    const msg = String(error?.message || '').toLowerCase();
-    return error?.code === '42P01'
-      || error?.code === 'PGRST205'
-      || msg.includes('does not exist')
-      || msg.includes('could not find the table');
+
+  /* ── Status helpers ── */
+  function setStatus(id, msg, type) {
+    const el = $(id);
+    if (!el) return;
+    el.textContent = msg || '';
+    el.className = 'rsm-status-msg' + (type ? (' rsm-status-' + type) : '');
   }
-  function normalizePreferredCategories(input) {
-    const values = Array.isArray(input) ? input : [];
-    const aliases = {
-      'eventi': 'Eventi',
-      'territorio': 'Territorio',
-      'vita locale': 'Vita locale',
-      'avvisi': 'Avvisi',
-      'richieste': 'Richieste',
-      'storie': 'Storie',
-      'il luccio': 'Storie',
-      'fauna': 'Territorio',
-      'ambiente': 'Territorio',
-      'ecoturismo': 'Territorio',
-      'storia': 'Storie'
-    };
-    const allowed = new Set(CATEGORY_OPTIONS);
-    const seen = new Set();
-    const normalized = [];
-    values.forEach((value) => {
-      const raw = String(value || '').trim();
-      const next = aliases[raw.toLowerCase()] || raw;
-      if (!next || !allowed.has(next) || seen.has(next)) return;
-      seen.add(next);
-      normalized.push(next);
-    });
-    return normalized;
+
+  /* ── Avatar preview ── */
+  function syncPreview() {
+    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
+    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
+    const display = $('p-display')?.value.trim() || '';
+    const username = $('p-username')?.value.trim() || '';
+
+    const prev = $('avatar-preview');
+    const chip = $('user-chip-avatar');
+    if (prev) { prev.textContent = emoji; prev.style.background = color; }
+    if (chip) { chip.textContent = emoji; chip.style.background = color; }
+    if ($('prev-display')) $('prev-display').textContent = display || '—';
+    if ($('prev-username')) $('prev-username').textContent = username ? ('@' + username) : '—';
   }
+
+  /* ── Build pickers ── */
+  function buildPickers(emoji, color) {
+    const eg = $('emoji-grid');
+    const cg = $('color-grid');
+    if (!eg || !cg) return;
+    eg.innerHTML = EMOJIS.map((e, i) =>
+      `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
+    ).join('');
+    cg.innerHTML = COLORS.map((c, i) =>
+      `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}"></label>`
+    ).join('');
+    eg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
+    cg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
+  }
+
+  /* ── Category chips ── */
   function getSelectedPreferredCategories() {
     const wrap = $('pref-category-chips');
     if (!wrap) return [];
@@ -997,52 +1145,31 @@
     syncPreferredCategorySummary();
   }
 
-  /* ── Status helpers ── */
-  function setStatus(id, msg, type) {
-    const el = $(id);
-    if (!el) return;
-    el.textContent = msg || '';
-    el.className = 'status-msg' + (type ? (' status-' + type) : '');
-  }
-
-  /* ── Sanitize username ── */
-  function sanitizeUsername(v) { return String(v || '').toLowerCase().replace(/[^a-z0-9_]/g, ''); }
-
-  /* ── Avatar preview ── */
-  function syncPreview() {
-    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
-    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
-    const display = $('p-display')?.value.trim() || currentProfile?.display_name || currentProfile?.username || '';
-    const username = $('p-username')?.value.trim() || currentProfile?.username || '';
-
-    const prev = $('avatar-preview');
-    const chip = $('user-chip-avatar');
-    if (prev) { prev.textContent = emoji; prev.style.background = color; }
-    if (chip) { chip.textContent = emoji; chip.style.background = color; }
-    if ($('prev-display')) $('prev-display').textContent = display || '—';
-    if ($('prev-username')) $('prev-username').textContent = username ? ('@' + username) : '—';
-  }
-
-  /* ── Build pickers ── */
-  function buildPickers(emoji, color) {
-    const eg = $('emoji-grid');
-    const cg = $('color-grid');
-    if (!eg || !cg) return;
-    eg.innerHTML = EMOJIS.map((e, i) =>
-      `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
+  /* ── Accessibility summary ── */
+  function renderAccessibilitySummary(prefs) {
+    const wrap = $('accessibility-summary');
+    if (!wrap) return;
+    const fontLabels = { sm: 'Piccolo', md: 'Normale', lg: 'Grande', xl: 'Molto grande' };
+    const themeLabels = { auto: 'Automatico', chiaro: 'Chiaro', scuro: 'Scuro' };
+    const densityLabels = { comfortable: 'Standard', compact: 'Compatta' };
+    const items = [
+      { label: 'Tema',             value: themeLabels[prefs.theme] || prefs.theme, active: prefs.theme !== 'auto' },
+      { label: 'Dimensione testo', value: fontLabels[prefs.fontsize] || prefs.fontsize, active: prefs.fontsize !== 'md' },
+      { label: 'Densità UI',       value: densityLabels[prefs.uiDensity] || prefs.uiDensity, active: prefs.uiDensity !== 'comfortable' },
+      { label: 'Contrasto elevato', value: prefs.contrast ? 'Attivo' : 'Disattivato', active: prefs.contrast },
+      { label: 'Animazioni',       value: prefs.animations ? 'Disattivate' : 'Attive', active: prefs.animations }
+    ];
+    wrap.innerHTML = items.map((item) =>
+      '<div class="rsm-accessibility-item" data-active="' + (item.active ? 'on' : 'off') + '">' +
+        '<strong>' + item.label + '</strong>' +
+        '<span>' + item.value + '</span>' +
+      '</div>'
     ).join('');
-    cg.innerHTML = COLORS.map((c, i) =>
-      `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}"></label>`
-    ).join('');
-    eg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
-    cg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
   }
 
-  /* ── Save profile ── */
-  async function saveProfile() {
-    if (!currentUser || !currentProfile) return;
+  /* ── Save handlers ── */
+  function saveProfile() {
     setStatus('profile-status', '', '');
-
     const username = sanitizeUsername($('p-username')?.value || '');
     const displayName = String($('p-display')?.value || '').trim();
     const bio = String($('p-bio')?.value || '').trim();
@@ -1052,236 +1179,152 @@
       return;
     }
 
-    const btn = $('save-profile-btn');
-    if (btn) btn.disabled = true;
+    const prefs = loadPrefs();
+    prefs.username = username;
+    prefs.displayName = displayName || username;
+    prefs.bio = bio;
+    savePrefs(prefs);
 
-    const { error } = await sb.from('profiles').update({
-      username,
-      display_name: displayName || username,
-      bio: bio || null,
-    }).eq('id', currentUser.id);
-
-    if (btn) btn.disabled = false;
-
-    if (error) {
-      const msg = error.code === '23505' ? 'Username già in uso. Prova con un altro.' : 'Salvataggio non riuscito: ' + error.message;
-      setStatus('profile-status', msg, 'err');
-      return;
-    }
-
-    currentProfile.username = username;
-    currentProfile.display_name = displayName || username;
-    currentProfile.bio = bio || null;
     if ($('user-chip-name')) $('user-chip-name').textContent = '@' + username;
-    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(username);
+    if ($('public-profile-link')) $('public-profile-link').href = '/profile?u=' + encodeURIComponent(username);
     syncPreview();
     setStatus('profile-status', 'Profilo aggiornato con successo.', 'ok');
   }
 
-  /* ── Save avatar ── */
-  async function saveAvatar() {
-    if (!currentUser || !currentProfile) return;
+  function saveAvatar() {
     setStatus('avatar-status', '', '');
-
     const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
     const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
 
-    const btn = $('save-avatar-btn');
-    if (btn) btn.disabled = true;
+    const prefs = loadPrefs();
+    prefs.avatarEmoji = emoji;
+    prefs.avatarColor = color;
+    savePrefs(prefs);
 
-    const { error } = await sb.from('profiles').update({ avatar_emoji: emoji, avatar_color: color }).eq('id', currentUser.id);
-
-    if (btn) btn.disabled = false;
-
-    if (error) {
-      setStatus('avatar-status', 'Aggiornamento non riuscito: ' + error.message, 'err');
-      return;
+    if ($('user-chip-avatar')) {
+      $('user-chip-avatar').textContent = emoji;
+      $('user-chip-avatar').style.background = color;
     }
-
-    currentProfile.avatar_emoji = emoji;
-    currentProfile.avatar_color = color;
     setStatus('avatar-status', 'Avatar aggiornato.', 'ok');
   }
 
-  /* ── Save UI prefs ── */
-  async function saveUiPreferences() {
-    if (!currentUser) return;
+  function saveUiPreferences() {
     setStatus('ui-status', '', '');
-
     const next = loadPrefs();
-    next.theme     = $('pref-theme')?.value || 'auto';
-    next.language  = $('pref-language')?.value || 'it';
-    next.uiDensity = $('pref-density')?.value || 'comfortable';
-    next.fontsize  = $('pref-fontsize')?.value || 'md';
-    next.contrast  = !!$('pref-contrast')?.checked;
-
+    next.theme      = $('pref-theme')?.value      || next.theme;
+    next.language   = $('pref-language')?.value   || next.language;
+    next.uiDensity  = $('pref-density')?.value    || next.uiDensity;
+    next.fontsize   = $('pref-fontsize')?.value   || next.fontsize;
+    next.contrast   = !!$('pref-contrast')?.checked;
+    next.animations = !!$('pref-animations')?.checked;
     savePrefs(next);
     applyUiPrefs(next);
-
-    const btn = $('save-ui-btn');
-    if (btn) btn.disabled = true;
-
-    const { error } = await sb.from('user_settings').upsert({
-      user_id: currentUser.id,
-      accessibility_fontsize: next.fontsize,
-      accessibility_high_contrast: next.contrast,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'user_id' });
-
-    if (btn) btn.disabled = false;
-
-    if (error) {
-      if (isMissingSettingsError(error)) {
-        setStatus('ui-status', 'Preferenze locali salvate. Per il sync cloud applica supabase-security.sql.', 'ok');
-      } else {
-        setStatus('ui-status', 'Locale salvato, sync cloud fallita: ' + error.message, 'err');
-      }
-      return;
-    }
+    renderAccessibilitySummary(next);
     setStatus('ui-status', 'Aspetto salvato.', 'ok');
   }
 
-  async function saveCustomPreferences() {
-    if (!currentUser) return;
+  function saveCustomPreferences() {
     setStatus('custom-status', '', '');
-
     const next = loadPrefs();
-    next.commentPrivacy = $('pref-comment-privacy')?.value || 'all';
-    next.notifFrequency = $('pref-notif-frequency')?.value || 'daily';
+    next.commentPrivacy = $('pref-comment-privacy')?.value || next.commentPrivacy;
+    next.notifFrequency = $('pref-notif-frequency')?.value || next.notifFrequency;
     next.notifEmail = !!$('pref-notif-email')?.checked;
     next.preferredCategories = getSelectedPreferredCategories();
     savePrefs(next);
-
-    const btn = $('save-custom-btn');
-    if (btn) btn.disabled = true;
-
-    const { error } = await sb.from('user_settings').upsert({
-      user_id: currentUser.id,
-      comment_privacy: next.commentPrivacy,
-      notif_frequency: next.notifFrequency,
-      notif_email: next.notifEmail,
-      preferred_categories: next.preferredCategories,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'user_id' });
-
-    if (btn) btn.disabled = false;
-
-    if (error) {
-      if (isMissingSettingsError(error)) {
-        setStatus('custom-status', 'Personalizzazioni salvate in locale. Per il sync cloud applica supabase-security.sql.', 'ok');
-      } else {
-        setStatus('custom-status', 'Salvataggio non riuscito: ' + error.message, 'err');
-      }
-      return;
-    }
-
     setStatus('custom-status', 'Personalizzazioni salvate.', 'ok');
   }
 
   /* ── Init ── */
-  async function init() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session?.user) { location.href = 'login'; return; }
-
-    currentUser = session.user;
-
-    const { data: profile, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-    if (error || !profile) { location.href = '/dashboard'; return; }
-
-    currentProfile = profile;
-
-    /* Populate chip */
-    if ($('user-chip-name')) $('user-chip-name').textContent = '@' + (profile.username || 'utente');
-    if ($('user-chip-avatar')) {
-      $('user-chip-avatar').textContent = profile.avatar_emoji || '🌿';
-      $('user-chip-avatar').style.background = profile.avatar_color || '#253f35';
-    }
-    if ($('public-profile-link')) $('public-profile-link').href = 'profile?u=' + encodeURIComponent(profile.username || '');
-
-    /* Populate profile fields */
-    if ($('p-username')) $('p-username').value = profile.username || '';
-    if ($('p-display'))  $('p-display').value  = profile.display_name || profile.username || '';
-    if ($('p-bio'))      $('p-bio').value       = profile.bio || '';
-
-    /* Build pickers */
-    buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#253f35');
-    syncPreview();
-
-    renderPreferredCategoryChips([]);
-
-    /* Load UI prefs */
+  function init() {
     const prefs = loadPrefs();
 
-    const { data: remote } = await sb.from('user_settings')
-      .select('comment_privacy,notif_frequency,notif_email,preferred_categories,accessibility_fontsize,accessibility_high_contrast')
-      .eq('user_id', currentUser.id)
-      .maybeSingle();
-
-    if (remote) {
-      if (remote.comment_privacy) prefs.commentPrivacy = remote.comment_privacy;
-      if (remote.notif_frequency) prefs.notifFrequency = remote.notif_frequency;
-      if (typeof remote.notif_email === 'boolean') prefs.notifEmail = remote.notif_email;
-      if (Array.isArray(remote.preferred_categories)) prefs.preferredCategories = normalizePreferredCategories(remote.preferred_categories);
-      if (remote.accessibility_fontsize) prefs.fontsize = remote.accessibility_fontsize;
-      if (typeof remote.accessibility_high_contrast === 'boolean') prefs.contrast = remote.accessibility_high_contrast;
-      savePrefs(prefs);
+    /* Populate account chip */
+    if ($('user-chip-name')) $('user-chip-name').textContent = prefs.username ? ('@' + prefs.username) : '—';
+    if ($('user-chip-avatar')) {
+      $('user-chip-avatar').textContent = prefs.avatarEmoji;
+      $('user-chip-avatar').style.background = prefs.avatarColor;
+    }
+    if ($('public-profile-link')) {
+      $('public-profile-link').href = prefs.username ? ('/profile?u=' + encodeURIComponent(prefs.username)) : '#';
     }
 
-    if ($('pref-theme'))    $('pref-theme').value    = prefs.theme || 'chiaro';
-    if ($('pref-language')) $('pref-language').value = prefs.language || 'it';
-    if ($('pref-density'))  $('pref-density').value  = prefs.uiDensity || 'comfortable';
-    if ($('pref-fontsize')) $('pref-fontsize').value = prefs.fontsize || 'md';
-    if ($('pref-contrast')) $('pref-contrast').checked = !!prefs.contrast;
-    if ($('pref-comment-privacy')) $('pref-comment-privacy').value = prefs.commentPrivacy || 'all';
-    if ($('pref-notif-frequency')) $('pref-notif-frequency').value = prefs.notifFrequency || 'daily';
-    if ($('pref-notif-email')) $('pref-notif-email').checked = !!prefs.notifEmail;
-    renderPreferredCategoryChips(prefs.preferredCategories || []);
+    /* Profile inputs */
+    if ($('p-username')) $('p-username').value = prefs.username;
+    if ($('p-display'))  $('p-display').value  = prefs.displayName || prefs.username;
+    if ($('p-bio'))      $('p-bio').value      = prefs.bio;
 
+    /* Avatar */
+    buildPickers(prefs.avatarEmoji, prefs.avatarColor);
+    syncPreview();
+
+    /* UI selects + toggles */
+    if ($('pref-theme'))     $('pref-theme').value    = prefs.theme;
+    if ($('pref-language'))  $('pref-language').value = prefs.language;
+    if ($('pref-density'))   $('pref-density').value  = prefs.uiDensity;
+    if ($('pref-fontsize'))  $('pref-fontsize').value = prefs.fontsize;
+    if ($('pref-contrast'))  $('pref-contrast').checked = prefs.contrast;
+    if ($('pref-animations'))$('pref-animations').checked = prefs.animations;
+
+    /* Funzioni */
+    if ($('pref-comment-privacy')) $('pref-comment-privacy').value = prefs.commentPrivacy;
+    if ($('pref-notif-frequency')) $('pref-notif-frequency').value = prefs.notifFrequency;
+    if ($('pref-notif-email'))     $('pref-notif-email').checked   = prefs.notifEmail;
+    renderPreferredCategoryChips(prefs.preferredCategories);
+
+    /* Apply + accessibility summary */
     applyUiPrefs(prefs);
+    renderAccessibilitySummary(prefs);
+
+    /* System theme listener */
     if (systemThemeQuery) {
-      const syncSystemTheme = () => {
+      const syncSystem = () => {
         const live = loadPrefs();
         if (live.theme === 'auto') applyUiPrefs(live);
       };
-      if (systemThemeQuery.addEventListener) systemThemeQuery.addEventListener('change', syncSystemTheme);
-      else if (systemThemeQuery.addListener) systemThemeQuery.addListener(syncSystemTheme);
+      if (systemThemeQuery.addEventListener) systemThemeQuery.addEventListener('change', syncSystem);
+      else if (systemThemeQuery.addListener) systemThemeQuery.addListener(syncSystem);
     }
 
-    /* Bind save buttons */
+    /* Save buttons */
     $('save-profile-btn')?.addEventListener('click', saveProfile);
     $('save-avatar-btn')?.addEventListener('click', saveAvatar);
     $('save-ui-btn')?.addEventListener('click', saveUiPreferences);
     $('save-custom-btn')?.addEventListener('click', saveCustomPreferences);
+
+    /* Logout (auth still uses Supabase) */
     $('logout-btn')?.addEventListener('click', async () => {
-      await sb.auth.signOut();
-      location.href = '/';
+      try {
+        if (typeof supabase !== 'undefined' && typeof SUPABASE_URL !== 'undefined' && !String(SUPABASE_URL).includes('your-project')) {
+          await supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY).auth.signOut();
+        }
+      } catch (_) {}
+      location.href = '/login';
     });
 
-    /* Live preview as user types */
+    /* Live preview on inputs */
     $('p-display')?.addEventListener('input', syncPreview);
     $('p-username')?.addEventListener('input', function () {
       this.value = sanitizeUsername(this.value);
       syncPreview();
     });
 
-    /* Live UI preview on select change — also persists immediately to localStorage */
-    ['pref-theme','pref-density','pref-fontsize','pref-contrast'].forEach((id) => {
+    /* Live UI: apply immediately + persist so other tabs/pages pick it up */
+    ['pref-theme','pref-language','pref-density','pref-fontsize','pref-contrast','pref-animations'].forEach((id) => {
       $(id)?.addEventListener('change', () => {
         const live = loadPrefs();
-        live.theme     = $('pref-theme')?.value || live.theme;
-        live.language  = $('pref-language')?.value || live.language;
-        live.uiDensity = $('pref-density')?.value || live.uiDensity;
-        live.fontsize  = $('pref-fontsize')?.value || live.fontsize;
-        live.contrast  = !!$('pref-contrast')?.checked;
+        live.theme      = $('pref-theme')?.value    || live.theme;
+        live.language   = $('pref-language')?.value || live.language;
+        live.uiDensity  = $('pref-density')?.value  || live.uiDensity;
+        live.fontsize   = $('pref-fontsize')?.value || live.fontsize;
+        live.contrast   = !!$('pref-contrast')?.checked;
+        live.animations = !!$('pref-animations')?.checked;
         savePrefs(live);
         applyUiPrefs(live);
+        renderAccessibilitySummary(live);
       });
     });
-    $('pref-language')?.addEventListener('change', () => {
-      const live = loadPrefs();
-      live.language = $('pref-language')?.value || live.language;
-      savePrefs(live);
-    });
+
+    /* Category chips toggle */
     $('pref-category-chips')?.addEventListener('click', (event) => {
       const btn = event.target.closest('.pref-chip');
       if (!btn) return;
