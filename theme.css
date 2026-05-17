@@ -757,6 +757,27 @@ html[data-theme="scuro"] body[data-page="home"] .badge.green {
 }
 
 /* ================================================================
+   ANIMATIONS OFF — html[data-animations="disabled"]
+   Site-wide kill switch driven by rsm_prefs_v1.animations
+   ================================================================ */
+html[data-animations="disabled"],
+html[data-animations="disabled"] *,
+html[data-animations="disabled"] *::before,
+html[data-animations="disabled"] *::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-animations="disabled"] [data-rsm-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html[data-animations="disabled"] .rsm-foot__aurora,
+html[data-animations="disabled"] .rsm-foot__band-track {
+  animation: none !important;
+}
+
+/* ================================================================
    FOOTER CANONICO — stili base condivisi
    ================================================================ */
 .footer {
