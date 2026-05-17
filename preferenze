@@ -378,6 +378,8 @@
       display: flex;
       align-items: center;
       gap: var(--rsm-s-4);
+      padding-bottom: var(--rsm-s-5);
+      border-bottom: 1px solid var(--rsm-line);
     }
     .prefs-account__chip-avatar {
       width: 64px;
@@ -387,10 +389,11 @@
       place-items: center;
       font-size: 28px;
       color: #fff;
-      background: #253f35;
+      background: var(--rsm-ink);
       flex-shrink: 0;
+      box-shadow: var(--rsm-sh-sm);
     }
-    .prefs-account__chip-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .prefs-account__chip-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
     .prefs-account__chip-info strong {
       font-family: var(--rsm-font-display);
       font-size: 1.4rem;
@@ -401,15 +404,22 @@
     .prefs-account__chip-info span {
       font-family: var(--rsm-font-mono);
       font-size: var(--rsm-text-eyebrow);
-      letter-spacing: var(--rsm-tracking-loose);
+      letter-spacing: var(--rsm-tracking-wide);
       color: var(--rsm-text-soft);
       text-transform: uppercase;
+    }
+    .prefs-account__desc {
+      max-width: 36ch;
+      color: var(--rsm-text-soft);
+      margin: 0;
     }
     .prefs-account__actions {
       display: flex;
       flex-wrap: wrap;
       gap: var(--rsm-s-3);
       margin-top: auto;
+      padding-top: var(--rsm-s-4);
+      border-top: 1px solid var(--rsm-line);
     }
     .prefs-motto {
       display: grid;
@@ -737,7 +747,7 @@
     </header>
 
     <div class="prefs-account">
-      <div class="rsm-card rsm-card--ink prefs-account__card">
+      <div class="rsm-card prefs-account__card">
         <div class="prefs-account__chip">
           <span class="prefs-account__chip-avatar" id="user-chip-avatar">🌿</span>
           <div class="prefs-account__chip-info">
@@ -745,7 +755,7 @@
             <span>Sessione attiva</span>
           </div>
         </div>
-        <p class="rsm-body" style="color:rgba(255,255,255,0.78);max-width:32ch">
+        <p class="rsm-body prefs-account__desc">
           Esci per chiudere la sessione su questo dispositivo. Le preferenze locali restano salvate per il prossimo accesso.
         </p>
         <div class="prefs-account__actions">
