@@ -7,12 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preferenze – Rivalta sul Mincio</title>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
+  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="/theme.css" />
   <style>
     /* ───────── Preferenze · layout editoriale ───────── */
@@ -27,18 +27,6 @@
 
     /* HERO */
     .prefs-hero {
-      display: grid;
-      gap: var(--rsm-s-12);
-      grid-template-columns: 1fr;
-      align-items: end;
-    }
-    @media (min-width: 920px) {
-      .prefs-hero {
-        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-        gap: var(--rsm-s-16);
-      }
-    }
-    .prefs-hero__left {
       display: flex;
       flex-direction: column;
       gap: var(--rsm-s-6);
@@ -51,44 +39,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: var(--rsm-s-2);
-    }
-    .prefs-hero__preview {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--rsm-s-4);
-      text-align: center;
-    }
-    .prefs-preview-avatar {
-      width: 132px;
-      height: 132px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 58px;
-      color: #fff;
-      background: #253f35;
-      box-shadow: var(--rsm-sh-lg);
-      transition: background var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-    .prefs-preview-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-    }
-    .prefs-preview-meta strong {
-      font-family: var(--rsm-font-display);
-      font-size: 1.4rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--rsm-text-strong);
-    }
-    .prefs-preview-meta span {
-      font-family: var(--rsm-font-mono);
-      font-size: var(--rsm-text-eyebrow);
-      letter-spacing: var(--rsm-tracking-loose);
-      color: var(--rsm-text-soft);
     }
 
     /* SECTION HEAD */
@@ -104,91 +54,6 @@
       max-width: 60ch;
     }
     .prefs-section__head .rsm-lead { color: var(--rsm-text-soft); }
-
-    /* CARD COMPOSITIONS */
-    .prefs-card-head {
-      display: flex;
-      flex-direction: column;
-      gap: var(--rsm-s-2);
-      margin-bottom: var(--rsm-s-6);
-    }
-    .prefs-grid-profile {
-      display: grid;
-      gap: var(--rsm-s-5);
-      grid-template-columns: 1fr;
-      margin-bottom: var(--rsm-s-5);
-    }
-    @media (min-width: 720px) {
-      .prefs-grid-profile { grid-template-columns: 1fr 1fr; }
-    }
-
-    .prefs-grid-avatar {
-      display: grid;
-      gap: var(--rsm-s-6);
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 720px) {
-      .prefs-grid-avatar { grid-template-columns: 1.6fr 1fr; }
-    }
-    .prefs-picker {
-      display: flex;
-      flex-direction: column;
-      gap: var(--rsm-s-3);
-    }
-
-    /* Emoji + color pickers */
-    .prefs-emoji-grid,
-    .prefs-color-grid {
-      display: grid;
-      gap: var(--rsm-s-2);
-    }
-    .prefs-emoji-grid { grid-template-columns: repeat(5, 1fr); }
-    .prefs-color-grid { grid-template-columns: repeat(5, 1fr); }
-    .prefs-emoji-grid input,
-    .prefs-color-grid input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-    .prefs-emoji-grid label {
-      display: grid;
-      place-items: center;
-      aspect-ratio: 1;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: var(--rsm-r-md);
-      background: rgba(255,255,255,0.66);
-      backdrop-filter: var(--rsm-blur-sm);
-      cursor: pointer;
-      font-size: 22px;
-      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out),
-                  border-color var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-    .prefs-color-grid label {
-      display: block;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: inset 0 0 0 1px var(--rsm-line-2), var(--rsm-sh-sm);
-      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out),
-                  border-color var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-    .prefs-emoji-grid label:hover,
-    .prefs-color-grid label:hover { transform: translateY(-1px); }
-    .prefs-emoji-grid input:checked + label {
-      border-color: var(--rsm-emerald);
-      transform: scale(1.04);
-      box-shadow: var(--rsm-sh-glow-emerald);
-    }
-    .prefs-color-grid input:checked + label {
-      border-color: var(--rsm-text-strong);
-      transform: scale(1.1);
-    }
-    .prefs-emoji-grid input:focus-visible + label,
-    .prefs-color-grid input:focus-visible + label {
-      outline: 2px solid var(--rsm-azure);
-      outline-offset: 3px;
-    }
 
     /* Pref rows */
     .prefs-row {
@@ -480,12 +345,6 @@
     .rsm-form-status.is-ok { color: var(--rsm-success); }
     .rsm-form-status.is-err { color: var(--rsm-danger); }
 
-    /* Dark mode tweaks */
-    html[data-theme="scuro"] .prefs-emoji-grid label {
-      background: rgba(20, 22, 32, 0.58);
-      border-color: var(--rsm-line-2);
-    }
-
     /* Density compact: tighten the pref-rows */
     html[data-density="compact"] .prefs-row { padding: var(--rsm-s-3) 0; }
     html[data-density="compact"] .rsm-page { gap: var(--rsm-s-16); }
@@ -499,93 +358,22 @@
 
   <!-- ───────── HERO ───────── -->
   <section class="prefs-hero">
-    <div class="prefs-hero__left">
-      <p class="rsm-kicker"><span>Profilo · Aspetto · Comunità</span></p>
-      <h1 class="rsm-h1">Personalizza la tua <em>esperienza</em>.</h1>
-      <p class="rsm-lead">Tipografia, tema, accessibilità e identità. Ogni scelta resta su questo dispositivo e si propaga su tutte le pagine del sito, senza passare dal cloud.</p>
-      <ul class="prefs-hero__tags" aria-label="Stato corrente">
-        <li class="rsm-tag rsm-tag--emerald" id="hero-tag-theme">Tema · automatico</li>
-        <li class="rsm-tag rsm-tag--azure" id="hero-tag-fontsize">Testo · normale</li>
-        <li class="rsm-tag rsm-tag--violet" id="hero-tag-animations">Animazioni · attive</li>
-      </ul>
-    </div>
-    <aside class="rsm-card rsm-card--glass prefs-hero__preview" aria-label="Anteprima profilo">
-      <p class="rsm-kicker rsm-kicker--center"><span>Anteprima</span></p>
-      <div class="prefs-preview-avatar" id="avatar-preview">🌿</div>
-      <div class="prefs-preview-meta">
-        <strong id="prev-display">—</strong>
-        <span id="prev-username">@...</span>
-      </div>
-      <a href="#" class="rsm-btn rsm-btn--ghost rsm-btn--sm" id="public-profile-link">
-        <span>Vedi profilo</span>
-        <span class="rsm-btn-icon" aria-hidden="true">↗</span>
-      </a>
-    </aside>
+    <p class="rsm-kicker"><span>Aspetto · Comunità · Account</span></p>
+    <h1 class="rsm-h1">Personalizza la tua <em>esperienza</em>.</h1>
+    <p class="rsm-lead">Tipografia, tema, accessibilità e comunità. Ogni scelta resta su questo dispositivo e si propaga su tutte le pagine del sito, senza passare dal cloud.</p>
+    <ul class="prefs-hero__tags" aria-label="Stato corrente">
+      <li class="rsm-tag rsm-tag--emerald" id="hero-tag-theme">Tema · automatico</li>
+      <li class="rsm-tag rsm-tag--azure" id="hero-tag-fontsize">Testo · normale</li>
+      <li class="rsm-tag rsm-tag--violet" id="hero-tag-animations">Animazioni · attive</li>
+    </ul>
   </section>
 
-  <!-- ───────── 01 · IDENTITÀ ───────── -->
+  <!-- ───────── 01 · ASPETTO ───────── -->
   <section class="prefs-section">
     <header class="prefs-section__head">
-      <p class="rsm-kicker"><span>01 · Identità</span></p>
-      <h2 class="rsm-h2">Come ti vedono <span class="rsm-grad">gli altri</span>.</h2>
-      <p class="rsm-lead">Nome, username e biografia restano sul dispositivo. Cambia avatar quando vuoi: anteprima a sinistra in tempo reale.</p>
-    </header>
-
-    <div class="rsm-card">
-      <div class="prefs-grid-profile">
-        <div class="rsm-field">
-          <label for="p-display" class="rsm-field-label">Nome visualizzato</label>
-          <input type="text" id="p-display" class="rsm-input" maxlength="50" placeholder="Mario Rossi" />
-        </div>
-        <div class="rsm-field">
-          <label for="p-username" class="rsm-field-label">Username · solo a-z 0-9 _</label>
-          <input type="text" id="p-username" class="rsm-input" maxlength="30" placeholder="lupo_del_mincio" autocomplete="off" />
-        </div>
-      </div>
-      <div class="rsm-field">
-        <label for="p-bio" class="rsm-field-label">Bio · max 200 caratteri</label>
-        <textarea id="p-bio" class="rsm-textarea" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
-      </div>
-      <div class="prefs-actions">
-        <button type="button" class="rsm-btn rsm-btn--brand" id="save-profile-btn">
-          <span>Salva profilo</span>
-          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
-        </button>
-        <span class="rsm-form-status" id="profile-status" aria-live="polite"></span>
-      </div>
-    </div>
-
-    <div class="rsm-card">
-      <header class="prefs-card-head">
-        <p class="rsm-kicker"><span>Avatar</span></p>
-        <h3 class="rsm-h3">Emoji e tinta del cerchio</h3>
-      </header>
-      <div class="prefs-grid-avatar">
-        <div class="prefs-picker">
-          <span class="rsm-field-label">Emoji</span>
-          <div class="prefs-emoji-grid" id="emoji-grid" role="radiogroup" aria-label="Scegli un'emoji"></div>
-        </div>
-        <div class="prefs-picker">
-          <span class="rsm-field-label">Colore</span>
-          <div class="prefs-color-grid" id="color-grid" role="radiogroup" aria-label="Scegli un colore"></div>
-        </div>
-      </div>
-      <div class="prefs-actions">
-        <button type="button" class="rsm-btn rsm-btn--brand" id="save-avatar-btn">
-          <span>Salva avatar</span>
-          <span class="rsm-btn-icon" aria-hidden="true">↗</span>
-        </button>
-        <span class="rsm-form-status" id="avatar-status" aria-live="polite"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ───────── 02 · ASPETTO ───────── -->
-  <section class="prefs-section">
-    <header class="prefs-section__head">
-      <p class="rsm-kicker"><span>02 · Aspetto</span></p>
+      <p class="rsm-kicker"><span>01 · Aspetto</span></p>
       <h2 class="rsm-h2">Tema, dimensione, <span class="rsm-grad">densità</span>.</h2>
-      <p class="rsm-lead">Le modifiche si applicano subito, su questa pagina e su tutte le altre. L'anteprima in alto le rispecchia.</p>
+      <p class="rsm-lead">Le modifiche si applicano subito, su questa pagina e su tutte le altre. I tag in alto rispecchiano lo stato attivo.</p>
     </header>
 
     <div class="rsm-card">
@@ -664,10 +452,10 @@
     </div>
   </section>
 
-  <!-- ───────── 03 · ACCESSIBILITÀ ───────── -->
+  <!-- ───────── 02 · ACCESSIBILITÀ ───────── -->
   <section class="prefs-section">
     <header class="prefs-section__head">
-      <p class="rsm-kicker"><span>03 · Accessibilità</span></p>
+      <p class="rsm-kicker"><span>02 · Accessibilità</span></p>
       <h2 class="rsm-h2">Il tuo profilo <span class="rsm-grad">accessibile</span>.</h2>
       <p class="rsm-lead">Le scelte attive in un colpo d'occhio. Le impostazioni evidenziate sono quelle che hai personalizzato rispetto al default.</p>
     </header>
@@ -677,10 +465,10 @@
     </div>
   </section>
 
-  <!-- ───────── 04 · COMUNITÀ ───────── -->
+  <!-- ───────── 03 · COMUNITÀ ───────── -->
   <section class="prefs-section">
     <header class="prefs-section__head">
-      <p class="rsm-kicker"><span>04 · Comunità</span></p>
+      <p class="rsm-kicker"><span>03 · Comunità</span></p>
       <h2 class="rsm-h2">Commenti, notifiche, <span class="rsm-grad">categorie</span>.</h2>
       <p class="rsm-lead">Decidi come interagire con il sito e quali temi tenere più vicini. Tutto modificabile in qualsiasi momento.</p>
     </header>
@@ -739,10 +527,10 @@
     </div>
   </section>
 
-  <!-- ───────── 05 · ACCOUNT ───────── -->
+  <!-- ───────── 04 · ACCOUNT ───────── -->
   <section class="prefs-section">
     <header class="prefs-section__head">
-      <p class="rsm-kicker"><span>05 · Account</span></p>
+      <p class="rsm-kicker"><span>04 · Account</span></p>
       <h2 class="rsm-h2">Sicurezza e <span class="rsm-grad">sessione</span>.</h2>
     </header>
 
@@ -1184,34 +972,6 @@
     el.className = 'rsm-form-status' + (type ? (' is-' + type) : '');
   }
 
-  function syncPreview() {
-    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
-    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
-    const display = $('p-display')?.value.trim() || '';
-    const username = $('p-username')?.value.trim() || '';
-
-    const prev = $('avatar-preview');
-    const chip = $('user-chip-avatar');
-    if (prev) { prev.textContent = emoji; prev.style.background = color; }
-    if (chip) { chip.textContent = emoji; chip.style.background = color; }
-    if ($('prev-display')) $('prev-display').textContent = display || '—';
-    if ($('prev-username')) $('prev-username').textContent = username ? ('@' + username) : '@...';
-  }
-
-  function buildPickers(emoji, color) {
-    const eg = $('emoji-grid');
-    const cg = $('color-grid');
-    if (!eg || !cg) return;
-    eg.innerHTML = EMOJIS.map((e, i) =>
-      `<input type="radio" id="em-${i}" name="pref-emoji" value="${e}" ${e === emoji ? 'checked' : ''}><label for="em-${i}">${e}</label>`
-    ).join('');
-    cg.innerHTML = COLORS.map((c, i) =>
-      `<input type="radio" id="co-${i}" name="pref-color" value="${c}" ${c === color ? 'checked' : ''}><label for="co-${i}" style="background:${c}" aria-label="${c}"></label>`
-    ).join('');
-    eg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
-    cg.querySelectorAll('input').forEach(el => el.addEventListener('change', syncPreview));
-  }
-
   function getSelectedPreferredCategories() {
     const wrap = $('pref-category-chips');
     if (!wrap) return [];
@@ -1270,45 +1030,6 @@
   }
 
   /* ── Save handlers ── */
-  function saveProfile() {
-    setStatus('profile-status', '', '');
-    const username = sanitizeUsername($('p-username')?.value || '');
-    const displayName = String($('p-display')?.value || '').trim();
-    const bio = String($('p-bio')?.value || '').trim();
-
-    if (username.length < 3) {
-      setStatus('profile-status', 'Username troppo corto: minimo 3 caratteri.', 'err');
-      return;
-    }
-
-    const prefs = loadPrefs();
-    prefs.username = username;
-    prefs.displayName = displayName || username;
-    prefs.bio = bio;
-    savePrefs(prefs);
-
-    if ($('user-chip-name')) $('user-chip-name').textContent = '@' + username;
-    if ($('public-profile-link')) $('public-profile-link').href = '/profile?u=' + encodeURIComponent(username);
-    syncPreview();
-    setStatus('profile-status', 'Profilo aggiornato.', 'ok');
-  }
-
-  function saveAvatar() {
-    setStatus('avatar-status', '', '');
-    const emoji = document.querySelector('input[name="pref-emoji"]:checked')?.value || '🌿';
-    const color = document.querySelector('input[name="pref-color"]:checked')?.value || '#253f35';
-
-    const prefs = loadPrefs();
-    prefs.avatarEmoji = emoji;
-    prefs.avatarColor = color;
-    savePrefs(prefs);
-
-    if ($('user-chip-avatar')) {
-      $('user-chip-avatar').textContent = emoji;
-      $('user-chip-avatar').style.background = color;
-    }
-    setStatus('avatar-status', 'Avatar aggiornato.', 'ok');
-  }
 
   function saveUiPreferences() {
     setStatus('ui-status', '', '');
@@ -1345,16 +1066,6 @@
       $('user-chip-avatar').textContent = prefs.avatarEmoji;
       $('user-chip-avatar').style.background = prefs.avatarColor;
     }
-    if ($('public-profile-link')) {
-      $('public-profile-link').href = prefs.username ? ('/profile?u=' + encodeURIComponent(prefs.username)) : '#';
-    }
-
-    if ($('p-username')) $('p-username').value = prefs.username;
-    if ($('p-display'))  $('p-display').value  = prefs.displayName || prefs.username;
-    if ($('p-bio'))      $('p-bio').value      = prefs.bio;
-
-    buildPickers(prefs.avatarEmoji, prefs.avatarColor);
-    syncPreview();
 
     if ($('pref-theme'))     $('pref-theme').value     = prefs.theme;
     if ($('pref-language'))  $('pref-language').value  = prefs.language;
@@ -1381,8 +1092,6 @@
       else if (systemThemeQuery.addListener) systemThemeQuery.addListener(syncSystem);
     }
 
-    $('save-profile-btn')?.addEventListener('click', saveProfile);
-    $('save-avatar-btn')?.addEventListener('click', saveAvatar);
     $('save-ui-btn')?.addEventListener('click', saveUiPreferences);
     $('save-custom-btn')?.addEventListener('click', saveCustomPreferences);
 
@@ -1393,12 +1102,6 @@
         }
       } catch (_) {}
       location.href = '/login';
-    });
-
-    $('p-display')?.addEventListener('input', syncPreview);
-    $('p-username')?.addEventListener('input', function () {
-      this.value = sanitizeUsername(this.value);
-      syncPreview();
     });
 
     ['pref-theme','pref-language','pref-density','pref-fontsize','pref-contrast','pref-animations'].forEach((id) => {
