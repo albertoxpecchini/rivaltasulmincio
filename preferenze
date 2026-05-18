@@ -15,22 +15,87 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="/theme.css" />
   <style>
-    /* ───────── Preferenze · layout editoriale ───────── */
-    .rsm-page {
-      width: var(--rsm-container);
-      margin: 0 auto;
-      padding: var(--rsm-s-16) 0 var(--rsm-s-24);
-      display: flex;
-      flex-direction: column;
-      gap: var(--rsm-s-24);
+    /* ═════════════ AMBIENT — body aurora + grain (index pattern) ═════════════ */
+    body[data-page="preferenze"] {
+      position: relative;
+      isolation: isolate;
+    }
+    body[data-page="preferenze"]::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 14% 6%, rgba(31, 191, 125, 0.14), transparent 40%),
+        radial-gradient(ellipse at 86% 12%, rgba(74, 155, 255, 0.16), transparent 44%),
+        radial-gradient(ellipse at 50% 92%, rgba(139, 92, 246, 0.12), transparent 48%);
+      animation: rsm-prefs-aurora 32s ease-in-out infinite;
+    }
+    body[data-page="preferenze"]::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.045;
+      mix-blend-mode: overlay;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.55) 0.6px, transparent 1.2px);
+      background-size: 3px 3px;
+    }
+    html[data-theme="scuro"] body[data-page="preferenze"]::before {
+      background:
+        radial-gradient(ellipse at 14% 6%, rgba(31, 191, 125, 0.18), transparent 40%),
+        radial-gradient(ellipse at 86% 12%, rgba(74, 155, 255, 0.20), transparent 44%),
+        radial-gradient(ellipse at 50% 92%, rgba(139, 92, 246, 0.16), transparent 48%);
+    }
+    @keyframes rsm-prefs-aurora {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50%      { transform: translate3d(0, -8px, 0) scale(1.02); }
     }
 
-    /* HERO */
-    .prefs-hero {
+    /* ───────── Preferenze · ritmo editoriale ───────── */
+    main#main {
+      padding-top: var(--rsm-s-16);
+      padding-bottom: var(--rsm-s-24);
+    }
+    main#main > .rsm-section + .rsm-section { padding-top: var(--rsm-s-12); }
+
+    /* HERO — riprende rsm-hero di index in versione mono-colonna */
+    .rsm-section.prefs-hero {
+      padding: clamp(64px, 8vw, 112px) 0 clamp(32px, 4vw, 56px);
+      overflow: hidden;
+    }
+    .prefs-hero__inner {
       display: flex;
       flex-direction: column;
       gap: var(--rsm-s-6);
-      max-width: 60ch;
+      max-width: 64ch;
+    }
+    .prefs-hero .rsm-hero__accent {
+      position: absolute;
+      width: 120%;
+      height: 140%;
+      top: -28%;
+      left: -10%;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 22% 30%, rgba(31,191,125,0.18), transparent 52%),
+        radial-gradient(ellipse at 78% 70%, rgba(139,92,246,0.18), transparent 52%);
+      animation: rsm-prefs-aurora 26s ease-in-out infinite;
+    }
+    .prefs-hero__title {
+      margin: var(--rsm-s-4) 0 0;
+      color: var(--rsm-ink);
+    }
+    .prefs-hero__title em {
+      font-style: italic;
+      background: var(--rsm-accent-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
     .prefs-hero__tags {
       list-style: none;
@@ -39,6 +104,21 @@
       display: flex;
       flex-wrap: wrap;
       gap: var(--rsm-s-2);
+    }
+    .prefs-hero .rsm-kicker .festa-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rsm-emerald);
+      box-shadow: 0 0 0 0 rgba(31,191,125, 0.6);
+      animation: rsm-pulse 2s var(--rsm-ease-out) infinite;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    @keyframes rsm-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(31,191,125, 0.55); }
+      70%  { box-shadow: 0 0 0 14px rgba(31,191,125, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(31,191,125, 0); }
     }
 
     /* SECTION HEAD */
@@ -345,31 +425,46 @@
     .rsm-form-status.is-ok { color: var(--rsm-success); }
     .rsm-form-status.is-err { color: var(--rsm-danger); }
 
-    /* Density compact: tighten the pref-rows */
+    /* Density compact: tighten the pref-rows + sezioni piu vicine */
     html[data-density="compact"] .prefs-row { padding: var(--rsm-s-3) 0; }
-    html[data-density="compact"] .rsm-page { gap: var(--rsm-s-16); }
+    html[data-density="compact"] main#main { padding-top: var(--rsm-s-10); padding-bottom: var(--rsm-s-16); }
+    html[data-density="compact"] main#main > .rsm-section + .rsm-section { padding-top: var(--rsm-s-8); }
   </style>
 </head>
-<body>
+<body data-page="preferenze">
 
 <!--PARTIAL:nav-->
 
-<main class="rsm-page">
+<main id="main">
 
   <!-- ───────── HERO ───────── -->
-  <section class="prefs-hero">
-    <p class="rsm-kicker"><span>Aspetto · Comunità · Account</span></p>
-    <h1 class="rsm-h1">Personalizza la tua <em>esperienza</em>.</h1>
-    <p class="rsm-lead">Tipografia, tema, accessibilità e comunità. Ogni scelta resta su questo dispositivo e si propaga su tutte le pagine del sito, senza passare dal cloud.</p>
-    <ul class="prefs-hero__tags" aria-label="Stato corrente">
-      <li class="rsm-tag rsm-tag--emerald" id="hero-tag-theme">Tema · automatico</li>
-      <li class="rsm-tag rsm-tag--azure" id="hero-tag-fontsize">Testo · normale</li>
-      <li class="rsm-tag rsm-tag--violet" id="hero-tag-animations">Animazioni · attive</li>
-    </ul>
+  <section class="rsm-section prefs-hero" id="intro" aria-labelledby="intro-title">
+    <span class="rsm-hero__accent" aria-hidden="true"></span>
+    <div class="rsm-container">
+      <div class="prefs-hero__inner">
+        <p class="rsm-kicker">
+          <span class="festa-pulse" aria-hidden="true"></span>
+          <span>Aspetto</span>
+          <span aria-hidden="true">·</span>
+          <span>Comunità</span>
+          <span aria-hidden="true">·</span>
+          <span>Account</span>
+        </p>
+        <h1 class="rsm-display-2 prefs-hero__title" id="intro-title">Personalizza la tua <em>esperienza</em>.</h1>
+        <p class="rsm-lead">Tipografia, tema, accessibilità e comunità. Ogni scelta resta su questo dispositivo e si propaga su tutte le pagine del sito, senza passare dal cloud.</p>
+        <ul class="prefs-hero__tags" aria-label="Stato corrente">
+          <li class="rsm-tag rsm-tag--emerald" id="hero-tag-theme">Tema · automatico</li>
+          <li class="rsm-tag rsm-tag--azure" id="hero-tag-fontsize">Testo · normale</li>
+          <li class="rsm-tag rsm-tag--violet" id="hero-tag-animations">Animazioni · attive</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <!-- ───────── 01 · ASPETTO ───────── -->
-  <section class="prefs-section">
+  <section class="rsm-section">
+   <div class="rsm-container">
+    <div class="prefs-section">
     <header class="prefs-section__head">
       <p class="rsm-kicker"><span>01 · Aspetto</span></p>
       <h2 class="rsm-h2">Tema, dimensione, <span class="rsm-grad">densità</span>.</h2>
@@ -450,10 +545,14 @@
       </div>
       <p class="prefs-note">Salvataggio solo locale · nessun dato lascia il dispositivo</p>
     </div>
+    </div>
+   </div>
   </section>
 
   <!-- ───────── 02 · ACCESSIBILITÀ ───────── -->
-  <section class="prefs-section">
+  <section class="rsm-section">
+   <div class="rsm-container">
+    <div class="prefs-section">
     <header class="prefs-section__head">
       <p class="rsm-kicker"><span>02 · Accessibilità</span></p>
       <h2 class="rsm-h2">Il tuo profilo <span class="rsm-grad">accessibile</span>.</h2>
@@ -463,10 +562,14 @@
     <div class="rsm-card">
       <div class="prefs-summary" id="accessibility-summary"></div>
     </div>
+    </div>
+   </div>
   </section>
 
   <!-- ───────── 03 · COMUNITÀ ───────── -->
-  <section class="prefs-section">
+  <section class="rsm-section">
+   <div class="rsm-container">
+    <div class="prefs-section">
     <header class="prefs-section__head">
       <p class="rsm-kicker"><span>03 · Comunità</span></p>
       <h2 class="rsm-h2">Commenti, notifiche, <span class="rsm-grad">categorie</span>.</h2>
@@ -525,10 +628,14 @@
         <span class="rsm-form-status" id="custom-status" aria-live="polite"></span>
       </div>
     </div>
+    </div>
+   </div>
   </section>
 
   <!-- ───────── 04 · ACCOUNT ───────── -->
-  <section class="prefs-section">
+  <section class="rsm-section">
+   <div class="rsm-container">
+    <div class="prefs-section">
     <header class="prefs-section__head">
       <p class="rsm-kicker"><span>04 · Account</span></p>
       <h2 class="rsm-h2">Sicurezza e <span class="rsm-grad">sessione</span>.</h2>
@@ -561,6 +668,8 @@
         <p class="prefs-motto__text">"Ogni scelta <em>plasma</em><br>la tua <em>esperienza</em>."</p>
       </div>
     </div>
+    </div>
+   </div>
   </section>
 
 </main>
