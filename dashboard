@@ -2,975 +2,121 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
-  <link rel="stylesheet" href="/theme.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    :root {
-      --dash-bg: var(--rsm-bg, #ffffff);
-      --dash-paper: var(--rsm-paper, #fbfbfd);
-      --dash-surface: rgba(255, 255, 255, 0.70);
-      --dash-surface-strong: rgba(255, 255, 255, 0.88);
-      --dash-line: var(--rsm-line-2, rgba(11, 13, 20, 0.14));
-      --dash-line-soft: var(--rsm-line, rgba(11, 13, 20, 0.08));
-      --dash-text: var(--rsm-text, #1d2030);
-      --dash-text-strong: var(--rsm-text-strong, #0b0d14);
-      --dash-text-soft: var(--rsm-text-soft, #4d5266);
-      --dash-text-faint: var(--rsm-text-faint, #828799);
-      --dash-emerald: var(--rsm-emerald, #1fbf7d);
-      --dash-azure: var(--rsm-azure, #4a9bff);
-      --dash-violet: var(--rsm-violet, #8b5cf6);
-      --dash-warning: var(--rsm-warning, #f59e0b);
-      --dash-danger: var(--rsm-danger, #ef4444);
-      --dash-radius-sm: 16px;
-      --dash-radius: 24px;
-      --dash-radius-lg: 34px;
-      --dash-shadow: 0 24px 70px rgba(11, 13, 20, 0.10), 0 1px 0 rgba(255, 255, 255, 0.66) inset;
-      --dash-shadow-soft: 0 14px 36px rgba(11, 13, 20, 0.08);
-      --dash-grad: linear-gradient(120deg, var(--dash-emerald) 0%, var(--dash-azure) 52%, var(--dash-violet) 100%);
-      --dash-dark: linear-gradient(145deg, rgba(7, 12, 22, 0.96), rgba(15, 26, 44, 0.94) 50%, rgba(38, 22, 69, 0.92));
-      --dash-font-sans: 'Syne', var(--rsm-font-sans, 'Cabinet Grotesk', system-ui, sans-serif);
-      --dash-font-display: var(--rsm-font-display, 'Fraunces', Georgia, serif);
-      --dash-font-mono: var(--rsm-font-mono, 'JetBrains Mono', ui-monospace, monospace);
-      --ease: var(--rsm-ease-quick, cubic-bezier(0.32, 0.72, 0, 1));
-    }
-
-    html[data-theme="scuro"] {
-      --dash-surface: rgba(20, 22, 32, 0.68);
-      --dash-surface-strong: rgba(20, 22, 32, 0.88);
-      --dash-shadow: 0 24px 70px rgba(0, 0, 0, 0.34), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
-      --dash-shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.26);
-    }
-
-    body[data-page="dashboard"] {
-      min-height: 100vh;
-      margin: 0;
-      color: var(--dash-text);
-      font-family: var(--dash-font-sans);
-      line-height: 1.5;
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.16), transparent 30%),
-        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.16), transparent 34%),
-        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.14), transparent 36%),
-        linear-gradient(180deg, var(--dash-bg) 0%, var(--dash-paper) 48%, var(--dash-bg) 100%);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body[data-page="dashboard"]::before,
-    body[data-page="dashboard"]::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body[data-page="dashboard"]::before {
-      opacity: 0.18;
-      background-image:
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
-      background-size: 24px 24px, 36px 36px;
-      background-position: 0 0, 12px 14px;
-      mix-blend-mode: multiply;
-    }
-
-    body[data-page="dashboard"]::after {
-      opacity: 0.92;
-      background:
-        radial-gradient(ellipse at 22% 24%, rgba(31, 191, 125, 0.14), transparent 42%),
-        radial-gradient(ellipse at 74% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
-        radial-gradient(ellipse at 66% 78%, rgba(139, 92, 246, 0.10), transparent 46%);
-      animation: dashAurora 26s ease-in-out infinite;
-    }
-
-    body[data-page="dashboard"] button,
-    body[data-page="dashboard"] input,
-    body[data-page="dashboard"] select,
-    body[data-page="dashboard"] textarea { font: inherit; }
-
-    a { color: inherit; text-decoration: none; }
-
-    .layout {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      isolation: isolate;
-    }
-
-    .main {
-      width: min(100% - 36px, 1480px);
-      margin: 0 auto;
-      padding: clamp(88px, 8vw, 118px) 0 clamp(40px, 5vw, 78px);
-      display: grid;
-      gap: clamp(14px, 2vw, 22px);
-    }
-
-    .mobile-nav {
-      position: sticky;
-      top: 72px;
-      z-index: 20;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      overflow-x: auto;
-      padding: 7px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--dash-surface-strong) 88%, transparent);
-      box-shadow: var(--dash-shadow-soft);
-      backdrop-filter: blur(22px);
-    }
-
-    .mobile-nav button,
-    .mobile-nav a,
-    .btn,
-    .switch-btn {
-      border: 0;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
-    }
-
-    .mobile-nav button,
-    .mobile-nav a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 38px;
-      padding: 0 15px;
-      border-radius: 999px;
-      color: var(--dash-text-soft);
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .01em;
-      background: transparent;
-    }
-
-    .mobile-nav button:hover,
-    .mobile-nav a:hover,
-    .mobile-nav button.on {
-      color: var(--dash-text-strong);
-      background: rgba(255, 255, 255, 0.72);
-      box-shadow: 0 10px 24px rgba(11, 13, 20, 0.08);
-    }
-
-    .bento {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      grid-auto-rows: minmax(150px, auto);
-      gap: clamp(12px, 1.5vw, 20px);
-      grid-template-areas:
-        'hero hero hero hero hero hero posts posts stat stat stat stat'
-        'hero hero hero hero hero hero views views stat stat stat stat'
-        'chart chart chart chart chart chart chart chart draft draft draft draft'
-        'recent recent recent recent notif notif notif notif motto motto motto motto';
-    }
-
-    .bc,
-    .card,
-    .kpi,
-    .ops-card {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: var(--dash-radius-lg);
-      background: linear-gradient(180deg, var(--dash-surface-strong), var(--dash-surface));
-      box-shadow: var(--dash-shadow);
-      backdrop-filter: blur(24px);
-    }
-
-    .bc::before,
-    .modal::before {
-      content: '';
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.82), transparent);
-      opacity: .78;
-      z-index: 2;
-    }
-
-    .bc { padding: clamp(18px, 2vw, 30px); }
-    .bc-hero { grid-area: hero; min-height: 520px; display: grid; align-content: space-between; gap: 24px; }
-    .bc-kpi--posts { grid-area: posts; }
-    .bc-kpi--comments { grid-area: views; }
-    .bc-stat { grid-area: stat; }
-    .bc-chart { grid-area: chart; }
-    .bc-motto { grid-area: motto; }
-
-    .bc-hero::after {
-      content: '';
-      position: absolute;
-      width: 78%;
-      aspect-ratio: 1;
-      right: -28%;
-      top: -22%;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(31, 191, 125, .28), transparent 58%),
-        radial-gradient(circle at 72% 72%, rgba(74, 155, 255, .24), transparent 54%);
-      filter: blur(2px);
-      z-index: -1;
-      animation: dashFloat 18s ease-in-out infinite;
-    }
-
-    .bc-hero-head,
-    .bc-hero-foot,
-    .period-row,
-    .hero-stats,
-    .head-meta,
-    .kpi-meta,
-    .bc-kpi-meta,
-    .chart-head,
-    .list-item__top,
-    .list-item__footer,
-    .mini-meta,
-    .modal-actions,
-    .section-title,
-    .group-switch {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .bc-hero-head,
-    .section-title,
-    .chart-head,
-    .list-item__top,
-    .list-item__footer,
-    .modal-actions { justify-content: space-between; }
-
-    .bc-hero-foot { align-items: stretch; flex-direction: column; gap: 14px; }
-
-    .bc-kicker,
-    .section-kicker,
-    .bc-kpi-lbl,
-    .bc-stat-label,
-    .hero-stat-label,
-    .kpi-label,
-    .field label {
-      color: var(--dash-text-soft);
-      font-family: var(--dash-font-mono);
-      font-size: .70rem;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-
-    .bc-orbit,
-    .sync-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      width: fit-content;
-      max-width: 100%;
-      padding: 8px 12px;
-      border: 1px solid rgba(31, 191, 125, .16);
-      border-radius: 999px;
-      background: rgba(31, 191, 125, .08);
-      color: var(--dash-text-soft);
-      font-size: .74rem;
-      font-weight: 800;
-    }
-
-    .bc-orbit::before,
-    .sync-badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--dash-emerald);
-      box-shadow: 0 0 0 6px rgba(31, 191, 125, .15);
-      animation: dashPulse 2.8s ease-in-out infinite;
-    }
-
-    .bc-title {
-      max-width: 10ch;
-      color: var(--dash-text-strong);
-      font-family: var(--dash-font-display);
-      font-size: clamp(3.2rem, 7.2vw, 7.4rem);
-      font-weight: 700;
-      line-height: .88;
-      letter-spacing: -.065em;
-      text-wrap: balance;
-    }
-
-    .bc-sub {
-      max-width: 58ch;
-      color: var(--dash-text-soft);
-      font-size: clamp(1rem, 1.2vw, 1.18rem);
-      line-height: 1.65;
-      text-wrap: pretty;
-    }
-
-    .hero-map { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-
-    .chip,
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      min-height: 30px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .58);
-      color: var(--dash-text-soft);
-      font-size: .73rem;
-      font-weight: 800;
-      letter-spacing: .01em;
-      padding: 5px 10px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.58);
-    }
-
-    .chip strong { color: var(--dash-text-strong); }
-
-    .select,
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, .70);
-      color: var(--dash-text-strong);
-      outline: none;
-      transition: border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
-    }
-
-    .select {
-      width: auto;
-      min-height: 28px;
-      padding: 0 26px 0 4px;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      color: var(--dash-text-strong);
-      font-size: .76rem;
-      font-weight: 800;
-    }
-
-    .select option,
-    .field select option { background: var(--dash-paper); color: var(--dash-text-strong); }
-
-    .select:focus,
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: rgba(74, 155, 255, .62);
-      box-shadow: 0 0 0 4px rgba(74, 155, 255, .14);
-      background: rgba(255, 255, 255, .88);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 42px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .74);
-      color: var(--dash-text-strong);
-      font-size: .82rem;
-      font-weight: 900;
-      padding: 0 18px;
-      box-shadow: 0 10px 24px rgba(11, 13, 20, .06);
-    }
-
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 16px 34px rgba(11, 13, 20, .10); }
-    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    .btn-primary {
-      border-color: transparent;
-      color: #fff;
-      background: var(--dash-grad);
-      box-shadow: 0 18px 44px rgba(74, 155, 255, .24);
-    }
-
-    .btn-ghost { color: var(--dash-text-soft); }
-
-    .hero-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-
-    .hero-stat {
-      min-height: 116px;
-      display: grid;
-      align-content: end;
-      gap: 8px;
-      padding: 16px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, .54);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
-    }
-
-    .hero-stat-value,
-    .bc-kpi-val,
-    .bc-stat-num,
-    .kpi-value { font-variant-numeric: tabular-nums; }
-
-    .hero-stat-value {
-      color: var(--dash-text-strong);
-      font-family: var(--dash-font-display);
-      font-size: clamp(1.55rem, 2.2vw, 2.25rem);
-      line-height: 1;
-      font-weight: 700;
-    }
-
-    .bc-kpi {
-      min-height: 210px;
-      display: grid;
-      align-content: space-between;
-      gap: 18px;
-    }
-
-    .bc-kpi::after {
-      content: '';
-      position: absolute;
-      width: 128px;
-      height: 128px;
-      right: -34px;
-      top: -32px;
-      border-radius: 50%;
-      background: rgba(74, 155, 255, .18);
-      z-index: -1;
-    }
-
-    .bc-kpi--posts::after { background: rgba(31, 191, 125, .18); }
-    .bc-kpi--comments::after { background: rgba(139, 92, 246, .18); }
-
-    .bc-kpi-val {
-      color: var(--dash-text-strong);
-      font-family: var(--dash-font-display);
-      font-size: clamp(3rem, 5vw, 4.4rem);
-      font-weight: 750;
-      letter-spacing: -.06em;
-      line-height: .88;
-    }
-
-    .bc-kpi-meta,
-    .kpi-meta,
-    .tiny,
-    .note-line,
-    .chart-head,
-    .chart-label,
-    .mini-meta,
-    .empty-state p,
-    .bc-list-head p,
-    .section-title p { color: var(--dash-text-soft); }
-
-    .bc-kpi-meta { font-size: .82rem; line-height: 1.45; }
-
-    .delta { font-weight: 900; }
-    .delta.up { color: var(--dash-emerald); }
-    .delta.down { color: var(--dash-danger); }
-    .delta.same { color: var(--dash-text-faint); }
-
-    .bc-stat {
-      min-height: 440px;
-      display: grid;
-      align-content: end;
-      gap: 14px;
-      color: #fff;
-      background: var(--dash-dark);
-      box-shadow: 0 34px 80px rgba(16, 24, 40, .28);
-    }
-
-    .bc-stat::after {
-      content: '';
-      position: absolute;
-      width: 340px;
-      height: 340px;
-      right: -130px;
-      bottom: -130px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(31, 191, 125, .24), rgba(74, 155, 255, .12), transparent 66%);
-      z-index: -1;
-    }
-
-    .bc-stat-label { color: rgba(236, 246, 255, .62); }
-    .bc-stat-num { font-family: var(--dash-font-display); font-size: clamp(5rem, 9vw, 8rem); font-weight: 750; letter-spacing: -.07em; line-height: .82; }
-    .bc-stat-sub,
-    .bc-stat-foot { max-width: 30ch; color: rgba(236, 246, 255, .74); }
-    .bc-stat-foot { display: grid; gap: 10px; font-size: .86rem; }
-    .bc-stat-foot p { margin: 0; }
-
-    .bc-chart { min-height: 440px; }
-    .section-title { align-items: end; margin-bottom: 18px; }
-    .section-title h2,
-    .bc-list-head h3,
-    .dash-head h1,
-    .modal-head h3,
-    .ops-card h3 {
-      margin: 0;
-      color: var(--dash-text-strong);
-      font-family: var(--dash-font-display);
-      font-weight: 700;
-      letter-spacing: -.04em;
-      line-height: 1;
-      text-wrap: balance;
-    }
-    .section-title h2,
-    .bc-list-head h3 { font-size: clamp(1.45rem, 2vw, 2rem); }
-    .section-title p,
-    .bc-list-head p { margin: 6px 0 0; max-width: 46ch; font-size: .9rem; line-height: 1.6; }
-
-    .group-switch {
-      gap: 4px;
-      padding: 5px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 999px;
-      background: rgba(255,255,255,.46);
-    }
-
-    .switch-btn {
-      min-height: 34px;
-      padding: 0 13px;
-      border-radius: 999px;
-      background: transparent;
-      color: var(--dash-text-soft);
-      font-size: .74rem;
-      font-weight: 900;
-    }
-
-    .switch-btn.on { color: #fff; background: var(--dash-grad); box-shadow: 0 12px 24px rgba(74, 155, 255, .20); }
-
-    .chart-wrap {
-      padding: clamp(14px, 2vw, 22px);
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, .50);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
-    }
-
-    .chart-bars {
-      height: 258px;
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(10px, 1fr);
-      align-items: end;
-      gap: 7px;
-      padding: 18px 4px 12px;
-      border-bottom: 1px solid var(--dash-line-soft);
-    }
-
-    .bar {
-      position: relative;
-      min-height: 4px;
-      border-radius: 999px 999px 8px 8px;
-      background: linear-gradient(180deg, var(--dash-azure), var(--dash-emerald));
-      box-shadow: 0 18px 32px rgba(31, 191, 125, .18);
-    }
-
-    .bar:nth-child(3n+2) { background: linear-gradient(180deg, var(--dash-violet), var(--dash-azure)); }
-    .bar::after {
-      content: attr(data-v);
-      position: absolute;
-      left: 50%;
-      top: -24px;
-      transform: translateX(-50%);
-      color: var(--dash-text-soft);
-      font-size: .7rem;
-      font-weight: 900;
-      opacity: 0;
-      transition: opacity .2s var(--ease);
-    }
-    .bar:hover::after { opacity: 1; }
-
-    .chart-labels {
-      margin-top: 8px;
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(10px, 1fr);
-      gap: 7px;
-    }
-    .chart-label { overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-size: .68rem; }
-
-    .bc-list { display: grid; gap: 14px; align-content: start; min-height: 340px; }
-    .bc-list-head { display: grid; gap: 8px; }
-    .list { display: grid; gap: 10px; }
-
-    .list-item {
-      display: grid;
-      gap: 10px;
-      padding: 14px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, .56);
-      box-shadow: 0 12px 28px rgba(11, 13, 20, .055);
-      transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
-    }
-    .list-item:hover { transform: translateY(-2px); background: rgba(255,255,255,.76); box-shadow: 0 18px 38px rgba(11, 13, 20, .08); }
-    .list-item__title,
-    .list-item strong { color: var(--dash-text-strong); font-size: .95rem; line-height: 1.38; }
-    .mini-meta { font-size: .72rem; }
-
-    .pill { min-height: 24px; padding: 3px 8px; font-size: .66rem; }
-    .pill.draft { color: var(--dash-warning); border-color: rgba(245, 158, 11, .28); background: rgba(245, 158, 11, .10); }
-    .pill.pub,
-    .pill-live { color: var(--dash-emerald); border-color: rgba(31, 191, 125, .28); background: rgba(31, 191, 125, .10); }
-    .list-link { color: var(--dash-azure); font-size: .78rem; font-weight: 900; }
-    .list-link:hover { color: var(--dash-violet); }
-
-    .note-line {
-      padding-top: 12px;
-      border-top: 1px solid var(--dash-line-soft);
-      font-size: .82rem;
-      line-height: 1.6;
-    }
-
-    .bc-motto {
-      display: grid;
-      align-content: space-between;
-      min-height: 340px;
-      color: #fff;
-      background: var(--dash-dark);
-    }
-    .bc-motto-text { font-family: var(--dash-font-display); font-size: clamp(1.7rem, 2.7vw, 3rem); font-weight: 650; letter-spacing: -.05em; line-height: 1; text-wrap: balance; }
-    .bc-motto-text em { color: #8ff0c5; font-style: italic; }
-
-    .empty-state {
-      display: grid;
-      gap: 8px;
-      padding: 18px;
-      border: 1px dashed rgba(74, 155, 255, .32);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, .58);
-      text-align: center;
-      box-shadow: var(--dash-shadow-soft);
-    }
-    .empty-state p { margin: 0; font-size: .9rem; line-height: 1.55; }
-    .tiny { font-size: .74rem; }
-
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 120;
-      max-width: min(360px, calc(100% - 44px));
-      padding: 13px 16px;
-      border: 1px solid var(--dash-line-soft);
-      border-radius: 18px;
-      background: rgba(10, 13, 24, .92);
-      color: #fff;
-      box-shadow: 0 24px 70px rgba(0,0,0,.26);
-      opacity: 0;
-      transform: translateY(12px);
-      pointer-events: none;
-      transition: opacity .2s var(--ease), transform .2s var(--ease);
-      backdrop-filter: blur(18px);
-    }
-    .toast.show { opacity: 1; transform: none; }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      background: rgba(8, 11, 18, .48);
-      backdrop-filter: blur(18px);
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      position: relative;
-      overflow: hidden;
-      width: min(620px, 100%);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 34px;
-      background: linear-gradient(180deg, var(--dash-surface-strong), var(--dash-surface));
-      box-shadow: 0 34px 90px rgba(0,0,0,.30);
-      backdrop-filter: blur(24px);
-    }
-    .modal-head,
-    .modal-actions { padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .modal-head { border-bottom: 1px solid var(--dash-line-soft); }
-    .modal-body { display: grid; gap: 12px; padding: 16px; }
-    .modal-msg { min-height: 20px; padding: 0 16px; color: var(--dash-danger); font-size: .84rem; font-weight: 800; }
-    .field { display: grid; gap: 7px; }
-    .field input,
-    .field select { min-height: 46px; padding: 0 14px; }
-    .field textarea { min-height: 150px; resize: vertical; padding: 13px 14px; }
-
-    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .kpi { padding: 16px; display: grid; gap: 10px; }
-    .kpi-value { color: var(--dash-text-strong); font-family: var(--dash-font-display); font-size: 2rem; font-weight: 700; line-height: 1; }
-    .ops-grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 12px; }
-    .ops-card { padding: 16px; display: grid; gap: 12px; }
-    .ops-card p { color: var(--dash-text-soft); font-size: .86rem; line-height: 1.55; }
-
-    @keyframes dashAurora {
-      0%, 100% { transform: translate3d(0,0,0) scale(1); }
-      50% { transform: translate3d(1.5%, -1%, 0) scale(1.03); }
-    }
-    @keyframes dashFloat {
-      0%, 100% { transform: translate3d(0,0,0) rotate(0deg); }
-      50% { transform: translate3d(-4%, 5%, 0) rotate(8deg); }
-    }
-    @keyframes dashPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 5px rgba(31, 191, 125, .14); }
-      50% { transform: scale(.86); box-shadow: 0 0 0 9px rgba(31, 191, 125, .06); }
-    }
-
-    @media (max-width: 1180px) {
-      .bento {
-        grid-template-columns: repeat(8, minmax(0, 1fr));
-        grid-template-areas:
-          'hero hero hero hero hero hero hero hero'
-          'posts posts views views stat stat stat stat'
-          'chart chart chart chart chart chart chart chart'
-          'draft draft draft draft recent recent recent recent'
-          'notif notif notif notif motto motto motto motto';
-      }
-      .bc-hero { min-height: 480px; }
-      .bc-stat { min-height: 300px; }
-    }
-
-    @media (max-width: 780px) {
-      .main { width: min(100% - 24px, 1480px); padding-top: 82px; }
-      .mobile-nav { top: 64px; border-radius: 22px; }
-      .bento {
-        grid-template-columns: 1fr;
-        grid-auto-rows: auto;
-        grid-template-areas:
-          'hero'
-          'posts'
-          'views'
-          'stat'
-          'chart'
-          'draft'
-          'recent'
-          'notif'
-          'motto';
-      }
-      .bc { border-radius: 28px; padding: 18px; }
-      .bc-hero { min-height: 0; }
-      .bc-title { max-width: 9ch; font-size: clamp(2.85rem, 18vw, 4.7rem); }
-      .period-row { align-items: stretch; flex-direction: column; }
-      .period-row .btn,
-      .period-row .chip,
-      .period-row .select { width: 100%; }
-      .hero-stats { grid-template-columns: 1fr; }
-      .bc-stat { min-height: 280px; }
-      .section-title { align-items: stretch; flex-direction: column; }
-      .group-switch { width: 100%; }
-      .switch-btn { flex: 1; }
-      .chart-bars { height: 210px; gap: 4px; }
-      .bc-motto { min-height: 260px; }
-      .modal-backdrop { align-items: end; padding: 12px; }
-      .modal { border-radius: 28px; }
-      .modal-actions { flex-direction: column-reverse; align-items: stretch; }
-      .modal-actions .btn { width: 100%; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
-    }
-  </style>
+  <title>Dashboard – Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
 </head>
-<body data-page="dashboard">
+<body>
 
 <!--PARTIAL:nav-->
 
-<div class="layout">
-  <main class="main">
-    <div class="mobile-nav" aria-label="Menu rapido mobile">
-      <button class="on" type="button" data-go="dashboard">Studio</button>
-      <button type="button" data-go="contenuti">Bozze</button>
-      <button type="button" data-go="media">Segnali</button>
-      <button type="button" data-go="analytics">Ritmo</button>
-      <a href="preferenze">Impostazioni</a>
-    </div>
+<main class="container rsm-page">
 
-    <div class="bento">
-
-      <!-- HERO — spans 2 rows -->
-      <article class="bc bc-hero" id="dashboard">
-        <div class="bc-hero-head">
-          <div class="bc-kicker">Cabina editoriale</div>
-          <div class="bc-orbit">Dati live collegati al server</div>
+  <!-- HERO -->
+  <section id="dashboard" class="card-wrapper mb-4">
+    <div class="card card-bg">
+      <div class="card-body">
+        <p class="text-primary fw-semibold text-uppercase small mb-1">Cabina editoriale · dati live</p>
+        <h1 class="h3">Tutto il tuo flusso in una schermata sola.</h1>
+        <p class="text-muted">Pubblica, controlla il ritmo delle reazioni e riprendi le bozze senza uscire dal contesto.</p>
+        <div class="d-flex flex-wrap align-items-center gap-2 my-3">
+          <span class="badge bg-secondary" id="chip-user">@utente</span>
+          <label class="d-flex align-items-center gap-2 mb-0"><strong class="small">Periodo</strong>
+            <select class="form-select form-select-sm w-auto" id="global-period" aria-label="Periodo globale">
+              <option value="7d">Ultimi 7 giorni</option>
+              <option value="30d">Ultimi 30 giorni</option>
+              <option value="90d">Ultimi 90 giorni</option>
+            </select>
+          </label>
+          <button class="btn btn-primary btn-sm" type="button" id="open-create">Nuovo post</button>
+          <a class="btn btn-outline-primary btn-sm" href="/write">Editor completo</a>
         </div>
-        <div class="bc-title">Tutto il tuo flusso in una schermata sola.</div>
-        <div class="bc-sub">Pubblica, controlla il ritmo delle reazioni e riprendi le bozze senza uscire dal contesto. La vista cambia, ma i dati restano gli stessi di Supabase.</div>
-        <div class="hero-map" aria-label="Mappa dashboard">
-          <span class="chip">4 aree</span>
-          <span class="chip">azioni in alto</span>
-          <span class="chip">dati live</span>
+        <div class="text-muted small" id="sync-note">Allineamento dati in corso...</div>
+        <div class="row text-center mt-3 g-3">
+          <div class="col-4"><div class="h3 mb-0" id="hero-published">0</div><div class="small text-muted">Già online</div></div>
+          <div class="col-4"><div class="h3 mb-0" id="hero-drafts">0</div><div class="small text-muted">In lavorazione</div></div>
+          <div class="col-4"><div class="h3 mb-0" id="hero-likes">0</div><div class="small text-muted">Apprezzamenti</div></div>
         </div>
-        <div class="bc-hero-foot">
-          <div class="period-row">
-            <span class="chip" id="chip-user">@utente</span>
-            <label class="chip" for="global-period" style="gap:6px"><strong>Periodo</strong>
-              <select class="select" id="global-period" aria-label="Periodo globale">
-                <option value="7d">Ultimi 7 giorni</option>
-                <option value="30d">Ultimi 30 giorni</option>
-                <option value="90d">Ultimi 90 giorni</option>
-              </select>
-            </label>
-            <button class="btn btn-primary" type="button" id="open-create">Nuovo post</button>
-            <a class="btn btn-ghost" href="write">Editor completo</a>
-          </div>
-          <div class="tiny sync-badge" id="sync-note">Allineamento dati in corso...</div>
-          <div class="hero-stats" aria-label="Project stats">
-            <article class="hero-stat">
-              <div class="hero-stat-label">Già online</div>
-              <div class="hero-stat-value" id="hero-published">0</div>
-            </article>
-            <article class="hero-stat">
-              <div class="hero-stat-label">In lavorazione</div>
-              <div class="hero-stat-value" id="hero-drafts">0</div>
-            </article>
-            <article class="hero-stat">
-              <div class="hero-stat-label">Apprezzamenti</div>
-              <div class="hero-stat-value" id="hero-likes">0</div>
-            </article>
-          </div>
-        </div>
-      </article>
-
-      <!-- KPI: Post pubblicati -->
-      <article class="bc bc-kpi bc-kpi--posts" style="grid-area:posts">
-        <div class="bc-kpi-lbl">Uscite nel periodo</div>
-        <div class="bc-kpi-val" id="bc-val-posts">–</div>
-        <div class="bc-kpi-meta" id="bc-meta-posts"><span>confronto con la finestra precedente</span></div>
-      </article>
-
-      <!-- Big stat: Interazioni — spans 2 rows -->
-      <article class="bc bc-stat" id="analytics">
-        <div class="bc-stat-label">Polso della community</div>
-        <div class="bc-stat-num" id="bc-val-inter">–</div>
-        <div class="bc-stat-sub">Somma di like e commenti nel periodo selezionato.</div>
-        <div class="bc-stat-foot">
-          <div id="bc-meta-inter"></div>
-          <p>Una lettura rapida di come stanno rispondendo le persone ai contenuti pubblicati.</p>
-        </div>
-      </article>
-
-      <!-- KPI: Commenti -->
-      <article class="bc bc-kpi bc-kpi--comments" style="grid-area:views">
-        <div class="bc-kpi-lbl">Commenti raccolti</div>
-        <div class="bc-kpi-val" id="bc-val-comments">–</div>
-        <div class="bc-kpi-meta" id="bc-meta-comments"><span>dialogo generato nella stessa finestra</span></div>
-      </article>
-
-      <!-- Chart: Andamento — spans 2 cols -->
-      <article class="bc bc-chart">
-        <div class="section-title">
-          <div>
-            <div class="section-kicker">Ritmo</div>
-            <h2>Traccia delle interazioni</h2>
-            <p>Ogni barra racconta un tratto del periodo che hai selezionato.</p>
-          </div>
-          <div class="group-switch" role="group" aria-label="Filtri andamento">
-            <button class="switch-btn on" type="button" data-group="day">Giorno</button>
-            <button class="switch-btn" type="button" data-group="week">Settimana</button>
-            <button class="switch-btn" type="button" data-group="month">Mese</button>
-          </div>
-        </div>
-        <div class="chart-wrap">
-          <div class="chart-head">
-            <span id="chart-title">Volume di risposta nel periodo</span>
-            <span id="chart-total">Totale: 0</span>
-          </div>
-          <div class="chart-bars" id="chart-bars"></div>
-          <div class="chart-labels" id="chart-labels"></div>
-        </div>
-      </article>
-
-      <!-- Bozze in sospeso -->
-      <article class="bc bc-list" style="grid-area:draft" id="contenuti">
-        <div class="bc-list-head">
-          <div class="section-kicker">In lavorazione</div>
-          <h3>Bozze da rifinire</h3>
-          <p>I contenuti fermi che puoi riprendere subito.</p>
-        </div>
-        <div class="list" id="drafts-list"></div>
-        <div class="note-line">Apri il mini editor qui sopra o passa all'editor completo quando vuoi rimettere mano ai testi.</div>
-      </article>
-
-      <!-- Attività recenti -->
-      <article class="bc bc-list" style="grid-area:recent">
-        <div class="bc-list-head">
-          <div class="section-kicker">Movimenti</div>
-          <h3>Ultimi cambiamenti</h3>
-          <p>Pubblicazioni e modifiche ordinate per recenza.</p>
-        </div>
-        <div class="list" id="recent-list"></div>
-      </article>
-
-      <!-- Notifiche -->
-      <article class="bc bc-list" style="grid-area:notif" id="media">
-        <div class="bc-list-head">
-          <div class="section-kicker">Segnali</div>
-          <h3>Centro notifiche</h3>
-          <p>Mi piace, commenti e avvisi operativi raccolti in una sola colonna.</p>
-        </div>
-        <div class="list" id="notif-list"></div>
-      </article>
-
-      <!-- Motto -->
-      <article class="bc bc-motto">
-        <div class="section-kicker" style="color:rgba(255,255,255,.58)">Promemoria</div>
-        <div class="bc-motto-text">Ogni aggiornamento locale conta di piu quando resta <em>chiaro</em>, <em>tempestivo</em> e davvero leggibile.</div>
-      </article>
-
-    </div><!-- /bento -->
-
-    <div class="empty-state" id="empty-dashboard" style="display:none;margin-top:12px">
-      <p><strong>Ancora nessun contenuto in archivio.</strong></p>
-      <p>Pubblica il primo post e qui inizierai a vedere ritmo, bozze, notifiche e ultimi movimenti.</p>
-      <div>
-        <button class="btn btn-primary" type="button" id="empty-create">Apri mini editor</button>
-        <a class="btn btn-ghost" href="write">Editor completo</a>
       </div>
     </div>
-  </main>
-</div>
+  </section>
 
+  <!-- KPI -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Uscite nel periodo</div><div class="h2" id="bc-val-posts">–</div><div class="small" id="bc-meta-posts"><span>confronto con la finestra precedente</span></div></div></div></div></div>
+    <div class="col-12 col-md-4" id="analytics"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Polso della community</div><div class="h2" id="bc-val-inter">–</div><div class="small text-muted">Somma di like e commenti nel periodo.</div><div class="small mt-1" id="bc-meta-inter"></div></div></div></div></div>
+    <div class="col-12 col-md-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Commenti raccolti</div><div class="h2" id="bc-val-comments">–</div><div class="small" id="bc-meta-comments"><span>dialogo generato nella stessa finestra</span></div></div></div></div></div>
+  </div>
+
+  <!-- CHART -->
+  <div class="card-wrapper mb-4"><div class="card card-bg"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <div>
+        <div class="text-uppercase small text-muted">Ritmo</div>
+        <h2 class="h5 mb-0">Traccia delle interazioni</h2>
+      </div>
+      <div class="group-switch d-flex gap-1" role="group" aria-label="Filtri andamento">
+        <button class="switch-btn on" type="button" data-group="day">Giorno</button>
+        <button class="switch-btn" type="button" data-group="week">Settimana</button>
+        <button class="switch-btn" type="button" data-group="month">Mese</button>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between small text-muted mb-1">
+      <span id="chart-title">Volume di risposta nel periodo</span>
+      <span id="chart-total">Totale: 0</span>
+    </div>
+    <div class="chart-bars" id="chart-bars"></div>
+    <div class="chart-labels" id="chart-labels"></div>
+  </div></div></div>
+
+  <!-- LISTS -->
+  <div class="row g-3">
+    <div class="col-12 col-lg-4" id="contenuti"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+      <div class="text-uppercase small text-muted">In lavorazione</div>
+      <h3 class="h5">Bozze da rifinire</h3>
+      <div class="list dash-list" id="drafts-list"></div>
+    </div></div></div></div>
+    <div class="col-12 col-lg-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+      <div class="text-uppercase small text-muted">Movimenti</div>
+      <h3 class="h5">Ultimi cambiamenti</h3>
+      <div class="list dash-list" id="recent-list"></div>
+    </div></div></div></div>
+    <div class="col-12 col-lg-4" id="media"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+      <div class="text-uppercase small text-muted">Segnali</div>
+      <h3 class="h5">Centro notifiche</h3>
+      <div class="list dash-list" id="notif-list"></div>
+    </div></div></div></div>
+  </div>
+
+  <div class="empty-state mt-3" id="empty-dashboard" style="display:none">
+    <p><strong>Ancora nessun contenuto in archivio.</strong></p>
+    <p>Pubblica il primo post e qui inizierai a vedere ritmo, bozze, notifiche e ultimi movimenti.</p>
+    <div class="d-flex justify-content-center gap-2">
+      <button class="btn btn-primary" type="button" id="empty-create">Apri mini editor</button>
+      <a class="btn btn-outline-primary" href="/write">Editor completo</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- Create modal (custom) -->
 <div class="modal-backdrop" id="create-modal-backdrop" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
     <div class="modal-head">
-      <h3 id="create-modal-title">Crea post</h3>
-      <button class="btn btn-ghost" type="button" id="close-create">Chiudi</button>
+      <h3 class="h5 mb-0" id="create-modal-title">Crea post</h3>
+      <button class="btn btn-outline-secondary btn-sm" type="button" id="close-create">Chiudi</button>
     </div>
     <div class="modal-body" id="write">
       <input type="hidden" id="create-id" />
-      <div class="field">
-        <label for="create-title">Titolo (facoltativo)</label>
-        <input id="create-title" type="text" placeholder="Titolo del post" />
-      </div>
-      <div class="field">
-        <label for="create-excerpt">Sommario (facoltativo)</label>
-        <input id="create-excerpt" type="text" placeholder="Breve descrizione" />
-      </div>
-      <div class="field">
-        <label for="create-content">Contenuto *</label>
-        <textarea id="create-content" placeholder="Scrivi il contenuto del post..."></textarea>
-      </div>
-      <div class="field">
-        <label for="create-category">Categoria *</label>
-        <select id="create-category"></select>
-      </div>
+      <div class="field"><label for="create-title">Titolo (facoltativo)</label><input id="create-title" type="text" placeholder="Titolo del post" /></div>
+      <div class="field"><label for="create-excerpt">Sommario (facoltativo)</label><input id="create-excerpt" type="text" placeholder="Breve descrizione" /></div>
+      <div class="field"><label for="create-content">Contenuto *</label><textarea id="create-content" placeholder="Scrivi il contenuto del post..."></textarea></div>
+      <div class="field"><label for="create-category">Categoria *</label><select id="create-category"></select></div>
     </div>
     <div class="modal-msg" id="create-msg"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" type="button" id="save-draft">Salva bozza</button>
+      <button class="btn btn-outline-primary" type="button" id="save-draft">Salva bozza</button>
       <button class="btn btn-primary" type="button" id="publish-post">Pubblica</button>
     </div>
   </div>
@@ -978,9 +124,10 @@
 
 <div class="toast" id="toast"></div>
 
+<!--PARTIAL:footer-->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script src="categories.client.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 (function () {
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
@@ -989,23 +136,10 @@
   const $ = (id) => document.getElementById(id);
 
   const STATE = {
-    period: '7d',
-    group: 'day',
-    session: null,
-    profile: null,
-    posts: [],
-    comments: [],
-    likes: [],
-    notifications: [],
-    totals: {
-      comments: 0,
-      likes: 0,
-    },
-    missing: {
-      comments: false,
-      likes: false,
-      notifications: false,
-    },
+    period: '7d', group: 'day', session: null, profile: null,
+    posts: [], comments: [], likes: [], notifications: [],
+    totals: { comments: 0, likes: 0 },
+    missing: { comments: false, likes: false, notifications: false },
   };
 
   const PERIOD_DAYS = { '7d': 7, '30d': 30, '90d': 90 };
@@ -1014,14 +148,8 @@
     : ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
 
   function escapeHtml(value) {
-    return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
-
   function toast(message, type) {
     const box = $('toast');
     if (!box) return;
@@ -1030,22 +158,14 @@
     window.clearTimeout(box._to);
     box._to = window.setTimeout(() => { box.className = 'toast'; }, 2600);
   }
-
   function isMissingRelationError(error) {
     const msg = String(error?.message || '').toLowerCase();
-    return !!error && (
-      error.code === '42P01'
-      || error.code === 'PGRST205'
-      || msg.includes('does not exist')
-      || msg.includes('could not find the table')
-    );
+    return !!error && (error.code === '42P01' || error.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table'));
   }
-
   function fmtDate(iso) {
     if (!iso) return '-';
     return new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
   }
-
   function relativeTime(iso) {
     if (!iso) return 'ora';
     const ts = new Date(iso).getTime();
@@ -1059,82 +179,45 @@
     if (days < 7) return days + ' g fa';
     return fmtDate(iso);
   }
-
-  function startOfDay(date) {
-    const x = new Date(date);
-    x.setHours(0, 0, 0, 0);
-    return x;
-  }
-
+  function startOfDay(date) { const x = new Date(date); x.setHours(0, 0, 0, 0); return x; }
   function rangeBounds(days) {
     const end = new Date();
     const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000);
     return { start, end };
   }
-
   function inRange(ts, start, end) {
     const value = new Date(ts).getTime();
     return value >= start.getTime() && value <= end.getTime();
   }
-
   function countByRange(items, getDate, start, end) {
-    return items.filter((item) => {
-      const d = getDate(item);
-      if (!d) return false;
-      return inRange(d, start, end);
-    }).length;
+    return items.filter((item) => { const d = getDate(item); if (!d) return false; return inRange(d, start, end); }).length;
   }
-
   function percentChange(curr, prev) {
     if (prev <= 0 && curr <= 0) return 0;
     if (prev <= 0 && curr > 0) return 100;
     return Math.round(((curr - prev) / prev) * 100);
   }
-
   function deltaBadge(value) {
     if (value > 0) return `<span class="delta up">+${value}%</span>`;
     if (value < 0) return `<span class="delta down">-${Math.abs(value)}%</span>`;
     return '<span class="delta same">=0%</span>';
   }
-
-  function fmtNum(value) {
-    return Number(value || 0).toLocaleString('it-IT');
-  }
-
-  function buildKpi(label, value, delta, periodText) {
-    return `
-      <article class="kpi">
-        <div class="kpi-label">${label}</div>
-        <div class="kpi-value">${value}</div>
-        <div class="kpi-meta">
-          ${deltaBadge(delta)}
-          <span>${periodText}</span>
-        </div>
-      </article>`;
-  }
+  function fmtNum(value) { return Number(value || 0).toLocaleString('it-IT'); }
 
   function renderKpis() {
     const days = PERIOD_DAYS[STATE.period] || 7;
     const periodText = days === 7 ? 'ultimi 7 giorni' : (days === 30 ? 'ultimi 30 giorni' : 'ultimi 90 giorni');
-
     const curr = rangeBounds(days);
-    const prev = {
-      end: new Date(curr.start.getTime() - 1),
-      start: new Date(curr.start.getTime() - days * 24 * 60 * 60 * 1000),
-    };
+    const prev = { end: new Date(curr.start.getTime() - 1), start: new Date(curr.start.getTime() - days * 24 * 60 * 60 * 1000) };
 
     const currPublished = countByRange(STATE.posts.filter(p => p.published), p => p.published_at || p.created_at, curr.start, curr.end);
     const prevPublished = countByRange(STATE.posts.filter(p => p.published), p => p.published_at || p.created_at, prev.start, prev.end);
-
     const currLikes = countByRange(STATE.likes, x => x.created_at, curr.start, curr.end);
     const prevLikes = countByRange(STATE.likes, x => x.created_at, prev.start, prev.end);
-
     const currComments = countByRange(STATE.comments, x => x.created_at, curr.start, curr.end);
     const prevComments = countByRange(STATE.comments, x => x.created_at, prev.start, prev.end);
-
     const currInteractions = currLikes + currComments;
     const prevInteractions = prevLikes + prevComments;
-
     const totalPublished = STATE.posts.filter((p) => p.published).length;
     const totalDrafts = STATE.posts.filter((p) => !p.published).length;
     const totalLikes = STATE.totals.likes || 0;
@@ -1145,15 +228,12 @@
       if (valEl) valEl.textContent = typeof value === 'number' ? value.toLocaleString('it-IT') : value;
       if (metaEl) metaEl.innerHTML = deltaBadge(delta) + ' <span>' + periodText + '</span>';
     }
-
     setKpi('bc-val-posts', 'bc-meta-posts', currPublished, percentChange(currPublished, prevPublished));
     setKpi('bc-val-comments', 'bc-meta-comments', currComments, percentChange(currComments, prevComments));
-
     const interEl = $('bc-val-inter');
     const interMetaEl = $('bc-meta-inter');
     if (interEl) interEl.textContent = fmtNum(currInteractions);
     if (interMetaEl) interMetaEl.innerHTML = deltaBadge(percentChange(currInteractions, prevInteractions));
-
     const heroPublished = $('hero-published');
     const heroDrafts = $('hero-drafts');
     const heroLikes = $('hero-likes');
@@ -1167,7 +247,6 @@
     let stepMs = 24 * 60 * 60 * 1000;
     if (group === 'week') stepMs = 7 * 24 * 60 * 60 * 1000;
     if (group === 'month') stepMs = 30 * 24 * 60 * 60 * 1000;
-
     let cursor = startOfDay(start);
     while (cursor.getTime() < end.getTime()) {
       const next = new Date(cursor.getTime() + stepMs);
@@ -1175,7 +254,6 @@
       cursor = next;
       if (items.length > 120) break;
     }
-
     if (!items.length) items.push({ start: startOfDay(start), end: end });
     return items;
   }
@@ -1185,29 +263,20 @@
     const labels = $('chart-labels');
     const totalNode = $('chart-total');
     if (!bars || !labels || !totalNode) return;
-
     const days = PERIOD_DAYS[STATE.period] || 7;
     const { start, end } = rangeBounds(days);
     const buckets = buildBuckets(start, end, STATE.group);
-
     const events = [];
     STATE.likes.forEach((x) => { if (x.created_at) events.push(new Date(x.created_at).getTime()); });
     STATE.comments.forEach((x) => { if (x.created_at) events.push(new Date(x.created_at).getTime()); });
-
-    const values = buckets.map((bucket) => {
-      const count = events.filter((ts) => ts >= bucket.start.getTime() && ts < bucket.end.getTime()).length;
-      return count;
-    });
-
+    const values = buckets.map((bucket) => events.filter((ts) => ts >= bucket.start.getTime() && ts < bucket.end.getTime()).length);
     const sum = values.reduce((a, b) => a + b, 0);
     totalNode.textContent = 'Totale: ' + sum.toLocaleString('it-IT');
-
     const max = Math.max(1, ...values);
     bars.innerHTML = values.map((v) => {
       const h = Math.max(3, Math.round((v / max) * 100));
       return `<div class="bar" style="height:${h}%" data-v="${v}"></div>`;
     }).join('');
-
     labels.innerHTML = buckets.map((bucket, idx) => {
       let label = fmtDate(bucket.start);
       if (STATE.group === 'week') label = 'W' + (idx + 1);
@@ -1219,42 +288,18 @@
   function renderRecent() {
     const wrap = $('recent-list');
     if (!wrap) return;
-
-    const recent = STATE.posts
-      .slice()
-      .sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime())
-      .slice(0, 6);
-
+    const recent = STATE.posts.slice().sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime()).slice(0, 6);
     if (!recent.length) {
       wrap.innerHTML = '<div class="empty-state"><p>Nessun movimento recente.</p><span class="tiny">Le prossime modifiche compariranno qui in ordine cronologico.</span></div>';
       return;
     }
-
     wrap.innerHTML = recent.map((p) => {
-      const statePill = p.published
-        ? '<span class="pill pub">Online</span>'
-        : '<span class="pill draft">Bozza</span>';
+      const statePill = p.published ? '<span class="pill pub">Online</span>' : '<span class="pill draft">Bozza</span>';
       const safeTitle = escapeHtml(p.title || '(Senza titolo)');
       const safeCategory = escapeHtml(p.category || 'Contenuto');
-      const href = p.published ? 'post?id=' + encodeURIComponent(p.id) : 'write?id=' + encodeURIComponent(p.id);
+      const href = p.published ? '/post?id=' + encodeURIComponent(p.id) : '/write?id=' + encodeURIComponent(p.id);
       const actionLabel = p.published ? 'Apri articolo' : 'Apri bozza';
-      return `
-        <article class="list-item">
-          <div class="list-item__top">
-            <div class="mini-meta">
-              ${statePill}
-              <span class="pill">${safeCategory}</span>
-            </div>
-            <span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span>
-          </div>
-          <strong class="list-item__title">${safeTitle}</strong>
-          <div class="list-item__footer">
-            <div class="mini-meta">
-              <span>${p.published ? 'Ultima pubblicazione' : 'Ultima modifica'}</span>
-            </div>
-            <a class="list-link" href="${href}">${actionLabel}</a>
-          </div>
-        </article>`;
+      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta">${statePill}<span class="pill">${safeCategory}</span></div><span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span></div><strong class="list-item__title">${safeTitle}</strong><div class="list-item__footer"><div class="mini-meta"><span class="tiny">${p.published ? 'Ultima pubblicazione' : 'Ultima modifica'}</span></div><a class="list-link" href="${href}">${actionLabel}</a></div></article>`;
     }).join('');
   }
 
@@ -1266,18 +311,15 @@
     $('create-category').value = post?.category || CATEGORIES[0] || 'Territorio';
     $('create-msg').textContent = '';
   }
-
   function openCreateModal(post) {
     fillCreateModal(post || null);
     $('create-modal-backdrop').classList.add('open');
     $('create-modal-backdrop').setAttribute('aria-hidden', 'false');
   }
-
   function closeCreateModal() {
     $('create-modal-backdrop').classList.remove('open');
     $('create-modal-backdrop').setAttribute('aria-hidden', 'true');
   }
-
   function autoTitleFromContent(content) {
     const clean = String(content || '').replace(/\s+/g, ' ').trim();
     if (!clean) return 'Nuovo post';
@@ -1289,61 +331,29 @@
     const msg = $('create-msg');
     const draftBtn = $('save-draft');
     const pubBtn = $('publish-post');
-
     const id = $('create-id').value;
     const titleInput = String($('create-title').value || '').trim();
     const excerpt = String($('create-excerpt').value || '').trim();
     const content = String($('create-content').value || '').trim();
     const category = String($('create-category').value || '').trim();
-
-    if (!content) {
-      msg.textContent = 'Il contenuto e obbligatorio.';
-      return;
-    }
-    if (!category) {
-      msg.textContent = 'Seleziona una categoria.';
-      return;
-    }
-
-    draftBtn.disabled = true;
-    pubBtn.disabled = true;
-    msg.textContent = '';
-
-    const badgeColor = window.RSM_CATEGORIES
-      ? window.RSM_CATEGORIES.badgeColor(category)
-      : 'default';
-
+    if (!content) { msg.textContent = 'Il contenuto e obbligatorio.'; return; }
+    if (!category) { msg.textContent = 'Seleziona una categoria.'; return; }
+    draftBtn.disabled = true; pubBtn.disabled = true; msg.textContent = '';
+    const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
     const payload = {
       title: titleInput || autoTitleFromContent(content),
-      excerpt: excerpt || null,
-      content: content,
-      category: category,
-      badge: null,
-      badge_color: badgeColor,
-      image_type: null,
-      published: publish,
-      published_at: publish ? new Date().toISOString() : null,
+      excerpt: excerpt || null, content: content, category: category,
+      badge: null, badge_color: badgeColor, image_type: null,
+      published: publish, published_at: publish ? new Date().toISOString() : null,
     };
-
     let error = null;
     if (id) {
       ({ error } = await sb.from('posts').update(payload).eq('id', id).eq('user_id', STATE.session.user.id));
     } else {
-      ({ error } = await sb.from('posts').insert({
-        ...payload,
-        user_id: STATE.session.user.id,
-        author_username: STATE.profile.username || null,
-      }));
+      ({ error } = await sb.from('posts').insert({ ...payload, user_id: STATE.session.user.id, author_username: STATE.profile.username || null }));
     }
-
-    draftBtn.disabled = false;
-    pubBtn.disabled = false;
-
-    if (error) {
-      msg.textContent = 'Salvataggio non riuscito: ' + error.message;
-      return;
-    }
-
+    draftBtn.disabled = false; pubBtn.disabled = false;
+    if (error) { msg.textContent = 'Salvataggio non riuscito: ' + error.message; return; }
     closeCreateModal();
     toast(publish ? 'Post pubblicato.' : 'Bozza salvata.', 'ok');
     await refreshData();
@@ -1352,71 +362,35 @@
   function renderDrafts() {
     const wrap = $('drafts-list');
     if (!wrap) return;
-
     const drafts = STATE.posts.filter((p) => !p.published).slice(0, 6);
     if (!drafts.length) {
       wrap.innerHTML = '<div class="empty-state"><p>Nessuna bozza aperta.</p><span class="tiny">Quando salvi una bozza, la ritrovi subito qui.</span></div>';
       return;
     }
-
     wrap.innerHTML = drafts.map((p) => {
       const safeTitle = escapeHtml(p.title || '(Senza titolo)');
       const safeCategory = escapeHtml(p.category || 'Contenuto');
-      return `
-        <article class="list-item">
-          <div class="list-item__top">
-            <div class="mini-meta">
-              <span class="pill draft">Bozza</span>
-              <span class="pill">${safeCategory}</span>
-            </div>
-            <span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span>
-          </div>
-          <strong class="list-item__title">${safeTitle}</strong>
-          <div class="list-item__footer">
-            <div class="mini-meta">
-              <span>Pronta per essere completata o pubblicata</span>
-            </div>
-            <a class="list-link" href="write?id=${encodeURIComponent(p.id)}">Riprendi</a>
-          </div>
-        </article>`;
+      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta"><span class="pill draft">Bozza</span><span class="pill">${safeCategory}</span></div><span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span></div><strong class="list-item__title">${safeTitle}</strong><div class="list-item__footer"><div class="mini-meta"><span class="tiny">Pronta per essere completata o pubblicata</span></div><a class="list-link" href="/write?id=${encodeURIComponent(p.id)}">Riprendi</a></div></article>`;
     }).join('');
   }
 
   function renderNotifications() {
     const wrap = $('notif-list');
     if (!wrap) return;
-
     if (STATE.missing.notifications) {
       wrap.innerHTML = '<div class="empty-state"><p>Centro notifiche non attivo.</p><span class="tiny">Per abilitarlo applica lo script Supabase completo o il layer sicurezza.</span></div>';
       return;
     }
-
     const notifs = STATE.notifications.slice(0, 6);
     if (!notifs.length) {
       wrap.innerHTML = '<div class="empty-state"><p>Nessun segnale da mostrare.</p><span class="tiny">Quando arrivano like o commenti li vedrai comparire qui.</span></div>';
       return;
     }
-
     wrap.innerHTML = notifs.map((n) => {
       const type = n.type === 'comment' ? 'Commento' : 'Mi piace';
       const safeMsg = escapeHtml(n.message || 'Nuova notifica');
       const state = n.is_read ? '<span class="pill">Letta</span>' : '<span class="pill pill-live">Nuova</span>';
-      return `
-        <article class="list-item">
-          <div class="list-item__top">
-            <div class="mini-meta">
-              <span class="pill">${type}</span>
-              ${state}
-            </div>
-            <span class="tiny">${relativeTime(n.created_at)}</span>
-          </div>
-          <strong class="list-item__title">${safeMsg}</strong>
-          <div class="list-item__footer">
-            <div class="mini-meta">
-              <span>${n.is_read ? 'Gia vista' : 'Richiede attenzione'}</span>
-            </div>
-          </div>
-        </article>`;
+      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta"><span class="pill">${type}</span>${state}</div><span class="tiny">${relativeTime(n.created_at)}</span></div><strong class="list-item__title">${safeMsg}</strong></article>`;
     }).join('');
   }
 
@@ -1427,24 +401,15 @@
   }
 
   function renderAll() {
-    renderKpis();
-    renderChart();
-    renderRecent();
-    renderDrafts();
-    renderNotifications();
-    renderEmptyState();
-
+    renderKpis(); renderChart(); renderRecent(); renderDrafts(); renderNotifications(); renderEmptyState();
     const note = $('sync-note');
     if (note) {
       const warnings = [];
       if (STATE.missing.likes) warnings.push('like');
       if (STATE.missing.comments) warnings.push('commenti');
       if (STATE.missing.notifications) warnings.push('notifiche');
-      if (warnings.length) {
-        note.textContent = 'Vista parziale: mancano le tabelle ' + warnings.join(', ') + '.';
-      } else {
-        note.textContent = 'Allineato alle ' + new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) + '.';
-      }
+      if (warnings.length) note.textContent = 'Vista parziale: mancano le tabelle ' + warnings.join(', ') + '.';
+      else note.textContent = 'Allineato alle ' + new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) + '.';
     }
   }
 
@@ -1458,88 +423,31 @@
   }
 
   async function fetchCommentsAndLikes() {
-    STATE.comments = [];
-    STATE.likes = [];
-    STATE.totals.comments = 0;
-    STATE.totals.likes = 0;
-    STATE.missing.comments = false;
-    STATE.missing.likes = false;
-
+    STATE.comments = []; STATE.likes = []; STATE.totals.comments = 0; STATE.totals.likes = 0;
+    STATE.missing.comments = false; STATE.missing.likes = false;
     const ids = STATE.posts.map((p) => p.id).filter(Boolean);
     if (!ids.length) return;
-
     const analyticsSince = new Date(Date.now() - (180 * 24 * 60 * 60 * 1000)).toISOString();
-
     const [commentsCountRes, likesCountRes] = await Promise.all([
-      sb.from('comments')
-        .select('id', { count: 'exact', head: true })
-        .in('post_id', ids)
-        .eq('is_hidden', false),
-      sb.from('post_likes')
-        .select('id', { count: 'exact', head: true })
-        .in('post_id', ids)
+      sb.from('comments').select('id', { count: 'exact', head: true }).in('post_id', ids).eq('is_hidden', false),
+      sb.from('post_likes').select('id', { count: 'exact', head: true }).in('post_id', ids)
     ]);
-
-    if (commentsCountRes.error) {
-      if (isMissingRelationError(commentsCountRes.error)) STATE.missing.comments = true;
-      else console.warn('[dashboard] comments count error:', commentsCountRes.error.message);
-    } else {
-      STATE.totals.comments = commentsCountRes.count || 0;
-    }
-
-    if (likesCountRes.error) {
-      if (isMissingRelationError(likesCountRes.error)) STATE.missing.likes = true;
-      else console.warn('[dashboard] likes count error:', likesCountRes.error.message);
-    } else {
-      STATE.totals.likes = likesCountRes.count || 0;
-    }
-
-    const commentsRes = await sb.from('comments')
-      .select('id,post_id,created_at,is_hidden')
-      .in('post_id', ids)
-      .eq('is_hidden', false)
-      .gte('created_at', analyticsSince)
-      .order('created_at', { ascending: false })
-      .limit(5000);
-
-    if (commentsRes.error) {
-      if (isMissingRelationError(commentsRes.error)) STATE.missing.comments = true;
-      else console.warn('[dashboard] comments error:', commentsRes.error.message);
-    } else {
-      STATE.comments = commentsRes.data || [];
-    }
-
-    const likesRes = await sb.from('post_likes')
-      .select('id,post_id,created_at')
-      .in('post_id', ids)
-      .gte('created_at', analyticsSince)
-      .order('created_at', { ascending: false })
-      .limit(5000);
-
-    if (likesRes.error) {
-      if (isMissingRelationError(likesRes.error)) STATE.missing.likes = true;
-      else console.warn('[dashboard] likes error:', likesRes.error.message);
-    } else {
-      STATE.likes = likesRes.data || [];
-    }
+    if (commentsCountRes.error) { if (isMissingRelationError(commentsCountRes.error)) STATE.missing.comments = true; }
+    else STATE.totals.comments = commentsCountRes.count || 0;
+    if (likesCountRes.error) { if (isMissingRelationError(likesCountRes.error)) STATE.missing.likes = true; }
+    else STATE.totals.likes = likesCountRes.count || 0;
+    const commentsRes = await sb.from('comments').select('id,post_id,created_at,is_hidden').in('post_id', ids).eq('is_hidden', false).gte('created_at', analyticsSince).order('created_at', { ascending: false }).limit(5000);
+    if (commentsRes.error) { if (isMissingRelationError(commentsRes.error)) STATE.missing.comments = true; }
+    else STATE.comments = commentsRes.data || [];
+    const likesRes = await sb.from('post_likes').select('id,post_id,created_at').in('post_id', ids).gte('created_at', analyticsSince).order('created_at', { ascending: false }).limit(5000);
+    if (likesRes.error) { if (isMissingRelationError(likesRes.error)) STATE.missing.likes = true; }
+    else STATE.likes = likesRes.data || [];
   }
 
   async function fetchNotifications() {
-    STATE.notifications = [];
-    STATE.missing.notifications = false;
-
-    const res = await sb.from('notifications')
-      .select('id,type,message,is_read,created_at')
-      .eq('user_id', STATE.session.user.id)
-      .order('created_at', { ascending: false })
-      .limit(30);
-
-    if (res.error) {
-      if (isMissingRelationError(res.error)) STATE.missing.notifications = true;
-      else console.warn('[dashboard] notifications error:', res.error.message);
-      return;
-    }
-
+    STATE.notifications = []; STATE.missing.notifications = false;
+    const res = await sb.from('notifications').select('id,type,message,is_read,created_at').eq('user_id', STATE.session.user.id).order('created_at', { ascending: false }).limit(30);
+    if (res.error) { if (isMissingRelationError(res.error)) STATE.missing.notifications = true; return; }
     STATE.notifications = res.data || [];
   }
 
@@ -1558,49 +466,16 @@
 
   function bindHashRouting() {
     const hash = (window.location.hash || '').replace('#', '');
-    if (hash === 'write') {
-      window.location.href = 'write';
-      return;
-    }
-    if (hash === 'posts') {
-      $('contenuti')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-    if (hash === 'profile') {
-      window.location.href = 'preferenze';
-    }
-    if (hash === 'write') {
-      window.location.href = 'write';
-    }
-  }
-
-  function bindNavigation() {
-    const jump = (target) => {
-      if (target === 'dashboard') $('dashboard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (target === 'contenuti') $('contenuti')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (target === 'media') $('media')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (target === 'analytics') $('analytics')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
-
-    document.querySelectorAll('[data-go]').forEach((node) => {
-      node.addEventListener('click', () => {
-        const t = node.getAttribute('data-go');
-        jump(t);
-
-        document.querySelectorAll('.sb-item').forEach((x) => x.classList.remove('on'));
-        document.querySelectorAll('.mobile-nav button').forEach((x) => x.classList.remove('on'));
-        document.querySelectorAll(`[data-go="${t}"]`).forEach((x) => x.classList.add('on'));
-      });
-    });
+    if (hash === 'write') { window.location.href = '/write'; return; }
+    if (hash === 'posts') { $('contenuti')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    if (hash === 'profile') { window.location.href = '/modifica-profilo'; }
   }
 
   function bindUi() {
     $('global-period')?.addEventListener('change', () => {
       STATE.period = $('global-period').value;
-      renderKpis();
-      renderChart();
+      renderKpis(); renderChart();
     });
-
     document.querySelectorAll('[data-group]').forEach((btn) => {
       btn.addEventListener('click', () => {
         STATE.group = btn.getAttribute('data-group');
@@ -1609,56 +484,28 @@
         renderChart();
       });
     });
-
     $('open-create')?.addEventListener('click', () => openCreateModal(null));
     $('empty-create')?.addEventListener('click', () => openCreateModal(null));
     $('close-create')?.addEventListener('click', closeCreateModal);
     $('create-modal-backdrop')?.addEventListener('click', (event) => {
       if (event.target.id === 'create-modal-backdrop') closeCreateModal();
     });
-
     $('save-draft')?.addEventListener('click', () => savePost(false));
     $('publish-post')?.addEventListener('click', () => savePost(true));
-
-    $('logout-side')?.addEventListener('click', async () => {
-      await sb.auth.signOut();
-      window.location.href = '/';
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeCreateModal();
-    });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeCreateModal(); });
   }
 
   async function init() {
     const { data: sessionData } = await sb.auth.getSession();
     STATE.session = sessionData?.session || null;
-    if (!STATE.session) {
-      window.location.href = 'login';
-      return;
-    }
-
-    const { data: profile, error } = await sb.from('profiles')
-      .select('id,username,display_name,avatar_emoji,avatar_color')
-      .eq('id', STATE.session.user.id)
-      .single();
-
-    if (error || !profile) {
-      window.location.href = 'login';
-      return;
-    }
-
+    if (!STATE.session) { window.location.href = '/login'; return; }
+    const { data: profile, error } = await sb.from('profiles').select('id,username,display_name,avatar_emoji,avatar_color').eq('id', STATE.session.user.id).single();
+    if (error || !profile) { window.location.href = '/login'; return; }
     STATE.profile = profile;
     const chip = $('chip-user');
-    if (chip) {
-      const name = '@' + (profile.username || 'utente');
-      chip.textContent = name;
-    }
-
+    if (chip) chip.textContent = '@' + (profile.username || 'utente');
     buildCategoryOptions();
-    bindNavigation();
     bindUi();
-
     await refreshData();
     bindHashRouting();
   }
@@ -1666,9 +513,6 @@
   init();
 })();
 </script>
-
-<!--PARTIAL:footer-->
-
 
 </body>
 </html>

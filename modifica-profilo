@@ -2,258 +2,115 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modifica profilo – Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --ink:        #10192b;
-      --ink-soft:   #5a6882;
-      --cream:      #f4f7ff;
-      --paper:      #fbfdff;
-      --mist:       #dde7f7;
-      --marsh:      #12203a;
-      --marsh-2:    #233a66;
-      --water:      #4a9bff;
-      --clay:       #8b5cf6;
-      --reed:       #1fbf7d;
-      --white:      #f9fbff;
-      --line:       rgba(18, 32, 58, 0.14);
-      --ok:         #1fbf7d;
-      --err:        #b83232;
-      --radius:     14px;
-      --shadow-card: 0 2px 24px rgba(18, 32, 58, 0.10), 0 0 0 1px rgba(18, 32, 58, 0.06);
-      --sans:       "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:      "Fraunces", Georgia, serif;
-      --ease:       cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      opacity: 0.16;
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(23, 34, 29, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(23, 34, 29, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
-      mix-blend-mode: multiply;
-    }
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); }
-
-    
-    .btn { display: inline-flex; align-items: center; gap: 6px;
-           border-radius: 999px; border: 1px solid var(--line);
-           background: var(--paper); color: var(--ink);
-           font-family: var(--sans); font-size: .82rem; font-weight: 700;
-           padding: 8px 18px; cursor: pointer; text-decoration: none; transition: all .15s; }
-    .btn:hover { background: var(--mist); }
-    .btn-primary { border-color: transparent;
-                   background: var(--marsh);
-                   color: var(--paper); box-shadow: 0 4px 16px rgba(37,63,53,.28); }
-    .btn-primary:hover { background: #1f362e; box-shadow: 0 6px 22px rgba(37,63,53,.4); border-color: transparent; }
-    .btn-ghost { color: var(--ink-soft); }
-
-    /* Page */
-    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 88px 20px 64px; }
-    .page-header { margin-bottom: 14px; }
-    .page-header h1 { font-family: var(--serif); font-size: 1.75rem; font-weight: 650; letter-spacing: -.02em; color: var(--ink); margin-bottom: 6px; }
-    .page-header p { color: var(--ink-soft); font-size: .9rem; }
-
-    .page-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-    .page-chip {
-      display: inline-flex; align-items: center; min-height: 30px;
-      padding: 0 12px; border-radius: 999px;
-      border: 1px solid var(--line); background: rgba(255,250,240,.74);
-      color: var(--ink-soft); font-size: .76rem; font-weight: 800; letter-spacing: .02em;
-    }
-
-    /* Bento grid */
-    .bento { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-    .bcard {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 20px; padding: 18px;
-      display: flex; flex-direction: column; gap: 14px;
-      box-shadow: var(--shadow-card);
-    }
-    .bcard-wide { grid-column: span 2; }
-    .bcard-tall { grid-row: span 2; }
-    .bcard-label {
-      font-size: .68rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .12em; color: var(--ink-soft);
-    }
-
-    /* Preview card */
-    .preview-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .preview-avatar { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center;
-                      justify-content: center; font-size: 2rem; transition: background .25s; flex-shrink: 0; }
-    .preview-username { font-size: .9rem; font-weight: 700; color: var(--ink-soft); }
-    .preview-display { font-family: var(--serif); font-size: 1.1rem; font-weight: 650; color: var(--ink); }
-    .preview-bio { font-size: .82rem; color: var(--ink-soft); text-align: center; line-height: 1.5; max-width: 220px; }
-
-    /* Emoji grid */
-    .emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .emoji-grid input[type="radio"] { display: none; }
-    .emoji-grid label { display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
-                        cursor: pointer; border-radius: 10px; border: 2px solid transparent;
-                        padding: 6px; transition: all .15s; background: rgba(37,63,53,.04); }
-    .emoji-grid label:hover { background: rgba(37,63,53,.1); }
-    .emoji-grid input:checked + label { border-color: var(--marsh); background: rgba(37,63,53,.1); }
-
-    /* Color grid */
-    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .color-grid input[type="radio"] { display: none; }
-    .color-grid label { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px;
-                        cursor: pointer; border: 3px solid transparent; transition: all .15s; }
-    .color-grid label:hover { transform: scale(1.1); }
-    .color-grid input:checked + label { border-color: var(--ink); box-shadow: 0 0 0 2px var(--marsh); }
-
-    /* Form fields */
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); }
-    .field input, .field textarea {
-      background: rgba(255, 250, 240, 0.7); border: 1px solid var(--line); border-radius: 12px;
-      color: var(--ink); font-family: var(--sans); font-size: .92rem; padding: 11px 16px;
-      transition: border-color .18s, box-shadow .18s; resize: vertical;
-    }
-    .field input:focus, .field textarea:focus {
-      outline: none; border-color: var(--marsh);
-      box-shadow: 0 0 0 3px rgba(37,63,53,.1);
-    }
-    .field textarea { min-height: 80px; }
-    .field .hint { font-size: .74rem; color: var(--ink-soft); }
-
-    /* Save row */
-    .save-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
-           border-radius: 999px; font-size: .9rem; font-weight: 800; font-family: var(--sans);
-           cursor: pointer; border: none; transition: all .2s; }
-    .btn-primary { background: var(--marsh); color: var(--paper);
-                   box-shadow: 0 4px 20px rgba(37,63,53,.3); }
-    .btn-primary:hover { background: #1f362e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,63,53,.45); }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-    .status-msg { font-size: .85rem; }
-    .status-ok { color: var(--ok); }
-    .status-err { color: var(--err); }
-
-    @media (max-width: 600px) {
-      .bento { grid-template-columns: 1fr; }
-      .bcard-wide { grid-column: span 1; }
-      .bcard-tall { grid-row: span 1; }
-      .page { padding: 100px 14px 60px; }
-    }
-
-    /* ── Footer ── */
-    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:72px 0 34px; font-family:var(--sans); }
-    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
-    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
-    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
-    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
-    .footer p { max-width:540px; line-height:1.66; }
-    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
-    .footer-links a:hover { color:var(--paper); }
-    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:64px; padding-top:24px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
-    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
-  </style>
-  <link rel="stylesheet" href="/theme.css" />
+  <meta name="robots" content="noindex" />
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<div class="page">
-  <div class="page-header">
-    <h1>Modifica profilo</h1>
-    <p>Le modifiche sono visibili pubblicamente nel tuo profilo</p>
-  </div>
+<main class="container rsm-page">
+  <div class="row">
+    <div class="col-12 col-lg-10 mx-auto">
 
-  <div class="page-summary" aria-label="Struttura della modifica profilo">
-    <span class="page-chip">4 blocchi</span>
-    <span class="page-chip">anteprima in alto</span>
-    <span class="page-chip">salvataggio finale</span>
-  </div>
+      <h1>Modifica profilo</h1>
+      <p class="text-muted">Le modifiche sono visibili pubblicamente nel tuo profilo.</p>
 
-  <div class="bento">
+      <div class="row g-3 mt-1">
 
-    <!-- Anteprima -->
-    <div class="bcard bcard-tall">
-      <div class="bcard-label">Anteprima</div>
-      <div class="preview-wrap">
-        <div class="preview-avatar" id="prev-avatar" style="background:#1F6F8B">🌿</div>
-        <div class="preview-username" id="prev-username">@...</div>
-        <div class="preview-display" id="prev-display">—</div>
-        <div class="preview-bio" id="prev-bio"></div>
+        <!-- Anteprima -->
+        <div class="col-12 col-md-4">
+          <div class="card-wrapper h-100">
+            <div class="card card-bg h-100">
+              <div class="card-body text-center">
+                <p class="text-uppercase small text-muted">Anteprima</p>
+                <div class="preview-avatar mx-auto mb-2" id="prev-avatar" style="background:#1F6F8B">🌿</div>
+                <div class="fw-semibold text-muted" id="prev-username">@...</div>
+                <div class="h5 mb-1" id="prev-display">—</div>
+                <div class="small text-muted" id="prev-bio"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar + colore -->
+        <div class="col-12 col-md-8">
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              <div class="card-wrapper h-100">
+                <div class="card card-bg h-100">
+                  <div class="card-body">
+                    <p class="text-uppercase small text-muted">Emoji avatar</p>
+                    <div class="emoji-grid" id="emoji-grid"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="card-wrapper h-100">
+                <div class="card card-bg h-100">
+                  <div class="card-body">
+                    <p class="text-uppercase small text-muted">Colore sfondo</p>
+                    <div class="color-grid" id="color-grid"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Identità -->
+        <div class="col-12">
+          <div class="card-wrapper">
+            <div class="card card-bg">
+              <div class="card-body">
+                <p class="text-uppercase small text-muted">Identità</p>
+                <div class="form-group">
+                  <label for="p-display">Nome visualizzato</label>
+                  <input type="text" id="p-display" class="form-control" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
+                </div>
+                <div class="form-group">
+                  <label for="p-bio">Bio</label>
+                  <textarea id="p-bio" class="form-control" maxlength="200" rows="3" placeholder="Raccontati in poche parole…"></textarea>
+                  <small class="form-text">Massimo 200 caratteri</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dove sei -->
+        <div class="col-12">
+          <div class="card-wrapper">
+            <div class="card card-bg">
+              <div class="card-body">
+                <p class="text-uppercase small text-muted">Dove sei</p>
+                <div class="form-group mb-0">
+                  <label for="p-comune">Comune</label>
+                  <input type="text" id="p-comune" class="form-control" maxlength="80" placeholder="Es. Rivalta sul Mincio" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <!-- Avatar emoji -->
-    <div class="bcard">
-      <div class="bcard-label">Emoji avatar</div>
-      <div class="emoji-grid" id="emoji-grid"></div>
-    </div>
-
-    <!-- Colore -->
-    <div class="bcard">
-      <div class="bcard-label">Colore sfondo</div>
-      <div class="color-grid" id="color-grid"></div>
-    </div>
-
-    <!-- Identità -->
-    <div class="bcard bcard-wide">
-      <div class="bcard-label">Identità</div>
-      <div class="field">
-        <label for="p-display">Nome visualizzato</label>
-        <input type="text" id="p-display" maxlength="50" placeholder="Come vuoi essere chiamato/a?" />
+      <div class="d-flex align-items-center gap-3 flex-wrap mt-3">
+        <button class="btn btn-primary" id="save-btn">Salva modifiche</button>
+        <span id="save-status"></span>
       </div>
-      <div class="field">
-        <label for="p-bio">Bio</label>
-        <textarea id="p-bio" maxlength="200" placeholder="Raccontati in poche parole…"></textarea>
-        <span class="hint">Massimo 200 caratteri</span>
-      </div>
-    </div>
 
-    <!-- Dove sei -->
-    <div class="bcard bcard-wide">
-      <div class="bcard-label">Dove sei</div>
-      <div class="field">
-        <label for="p-comune">Comune</label>
-        <input type="text" id="p-comune" maxlength="80" placeholder="Es. Rivalta sul Mincio" />
-      </div>
     </div>
-
   </div>
+</main>
 
-  <div class="save-row">
-    <button class="btn btn-primary" id="save-btn">Salva modifiche</button>
-    <span class="status-msg" id="save-status"></span>
-  </div>
-</div>
+<!--PARTIAL:footer-->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
@@ -294,7 +151,7 @@ function updatePreview() {
 function setStatus(msg, type) {
   const el = $('save-status');
   el.textContent = msg;
-  el.className = 'status-msg ' + (type === 'ok' ? 'status-ok' : type === 'err' ? 'status-err' : '');
+  el.className = type === 'ok' ? 'text-success' : type === 'err' ? 'text-danger' : '';
 }
 
 async function save() {
@@ -336,7 +193,7 @@ async function save() {
 
 (async function init() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session?.user) { location.href = 'login'; return; }
+  if (!session?.user) { location.href = '/login'; return; }
 
   currentUser = session.user;
 
@@ -345,10 +202,8 @@ async function save() {
 
   currentProfile = profile;
 
-  /* Populate preview username */
   $('prev-username').textContent = '@' + (profile.username || '');
 
-  /* Populate form */
   $('p-display').value = profile.display_name || profile.username || '';
   $('p-bio').value     = profile.bio || '';
   $('p-comune').value  = profile.comune || '';
@@ -356,16 +211,12 @@ async function save() {
   buildPickers(profile.avatar_emoji || '🌿', profile.avatar_color || '#1F6F8B');
   updatePreview();
 
-  /* Live preview on typing */
   $('p-display').addEventListener('input', updatePreview);
   $('p-bio').addEventListener('input', updatePreview);
 
   $('save-btn').addEventListener('click', save);
 })();
 </script>
-
-<!--PARTIAL:footer-->
-
 
 </body>
 </html>

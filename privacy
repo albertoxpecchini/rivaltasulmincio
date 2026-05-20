@@ -2,479 +2,196 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink:      #10192b;
-      --ink-soft: #5a6882;
-      --cream:    #f4f7ff;
-      --paper:    #fbfdff;
-      --marsh:    #12203a;
-      --water:    #4a9bff;
-      --clay:     #8b5cf6;
-      --reed:     #1fbf7d;
-      --line:     rgba(18, 32, 58, 0.14);
-      --sans:     "Cabinet Grotesk", system-ui, sans-serif;
-      --serif:    "Fraunces", Georgia, serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31, 191, 125, 0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74, 155, 255, 0.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      font-size: 15px;
-      line-height: 1.75;
-      min-height: 100vh;
-      position: relative;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      opacity: 0.16;
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(16, 25, 43, 0.11) 0 1px, transparent 1px),
-        radial-gradient(circle at 77% 54%, rgba(16, 25, 43, 0.08) 0 1px, transparent 1px);
-      background-size: 23px 23px, 31px 31px;
-      mix-blend-mode: multiply;
-    }
-
-    a { color: var(--water); text-decoration: none; }
-    a:hover { color: var(--clay); text-decoration: underline; }
-
-    
-
-    /* ── Document ── */
-    .doc-wrap {
-      max-width: 740px; margin: 0 auto;
-      padding: 88px 24px 72px;
-      position: relative; z-index: 1;
-    }
-
-    .doc-eyebrow {
-      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--water);
-      margin-bottom: 8px;
-    }
-
-    .doc-title {
-      font-family: var(--serif);
-      font-size: clamp(1.5rem, 3.4vw, 2rem);
-      font-weight: 650; line-height: 1.2; letter-spacing: -0.03em;
-      color: var(--ink); margin-bottom: 8px;
-    }
-
-    .doc-meta {
-      font-size: .82rem; color: var(--ink-soft);
-      margin-bottom: 20px; padding-bottom: 18px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .doc-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .doc-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-
-    /* ── TOC ── */
-    .toc {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px 18px;
-      margin-bottom: 28px;
-      box-shadow: 0 2px 12px rgba(37,63,53,.07);
-    }
-
-    .toc-title {
-      font-size: .72rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .08em;
-      color: var(--ink-soft); margin-bottom: 12px;
-    }
-
-    .toc ol { padding-left: 18px; }
-    .toc li { font-size: .84rem; margin-bottom: 4px; line-height: 1.5; }
-    .toc a { color: var(--ink); }
-    .toc a:hover { color: var(--marsh); text-decoration: none; }
-
-    /* ── Sections ── */
-    .doc-section { margin-bottom: 30px; }
-
-    .section-header {
-      display: flex; align-items: baseline; gap: 12px;
-      gap: 10px;
-      margin-bottom: 10px; padding-bottom: 8px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section-num {
-      font-size: .72rem; font-weight: 700;
-      color: var(--marsh); letter-spacing: .06em;
-      text-transform: uppercase; flex-shrink: 0;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: 1.1rem; font-weight: 650;
-      color: var(--ink); letter-spacing: -0.02em;
-    }
-
-    p { margin-bottom: 10px; color: var(--ink); }
-    p:last-child { margin-bottom: 0; }
-
-    ul, ol { padding-left: 22px; margin-bottom: 10px; }
-    li { margin-bottom: 4px; }
-
-    .highlight-box {
-      background: rgba(47, 107, 103, 0.07);
-      border-left: 3px solid var(--water);
-      border-radius: 0 8px 8px 0;
-      padding: 12px 16px; margin: 14px 0; font-size: .9rem;
-    }
-
-    table {
-      width: 100%; border-collapse: collapse;
-      font-size: .84rem; margin: 14px 0;
-    }
-    th {
-      text-align: left; padding: 10px 14px;
-      background: rgba(37,63,53,.05); border: 1px solid var(--line);
-      font-weight: 700; font-size: .76rem;
-      text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft);
-    }
-    td {
-      padding: 10px 14px; border: 1px solid var(--line);
-      vertical-align: top; line-height: 1.5;
-    }
-
-    .placeholder {
-      background: rgba(198,164,98,.12);
-      border: 1px dashed rgba(198,164,98,.5);
-      border-radius: 4px; padding: 1px 6px;
-      font-size: .82rem; color: var(--clay); font-style: italic;
-    }
-
-    /* ── Footer ── */
-    .footer { color:rgba(255,250,240,.72); background:#101c18; padding:56px 0 26px; font-family:var(--sans); }
-    .footer-container { width:min(100% - 44px, 1400px); margin:0 auto; }
-    .footer-grid { display:grid; grid-template-columns:minmax(0,0.72fr) repeat(3,minmax(140px,0.22fr)); gap:clamp(24px,5vw,76px); align-items:start; }
-    .footer h3,.footer h4 { margin:0 0 16px; color:var(--paper); letter-spacing:-0.02em; }
-    .footer h3 { font-family:var(--serif); font-size:clamp(2rem,4vw,4.8rem); line-height:0.96; letter-spacing:-0.055em; }
-    .footer p { max-width:540px; line-height:1.66; }
-    .footer-links { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-    .footer-links a { color:rgba(255,250,240,.68); font-weight:750; text-decoration:none; }
-    .footer-links a:hover { color:var(--paper); }
-    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:44px; padding-top:18px; border-top:1px solid rgba(255,250,240,.12); font-size:0.86rem; }
-    @media(max-width:760px){ .footer-grid { grid-template-columns:1fr; } }
-
-    @media (max-width: 600px) {
-      .doc-wrap { padding: 92px 16px 56px; }
-    }
-
-    @media print {
-      .site-header { display: none; }
-      .doc-wrap { padding: 0; max-width: 100%; }
-      body { background: #fff; font-size: 13px; }
-    }
-  </style>
-  <link rel="stylesheet" href="/theme.css" />
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<div class="doc-wrap">
+<main class="container rsm-page">
+  <div class="row">
+    <div class="col-12 col-lg-9 mx-auto">
 
-  <div class="doc-eyebrow">Documento legale</div>
-  <h1 class="doc-title">Privacy Policy</h1>
-  <p class="doc-meta">
-    Versione 1.0 &nbsp;·&nbsp; Ultimo aggiornamento: <strong>aprile 2026</strong>
-    &nbsp;·&nbsp; Applicabile a: www.rivaltasulmincio.it
-  </p>
+      <p class="text-primary fw-semibold text-uppercase small mb-1">Documento legale</p>
+      <h1>Privacy Policy</h1>
+      <p class="text-muted">
+        Versione 1.0 · Ultimo aggiornamento: <strong>aprile 2026</strong> · Applicabile a: www.rivaltasulmincio.it
+      </p>
 
-  <div class="doc-summary" aria-label="Struttura del documento">
-    <span class="doc-chip">10 sezioni</span>
-    <span class="doc-chip">indice all'inizio</span>
-    <span class="doc-chip">contatti finali</span>
-  </div>
+      <div class="d-flex flex-wrap gap-2 my-3">
+        <span class="chip chip-simple"><span class="chip-label">10 sezioni</span></span>
+        <span class="chip chip-simple"><span class="chip-label">indice all'inizio</span></span>
+        <span class="chip chip-simple"><span class="chip-label">contatti finali</span></span>
+      </div>
 
-  <nav class="toc" aria-label="Indice">
-    <div class="toc-title">Indice</div>
-    <ol>
-      <li><a href="#s1">Titolare del trattamento</a></li>
-      <li><a href="#s2">Tipologie di dati raccolti</a></li>
-      <li><a href="#s3">Finalità e base giuridica del trattamento</a></li>
-      <li><a href="#s4">Destinatari e trasferimento dei dati</a></li>
-      <li><a href="#s5">Periodo di conservazione</a></li>
-      <li><a href="#s6">Diritti dell'interessato</a></li>
-      <li><a href="#s7">Sicurezza dei dati</a></li>
-      <li><a href="#s8">Minori</a></li>
-      <li><a href="#s9">Modifiche alla presente policy</a></li>
-      <li><a href="#s10">Contatti</a></li>
-    </ol>
-  </nav>
+      <nav class="callout note" aria-label="Indice">
+        <div class="callout-title">Indice</div>
+        <ol class="mb-0">
+          <li><a href="#s1">Titolare del trattamento</a></li>
+          <li><a href="#s2">Tipologie di dati raccolti</a></li>
+          <li><a href="#s3">Finalità e base giuridica del trattamento</a></li>
+          <li><a href="#s4">Destinatari e trasferimento dei dati</a></li>
+          <li><a href="#s5">Periodo di conservazione</a></li>
+          <li><a href="#s6">Diritti dell'interessato</a></li>
+          <li><a href="#s7">Sicurezza dei dati</a></li>
+          <li><a href="#s8">Minori</a></li>
+          <li><a href="#s9">Modifiche alla presente policy</a></li>
+          <li><a href="#s10">Contatti</a></li>
+        </ol>
+      </nav>
 
-  <!-- 1 -->
-  <div class="doc-section" id="s1">
-    <div class="section-header">
-      <span class="section-num">Art. 1</span>
-      <span class="section-title">Titolare del trattamento</span>
-    </div>
-    <p>Il Titolare del trattamento dei dati personali raccolti tramite il sito <strong>www.rivaltasulmincio.it</strong> è:</p>
-    <div class="highlight-box">
-      <strong>Pro Loco Rivalta sul Mincio</strong><br>
-      <span class="placeholder">[Indirizzo completo]</span><br>
-      C.F. / P.IVA: <span class="placeholder">[Codice fiscale]</span><br>
-      Email: <span class="placeholder">[email@rivaltasulmincio.it]</span>
-    </div>
-    <p>Il sito è una piattaforma editoriale comunitaria locale che consente ai residenti di pubblicare articoli, commentare e interagire su temi legati al territorio di Rivalta sul Mincio e comuni limitrofi.</p>
-  </div>
+      <section id="s1" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 1</span>Titolare del trattamento</h2>
+        <p>Il Titolare del trattamento dei dati personali raccolti tramite il sito <strong>www.rivaltasulmincio.it</strong> è:</p>
+        <div class="callout">
+          <p class="mb-0">
+            <strong>Pro Loco Rivalta sul Mincio</strong><br>
+            <em>[Indirizzo completo]</em><br>
+            C.F. / P.IVA: <em>[Codice fiscale]</em><br>
+            Email: <em>[email@rivaltasulmincio.it]</em>
+          </p>
+        </div>
+        <p>Il sito è una piattaforma editoriale comunitaria locale che consente ai residenti di pubblicare articoli, commentare e interagire su temi legati al territorio di Rivalta sul Mincio e comuni limitrofi.</p>
+      </section>
 
-  <!-- 2 -->
-  <div class="doc-section" id="s2">
-    <div class="section-header">
-      <span class="section-num">Art. 2</span>
-      <span class="section-title">Tipologie di dati raccolti</span>
-    </div>
+      <section id="s2" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 2</span>Tipologie di dati raccolti</h2>
+        <p><strong>2.1 Visitatori non registrati</strong></p>
+        <p>Il sito non raccoglie direttamente dati personali dai visitatori anonimi. Tuttavia, i servizi di terze parti incorporati nella pagina (Google Fonts, Google Maps, jsDelivr) possono ricevere l'indirizzo IP e i dati tecnici del browser del visitatore. Si rimanda alla sezione 4 e alla Cookie Policy per i dettagli.</p>
+        <p><strong>2.2 Utenti che si registrano</strong></p>
+        <p>Durante la registrazione vengono raccolti i seguenti dati:</p>
+        <ul>
+          <li><strong>Indirizzo email</strong> (obbligatorio) — usato per autenticazione e verifica identità</li>
+          <li><strong>Password</strong> (obbligatoria) — mai memorizzata in chiaro; conservata in forma crittografata tramite algoritmo hashing sicuro</li>
+          <li><strong>Username</strong> (obbligatorio) — nome utente pubblico, unico, visibile a tutti</li>
+          <li><strong>Nome visualizzato</strong> (obbligatorio) — nome pubblico scelto dall'utente</li>
+          <li><strong>Comune di residenza/riferimento</strong> (obbligatorio) — scelta tra: Rivalta sul Mincio, Rodigo, Fossato, Fuori comune</li>
+          <li><strong>Biografia breve</strong> (obbligatoria) — testo libero, visibile pubblicamente sul profilo</li>
+          <li><strong>Avatar emoji e colore</strong> (obbligatori) — scelti da set predefiniti, visibili pubblicamente</li>
+          <li><strong>Consenso alle regole della comunità</strong> — data e versione delle regole accettate, registrate con timestamp</li>
+        </ul>
+        <p><strong>2.3 Dati generati dall'attività dell'utente registrato</strong></p>
+        <ul>
+          <li><strong>Articoli</strong>: titolo, testo, categoria, illustrazione, stato (bozza/pubblicato), data di pubblicazione</li>
+          <li><strong>Commenti</strong>: testo del commento, data e ora</li>
+          <li><strong>Interazioni</strong>: like (mi piace) agli articoli, con data e ora</li>
+          <li><strong>Segnalazioni</strong>: motivo della segnalazione di contenuti abusivi</li>
+          <li><strong>Notifiche</strong>: traccia delle interazioni ricevute (commenti, like sui propri articoli)</li>
+          <li><strong>Preferenze di accessibilità</strong>: dimensione testo, contrasto elevato, salvate in forma anonima nel browser e opzionalmente sincronizzate con il server</li>
+        </ul>
+        <p><strong>2.4 Dati tecnici</strong></p>
+        <p>La piattaforma di backend (Supabase) registra i timestamp di ogni operazione (<code>created_at</code>, <code>updated_at</code>, <code>published_at</code>). Supabase può registrare l'indirizzo IP delle richieste API nell'ambito dei propri log interni.</p>
+      </section>
 
-    <p><strong>2.1 Visitatori non registrati</strong></p>
-    <p>Il sito non raccoglie direttamente dati personali dai visitatori anonimi. Tuttavia, i servizi di terze parti incorporati nella pagina (Google Fonts, Google Maps, jsDelivr) possono ricevere l'indirizzo IP e i dati tecnici del browser del visitatore. Si rimanda alla sezione 4 e alla Cookie Policy per i dettagli.</p>
+      <section id="s3" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 3</span>Finalità e base giuridica del trattamento</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Finalità</th>
+                <th>Dati trattati</th>
+                <th>Base giuridica (GDPR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Creazione e gestione dell'account utente</td><td>Email, password, username, nome, comune, bio, avatar</td><td>Art. 6(1)(b) — esecuzione di un contratto</td></tr>
+              <tr><td>Verifica dell'identità e autenticazione</td><td>Email, token di sessione</td><td>Art. 6(1)(b) — esecuzione di un contratto</td></tr>
+              <tr><td>Pubblicazione e gestione dei contenuti</td><td>Articoli, commenti, like</td><td>Art. 6(1)(b) — esecuzione di un contratto</td></tr>
+              <tr><td>Sicurezza, prevenzione spam e abusi</td><td>Tentativi di login, rate limiting (dati anonimi nel browser)</td><td>Art. 6(1)(f) — legittimo interesse del Titolare</td></tr>
+              <tr><td>Moderazione dei contenuti</td><td>Segnalazioni, contenuti degli utenti</td><td>Art. 6(1)(f) — legittimo interesse del Titolare</td></tr>
+              <tr><td>Notifiche di interazione</td><td>Username, tipo di interazione, riferimento all'articolo</td><td>Art. 6(1)(b) — esecuzione di un contratto</td></tr>
+              <tr><td>Registrazione del consenso alle regole</td><td>Timestamp e versione accettazione regole</td><td>Art. 6(1)(c) — obbligo legale / Art. 6(1)(a) — consenso</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <p><strong>2.2 Utenti che si registrano</strong></p>
-    <p>Durante la registrazione vengono raccolti i seguenti dati:</p>
-    <ul>
-      <li><strong>Indirizzo email</strong> (obbligatorio) — usato per autenticazione e verifica identità</li>
-      <li><strong>Password</strong> (obbligatoria) — mai memorizzata in chiaro; conservata in forma crittografata tramite algoritmo hashing sicuro</li>
-      <li><strong>Username</strong> (obbligatorio) — nome utente pubblico, unico, visibile a tutti</li>
-      <li><strong>Nome visualizzato</strong> (obbligatorio) — nome pubblico scelto dall'utente</li>
-      <li><strong>Comune di residenza/riferimento</strong> (obbligatorio) — scelta tra: Rivalta sul Mincio, Rodigo, Fossato, Fuori comune</li>
-      <li><strong>Biografia breve</strong> (obbligatoria) — testo libero, visibile pubblicamente sul profilo</li>
-      <li><strong>Avatar emoji e colore</strong> (obbligatori) — scelti da set predefiniti, visibili pubblicamente</li>
-      <li><strong>Consenso alle regole della comunità</strong> — data e versione delle regole accettate, registrate con timestamp</li>
-    </ul>
+      <section id="s4" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 4</span>Destinatari e trasferimento dei dati</h2>
+        <p>I dati personali degli utenti sono trattati da:</p>
+        <p><strong>Supabase Inc.</strong> — fornitore del database e dei servizi di autenticazione (Responsabile del trattamento). Supabase ospita i dati su infrastruttura Amazon Web Services (AWS). I dati possono essere trasferiti al di fuori dell'Unione Europea. Supabase è certificato SOC 2 Type II e adotta clausole contrattuali standard (Standard Contractual Clauses) per i trasferimenti extra-UE. Sito: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
+        <p><strong>Google LLC</strong> — tramite Google Fonts (tipografia) e Google Maps (mappa nella homepage). Google può ricevere dati tecnici del visitatore (indirizzo IP, browser). Sito: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
+        <p><strong>jsDelivr (Prospect One)</strong> — CDN per la distribuzione della libreria JavaScript Supabase. Può ricevere dati tecnici del visitatore (IP, browser). Sito: <a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">jsdelivr.com/privacy-policy</a></p>
+        <p>I dati non vengono venduti né ceduti a terzi per finalità commerciali o di profilazione. I contenuti pubblicati (articoli, commenti, profili) sono visibili pubblicamente a tutti i visitatori del sito.</p>
+      </section>
 
-    <p><strong>2.3 Dati generati dall'attività dell'utente registrato</strong></p>
-    <ul>
-      <li><strong>Articoli</strong>: titolo, testo, categoria, illustrazione, stato (bozza/pubblicato), data di pubblicazione</li>
-      <li><strong>Commenti</strong>: testo del commento, data e ora</li>
-      <li><strong>Interazioni</strong>: like (mi piace) agli articoli, con data e ora</li>
-      <li><strong>Segnalazioni</strong>: motivo della segnalazione di contenuti abusivi</li>
-      <li><strong>Notifiche</strong>: traccia delle interazioni ricevute (commenti, like sui propri articoli)</li>
-      <li><strong>Preferenze di accessibilità</strong>: dimensione testo, contrasto elevato, salvate in forma anonima nel browser e opzionalmente sincronizzate con il server</li>
-    </ul>
+      <section id="s5" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 5</span>Periodo di conservazione</h2>
+        <ul>
+          <li><strong>Dati dell'account</strong>: conservati per tutta la durata del rapporto e fino a richiesta di cancellazione da parte dell'utente o decisione del Titolare</li>
+          <li><strong>Articoli e commenti</strong>: conservati finché l'utente non li elimina manualmente o il Titolare non interviene per motivi di moderazione</li>
+          <li><strong>Like e notifiche</strong>: conservati per la durata dell'account</li>
+          <li><strong>Segnalazioni</strong>: conservate per il tempo necessario alla gestione della moderazione</li>
+          <li><strong>Dati di rate limiting nel browser (localStorage)</strong>: si azzerano automaticamente allo scadere della finestra temporale (da 10 minuti a 24 ore a seconda del tipo)</li>
+          <li><strong>Token di sessione</strong>: scadono automaticamente secondo le policy di Supabase Auth; l'utente può revocare la sessione in qualsiasi momento effettuando il logout</li>
+        </ul>
+      </section>
 
-    <p><strong>2.4 Dati tecnici</strong></p>
-    <p>La piattaforma di backend (Supabase) registra i timestamp di ogni operazione (<code>created_at</code>, <code>updated_at</code>, <code>published_at</code>). Supabase può registrare l'indirizzo IP delle richieste API nell'ambito dei propri log interni.</p>
-  </div>
+      <section id="s6" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 6</span>Diritti dell'interessato</h2>
+        <p>Ai sensi degli artt. 15–22 del Regolamento (UE) 2016/679 (GDPR), l'interessato ha il diritto di:</p>
+        <ul>
+          <li><strong>Accesso</strong> (art. 15): ottenere conferma del trattamento e copia dei dati personali</li>
+          <li><strong>Rettifica</strong> (art. 16): correggere dati inesatti — esercitabile direttamente dalle impostazioni profilo</li>
+          <li><strong>Cancellazione</strong> (art. 17): richiedere la cancellazione dell'account e dei dati associati</li>
+          <li><strong>Limitazione</strong> (art. 18): ottenere la limitazione del trattamento in specifiche circostanze</li>
+          <li><strong>Portabilità</strong> (art. 20): ricevere i propri dati in formato strutturato e leggibile da macchina</li>
+          <li><strong>Opposizione</strong> (art. 21): opporsi al trattamento basato su legittimo interesse</li>
+          <li><strong>Revoca del consenso</strong>: revocare il consenso prestato, senza pregiudicare la liceità del trattamento svolto prima della revoca</li>
+        </ul>
+        <p>Per esercitare i propri diritti, l'interessato può contattare il Titolare all'indirizzo: <em>[email@rivaltasulmincio.it]</em></p>
+        <p>Il Titolare risponderà entro 30 giorni dalla ricezione della richiesta. L'interessato ha inoltre il diritto di proporre reclamo all'Autorità Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">www.garanteprivacy.it</a>).</p>
+        <div class="callout warning">
+          <div class="callout-title">Nota</div>
+          <p class="mb-0">La cancellazione dell'account non è attualmente disponibile in autonomia tramite le impostazioni del profilo. Per richiedere la cancellazione completa dei propri dati contattare il Titolare all'indirizzo indicato.</p>
+        </div>
+      </section>
 
-  <!-- 3 -->
-  <div class="doc-section" id="s3">
-    <div class="section-header">
-      <span class="section-num">Art. 3</span>
-      <span class="section-title">Finalità e base giuridica del trattamento</span>
-    </div>
+      <section id="s7" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 7</span>Sicurezza dei dati</h2>
+        <p>Il Titolare adotta le seguenti misure tecniche e organizzative per proteggere i dati personali:</p>
+        <ul>
+          <li>Trasmissione cifrata tramite protocollo HTTPS/TLS per tutte le comunicazioni</li>
+          <li>Password degli utenti mai memorizzate in chiaro — archiviate con hashing crittografico sicuro (gestito da Supabase Auth)</li>
+          <li>Controllo degli accessi a livello di riga del database (Row Level Security — RLS): ogni utente può accedere solo ai propri dati</li>
+          <li>Meccanismi di rate limiting per prevenire attacchi brute-force e spam</li>
+          <li>Filtro automatico dei contenuti per parole vietate, sia lato browser sia lato database (trigger PostgreSQL)</li>
+          <li>Header HTTP di sicurezza: <code>X-Frame-Options: DENY</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code> (che vieta esplicitamente accesso a geolocalizzazione, microfono e fotocamera)</li>
+          <li>Pannello di amministrazione protetto da autenticazione separata con ruolo verificato</li>
+        </ul>
+      </section>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Finalità</th>
-          <th>Dati trattati</th>
-          <th>Base giuridica (GDPR)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Creazione e gestione dell'account utente</td>
-          <td>Email, password, username, nome, comune, bio, avatar</td>
-          <td>Art. 6(1)(b) — esecuzione di un contratto</td>
-        </tr>
-        <tr>
-          <td>Verifica dell'identità e autenticazione</td>
-          <td>Email, token di sessione</td>
-          <td>Art. 6(1)(b) — esecuzione di un contratto</td>
-        </tr>
-        <tr>
-          <td>Pubblicazione e gestione dei contenuti</td>
-          <td>Articoli, commenti, like</td>
-          <td>Art. 6(1)(b) — esecuzione di un contratto</td>
-        </tr>
-        <tr>
-          <td>Sicurezza, prevenzione spam e abusi</td>
-          <td>Tentativi di login, rate limiting (dati anonimi nel browser)</td>
-          <td>Art. 6(1)(f) — legittimo interesse del Titolare</td>
-        </tr>
-        <tr>
-          <td>Moderazione dei contenuti</td>
-          <td>Segnalazioni, contenuti degli utenti</td>
-          <td>Art. 6(1)(f) — legittimo interesse del Titolare</td>
-        </tr>
-        <tr>
-          <td>Notifiche di interazione</td>
-          <td>Username, tipo di interazione, riferimento all'articolo</td>
-          <td>Art. 6(1)(b) — esecuzione di un contratto</td>
-        </tr>
-        <tr>
-          <td>Registrazione del consenso alle regole</td>
-          <td>Timestamp e versione accettazione regole</td>
-          <td>Art. 6(1)(c) — obbligo legale / Art. 6(1)(a) — consenso</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <section id="s8" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 8</span>Minori</h2>
+        <p>Il sito non è destinato a minori di <em>[14 / 16]</em> anni. Il Titolare non raccoglie consapevolmente dati personali di minori. Qualora venisse rilevata la registrazione di un minore, i relativi dati saranno cancellati tempestivamente. I genitori o tutori che ritenessero che il proprio figlio abbia fornito dati personali sono invitati a contattare il Titolare.</p>
+      </section>
 
-  <!-- 4 -->
-  <div class="doc-section" id="s4">
-    <div class="section-header">
-      <span class="section-num">Art. 4</span>
-      <span class="section-title">Destinatari e trasferimento dei dati</span>
-    </div>
+      <section id="s9" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 9</span>Modifiche alla presente policy</h2>
+        <p>Il Titolare si riserva il diritto di modificare la presente Privacy Policy in qualsiasi momento. Le modifiche sostanziali saranno comunicate agli utenti registrati tramite avviso sul sito o notifica via email. La versione aggiornata sarà sempre disponibile su questa pagina con indicazione della data di ultimo aggiornamento. L'utilizzo continuato del sito successivamente alla pubblicazione delle modifiche costituisce accettazione delle stesse.</p>
+      </section>
 
-    <p>I dati personali degli utenti sono trattati da:</p>
+      <section id="s10" class="mt-4">
+        <h2 class="h4"><span class="text-muted small d-block">Art. 10</span>Contatti</h2>
+        <p>Per qualsiasi domanda o richiesta relativa al trattamento dei dati personali:</p>
+        <div class="callout">
+          <p class="mb-0">
+            Pro Loco Rivalta sul Mincio<br>
+            Email: <em>[email@rivaltasulmincio.it]</em><br>
+            <em>[Indirizzo postale completo]</em>
+          </p>
+        </div>
+      </section>
 
-    <p><strong>Supabase Inc.</strong> — fornitore del database e dei servizi di autenticazione (Responsabile del trattamento). Supabase ospita i dati su infrastruttura Amazon Web Services (AWS). I dati possono essere trasferiti al di fuori dell'Unione Europea. Supabase è certificato SOC 2 Type II e adotta clausole contrattuali standard (Standard Contractual Clauses) per i trasferimenti extra-UE. Sito: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
-
-    <p><strong>Google LLC</strong> — tramite Google Fonts (tipografia) e Google Maps (mappa nella homepage). Google può ricevere dati tecnici del visitatore (indirizzo IP, browser). Sito: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
-
-    <p><strong>jsDelivr (Prospect One)</strong> — CDN per la distribuzione della libreria JavaScript Supabase. Può ricevere dati tecnici del visitatore (IP, browser). Sito: <a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">jsdelivr.com/privacy-policy</a></p>
-
-    <p>I dati non vengono venduti né ceduti a terzi per finalità commerciali o di profilazione. I contenuti pubblicati (articoli, commenti, profili) sono visibili pubblicamente a tutti i visitatori del sito.</p>
-  </div>
-
-  <!-- 5 -->
-  <div class="doc-section" id="s5">
-    <div class="section-header">
-      <span class="section-num">Art. 5</span>
-      <span class="section-title">Periodo di conservazione</span>
-    </div>
-
-    <ul>
-      <li><strong>Dati dell'account</strong>: conservati per tutta la durata del rapporto e fino a richiesta di cancellazione da parte dell'utente o decisione del Titolare</li>
-      <li><strong>Articoli e commenti</strong>: conservati finché l'utente non li elimina manualmente o il Titolare non interviene per motivi di moderazione</li>
-      <li><strong>Like e notifiche</strong>: conservati per la durata dell'account</li>
-      <li><strong>Segnalazioni</strong>: conservate per il tempo necessario alla gestione della moderazione</li>
-      <li><strong>Dati di rate limiting nel browser (localStorage)</strong>: si azzerano automaticamente allo scadere della finestra temporale (da 10 minuti a 24 ore a seconda del tipo)</li>
-      <li><strong>Token di sessione</strong>: scadono automaticamente secondo le policy di Supabase Auth; l'utente può revocare la sessione in qualsiasi momento effettuando il logout</li>
-    </ul>
-  </div>
-
-  <!-- 6 -->
-  <div class="doc-section" id="s6">
-    <div class="section-header">
-      <span class="section-num">Art. 6</span>
-      <span class="section-title">Diritti dell'interessato</span>
-    </div>
-
-    <p>Ai sensi degli artt. 15–22 del Regolamento (UE) 2016/679 (GDPR), l'interessato ha il diritto di:</p>
-    <ul>
-      <li><strong>Accesso</strong> (art. 15): ottenere conferma del trattamento e copia dei dati personali</li>
-      <li><strong>Rettifica</strong> (art. 16): correggere dati inesatti — esercitabile direttamente dalle impostazioni profilo</li>
-      <li><strong>Cancellazione</strong> (art. 17): richiedere la cancellazione dell'account e dei dati associati</li>
-      <li><strong>Limitazione</strong> (art. 18): ottenere la limitazione del trattamento in specifiche circostanze</li>
-      <li><strong>Portabilità</strong> (art. 20): ricevere i propri dati in formato strutturato e leggibile da macchina</li>
-      <li><strong>Opposizione</strong> (art. 21): opporsi al trattamento basato su legittimo interesse</li>
-      <li><strong>Revoca del consenso</strong>: revocare il consenso prestato, senza pregiudicare la liceità del trattamento svolto prima della revoca</li>
-    </ul>
-
-    <p>Per esercitare i propri diritti, l'interessato può contattare il Titolare all'indirizzo: <span class="placeholder">[email@rivaltasulmincio.it]</span></p>
-    <p>Il Titolare risponderà entro 30 giorni dalla ricezione della richiesta. L'interessato ha inoltre il diritto di proporre reclamo all'Autorità Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">www.garanteprivacy.it</a>).</p>
-
-    <div class="highlight-box">
-      <strong>Nota:</strong> La cancellazione dell'account non è attualmente disponibile in autonomia tramite le impostazioni del profilo. Per richiedere la cancellazione completa dei propri dati contattare il Titolare all'indirizzo indicato.
     </div>
   </div>
-
-  <!-- 7 -->
-  <div class="doc-section" id="s7">
-    <div class="section-header">
-      <span class="section-num">Art. 7</span>
-      <span class="section-title">Sicurezza dei dati</span>
-    </div>
-    <p>Il Titolare adotta le seguenti misure tecniche e organizzative per proteggere i dati personali:</p>
-    <ul>
-      <li>Trasmissione cifrata tramite protocollo HTTPS/TLS per tutte le comunicazioni</li>
-      <li>Password degli utenti mai memorizzate in chiaro — archiviate con hashing crittografico sicuro (gestito da Supabase Auth)</li>
-      <li>Controllo degli accessi a livello di riga del database (Row Level Security — RLS): ogni utente può accedere solo ai propri dati</li>
-      <li>Meccanismi di rate limiting per prevenire attacchi brute-force e spam</li>
-      <li>Filtro automatico dei contenuti per parole vietate, sia lato browser sia lato database (trigger PostgreSQL)</li>
-      <li>Header HTTP di sicurezza: <code>X-Frame-Options: DENY</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code> (che vieta esplicitamente accesso a geolocalizzazione, microfono e fotocamera)</li>
-      <li>Pannello di amministrazione protetto da autenticazione separata con ruolo verificato</li>
-    </ul>
-  </div>
-
-  <!-- 8 -->
-  <div class="doc-section" id="s8">
-    <div class="section-header">
-      <span class="section-num">Art. 8</span>
-      <span class="section-title">Minori</span>
-    </div>
-    <p>Il sito non è destinato a minori di <span class="placeholder">[14 / 16]</span> anni. Il Titolare non raccoglie consapevolmente dati personali di minori. Qualora venisse rilevata la registrazione di un minore, i relativi dati saranno cancellati tempestivamente. I genitori o tutori che ritenessero che il proprio figlio abbia fornito dati personali sono invitati a contattare il Titolare.</p>
-  </div>
-
-  <!-- 9 -->
-  <div class="doc-section" id="s9">
-    <div class="section-header">
-      <span class="section-num">Art. 9</span>
-      <span class="section-title">Modifiche alla presente policy</span>
-    </div>
-    <p>Il Titolare si riserva il diritto di modificare la presente Privacy Policy in qualsiasi momento. Le modifiche sostanziali saranno comunicate agli utenti registrati tramite avviso sul sito o notifica via email. La versione aggiornata sarà sempre disponibile su questa pagina con indicazione della data di ultimo aggiornamento. L'utilizzo continuato del sito successivamente alla pubblicazione delle modifiche costituisce accettazione delle stesse.</p>
-  </div>
-
-  <!-- 10 -->
-  <div class="doc-section" id="s10">
-    <div class="section-header">
-      <span class="section-num">Art. 10</span>
-      <span class="section-title">Contatti</span>
-    </div>
-    <p>Per qualsiasi domanda o richiesta relativa al trattamento dei dati personali:</p>
-    <div class="highlight-box">
-      Pro Loco Rivalta sul Mincio<br>
-      Email: <span class="placeholder">[email@rivaltasulmincio.it]</span><br>
-      <span class="placeholder">[Indirizzo postale completo]</span>
-    </div>
-  </div>
-
-</div>
+</main>
 
 <!--PARTIAL:footer-->
 
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
 </body>
 </html>

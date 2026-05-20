@@ -2,1077 +2,195 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>La Storia del Sito — Rivalta sul Mincio</title>
   <meta name="description" content="La cronologia completa del sito ufficiale della Pro Loco di Rivalta sul Mincio: funzioni, versioni, tecnologie e deployment in costante crescita." />
   <meta name="robots" content="noindex" />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="/supabase.config.js"></script>
-  <link rel="stylesheet" href="/theme.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    * { margin: 0; }
-
-    :root {
-      --story-bg: #f7fafe;
-      --story-ink: #08111f;
-      --story-ink-2: #172033;
-      --story-muted: #65728a;
-      --story-muted-2: #93a0b4;
-      --story-card: rgba(255, 255, 255, 0.72);
-      --story-card-strong: rgba(255, 255, 255, 0.9);
-      --story-line: rgba(12, 20, 35, 0.12);
-      --story-line-strong: rgba(12, 20, 35, 0.2);
-      --story-emerald: #1fbf7d;
-      --story-azure: #4a9bff;
-      --story-violet: #8b5cf6;
-      --story-grad: linear-gradient(100deg, var(--story-emerald) 0%, var(--story-azure) 50%, var(--story-violet) 100%);
-      --story-grad-soft: linear-gradient(135deg, rgba(31,191,125,0.14), rgba(74,155,255,0.12), rgba(139,92,246,0.14));
-      --story-shadow: 0 28px 90px rgba(9, 17, 31, 0.12);
-      --story-shadow-soft: 0 14px 42px rgba(9, 17, 31, 0.08);
-      --story-radius-xl: 34px;
-      --story-radius-lg: 24px;
-      --story-radius-md: 16px;
-      --story-sans: "Cabinet Grotesk", var(--rsm-font-sans, system-ui, sans-serif);
-      --story-serif: "Fraunces", var(--rsm-font-display, Georgia, serif);
-      --story-mono: var(--rsm-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-      --story-ease: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      min-height: 100vh;
-      font-family: var(--story-sans);
-      color: var(--story-ink);
-      background:
-        radial-gradient(circle at 12% 8%, rgba(31, 191, 125, 0.22), transparent 28rem),
-        radial-gradient(circle at 85% 12%, rgba(74, 155, 255, 0.24), transparent 30rem),
-        radial-gradient(circle at 72% 82%, rgba(139, 92, 246, 0.18), transparent 34rem),
-        linear-gradient(180deg, #ffffff 0%, var(--story-bg) 42%, #eef4ff 100%);
-      font-size: 16px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.58;
-      background:
-        linear-gradient(90deg, rgba(12,20,35,0.035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(12,20,35,0.035) 1px, transparent 1px),
-        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 0.8px, transparent 1.3px);
-      background-size: 72px 72px, 72px 72px, 3px 3px;
-      mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.74) 58%, transparent 100%);
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: auto -15vw -32vw -15vw;
-      height: 48vw;
-      min-height: 420px;
-      z-index: 0;
-      pointer-events: none;
-      background: radial-gradient(closest-side, rgba(74,155,255,0.12), transparent 70%);
-      filter: blur(10px);
-    }
-
-    a { color: var(--story-azure); text-decoration: none; }
-    a:hover { color: var(--story-violet); }
-    code { font-family: var(--story-mono); font-size: 0.92em; }
-
-    .skip-link {
-      position: fixed;
-      left: 18px;
-      top: 14px;
-      z-index: 100;
-      padding: 11px 16px;
-      border-radius: 999px;
-      background: var(--story-ink);
-      color: #fff;
-      box-shadow: var(--story-shadow-soft);
-      transform: translateY(-180%);
-      transition: transform 360ms var(--story-ease);
-      font-size: 0.86rem;
-      font-weight: 800;
-    }
-    .skip-link:focus { transform: translateY(0); }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      isolation: isolate;
-      width: min(100% - 40px, 1320px);
-      margin: 0 auto;
-      padding: clamp(132px, 16vw, 220px) 0 clamp(64px, 8vw, 110px);
-      text-align: left;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      right: min(-9vw, -90px);
-      top: 18%;
-      width: min(46vw, 620px);
-      aspect-ratio: 1;
-      z-index: -1;
-      border-radius: 48% 52% 42% 58%;
-      background:
-        radial-gradient(circle at 34% 26%, rgba(255,255,255,0.78), transparent 24%),
-        conic-gradient(from 140deg, rgba(31,191,125,0.22), rgba(74,155,255,0.28), rgba(139,92,246,0.24), rgba(31,191,125,0.22));
-      filter: blur(0.2px);
-      opacity: 0.95;
-      animation: story-orb 18s ease-in-out infinite alternate;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      left: -9vw;
-      bottom: 9%;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(31,191,125,0.2), transparent 68%);
-      z-index: -1;
-    }
-    @keyframes story-orb {
-      from { transform: translate3d(0, 0, 0) rotate(0deg); border-radius: 48% 52% 42% 58%; }
-      to { transform: translate3d(-18px, 22px, 0) rotate(12deg); border-radius: 56% 44% 60% 40%; }
-    }
-
-    .hero-eyebrow,
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--story-mono);
-      font-size: clamp(0.68rem, 0.78vw, 0.78rem);
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--story-muted);
-    }
-    .hero-eyebrow::before,
-    .section-label::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--story-grad);
-      box-shadow: 0 0 0 7px rgba(74,155,255,0.10);
-    }
-    .hero-eyebrow { margin-bottom: 22px; }
-
-    .hero-title {
-      max-width: 980px;
-      font-family: var(--story-sans);
-      font-size: clamp(4rem, 10vw, 10.5rem);
-      font-weight: 900;
-      line-height: 0.86;
-      letter-spacing: -0.085em;
-      color: var(--story-ink);
-      text-wrap: balance;
-    }
-    .hero-title em {
-      font-family: var(--story-serif);
-      font-weight: 500;
-      font-style: italic;
-      background: var(--story-grad);
-      background-size: 220% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: story-grad 8s ease-in-out infinite alternate;
-    }
-    @keyframes story-grad { to { background-position: 100% 50%; } }
-
-    .hero-subtitle {
-      max-width: 760px;
-      margin: clamp(26px, 4vw, 42px) 0 0;
-      font-size: clamp(1.08rem, 1.5vw, 1.34rem);
-      font-weight: 500;
-      line-height: 1.55;
-      color: var(--story-muted);
-    }
-    .hero-subtitle span { color: var(--story-ink-2); font-weight: 900; }
-    .hero-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      max-width: 980px;
-      margin-top: clamp(28px, 4vw, 48px);
-    }
-    .stat-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      min-height: 44px;
-      padding: 8px 15px;
-      border: 1px solid rgba(255,255,255,0.68);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.58);
-      color: var(--story-muted);
-      font-weight: 800;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 12px 36px rgba(9,17,31,0.06);
-      backdrop-filter: blur(18px);
-    }
-    .stat-pill strong { color: var(--story-ink); font-size: 1.02rem; }
-    .stat-pill .sep { color: var(--story-muted-2); }
-
-    .page-wrap {
-      position: relative;
-      z-index: 1;
-      width: min(100% - 40px, 1240px);
-      margin: 0 auto;
-      padding: 0 0 100px;
-    }
-    .section-label {
-      display: flex;
-      margin: clamp(54px, 8vw, 92px) 0 18px;
-    }
-
-    .release-card,
-    .fn-card,
-    .stack-item,
-    .swatch,
-    .uptime-unit,
-    .number-tile,
-    .release-commits-list li {
-      position: relative;
-      border: 1px solid var(--story-line);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)) padding-box,
-        var(--story-grad) border-box;
-      box-shadow: var(--story-shadow-soft);
-      backdrop-filter: blur(20px);
-    }
-
-    .release-card {
-      overflow: hidden;
-      border-radius: var(--story-radius-xl);
-      padding: clamp(24px, 4vw, 44px);
-      box-shadow: var(--story-shadow);
-    }
-    .release-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 85% 0%, rgba(74,155,255,0.16), transparent 36%), radial-gradient(circle at 0% 100%, rgba(31,191,125,0.12), transparent 38%);
-    }
-    .release-card > * { position: relative; }
-    .release-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-    .release-version-block { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; }
-    .release-v-badge,
-    .release-changes-title {
-      font-family: var(--story-mono);
-      font-size: 0.7rem;
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--story-violet);
-    }
-    .release-v-badge {
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: rgba(139,92,246,0.11);
-      border: 1px solid rgba(139,92,246,0.2);
-    }
-    .release-vname {
-      font-family: var(--story-serif);
-      font-size: clamp(1.55rem, 3vw, 2.5rem);
-      font-weight: 650;
-      line-height: 1;
-      color: var(--story-ink);
-    }
-    .release-date-text { color: var(--story-muted); font-weight: 800; padding-top: 8px; }
-    .release-commit-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      min-height: 52px;
-      margin: 18px 0 26px;
-      padding: 12px 16px;
-      border: 1px solid var(--story-line);
-      border-radius: 18px;
-      background: rgba(9,17,31,0.045);
-    }
-    .release-commit-row code { color: var(--story-azure); font-weight: 900; }
-    .release-commit-row .rel-msg { color: var(--story-ink-2); font-weight: 700; flex: 1; min-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .release-commit-row .rel-author { color: var(--story-muted); font-size: 0.86rem; font-weight: 800; }
-    .release-commit-row a { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; background: var(--story-ink); }
-    .release-changes-list,
-    .release-commits-list,
-    .security-list { list-style: none; padding: 0; }
-    .release-changes-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .release-changes-list li,
-    .security-list li {
-      display: flex;
-      gap: 10px;
-      color: var(--story-muted);
-      font-weight: 600;
-      line-height: 1.55;
-    }
-    .release-changes-list li::before,
-    .security-list li::before {
-      content: '+';
-      flex: 0 0 auto;
-      color: var(--story-emerald);
-      font-weight: 900;
-    }
-    .release-commits-list { display: grid; gap: 10px; margin-top: 12px; }
-    .release-commits-list li {
-      border-radius: 18px;
-      padding: 14px 16px;
-      box-shadow: none;
-    }
-    .release-commits-list .row-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; color: var(--story-muted); font-size: 0.86rem; }
-    .release-commits-list .row-top code { color: var(--story-azure); font-weight: 900; }
-    .release-commits-list .row-msg { color: var(--story-ink-2); font-weight: 800; line-height: 1.35; }
-    .release-commits-list .row-files { color: var(--story-muted-2); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .release-skeleton { color: var(--story-muted); font-style: italic; }
-
-    .live-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
-    .live-dot-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(31,191,125,0.12);
-      color: #0d8a5a;
-      border: 1px solid rgba(31,191,125,0.22);
-      font-family: var(--story-mono);
-      font-size: 0.72rem;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    .live-dot-badge::before,
-    .number-tile[data-live]::after {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--story-emerald);
-      box-shadow: 0 0 0 6px rgba(31,191,125,0.14);
-      animation: story-pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes story-pulse { 50% { opacity: 0.35; transform: scale(0.7); } }
-    .live-since { color: var(--story-muted); font-weight: 800; }
-
-    .uptime-row { display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-    .uptime-unit {
-      min-width: 104px;
-      border-radius: 22px;
-      padding: 18px 20px;
-      text-align: center;
-    }
-    .uptime-unit .u-val,
-    .number-tile .num {
-      display: block;
-      font-family: var(--story-sans);
-      font-weight: 900;
-      line-height: 0.9;
-      letter-spacing: -0.06em;
-      color: var(--story-ink);
-      font-variant-numeric: tabular-nums;
-    }
-    .uptime-unit .u-val { font-size: clamp(2rem, 4vw, 3rem); }
-    .uptime-unit .u-lbl,
-    .number-tile .label {
-      display: block;
-      margin-top: 10px;
-      font-family: var(--story-mono);
-      color: var(--story-muted);
-      font-size: 0.68rem;
-      font-weight: 900;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-    .uptime-sep { align-self: center; color: var(--story-muted-2); font-size: 2rem; font-family: var(--story-serif); }
-
-    .numbers-bento {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
-    }
-    .number-tile {
-      min-height: 160px;
-      border-radius: var(--story-radius-lg);
-      padding: 22px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      transition: transform 360ms var(--story-ease), box-shadow 360ms var(--story-ease), border-color 360ms var(--story-ease);
-    }
-    .number-tile:hover { transform: translateY(-5px); box-shadow: var(--story-shadow); border-color: rgba(74,155,255,0.26); }
-    .number-tile[data-live]::after { position: absolute; top: 18px; right: 18px; width: 7px; height: 7px; }
-    .number-tile .num { font-size: clamp(2.2rem, 5vw, 4.7rem); }
-    .number-tile .num.loading { font-size: 1.4rem; letter-spacing: 0; color: var(--story-muted); }
-    #tile-deploy { grid-column: span 2; grid-row: span 2; min-height: 334px; background: linear-gradient(145deg, rgba(31,191,125,0.16), rgba(255,255,255,0.68)); }
-    #tile-lines { grid-column: span 3; background: linear-gradient(145deg, rgba(74,155,255,0.16), rgba(255,255,255,0.68)); }
-    #tile-files, #tile-pages, #tile-videos, #tile-images, #tile-npm, #tile-words, #tile-members, #tile-comments, #tile-likes { grid-column: span 1; }
-    #tile-posts { grid-column: span 2; background: linear-gradient(145deg, rgba(139,92,246,0.14), rgba(255,255,255,0.68)); }
-
-    .timeline {
-      position: relative;
-      display: grid;
-      gap: 18px;
-      max-width: 980px;
-      margin-top: 4px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 16px;
-      top: 20px;
-      bottom: 20px;
-      width: 2px;
-      background: linear-gradient(180deg, var(--story-emerald), var(--story-azure), var(--story-violet));
-      opacity: 0.45;
-    }
-    .timeline-entry {
-      position: relative;
-      padding: 22px 24px 22px 58px;
-      border: 1px solid transparent;
-      border-radius: var(--story-radius-lg);
-      background: rgba(255,255,255,0.52);
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 640ms var(--story-ease), transform 640ms var(--story-ease), background 360ms var(--story-ease), box-shadow 360ms var(--story-ease);
-    }
-    .timeline-entry.visible { opacity: 1; transform: none; }
-    .timeline-entry:hover { background: rgba(255,255,255,0.82); box-shadow: var(--story-shadow-soft); }
-    .timeline-dot {
-      position: absolute;
-      left: 8px;
-      top: 30px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #fff;
-      border: 5px solid var(--story-azure);
-      box-shadow: 0 0 0 8px rgba(74,155,255,0.12);
-      z-index: 1;
-    }
-    .timeline-dot.milestone { border-color: var(--story-emerald); box-shadow: 0 0 0 8px rgba(31,191,125,0.14); }
-    .timeline-date { font-family: var(--story-mono); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: var(--story-violet); margin-bottom: 8px; }
-    .timeline-heading { font-family: var(--story-sans); font-size: clamp(1.45rem, 2.3vw, 2.1rem); line-height: 1.04; letter-spacing: -0.04em; color: var(--story-ink); margin-bottom: 12px; }
-    .timeline-body { color: var(--story-muted); font-size: 1rem; font-weight: 500; line-height: 1.72; }
-    .timeline-body p + p { margin-top: 12px; }
-
-    .functions-grid,
-    .stack-grid,
-    .color-row {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
-    .fn-card {
-      grid-column: span 3;
-      min-height: 218px;
-      border-radius: var(--story-radius-lg);
-      padding: 24px;
-      overflow: hidden;
-      transition: transform 360ms var(--story-ease), box-shadow 360ms var(--story-ease);
-    }
-    .fn-card--wide { grid-column: span 6; }
-    .fn-card:hover { transform: translateY(-5px); box-shadow: var(--story-shadow); }
-    .fn-card-icon { font-size: 2rem; line-height: 1; margin-bottom: 18px; }
-    .fn-card-title { color: var(--story-ink); font-size: 1.08rem; font-weight: 900; letter-spacing: -0.02em; }
-    .fn-card-route { display: inline-flex; margin: 8px 0 12px; padding: 5px 9px; border-radius: 999px; background: rgba(74,155,255,0.1); color: var(--story-azure); font-family: var(--story-mono); font-size: 0.72rem; font-weight: 900; }
-    .fn-card-desc { color: var(--story-muted); font-weight: 600; line-height: 1.56; }
-    .fn-card-lines { margin-top: 14px; color: var(--story-violet); font-family: var(--story-mono); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
-
-    .stack-item,
-    .swatch {
-      grid-column: span 3;
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: none;
-    }
-    .stack-layer { font-family: var(--story-mono); color: var(--story-violet); font-size: 0.68rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; }
-    .stack-name { margin-top: 4px; color: var(--story-ink); font-weight: 900; letter-spacing: -0.02em; }
-    .stack-note { margin-top: 3px; color: var(--story-muted); font-weight: 600; }
-
-    .security-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 12px 22px; padding: 28px; border-radius: var(--story-radius-lg); border: 1px solid var(--story-line); background: rgba(255,255,255,0.52); }
-    .security-list li::before { content: '✓'; }
-
-    .color-row { grid-template-columns: repeat(6, 1fr); }
-    .swatch { grid-column: span 2; display: flex; align-items: center; gap: 13px; }
-    .swatch-dot { width: 38px; height: 38px; border-radius: 13px; flex: 0 0 auto; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.44), 0 10px 28px rgba(9,17,31,0.12); }
-    .swatch-info { display: grid; gap: 1px; }
-    .swatch-name { color: var(--story-ink); font-weight: 900; }
-    .swatch-hex { font-family: var(--story-mono); color: var(--story-muted); font-size: 0.78rem; font-weight: 800; }
-    .swatch-use { color: var(--story-muted-2); font-size: 0.82rem; font-weight: 700; }
-
-    .commit-block {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--story-radius-xl);
-      padding: clamp(26px, 4vw, 44px);
-      color: rgba(236, 246, 255, 0.82);
-      background:
-        radial-gradient(circle at 10% 10%, rgba(31,191,125,0.24), transparent 30%),
-        radial-gradient(circle at 92% 0%, rgba(74,155,255,0.25), transparent 34%),
-        radial-gradient(circle at 70% 100%, rgba(139,92,246,0.22), transparent 32%),
-        #08111f;
-      box-shadow: var(--story-shadow);
-      font-family: var(--story-mono);
-    }
-    .commit-block::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 100% 28px; pointer-events: none; }
-    .commit-line { position: relative; min-height: 28px; display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.9rem; line-height: 1.6; }
-    .commit-line .key { color: rgba(146,196,255,0.92); font-weight: 900; }
-    .commit-line .val { color: rgba(240,248,255,0.88); }
-    .commit-line .hash { color: rgba(134,255,211,0.92); }
-
-    .container { width: min(100% - 40px, 1320px); margin: 0 auto; }
-
-    html[data-theme="scuro"] body {
-      color: #eef4ff;
-      background:
-        radial-gradient(circle at 12% 8%, rgba(31, 191, 125, 0.18), transparent 28rem),
-        radial-gradient(circle at 85% 12%, rgba(74, 155, 255, 0.18), transparent 30rem),
-        radial-gradient(circle at 72% 82%, rgba(139, 92, 246, 0.16), transparent 34rem),
-        linear-gradient(180deg, #080d18 0%, #0d1320 52%, #101622 100%) !important;
-    }
-    html[data-theme="scuro"] body::before { opacity: 0.22 !important; }
-    html[data-theme="scuro"] .hero-title,
-    html[data-theme="scuro"] .timeline-heading,
-    html[data-theme="scuro"] .release-vname,
-    html[data-theme="scuro"] .number-tile .num,
-    html[data-theme="scuro"] .uptime-unit .u-val,
-    html[data-theme="scuro"] .fn-card-title,
-    html[data-theme="scuro"] .stack-name,
-    html[data-theme="scuro"] .swatch-name { color: #f6f9ff; }
-    html[data-theme="scuro"] .hero-subtitle,
-    html[data-theme="scuro"] .timeline-body,
-    html[data-theme="scuro"] .fn-card-desc,
-    html[data-theme="scuro"] .stack-note,
-    html[data-theme="scuro"] .release-changes-list li,
-    html[data-theme="scuro"] .security-list li,
-    html[data-theme="scuro"] .live-since { color: rgba(214,225,242,0.74); }
-    html[data-theme="scuro"] .release-card,
-    html[data-theme="scuro"] .fn-card,
-    html[data-theme="scuro"] .stack-item,
-    html[data-theme="scuro"] .swatch,
-    html[data-theme="scuro"] .uptime-unit,
-    html[data-theme="scuro"] .number-tile,
-    html[data-theme="scuro"] .release-commits-list li,
-    html[data-theme="scuro"] .security-list,
-    html[data-theme="scuro"] .timeline-entry,
-    html[data-theme="scuro"] .stat-pill {
-      background: rgba(17, 24, 39, 0.68);
-      border-color: rgba(255,255,255,0.1);
-      box-shadow: 0 24px 72px rgba(0,0,0,0.28);
-    }
-    html[data-theme="scuro"] .release-commit-row { background: rgba(255,255,255,0.055); border-color: rgba(255,255,255,0.1); }
-    html[data-theme="scuro"] .release-commit-row .rel-msg { color: #eef4ff; }
-    html[data-theme="scuro"] .timeline-entry:hover { background: rgba(27, 36, 56, 0.82); }
-    html[data-theme="scuro"] .timeline-dot { background: #101827; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.001ms !important; }
-    }
-
-    @media (max-width: 1100px) {
-      .numbers-bento { grid-template-columns: repeat(4, 1fr); }
-      #tile-deploy, #tile-lines, #tile-posts { grid-column: span 2; min-height: 210px; }
-      .fn-card { grid-column: span 4; }
-      .fn-card--wide { grid-column: span 6; }
-      .stack-item { grid-column: span 4; }
-      .color-row { grid-template-columns: repeat(2, 1fr); }
-      .swatch { grid-column: span 1; }
-    }
-
-    @media (max-width: 760px) {
-      .hero, .page-wrap { width: min(100% - 28px, 1240px); }
-      .hero { padding-top: 118px; }
-      .hero-title { font-size: clamp(3.25rem, 18vw, 5.2rem); }
-      .hero::before { width: 78vw; opacity: 0.6; }
-      .numbers-bento, .functions-grid, .stack-grid, .color-row { grid-template-columns: 1fr; }
-      .number-tile, #tile-deploy, #tile-lines, #tile-posts, .fn-card, .fn-card--wide, .stack-item, .swatch { grid-column: auto; min-height: auto; }
-      .number-tile { min-height: 145px; }
-      .timeline-entry { padding: 20px 18px 20px 48px; }
-      .timeline::before { left: 13px; }
-      .timeline-dot { left: 5px; }
-      .release-commit-row .rel-msg { min-width: 100%; white-space: normal; }
-      .uptime-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .uptime-sep { display: none; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-stats { display: grid; }
-      .stat-pill { justify-content: space-between; }
-      .release-card, .commit-block { border-radius: 24px; }
-      .security-list { padding: 20px; }
-    }
-  </style>
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Salta al contenuto</a>
-
 <!--PARTIAL:nav-->
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-eyebrow">Archivio del progetto</div>
-    <h1 class="hero-title">La <em>storia</em> del sito</h1>
-    <p class="hero-subtitle">
-      Come un sito per un piccolo borgo sul Mincio è diventato una piattaforma community completa —
-      con <span id="sub-pages">…</span> pagine, <span id="sub-lines">…</span> righe di codice e <span id="sub-deploy">…</span> deployment.
-    </p>
-    <div class="hero-stats">
-      <div class="stat-pill"><strong id="pill-deploy">…</strong><span class="sep">·</span> deployment Vercel</div>
-      <div class="stat-pill"><strong id="pill-lines">…</strong><span class="sep">·</span> righe di codice</div>
-      <div class="stat-pill"><strong id="pill-files">…</strong><span class="sep">·</span> file nel repository</div>
-      <div class="stat-pill"><strong id="pill-pages">…</strong><span class="sep">·</span> pagine pubblicate</div>
-      <div class="stat-pill"><strong id="pill-launch">…</strong><span class="sep">·</span> prima release</div>
-      <div class="stat-pill"><strong>11</strong><span class="sep">·</span> sezioni guidate</div>
-    </div>
-  </section>
+<main class="container rsm-page" id="main">
 
-  <div class="page-wrap">
+  <p class="text-primary fw-semibold text-uppercase small mb-1">Archivio del progetto</p>
+  <h1>La storia del sito</h1>
+  <p class="lead">
+    Come un sito per un piccolo borgo sul Mincio è diventato una piattaforma community completa —
+    con <span id="sub-pages">…</span> pagine, <span id="sub-lines">…</span> righe di codice e <span id="sub-deploy">…</span> deployment.
+  </p>
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <span class="chip chip-simple"><span class="chip-label"><strong id="pill-deploy">…</strong> · deployment Vercel</span></span>
+    <span class="chip chip-simple"><span class="chip-label"><strong id="pill-lines">…</strong> · righe di codice</span></span>
+    <span class="chip chip-simple"><span class="chip-label"><strong id="pill-files">…</strong> · file nel repository</span></span>
+    <span class="chip chip-simple"><span class="chip-label"><strong id="pill-pages">…</strong> · pagine pubblicate</span></span>
+    <span class="chip chip-simple"><span class="chip-label"><strong id="pill-launch">…</strong> · prima release</span></span>
+    <span class="chip chip-simple"><span class="chip-label"><strong>11</strong> · sezioni guidate</span></span>
+  </div>
 
-    <!-- Ultimo aggiornamento -->
-    <div class="section-label">Ultimo aggiornamento</div>
-    <div class="release-card" id="releaseCard">
-      <div class="release-header">
-        <div class="release-version-block">
-          <span class="release-v-badge">versione</span>
-          <span class="release-vname" id="rel-vname"><span class="release-skeleton">caricamento…</span></span>
+  <!-- Ultimo aggiornamento -->
+  <h2 class="h5 text-uppercase text-muted">Ultimo aggiornamento</h2>
+  <div class="card-wrapper" id="releaseCard">
+    <div class="card card-bg">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div><span class="badge bg-secondary">versione</span> <strong id="rel-vname">caricamento…</strong></div>
+          <span class="text-muted small" id="rel-date"></span>
         </div>
-        <span class="release-date-text" id="rel-date"></span>
-      </div>
-      <div class="release-commit-row" id="rel-commit-row">
-        <code id="rel-hash">—</code>
-        <span class="rel-msg" id="rel-msg">—</span>
-        <span class="rel-author" id="rel-author"></span>
-        <a id="rel-link" href="#" target="_blank" rel="noopener" aria-label="Apri commit su GitHub" style="display:none">↗</a>
-      </div>
-      <div class="release-changes-title">Cosa è stato aggiunto</div>
-      <ul class="release-changes-list" id="rel-changes">
-        <li><span class="release-skeleton">caricamento…</span></li>
-      </ul>
-      <div class="release-changes-title" style="margin-top:18px;">Ultimi push e commit</div>
-      <ul class="release-commits-list" id="rel-commits">
-        <li><span class="release-skeleton">caricamento…</span></li>
-      </ul>
-    </div>
-
-    <!-- I numeri -->
-    <div class="section-label">In diretta</div>
-    <div class="live-bar">
-      <span class="live-dot-badge">Live</span>
-      <span class="live-since">Attivo dal <span id="txt-launch-since">4 maggio 2026, ore 22:11:56</span></span>
-    </div>
-    <div class="uptime-row" id="uptimeRow">
-      <div class="uptime-unit"><span class="u-val" id="u-days">--</span><span class="u-lbl">Giorni</span></div>
-      <span class="uptime-sep">:</span>
-      <div class="uptime-unit"><span class="u-val" id="u-hours">--</span><span class="u-lbl">Ore</span></div>
-      <span class="uptime-sep">:</span>
-      <div class="uptime-unit"><span class="u-val" id="u-min">--</span><span class="u-lbl">Minuti</span></div>
-      <span class="uptime-sep">:</span>
-      <div class="uptime-unit"><span class="u-val" id="u-sec">--</span><span class="u-lbl">Secondi</span></div>
-    </div>
-
-    <div class="section-label">In cifre</div>
-    <div class="numbers-bento" id="numbersRow">
-      <div class="number-tile" data-live id="tile-deploy"><span class="num loading">…</span><span class="label">Deployment</span></div>
-      <div class="number-tile" data-live id="tile-files"><span class="num loading">…</span><span class="label">File</span></div>
-      <div class="number-tile" data-live id="tile-lines"><span class="num loading">…</span><span class="label">Righe codice</span></div>
-      <div class="number-tile" data-live id="tile-pages"><span class="num loading">…</span><span class="label">Pagine</span></div>
-      <div class="number-tile" data-live id="tile-videos"><span class="num loading">…</span><span class="label">Video</span></div>
-      <div class="number-tile" data-live id="tile-images"><span class="num loading">…</span><span class="label">Immagini</span></div>
-      <div class="number-tile" data-live id="tile-npm"><span class="num loading">…</span><span class="label">Dipendenze npm</span></div>
-      <div class="number-tile" data-live id="tile-words"><span class="num loading">…</span><span class="label">Parole filtrate</span></div>
-      <div class="number-tile" data-live id="tile-posts"><span class="num loading">…</span><span class="label">Post pubblicati</span></div>
-      <div class="number-tile" data-live id="tile-members"><span class="num loading">…</span><span class="label">Iscritti</span></div>
-      <div class="number-tile" data-live id="tile-comments"><span class="num loading">…</span><span class="label">Commenti</span></div>
-      <div class="number-tile" data-live id="tile-likes"><span class="num loading">…</span><span class="label">Mi piace</span></div>
-    </div>
-
-    <!-- Timeline -->
-    <div class="section-label">Cronologia</div>
-    <div class="timeline" id="timeline">
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Aprile 2026 — Inizio</div>
-        <h2 class="timeline-heading">Nasce il progetto</h2>
-        <div class="timeline-body">
-          <p>La Pro Loco di Rivalta sul Mincio decide di costruire un sito che faccia davvero giustizia al borgo e alle sue Valli. Nessun template, nessun CMS, nessun framework JavaScript. Il progetto parte da zero: HTML puro, CSS custom scritto a mano, JavaScript vanilla. La scelta non è per pigrizia — è una dichiarazione di intenzioni: ogni dettaglio visivo e ogni millisecondo di prestazione devono essere controllati.</p>
-          <p>Il design system viene definito subito: una palette di sei colori ispirati alla natura locale (verde palude, acqua, terracotta, canna, crema, inchiostro scuro), due famiglie tipografiche (Cabinet Grotesk per i testi, Fraunces per i titoli), e un linguaggio visivo che evoca il paesaggio lagunare del Parco del Mincio.</p>
+        <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+          <code id="rel-hash">—</code>
+          <span id="rel-msg">—</span>
+          <span class="text-muted small" id="rel-author"></span>
+          <a id="rel-link" href="#" target="_blank" rel="noopener" aria-label="Apri commit su GitHub" style="display:none">↗</a>
         </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Aprile 2026 — Homepage</div>
-        <h2 class="timeline-heading">La homepage prende vita</h2>
-        <div class="timeline-body">
-          <p><span id="txt-lines-index">3.641</span> righe per la pagina più importante: un'esperienza visiva immersiva con video MP4 delle Valli del Mincio in fullscreen, con fallback GIF per i browser che non supportano l'autoplay. Il carousel fotografico usa Swiper.js v12 — quattro foto nella sezione hero, cinque in galleria, altre quattro per "Le Valli".</p>
-          <p>Le sezioni si strutturano: introduzione alle Valli (1.500+ ettari, 260+ specie di uccelli), tre esperienze ("Dal livello dell'acqua", "La valle a pedali", "Aironi e fauna"), la Festa del Pesce alla sua 40ª edizione (luglio 2025 — tradizione attiva dal 1985), news, contatti completi.</p>
-          <p>La SEO viene curata con attenzione: markup Schema.org JSON-LD con quattro tipi (Organization, WebSite, TouristDestination, Festival), Open Graph, Twitter Cards, meta geografici con coordinate 45.181°N 10.665°E, tag canonici.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Aprile–Maggio 2026 — Backend</div>
-        <h2 class="timeline-heading">Integrazione Supabase: il sito diventa una piattaforma</h2>
-        <div class="timeline-body">
-          <p>La decisione cambia tutto: Supabase come backend completo. PostgreSQL come database, autenticazione JWT, Row-Level Security su ogni tabella sensibile. Il sito non è più solo una vetrina — diventa una community platform.</p>
-          <p>Nascono le pagine per gli utenti registrati: login con autenticazione Supabase, dashboard personale, editor di post con upload immagini, profilo pubblico, modifica profilo. Le funzioni SQL <code>is_admin()</code> e <code>is_member()</code> gestiscono i livelli di autorizzazione. Il trigger automatico per <code>updated_at</code> viene implementato su tutte le tabelle che lo richiedono.</p>
-          <p>La tabella <code>user_settings</code> raccoglie le preferenze di ogni utente: privacy dei commenti, frequenza delle notifiche, categorie preferite, impostazioni di accessibilità.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Maggio 2026 — Sicurezza</div>
-        <h2 class="timeline-heading">Il sistema di sicurezza</h2>
-        <div class="timeline-body">
-          <p>Viene scritto <code>security.client.js</code> — <span id="txt-sec-lines">254</span> righe di protezione lato client. Il rate limiter blocca l'account dopo <span id="txt-rl-attempts">5</span> tentativi in <span id="txt-rl-window">10</span> minuti, con lock di <span id="txt-rl-lock">15</span> minuti. Il sistema usa localStorage con fallback in memoria per evitare crash in ambienti con storage disabilitato.</p>
-          <p>Il filtro contenuti inappropriati blocca <span id="txt-words-tl">11</span> termini in italiano. Il server Node.js viene corazzato con security headers HTTP: <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>, <code>Permissions-Policy</code> che disabilita geolocation, microfono e camera. Protezione contro path traversal implementata nel routing.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Maggio 2026 — Accessibilità</div>
-        <h2 class="timeline-heading">Preferenze utente e accessibilità</h2>
-        <div class="timeline-body">
-          <p>Il sistema di preferenze utente è una delle funzioni più curate: quattro dimensioni di testo (14px, 16px, 18px, 20px), tema chiaro/scuro/automatico, tre livelli di densità dell'interfaccia, modalità alto contrasto. Le preferenze vengono applicate immediatamente senza refresh grazie a uno script inline nel <code>&lt;head&gt;</code> che legge localStorage prima che il DOM sia pronto.</p>
-          <p>La chiave di storage <code>rsm_prefs_v1</code> è versionata per permettere future migrazioni senza rompere i dati esistenti.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Maggio 2026 — Pagine legali</div>
-        <h2 class="timeline-heading">Compliance e documentazione</h2>
-        <div class="timeline-body">
-          <p>Vengono redatte e messe online tre pagine legali: Privacy Policy (676 righe, GDPR-compliant), Cookie Policy (644 righe, con spiegazione dei tipi di cookie e modalità di gestione), Note Legali (582 righe, termini e condizioni d'uso). Tutte con markup <code>noindex</code> per non frammentare il posizionamento SEO.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot milestone"></div>
-        <div class="timeline-date">Lunedì 4 maggio 2026, ore 22:11:56 CEST — Prima release</div>
-        <h2 class="timeline-heading">Versione 1.0 — Il primo commit ufficiale</h2>
-        <div class="timeline-body">
-          <p>Dopo settimane di sviluppo, la versione 1.0 viene committata nel repository Git e deployata su Vercel. <span id="txt-files-tl">45</span> file, <span id="txt-lines-tl">16.630</span> righe di codice inserite in un singolo commit. Il progetto entra in produzione su <strong>www.rivaltasulmincio.it</strong>.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot milestone"></div>
-        <div class="timeline-date">4 maggio 2026 — Oggi</div>
-        <h2 class="timeline-heading"><span id="txt-deploy-h">…</span> deployment su Vercel</h2>
-        <div class="timeline-body">
-          <p>Il sito raggiunge <span id="txt-deploy-t">…</span> deployment su Vercel. Ogni deployment è una versione migliorata, rifinita, corretta. Il ciclo di sviluppo continua: nuove funzioni, ottimizzazioni, contenuti aggiornati. Il borgo di Rivalta sul Mincio ha ora una presenza online all'altezza della sua storia e dei suoi paesaggi.</p>
-        </div>
-      </div>
-
-    </div><!-- /timeline -->
-
-    <!-- Il commit storico -->
-    <div class="section-label">Il commit storico</div>
-    <div class="commit-block">
-      <div class="commit-line"><span class="key">commit </span><span class="hash">ab399aa7927720ae882630460e11079a57d82902</span></div>
-      <div class="commit-line"><span class="key">Author:</span> <span class="val">Alberto Pecchini &lt;pzkko@yahoo.com&gt;</span></div>
-      <div class="commit-line"><span class="key">Date:  </span> <span class="val">Mon May 4 22:11:56 2026 +0200</span></div>
-      <div class="commit-line" style="margin-top:12px; padding-left: 16px;"><span class="val">versione 04052026</span></div>
-      <div class="commit-line" style="margin-top:12px; opacity:0.5; font-size:0.75rem;">45 files changed, 16630 insertions(+)</div>
-    </div>
-
-    <!-- Pagine e funzioni -->
-    <div class="section-label">Tutte le pagine</div>
-    <div class="functions-grid">
-
-      <div class="fn-card fn-card--wide">
-        <div class="fn-card-title">Homepage</div>
-        <div class="fn-card-route">/</div>
-        <div class="fn-card-desc">Hero video in fullscreen (MP4+GIF), carousel Swiper, sezioni esperienze, galleria fotografica, Festa del Pesce, news, contatti. SEO Schema.org completo.</div>
-        <div class="fn-card-lines"><span id="fc-index">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Login</div>
-        <div class="fn-card-route">/login</div>
-        <div class="fn-card-desc">Autenticazione con Supabase Auth. Rate limiting attivo: <span id="fc-rl-a">5</span> tentativi / <span id="fc-rl-w">10</span> min, blocco <span id="fc-rl-l">15</span> min. Gestione errori, redirect post-login.</div>
-        <div class="fn-card-lines"><span id="fc-login">…</span> righe</div>
-      </div>
-
-      <div class="fn-card fn-card--wide">
-        <div class="fn-card-title">Dashboard</div>
-        <div class="fn-card-route">/dashboard</div>
-        <div class="fn-card-desc">Area personale dell'utente autenticato. Gestione contenuti, visualizzazione post, impostazioni rapide. Alias accessibile da <code>/me</code>.</div>
-        <div class="fn-card-lines"><span id="fc-dashboard">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Scrivi</div>
-        <div class="fn-card-route">/write</div>
-        <div class="fn-card-desc">Editor per la creazione di post e articoli. Supporto upload immagini, salvataggio su Supabase, anteprima in tempo reale.</div>
-        <div class="fn-card-lines"><span id="fc-write">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Post</div>
-        <div class="fn-card-route">/post</div>
-        <div class="fn-card-desc">Visualizzazione di un singolo articolo. Contenuto formattato, autore, data, sezione commenti con controllo privacy.</div>
-        <div class="fn-card-lines"><span id="fc-post">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Profilo</div>
-        <div class="fn-card-route">/profile</div>
-        <div class="fn-card-desc">Profilo pubblico dell'utente. Dati anagrafici, bio, storico articoli pubblicati.</div>
-        <div class="fn-card-lines"><span id="fc-profile">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Modifica Profilo</div>
-        <div class="fn-card-route">/modifica-profilo</div>
-        <div class="fn-card-desc">Modifica dei dati personali, avatar, bio. Salvataggio diretto su Supabase con feedback visivo.</div>
-        <div class="fn-card-lines"><span id="fc-modifica">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Preferenze</div>
-        <div class="fn-card-route">/preferenze</div>
-        <div class="fn-card-desc">Tema chiaro/scuro/auto, 4 dimensioni testo, densità UI, alto contrasto, privacy commenti (pubblica/membri/off), frequenza notifiche.</div>
-        <div class="fn-card-lines"><span id="fc-preferenze">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Categorie</div>
-        <div class="fn-card-route">/category</div>
-        <div class="fn-card-desc">Browsing dei contenuti per categoria. Filtro dinamico, lista articoli, navigazione rapida per argomento.</div>
-        <div class="fn-card-lines"><span id="fc-category">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Reset Password</div>
-        <div class="fn-card-route">/reset</div>
-        <div class="fn-card-desc">Recupero credenziali via email. Flusso completo: richiesta link, verifica token, nuova password.</div>
-        <div class="fn-card-lines"><span id="fc-reset">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Privacy Policy</div>
-        <div class="fn-card-route">/privacy</div>
-        <div class="fn-card-desc">Informativa privacy GDPR completa. Tipologie di dati raccolti, finalità, durata di conservazione, diritti dell'interessato.</div>
-        <div class="fn-card-lines"><span id="fc-privacy">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Cookie Policy</div>
-        <div class="fn-card-route">/cookie</div>
-        <div class="fn-card-desc">Informativa cookie. Distinzione tra cookie tecnici, analitici e di terze parti. Modalità di gestione e consenso.</div>
-        <div class="fn-card-lines"><span id="fc-cookie">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Note Legali</div>
-        <div class="fn-card-route">/note-legali</div>
-        <div class="fn-card-desc">Termini e condizioni d'uso del sito. Limitazioni di responsabilità, proprietà intellettuale, legge applicabile.</div>
-        <div class="fn-card-lines"><span id="fc-note-legali">…</span> righe</div>
-      </div>
-
-      <div class="fn-card">
-        <div class="fn-card-title">Storia</div>
-        <div class="fn-card-route">/storia</div>
-        <div class="fn-card-desc">Questa pagina. Cronologia completa del progetto, funzioni, stack tecnologico, numeri e identità visiva.</div>
-        <div class="fn-card-lines">— la stai leggendo —</div>
-      </div>
-
-    </div>
-
-    <!-- Stack tecnico -->
-    <div class="section-label">Stack tecnico</div>
-    <div class="stack-grid">
-      <div class="stack-item">
-        <span class="stack-layer">Server</span>
-        <span class="stack-name">Node.js</span>
-        <span class="stack-note">HTTP nativo, zero framework, porta 3001</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Frontend</span>
-        <span class="stack-name">HTML + CSS + JS</span>
-        <span class="stack-note">Vanilla, ES5/ES6+, nessun bundler</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Database</span>
-        <span class="stack-name">PostgreSQL</span>
-        <span class="stack-note">Via Supabase, RLS attivo</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Auth</span>
-        <span class="stack-name">Supabase Auth</span>
-        <span class="stack-note">JWT, sessioni persistenti</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Animazioni</span>
-        <span class="stack-name">Anime.js v<span id="v-animejs">…</span></span>
-        <span class="stack-note">Transizioni e micro-interazioni</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Carousel</span>
-        <span class="stack-name">Swiper.js v<span id="v-swiper">…</span></span>
-        <span class="stack-note">Hero, galleria, sezione valli</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Deployment</span>
-        <span class="stack-name">Vercel</span>
-        <span class="stack-note">Serverless, <span id="txt-deploy-stack">…</span> deploy</span>
-      </div>
-      <div class="stack-item">
-        <span class="stack-layer">Tipografia</span>
-        <span class="stack-name">Cabinet Grotesk</span>
-        <span class="stack-note">+ Fraunces per i titoli</span>
+        <p class="text-uppercase small text-muted mt-3 mb-1">Cosa è stato aggiunto</p>
+        <ul id="rel-changes"><li>caricamento…</li></ul>
+        <p class="text-uppercase small text-muted mt-3 mb-1">Ultimi push e commit</p>
+        <ul id="rel-commits"><li>caricamento…</li></ul>
       </div>
     </div>
+  </div>
 
-    <!-- Sicurezza -->
-    <div class="section-label">Sicurezza</div>
-    <ul class="security-list">
-      <li>Rate limiting client-side: blocco dopo <span id="txt-rl-sec-a">…</span> tentativi in <span id="txt-rl-sec-w">…</span> minuti, lock <span id="txt-rl-sec-l">…</span> minuti — storage in localStorage con fallback in memoria</li>
-      <li>Filtro parole inappropriate in italiano: <span id="txt-words-sec">…</span> termini bloccati nei contenuti generati dagli utenti</li>
-      <li>Row-Level Security (RLS) PostgreSQL su tutte le tabelle sensibili</li>
-      <li>Autorizzazione a due livelli: <code>is_admin()</code> e <code>is_member()</code> come funzioni SQL</li>
-      <li>Security headers HTTP: X-Content-Type-Options, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (geo/mic/camera disabilitati)</li>
-      <li>Protezione path traversal: ogni richiesta al server viene validata e normalizzata prima dell'accesso al file system</li>
-      <li>Redirect 308 permanente per URL legacy con estensione .html — nessuna URL injection possibile</li>
-      <li>Cache Control: le pagine HTML sono sempre <code>no-store</code>; solo gli asset statici (immagini, video) vengono cachati 24h in produzione</li>
-    </ul>
+  <!-- In diretta -->
+  <h2 class="h5 text-uppercase text-muted mt-4">In diretta</h2>
+  <p><span class="badge bg-success">Live</span> Attivo dal <span id="txt-launch-since">4 maggio 2026, ore 22:11:56</span></p>
+  <div class="d-flex gap-3 flex-wrap" id="uptimeRow">
+    <div class="text-center"><span class="h3 d-block" id="u-days">--</span><span class="text-muted small">Giorni</span></div>
+    <div class="text-center"><span class="h3 d-block" id="u-hours">--</span><span class="text-muted small">Ore</span></div>
+    <div class="text-center"><span class="h3 d-block" id="u-min">--</span><span class="text-muted small">Minuti</span></div>
+    <div class="text-center"><span class="h3 d-block" id="u-sec">--</span><span class="text-muted small">Secondi</span></div>
+  </div>
 
-    <!-- Identità visiva -->
-    <div class="section-label">Identità visiva</div>
-    <div class="color-row">
-      <div class="swatch">
-        <div class="swatch-dot" style="background:#1fbf7d;"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-emerald</span>
-          <span class="swatch-hex">#1fbf7d</span>
-          <span class="swatch-use">Accento natura, stati live</span>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-dot" style="background:#4a9bff;"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-azure</span>
-          <span class="swatch-hex">#4a9bff</span>
-          <span class="swatch-use">Link, metriche, interazioni</span>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-dot" style="background:#8b5cf6;"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-violet</span>
-          <span class="swatch-hex">#8b5cf6</span>
-          <span class="swatch-use">Gradienti, label, profondità</span>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-dot" style="background:#0b0d14;"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-ink</span>
-          <span class="swatch-hex">#0b0d14</span>
-          <span class="swatch-use">Titoli, testo forte, terminale</span>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-dot" style="background:#f5f5fa; border-color: rgba(0,0,0,0.12);"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-surface</span>
-          <span class="swatch-hex">#f5f5fa</span>
-          <span class="swatch-use">Card, pannelli, superfici</span>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-dot" style="background:linear-gradient(120deg,#1fbf7d,#4a9bff,#8b5cf6);"></div>
-        <div class="swatch-info">
-          <span class="swatch-name">--rsm-accent-grad</span>
-          <span class="swatch-hex">gradient</span>
-          <span class="swatch-use">Firma visiva homepage</span>
-        </div>
-      </div>
+  <!-- In cifre -->
+  <h2 class="h5 text-uppercase text-muted mt-4">In cifre</h2>
+  <div class="row g-2" id="numbersRow">
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-deploy"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Deployment</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-files"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">File</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-lines"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Righe codice</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-pages"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Pagine</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-videos"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Video</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-images"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Immagini</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-npm"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Dipendenze npm</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-words"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Parole filtrate</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-posts"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Post pubblicati</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-members"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Iscritti</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-comments"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Commenti</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="number-tile card-wrapper" data-live id="tile-likes"><div class="card card-bg"><div class="card-body text-center"><span class="num loading h4 d-block">…</span><span class="label text-muted small">Mi piace</span></div></div></div></div>
+  </div>
+
+  <!-- Cronologia -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Cronologia</h2>
+  <div id="timeline">
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Aprile 2026 — Inizio</p>
+      <h3 class="h5">Nasce il progetto</h3>
+      <p>La Pro Loco di Rivalta sul Mincio decide di costruire un sito che faccia davvero giustizia al borgo e alle sue Valli. Nessun template, nessun CMS, nessun framework JavaScript. Il progetto parte da zero: HTML puro, CSS custom scritto a mano, JavaScript vanilla. La scelta non è per pigrizia — è una dichiarazione di intenzioni: ogni dettaglio visivo e ogni millisecondo di prestazione devono essere controllati.</p>
+      <p>Il design system viene definito subito: una palette di sei colori ispirati alla natura locale, due famiglie tipografiche, e un linguaggio visivo che evoca il paesaggio lagunare del Parco del Mincio.</p>
     </div>
-
-    <!-- Il server -->
-    <div class="section-label">Come funziona il server</div>
-    <div class="timeline" style="margin-top: 0;">
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Routing</div>
-        <h2 class="timeline-heading">Clean URL senza estensione</h2>
-        <div class="timeline-body">
-          <p>Il server Node.js gestisce 14 pagine HTML senza estensione <code>.html</code>. Ogni richiesta a un URL del tipo <code>/pagina.html</code> viene reindirizzata automaticamente con un redirect 308 (permanente) verso <code>/pagina</code>. La homepage è accessibile solo da <code>/</code> — <code>/index</code> fa redirect. La dashboard è raggiungibile anche da <code>/me</code> per comodità.</p>
-        </div>
-      </div>
-
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Vercel</div>
-        <h2 class="timeline-heading">Deployment serverless</h2>
-        <div class="timeline-body">
-          <p>Tutta l'infrastruttura è su Vercel in modalità serverless. La configurazione in <code>vercel.json</code> fa sì che ogni richiesta passi per <code>server.js</code>. I file inclusi nel bundle di deployment includono tutte le pagine, le immagini, i video, i file JavaScript client e le dipendenze npm necessarie.</p>
-          <p>In produzione, gli asset statici (immagini, video) vengono cachati per 24 ore (<code>max-age=86400</code>). Le pagine HTML restano sempre fresche (<code>no-store</code>) per garantire che gli utenti vedano sempre l'ultima versione.</p>
-        </div>
-      </div>
-
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Aprile 2026 — Homepage</p>
+      <h3 class="h5">La homepage prende vita</h3>
+      <p><span id="txt-lines-index">3.641</span> righe per la pagina più importante: un'esperienza visiva immersiva con video MP4 delle Valli del Mincio in fullscreen, con fallback GIF. Il carousel fotografico usa Swiper.js v12.</p>
+      <p>La SEO viene curata con attenzione: markup Schema.org JSON-LD con quattro tipi (Organization, WebSite, TouristDestination, Festival), Open Graph, Twitter Cards, meta geografici, tag canonici.</p>
     </div>
-
-    <!-- Contatti -->
-    <div class="section-label">Pro Loco</div>
-    <div class="commit-block">
-      <div class="commit-line"><span class="key">Nome:     </span><span class="val">Pro Loco Rivalta sul Mincio</span></div>
-      <div class="commit-line"><span class="key">Sede:     </span><span class="val">Via Porto, 31 — Rivalta sul Mincio, 46040 (MN)</span></div>
-      <div class="commit-line"><span class="key">Email:    </span><span class="val">info@prolocorivalta.mn.it</span></div>
-      <div class="commit-line"><span class="key">Telefono: </span><span class="val">+39 339 899 5680</span></div>
-      <div class="commit-line"><span class="key">Web:      </span><span class="val">www.rivaltasulmincio.it</span></div>
-      <div class="commit-line"><span class="key">Geo:      </span><span class="val">45.181°N, 10.665°E — Parco Regionale del Mincio</span></div>
-      <div class="commit-line"><span class="key">Social:   </span><span class="val">Facebook · Instagram @prolocrivalta</span></div>
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Aprile–Maggio 2026 — Backend</p>
+      <h3 class="h5">Integrazione Supabase: il sito diventa una piattaforma</h3>
+      <p>La decisione cambia tutto: Supabase come backend completo. PostgreSQL come database, autenticazione JWT, Row-Level Security su ogni tabella sensibile. Il sito non è più solo una vetrina — diventa una community platform.</p>
+      <p>Nascono le pagine per gli utenti registrati: login, dashboard personale, editor di post con upload immagini, profilo pubblico, modifica profilo. Le funzioni SQL <code>is_admin()</code> e <code>is_member()</code> gestiscono i livelli di autorizzazione.</p>
     </div>
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Maggio 2026 — Sicurezza</p>
+      <h3 class="h5">Il sistema di sicurezza</h3>
+      <p>Viene scritto <code>security.client.js</code> — <span id="txt-sec-lines">254</span> righe di protezione lato client. Il rate limiter blocca l'account dopo <span id="txt-rl-attempts">5</span> tentativi in <span id="txt-rl-window">10</span> minuti, con lock di <span id="txt-rl-lock">15</span> minuti.</p>
+      <p>Il filtro contenuti inappropriati blocca <span id="txt-words-tl">11</span> termini in italiano. Il server Node.js viene corazzato con security headers HTTP e protezione contro path traversal.</p>
+    </div>
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Maggio 2026 — Pagine legali</p>
+      <h3 class="h5">Compliance e documentazione</h3>
+      <p>Vengono redatte e messe online tre pagine legali: Privacy Policy, Cookie Policy, Note Legali. Tutte con markup <code>noindex</code> per non frammentare il posizionamento SEO.</p>
+    </div>
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">Lunedì 4 maggio 2026, ore 22:11:56 CEST — Prima release</p>
+      <h3 class="h5">Versione 1.0 — Il primo commit ufficiale</h3>
+      <p>Dopo settimane di sviluppo, la versione 1.0 viene committata nel repository Git e deployata su Vercel. <span id="txt-files-tl">45</span> file, <span id="txt-lines-tl">16.630</span> righe di codice in un singolo commit. Il progetto entra in produzione su <strong>www.rivaltasulmincio.it</strong>.</p>
+    </div>
+    <div class="timeline-entry mb-4">
+      <p class="text-muted small mb-1">4 maggio 2026 — Oggi</p>
+      <h3 class="h5"><span id="txt-deploy-h">…</span> deployment su Vercel</h3>
+      <p>Il sito raggiunge <span id="txt-deploy-t">…</span> deployment su Vercel. Ogni deployment è una versione migliorata, rifinita, corretta. Il ciclo di sviluppo continua.</p>
+    </div>
+  </div>
 
-  </div><!-- /page-wrap -->
+  <!-- Il commit storico -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Il commit storico</h2>
+  <pre class="p-3 bg-dark text-white rounded"><code>commit ab399aa7927720ae882630460e11079a57d82902
+Author: Alberto Pecchini &lt;pzkko@yahoo.com&gt;
+Date:   Mon May 4 22:11:56 2026 +0200
+
+    versione 04052026
+
+45 files changed, 16630 insertions(+)</code></pre>
+
+  <!-- Tutte le pagine -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Tutte le pagine</h2>
+  <div class="row g-3">
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Homepage <code class="ms-1">/</code></h3><p class="small text-muted">Hero video in fullscreen, carousel, sezioni esperienze, galleria, Festa del Pesce, news, contatti. SEO Schema.org completo.</p><span class="small"><span id="fc-index">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Login <code class="ms-1">/login</code></h3><p class="small text-muted">Autenticazione con Supabase Auth. Rate limiting: <span id="fc-rl-a">5</span> tentativi / <span id="fc-rl-w">10</span> min, blocco <span id="fc-rl-l">15</span> min.</p><span class="small"><span id="fc-login">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Dashboard <code class="ms-1">/dashboard</code></h3><p class="small text-muted">Area personale dell'utente autenticato. Gestione contenuti, post, impostazioni rapide. Alias da <code>/me</code>.</p><span class="small"><span id="fc-dashboard">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Scrivi <code class="ms-1">/write</code></h3><p class="small text-muted">Editor per la creazione di post. Upload immagini, salvataggio su Supabase, anteprima in tempo reale.</p><span class="small"><span id="fc-write">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Post <code class="ms-1">/post</code></h3><p class="small text-muted">Visualizzazione di un singolo articolo. Contenuto formattato, autore, data, commenti con controllo privacy.</p><span class="small"><span id="fc-post">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Profilo <code class="ms-1">/profile</code></h3><p class="small text-muted">Profilo pubblico dell'utente. Dati anagrafici, bio, storico articoli pubblicati.</p><span class="small"><span id="fc-profile">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Modifica Profilo <code class="ms-1">/modifica-profilo</code></h3><p class="small text-muted">Modifica dei dati personali, avatar, bio. Salvataggio diretto su Supabase con feedback visivo.</p><span class="small"><span id="fc-modifica">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Categorie <code class="ms-1">/category</code></h3><p class="small text-muted">Browsing dei contenuti per categoria. Filtro dinamico, lista articoli, navigazione rapida.</p><span class="small"><span id="fc-category">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Reset Password <code class="ms-1">/reset</code></h3><p class="small text-muted">Recupero credenziali via email. Richiesta link, verifica token, nuova password.</p><span class="small"><span id="fc-reset">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Privacy Policy <code class="ms-1">/privacy</code></h3><p class="small text-muted">Informativa privacy GDPR completa.</p><span class="small"><span id="fc-privacy">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Cookie Policy <code class="ms-1">/cookie</code></h3><p class="small text-muted">Informativa cookie tecnici, analitici e di terze parti.</p><span class="small"><span id="fc-cookie">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Note Legali <code class="ms-1">/note-legali</code></h3><p class="small text-muted">Termini e condizioni d'uso del sito.</p><span class="small"><span id="fc-note-legali">…</span> righe</span></div></div></div></div>
+    <div class="col-12 col-md-6"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><h3 class="h6">Storia <code class="ms-1">/storia</code></h3><p class="small text-muted">Questa pagina. Cronologia completa del progetto, funzioni, stack, numeri e identità visiva.</p><span class="small">— la stai leggendo —</span></div></div></div></div>
+  </div>
+
+  <!-- Stack tecnico -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Stack tecnico</h2>
+  <div class="row g-3">
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Server</span><strong>Node.js</strong><span class="d-block small text-muted">HTTP nativo, zero framework</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Frontend</span><strong>Bootstrap Italia</strong><span class="d-block small text-muted">HTML + CSS + JS, nessun bundler</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Database</span><strong>PostgreSQL</strong><span class="d-block small text-muted">Via Supabase, RLS attivo</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Auth</span><strong>Supabase Auth</strong><span class="d-block small text-muted">JWT, sessioni persistenti</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Deployment</span><strong>Vercel</strong><span class="d-block small text-muted">Serverless, <span id="txt-deploy-stack">…</span> deploy</span></div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><span class="text-muted small d-block">Tipografia</span><strong>Titillium Web</strong><span class="d-block small text-muted">Bootstrap Italia</span></div></div></div></div>
+    <div class="col-6 col-md-3 d-none"><span id="v-animejs"></span><span id="v-swiper"></span></div>
+  </div>
+
+  <!-- Sicurezza -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Sicurezza</h2>
+  <ul>
+    <li>Rate limiting client-side: blocco dopo <span id="txt-rl-sec-a">…</span> tentativi in <span id="txt-rl-sec-w">…</span> minuti, lock <span id="txt-rl-sec-l">…</span> minuti</li>
+    <li>Filtro parole inappropriate in italiano: <span id="txt-words-sec">…</span> termini bloccati</li>
+    <li>Row-Level Security (RLS) PostgreSQL su tutte le tabelle sensibili</li>
+    <li>Autorizzazione a due livelli: <code>is_admin()</code> e <code>is_member()</code></li>
+    <li>Security headers HTTP: X-Content-Type-Options, X-Frame-Options: DENY, Referrer-Policy, Permissions-Policy</li>
+    <li>Protezione path traversal su ogni richiesta al server</li>
+    <li>Redirect 308 permanente per URL legacy con estensione .html</li>
+  </ul>
+
+  <!-- Contatti -->
+  <h2 class="h5 text-uppercase text-muted mt-4">Pro Loco</h2>
+  <pre class="p-3 bg-dark text-white rounded"><code>Nome:     Pro Loco Rivalta sul Mincio
+Sede:     Via Porto, 31 — Rivalta sul Mincio, 46040 (MN)
+Email:    info@prolocorivalta.mn.it
+Telefono: +39 339 899 5680
+Web:      www.rivaltasulmincio.it
+Geo:      45.181°N, 10.665°E — Parco Regionale del Mincio
+Social:   Facebook · Instagram @prolocrivalta</code></pre>
+
+</main>
 
 <!--PARTIAL:footer-->
+
   <script>
     (function () {
       'use strict';
@@ -1146,7 +264,6 @@
 
       /* ══════════════════════════════════════════
          SUPABASE — site_stats + contatori live
-         Aggiorna ogni 60 secondi
       ══════════════════════════════════════════ */
       function numIT(n) {
         return Number(n).toLocaleString('it-IT');
@@ -1172,7 +289,6 @@
         if (!window.supabase || typeof SUPABASE_URL === 'undefined') return;
         var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        /* ── site_stats: deployment, file, righe, pagine, video, immagini, ecc. ── */
         db.from('site_stats').select('key, value').then(function (r) {
           if (!r.data) return;
           var s = {};
@@ -1181,7 +297,6 @@
           function n(v)  { return v || '–'; }
           function ni(v) { return v ? numIT(v) : '–'; }
 
-          /* ── Tiles (cifre) ── */
           setTileValue('tile-deploy', s.deployments);
           setTileValue('tile-files',  s.files);
           setTileValue('tile-lines',  s.lines_of_code);
@@ -1191,22 +306,18 @@
           setTileValue('tile-npm',    s.npm_deps);
           setTileValue('tile-words',  s.filtered_words);
 
-          /* ── Hero pills ── */
           setText('pill-deploy', n(s.deployments));
           setText('pill-lines',  ni(s.lines_of_code));
           setText('pill-files',  n(s.files));
           setText('pill-pages',  n(s.pages));
           setText('pill-launch', n(s.launch_date));
 
-          /* ── Hero subtitle ── */
           setText('sub-pages',  n(s.pages));
           setText('sub-lines',  ni(s.lines_of_code));
           setText('sub-deploy', n(s.deployments));
 
-          /* ── Testo "Attivo dal..." ── */
           setText('txt-launch-since', n(s.launch_label));
 
-          /* ── Timeline inline ── */
           setText('txt-lines-index', ni(s.lines_index));
           setText('txt-sec-lines',   n(s.sec_client_lines));
           setText('txt-rl-attempts', n(s.rate_limit_attempts));
@@ -1218,7 +329,6 @@
           setText('txt-deploy-h',    n(s.deployments));
           setText('txt-deploy-t',    n(s.deployments));
 
-          /* ── Fn-card righe per pagina ── */
           setText('fc-index',       ni(s.lines_index));
           setText('fc-login',       ni(s.lines_login));
           setText('fc-dashboard',   ni(s.lines_dashboard));
@@ -1226,31 +336,26 @@
           setText('fc-post',        ni(s.lines_post));
           setText('fc-profile',     ni(s.lines_profile));
           setText('fc-modifica',    ni(s.lines_modifica_profilo));
-          setText('fc-preferenze',  ni(s.lines_preferenze));
           setText('fc-category',    ni(s.lines_category));
           setText('fc-reset',       ni(s.lines_reset));
           setText('fc-privacy',     ni(s.lines_privacy));
           setText('fc-cookie',      ni(s.lines_cookie));
           setText('fc-note-legali', ni(s.lines_note_legali));
 
-          /* ── Fn-card rate limiting ── */
           setText('fc-rl-a', n(s.rate_limit_attempts));
           setText('fc-rl-w', n(s.rate_limit_window));
           setText('fc-rl-l', n(s.rate_limit_lock));
 
-          /* ── Stack versioni + deploy ── */
           setText('v-animejs',        n(s.animejs_version));
           setText('v-swiper',         n(s.swiper_version));
           setText('txt-deploy-stack', n(s.deployments));
 
-          /* ── Security list ── */
           setText('txt-rl-sec-a',  n(s.rate_limit_attempts));
           setText('txt-rl-sec-w',  n(s.rate_limit_window));
           setText('txt-rl-sec-l',  n(s.rate_limit_lock));
           setText('txt-words-sec', n(s.filtered_words));
         });
 
-        /* ── Contatori live da tabelle applicazione ── */
         db.from('posts').select('*', { count: 'exact', head: true }).eq('published', true)
           .then(function (r) { setTileValue('tile-posts', r.count); });
 
@@ -1269,8 +374,6 @@
 
       /* ══════════════════════════════════════════
          ULTIMO AGGIORNAMENTO
-         — /api/changelog: commit info + AI changelog
-         — Supabase site_releases: nome versione
       ══════════════════════════════════════════ */
       var MONTHS_IT = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
 
@@ -1302,7 +405,6 @@
         setHTML('rel-commits', '<li style="opacity:.5">Nessun commit recente disponibile.</li>');
       }
 
-      // /api/changelog — commit info + AI changelog generato dal server
       fetch('/api/changelog', { cache: 'no-store' })
         .then(function (r) {
           if (!r.ok) throw new Error('http-' + r.status);
@@ -1342,9 +444,9 @@
                 ? c.changed_files.join(', ')
                 : 'Nessun dettaglio file disponibile';
               return '<li>' +
-                '<div class="row-top"><code>' + esc(c.short_sha || c.sha || '—') + '</code><span>' + esc(when) + '</span></div>' +
-                '<div class="row-msg">' + esc(c.message || 'Aggiornamento sito') + '</div>' +
-                '<div class="row-files">' + esc(fileLabel + ' · ' + fileList) + '</div>' +
+                '<div class="d-flex justify-content-between gap-2"><code>' + esc(c.short_sha || c.sha || '—') + '</code><span class="text-muted small">' + esc(when) + '</span></div>' +
+                '<div>' + esc(c.message || 'Aggiornamento sito') + '</div>' +
+                '<div class="text-muted small">' + esc(fileLabel + ' · ' + fileList) + '</div>' +
               '</li>';
             }).join(''));
           } else {
@@ -1355,7 +457,6 @@
           renderChangelogFallback('Changelog non raggiungibile');
         });
 
-      // Supabase site_releases — solo nome versione (etichetta manuale)
       (function () {
         if (!window.supabase || typeof SUPABASE_URL === 'undefined') return;
         var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1365,9 +466,7 @@
           .limit(1)
           .then(function (r) {
             var v = r.data && r.data[0] && r.data[0].version;
-            setHTML('rel-vname', v
-              ? v
-              : '<span style="opacity:.5">—</span>');
+            setHTML('rel-vname', v ? v : '<span style="opacity:.5">—</span>');
           })
           .catch(function () {
             setHTML('rel-vname', '<span style="opacity:.5">—</span>');

@@ -1,12 +1,12 @@
 (function () {
+  var SPRITES = '/vendor/bootstrap-italia/svg/sprites.svg';
+
   function $(selector, root) {
     return (root || document).querySelector(selector);
   }
-
   function $all(selector, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(selector));
   }
-
   function escapeHtml(value) {
     return String(value || '')
       .replace(/&/g, '&amp;')
@@ -15,215 +15,126 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
   }
-
-  function safeIconClass(value) {
-    var raw = String(value || '').trim();
-    if (!raw) return '';
-    var tokens = raw.split(/\s+/);
-    var valid = tokens.length > 0 && tokens.every(function (token) {
-      return /^fa-[a-z0-9-]+$/i.test(token);
-    });
-    return valid ? tokens.join(' ') : '';
-  }
-
-  function safeColor(value) {
-    var raw = String(value || '').trim();
-    return /^#[0-9a-f]{3,8}$/i.test(raw) ? raw : '#2f6b67';
+  function icon(name) {
+    return '<svg class="icon icon-sm"><use href="' + SPRITES + '#' + name + '"></use></svg>';
   }
 
   /* ── Supabase helpers ──────────────────────────────────────── */
-  function canUseSupabase() {
-    return typeof supabase !== 'undefined'
-      && typeof supabase.createClient === 'function'
-      && typeof SUPABASE_URL !== 'undefined'
-      && !String(SUPABASE_URL || '').includes('your-project');
-  }
-
   function createClient() {
     if (window.RSM_SUPABASE && typeof window.RSM_SUPABASE.createClient === 'function') {
-      return window.RSM_SUPABASE.createClient();
+      try { return window.RSM_SUPABASE.createClient(); } catch (_) { return null; }
     }
-    if (!canUseSupabase()) return null;
+    if (typeof supabase === 'undefined' || typeof supabase.createClient !== 'function') return null;
+    if (typeof SUPABASE_URL === 'undefined' || String(SUPABASE_URL || '').includes('your-project')) return null;
     return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
-  /* ── Dropdown profilo ──────────────────────────────────────── */
-  function getCurrentPath() {
-    return String(window.location.pathname || '').toLowerCase();
-  }
-
-  function closeDropdown() {
-    var dropdown = $('#profileDropdown');
-    var button = $('#profileBtn');
-    var header = $('[data-rsm-topbar]');
-    if (dropdown) dropdown.classList.remove('open');
-    if (button) button.setAttribute('aria-expanded', 'false');
-    if (header) header.classList.remove('menu-open');
-  }
-
-  function item(label, href, active, primary, iconClass) {
-    var safeClass = safeIconClass(iconClass);
-    var icon = safeClass ? '<i class="' + safeClass + '" aria-hidden="true"></i> ' : '';
-    return '<a href="' + href + '" role="menuitem" class="' + (active ? 'active ' : '') + (primary ? 'item-primary' : '') + '"><span>' + icon + '<span>' + label + '</span></span></a>';
-  }
-
-  function buildMenu(username, color, emoji, email) {
-    var current = getCurrentPath();
-    var queryUser = new URLSearchParams(window.location.search).get('u');
-    var safeUsername = escapeHtml(username || 'utente');
-    var safeEmail = escapeHtml(email || 'account attivo');
-    var safePage = escapeHtml((window.location.pathname || '/').replace(/^\//, '') || 'home');
-    var profileHref = 'profile?u=' + encodeURIComponent(username || 'utente');
-    var isProfile = current.indexOf('profile') >= 0;
-    var isDashboard = current.indexOf('/dashboard') >= 0 || current.indexOf('/me') >= 0;
-    var isWrite = current.indexOf('write') >= 0;
-    var isCategory = current.indexOf('/category') >= 0;
-    var isPreferences = current.indexOf('preferenze') >= 0;
-    var isReset = current.indexOf('reset') >= 0;
-    var isEditProfile = current.indexOf('modifica-profilo') >= 0;
-    var isStoria = current.indexOf('storia') >= 0;
-    var isPrivacy = current.indexOf('privacy') >= 0;
-    var isCookie = current.indexOf('cookie') >= 0;
-    var isNoteLegali = current.indexOf('note-legali') >= 0;
-    var canEditProfile = (isProfile && queryUser === username) || isEditProfile;
-    var accent = safeColor(color);
-    var hasEmoji = Boolean(emoji);
-    var avatar = hasEmoji ? escapeHtml(emoji) : '';
-    var editItem = canEditProfile
-      ? item('Modifica profilo', 'modifica-profilo', isEditProfile, false, 'fa-solid fa-user-pen')
-      : '';
-
-    return '<div class="profile-menu" id="profileMenu">'
-      + '<button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">'
-      + '<span class="profile-avatar' + (hasEmoji ? '' : ' profile-avatar--fa') + '" style="background:' + accent + '">' + avatar + '</span>'
-      + '<span>@' + safeUsername + '</span>'
-      + '</button>'
-      + '<div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Menu navigazione">'
-      + '<div class="profile-dropdown__meta"><strong>@' + safeUsername + '</strong><span>' + safeEmail + '</span><span>Pagina: ' + safePage + '</span></div>'
-      + '<div class="profile-dropdown__sep"></div>'
-      + '<div class="profile-dropdown__section-title">Navigazione</div>'
-      + item('Profilo', profileHref, isProfile && !isEditProfile, false, 'fa-solid fa-user')
-      + item('Dashboard', '/dashboard', isDashboard, false, 'fa-solid fa-gauge-high')
-      + editItem
-      + item('Scrivi', 'write', isWrite, true, 'fa-solid fa-pen-nib')
-      + item('Categorie', '/category', isCategory, false, 'fa-solid fa-folder-open')
-      + item('Aspetto', 'preferenze', isPreferences, false, 'fa-solid fa-palette')
-      + item('Reimposta Password', 'reset', isReset, false, 'fa-solid fa-key')
-      + '<div class="profile-dropdown__sep"></div>'
-      + '<div class="profile-dropdown__section-title">Sito</div>'
-      + item('Storia', '/storia', isStoria, false, 'fa-solid fa-landmark')
-      + item('Privacy', '/privacy', isPrivacy, false, 'fa-solid fa-shield-halved')
-      + item('Cookie', '/cookie', isCookie, false, 'fa-solid fa-cookie-bite')
-      + item('Note legali', '/note-legali', isNoteLegali, false, 'fa-solid fa-scale-balanced')
-      + '<div class="profile-dropdown__sep"></div>'
-      + '<button type="button" data-action="logout" class="danger" role="menuitem"><span><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span>Esci</span></span></button>'
-      + '</div></div>';
-  }
-
-  function bindMenu(client) {
-    var menu = $('#profileMenu');
-    var button = $('#profileBtn');
-    var dropdown = $('#profileDropdown');
-    var header = $('[data-rsm-topbar]');
-    if (!menu || !button || !dropdown) return;
-
-    var autoCloseTimer = null;
-    var leaveTimer = null;
-
-    function clearAutoCloseTimer() {
-      if (!autoCloseTimer) return;
-      clearTimeout(autoCloseTimer);
-      autoCloseTimer = null;
-    }
-
-    function scheduleAutoClose() {
-      clearAutoCloseTimer();
-      autoCloseTimer = setTimeout(function () {
-        closeDropdown();
-      }, 10000);
-    }
-
-    function openDropdown() {
-      dropdown.classList.add('open');
-      button.setAttribute('aria-expanded', 'true');
-      if (header) header.classList.add('menu-open');
-      scheduleAutoClose();
-    }
-
-    function clearLeaveTimer() {
-      if (!leaveTimer) return;
-      clearTimeout(leaveTimer);
-      leaveTimer = null;
-    }
-
-    button.addEventListener('click', function (event) {
-      /* apertura solo hover, niente toggle su click */
-      event.preventDefault();
-      event.stopPropagation();
-    });
-
-    menu.addEventListener('mouseenter', function () {
-      clearLeaveTimer();
-      openDropdown();
-    });
-
-    menu.addEventListener('mouseleave', function () {
-      clearLeaveTimer();
-      leaveTimer = setTimeout(function () {
-        clearAutoCloseTimer();
-        closeDropdown();
-      }, 120);
-    });
-
-    $all('[data-action="logout"]', dropdown).forEach(function (logoutButton) {
-      logoutButton.addEventListener('click', function () {
-        clearAutoCloseTimer();
-        client.auth.signOut().then(function () {
-          window.location.reload();
-        });
-      });
-    });
-
-    $all('a', dropdown).forEach(function (link) {
-      link.addEventListener('click', closeDropdown);
-    });
+  function authSlots() {
+    return $all('#nav-auth, #nav-auth-mobile');
   }
 
   /* ── Auth render ───────────────────────────────────────────── */
-  function renderGuest(nav) {
-    nav.innerHTML = '<a href="login" class="nav-login"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i><span>Accedi</span></a>';
+  function guestHtml() {
+    return '<a class="btn btn-primary btn-sm btn-icon" href="/login">' +
+      icon('it-user') + '<span>Accedi</span></a>';
   }
 
-  function renderSession(nav, session, profile) {
-    var emailName = String(session.user && session.user.email || 'profilo').split('@')[0] || 'profilo';
-    var username = (profile && profile.username) || emailName;
-    nav.innerHTML = buildMenu(username, profile && profile.avatar_color, profile && profile.avatar_emoji, session.user && session.user.email);
+  function menuHtml(username, email) {
+    var u = escapeHtml(username || 'utente');
+    var e = escapeHtml(email || 'account attivo');
+    var profileHref = '/profile?u=' + encodeURIComponent(username || 'utente');
+    function it(label, href, name) {
+      return '<li><a class="dropdown-item list-item" href="' + href + '">' + icon(name) + '<span>' + label + '</span></a></li>';
+    }
+    return '<div class="dropdown">' +
+      '<button class="btn btn-primary btn-sm dropdown-toggle btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
+        icon('it-user') + '<span>@' + u + '</span></button>' +
+      '<div class="dropdown-menu dropdown-menu-end">' +
+        '<div class="link-list-wrapper">' +
+          '<ul class="link-list">' +
+            '<li><span class="dropdown-item text-muted small">' + e + '</span></li>' +
+            '<li><span class="divider"></span></li>' +
+            it('Profilo', profileHref, 'it-user') +
+            it('Dashboard', '/dashboard', 'it-pa') +
+            it('Scrivi', '/write', 'it-pencil') +
+            it('Categorie', '/category', 'it-folder') +
+            it('Reimposta password', '/reset', 'it-key') +
+            '<li><span class="divider"></span></li>' +
+            '<li><a class="dropdown-item list-item" href="#" data-action="logout">' + icon('it-logout') + '<span>Esci</span></a></li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderAuth(html, client) {
+    authSlots().forEach(function (slot) { slot.innerHTML = html; });
+    if (client) {
+      $all('[data-action="logout"]').forEach(function (btn) {
+        btn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          client.auth.signOut().then(function () { window.location.reload(); });
+        });
+      });
+    }
+  }
+
+  async function initAuth() {
+    if (!authSlots().length) return;
+    var client = createClient();
+    if (!client) { renderAuth(guestHtml(), null); return; }
+
+    async function resolveProfile(session) {
+      if (!session || !session.user || !session.user.id) return null;
+      try {
+        var res = await client.from('profiles')
+          .select('username,avatar_emoji,avatar_color')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        return res && res.data ? res.data : null;
+      } catch (_) { return null; }
+    }
+
+    async function render(session) {
+      if (!session) { renderAuth(guestHtml(), client); return; }
+      var profile = await resolveProfile(session);
+      var emailName = String(session.user && session.user.email || 'profilo').split('@')[0] || 'profilo';
+      var username = (profile && profile.username) || emailName;
+      renderAuth(menuHtml(username, session.user && session.user.email), client);
+    }
+
+    client.auth.onAuthStateChange(function (_event, session) { render(session); });
+    try {
+      var result = await client.auth.getSession();
+      await render(result && result.data ? result.data.session : null);
+    } catch (_) {
+      renderAuth(guestHtml(), client);
+    }
   }
 
   /* ── Ricerca ───────────────────────────────────────────────── */
   var SEARCH_INDEX = [
-    { title: 'Intro',                 desc: 'La panoramica iniziale su Rivalta e il Mincio', url: '/#intro' },
-    { title: 'Festa del Pesce',       desc: 'Date, menu e dettagli della festa',            url: '/#festa' },
-    { title: 'Eventi',                desc: 'Calendario di appuntamenti e iniziative',      url: '/#eventi' },
-    { title: 'Galleria',              desc: 'Foto e video dal territorio',                  url: '/#galleria' },
-    { title: 'Territorio',            desc: 'Atlante, valli ed esperienze sul Mincio',      url: '/#territorio' },
-    { title: 'Contatti',              desc: 'Come raggiungerci e scriverci',                url: '/#contatti' },
-    { title: 'Categorie',             desc: 'Tutti gli argomenti e le sezioni',         url: '/category' },
-    { title: 'Dashboard',             desc: 'Il tuo spazio personale',                   url: '/dashboard' },
-    { title: 'Scrivi un articolo',    desc: 'Pubblica contenuti sul sito',               url: '/write' },
-    { title: 'Comunità',              desc: 'Le persone e i luoghi di Rivalta',          url: '/category' },
-    { title: 'Profilo utente',        desc: 'Visualizza e modifica il tuo profilo',      url: '/profile' },
-    { title: 'Preferenze aspetto',    desc: 'Tema, font e impostazioni visive',          url: '/preferenze' },
-    { title: 'Pro Loco Rivalta',      desc: "L'associazione del territorio",             url: '/' },
+    { title: 'Intro',              desc: 'Panoramica su Rivalta e il Mincio',       url: '/#intro' },
+    { title: 'Festa del Pesce',    desc: 'Date, menu e dettagli della festa',       url: '/#festa' },
+    { title: 'Eventi',             desc: 'Calendario di appuntamenti e iniziative', url: '/#eventi' },
+    { title: 'Galleria',           desc: 'Foto e video dal territorio',             url: '/#galleria' },
+    { title: 'Territorio',         desc: 'Atlante, valli ed esperienze sul Mincio', url: '/#territorio' },
+    { title: 'Contatti',           desc: 'Come raggiungerci e scriverci',           url: '/#contatti' },
+    { title: 'Categorie',          desc: 'Tutti gli argomenti e le sezioni',        url: '/category' },
+    { title: 'Origini di Rivalta', desc: 'Le origini storiche del borgo',           url: '/origini' },
+    { title: 'Storia del sito',    desc: 'Come è nato e cresciuto il sito',         url: '/storia' },
+    { title: 'Dashboard',          desc: 'Il tuo spazio personale',                 url: '/dashboard' },
+    { title: 'Scrivi un articolo', desc: 'Pubblica contenuti sul sito',             url: '/write' },
+    { title: 'Profilo utente',     desc: 'Visualizza e modifica il tuo profilo',    url: '/profile' },
+    { title: 'Pro Loco Rivalta',   desc: "L'associazione del territorio",           url: '/' }
   ];
 
   function searchItems(query) {
     var q = query.trim().toLowerCase();
     if (!q) return [];
     return SEARCH_INDEX.filter(function (r) {
-      return r.title.toLowerCase().indexOf(q) >= 0
-          || r.desc.toLowerCase().indexOf(q) >= 0;
-    }).slice(0, 7);
+      return r.title.toLowerCase().indexOf(q) >= 0 || r.desc.toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 8);
   }
 
   function renderResults(results, query) {
@@ -231,246 +142,103 @@
     if (!list) return;
     if (!query.trim()) { list.innerHTML = ''; return; }
     if (!results.length) {
-      list.innerHTML = '<li class="search-empty">Nessun risultato per «<em>' + escapeHtml(query) + '</em>»</li>';
+      list.innerHTML = '<li><span class="list-item text-muted">Nessun risultato per «' + escapeHtml(query) + '»</span></li>';
       return;
     }
     list.innerHTML = results.map(function (r) {
-      return '<li><a class="search-result-item" href="' + escapeHtml(r.url) + '">'
-        + '<span class="search-result-body">'
-        + '<span class="search-result-title">' + escapeHtml(r.title) + '</span>'
-        + '<span class="search-result-desc">' + escapeHtml(r.desc) + '</span>'
-        + '</span>'
-        + '</a></li>';
+      return '<li><a class="list-item" href="' + escapeHtml(r.url) + '">' +
+        '<span class="d-flex flex-column">' +
+          '<span class="fw-semibold">' + escapeHtml(r.title) + '</span>' +
+          '<small class="text-muted">' + escapeHtml(r.desc) + '</small>' +
+        '</span></a></li>';
     }).join('');
   }
 
-  function syncPanelHeight(panel, inner) {
-    panel.style.height = panel.classList.contains('open')
-      ? inner.scrollHeight + 'px'
-      : '0';
-  }
-
   function initSearch() {
-    var toggle = $('#searchToggle');
-    var panel  = $('#searchPanel');
-    if (!toggle || !panel) return;
-    var inner  = panel.querySelector('.search-panel-inner');
-    var input  = $('#searchInput');
-    if (!inner || !input) return;
-
-    function openSearch() {
-      panel.classList.add('open');
-      panel.removeAttribute('aria-hidden');
-      toggle.setAttribute('aria-expanded', 'true');
-      syncPanelHeight(panel, inner);
-      input.focus();
-    }
-
-    function closeSearch() {
-      panel.classList.remove('open');
-      panel.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
-      syncPanelHeight(panel, inner);
-      input.value = '';
-      renderResults([], '');
-    }
-
-    toggle.addEventListener('click', function () {
-      panel.classList.contains('open') ? closeSearch() : openSearch();
-    });
-
-    window.addEventListener('resize', function () {
-      if (panel.classList.contains('open')) syncPanelHeight(panel, inner);
-    });
+    var input = $('#searchInput');
+    var modal = $('#searchModal');
+    if (!input) return;
 
     var debounce;
     input.addEventListener('input', function () {
       clearTimeout(debounce);
       var q = input.value;
-      debounce = setTimeout(function () {
-        renderResults(searchItems(q), q);
-        syncPanelHeight(panel, inner);
-      }, 110);
+      debounce = setTimeout(function () { renderResults(searchItems(q), q); }, 110);
     });
 
-    $all('.search-chip').forEach(function (chip) {
+    $all('.rsm-search-chips .chip').forEach(function (chip) {
       chip.addEventListener('click', function () {
         input.value = chip.getAttribute('data-q') || '';
         renderResults(searchItems(input.value), input.value);
-        syncPanelHeight(panel, inner);
         input.focus();
       });
     });
 
+    if (modal) {
+      modal.addEventListener('shown.bs.modal', function () { input.focus(); });
+    }
+
     /* '/' apre la ricerca quando non si è in un campo testo */
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        if (panel.classList.contains('open')) { closeSearch(); toggle.focus(); }
-        else closeDropdown();
+      if (e.key !== '/' || !modal || !window.bootstrap || !window.bootstrap.Modal) return;
+      var tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      e.preventDefault();
+      window.bootstrap.Modal.getOrCreateInstance(modal).show();
+    });
+  }
+
+  /* ── Newsletter ────────────────────────────────────────────── */
+  function initNewsletter() {
+    var form = $('#newsletter-modal-form');
+    var input = $('#newsletter-modal-email');
+    var status = $('#newsletter-modal-status');
+    var btn = $('#newsletter-modal-btn');
+    var wrap = $('#newsletter-modal-form-wrap');
+    var success = $('#newsletter-modal-success');
+    if (!form || !input || !status) return;
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var email = input.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = 'Inserisci un indirizzo email valido.';
+        status.className = 'form-text small mt-1 text-danger';
+        input.focus();
         return;
       }
-      if (e.key === '/' && !panel.classList.contains('open')) {
-        var tag = document.activeElement && document.activeElement.tagName;
-        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
-          e.preventDefault();
-          openSearch();
-        }
-      }
-    });
+      if (btn) btn.disabled = true;
+      status.textContent = 'Invio in corso…';
+      status.className = 'form-text small mt-1 text-muted';
 
-    /* click fuori chiude */
-    document.addEventListener('click', function (e) {
-      if (!panel.classList.contains('open')) return;
-      var header = $('[data-rsm-topbar]');
-      if (header && !header.contains(e.target)) closeSearch();
-    }, { capture: true });
-  }
-
-  /* ── Init topbar (auth) ────────────────────────────────────── */
-  async function initTopbar() {
-    var nav = $('#nav-auth');
-    if (!nav) return;
-
-    var client = createClient();
-    if (!client) {
-      renderGuest(nav);
-      return;
-    }
-
-    async function resolveProfile(session) {
-      if (!session || !session.user || !session.user.id) return null;
-      try {
-        var result = await client.from('profiles')
-          .select('username,avatar_emoji,avatar_color')
-          .eq('id', session.user.id)
-          .maybeSingle();
-        return result && result.data ? result.data : null;
-      } catch (_) {
-        return null;
-      }
-    }
-
-    async function render(session) {
-      if (!session) { renderGuest(nav); return; }
-      var profile = await resolveProfile(session);
-      renderSession(nav, session, profile);
-      bindMenu(client);
-    }
-
-    /* document-level listeners (una sola volta) */
-    if (!window.__RSM_TOPBAR_BOUND__) {
-      document.addEventListener('click', function (event) {
-        var menu = $('#profileMenu');
-        if (menu && !menu.contains(event.target)) closeDropdown();
-      }, { capture: true });
-      window.__RSM_TOPBAR_BOUND__ = true;
-    }
-
-    client.auth.onAuthStateChange(function (_event, session) {
-      render(session);
-    });
-
-    try {
-      var result = await client.auth.getSession();
-      await render(result && result.data ? result.data.session : null);
-    } catch (_) {
-      renderGuest(nav);
-    }
-  }
-
-  initSearch();
-  initTopbar();
-
-  /* ── Newsletter modal & global modals ─────────────────────────── */
-  (function () {
-    /* Guard: avoid double-initialisation if the page's own script already ran */
-    if (window.__RSM_MODALS_BOUND__) return;
-    window.__RSM_MODALS_BOUND__ = true;
-
-    function closeModal(modal) {
-      modal.classList.remove('is-open');
-      setTimeout(function () { modal.setAttribute('hidden', ''); }, 380);
-    }
-
-    function openModal(modal) {
-      modal.removeAttribute('hidden');
-      requestAnimationFrame(function () {
-        modal.classList.add('is-open');
-        var first = modal.querySelector('input, textarea, select, button:not([data-modal-close])');
-        if (first) setTimeout(function () { first.focus(); }, 200);
-      });
-    }
-
-    /* Open triggers */
-    $all('[data-modal-open]').forEach(function (trigger) {
-      trigger.addEventListener('click', function () {
-        var id = trigger.getAttribute('data-modal-open');
-        var modal = document.getElementById(id);
-        if (modal) openModal(modal);
-      });
-    });
-
-    /* Close on backdrop click or [data-modal-close] */
-    $all('.rsm-modal').forEach(function (modal) {
-      modal.addEventListener('click', function (e) {
-        if (e.target === modal || (e.target.closest && e.target.closest('[data-modal-close]'))) {
-          closeModal(modal);
-        }
-      });
-    });
-
-    /* Close on Escape */
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      $all('.rsm-modal.is-open').forEach(closeModal);
-    });
-
-    /* Newsletter form submit */
-    var form   = document.getElementById('newsletter-modal-form');
-    var input  = document.getElementById('newsletter-modal-email');
-    var status = document.getElementById('newsletter-modal-status');
-    var btn    = document.getElementById('newsletter-modal-btn');
-    var panel  = form && form.closest('.rsm-nw-modal__panel');
-
-    if (form && input && status) {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        var email = input.value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          status.textContent = 'Inserisci un indirizzo email valido.';
-          status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
-          input.focus();
-          return;
-        }
-
-        /* Loading state */
-        if (btn) btn.disabled = true;
-        status.textContent = '';
-        status.className = 'rsm-nw-modal__status';
-
-        fetch('/api/newsletter/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email })
-        })
-          .then(function (res) { return res.json(); })
-          .then(function (data) {
-            if (data && data.ok) {
-              form.reset();
-              if (panel) panel.classList.add('is-success');
-            } else {
-              status.textContent = (data && data.error) || 'Errore durante l\'iscrizione. Riprova.';
-              status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
-              if (btn) btn.disabled = false;
-            }
-          })
-          .catch(function () {
-            status.textContent = 'Errore di rete. Controlla la connessione e riprova.';
-            status.className = 'rsm-nw-modal__status rsm-nw-modal__status--error';
+      fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && data.ok) {
+            form.reset();
+            status.textContent = '';
+            if (wrap) wrap.classList.add('d-none');
+            if (success) success.classList.remove('d-none');
+            if (btn) btn.classList.add('d-none');
+          } else {
+            status.textContent = (data && data.error) || 'Errore durante l\'iscrizione. Riprova.';
+            status.className = 'form-text small mt-1 text-danger';
             if (btn) btn.disabled = false;
-          });
-      });
-    }
-  }());
+          }
+        })
+        .catch(function () {
+          status.textContent = 'Errore di rete. Controlla la connessione e riprova.';
+          status.className = 'form-text small mt-1 text-danger';
+          if (btn) btn.disabled = false;
+        });
+    });
+  }
+
+  initAuth();
+  initSearch();
+  initNewsletter();
 })();

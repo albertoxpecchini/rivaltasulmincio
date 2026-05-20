@@ -1,0 +1,239 @@
+/* Ritocchi minimi sopra Bootstrap Italia — Rivalta sul Mincio */
+
+.rsm-brand-logo {
+  border-radius: 50%;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Pulsante di ricerca nell'header */
+.search-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: .25rem .5rem;
+  font-weight: 600;
+}
+.search-link .icon {
+  fill: currentColor;
+}
+
+/* Chip di ricerca rapida nella modale */
+.rsm-search-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+/* Slot auth nello slim header allineato a destra */
+.it-header-slim-right-zone #nav-auth .dropdown,
+.it-header-slim-right-zone #nav-auth > a {
+  display: inline-flex;
+}
+
+/* Spaziatura standard del contenuto di pagina */
+.rsm-page {
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
+}
+
+/* Hero homepage */
+.rsm-bi-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 60vh;
+  padding: 4rem 0;
+  color: #fff;
+  background: #0b1626 url('/img/mantova-laghi-aerea.jpg') center / cover no-repeat;
+}
+.rsm-bi-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 18, 38, .35), rgba(6, 18, 38, .75));
+}
+.rsm-bi-hero__content {
+  position: relative;
+}
+.rsm-bi-hero__content .lead { color: rgba(255, 255, 255, .9); }
+
+/* Stati a comparsa (login, reset, ecc.) */
+.state { display: none; }
+.state.active { display: block; }
+
+/* Viste multiple (login multi-step) */
+.view { display: none; }
+.view.is-active { display: block; }
+
+/* Messaggi inline (login) */
+.notice { padding: 10px 12px; border-radius: 8px; font-size: .9rem; margin: .5rem 0; }
+.notice.info { background: #e6effb; color: #06c; }
+.notice.error { background: #fbeaea; color: #b53838; }
+.notice.success { background: #e8f5ec; color: #2E7D32; }
+
+/* Banner di errore inline */
+.err-banner { display: none; }
+.err-banner.show { display: block; }
+
+/* Picker emoji/colore (modifica profilo) */
+.preview-avatar {
+  width: 72px; height: 72px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+.emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.emoji-grid input[type="radio"] { display: none; }
+.emoji-grid label {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; cursor: pointer; border-radius: 10px;
+  border: 2px solid transparent; padding: 6px;
+  background: rgba(0, 0, 0, .04);
+}
+.emoji-grid input:checked + label { border-color: var(--primary, #06c); }
+.color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.color-grid input[type="radio"] { display: none; }
+.color-grid label {
+  display: block; width: 100%; aspect-ratio: 1;
+  border-radius: 10px; cursor: pointer; border: 3px solid transparent;
+}
+.color-grid input:checked + label { border-color: #17324d; box-shadow: 0 0 0 2px var(--primary, #06c); }
+
+/* Avatar profilo + skeleton */
+.rsm-profile-avatar {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; color: #fff;
+  flex-shrink: 0;
+}
+.rsm-skel {
+  background: #e6e9ee;
+  border-radius: 6px;
+  display: inline-block;
+  min-height: 1em;
+}
+
+/* Miniature post (archivio, categorie, dashboard) */
+.rsm-post-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+}
+.rsm-post-thumb--empty {
+  background: linear-gradient(135deg, #0b1626, #1e2338);
+}
+
+/* Pulsante "ghost" usato in alcune pagine (post, dashboard) */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, .15);
+  color: inherit;
+}
+.btn-ghost:hover { background: rgba(0, 0, 0, .04); }
+
+/* ── Pagina articolo (post) ── */
+.rsm-article .post-nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
+.rsm-article .post-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+.rsm-article .badge-default { background: #e6effb; color: #06c; }
+.rsm-article .badge-green { background: #e3f5ec; color: #2E7D32; }
+.rsm-article .post-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: #5a6882; font-size: .85rem; margin-bottom: 1rem; }
+.rsm-article .meta-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .5; }
+.rsm-article .post-title { line-height: 1.2; margin-bottom: 1rem; }
+.rsm-article .post-lead { font-size: 1.05rem; color: #45526b; border-left: 3px solid #06c; padding-left: 14px; margin-bottom: 1.5rem; }
+.rsm-article .reading-brief { display: grid; gap: 10px; margin-bottom: 1.5rem; padding: 14px 0; border-top: 1px solid #e3e7ee; border-bottom: 1px solid #e3e7ee; }
+.rsm-article .reading-kicker { font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5a6882; }
+.rsm-article .reading-stats { display: flex; flex-wrap: wrap; gap: 8px; }
+.rsm-article .reading-chip { display: inline-flex; align-items: center; min-height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid #d5dbe6; color: #5a6882; font-size: .76rem; font-weight: 600; }
+.rsm-article .reading-links { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; }
+.rsm-article .content-divider { height: 1px; background: #e3e7ee; margin-bottom: 1.5rem; }
+.rsm-article .post-hero-img { margin: 0 0 1.75rem; border-radius: 12px; overflow: hidden; }
+.rsm-article .post-hero-img img { width: 100%; height: auto; display: block; }
+.rsm-article .content { font-size: 1.05rem; line-height: 1.7; }
+.rsm-article .content p { margin-bottom: 1.1em; }
+.rsm-article .content h2 { margin: 1.8em 0 .5em; }
+.rsm-article .content h3 { margin: 1.4em 0 .4em; }
+.rsm-article .content blockquote { margin: 1.4em 0; padding-left: 16px; border-left: 3px solid #c6a462; font-style: italic; color: #45526b; }
+.rsm-article .post-footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e3e7ee; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+.rsm-article .post-reactions { margin-top: 1rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.rsm-article .like-btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #d5dbe6; background: #fff; color: #45526b; border-radius: 999px; padding: 8px 16px; font-weight: 600; cursor: pointer; }
+.rsm-article .like-btn.on { color: #c0002a; border-color: rgba(192,0,42,.35); background: rgba(192,0,42,.08); }
+.rsm-article .like-btn:disabled { opacity: .55; cursor: not-allowed; }
+.rsm-article .like-count { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #eef1f6; font-size: .75rem; font-weight: 700; }
+.rsm-article .discussion { margin-top: 2rem; border-top: 1px solid #e3e7ee; padding-top: 1.5rem; display: grid; gap: 14px; }
+.rsm-article .discussion-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rsm-article .discussion-note { color: #5a6882; font-size: .85rem; }
+.rsm-article .discussion-msg { padding: 10px 12px; border-radius: 8px; font-size: .85rem; border: 1px solid #d5dbe6; background: #f7f9fc; }
+.rsm-article .discussion-msg.err { border-color: rgba(181,56,56,.3); color: #b53838; background: #fbeaea; }
+.rsm-article .discussion-msg.ok { border-color: rgba(46,125,50,.35); color: #2E7D32; background: #e8f5ec; }
+.rsm-article .comment-form { display: grid; gap: 10px; }
+.rsm-article .comment-form textarea { width: 100%; min-height: 110px; resize: vertical; border-radius: 8px; border: 1px solid #d5dbe6; padding: 12px; font: inherit; }
+.rsm-article .comments-list { display: grid; gap: 10px; }
+.rsm-article .comment-card { border: 1px solid #e3e7ee; border-radius: 8px; background: #fff; padding: 12px; display: grid; gap: 8px; }
+.rsm-article .comment-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: .8rem; color: #5a6882; }
+.rsm-article .comment-body { line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.rsm-article .comment-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rsm-article .mini-btn { background: #f2f4f8; border: 1px solid #d5dbe6; color: #45526b; border-radius: 18px; padding: 4px 10px; font-size: .75rem; cursor: pointer; }
+.rsm-article .community-rules { border: 1px dashed rgba(6,102,204,.3); border-radius: 8px; background: rgba(6,102,204,.05); padding: 12px; display: grid; gap: 6px; }
+.rsm-article .community-rules ul { margin: 0; padding-left: 18px; color: #5a6882; font-size: .82rem; }
+.rsm-article .skel { background: linear-gradient(90deg, #eef1f6 25%, #e2e7ef 50%, #eef1f6 75%); background-size: 400% 100%; animation: rsm-shimmer 1.4s ease-in-out infinite; border-radius: 8px; }
+@keyframes rsm-shimmer { to { background-position: -400% 0; } }
+.rsm-article .error-wrap { text-align: center; padding: 4rem 1rem; }
+
+/* ── Editor post (write) ── */
+.img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+.img-opt { display: block; cursor: pointer; border: 2px solid transparent; border-radius: 8px; padding: 4px; text-align: center; }
+.img-opt input { display: none; }
+.img-opt.selected { border-color: var(--primary, #06c); background: rgba(6,102,204,.06); }
+.img-thumb svg { width: 100%; height: auto; border-radius: 6px; display: block; }
+.img-label { font-size: .72rem; color: #5a6882; margin-top: 4px; }
+.status-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .75rem; font-weight: 700; background: #e6e9ee; color: #45526b; }
+.status-pill.pub { background: #e3f5ec; color: #2E7D32; }
+.status-pill.draft { background: #fef3e2; color: #b06f00; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #17324d; color: #fff; padding: 12px 20px; border-radius: 8px; transition: opacity .2s, transform .2s; z-index: 1080; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { background: #b53838; }
+.toast.ok { background: #2E7D32; }
+
+/* ── Dashboard ── */
+.dash-list { display: grid; gap: 10px; }
+.dash-list .list-item { border: 1px solid #e3e7ee; border-radius: 8px; background: #fff; padding: 12px; display: grid; gap: 6px; }
+.dash-list .list-item__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dash-list .list-item__title { font-weight: 700; }
+.dash-list .list-item__footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dash-list .mini-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.dash-list .list-link { font-weight: 600; }
+.dash-list .tiny { font-size: .74rem; color: #5a6882; }
+.pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; background: #eef1f6; color: #45526b; }
+.pill.pub { background: #e3f5ec; color: #2E7D32; }
+.pill.draft { background: #fef3e2; color: #b06f00; }
+.pill.pill-live { background: #e6effb; color: #06c; }
+.delta { font-weight: 700; font-size: .8rem; }
+.delta.up { color: #2E7D32; }
+.delta.down { color: #b53838; }
+.delta.same { color: #5a6882; }
+.empty-state { border: 1px dashed #cdd5e2; border-radius: 8px; padding: 16px; text-align: center; color: #5a6882; }
+.chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 120px; }
+.chart-bars .bar { flex: 1; background: linear-gradient(180deg, #6ee7b7, #059669); border-radius: 4px 4px 0 0; min-height: 3px; }
+.chart-labels { display: flex; gap: 6px; margin-top: 4px; }
+.chart-label { flex: 1; text-align: center; font-size: .7rem; color: #5a6882; }
+.group-switch .switch-btn { border: 1px solid #d5dbe6; background: #fff; padding: 4px 10px; border-radius: 999px; font-size: .8rem; cursor: pointer; }
+.group-switch .switch-btn.on { background: #06c; color: #fff; border-color: #06c; }
+
+/* Modale custom dashboard */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(6,18,38,.55); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 1070; }
+.modal-backdrop.open { display: flex; }
+.modal-backdrop .modal { background: #fff; border-radius: 12px; max-width: 560px; width: 100%; max-height: 90vh; overflow: auto; padding: 1.25rem; }
+.modal-backdrop .modal-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 1rem; }
+.modal-backdrop .field { margin-bottom: .75rem; display: grid; gap: 4px; }
+.modal-backdrop .field input, .modal-backdrop .field textarea, .modal-backdrop .field select { width: 100%; border: 1px solid #d5dbe6; border-radius: 8px; padding: 10px; font: inherit; }
+.modal-backdrop .field textarea { min-height: 140px; resize: vertical; }
+.modal-backdrop .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1rem; }
+.modal-backdrop .modal-msg { color: #b53838; font-size: .85rem; min-height: 1em; }
