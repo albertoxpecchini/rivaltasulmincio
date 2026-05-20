@@ -2,681 +2,13 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scrivi – Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
-  <link rel="stylesheet" href="/theme.css" />
-  <style>
-    body[data-page="write"] {
-      position: relative;
-      font-family: 'Syne', var(--rsm-font-sans, "Cabinet Grotesk", system-ui, sans-serif);
-      color: var(--rsm-text, #10192b);
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 14% 18%, rgba(31, 191, 125, 0.16), transparent 30%),
-        radial-gradient(circle at 86% 16%, rgba(74, 155, 255, 0.16), transparent 34%),
-        radial-gradient(circle at 78% 76%, rgba(139, 92, 246, 0.14), transparent 36%),
-        linear-gradient(180deg, var(--rsm-bg, #f8fbff) 0%, var(--rsm-paper, #eef4ff) 48%, var(--rsm-bg, #f8fbff) 100%);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .rsm-write-page,
-    .rsm-write-page *,
-    .rsm-write-page *::before,
-    .rsm-write-page *::after,
-    .toast,
-    .toast::before,
-    .toast::after {
-      box-sizing: border-box;
-    }
-
-    body[data-page="write"] button,
-    body[data-page="write"] input,
-    body[data-page="write"] select,
-    body[data-page="write"] textarea {
-      font: inherit;
-    }
-
-    body[data-page="write"]::before,
-    body[data-page="write"]::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body[data-page="write"]::before {
-      opacity: 0.18;
-      background-image:
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
-      background-size: 24px 24px, 36px 36px;
-      background-position: 0 0, 12px 14px;
-      mix-blend-mode: multiply;
-    }
-
-    body[data-page="write"]::after {
-      opacity: 0.9;
-      background:
-        radial-gradient(ellipse at 22% 24%, rgba(31, 191, 125, 0.14), transparent 42%),
-        radial-gradient(ellipse at 74% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
-        radial-gradient(ellipse at 66% 78%, rgba(139, 92, 246, 0.10), transparent 46%);
-      animation: rsm-write-aurora 26s ease-in-out infinite;
-    }
-
-    .rsm-write-page {
-      --write-ink: var(--rsm-text, #10192b);
-      --write-muted: var(--rsm-muted, #5a6882);
-      --write-line: rgba(18, 32, 58, 0.14);
-      --write-paper: rgba(255,255,255,0.72);
-      --write-paper-strong: rgba(255,255,255,0.9);
-      --write-brand: #1fbf7d;
-      --write-water: #4a9bff;
-      --write-violet: #8b5cf6;
-      --write-shadow: 0 24px 70px rgba(18, 32, 58, 0.16), 0 0 0 1px rgba(255,255,255,0.72) inset;
-      position: relative;
-      z-index: 1;
-      min-height: 100dvh;
-      padding: clamp(76px, 7vw, 108px) 0 clamp(30px, 5vw, 76px);
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .rsm-write-page a { color: inherit; text-decoration: none; }
-
-    .rsm-write__accent {
-      position: absolute;
-      width: 132%;
-      height: 132%;
-      top: -16%;
-      left: -16%;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse at 18% 22%, rgba(46, 224, 170, 0.18), transparent 48%),
-        radial-gradient(ellipse at 82% 78%, rgba(167, 119, 255, 0.18), transparent 48%),
-        radial-gradient(ellipse at 50% 50%, rgba(86, 156, 255, 0.10), transparent 60%);
-      animation: rsm-write-float 30s ease-in-out infinite;
-    }
-
-    .rsm-write__container {
-      width: min(100% - 40px, 1460px);
-      margin: 0 auto;
-    }
-
-    .rsm-write__layout {
-      display: grid;
-      grid-template-columns: minmax(260px, 0.58fr) minmax(420px, 1fr) minmax(260px, 0.54fr);
-      gap: clamp(14px, 2vw, 22px);
-      align-items: stretch;
-    }
-
-    .rsm-write__intro,
-    .compose-card,
-    .rsm-write__side-card,
-    .compose-status,
-    .stat-tile {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      border: 1px solid rgba(255,255,255,0.62);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,0.86), rgba(255,255,255,0.56)),
-        radial-gradient(ellipse at 0% 0%, rgba(31, 191, 125, 0.10), transparent 52%);
-      box-shadow: var(--write-shadow);
-      backdrop-filter: blur(22px) saturate(1.15);
-      -webkit-backdrop-filter: blur(22px) saturate(1.15);
-    }
-
-    .rsm-write__intro::before,
-    .compose-card::before,
-    .rsm-write__side-card::before,
-    .compose-status::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.85), transparent);
-      opacity: 0.9;
-    }
-
-    .rsm-write__intro {
-      min-height: 100%;
-      border-radius: 34px;
-      padding: clamp(24px, 3.4vw, 42px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 28px;
-    }
-
-    .page-eyebrow,
-    .rsm-write__kicker,
-    .compose-img-label,
-    .compose-dropdown-section,
-    .stat-tile-label,
-    .status-num-label {
-      font-size: 0.72rem;
-      font-weight: 900;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-
-    .page-eyebrow,
-    .rsm-write__kicker {
-      display: inline-flex;
-      width: max-content;
-      align-items: center;
-      gap: 9px;
-      color: rgba(16, 25, 43, 0.66);
-    }
-
-    .page-eyebrow::before,
-    .rsm-write__kicker::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--write-brand), var(--write-water));
-      box-shadow: 0 0 0 7px rgba(31, 191, 125, 0.12);
-    }
-
-    .page-title {
-      max-width: 9ch;
-      margin-top: 16px;
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(3rem, 7vw, 6.7rem);
-      font-weight: 850;
-      line-height: 0.86;
-      letter-spacing: -0.08em;
-      color: var(--write-ink);
-    }
-
-    .page-title::after {
-      content: "";
-      display: block;
-      width: min(180px, 55%);
-      height: 10px;
-      margin-top: 22px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--write-brand), var(--write-water), var(--write-violet));
-    }
-
-    .page-sub {
-      max-width: 31rem;
-      margin-top: 20px;
-      font-size: clamp(1rem, 1.3vw, 1.18rem);
-      line-height: 1.55;
-      color: var(--write-muted);
-    }
-
-    .page-summary {
-      display: grid;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .page-chip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 48px;
-      padding: 0 16px;
-      border: 1px solid rgba(18, 32, 58, 0.10);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.50);
-      color: rgba(16, 25, 43, 0.74);
-      font-weight: 850;
-      letter-spacing: -0.01em;
-    }
-
-    .page-chip::after {
-      content: "↗";
-      color: var(--write-water);
-      font-weight: 900;
-    }
-
-    .rsm-write__note {
-      display: grid;
-      gap: 10px;
-      padding: 18px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(5, 28, 44, 0.92), rgba(42, 17, 71, 0.88));
-      color: rgba(255,255,255,0.78);
-      box-shadow: 0 18px 44px rgba(5, 28, 44, 0.22);
-    }
-
-    .rsm-write__note strong {
-      color: #fff;
-      font-size: 1.04rem;
-      letter-spacing: -0.03em;
-    }
-
-    .rsm-write__note span {
-      line-height: 1.5;
-    }
-
-    .rsm-write__editor {
-      min-width: 0;
-      display: grid;
-      gap: 14px;
-    }
-
-    .compose-card {
-      min-height: clamp(620px, 74vh, 840px);
-      border-radius: 34px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .compose-inputs {
-      padding: clamp(22px, 3vw, 34px) clamp(20px, 3vw, 34px) 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .compose-title,
-    .compose-excerpt,
-    .compose-body {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: var(--write-ink);
-    }
-
-    .compose-title {
-      min-height: 108px;
-      padding: 0 0 16px;
-      border-bottom: 1px solid rgba(18, 32, 58, 0.11);
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(2.1rem, 4.7vw, 4.9rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.075em;
-    }
-
-    .compose-excerpt {
-      padding: 13px 0 15px;
-      border-bottom: 1px solid rgba(18, 32, 58, 0.10);
-      font-size: clamp(1rem, 1.2vw, 1.12rem);
-      font-weight: 650;
-      color: rgba(16, 25, 43, 0.74);
-    }
-
-    .compose-body {
-      flex: 1;
-      min-height: 320px;
-      resize: vertical;
-      padding: 24px clamp(20px, 3vw, 34px);
-      font-family: var(--rsm-font-sans, "Cabinet Grotesk", system-ui, sans-serif);
-      font-size: 1.08rem;
-      line-height: 1.78;
-    }
-
-    .compose-title::placeholder,
-    .compose-excerpt::placeholder,
-    .compose-body::placeholder { color: rgba(16, 25, 43, 0.28); }
-
-    .compose-hint {
-      min-height: 22px;
-      margin-top: -12px;
-      margin-bottom: 4px;
-      text-align: right;
-      color: rgba(16, 25, 43, 0.36);
-      font-size: 0.74rem;
-      font-weight: 800;
-    }
-
-    .compose-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px;
-      margin: 0 14px 14px;
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 24px;
-      background:
-        radial-gradient(ellipse at 12% 0%, rgba(102, 255, 214, 0.18), transparent 40%),
-        radial-gradient(ellipse at 86% 100%, rgba(196, 122, 255, 0.18), transparent 42%),
-        linear-gradient(135deg, rgba(5, 28, 44, 0.96), rgba(8, 38, 73, 0.94) 52%, rgba(42, 17, 71, 0.94));
-      box-shadow: 0 20px 54px rgba(5, 28, 44, 0.24);
-      flex-wrap: wrap;
-    }
-
-    .compose-bar-left,
-    .compose-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn,
-    .compose-dropdown-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.82);
-      padding: 8px 16px;
-      font-size: 0.84rem;
-      font-weight: 850;
-      cursor: pointer;
-      transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
-      white-space: nowrap;
-    }
-
-    .btn:hover,
-    .compose-dropdown-btn:hover,
-    .compose-dropdown-btn.open {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.17);
-      color: #fff;
-    }
-
-    .btn:disabled { opacity: 0.48; cursor: not-allowed; transform: none; }
-
-    .btn-primary {
-      border-color: transparent;
-      background: linear-gradient(135deg, #2ee0aa, #4a9bff 54%, #a777ff);
-      color: #07111f;
-      box-shadow: 0 12px 34px rgba(74, 155, 255, 0.32);
-    }
-
-    .btn-primary:hover { color: #07111f; box-shadow: 0 16px 42px rgba(74, 155, 255, 0.42); }
-    .btn-danger { color: #ffd7d7; border-color: rgba(255, 168, 168, 0.30); }
-    .btn-ghost { color: rgba(255,255,255,0.64); }
-
-    .compose-char {
-      display: inline-flex;
-      align-items: center;
-      min-height: 40px;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.58);
-      font-size: 0.78rem;
-      font-weight: 850;
-    }
-
-    .compose-dropdown { position: relative; }
-    .compose-dropdown-btn .caret { opacity: 0.65; font-size: 0.72rem; }
-
-    .compose-dropdown-menu {
-      position: absolute;
-      left: 0;
-      bottom: calc(100% + 10px);
-      z-index: 20;
-      min-width: 230px;
-      max-height: 310px;
-      overflow: auto;
-      padding: 10px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.66);
-      background: rgba(255,255,255,0.92);
-      box-shadow: 0 24px 58px rgba(18, 32, 58, 0.22);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px) scale(0.98);
-      transform-origin: bottom left;
-      transition: opacity 160ms ease, visibility 160ms ease, transform 160ms ease;
-    }
-
-    .compose-dropdown-menu.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-    .compose-dropdown-menu--img { width: min(380px, calc(100vw - 40px)); }
-
-    .compose-dropdown-section,
-    .compose-img-label {
-      margin: 4px 6px 9px;
-      color: rgba(16,25,43,0.46);
-    }
-
-    .compose-dropdown-item {
-      width: 100%;
-      border: 0;
-      border-radius: 14px;
-      background: transparent;
-      color: rgba(16,25,43,0.76);
-      padding: 11px 12px;
-      text-align: left;
-      font-weight: 850;
-      cursor: pointer;
-    }
-
-    .compose-dropdown-item:hover,
-    .compose-dropdown-item.selected { background: rgba(74,155,255,0.12); color: #10192b; }
-
-    .img-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .img-opt {
-      display: grid;
-      gap: 7px;
-      padding: 8px;
-      border: 1px solid rgba(18,32,58,0.10);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.62);
-      cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-    }
-
-    .img-opt input { position: absolute; opacity: 0; pointer-events: none; }
-    .img-opt:hover,
-    .img-opt.selected { transform: translateY(-1px); border-color: rgba(74,155,255,0.42); box-shadow: 0 14px 28px rgba(18,32,58,0.12); }
-    .img-thumb { overflow: hidden; border-radius: 13px; line-height: 0; }
-    .img-thumb svg { width: 100%; height: auto; display: block; }
-    .img-label { color: rgba(16,25,43,0.74); font-size: 0.82rem; font-weight: 850; }
-
-    .err-msg {
-      display: none;
-      padding: 14px 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(184,50,50,0.20);
-      background: rgba(184,50,50,0.08);
-      color: #8f2020;
-      font-weight: 850;
-    }
-
-    .err-msg:not(:empty) { display: block; }
-
-    .rsm-write__side {
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-
-    .rsm-write__side-card,
-    .compose-status {
-      border-radius: 30px;
-      padding: 22px;
-    }
-
-    .rsm-write__side-title {
-      margin: 10px 0 6px;
-      color: var(--write-ink);
-      font-size: clamp(1.5rem, 2vw, 2.2rem);
-      line-height: 1;
-      letter-spacing: -0.06em;
-      font-weight: 900;
-    }
-
-    .rsm-write__side-text {
-      color: var(--write-muted);
-      line-height: 1.55;
-      font-weight: 650;
-    }
-
-    .compose-status {
-      display: none;
-      gap: 16px;
-      flex-direction: column;
-    }
-
-    .compose-status.visible { display: flex; }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(18,32,58,0.12);
-      background: rgba(255,255,255,0.54);
-      color: var(--write-muted);
-      font-size: 0.78rem;
-      font-weight: 900;
-    }
-    .status-pill.draft { color: #9a5a0c; border-color: rgba(177,107,18,.25); background: rgba(177,107,18,.10); }
-    .status-pill.pub { color: #08764d; border-color: rgba(31,191,125,.28); background: rgba(31,191,125,.10); }
-    .status-date { color: var(--write-muted); font-size: 0.84rem; font-weight: 700; }
-    .status-num { color: var(--write-ink); font-size: 2.35rem; line-height: 1; font-weight: 950; letter-spacing: -0.07em; }
-    .status-num-label { color: var(--write-muted); }
-
-    .stats-strip {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat-tile {
-      min-height: 138px;
-      border-radius: 26px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-
-    .stat-tile::after {
-      content: "";
-      position: absolute;
-      width: 94px;
-      height: 94px;
-      top: -42px;
-      right: -34px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(74,155,255,0.22), transparent 66%);
-      z-index: -1;
-    }
-
-    .stat-tile-num {
-      color: var(--write-ink);
-      font-size: clamp(1.55rem, 3vw, 2.5rem);
-      font-weight: 950;
-      line-height: 0.92;
-      letter-spacing: -0.07em;
-      overflow-wrap: anywhere;
-    }
-
-    .stat-tile-num.pub { color: #0f9f6e; }
-    .stat-tile-num.draft { color: #9a5a0c; }
-    .stat-tile-num.total { color: #2476d4; }
-    .stat-tile-num.top { color: #6840d7; font-size: clamp(1.15rem, 2.1vw, 1.7rem); }
-    .stat-tile-label { color: rgba(16,25,43,0.48); }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 26px;
-      z-index: 1000;
-      max-width: min(520px, calc(100vw - 32px));
-      padding: 14px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.62);
-      background: rgba(16,25,43,0.88);
-      color: #fff;
-      box-shadow: 0 20px 46px rgba(16,25,43,0.28);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      font-weight: 850;
-      opacity: 0;
-      visibility: hidden;
-      transform: translate(-50%, 14px);
-      transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
-    }
-
-    .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-    .toast.err { background: rgba(127,29,29,0.92); }
-    .toast.ok { background: rgba(6,95,70,0.92); }
-
-    @keyframes rsm-write-aurora {
-      0%, 100% { transform: translate3d(0,0,0) scale(1); }
-      45% { transform: translate3d(-1.6%, 1%, 0) scale(1.03); }
-      72% { transform: translate3d(1.4%, -1.2%, 0) scale(1.02); }
-    }
-
-    @keyframes rsm-write-float {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(5deg) scale(1.04); }
-    }
-
-    @media (max-width: 1180px) {
-      .rsm-write__layout { grid-template-columns: minmax(0, 1fr) minmax(340px, 0.86fr); }
-      .rsm-write__intro { grid-column: 1 / -1; min-height: auto; }
-      .page-title { max-width: 12ch; }
-      .page-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 860px) {
-      .rsm-write-page { padding-top: 86px; }
-      .rsm-write__container { width: min(100% - 28px, 1460px); }
-      .rsm-write__layout { grid-template-columns: 1fr; }
-      .page-summary,
-      .stats-strip { grid-template-columns: 1fr; }
-      .compose-card { min-height: 620px; }
-      .compose-title { min-height: 84px; }
-      .compose-bar { align-items: stretch; }
-      .compose-bar-left,
-      .compose-bar-right { width: 100%; justify-content: space-between; }
-      .compose-dropdown-menu { bottom: auto; top: calc(100% + 10px); transform-origin: top left; }
-    }
-
-    @media (max-width: 560px) {
-      .rsm-write__intro,
-      .compose-card,
-      .rsm-write__side-card,
-      .compose-status { border-radius: 24px; }
-      .compose-bar-left,
-      .compose-bar-right { display: grid; grid-template-columns: 1fr; }
-      .btn,
-      .compose-dropdown-btn,
-      .compose-char { width: 100%; }
-      .img-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      body[data-page="write"]::after,
-      .rsm-write__accent { animation: none; }
-      .btn,
-      .compose-dropdown-btn,
-      .img-opt { transition: none; }
-    }
-  </style>
+  <title>Scrivi un post – Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
 </head>
-<body data-page="write">
+<body>
 
-<!-- SVG gradient defs for illustration thumbnails -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="g-water"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d8b89"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
   <linearGradient id="g-marsh"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5fb085"/><stop offset="100%" stop-color="#15433a"/></linearGradient>
@@ -687,127 +19,83 @@
 
 <!--PARTIAL:nav-->
 
-<main class="rsm-write-page">
-  <div class="rsm-write__accent" aria-hidden="true"></div>
-  <div class="rsm-write__container">
-    <div class="rsm-write__layout">
-      <section class="rsm-write__intro" aria-labelledby="page-title">
-        <div>
-          <div class="page-eyebrow">Rivalta sul Mincio</div>
-          <h1 class="page-title" id="page-title">Scrivi un post</h1>
-          <p class="page-sub" id="page-sub">Crea un nuovo contenuto per la comunit&agrave;, con lo stesso respiro luminoso della pagina di accesso.</p>
+<main class="container rsm-page">
+  <p class="text-primary fw-semibold text-uppercase small mb-1">Rivalta sul Mincio</p>
+  <h1 class="page-title" id="page-title">Scrivi un post</h1>
+  <p class="text-muted" id="page-sub">Crea un nuovo contenuto per la comunità: titolo, estratto, testo, categoria e illustrazione.</p>
+
+  <div class="row g-4 mt-1">
+    <div class="col-12 col-lg-8">
+      <div class="alert alert-danger" id="err-msg" style="display:none"></div>
+      <div class="card-wrapper"><div class="card card-bg"><div class="card-body">
+        <div class="form-group">
+          <label for="f-title">Titolo</label>
+          <input id="f-title" class="form-control" type="text" maxlength="120" placeholder="Titolo del post..." />
+          <small class="form-text"><span id="title-count">0 / 120</span></small>
         </div>
-
-        <div class="page-summary" aria-label="Struttura editor post">
-          <span class="page-chip">titolo + estratto</span>
-          <span class="page-chip">testo centrale</span>
-          <span class="page-chip">bozza o pubblicazione</span>
+        <div class="form-group">
+          <label for="f-excerpt">Estratto</label>
+          <input id="f-excerpt" class="form-control" type="text" maxlength="200" placeholder="Breve descrizione (facoltativa)..." />
+          <small class="form-text"><span id="excerpt-count">0 / 200</span></small>
         </div>
-
-        <div class="rsm-write__note">
-          <strong>Un editor pi&ugrave; editoriale</strong>
-          <span>Scrivi, scegli categoria e illustrazione, poi salva come bozza o pubblica quando il racconto &egrave; pronto.</span>
+        <div class="form-group">
+          <label for="f-content">Testo</label>
+          <textarea id="f-content" class="form-control" rows="12" placeholder="Inizia a scrivere... Racconta di Rivalta, degli eventi, della natura del Mincio..."></textarea>
+          <small class="form-text"><span id="content-count">0 car.</span></small>
         </div>
-      </section>
-
-      <section class="rsm-write__editor" aria-label="Editor post">
-        <div class="err-msg" id="err-msg"></div>
-
-        <div class="compose-card">
-          <div class="compose-inputs">
-            <input id="f-title" class="compose-title" type="text" maxlength="120" placeholder="Titolo del post..." />
-            <div class="compose-hint"><span id="title-count">0 / 120</span></div>
-            <input id="f-excerpt" class="compose-excerpt" type="text" maxlength="200" placeholder="Breve descrizione (facoltativa)..." />
-            <div class="compose-hint"><span id="excerpt-count">0 / 200</span></div>
-          </div>
-          <textarea id="f-content" class="compose-body" placeholder="Inizia a scrivere...&#10;&#10;Racconta di Rivalta, degli eventi, della natura del Mincio..."></textarea>
-          <div class="compose-bar">
-            <div class="compose-bar-left">
-              <div class="compose-dropdown" id="cat-wrap">
-                <button class="compose-dropdown-btn" id="cat-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="cat-label">Categoria</span><span class="caret" aria-hidden="true">▾</span>
-                </button>
-                <div class="compose-dropdown-menu" id="cat-menu" role="listbox"></div>
-              </div>
-              <select id="f-category" style="display:none" aria-hidden="true" tabindex="-1"></select>
-              <div class="compose-dropdown" id="img-wrap">
-                <button class="compose-dropdown-btn" id="compose-img-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="img-btn-label">Illustrazione</span><span class="caret" aria-hidden="true">▾</span>
-                </button>
-                <div class="compose-dropdown-menu compose-dropdown-menu--img" id="img-menu" role="listbox">
-                  <div class="compose-img-label">Scegli illustrazione</div>
-                  <div class="img-grid" id="img-grid"></div>
-                </div>
-              </div>
-              <span class="compose-char" id="content-count">0 car.</span>
-            </div>
-            <div class="compose-bar-right">
-              <a class="btn btn-ghost" href="/dashboard">Annulla</a>
-              <button class="btn" id="btn-draft" type="button">Bozza</button>
-              <button class="btn btn-primary" id="btn-publish" type="button">Pubblica</button>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="f-category">Categoria</label>
+              <select id="f-category" class="form-select"></select>
             </div>
           </div>
-        </div>
-      </section>
-
-      <aside class="rsm-write__side" aria-label="Statistiche e stato post">
-        <div class="rsm-write__side-card">
-          <div class="rsm-write__kicker">Dashboard</div>
-          <h2 class="rsm-write__side-title">Dati rapidi</h2>
-          <p class="rsm-write__side-text">Una vista compatta sui contenuti creati e sulla categoria pi&ugrave; usata.</p>
-        </div>
-
-        <div class="compose-status" id="card-status">
-          <div>
-            <span class="status-pill" id="status-pill">Bozza</span>
-            <div class="status-date" id="status-date"></div>
-          </div>
-          <div>
-            <span class="status-num" id="status-num">0</span>
-            <span class="status-num-label" id="status-num-label">caratteri</span>
-          </div>
-          <div class="rsm-write__side-text">
-            <span id="meta-username" style="font-weight:900;color:var(--write-ink)">@...</span>
-            <span id="meta-displayname"></span>
-          </div>
-          <div id="actions-label" class="rsm-write__side-text"></div>
-        </div>
-
-        <div class="stats-strip">
-          <div class="stat-tile">
-            <div class="stat-tile-num pub" id="ps-published">0</div>
-            <div class="stat-tile-label">Pubblicati</div>
-          </div>
-          <div class="stat-tile">
-            <div class="stat-tile-num draft" id="ps-drafts">0</div>
-            <div class="stat-tile-label">Bozze</div>
-          </div>
-          <div class="stat-tile">
-            <div class="stat-tile-num total" id="ps-total">0</div>
-            <div class="stat-tile-label">Totali</div>
-          </div>
-          <div class="stat-tile">
-            <div class="stat-tile-num top" id="ps-top-category">–</div>
-            <div class="stat-tile-label">Categoria top</div>
+          <div class="col-12 col-md-6">
+            <label class="d-block">Illustrazione <span id="img-btn-label" class="visually-hidden"></span></label>
+            <div class="img-grid" id="img-grid"></div>
           </div>
         </div>
-      </aside>
+        <div class="d-flex flex-wrap gap-2 justify-content-end mt-3">
+          <a class="btn btn-outline-secondary" href="/dashboard">Annulla</a>
+          <button class="btn btn-outline-primary" id="btn-draft" type="button">Salva bozza</button>
+          <button class="btn btn-primary" id="btn-publish" type="button">Pubblica</button>
+        </div>
+      </div></div></div>
     </div>
 
-    <div aria-hidden="true" style="display:none">
-      <div id="ps-bars"></div>
-      <div id="ps-chart-growth"></div>
-      <div id="ps-meta"></div>
-      <div id="ps-date"></div>
-    </div>
+    <aside class="col-12 col-lg-4">
+      <div class="card-wrapper"><div class="card card-bg"><div class="card-body">
+        <p class="text-uppercase small text-muted mb-1">Dati rapidi</p>
+        <h2 class="h5">Stato del post</h2>
+        <div id="card-status" class="mb-3">
+          <span class="status-pill" id="status-pill">Bozza</span>
+          <div class="text-muted small" id="status-date"></div>
+          <div class="mt-2"><span class="h4" id="status-num">0</span> <span class="text-muted small" id="status-num-label">caratteri</span></div>
+          <div class="mt-2"><strong id="meta-username">@...</strong> <span class="text-muted" id="meta-displayname"></span></div>
+          <div class="text-muted small" id="actions-label"></div>
+        </div>
+        <div class="row text-center g-2">
+          <div class="col-6"><div class="h4 mb-0" id="ps-published">0</div><div class="small text-muted">Pubblicati</div></div>
+          <div class="col-6"><div class="h4 mb-0" id="ps-drafts">0</div><div class="small text-muted">Bozze</div></div>
+          <div class="col-6"><div class="h4 mb-0" id="ps-total">0</div><div class="small text-muted">Totali</div></div>
+          <div class="col-6"><div class="h6 mb-0" id="ps-top-category">–</div><div class="small text-muted">Categoria top</div></div>
+        </div>
+      </div></div></div>
+    </aside>
+  </div>
+
+  <div aria-hidden="true" style="display:none">
+    <div id="ps-bars"></div>
+    <div id="ps-chart-growth"></div>
+    <div id="ps-meta"></div>
+    <div id="ps-date"></div>
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script src="categories.client.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 (function () {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -850,7 +138,11 @@
     el._t = setTimeout(() => { el.className = 'toast'; }, 2800);
   }
 
-  function setErr(msg) { $('err-msg').textContent = msg || ''; }
+  function setErr(msg) {
+    const el = $('err-msg');
+    el.textContent = msg || '';
+    el.style.display = msg ? 'block' : 'none';
+  }
 
   function fmtDate(iso) {
     if (!iso) return '';
@@ -930,16 +222,7 @@
     if (barsWrap) {
       barsWrap.innerHTML = monthCounts.map((item) => {
         const h = Math.max(10, Math.round((item.count / maxValue) * 78));
-        let gradient = 'linear-gradient(180deg,#a7f3d0,#6ee7b7)';
-        if (item.count >= maxValue * 0.9) gradient = 'linear-gradient(180deg,#34d399,#059669)';
-        else if (item.count >= maxValue * 0.55) gradient = 'linear-gradient(180deg,#6ee7b7,#34d399)';
-        return (
-          `<div class="ps-bar-group">` +
-          `<div class="ps-bar-val">${item.count}</div>` +
-          `<div class="ps-bar" style="height:${h}px;background:${gradient}"></div>` +
-          `<div class="ps-bar-lbl">${item.label}</div>` +
-          `</div>`
-        );
+        return `<div>${item.label}: ${item.count}</div>`;
       }).join('');
     }
 
@@ -959,19 +242,10 @@
     if (growthNode) {
       const sign = growth > 0 ? '+' : '';
       growthNode.textContent = `${sign}${growth}%`;
-      growthNode.style.color = growth >= 0 ? '#059669' : '#ff6b6b';
     }
-
-    if (metaNode) {
-      metaNode.textContent = `${fmtNum(avgChars)} caratteri medi per contenuto`;
-    }
-
+    if (metaNode) metaNode.textContent = `${fmtNum(avgChars)} caratteri medi per contenuto`;
     if (dateNode) {
-      const stamp = new Date().toLocaleDateString('it-IT', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
+      const stamp = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
       dateNode.textContent = `Aggiornato il ${stamp}`;
     }
   }
@@ -995,54 +269,17 @@
   function autoTitle(content) {
     const c = String(content || '').replace(/\s+/g, ' ').trim();
     if (!c) return 'Nuovo post';
-    return c.length <= 64 ? c : c.slice(0, 61).trim() + '\u2026';
-  }
-
-  /* ── Custom dropdown helpers ── */
-  function openDrop(btnId, menuId) {
-    const btn = $(btnId); const menu = $(menuId);
-    if (!btn || !menu) return;
-    menu.classList.add('open'); btn.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-  }
-  function closeDrop(btnId, menuId) {
-    const btn = $(btnId); const menu = $(menuId);
-    if (!btn || !menu) return;
-    menu.classList.remove('open'); btn.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
-  function toggleDrop(btnId, menuId) {
-    const menu = $(menuId);
-    if (!menu) return;
-    menu.classList.contains('open') ? closeDrop(btnId, menuId) : openDrop(btnId, menuId);
+    return c.length <= 64 ? c : c.slice(0, 61).trim() + '…';
   }
 
   function buildCategories() {
     const sel  = $('f-category');
-    const menu = $('cat-menu');
     const lbl  = $('cat-label');
     sel.innerHTML = CATEGORIES
       .map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
       .join('');
     const first = CATEGORIES[0] || 'Categoria';
     if (lbl) lbl.textContent = first;
-    if (menu) {
-      menu.innerHTML =
-        '<div class="compose-dropdown-section">Categoria</div>' +
-        CATEGORIES.map(c =>
-          `<button class="compose-dropdown-item${c === first ? ' selected' : ''}" data-val="${escapeHtml(c)}" type="button" role="option">${escapeHtml(c)}</button>`
-        ).join('');
-      menu.querySelectorAll('.compose-dropdown-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const val = item.dataset.val;
-          sel.value = val;
-          if (lbl) lbl.textContent = val;
-          menu.querySelectorAll('.compose-dropdown-item').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          closeDrop('cat-btn', 'cat-menu');
-        });
-      });
-    }
   }
 
   function buildImgPicker() {
@@ -1062,7 +299,6 @@
         selectedImg = opt.dataset.key;
         const btnLbl = $('img-btn-label');
         if (btnLbl) btnLbl.textContent = opt.querySelector('.img-label')?.textContent || opt.dataset.key;
-        closeDrop('compose-img-toggle', 'img-menu');
       });
     });
   }
@@ -1081,8 +317,7 @@
     titleEl.addEventListener('input',   () => { $('title-count').textContent   = `${titleEl.value.length} / 120`; });
     excerptEl.addEventListener('input', () => { $('excerpt-count').textContent = `${excerptEl.value.length} / 200`; });
     contentEl.addEventListener('input', () => {
-      if ($('card-status').classList.contains('visible'))
-        $('status-num').textContent = contentEl.value.length.toLocaleString('it-IT');
+      $('status-num').textContent = contentEl.value.length.toLocaleString('it-IT');
     });
   }
 
@@ -1100,17 +335,10 @@
     $('f-content').value               = data.content || '';
     const loadedCat = data.category || CATEGORIES[0];
     $('f-category').value = loadedCat;
-    const catLbl = $('cat-label');
-    if (catLbl) catLbl.textContent = loadedCat;
-    document.querySelectorAll('#cat-menu .compose-dropdown-item').forEach(i => {
-      i.classList.toggle('selected', i.dataset.val === loadedCat);
-    });
     $('title-count').textContent       = `${(data.title   || '').length} / 120`;
     $('excerpt-count').textContent     = `${(data.excerpt || '').length} / 200`;
     if (data.image_type) selectImg(data.image_type);
-    const sc   = $('card-status');
     const pill = $('status-pill');
-    sc.classList.add('visible');
     if (data.published) { pill.className = 'status-pill pub';   pill.textContent = 'Pubblicato'; }
     else                { pill.className = 'status-pill draft'; pill.textContent = 'Bozza'; }
     $('status-num').textContent       = (data.content || '').length.toLocaleString('it-IT');
@@ -1126,7 +354,7 @@
     const title    = $('f-title').value.trim();
     const excerpt  = $('f-excerpt').value.trim();
     const category = $('f-category').value.trim();
-    if (!content)  { setErr('Il contenuto \u00e8 obbligatorio.'); return; }
+    if (!content)  { setErr('Il contenuto è obbligatorio.'); return; }
     if (!category) { setErr('Seleziona una categoria.'); return; }
     $('btn-draft').disabled = $('btn-publish').disabled = true;
     const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
@@ -1162,7 +390,7 @@
 
   async function deletePost() {
     if (!editId) return;
-    if (!confirm('Eliminare questo post? L\u2019azione \u00e8 irreversibile.')) return;
+    if (!confirm('Eliminare questo post? L’azione è irreversibile.')) return;
     const { error } = await sb.from('posts').delete().eq('id', editId).eq('user_id', session.user.id);
     if (error) { toast('Errore: ' + error.message, 'err'); return; }
     toast('Post eliminato.', 'ok');
@@ -1172,39 +400,18 @@
   async function init() {
     const { data: sd } = await sb.auth.getSession();
     session = sd?.session || null;
-    if (!session) { window.location.href = 'login'; return; }
+    if (!session) { window.location.href = '/login'; return; }
     const { data: prof } = await sb.from('profiles')
       .select('id,username,display_name,avatar_emoji,avatar_color').eq('id', session.user.id).single();
     profile = prof;
     if (prof) {
-      $('meta-username').textContent    = '@' + (prof.username || '\u2013');
+      $('meta-username').textContent    = '@' + (prof.username || '–');
       $('meta-displayname').textContent = prof.display_name || '';
     }
 
     buildCategories();
     buildImgPicker();
     bindCounters();
-    /* Custom dropdown toggles */
-    $('cat-btn')?.addEventListener('click', e => { e.stopPropagation(); toggleDrop('cat-btn', 'cat-menu'); });
-    $('compose-img-toggle')?.addEventListener('click', e => { e.stopPropagation(); toggleDrop('compose-img-toggle', 'img-menu'); });
-    document.addEventListener('click', () => {
-      closeDrop('cat-btn', 'cat-menu');
-      closeDrop('compose-img-toggle', 'img-menu');
-    }, { capture: true });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        closeDrop('cat-btn', 'cat-menu');
-        closeDrop('compose-img-toggle', 'img-menu');
-      }
-    });
-    /* live char count in compose bar */
-    const contentInput = $('f-content');
-    const contentCount = $('content-count');
-    if (contentInput && contentCount) {
-      contentInput.addEventListener('input', () => {
-        contentCount.textContent = contentInput.value.length.toLocaleString('it-IT') + ' car.';
-      });
-    }
     await refreshProjectStats();
     const params = new URLSearchParams(location.search);
     editId = params.get('id') || null;
@@ -1218,9 +425,6 @@
   init();
 })();
 </script>
-
-<!--PARTIAL:footer-->
-
 
 </body>
 </html>

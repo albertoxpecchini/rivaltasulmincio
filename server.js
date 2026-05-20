@@ -11,11 +11,13 @@ const SUPABASE_ANON_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
-const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|theme\.css))(?:\?[^"']*)?(["'])/gi;
+const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|rsm-bi\.css))(?:\?[^"']*)?(["'])/gi;
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
-const TOPBAR_FONTS_HREF = 'https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap';
-const FONT_AWESOME_HREF = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
-const PAGE_ICONS_CLIENT_JS = '/partials/page-icons.client.js';
+const BI_CSS_HREF = '/vendor/bootstrap-italia/css/bootstrap-italia.min.css';
+const BI_JS_SRC = '/vendor/bootstrap-italia/js/bootstrap-italia.bundle.min.js';
+const BI_FONTS_PATH = '/vendor/bootstrap-italia/fonts';
+const RSM_CSS_HREF = '/rsm-bi.css';
+const SUPABASE_SDK_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
 const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
@@ -204,48 +206,44 @@ function injectTopbarAssets(html) {
   if (!html.includes('data-rsm-topbar')) return html;
 
   let result = html;
-  const hasTopbarCss = /<link[^>]+href=["'][^"']*\/partials\/topbar\.css(?:\?[^"']*)?["'][^>]*>/i.test(result);
+  const hasBiCss = result.includes(BI_CSS_HREF);
+  const hasRsmCss = result.includes(RSM_CSS_HREF);
+  const hasBiJs = result.includes(BI_JS_SRC);
   const hasTopbarJs = /<script[^>]+src=["'][^"']*\/partials\/topbar\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
-  const hasPageIconsJs = /<script[^>]+src=["'][^"']*\/partials\/page-icons\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
-  const hasFontsApiPreconnect = /<link[^>]+href=["']https:\/\/fonts\.googleapis\.com["'][^>]*>/i.test(result);
-  const hasFontsStaticPreconnect = /<link[^>]+href=["']https:\/\/fonts\.gstatic\.com["'][^>]*>/i.test(result);
-  const hasTopbarFonts = result.includes(TOPBAR_FONTS_HREF);
-  const hasCdnjsPreconnect = /<link[^>]+href=["']https:\/\/cdnjs\.cloudflare\.com["'][^>]*>/i.test(result);
-  const hasFontAwesome = /<link[^>]+href=["'][^"']*font-awesome[^"']*\.css(?:\?[^"']*)?["'][^>]*>/i.test(result)
-    || result.includes(FONT_AWESOME_HREF);
+  const hasSupabaseSdk = /<script[^>]+src=["'][^"']*supabase-js@2[^"']*["'][^>]*><\/script>/i.test(result);
+  const hasSupabaseConfig = /<script[^>]+src=["'][^"']*supabase\.config\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
 
   if (result.includes('</head>')) {
     const headInjections = [];
-
-    if (!hasFontsApiPreconnect) {
-      headInjections.push('  <link rel="preconnect" href="https://fonts.googleapis.com" />');
+    if (!hasBiCss) {
+      headInjections.push(`  <link rel="stylesheet" href="${BI_CSS_HREF}" />`);
     }
-    if (!hasFontsStaticPreconnect) {
-      headInjections.push('  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />');
+    if (!hasRsmCss) {
+      headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath(RSM_CSS_HREF)}" />`);
     }
-    if (!hasTopbarFonts) {
-      headInjections.push(`  <link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" media="print" onload="this.onload=null;this.media='all'" />`);
-      headInjections.push(`  <noscript><link rel="stylesheet" href="${TOPBAR_FONTS_HREF}" /></noscript>`);
-    }
-    if (!hasCdnjsPreconnect) {
-      headInjections.push('  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />');
-    }
-    if (!hasFontAwesome) {
-      headInjections.push(`  <link rel="stylesheet" href="${FONT_AWESOME_HREF}" />`);
-    }
-    if (!hasTopbarCss) {
-      headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath('/partials/topbar.css')}" />`);
-    }
-
     if (headInjections.length) {
       result = result.replace('</head>', `${headInjections.join('\n')}\n</head>`);
     }
   }
-  if (!hasTopbarJs && result.includes('</body>')) {
-    result = result.replace('</body>', `  <script src="${versionedAssetPath('/partials/topbar.client.js')}" defer></script>\n</body>`);
-  }
-  if (!hasPageIconsJs && result.includes('</body>')) {
-    result = result.replace('</body>', `  <script src="${versionedAssetPath(PAGE_ICONS_CLIENT_JS)}" defer></script>\n</body>`);
+
+  if (result.includes('</body>')) {
+    const bodyInjections = [];
+    if (!hasBiJs) {
+      bodyInjections.push(`  <script src="${BI_JS_SRC}"></script>`);
+      bodyInjections.push(`  <script>if(window.bootstrap&&bootstrap.loadFonts)bootstrap.loadFonts('${BI_FONTS_PATH}');</script>`);
+    }
+    if (!hasSupabaseSdk) {
+      bodyInjections.push(`  <script src="${SUPABASE_SDK_SRC}"></script>`);
+    }
+    if (!hasSupabaseConfig) {
+      bodyInjections.push('  <script src="/supabase.config.js"></script>');
+    }
+    if (!hasTopbarJs) {
+      bodyInjections.push(`  <script src="${versionedAssetPath('/partials/topbar.client.js')}"></script>`);
+    }
+    if (bodyInjections.length) {
+      result = result.replace('</body>', `${bodyInjections.join('\n')}\n</body>`);
+    }
   }
   return result;
 }
@@ -269,7 +267,6 @@ const HTML_PAGES = new Set([
   'write',
   'reset',
   'profile',
-  'preferenze',
   'post',
   'modifica-profilo',
   'dashboard',
@@ -295,6 +292,9 @@ const MIME = {
   '.webp': 'image/webp',
   '.ico':  'image/x-icon',
   '.woff2':'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf':  'font/ttf',
+  '.eot':  'application/vnd.ms-fontobject',
   '.xml':  'application/xml; charset=utf-8',
   '.txt':  'text/plain; charset=utf-8',
 };

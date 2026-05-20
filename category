@@ -4,770 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Categoria - Rivalta sul Mincio</title>
-  <meta name="theme-color" content="#ffffff" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';t=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.theme=t;r.dataset.themePref=ok?p.theme:'chiaro';r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=t==='scuro'?'#0a0c14':'#ffffff';}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
-  <link rel="stylesheet" href="/theme.css" />
-  <style>
-    body[data-page="category"] {
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-      font-family: var(--rsm-font-sans);
-      color: var(--rsm-text);
-      background:
-        radial-gradient(circle at 14% 16%, rgba(31, 191, 125, 0.16), transparent 30%),
-        radial-gradient(circle at 84% 14%, rgba(74, 155, 255, 0.17), transparent 34%),
-        radial-gradient(circle at 80% 78%, rgba(139, 92, 246, 0.13), transparent 38%),
-        linear-gradient(180deg, var(--rsm-bg) 0%, var(--rsm-paper) 48%, var(--rsm-bg) 100%);
-    }
-
-    .rsm-category-page,
-    .rsm-category-page *,
-    .rsm-category-page *::before,
-    .rsm-category-page *::after {
-      box-sizing: border-box;
-    }
-
-    body[data-page="category"]::before,
-    body[data-page="category"]::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    body[data-page="category"]::before {
-      opacity: 0.18;
-      background-image:
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.14) 0.6px, transparent 1.2px),
-        radial-gradient(circle at 1px 1px, rgba(11, 13, 20, 0.08) 0.6px, transparent 1.2px);
-      background-position: 0 0, 12px 14px;
-      background-size: 24px 24px, 36px 36px;
-      mix-blend-mode: multiply;
-    }
-
-    body[data-page="category"]::after {
-      opacity: 0.88;
-      background:
-        radial-gradient(ellipse at 18% 22%, rgba(31, 191, 125, 0.14), transparent 42%),
-        radial-gradient(ellipse at 78% 20%, rgba(74, 155, 255, 0.14), transparent 44%),
-        radial-gradient(ellipse at 66% 80%, rgba(139, 92, 246, 0.10), transparent 46%);
-      animation: rsm-category-aurora 28s ease-in-out infinite;
-    }
-
-    html[data-theme="scuro"] body[data-page="category"]::before {
-      opacity: 0.2;
-      background-image:
-        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.18) 0.6px, transparent 1.2px),
-        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 0.6px, transparent 1.2px);
-      mix-blend-mode: screen;
-    }
-
-    body[data-page="category"] .rsm-foot {
-      margin-top: 0 !important;
-      background:
-        radial-gradient(ellipse at 14% -10%, rgba(102, 255, 214, 0.18), transparent 38%),
-        radial-gradient(ellipse at 80% -8%, rgba(126, 188, 255, 0.22), transparent 42%),
-        radial-gradient(ellipse at 100% 100%, rgba(196, 122, 255, 0.20), transparent 48%),
-        linear-gradient(160deg, #051c2c 0%, #082649 50%, #2a1147 100%);
-    }
-
-    .rsm-category-page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      padding: clamp(82px, 8vw, 118px) 0 clamp(58px, 7vw, 96px);
-      isolation: isolate;
-    }
-
-    .rsm-category-page::before {
-      content: "";
-      position: absolute;
-      width: min(760px, 74vw);
-      aspect-ratio: 1;
-      top: -18%;
-      right: -24%;
-      z-index: -1;
-      border-radius: 50%;
-      background: conic-gradient(from 150deg, rgba(31, 191, 125, 0.22), rgba(74, 155, 255, 0.18), rgba(139, 92, 246, 0.20), rgba(31, 191, 125, 0.22));
-      filter: blur(34px);
-      opacity: 0.74;
-      animation: rsm-category-float 32s ease-in-out infinite;
-    }
-
-    .rsm-category-shell {
-      width: min(100% - 40px, 1460px);
-      margin: 0 auto;
-      display: grid;
-      gap: clamp(18px, 2vw, 28px);
-    }
-
-    .rsm-category-hero {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      min-height: clamp(360px, 42vw, 560px);
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.46fr);
-      gap: clamp(18px, 2.4vw, 28px);
-      padding: clamp(24px, 4vw, 56px);
-      border: 1px solid var(--rsm-line-2);
-      border-radius: clamp(28px, 4vw, 52px);
-      background:
-        linear-gradient(120deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.46)),
-        radial-gradient(ellipse at 8% 12%, rgba(31, 191, 125, 0.20), transparent 42%),
-        radial-gradient(ellipse at 80% 12%, rgba(74, 155, 255, 0.18), transparent 48%),
-        var(--rsm-glass);
-      box-shadow: var(--rsm-sh-xl);
-      backdrop-filter: var(--rsm-blur-md);
-    }
-
-    html[data-theme="scuro"] .rsm-category-hero {
-      background:
-        linear-gradient(132deg, rgba(14, 18, 30, 0.88), rgba(18, 23, 38, 0.64)),
-        radial-gradient(ellipse at 8% 12%, rgba(31, 191, 125, 0.16), transparent 42%),
-        radial-gradient(ellipse at 80% 12%, rgba(74, 155, 255, 0.15), transparent 48%),
-        var(--rsm-glass);
-    }
-
-    .rsm-category-hero::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.92), transparent);
-    }
-
-    .rsm-category-hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -8% -34% 38%;
-      height: 52%;
-      z-index: -1;
-      border-radius: 999px 999px 0 0;
-      background:
-        linear-gradient(90deg, rgba(31, 191, 125, 0.20), rgba(74, 155, 255, 0.18), rgba(139, 92, 246, 0.18));
-      filter: blur(20px);
-      transform: rotate(-4deg);
-    }
-
-    .rsm-category-copy {
-      align-self: end;
-      display: grid;
-      gap: clamp(16px, 2vw, 24px);
-      max-width: 880px;
-    }
-
-    .rsm-category-kicker,
-    .rsm-category-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      width: max-content;
-      max-width: 100%;
-      min-height: 34px;
-      padding: 0 14px;
-      border: 1px solid rgba(31, 191, 125, 0.24);
-      border-radius: var(--rsm-r-pill);
-      background: rgba(255, 255, 255, 0.68);
-      color: var(--rsm-text-soft);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      box-shadow: var(--rsm-sh-sm);
-    }
-
-    .rsm-category-kicker::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--rsm-accent-grad);
-      box-shadow: 0 0 0 6px rgba(31, 191, 125, 0.12);
-    }
-
-    html[data-theme="scuro"] .rsm-category-kicker,
-    html[data-theme="scuro"] .rsm-category-eyebrow {
-      background: rgba(17, 20, 31, 0.72);
-    }
-
-    .rsm-category-title {
-      max-width: 11ch;
-      margin: 0;
-      color: var(--rsm-text-strong);
-      font-family: var(--rsm-font-display);
-      font-size: clamp(3.2rem, 9vw, 8.6rem);
-      font-weight: 760;
-      line-height: 0.88;
-      letter-spacing: -0.075em;
-      text-wrap: balance;
-    }
-
-    .rsm-category-title span {
-      display: inline-block;
-      background: var(--rsm-accent-grad-strong);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .rsm-category-subtitle {
-      max-width: 62ch;
-      margin: 0;
-      color: var(--rsm-text);
-      font-size: clamp(1.04rem, 1.4vw, 1.24rem);
-      font-weight: 500;
-      line-height: 1.64;
-    }
-
-    .rsm-category-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .rsm-category-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: var(--rsm-r-pill);
-      background: rgba(255, 255, 255, 0.58);
-      color: var(--rsm-text);
-      font-size: 0.88rem;
-      font-weight: 800;
-      text-decoration: none;
-      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out), border-color var(--rsm-dur-fast) var(--rsm-ease-out), box-shadow var(--rsm-dur-fast) var(--rsm-ease-out), background var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-
-    .rsm-category-chip:hover,
-    .rsm-category-chip:focus-visible,
-    .rsm-category-chip.is-active {
-      transform: translateY(-2px);
-      border-color: rgba(31, 191, 125, 0.44);
-      background: rgba(255, 255, 255, 0.86);
-      box-shadow: var(--rsm-sh-md);
-      outline: none;
-    }
-
-    .rsm-category-chip.is-active {
-      color: var(--rsm-text-on-dark);
-      border-color: transparent;
-      background: var(--rsm-accent-grad-strong);
-      box-shadow: var(--rsm-sh-glow-emerald);
-    }
-
-    html[data-theme="scuro"] .rsm-category-chip {
-      background: rgba(17, 20, 31, 0.64);
-    }
-
-    html[data-theme="scuro"] .rsm-category-chip:hover,
-    html[data-theme="scuro"] .rsm-category-chip:focus-visible {
-      background: rgba(25, 30, 45, 0.86);
-    }
-
-    .rsm-category-orbit {
-      position: relative;
-      min-height: 100%;
-      display: grid;
-      align-content: stretch;
-      gap: 14px;
-    }
-
-    .rsm-category-panel {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      height: 100%;
-      min-height: 300px;
-      display: grid;
-      align-content: space-between;
-      gap: 22px;
-      padding: clamp(20px, 2.6vw, 30px);
-      border: 1px solid rgba(255, 255, 255, 0.46);
-      border-radius: clamp(24px, 3vw, 38px);
-      background:
-        radial-gradient(ellipse at 20% 0%, rgba(31, 191, 125, 0.20), transparent 44%),
-        radial-gradient(ellipse at 100% 12%, rgba(74, 155, 255, 0.22), transparent 42%),
-        linear-gradient(145deg, rgba(9, 20, 36, 0.94), rgba(24, 18, 46, 0.90));
-      color: var(--rsm-text-on-dark);
-      box-shadow: var(--rsm-sh-lg);
-    }
-
-    .rsm-category-panel::before {
-      content: "";
-      position: absolute;
-      width: 72%;
-      aspect-ratio: 1;
-      right: -24%;
-      bottom: -34%;
-      z-index: -1;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 60%);
-    }
-
-    .rsm-category-panel__top {
-      display: grid;
-      gap: 12px;
-    }
-
-    .rsm-category-panel__label {
-      color: rgba(229, 241, 255, 0.68);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .rsm-category-panel__value {
-      margin: 0;
-      font-family: var(--rsm-font-display);
-      font-size: clamp(3.3rem, 7vw, 6.7rem);
-      font-weight: 780;
-      line-height: 0.82;
-      letter-spacing: -0.08em;
-    }
-
-    .rsm-category-panel__text {
-      margin: 0;
-      color: var(--rsm-text-on-dark-soft);
-      font-size: 0.98rem;
-      font-weight: 600;
-      line-height: 1.56;
-    }
-
-    .rsm-category-panel__rings {
-      position: relative;
-      height: 96px;
-    }
-
-    .rsm-category-ring {
-      position: absolute;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.20);
-      background: linear-gradient(120deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20);
-    }
-
-    .rsm-category-ring:nth-child(1) { inset: 6px 18% 48px 0; }
-    .rsm-category-ring:nth-child(2) { inset: 36px 4% 18px 20%; }
-    .rsm-category-ring:nth-child(3) { inset: 66px 38% 0 8%; }
-
-    .rsm-category-content {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.27fr) minmax(0, 1fr);
-      gap: clamp(16px, 2vw, 26px);
-      align-items: start;
-    }
-
-    .rsm-category-sidebar,
-    .rsm-category-feed {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--rsm-line-2);
-      border-radius: clamp(24px, 3vw, 38px);
-      background: rgba(255, 255, 255, 0.70);
-      box-shadow: var(--rsm-sh-lg);
-      backdrop-filter: var(--rsm-blur-md);
-    }
-
-    html[data-theme="scuro"] .rsm-category-sidebar,
-    html[data-theme="scuro"] .rsm-category-feed {
-      background: rgba(15, 18, 29, 0.72);
-    }
-
-    .rsm-category-sidebar {
-      position: sticky;
-      top: 96px;
-      padding: 18px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .rsm-category-nav {
-      display: grid;
-      gap: 8px;
-    }
-
-    .rsm-category-nav__link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 48px;
-      padding: 0 14px;
-      border: 1px solid transparent;
-      border-radius: 18px;
-      color: var(--rsm-text);
-      font-weight: 850;
-      text-decoration: none;
-      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out), background var(--rsm-dur-fast) var(--rsm-ease-out), border-color var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-
-    .rsm-category-nav__link span:last-child {
-      color: var(--rsm-text-faint);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .rsm-category-nav__link:hover,
-    .rsm-category-nav__link:focus-visible,
-    .rsm-category-nav__link.is-active {
-      transform: translateX(3px);
-      border-color: rgba(74, 155, 255, 0.26);
-      background: rgba(74, 155, 255, 0.10);
-      outline: none;
-    }
-
-    .rsm-category-feed {
-      padding: clamp(16px, 2.2vw, 26px);
-    }
-
-    .rsm-category-feed__head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 18px;
-      margin-bottom: 18px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--rsm-line);
-    }
-
-    .rsm-category-feed__head h2 {
-      margin: 0;
-      color: var(--rsm-text-strong);
-      font-size: clamp(1.5rem, 2.5vw, 2.3rem);
-      font-weight: 900;
-      letter-spacing: -0.045em;
-    }
-
-    .rsm-category-feed__head p {
-      margin: 6px 0 0;
-      color: var(--rsm-text-soft);
-      font-weight: 600;
-    }
-
-    .rsm-category-count {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      min-height: 40px;
-      padding: 0 14px;
-      border-radius: var(--rsm-r-pill);
-      background: var(--rsm-panel-dark);
-      color: var(--rsm-text-on-dark);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .posts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(12px, 1.6vw, 18px);
-    }
-
-    .post-card {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      min-height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      border: 1px solid var(--rsm-line);
-      border-radius: clamp(22px, 2.6vw, 32px);
-      background: rgba(255, 255, 255, 0.76);
-      box-shadow: var(--rsm-sh-sm);
-      transition: transform var(--rsm-dur-base) var(--rsm-ease-out), border-color var(--rsm-dur-base) var(--rsm-ease-out), box-shadow var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-
-    html[data-theme="scuro"] .post-card {
-      background: rgba(18, 22, 34, 0.78);
-    }
-
-    .post-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(31, 191, 125, 0.30);
-      box-shadow: var(--rsm-sh-xl);
-    }
-
-    .post-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      opacity: 0;
-      background: radial-gradient(ellipse at 20% 0%, rgba(31, 191, 125, 0.14), transparent 46%), radial-gradient(ellipse at 90% 100%, rgba(139, 92, 246, 0.12), transparent 48%);
-      transition: opacity var(--rsm-dur-base) var(--rsm-ease-out);
-    }
-
-    .post-card:hover::after { opacity: 1; }
-
-    .post-media {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 10;
-      margin: 10px 10px 0;
-      border-radius: 22px;
-      background:
-        radial-gradient(ellipse at 18% 20%, rgba(31, 191, 125, 0.34), transparent 44%),
-        radial-gradient(ellipse at 78% 72%, rgba(74, 155, 255, 0.30), transparent 44%),
-        linear-gradient(135deg, rgba(11, 13, 20, 0.94), rgba(30, 35, 56, 0.90));
-    }
-
-    .post-thumb {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      transform: scale(1.01);
-      transition: transform var(--rsm-dur-slow) var(--rsm-ease-out), filter var(--rsm-dur-slow) var(--rsm-ease-out);
-    }
-
-    .post-card:hover .post-thumb {
-      transform: scale(1.065);
-      filter: saturate(1.08) contrast(1.04);
-    }
-
-    .post-media.is-empty::before {
-      content: "RSM";
-      position: absolute;
-      right: 18px;
-      bottom: 14px;
-      color: rgba(255, 255, 255, 0.16);
-      font-family: var(--rsm-font-mono);
-      font-size: clamp(2.5rem, 8vw, 5.6rem);
-      font-weight: 800;
-      letter-spacing: -0.08em;
-    }
-
-    .post-body {
-      display: grid;
-      gap: 13px;
-      align-content: start;
-      padding: 18px;
-    }
-
-    .post-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 9px;
-      color: var(--rsm-text-faint);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .post-title {
-      margin: 0;
-      font-size: clamp(1.24rem, 1.8vw, 1.72rem);
-      font-weight: 900;
-      line-height: 1.04;
-      letter-spacing: -0.045em;
-    }
-
-    .post-title a {
-      color: var(--rsm-text-strong);
-      text-decoration: none;
-      transition: color var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-
-    .post-title a:hover,
-    .post-title a:focus-visible {
-      color: var(--rsm-azure);
-      outline: none;
-    }
-
-    .post-excerpt {
-      margin: 0;
-      color: var(--rsm-text-soft);
-      font-size: 0.96rem;
-      font-weight: 500;
-      line-height: 1.56;
-    }
-
-    .post-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: max-content;
-      margin-top: 4px;
-      color: var(--rsm-text-strong);
-      font-weight: 900;
-      text-decoration: none;
-    }
-
-    .post-cta::after {
-      content: "→";
-      transition: transform var(--rsm-dur-fast) var(--rsm-ease-out);
-    }
-
-    .post-cta:hover::after,
-    .post-cta:focus-visible::after { transform: translateX(4px); }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 10px;
-      border-radius: var(--rsm-r-pill);
-      color: var(--rsm-text-on-dark);
-      background: var(--rsm-panel-dark);
-      font-family: var(--rsm-font-mono);
-      font-size: 0.64rem;
-      font-weight: 800;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-    }
-
-    .badge.green { background: linear-gradient(135deg, #129464, #1fbf7d); }
-
-    .empty {
-      display: none;
-      margin-top: 0;
-      padding: clamp(28px, 4vw, 48px);
-      border: 1px dashed var(--rsm-line-3);
-      border-radius: 28px;
-      color: var(--rsm-text-soft);
-      background: rgba(255, 255, 255, 0.52);
-      text-align: center;
-      font-weight: 700;
-    }
-
-    html[data-theme="scuro"] .empty { background: rgba(18, 22, 34, 0.62); }
-
-    @keyframes rsm-category-aurora {
-      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(0, -18px, 0) scale(1.03); }
-    }
-
-    @keyframes rsm-category-float {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-      50% { transform: translate3d(-4%, 5%, 0) rotate(18deg); }
-    }
-
-    @media (max-width: 1100px) {
-      .rsm-category-hero,
-      .rsm-category-content { grid-template-columns: 1fr; }
-      .rsm-category-sidebar { position: relative; top: auto; }
-      .rsm-category-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 760px) {
-      .rsm-category-shell { width: min(100% - 28px, 1460px); }
-      .rsm-category-hero { padding: 22px; border-radius: 30px; }
-      .rsm-category-title { font-size: clamp(2.8rem, 18vw, 5rem); }
-      .rsm-category-panel { min-height: 260px; }
-      .rsm-category-feed__head { display: grid; align-items: start; }
-      .rsm-category-nav,
-      .posts { grid-template-columns: 1fr; }
-      .rsm-category-sidebar,
-      .rsm-category-feed { border-radius: 28px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      body[data-page="category"]::after,
-      .rsm-category-page::before,
-      .post-card,
-      .post-thumb,
-      .rsm-category-chip,
-      .rsm-category-nav__link { animation: none; transition: none; }
-    }
-  </style>
 </head>
-<body data-page="category">
+<body>
 
 <!--PARTIAL:nav-->
 
-<main class="rsm-category-page">
-  <div class="rsm-category-shell">
-    <section class="rsm-category-hero" aria-labelledby="cat-title">
-      <div class="rsm-category-copy">
-        <p class="rsm-category-kicker">Archivio Rivalta sul Mincio</p>
-        <h1 class="rsm-category-title" id="cat-title">Tutti i <span>post</span></h1>
-        <p class="rsm-category-subtitle" id="cat-sub">Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale, avvisi, richieste e storie della comunità.</p>
-        <nav class="rsm-category-tools" id="category-tools" aria-label="Categorie principali">
-          <a class="rsm-category-chip is-active" href="/category" data-category-link="all">Tutto</a>
-        </nav>
-      </div>
-      <aside class="rsm-category-orbit" aria-label="Riepilogo archivio">
-        <div class="rsm-category-panel">
-          <div class="rsm-category-panel__top">
-            <span class="rsm-category-panel__label">Selezione attiva</span>
-            <p class="rsm-category-panel__value" id="cat-count">—</p>
-            <p class="rsm-category-panel__text" id="cat-count-label">Caricamento degli articoli pubblicati.</p>
-          </div>
-          <div class="rsm-category-panel__rings" aria-hidden="true">
-            <span class="rsm-category-ring"></span>
-            <span class="rsm-category-ring"></span>
-            <span class="rsm-category-ring"></span>
-          </div>
-        </div>
-      </aside>
-    </section>
+<main class="container rsm-page">
 
-    <section class="rsm-category-content" aria-label="Archivio articoli">
-      <aside class="rsm-category-sidebar" aria-label="Naviga categorie">
-        <span class="rsm-category-eyebrow">Filtra archivio</span>
-        <nav class="rsm-category-nav" id="category-nav">
-          <a class="rsm-category-nav__link is-active" href="/category" data-category-link="all"><span>Tutte</span><span>All</span></a>
-        </nav>
-      </aside>
+  <p class="text-primary fw-semibold text-uppercase small mb-1">Archivio Rivalta sul Mincio</p>
+  <h1 id="cat-title">Tutti i post</h1>
+  <p class="text-muted lead" id="cat-sub">Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale, avvisi, richieste e storie della comunità.</p>
 
-      <section class="rsm-category-feed" aria-live="polite">
-        <header class="rsm-category-feed__head">
-          <div>
-            <h2 id="feed-title">Ultimi articoli</h2>
-            <p id="feed-subtitle">La categoria corrente resta in evidenza, con l'archivio subito sotto.</p>
-          </div>
-          <span class="rsm-category-count" id="feed-count">In caricamento</span>
-        </header>
-        <section class="posts" id="posts"></section>
-        <div class="empty" id="empty"></div>
-      </section>
-    </section>
+  <nav class="d-flex flex-wrap gap-2 my-3" id="category-tools" aria-label="Categorie principali">
+    <a class="chip chip-simple chip-primary" href="/category" data-category-link="all"><span class="chip-label">Tutto</span></a>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+    <h2 class="h5 mb-0" id="feed-title">Ultimi articoli</h2>
+    <span class="badge bg-secondary" id="feed-count">In caricamento</span>
   </div>
+
+  <div class="row g-3" id="posts"></div>
+  <div class="callout note" id="empty" style="display:none"></div>
+
 </main>
 
+<!--PARTIAL:footer-->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script src="categories.client.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 (function () {
+  const SPRITES = '/vendor/bootstrap-italia/svg/sprites.svg';
   const postsEl = document.getElementById('posts');
   const emptyEl = document.getElementById('empty');
   const titleEl = document.getElementById('cat-title');
   const subEl = document.getElementById('cat-sub');
   const feedTitleEl = document.getElementById('feed-title');
-  const feedSubtitleEl = document.getElementById('feed-subtitle');
   const feedCountEl = document.getElementById('feed-count');
-  const panelCountEl = document.getElementById('cat-count');
-  const panelLabelEl = document.getElementById('cat-count-label');
   const toolsEl = document.getElementById('category-tools');
-  const navEl = document.getElementById('category-nav');
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
   const categories = window.RSM_CATEGORIES
     ? window.RSM_CATEGORIES.all()
@@ -788,36 +73,22 @@
     return category === 'all' ? '/category' : '/category?name=' + encodeURIComponent(category);
   }
 
-  function categoryCode(category) {
-    return category === 'all' ? 'All' : category.split(/\s+/).map(function (part) { return part.charAt(0); }).join('').slice(0, 3);
-  }
-
   function renderCategoryLinks() {
-    const heroLinks = [{ label: 'Tutto', value: 'all' }].concat(categories.map(function (category) {
-      return { label: category, value: category };
+    const links = [{ label: 'Tutto', value: 'all' }].concat(categories.map(function (c) {
+      return { label: c, value: c };
     }));
-
-    toolsEl.innerHTML = heroLinks.map(function (item) {
-      const active = item.value === activeCategory ? ' is-active' : '';
-      return '<a class="rsm-category-chip' + active + '" href="' + categoryUrl(item.value) + '" data-category-link="' + escapeHtml(item.value) + '">' + escapeHtml(item.label) + '</a>';
-    }).join('');
-
-    navEl.innerHTML = heroLinks.map(function (item) {
-      const active = item.value === activeCategory ? ' is-active' : '';
-      const label = item.value === 'all' ? 'Tutte' : item.label;
-      return '<a class="rsm-category-nav__link' + active + '" href="' + categoryUrl(item.value) + '" data-category-link="' + escapeHtml(item.value) + '"><span>' + escapeHtml(label) + '</span><span>' + escapeHtml(categoryCode(item.value)) + '</span></a>';
+    toolsEl.innerHTML = links.map(function (item) {
+      const active = item.value === activeCategory ? ' chip-primary' : '';
+      return '<a class="chip chip-simple' + active + '" href="' + categoryUrl(item.value) + '" data-category-link="' + escapeHtml(item.value) + '"><span class="chip-label">' + escapeHtml(item.label) + '</span></a>';
     }).join('');
   }
 
   document.title = (isAllView ? 'Tutti i post' : activeCategory) + ' - Rivalta sul Mincio';
-  titleEl.innerHTML = isAllView ? 'Tutti i <span>post</span>' : escapeHtml(activeCategory);
+  titleEl.textContent = isAllView ? 'Tutti i post' : activeCategory;
   subEl.textContent = isAllView
     ? 'Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale, avvisi, richieste e storie della comunità.'
-    : 'Articoli pubblicati nella categoria ' + activeCategory + ', raccolti in una vista più ampia, visiva e leggibile.';
+    : 'Articoli pubblicati nella categoria ' + activeCategory + '.';
   feedTitleEl.textContent = isAllView ? 'Ultimi articoli' : 'Archivio ' + activeCategory;
-  feedSubtitleEl.textContent = isAllView
-    ? 'La categoria corrente resta in evidenza, con l\'archivio subito sotto.'
-    : 'Una selezione aggiornata dei contenuti pubblicati in questa categoria.';
 
   renderCategoryLinks();
 
@@ -826,30 +97,13 @@
     return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
-  function escapeHtml(value) {
-    return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
   function isValidHttpsUrl(url) {
     if (!url || typeof url !== 'string') return false;
-    try {
-      return new URL(url).protocol === 'https:';
-    } catch (_) {
-      return false;
-    }
+    try { return new URL(url).protocol === 'https:'; } catch (_) { return false; }
   }
 
   function setCount(count) {
     const label = count === 1 ? 'articolo' : 'articoli';
-    panelCountEl.textContent = String(count);
-    panelLabelEl.textContent = isAllView
-      ? 'Articoli pubblicati in tutte le categorie dell\'archivio.'
-      : 'Articoli pubblicati nella categoria selezionata.';
     feedCountEl.textContent = count + ' ' + label;
   }
 
@@ -897,29 +151,32 @@
       emptyEl.style.display = 'none';
       setCount(rows.length);
       postsEl.innerHTML = rows.map(function (post) {
-        const badgeClass = post.badge_color === 'green' ? 'badge green' : 'badge';
-        const href = 'post?id=' + encodeURIComponent(post.id);
+        const badgeClass = post.badge_color === 'green' ? 'badge bg-success' : 'badge bg-primary';
+        const href = '/post?id=' + encodeURIComponent(post.id);
         const media = isValidHttpsUrl(post.image_url)
-          ? '<a class="post-media" href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"><img class="post-thumb" src="' + escapeHtml(post.image_url) + '" alt="" loading="lazy" /></a>'
-          : '<a class="post-media is-empty" href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"></a>';
-        return '<article class="post-card">' +
-          media +
-          '<div class="post-body">' +
-            '<div class="post-meta">' +
-              '<time>' + escapeHtml(fmt(post.published_at)) + '</time>' +
-              '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
+          ? '<a href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"><img class="rsm-post-thumb" src="' + escapeHtml(post.image_url) + '" alt="" loading="lazy" /></a>'
+          : '<a href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"><span class="rsm-post-thumb rsm-post-thumb--empty"></span></a>';
+        return '<div class="col-12 col-sm-6 col-lg-4">' +
+          '<div class="card-wrapper h-100">' +
+            '<div class="card card-bg h-100">' +
+              media +
+              '<div class="card-body">' +
+                '<div class="d-flex align-items-center gap-2 mb-2">' +
+                  '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
+                  '<span class="text-muted small">' + escapeHtml(fmt(post.published_at)) + '</span>' +
+                '</div>' +
+                '<h3 class="card-title h5"><a href="' + href + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
+                '<p class="card-text">' + escapeHtml(post.excerpt || '') + '</p>' +
+                '<a class="read-more" href="' + href + '"><span class="text">Leggi articolo</span>' +
+                  '<svg class="icon"><use href="' + SPRITES + '#it-arrow-right"></use></svg></a>' +
+              '</div>' +
             '</div>' +
-            '<h3 class="post-title"><a href="' + href + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
-            '<p class="post-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
-            '<a class="post-cta" href="' + href + '">Leggi articolo</a>' +
           '</div>' +
-        '</article>';
+        '</div>';
       }).join('');
     });
 })();
 </script>
-<!--PARTIAL:footer-->
-
 
 </body>
 </html>

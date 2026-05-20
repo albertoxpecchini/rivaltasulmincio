@@ -1,54 +1,108 @@
-<header class="site-header" data-rsm-topbar>
-  <div class="nav-island">
-    <a class="brand" href="/">
-      <div class="logo-mark">
-        <img src="/img/favicon.png" alt="Rivalta sul Mincio" width="34" height="34">
+<header class="it-header-wrapper" data-rsm-topbar>
+  <div class="it-header-slim-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="it-header-slim-wrapper-content">
+            <a class="d-none d-lg-block navbar-brand" href="/">Pro Loco Rivalta sul Mincio A.P.S.</a>
+            <div class="it-header-slim-right-zone">
+              <span id="nav-auth"></span>
+            </div>
+          </div>
+        </div>
       </div>
-      <span class="brand-name">
-        <strong>Rivalta</strong><em>sul Mincio</em>
-      </span>
-    </a>
-
-    <nav class="nav-links" aria-label="Navigazione principale">
-      <a href="/#festa" class="nav-link"><i class="fa-solid fa-fish-fins nav-link-icon" aria-hidden="true"></i> Festa del Pesce</a>
-      <a href="/#eventi" class="nav-link"><i class="fa-solid fa-calendar-days nav-link-icon" aria-hidden="true"></i> Eventi</a>
-      <a href="/#galleria" class="nav-link"><i class="fa-solid fa-images nav-link-icon" aria-hidden="true"></i> Galleria</a>
-      <a href="/#territorio" class="nav-link"><i class="fa-solid fa-tree nav-link-icon" aria-hidden="true"></i> Territorio</a>
-      <a href="/#contatti" class="nav-link"><i class="fa-solid fa-map-location-dot nav-link-icon" aria-hidden="true"></i> Contatti</a>
-      <a href="/#banner" class="nav-link nav-link--top"><i class="fa-solid fa-arrow-up nav-link-icon" aria-hidden="true"></i> Torna in cima</a>
-    </nav>
-
-    <div class="nav-actions">
-      <button class="search-toggle" id="searchToggle" type="button"
-              aria-label="Apri ricerca" aria-expanded="false" aria-controls="searchPanel">
-        <i class="fa-solid fa-magnifying-glass search-toggle-icon" aria-hidden="true"></i>
-        <span class="search-toggle-label">Cerca</span>
-        <kbd class="search-kbd">/</kbd>
-      </button>
-      <div id="nav-auth"></div>
     </div>
   </div>
 
-  <div class="search-panel" id="searchPanel" aria-hidden="true">
-      <div class="search-panel-inner">
-        <div class="search-row">
-          <input class="search-input" id="searchInput" type="search"
-                 placeholder="Cerca luoghi, storie, persone…"
-                 autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
-        <kbd class="search-esc-kbd">ESC</kbd>
+  <div class="it-nav-wrapper">
+    <div class="it-header-center-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="it-header-center-content-wrapper">
+              <div class="it-brand-wrapper">
+                <a href="/" aria-label="Home Pro Loco Rivalta sul Mincio">
+                  <img src="/img/favicon.png" alt="" width="48" height="48" class="rsm-brand-logo" />
+                  <div class="it-brand-text">
+                    <div class="it-brand-title">Rivalta sul Mincio</div>
+                    <div class="it-brand-tagline d-none d-md-block">Pro Loco · Parco del Mincio</div>
+                  </div>
+                </a>
+              </div>
+              <div class="it-right-zone">
+                <div class="it-search-wrapper">
+                  <button type="button" class="search-link rounded-icon" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Cerca nel sito">
+                    <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-search"></use></svg>
+                    <span class="d-none d-md-block">Cerca</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="search-chips">
-        <button class="search-chip" type="button" data-q="Intro">Intro</button>
-        <button class="search-chip" type="button" data-q="Festa">Festa</button>
-        <button class="search-chip" type="button" data-q="Eventi">Eventi</button>
-        <button class="search-chip" type="button" data-q="Galleria">Galleria</button>
-        <button class="search-chip" type="button" data-q="Territorio">Territorio</button>
-        <button class="search-chip" type="button" data-q="Contatti">Contatti</button>
-        <button class="search-chip" type="button" data-q="Comunità">Comunità</button>
+    <div class="it-header-navbar-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="navbar navbar-expand-lg" aria-label="Navigazione principale">
+              <button class="custom-navbar-toggler" type="button" aria-controls="rsmNav" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#rsmNav">
+                <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-burger"></use></svg>
+              </button>
+              <div class="navbar-collapsable" id="rsmNav">
+                <div class="overlay"></div>
+                <div class="close-div">
+                  <button class="btn close-menu" type="button">
+                    <span class="it-close-icon"></span>
+                    <span class="visually-hidden">Nascondi la navigazione</span>
+                  </button>
+                </div>
+                <div class="menu-wrapper">
+                  <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/#festa"><span>Festa del Pesce</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#eventi"><span>Eventi</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#galleria"><span>Galleria</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#territorio"><span>Territorio</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#contatti"><span>Contatti</span></a></li>
+                  </ul>
+                  <ul class="navbar-nav d-lg-none">
+                    <li class="nav-item"><span id="nav-auth-mobile"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
       </div>
-
-      <ul class="search-results-list" id="searchResults" role="listbox" aria-label="Risultati ricerca"></ul>
     </div>
   </div>
 </header>
+
+<!-- Modale di ricerca -->
+<div class="modal fade" tabindex="-1" role="dialog" id="searchModal" aria-labelledby="searchModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="searchModalTitle">Cerca nel sito</h2>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <label for="searchInput" class="visually-hidden">Cerca luoghi, storie, sezioni</label>
+          <input type="search" class="form-control" id="searchInput" placeholder="Cerca luoghi, storie, sezioni…" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="rsm-search-chips mb-3" aria-label="Ricerche rapide">
+          <button class="chip chip-simple" type="button" data-q="Festa">Festa</button>
+          <button class="chip chip-simple" type="button" data-q="Eventi">Eventi</button>
+          <button class="chip chip-simple" type="button" data-q="Galleria">Galleria</button>
+          <button class="chip chip-simple" type="button" data-q="Territorio">Territorio</button>
+          <button class="chip chip-simple" type="button" data-q="Contatti">Contatti</button>
+          <button class="chip chip-simple" type="button" data-q="Categorie">Categorie</button>
+        </div>
+        <ul class="link-list" id="searchResults" aria-label="Risultati ricerca"></ul>
+      </div>
+    </div>
+  </div>
+</div>

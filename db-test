@@ -2,275 +2,54 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;if(p.animations===true)r.dataset.animations='disabled';else delete r.dataset.animations;}catch(e){}}();</script>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DB Test – Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" /></noscript>
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
-  <noscript><link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" /></noscript>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink: #10192b;
-      --ink-soft: #5a6882;
-      --cream: #f4f7ff;
-      --paper: #fbfdff;
-      --marsh: #12203a;
-      --water: #4a9bff;
-      --reed: #1fbf7d;
-      --line: rgba(18,32,58,0.14);
-      --sans: "Cabinet Grotesk", system-ui, sans-serif;
-      --serif: "Fraunces", Georgia, serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31,191,125,.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74,155,255,.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139,92,246,.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      font-family: var(--sans);
-      line-height: 1.55;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image: radial-gradient(circle, rgba(18,32,58,.08) 1px, transparent 1px);
-      background-size: 18px 18px;
-      mix-blend-mode: multiply;
-      opacity: 0.16;
-    }
-
-    
-
-    /* ── Page ── */
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 100px 20px 60px;
-    }
-
-    .page-head { margin-bottom: 20px; }
-    .page-head h1 {
-      font-family: var(--serif);
-      font-size: 1.6rem;
-      font-weight: 650;
-      margin-bottom: 4px;
-    }
-    .page-head p { font-size: .88rem; color: var(--ink-soft); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 12px;
-    }
-
-    .card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 1px 6px rgba(37,63,53,.05);
-    }
-    .card h2 {
-      font-size: .85rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--ink-soft);
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-    .result { font-size: .82rem; font-family: 'Courier New', monospace; line-height: 1.6; word-break: break-all; }
-    .ok      { color: #2E7D32; }
-    .err     { color: #b94747; }
-    .pending { color: var(--ink-soft); }
-
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; margin-right: 4px; }
-    .badge-ok   { background: rgba(46,125,50,.12); color: #2E7D32; }
-    .badge-err  { background: rgba(185,71,71,.10); color: #b94747; }
-    .badge-skip { background: rgba(37,63,53,.07); color: var(--ink-soft); }
-
-    pre { white-space: pre-wrap; margin-top: 6px; font-size: .78rem; color: var(--ink-soft); }
-
-    .summary {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      box-shadow: 0 1px 6px rgba(37,63,53,.05);
-    }
-    .summary strong { font-size: 1.1rem; }
-
-    .run-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--marsh);
-      color: var(--cream);
-      font-family: var(--sans);
-      font-size: .84rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 16px;
-      transition: opacity .2s;
-    }
-    .run-btn:hover { opacity: .82; }
-
-    .config-card {
-      margin-bottom: 16px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .config-copy {
-      font-size: .84rem;
-      color: var(--ink-soft);
-    }
-
-    .config-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-
-    .field span {
-      font-size: .76rem;
-      font-weight: 700;
-      color: var(--ink-soft);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .field input,
-    .field textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fffdf8;
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: .86rem;
-      padding: 11px 12px;
-    }
-
-    .field textarea {
-      min-height: 120px;
-      resize: vertical;
-      font-family: 'Courier New', monospace;
-      font-size: .78rem;
-      line-height: 1.45;
-    }
-
-    .field input:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: var(--water);
-      box-shadow: 0 0 0 3px rgba(47,107,103,.12);
-    }
-
-    .config-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-inline {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.88);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: .8rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn-inline:hover { background: rgba(37,63,53,.06); }
-
-    .config-note {
-      font-size: .8rem;
-      color: var(--ink-soft);
-      line-height: 1.5;
-    }
-
-    .config-note.ok { color: #2E7D32; }
-    .config-note.err { color: #b94747; }
-  </style>
-  <link rel="stylesheet" href="/theme.css" />
+  <title>Database Test — Rivalta sul Mincio</title>
+  <meta name="robots" content="noindex" />
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<div class="page">
-  <div class="page-head">
-    <h1>Database Test</h1>
-    <p>Diagnostica della connessione Supabase e delle tabelle del progetto.</p>
-  </div>
+<main class="container rsm-page">
 
-  <div class="card config-card" id="config-card">
-    <h2>Configura Supabase</h2>
-    <p class="config-copy">Incolla URL progetto e anon key, salva e ricarica. La configurazione viene memorizzata localmente nel browser e riusata da tutte le pagine del sito.</p>
-    <div class="config-grid">
-      <label class="field">
-        <span>Project URL</span>
-        <input id="sb-url" type="url" placeholder="https://xxxx.supabase.co" />
-      </label>
-      <label class="field">
-        <span>Anon Key</span>
-        <textarea id="sb-key" placeholder="Incolla qui la anon key del progetto"></textarea>
-      </label>
+  <h1>Database Test</h1>
+  <p class="text-muted">Diagnostica della connessione Supabase e delle tabelle del progetto.</p>
+
+  <div class="card-wrapper my-3" id="config-card" hidden>
+    <div class="card card-bg">
+      <div class="card-body">
+        <h2 class="h5">Configura Supabase</h2>
+        <p class="text-muted small">Incolla URL progetto e anon key, salva e ricarica. La configurazione viene memorizzata localmente nel browser e riusata da tutte le pagine del sito.</p>
+        <div class="form-group">
+          <label for="sb-url">Project URL</label>
+          <input id="sb-url" type="url" class="form-control" placeholder="https://xxxx.supabase.co" />
+        </div>
+        <div class="form-group">
+          <label for="sb-key">Anon Key</label>
+          <textarea id="sb-key" class="form-control" rows="4" placeholder="Incolla qui la anon key del progetto"></textarea>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <button class="btn btn-primary btn-sm" type="button" id="save-config">Salva e ricarica</button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" id="reset-config">Ripristina default</button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" id="copy-config-link">Copia link setup</button>
+        </div>
+        <div class="small mt-2" id="config-note"></div>
+      </div>
     </div>
-    <div class="config-actions">
-      <button class="run-btn" type="button" id="save-config">Salva e ricarica</button>
-      <button class="btn-inline" type="button" id="reset-config">Ripristina default</button>
-      <button class="btn-inline" type="button" id="copy-config-link">Copia link setup</button>
-    </div>
-    <div class="config-note" id="config-note"></div>
   </div>
 
-  <div class="summary" id="summary">
-    <span>Esecuzione in corso…</span>
-  </div>
+  <div class="callout note" id="summary"><span>Esecuzione in corso…</span></div>
 
-  <button class="run-btn" onclick="runAll()">Riesegui tutti i test</button>
+  <button class="btn btn-primary mb-3" onclick="runAll()">Riesegui tutti i test</button>
 
-  <div class="grid" id="grid"></div>
-</div>
+  <div class="row g-3" id="grid"></div>
+</main>
+
+<!--PARTIAL:footer-->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 const sb = window.RSM_SUPABASE && typeof window.RSM_SUPABASE.createClient === 'function'
   ? window.RSM_SUPABASE.createClient()
@@ -304,7 +83,6 @@ const TESTS = [
       const cols = ['id','username','display_name','bio','comune','avatar_emoji','avatar_color','role','created_at'];
       const { data, error } = await sb.from('profiles').select(cols.join(',')).limit(1);
       if (error) throw error;
-      // If we got here without error, all columns exist
       return `OK — tutte le colonne trovate: ${cols.join(', ')}`;
     }
   },
@@ -444,7 +222,7 @@ function canManageConfig() {
 function updateConfigNote(message, type) {
   const note = document.getElementById('config-note');
   if (!note) return;
-  note.className = 'config-note' + (type ? ' ' + type : '');
+  note.className = 'small mt-2' + (type === 'ok' ? ' text-success' : type === 'err' ? ' text-danger' : '');
   note.innerHTML = message;
 }
 
@@ -510,20 +288,25 @@ function bindConfigUi() {
   }
 }
 
-function renderCard(test, status, message, detail) {
-  const statusClass = status === 'ok' ? 'ok' : status === 'err' ? 'err' : 'pending';
+function renderCard(test, status, message) {
   const badge = status === 'ok'
-    ? '<span class="badge badge-ok">PASS</span>'
+    ? '<span class="badge bg-success">PASS</span>'
     : status === 'err'
-    ? '<span class="badge badge-err">FAIL</span>'
-    : '<span class="badge badge-skip">…</span>';
+    ? '<span class="badge bg-danger">FAIL</span>'
+    : '<span class="badge bg-secondary">…</span>';
+  const textClass = status === 'ok' ? 'text-success' : status === 'err' ? 'text-danger' : 'text-muted';
 
   return `
-    <div class="card" id="card-${test.id}">
-      <h2>${badge} ${test.label}</h2>
-      <div class="result ${statusClass}">${message}</div>
-      ${detail ? `<pre>${detail}</pre>` : ''}
-      <div style="margin-top:8px;font-size:.74rem;color:var(--ink-soft)">${test.desc}</div>
+    <div class="col-12 col-md-6" id="card-${test.id}">
+      <div class="card-wrapper h-100">
+        <div class="card card-bg h-100">
+          <div class="card-body">
+            <h2 class="h6">${badge} ${escapeHtml(test.label)}</h2>
+            <p class="mb-1 ${textClass}">${escapeHtml(message)}</p>
+            <small class="text-muted">${escapeHtml(test.desc)}</small>
+          </div>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -536,9 +319,9 @@ function updateSummary() {
 
   document.getElementById('summary').innerHTML = `
     <strong>${done}/${total}</strong> eseguiti &nbsp;|&nbsp;
-    <span style="color:#2E7D32;font-weight:700">${passed} PASS</span> &nbsp;|&nbsp;
-    <span style="color:#b94747;font-weight:700">${failed} FAIL</span> &nbsp;|&nbsp;
-    <span style="color:var(--ink-soft)">${total - done} in attesa</span>
+    <span class="text-success fw-bold">${passed} PASS</span> &nbsp;|&nbsp;
+    <span class="text-danger fw-bold">${failed} FAIL</span> &nbsp;|&nbsp;
+    <span class="text-muted">${total - done} in attesa</span>
     ${done === total ? `&nbsp;— <strong>${pct === 100 ? 'Tutti i test superati' : `${failed} test falliti`}</strong>` : ''}
   `;
 }
@@ -547,18 +330,17 @@ async function runAll() {
   const grid = document.getElementById('grid');
   Object.keys(results).forEach(k => delete results[k]);
 
-  // Render all as pending
-  grid.innerHTML = TESTS.map(t => renderCard(t, 'pending', 'In esecuzione…', '')).join('');
+  grid.innerHTML = TESTS.map(t => renderCard(t, 'pending', 'In esecuzione…')).join('');
   updateSummary();
 
   for (const test of TESTS) {
     try {
       const msg = await test.run();
       results[test.id] = 'ok';
-      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'ok', msg, '');
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'ok', msg);
     } catch (e) {
       results[test.id] = 'err';
-      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'err', e.message || String(e), '');
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'err', e.message || String(e));
     }
     updateSummary();
   }
@@ -568,8 +350,6 @@ runAll();
 refreshConfigUi();
 bindConfigUi();
 </script>
-<!--PARTIAL:footer-->
-
 
 </body>
 </html>
