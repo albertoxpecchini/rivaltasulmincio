@@ -35,7 +35,8 @@
       "Bash(grep -oE \"\\\\.card-wrapper\\\\s+\\\\.card\\\\{[^}]{0,150}\" vendor/bootstrap-italia/css/bootstrap-italia.min.css)",
       "Bash(grep -oE \"\\\\.it-footer[^{]*\\(form-control|input|\\\\.it-input\\)[^{]*\\\\{[^}]{0,120}\" vendor/bootstrap-italia/css/bootstrap-italia.min.css)",
       "Bash(grep -oE \"\\\\.it-footer[^{]*\\(h4|\\\\.link-list|a\\)[^{]*\\\\{[^}]{0,100}\" vendor/bootstrap-italia/css/bootstrap-italia.min.css)",
-      "Bash(grep -oE \"\\\\.it-footer\\\\{[^}]{0,120}\" vendor/bootstrap-italia/css/bootstrap-italia.min.css)"
+      "Bash(grep -oE \"\\\\.it-footer\\\\{[^}]{0,120}\" vendor/bootstrap-italia/css/bootstrap-italia.min.css)",
+      "Bash(git branch *)"
     ]
   }
 }
