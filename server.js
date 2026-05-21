@@ -8,7 +8,6 @@ const zlib = require('zlib');
 const SUPABASE_PROJECT_URL = 'https://tljwxymcavgpzntksjtx.supabase.co';
 const SUPABASE_ANON_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsand4eW1jYXZncHpudGtzanR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyODM2MzksImV4cCI6MjA5Mjg1OTYzOX0.4mLVUxTO2SGeVWDDn7Vw0NuSDB82T3v6IWO-BVlrzC0';
 
-const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|rsm-bi\.css))(?:\?[^"']*)?(["'])/gi;
@@ -19,6 +18,7 @@ const BI_FONTS_PATH = '/vendor/bootstrap-italia/fonts';
 const RSM_CSS_HREF = '/rsm-bi.css';
 const SUPABASE_SDK_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const LOCAL_PORT = Number(process.env.PORT || 2858);
 const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
 const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
 const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
