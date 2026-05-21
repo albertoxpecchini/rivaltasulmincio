@@ -25,7 +25,7 @@
     <div class="card card-bg">
       <div class="card-body">
         <div class="d-flex align-items-center gap-3 flex-wrap">
-          <div class="rsm-profile-avatar rsm-skel" id="avatar" aria-hidden="true"></div>
+          <div class="avatar size-xl rsm-skel" id="avatar" aria-hidden="true"><p></p></div>
           <div>
             <p class="text-primary fw-semibold text-uppercase small mb-1">Profilo autore · Rivalta sul Mincio</p>
             <h1 class="rsm-skel" id="username" style="width:180px;height:30px" aria-label="Nome utente"></h1>
@@ -92,7 +92,7 @@ const un = new URLSearchParams(location.search).get('u');
   const av = $('avatar');
   av.classList.remove('rsm-skel');
   av.style.background = prof.avatar_color || '#1f3d2e';
-  av.textContent = prof.avatar_emoji || '🌿';
+  av.querySelector('p').textContent = prof.avatar_emoji || '🌿';
 
   $('username').outerHTML  = `<h1 id="username">@${escapeHtml(prof.username)}</h1>`;
   $('displayname').outerHTML = `<p class="text-muted" id="displayname">${escapeHtml(prof.display_name || prof.username)}</p>`;

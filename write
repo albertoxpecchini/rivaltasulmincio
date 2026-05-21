@@ -68,7 +68,7 @@
         <p class="text-uppercase small text-muted mb-1">Dati rapidi</p>
         <h2 class="h5">Stato del post</h2>
         <div id="card-status" class="mb-3">
-          <span class="status-pill" id="status-pill">Bozza</span>
+          <span class="badge bg-warning rounded-pill" id="status-pill">Bozza</span>
           <div class="text-muted small" id="status-date"></div>
           <div class="mt-2"><span class="h4" id="status-num">0</span> <span class="text-muted small" id="status-num-label">caratteri</span></div>
           <div class="mt-2"><strong id="meta-username">@...</strong> <span class="text-muted" id="meta-displayname"></span></div>
@@ -92,7 +92,13 @@
   </div>
 </main>
 
-<div class="toast" id="toast"></div>
+<div class="notification fade dismissable" role="alert" id="toast" aria-hidden="true">
+  <h5 id="toast-title">Notifica</h5>
+  <p id="toast-msg"></p>
+  <button type="button" class="notification-close" data-bs-dismiss="notification" aria-label="Chiudi">
+    <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-close"></use></svg>
+  </button>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/supabase.config.js"></script>
@@ -132,10 +138,17 @@
 
   function toast(msg, type) {
     const el = $('toast');
-    el.textContent = msg;
-    el.className = 'toast show ' + (type || '');
-    clearTimeout(el._t);
-    el._t = setTimeout(() => { el.className = 'toast'; }, 2800);
+    if (!el) return;
+    const titleEl = $('toast-title');
+    const msgEl = $('toast-msg');
+    if (msgEl) msgEl.textContent = msg;
+    el.classList.remove('success', 'error');
+    if (type === 'ok') { el.classList.add('success'); if (titleEl) titleEl.textContent = 'Fatto'; }
+    else if (type === 'err') { el.classList.add('error'); if (titleEl) titleEl.textContent = 'Errore'; }
+    else if (titleEl) titleEl.textContent = 'Notifica';
+    if (window.bootstrap && bootstrap.Notification) {
+      bootstrap.Notification.getOrCreateInstance(el).show(2800);
+    }
   }
 
   function setErr(msg) {
@@ -339,8 +352,8 @@
     $('excerpt-count').textContent     = `${(data.excerpt || '').length} / 200`;
     if (data.image_type) selectImg(data.image_type);
     const pill = $('status-pill');
-    if (data.published) { pill.className = 'status-pill pub';   pill.textContent = 'Pubblicato'; }
-    else                { pill.className = 'status-pill draft'; pill.textContent = 'Bozza'; }
+    if (data.published) { pill.className = 'badge bg-success rounded-pill';  pill.textContent = 'Pubblicato'; }
+    else                { pill.className = 'badge bg-warning rounded-pill';  pill.textContent = 'Bozza'; }
     $('status-num').textContent       = (data.content || '').length.toLocaleString('it-IT');
     $('status-num-label').textContent = 'caratteri';
     $('status-date').textContent      = data.published

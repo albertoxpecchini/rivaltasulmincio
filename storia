@@ -83,45 +83,119 @@
 
   <!-- Cronologia -->
   <h2 class="h5 text-uppercase text-muted mt-4">Cronologia</h2>
-  <div id="timeline">
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Aprile 2026 — Inizio</p>
-      <h3 class="h5">Nasce il progetto</h3>
-      <p>La Pro Loco di Rivalta sul Mincio decide di costruire un sito che faccia davvero giustizia al borgo e alle sue Valli. Nessun template, nessun CMS, nessun framework JavaScript. Il progetto parte da zero: HTML puro, CSS custom scritto a mano, JavaScript vanilla. La scelta non è per pigrizia — è una dichiarazione di intenzioni: ogni dettaglio visivo e ogni millisecondo di prestazione devono essere controllati.</p>
-      <p>Il design system viene definito subito: una palette di sei colori ispirati alla natura locale, due famiglie tipografiche, e un linguaggio visivo che evoca il paesaggio lagunare del Parco del Mincio.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Aprile 2026 — Homepage</p>
-      <h3 class="h5">La homepage prende vita</h3>
-      <p><span id="txt-lines-index">3.641</span> righe per la pagina più importante: un'esperienza visiva immersiva con video MP4 delle Valli del Mincio in fullscreen, con fallback GIF. Il carousel fotografico usa Swiper.js v12.</p>
-      <p>La SEO viene curata con attenzione: markup Schema.org JSON-LD con quattro tipi (Organization, WebSite, TouristDestination, Festival), Open Graph, Twitter Cards, meta geografici, tag canonici.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Aprile–Maggio 2026 — Backend</p>
-      <h3 class="h5">Integrazione Supabase: il sito diventa una piattaforma</h3>
-      <p>La decisione cambia tutto: Supabase come backend completo. PostgreSQL come database, autenticazione JWT, Row-Level Security su ogni tabella sensibile. Il sito non è più solo una vetrina — diventa una community platform.</p>
-      <p>Nascono le pagine per gli utenti registrati: login, dashboard personale, editor di post con upload immagini, profilo pubblico, modifica profilo. Le funzioni SQL <code>is_admin()</code> e <code>is_member()</code> gestiscono i livelli di autorizzazione.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Maggio 2026 — Sicurezza</p>
-      <h3 class="h5">Il sistema di sicurezza</h3>
-      <p>Viene scritto <code>security.client.js</code> — <span id="txt-sec-lines">254</span> righe di protezione lato client. Il rate limiter blocca l'account dopo <span id="txt-rl-attempts">5</span> tentativi in <span id="txt-rl-window">10</span> minuti, con lock di <span id="txt-rl-lock">15</span> minuti.</p>
-      <p>Il filtro contenuti inappropriati blocca <span id="txt-words-tl">11</span> termini in italiano. Il server Node.js viene corazzato con security headers HTTP e protezione contro path traversal.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Maggio 2026 — Pagine legali</p>
-      <h3 class="h5">Compliance e documentazione</h3>
-      <p>Vengono redatte e messe online tre pagine legali: Privacy Policy, Cookie Policy, Note Legali. Tutte con markup <code>noindex</code> per non frammentare il posizionamento SEO.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">Lunedì 4 maggio 2026, ore 22:11:56 CEST — Prima release</p>
-      <h3 class="h5">Versione 1.0 — Il primo commit ufficiale</h3>
-      <p>Dopo settimane di sviluppo, la versione 1.0 viene committata nel repository Git e deployata su Vercel. <span id="txt-files-tl">45</span> file, <span id="txt-lines-tl">16.630</span> righe di codice in un singolo commit. Il progetto entra in produzione su <strong>www.rivaltasulmincio.it</strong>.</p>
-    </div>
-    <div class="timeline-entry mb-4">
-      <p class="text-muted small mb-1">4 maggio 2026 — Oggi</p>
-      <h3 class="h5"><span id="txt-deploy-h">…</span> deployment su Vercel</h3>
-      <p>Il sito raggiunge <span id="txt-deploy-t">…</span> deployment su Vercel. Ogni deployment è una versione migliorata, rifinita, corretta. Il ciclo di sviluppo continua.</p>
+  <div class="it-timeline-wrapper" id="timeline">
+    <div class="row">
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-flag"></use></svg></div>
+            <div class="pin-text"><span>Aprile 2026 — Inizio</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">Nasce il progetto</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">La Pro Loco di Rivalta sul Mincio decide di costruire un sito che faccia davvero giustizia al borgo e alle sue Valli. Nessun template, nessun CMS, nessun framework JavaScript. Il progetto parte da zero: HTML puro, CSS custom scritto a mano, JavaScript vanilla. La scelta non è per pigrizia — è una dichiarazione di intenzioni: ogni dettaglio visivo e ogni millisecondo di prestazione devono essere controllati.</p>
+              <p class="it-card-text">Il design system viene definito subito: una palette di sei colori ispirati alla natura locale, due famiglie tipografiche, e un linguaggio visivo che evoca il paesaggio lagunare del Parco del Mincio.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-pencil"></use></svg></div>
+            <div class="pin-text"><span>Aprile 2026 — Homepage</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">La homepage prende vita</h4>
+            <div class="it-card-body">
+              <p class="it-card-text"><span id="txt-lines-index">3.641</span> righe per la pagina più importante: un'esperienza visiva immersiva con video MP4 delle Valli del Mincio in fullscreen, con fallback GIF. Il carousel fotografico usa Swiper.js v12.</p>
+              <p class="it-card-text">La SEO viene curata con attenzione: markup Schema.org JSON-LD con quattro tipi (Organization, WebSite, TouristDestination, Festival), Open Graph, Twitter Cards, meta geografici, tag canonici.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-code-circle"></use></svg></div>
+            <div class="pin-text"><span>Aprile–Maggio 2026 — Backend</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">Integrazione Supabase: il sito diventa una piattaforma</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">La decisione cambia tutto: Supabase come backend completo. PostgreSQL come database, autenticazione JWT, Row-Level Security su ogni tabella sensibile. Il sito non è più solo una vetrina — diventa una community platform.</p>
+              <p class="it-card-text">Nascono le pagine per gli utenti registrati: login, dashboard personale, editor di post con upload immagini, profilo pubblico, modifica profilo. Le funzioni SQL <code>is_admin()</code> e <code>is_member()</code> gestiscono i livelli di autorizzazione.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-locked"></use></svg></div>
+            <div class="pin-text"><span>Maggio 2026 — Sicurezza</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">Il sistema di sicurezza</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">Viene scritto <code>security.client.js</code> — <span id="txt-sec-lines">254</span> righe di protezione lato client. Il rate limiter blocca l'account dopo <span id="txt-rl-attempts">5</span> tentativi in <span id="txt-rl-window">10</span> minuti, con lock di <span id="txt-rl-lock">15</span> minuti.</p>
+              <p class="it-card-text">Il filtro contenuti inappropriati blocca <span id="txt-words-tl">11</span> termini in italiano. Il server Node.js viene corazzato con security headers HTTP e protezione contro path traversal.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-check"></use></svg></div>
+            <div class="pin-text"><span>Maggio 2026 — Pagine legali</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">Compliance e documentazione</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">Vengono redatte e messe online tre pagine legali: Privacy Policy, Cookie Policy, Note Legali. Tutte con markup <code>noindex</code> per non frammentare il posizionamento SEO.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <h3 class="it-pin-wrapper it-evidence">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-star-full"></use></svg></div>
+            <div class="pin-text"><span>Lunedì 4 maggio 2026, ore 22:11:56 CEST — Prima release</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title">Versione 1.0 — Il primo commit ufficiale</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">Dopo settimane di sviluppo, la versione 1.0 viene committata nel repository Git e deployata su Vercel. <span id="txt-files-tl">45</span> file, <span id="txt-lines-tl">16.630</span> righe di codice in un singolo commit. Il progetto entra in produzione su <strong>www.rivaltasulmincio.it</strong>.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="timeline-element">
+          <span class="it-now-label d-none d-lg-flex">Oggi</span>
+          <h3 class="it-pin-wrapper it-now">
+            <div class="pin-icon"><svg class="icon" role="img"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-clock"></use></svg></div>
+            <div class="pin-text"><span>4 maggio 2026 — Oggi</span></div>
+          </h3>
+          <article class="it-card rounded shadow-sm border">
+            <h4 class="it-card-title"><span id="txt-deploy-h">…</span> deployment su Vercel</h4>
+            <div class="it-card-body">
+              <p class="it-card-text">Il sito raggiunge <span id="txt-deploy-t">…</span> deployment su Vercel. Ogni deployment è una versione migliorata, rifinita, corretta. Il ciclo di sviluppo continua.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
     </div>
   </div>
 

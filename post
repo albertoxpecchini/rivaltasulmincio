@@ -15,8 +15,8 @@
     <div class="col-12 col-lg-9 mx-auto">
 
       <div class="post-nav">
-        <a href="/#news" class="btn btn-ghost btn-sm">← Torna alle notizie</a>
-        <a href="/" class="btn btn-ghost btn-sm">Home</a>
+        <a href="/#news" class="btn btn-outline-secondary btn-sm">← Torna alle notizie</a>
+        <a href="/" class="btn btn-outline-secondary btn-sm">Home</a>
       </div>
 
       <div id="post-content">
@@ -263,12 +263,14 @@
     if (!box) return;
     if (!message) {
       box.style.display = 'none';
-      box.className = 'discussion-msg';
+      box.className = 'alert';
       box.textContent = '';
       return;
     }
+    const variant = type === 'err' ? 'alert-danger' : (type === 'ok' ? 'alert-success' : 'alert-info');
     box.style.display = '';
-    box.className = 'discussion-msg ' + (type || '');
+    box.className = 'alert ' + variant;
+    box.setAttribute('role', 'alert');
     box.textContent = message;
   }
 
@@ -278,7 +280,8 @@
     const hint = document.getElementById('like-hint');
     if (!btn || !count) return;
 
-    btn.classList.toggle('on', viewerLikedPost);
+    btn.classList.toggle('active', viewerLikedPost);
+    btn.setAttribute('aria-pressed', viewerLikedPost ? 'true' : 'false');
     count.textContent = String(Math.max(0, likesCount));
 
     if (hint) {
@@ -557,7 +560,7 @@
     if (!list) return;
 
     if (!commentsCache.length) {
-      list.innerHTML = '<p class="discussion-note">Nessun commento ancora. Inizia tu la discussione.</p>';
+      list.innerHTML = '<p class="text-muted small">Nessun commento ancora. Inizia tu la discussione.</p>';
       return;
     }
 
@@ -569,15 +572,19 @@
       const canEdit = ownComment && (nowTs - createdAt) <= (10 * 60 * 1000);
 
       return `
-        <article class="comment-card">
-          <div class="comment-meta">
-            <span>${author}</span>
-            <time>${new Date(comment.created_at).toLocaleString('it-IT')}</time>
-          </div>
-          <div class="comment-body">${escapeHtml(comment.content)}</div>
-          <div class="comment-actions">
-            ${canEdit ? `<button class="mini-btn" type="button" onclick="editComment('${comment.id}')">Modifica</button>` : ''}
-            ${ownComment ? `<button class="mini-btn" type="button" onclick="deleteComment('${comment.id}')">Elimina</button>` : ''}
+        <article class="card-wrapper">
+          <div class="card card-bg">
+            <div class="card-body">
+              <div class="comment-meta">
+                <span>${author}</span>
+                <time>${new Date(comment.created_at).toLocaleString('it-IT')}</time>
+              </div>
+              <div class="comment-body">${escapeHtml(comment.content)}</div>
+              <div class="comment-actions">
+                ${canEdit ? `<button class="btn btn-outline-secondary btn-sm" type="button" onclick="editComment('${comment.id}')">Modifica</button>` : ''}
+                ${ownComment ? `<button class="btn btn-outline-secondary btn-sm" type="button" onclick="deleteComment('${comment.id}')">Elimina</button>` : ''}
+              </div>
+            </div>
           </div>
         </article>`;
     }).join('');
@@ -595,10 +602,10 @@
 
     if (error) {
       if (isMissingRelationError(error)) {
-        list.innerHTML = '<p class="discussion-note">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>';
+        list.innerHTML = '<p class="text-muted small">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>';
         return;
       }
-      list.innerHTML = `<p class="discussion-note">Errore caricamento commenti: ${escapeHtml(error.message)}</p>`;
+      list.innerHTML = `<p class="text-muted small">Errore caricamento commenti: ${escapeHtml(error.message)}</p>`;
       return;
     }
 
@@ -842,7 +849,7 @@
   document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
   const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  const badgeCls = c => c === 'green' ? 'badge badge-green' : 'badge badge-default';
+  const badgeCls = c => c === 'green' ? 'badge bg-success' : 'badge bg-primary';
 
   activePost = {
     ...post,
@@ -866,13 +873,13 @@
     ? `<span class="meta-dot"></span><a href="https://rivaltasulmincio.com">rivaltasulmincio.com</a>`
     : (activePost.author_username ? `<span class="meta-dot"></span><a href="${authorHref}">@${safeAuthor}</a>` : '');
   const authorFooter = isImportedAuthor
-    ? `<a href="https://rivaltasulmincio.com" class="btn btn-ghost">rivaltasulmincio.com →</a>`
-    : (activePost.author_username ? `<a href="${authorHref}" class="btn btn-ghost">Autore: @${safeAuthor} →</a>` : '');
+    ? `<a href="https://rivaltasulmincio.com" class="btn btn-outline-secondary">rivaltasulmincio.com →</a>`
+    : (activePost.author_username ? `<a href="${authorHref}" class="btn btn-outline-secondary">Autore: @${safeAuthor} →</a>` : '');
 
   wrap.innerHTML = `
     <div class="post-badges">
       <span class="${badgeCls(activePost.badge_color)}">${safeBadge}</span>
-      ${activePost.category && activePost.badge && activePost.category !== activePost.badge ? `<a class="badge badge-default" href="${safeCategoryHref}">${safeCategory}</a>` : ''}
+      ${activePost.category && activePost.badge && activePost.category !== activePost.badge ? `<a class="badge bg-primary" href="${safeCategoryHref}">${safeCategory}</a>` : ''}
     </div>
     <div class="post-meta">
       <time>${fmt(activePost.published_at)}</time>
@@ -885,9 +892,9 @@
     <div class="reading-brief" aria-label="Guida di lettura">
       <div class="reading-kicker">Guida di lettura</div>
       <div class="reading-stats">
-        <span class="reading-chip">${readingStats.minutes} min di lettura</span>
-        <span class="reading-chip">${readingShape}</span>
-        <span class="reading-chip">${readingEntry}</span>
+        <span class="chip chip-simple"><span class="chip-label">${readingStats.minutes} min di lettura</span></span>
+        <span class="chip chip-simple"><span class="chip-label">${readingShape}</span></span>
+        <span class="chip chip-simple"><span class="chip-label">${readingEntry}</span></span>
       </div>
       <div class="reading-links">
         <a href="#article-body">Vai al testo</a>
@@ -902,27 +909,28 @@
       ${authorFooter}
     </div>
     <div class="post-reactions">
-      <button class="like-btn" id="like-btn" type="button">
+      <button class="btn btn-outline-primary btn-sm" id="like-btn" type="button" aria-pressed="false">
+        <svg class="icon icon-sm icon-primary"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-favourite"></use></svg>
         <span>Mi piace</span>
-        <span class="like-count" id="like-count">0</span>
+        <span class="badge bg-primary rounded-pill" id="like-count">0</span>
       </button>
-      <span class="discussion-note" id="like-hint">Un singolo Mi piace per utente (toggle).</span>
+      <span class="text-muted small" id="like-hint">Un singolo Mi piace per utente (toggle).</span>
     </div>
     <section class="discussion" id="discussion">
       <div class="discussion-head">
         <h2>Discussione</h2>
       </div>
-      <p class="discussion-note">Commenti con filtro anti-spam e moderazione. Modifica consentita entro 10 minuti.</p>
-      <div id="discussion-msg" class="discussion-msg" style="display:none"></div>
+      <p class="text-muted small">Commenti con filtro anti-spam e moderazione. Modifica consentita entro 10 minuti.</p>
+      <div id="discussion-msg" class="alert" role="alert" style="display:none"></div>
       <form class="comment-form" id="comment-form">
         <textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" id="comment-submit" type="submit">Pubblica commento</button>
-          <button class="btn btn-ghost btn-sm" id="report-post-btn" type="button">Segnala post</button>
+          <button class="btn btn-outline-secondary btn-sm" id="report-post-btn" type="button">Segnala post</button>
         </div>
       </form>
-      <div class="community-rules">
-        <strong>Regole di convivenza</strong>
+      <div class="callout note">
+        <div class="callout-title">Regole di convivenza</div>
         <ul>
           <li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>
           <li>Resta sul tema del post e usa un linguaggio costruttivo.</li>
@@ -930,7 +938,7 @@
         </ul>
       </div>
       <div id="comments-list" class="comments-list">
-        <p class="discussion-note">Caricamento commenti...</p>
+        <p class="text-muted small">Caricamento commenti...</p>
       </div>
     </section>
   `;

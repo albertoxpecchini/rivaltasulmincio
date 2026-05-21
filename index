@@ -105,13 +105,27 @@
 <main id="main">
 
   <!-- BANNER -->
-  <section class="rsm-bi-hero" id="banner" aria-label="Benvenuto a Rivalta sul Mincio">
-    <div class="rsm-bi-hero__overlay"></div>
-    <div class="container rsm-bi-hero__content">
-      <p class="text-uppercase fw-semibold mb-2">Pro Loco Rivalta sul Mincio · Mantova</p>
-      <h1 class="display-4 fw-bold">Rivalta sul Mincio</h1>
-      <p class="lead">Valli, borghi, tradizioni. Nel cuore del Parco del Mincio.</p>
-      <a class="btn btn-primary btn-lg" href="#intro">Scopri il borgo</a>
+  <section class="it-hero-wrapper it-dark it-overlay" id="banner" aria-label="Benvenuto a Rivalta sul Mincio">
+    <div class="img-responsive-wrapper">
+      <div class="img-responsive">
+        <div class="img-wrapper">
+          <img src="/img/mantova-laghi-aerea.jpg" alt="" loading="eager" />
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="it-hero-text-wrapper bg-dark">
+            <span class="it-category">Pro Loco Rivalta sul Mincio · Mantova</span>
+            <h1>Rivalta sul Mincio</h1>
+            <p>Valli, borghi, tradizioni. Nel cuore del Parco del Mincio.</p>
+            <div class="it-btn-container">
+              <a class="btn btn-primary btn-lg" href="#intro">Scopri il borgo</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
