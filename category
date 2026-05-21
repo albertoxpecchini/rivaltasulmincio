@@ -2,190 +2,57 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
-  <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Categoria - Rivalta sul Mincio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet" />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink: #10192b;
-      --ink-soft: #5a6882;
-      --cream: #f4f7ff;
-      --paper: #fbfdff;
-      --marsh: #12203a;
-      --marsh-2: #233a66;
-      --water: #4a9bff;
-      --clay: #8b5cf6;
-      --reed: #1fbf7d;
-      --line: rgba(18,32,58,0.14);
-      --sans: "Cabinet Grotesk", system-ui, sans-serif;
-      --serif: "Fraunces", Georgia, serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31,191,125,.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74,155,255,.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139,92,246,.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      font-family: var(--sans);
-      line-height: 1.6;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image: radial-gradient(circle, rgba(37,63,53,.08) 1px, transparent 1px);
-      background-size: 18px 18px;
-      mix-blend-mode: multiply;
-      opacity: 0.16;
-    }
-
-    a { color: var(--water); text-decoration: none; }
-
-    
-
-    /* ── Page ── */
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 84px 20px 60px;
-    }
-
-    .page-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .page-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,250,240,.74);
-      color: var(--ink-soft);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-
-    .head h1 {
-      font-family: var(--serif);
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 650;
-      margin-bottom: 8px;
-    }
-    .head p { color: var(--ink-soft); font-size: .9rem; }
-
-    /* ── Posts ── */
-    .posts { margin-top: 24px; display: grid; gap: 12px; }
-    .post-card {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--paper);
-      padding: 14px;
-      display: grid;
-      gap: 8px;
-      box-shadow: 0 1px 6px rgba(37,63,53,.05);
-    }
-    .post-thumb {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-      border-radius: 10px;
-      display: block;
-    }
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      color: var(--ink-soft);
-      font-size: .78rem;
-    }
-    .post-title {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      line-height: 1.3;
-    }
-    .post-title a { color: var(--ink); }
-    .post-title a:hover { color: var(--water); }
-    .post-excerpt { color: var(--ink-soft); font-size: .9rem; }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: .68rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      font-weight: 700;
-      color: var(--cream);
-      background: var(--marsh);
-    }
-    .badge.green { background: #2E7D32; }
-
-    .empty {
-      margin-top: 24px;
-      border: 1px dashed var(--line);
-      border-radius: 14px;
-      padding: 20px;
-      color: var(--ink-soft);
-      text-align: center;
-      font-size: .88rem;
-    }
-  </style>
-  <link rel="stylesheet" href="/theme.css" />
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<main class="page">
-  <header class="head">
-    <h1 id="cat-title">Tutti i post</h1>
-    <p id="cat-sub">Archivio completo di tutti i post pubblicati.</p>
-    <div class="page-summary" aria-label="Struttura archivio categoria">
-      <span class="page-chip">lista compatta</span>
-      <span class="page-chip">categoria corrente in testa</span>
-      <span class="page-chip">archivio subito sotto</span>
-    </div>
-  </header>
+<main class="container rsm-page">
 
-  <section class="posts" id="posts"></section>
-  <div class="empty" id="empty" style="display:none"></div>
+  <p class="text-primary fw-semibold text-uppercase small mb-1">Archivio Rivalta sul Mincio</p>
+  <h1 id="cat-title">Tutti i post</h1>
+  <p class="text-muted lead" id="cat-sub">Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale, avvisi, richieste e storie della comunità.</p>
+
+  <nav class="d-flex flex-wrap gap-2 my-3" id="category-tools" aria-label="Categorie principali">
+    <a class="chip chip-simple chip-primary" href="/category" data-category-link="all"><span class="chip-label">Tutto</span></a>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+    <h2 class="h5 mb-0" id="feed-title">Ultimi articoli</h2>
+    <span class="badge bg-secondary" id="feed-count">In caricamento</span>
+  </div>
+
+  <div class="row g-3" id="posts"></div>
+  <div class="callout note" id="empty" style="display:none"></div>
+
 </main>
 
+<!--PARTIAL:footer-->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
-<script src="categories.client.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 (function () {
-  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
-
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const SPRITES = '/vendor/bootstrap-italia/svg/sprites.svg';
   const postsEl = document.getElementById('posts');
   const emptyEl = document.getElementById('empty');
   const titleEl = document.getElementById('cat-title');
   const subEl = document.getElementById('cat-sub');
+  const feedTitleEl = document.getElementById('feed-title');
+  const feedCountEl = document.getElementById('feed-count');
+  const toolsEl = document.getElementById('category-tools');
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
   const categories = window.RSM_CATEGORIES
     ? window.RSM_CATEGORIES.all()
@@ -202,33 +69,57 @@
   const activeCategory = categories.includes(requested) ? requested : 'all';
   const isAllView = activeCategory === 'all';
 
+  function categoryUrl(category) {
+    return category === 'all' ? '/category' : '/category?name=' + encodeURIComponent(category);
+  }
+
+  function renderCategoryLinks() {
+    const links = [{ label: 'Tutto', value: 'all' }].concat(categories.map(function (c) {
+      return { label: c, value: c };
+    }));
+    toolsEl.innerHTML = links.map(function (item) {
+      const active = item.value === activeCategory ? ' chip-primary' : '';
+      return '<a class="chip chip-simple' + active + '" href="' + categoryUrl(item.value) + '" data-category-link="' + escapeHtml(item.value) + '"><span class="chip-label">' + escapeHtml(item.label) + '</span></a>';
+    }).join('');
+  }
+
   document.title = (isAllView ? 'Tutti i post' : activeCategory) + ' - Rivalta sul Mincio';
   titleEl.textContent = isAllView ? 'Tutti i post' : activeCategory;
   subEl.textContent = isAllView
-    ? 'Archivio completo di tutti i post pubblicati.'
+    ? 'Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale, avvisi, richieste e storie della comunità.'
     : 'Articoli pubblicati nella categoria ' + activeCategory + '.';
+  feedTitleEl.textContent = isAllView ? 'Ultimi articoli' : 'Archivio ' + activeCategory;
+
+  renderCategoryLinks();
 
   const fmt = function (iso) {
+    if (!iso) return '';
     return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
-  function escapeHtml(value) {
-    return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
   function isValidHttpsUrl(url) {
     if (!url || typeof url !== 'string') return false;
-    try {
-      return new URL(url).protocol === 'https:';
-    } catch (_) {
-      return false;
-    }
+    try { return new URL(url).protocol === 'https:'; } catch (_) { return false; }
   }
+
+  function setCount(count) {
+    const label = count === 1 ? 'articolo' : 'articoli';
+    feedCountEl.textContent = count + ' ' + label;
+  }
+
+  function showEmpty(message) {
+    postsEl.innerHTML = '';
+    emptyEl.style.display = 'block';
+    emptyEl.textContent = message;
+    setCount(0);
+  }
+
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project') || typeof supabase === 'undefined') {
+    showEmpty('Configura Supabase per visualizzare gli articoli pubblicati.');
+    return;
+  }
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   sb.from('posts')
     .select('id,title,excerpt,category,badge,badge_color,image_url,published_at')
@@ -236,8 +127,7 @@
     .order('published_at', { ascending: false })
     .then(function (res) {
       if (res.error) {
-        emptyEl.style.display = '';
-        emptyEl.textContent = 'Errore caricamento post: ' + res.error.message;
+        showEmpty('Errore caricamento post: ' + res.error.message);
         return;
       }
 
@@ -252,31 +142,41 @@
       });
 
       if (!rows.length) {
-        emptyEl.style.display = '';
-        emptyEl.textContent = isAllView
+        showEmpty(isAllView
           ? 'Nessun articolo disponibile al momento.'
-          : 'Nessun articolo disponibile in questa categoria.';
+          : 'Nessun articolo disponibile in questa categoria.');
         return;
       }
 
+      emptyEl.style.display = 'none';
+      setCount(rows.length);
       postsEl.innerHTML = rows.map(function (post) {
-        const badgeClass = post.badge_color === 'green' ? 'badge green' : 'badge';
-        const thumb = isValidHttpsUrl(post.image_url)
-          ? '<img class="post-thumb" src="' + escapeHtml(post.image_url) + '" alt="" loading="lazy" />'
-          : '';
-        return '<article class="post-card">' +
-          thumb +
-          '<div class="post-meta">' +
-            '<time>' + fmt(post.published_at) + '</time>' +
-            '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
+        const badgeClass = post.badge_color === 'green' ? 'badge bg-success' : 'badge bg-primary';
+        const href = '/post?id=' + encodeURIComponent(post.id);
+        const media = isValidHttpsUrl(post.image_url)
+          ? '<a href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"><img class="rsm-post-thumb" src="' + escapeHtml(post.image_url) + '" alt="" loading="lazy" /></a>'
+          : '<a href="' + href + '" aria-label="Apri ' + escapeHtml(post.title || 'articolo') + '"><span class="rsm-post-thumb rsm-post-thumb--empty"></span></a>';
+        return '<div class="col-12 col-sm-6 col-lg-4">' +
+          '<div class="card-wrapper h-100">' +
+            '<div class="card card-bg h-100">' +
+              media +
+              '<div class="card-body">' +
+                '<div class="d-flex align-items-center gap-2 mb-2">' +
+                  '<span class="' + badgeClass + '">' + escapeHtml(post.badge || post.category || '') + '</span>' +
+                  '<span class="text-muted small">' + escapeHtml(fmt(post.published_at)) + '</span>' +
+                '</div>' +
+                '<h3 class="card-title h5"><a href="' + href + '">' + escapeHtml(post.title || 'Articolo') + '</a></h3>' +
+                '<p class="card-text">' + escapeHtml(post.excerpt || '') + '</p>' +
+                '<a class="read-more" href="' + href + '"><span class="text">Leggi articolo</span>' +
+                  '<svg class="icon"><use href="' + SPRITES + '#it-arrow-right"></use></svg></a>' +
+              '</div>' +
+            '</div>' +
           '</div>' +
-          '<h2 class="post-title"><a href="post?id=' + post.id + '">' + escapeHtml(post.title || 'Articolo') + '</a></h2>' +
-          '<p class="post-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
-        '</article>';
+        '</div>';
       }).join('');
     });
 })();
 </script>
-  <!--PARTIAL:footer-->
+
 </body>
 </html>

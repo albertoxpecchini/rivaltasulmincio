@@ -4,24 +4,127 @@ const fs   = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
+// Supabase connection constants (same project used by supabase.config.js client-side)
+const SUPABASE_PROJECT_URL = 'https://tljwxymcavgpzntksjtx.supabase.co';
+const SUPABASE_ANON_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsand4eW1jYXZncHpudGtzanR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyODM2MzksImV4cCI6MjA5Mjg1OTYzOX0.4mLVUxTO2SGeVWDDn7Vw0NuSDB82T3v6IWO-BVlrzC0';
+
 const LOCAL_PORT = 2858;
 const ROOT = path.resolve(__dirname);
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
-const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|theme\.css))(?:\?[^"']*)?(["'])/gi;
+const HTML_ASSET_VERSION_RE = /((?:href|src)=["'])(\/(?:partials\/[^"']+\.(?:css|js)|rsm-bi\.css))(?:\?[^"']*)?(["'])/gi;
 const COMPRESSIBLE_TYPE_RE = /^(text\/|application\/(?:javascript|json)|image\/svg\+xml)/i;
+const BI_CSS_HREF = '/vendor/bootstrap-italia/css/bootstrap-italia.min.css';
+const BI_JS_SRC = '/vendor/bootstrap-italia/js/bootstrap-italia.bundle.min.js';
+const BI_FONTS_PATH = '/vendor/bootstrap-italia/fonts';
+const RSM_CSS_HREF = '/rsm-bi.css';
+const SUPABASE_SDK_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const LONG_CACHE_TTL_MS = 5 * 60 * 1000;
+const ASSET_VERSION_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
+const PARTIAL_CACHE_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 1000;
+const RESPONSE_CACHE_TTL_MS = IS_PRODUCTION ? 30 * 1000 : 0;
+const RESPONSE_CACHE_MAX_ENTRIES = 256;
+const RESPONSE_CACHE_MAX_ENTRY_BYTES = 512 * 1024;
+const RESPONSE_CACHE_MAX_TOTAL_BYTES = 20 * 1024 * 1024;
 const BROTLI_OPTIONS = {
   params: {
     [zlib.constants.BROTLI_PARAM_QUALITY]: 4
   }
 };
+const ASSET_VERSION_CACHE = new Map();
+const PARTIAL_CACHE = new Map();
+const RESPONSE_CACHE = new Map();
+let responseCacheBytes = 0;
+
+function cacheIsFresh(entry, ttlMs) {
+  return Boolean(entry) && (Date.now() - entry.ts) < ttlMs;
+}
+
+function preferredEncoding(rawHeader) {
+  const accepts = String(rawHeader || '');
+  if (accepts.includes('br')) return 'br';
+  if (accepts.includes('gzip')) return 'gzip';
+  return 'identity';
+}
+
+function makeResponseCacheKey(rawUrl, encoding) {
+  return JSON.stringify([rawUrl || '/', encoding]);
+}
+
+function isCacheableMethod(method) {
+  return method === 'GET' || method === 'HEAD';
+}
+
+function getCachedResponse(key) {
+  if (!RESPONSE_CACHE_TTL_MS) return null;
+  const entry = RESPONSE_CACHE.get(key);
+  if (!cacheIsFresh(entry, RESPONSE_CACHE_TTL_MS)) {
+    if (entry) {
+      responseCacheBytes -= Number(entry.body?.length || 0);
+      RESPONSE_CACHE.delete(key);
+    }
+    return null;
+  }
+  return entry;
+}
+
+function setCachedResponse(key, payload) {
+  if (!RESPONSE_CACHE_TTL_MS || !payload) return;
+  const entryBytes = Number(payload.body?.length || 0);
+  if (entryBytes > RESPONSE_CACHE_MAX_ENTRY_BYTES) return;
+
+  const current = RESPONSE_CACHE.get(key);
+  if (current) {
+    responseCacheBytes -= Number(current.body?.length || 0);
+  }
+
+  RESPONSE_CACHE.set(key, { ...payload, ts: Date.now() });
+  responseCacheBytes += entryBytes;
+
+  while (
+    RESPONSE_CACHE.size > RESPONSE_CACHE_MAX_ENTRIES ||
+    responseCacheBytes > RESPONSE_CACHE_MAX_TOTAL_BYTES
+  ) {
+    const keys = RESPONSE_CACHE.keys();
+    const oldest = keys.next();
+    if (oldest.done) break;
+    const stale = RESPONSE_CACHE.get(oldest.value);
+    responseCacheBytes -= Number(stale?.body?.length || 0);
+    RESPONSE_CACHE.delete(oldest.value);
+  }
+}
+
+function matchesEtag(ifNoneMatchHeader, etag) {
+  const header = String(ifNoneMatchHeader || '').trim();
+  if (!header) return false;
+  if (header === '*') return true;
+  const normalize = (value) => {
+    let token = String(value || '').trim();
+    token = token.replace(/^W\//i, '').trim();
+    if (token.startsWith('"') && token.endsWith('"')) {
+      token = token.slice(1, -1);
+    }
+    return token;
+  };
+  const target = normalize(etag);
+  return header.split(',').some(v => {
+    const token = v.trim();
+    return token === '*' || normalize(token) === target;
+  });
+}
 
 function getAssetVersion(assetPath) {
-  const diskPath = path.join(ROOT, assetPath.replace(/^\//, ''));
-  try {
-    return Math.floor(fs.statSync(diskPath).mtimeMs).toString(36);
-  } catch (_) {
-    return '1';
+  const cached = ASSET_VERSION_CACHE.get(assetPath);
+  if (cacheIsFresh(cached, ASSET_VERSION_CACHE_TTL_MS)) {
+    return cached.value;
   }
+  const diskPath = path.join(ROOT, assetPath.replace(/^\//, ''));
+  let version = '1';
+  try {
+    version = Math.floor(fs.statSync(diskPath).mtimeMs).toString(36);
+  } catch (_) {}
+  ASSET_VERSION_CACHE.set(assetPath, { value: version, ts: Date.now() });
+  return version;
 }
 
 function versionedAssetPath(assetPath) {
@@ -41,7 +144,7 @@ function createEntityTag(body) {
 }
 
 function getCacheControl(rawUrl, isPage) {
-  if (process.env.NODE_ENV !== 'production') return 'no-store';
+  if (!IS_PRODUCTION) return 'no-store';
 
   if (isPage) {
     return 'public, max-age=0, must-revalidate';
@@ -55,22 +158,21 @@ function getCacheControl(rawUrl, isPage) {
   return 'public, max-age=86400, stale-while-revalidate=3600';
 }
 
-function compressBody(req, contentType, body) {
-  const accepts = String(req.headers['accept-encoding'] || '');
+function compressBody(contentType, body, encoding) {
   const bytes = Buffer.isBuffer(body) ? body : Buffer.from(body);
 
   if (!COMPRESSIBLE_TYPE_RE.test(contentType || '') || bytes.length < 1024) {
     return { body: bytes };
   }
 
-  if (accepts.includes('br')) {
+  if (encoding === 'br') {
     return {
       body: zlib.brotliCompressSync(bytes, BROTLI_OPTIONS),
       encoding: 'br'
     };
   }
 
-  if (accepts.includes('gzip')) {
+  if (encoding === 'gzip') {
     return {
       body: zlib.gzipSync(bytes, { level: 6 }),
       encoding: 'gzip'
@@ -85,62 +187,86 @@ function loadPartial(name) {
   const resolvedName = name === 'footer'
     ? 'footbar'
     : (name === 'nav' ? 'topbar' : name);
-  const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
-  try {
-    return versionHtmlAssetUrls(fs.readFileSync(p, 'utf8'));
-  } catch (_) {
-    return `<!-- partial "${name}" not found -->`;
+  const cached = PARTIAL_CACHE.get(resolvedName);
+  if (cacheIsFresh(cached, PARTIAL_CACHE_TTL_MS)) {
+    return cached.value;
   }
+  const p = path.join(ROOT, 'partials', `${resolvedName}.html`);
+  let partial;
+  try {
+    partial = versionHtmlAssetUrls(fs.readFileSync(p, 'utf8'));
+  } catch (_) {
+    partial = `<!-- partial "${name}" not found -->`;
+  }
+  PARTIAL_CACHE.set(resolvedName, { value: partial, ts: Date.now() });
+  return partial;
 }
 
 function injectTopbarAssets(html) {
   if (!html.includes('data-rsm-topbar')) return html;
 
   let result = html;
-  const hasTopbarCss = /<link[^>]+href=["'][^"']*\/partials\/topbar\.css(?:\?[^"']*)?["'][^>]*>/i.test(result);
+  const hasBiCss = result.includes(BI_CSS_HREF);
+  const hasRsmCss = result.includes(RSM_CSS_HREF);
+  const hasBiJs = result.includes(BI_JS_SRC);
   const hasTopbarJs = /<script[^>]+src=["'][^"']*\/partials\/topbar\.client\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
-  const hasFontsApiPreconnect = /<link[^>]+href=["']https:\/\/fonts\.googleapis\.com["'][^>]*>/i.test(result);
-  const hasFontsStaticPreconnect = /<link[^>]+href=["']https:\/\/fonts\.gstatic\.com["'][^>]*>/i.test(result);
-  const hasTopbarFonts = /<link[^>]+href=["'][^"']*family=Syne:wght@500;600;700;800&family=Space\+Grotesk:wght@400;500;600;700&display=swap["'][^>]*>/i.test(result);
+  const hasSupabaseSdk = /<script[^>]+src=["'][^"']*supabase-js@2[^"']*["'][^>]*><\/script>/i.test(result);
+  const hasSupabaseConfig = /<script[^>]+src=["'][^"']*supabase\.config\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(result);
 
   if (result.includes('</head>')) {
     const headInjections = [];
-
-    if (!hasFontsApiPreconnect) {
-      headInjections.push('  <link rel="preconnect" href="https://fonts.googleapis.com" />');
+    if (!hasBiCss) {
+      headInjections.push(`  <link rel="stylesheet" href="${BI_CSS_HREF}" />`);
     }
-    if (!hasFontsStaticPreconnect) {
-      headInjections.push('  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />');
+    if (!hasRsmCss) {
+      headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath(RSM_CSS_HREF)}" />`);
     }
-    if (!hasTopbarFonts) {
-      headInjections.push('  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" />');
-    }
-    if (!hasTopbarCss) {
-      headInjections.push(`  <link rel="stylesheet" href="${versionedAssetPath('/partials/topbar.css')}" />`);
-    }
-
     if (headInjections.length) {
       result = result.replace('</head>', `${headInjections.join('\n')}\n</head>`);
     }
   }
-  if (!hasTopbarJs && result.includes('</body>')) {
-    result = result.replace('</body>', `  <script src="${versionedAssetPath('/partials/topbar.client.js')}" defer></script>\n</body>`);
+
+  if (result.includes('</body>')) {
+    const bodyInjections = [];
+    if (!hasBiJs) {
+      bodyInjections.push(`  <script src="${BI_JS_SRC}"></script>`);
+      bodyInjections.push(`  <script>if(window.bootstrap&&bootstrap.loadFonts)bootstrap.loadFonts('${BI_FONTS_PATH}');</script>`);
+    }
+    if (!hasSupabaseSdk) {
+      bodyInjections.push(`  <script src="${SUPABASE_SDK_SRC}"></script>`);
+    }
+    if (!hasSupabaseConfig) {
+      bodyInjections.push('  <script src="/supabase.config.js"></script>');
+    }
+    if (!hasTopbarJs) {
+      bodyInjections.push(`  <script src="${versionedAssetPath('/partials/topbar.client.js')}"></script>`);
+    }
+    if (bodyInjections.length) {
+      result = result.replace('</body>', `${bodyInjections.join('\n')}\n</body>`);
+    }
   }
   return result;
+}
+
+function injectNewsletterModal(html) {
+  // Inject the newsletter modal partial into every page that does not already include it.
+  if (html.includes('id="newsletter-modal"')) return html;
+  if (!html.includes('</body>')) return html;
+  const modal = loadPartial('newsletter-modal');
+  return html.replace('</body>', modal + '\n</body>');
 }
 
 function injectPartials(html) {
   const withPartials = versionHtmlAssetUrls(
     html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name))
   );
-  return injectTopbarAssets(withPartials);
+  return injectNewsletterModal(injectTopbarAssets(withPartials));
 }
 const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
 const HTML_PAGES = new Set([
   'write',
   'reset',
   'profile',
-  'preferenze',
   'post',
   'modifica-profilo',
   'dashboard',
@@ -151,7 +277,8 @@ const HTML_PAGES = new Set([
   'privacy',
   'cookie',
   'note-legali',
-  'storia'
+  'storia',
+  'origini'
 ]);
 const MIME = {
   '.css':  'text/css',
@@ -165,6 +292,11 @@ const MIME = {
   '.webp': 'image/webp',
   '.ico':  'image/x-icon',
   '.woff2':'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf':  'font/ttf',
+  '.eot':  'application/vnd.ms-fontobject',
+  '.xml':  'application/xml; charset=utf-8',
+  '.txt':  'text/plain; charset=utf-8',
 };
 
 const SECURITY_HEADERS = {
@@ -392,6 +524,193 @@ async function handleKwContext(req, res) {
   res.end(JSON.stringify({ wiki: wikiExtract, claude: claudeSentence }));
 }
 
+const MAX_REQUEST_BODY_SIZE = 4096; // bytes
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    req.on('data', chunk => {
+      data += chunk;
+      if (data.length > MAX_REQUEST_BODY_SIZE) {
+        req.destroy();
+        reject(new Error('payload-too-large'));
+      }
+    });
+    req.on('end', () => {
+      try { resolve(JSON.parse(data)); } catch (_) { resolve({}); }
+    });
+    req.on('error', reject);
+  });
+}
+
+function isValidEmail(str) {
+  return typeof str === 'string' &&
+    str.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str.trim());
+}
+
+async function handleNewsletterSubscribe(req, res) {
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+
+  const email = String(body.email || '').trim().toLowerCase();
+  if (!isValidEmail(email)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Inserisci un indirizzo email valido.' }));
+    return;
+  }
+
+  // Use the service role key when available (bypasses RLS), otherwise the anon key
+  // (RLS policy allows INSERT for anon on newsletter_subscribers).
+  const apiKey = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
+
+  try {
+    const sbRes = await fetch(`${SUPABASE_PROJECT_URL}/rest/v1/newsletter_subscribers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': apiKey,
+        'Authorization': `Bearer ${apiKey}`,
+        'Prefer': 'resolution=ignore-duplicates,return=minimal'
+      },
+      body: JSON.stringify({ email, source: 'web' })
+    });
+
+    if (!sbRes.ok && sbRes.status !== 409) {
+      const errText = await sbRes.text().catch(() => '');
+      throw new Error(`supabase-${sbRes.status}: ${errText}`);
+    }
+
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify({ ok: true }));
+  } catch (e) {
+    console.error('[newsletter/subscribe]', e.message);
+    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Errore interno. Riprova tra poco.' }));
+  }
+}
+
+async function handleNewsletterSend(req, res) {
+  // Admin-only endpoint: requires NEWSLETTER_ADMIN_SECRET env var.
+  // Sends a newsletter to all active subscribers via SMTP (SMTP_* env vars)
+  // or via the Resend API (RESEND_API_KEY env var).
+  const adminSecret = process.env.NEWSLETTER_ADMIN_SECRET;
+  if (!adminSecret) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Newsletter send not configured (NEWSLETTER_ADMIN_SECRET missing).' }));
+    return;
+  }
+
+  const authHeader = req.headers['authorization'] || '';
+  if (authHeader !== `Bearer ${adminSecret}`) {
+    res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Non autorizzato.' }));
+    return;
+  }
+
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+
+  const subject = String(body.subject || '').trim();
+  const htmlContent = String(body.html || '').trim();
+  const textContent = String(body.text || '').trim();
+
+  if (!subject || (!htmlContent && !textContent)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Fornisci subject e html (o text).' }));
+    return;
+  }
+
+  // Fetch all active subscribers using service role key
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'SUPABASE_SERVICE_ROLE_KEY non configurata.' }));
+    return;
+  }
+
+  let subscribers;
+  try {
+    const sbRes = await fetch(
+      `${SUPABASE_PROJECT_URL}/rest/v1/newsletter_subscribers?is_active=eq.true&select=email`,
+      {
+        headers: {
+          'apikey': serviceKey,
+          'Authorization': `Bearer ${serviceKey}`
+        }
+      }
+    );
+    if (!sbRes.ok) throw new Error(`supabase-${sbRes.status}`);
+    subscribers = await sbRes.json();
+  } catch (e) {
+    console.error('[newsletter/send] fetch-subscribers', e.message);
+    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Impossibile recuperare gli iscritti.' }));
+    return;
+  }
+
+  if (!Array.isArray(subscribers) || subscribers.length === 0) {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true, sent: 0, message: 'Nessun iscritto attivo.' }));
+    return;
+  }
+
+  const emails = subscribers.map(s => s.email).filter(Boolean);
+  const fromName  = process.env.NEWSLETTER_FROM_NAME  || 'Pro Loco Rivalta sul Mincio';
+  const fromEmail = process.env.NEWSLETTER_FROM_EMAIL || 'info@prolocorivalta.mn.it';
+
+  // Try Resend API first, then log error if not configured
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      ok: false,
+      error: 'Email provider non configurato. Imposta RESEND_API_KEY nelle variabili d\'ambiente.',
+      subscribers: emails.length
+    }));
+    return;
+  }
+
+  // Send via Resend (https://resend.com) – free tier: 3,000 emails/month
+  // BCC approach: each batch is sent as one API call with recipients in BCC
+  // so each subscriber receives only their own address in headers.
+  let sent = 0;
+  const errors = [];
+  // Send in batches of 50 to respect rate limits
+  const BATCH = 50;
+  for (let i = 0; i < emails.length; i += BATCH) {
+    const batch = emails.slice(i, i + BATCH);
+    try {
+      const rRes = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${resendKey}`
+        },
+        body: JSON.stringify({
+          from: `${fromName} <${fromEmail}>`,
+          bcc: batch,
+          to: fromEmail,
+          subject,
+          html: htmlContent || undefined,
+          text: textContent || undefined
+        })
+      });
+      if (rRes.ok) {
+        sent += batch.length;
+      } else {
+        const errBody = await rRes.text().catch(() => '');
+        errors.push(`batch-${i}: ${rRes.status} ${errBody}`);
+      }
+    } catch (e) {
+      errors.push(`batch-${i}: ${e.message}`);
+    }
+  }
+
+  const ok = errors.length === 0;
+  res.writeHead(ok ? 200 : 207, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ ok, sent, errors: errors.length ? errors : undefined }));
+}
+
 function getSafeFilePath(rawUrl) {
   const requestPath = (rawUrl || '/').split('?')[0].split('#')[0] || '/';
   let decodedPath;
@@ -473,13 +792,23 @@ function handler(req, res) {
     return;
   }
 
- if (req.method === 'GET' && requestPathLower === '/api/changelog') {
-  handleChangelog(req, res);
-  return;
-}
+  if (req.method === 'GET' && requestPathLower === '/api/changelog') {
+    handleChangelog(req, res);
+    return;
+  }
 
   if (req.method === 'GET' && requestPathLower === '/api/kw-context') {
     handleKwContext(req, res);
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/newsletter/subscribe') {
+    handleNewsletterSubscribe(req, res);
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/newsletter/send') {
+    handleNewsletterSend(req, res);
     return;
   }
 
@@ -493,6 +822,30 @@ function handler(req, res) {
   const ext       = path.extname(filePath).toLowerCase();
   const isPage    = isHtmlPage(filePath);
   const cacheControl = getCacheControl(req.url, isPage);
+  const encoding = preferredEncoding(req.headers['accept-encoding']);
+  const responseCacheKey = makeResponseCacheKey(req.url, encoding);
+
+  if (isCacheableMethod(req.method)) {
+    const cached = getCachedResponse(responseCacheKey);
+    if (cached) {
+      if (matchesEtag(req.headers['if-none-match'], cached.etag)) {
+        res.writeHead(304, {
+          ...SECURITY_HEADERS,
+          'Cache-Control': cacheControl,
+          ETag: cached.etag
+        });
+        res.end();
+        return;
+      }
+      res.writeHead(cached.statusCode, cached.headers);
+      if (req.method === 'HEAD') {
+        res.end();
+      } else {
+        res.end(cached.body);
+      }
+      return;
+    }
+  }
 
   fs.readFile(filePath, isPage ? 'utf8' : null, (err, data) => {
     if (err) {
@@ -505,7 +858,7 @@ function handler(req, res) {
     const contentType = isPage ? HTML_CONTENT_TYPE : (MIME[ext] || 'application/octet-stream');
     const etag = createEntityTag(body);
 
-    if (req.headers['if-none-match'] === etag) {
+    if (matchesEtag(req.headers['if-none-match'], etag)) {
       res.writeHead(304, {
         ...SECURITY_HEADERS,
         'Cache-Control': cacheControl,
@@ -515,7 +868,7 @@ function handler(req, res) {
       return;
     }
 
-    const compressed = compressBody(req, contentType, body);
+    const compressed = compressBody(contentType, body, encoding);
     const headers = {
       ...SECURITY_HEADERS,
       'Content-Type': contentType,
@@ -529,8 +882,21 @@ function handler(req, res) {
       headers.Vary = 'Accept-Encoding';
     }
 
+    if (isCacheableMethod(req.method)) {
+      setCachedResponse(responseCacheKey, {
+        statusCode: 200,
+        headers: { ...headers },
+        body: compressed.body,
+        etag
+      });
+    }
+
     res.writeHead(200, headers);
-    res.end(compressed.body);
+    if (req.method === 'HEAD') {
+      res.end();
+    } else {
+      res.end(compressed.body);
+    }
   });
 }
 

@@ -1,0 +1,39 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="newsletter-modal" aria-labelledby="newsletter-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="newsletter-modal-title">Newsletter Pro Loco</h2>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+      <div class="modal-body">
+        <div id="newsletter-modal-form-wrap">
+          <p>
+            Lasciaci la tua email: ti scriviamo solo per la <strong>Festa del Pesce</strong>
+            e per gli eventi importanti della Pro Loco di Rivalta. Niente spam, una mail al mese.
+          </p>
+          <form id="newsletter-modal-form" novalidate>
+            <div class="form-group">
+              <label for="newsletter-modal-email">Indirizzo email</label>
+              <input type="email" class="form-control" id="newsletter-modal-email" placeholder="nome@email.it" required autocomplete="email" />
+            </div>
+            <p class="form-text small mt-1" id="newsletter-modal-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div id="newsletter-modal-success" class="d-none">
+          <div class="callout success">
+            <div class="callout-title">
+              <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-check-circle"></use></svg>
+              Perfetto, sei iscritto!
+            </div>
+            <p>Ti avviseremo in anticipo degli eventi della Pro Loco di Rivalta sul Mincio.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p class="small text-muted me-auto mb-0">Una mail al mese, al massimo. <a href="/privacy">Privacy</a>.</p>
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-dismiss="modal">Chiudi</button>
+        <button class="btn btn-primary btn-sm" type="submit" form="newsletter-modal-form" id="newsletter-modal-btn">Iscrivimi</button>
+      </div>
+    </div>
+  </div>
+</div>

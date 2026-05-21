@@ -2,292 +2,104 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <script>!function(){try{var p=JSON.parse(localStorage.getItem('rsm_prefs_v1'))||{},r=document.documentElement,s={sm:'14px',md:'16px',lg:'18px',xl:'20px'},t=p.theme;var ok=t==='chiaro'||t==='scuro'||t==='auto';t=ok?t:'chiaro';r.dataset.theme=t==='auto'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'scuro':'chiaro'):t;r.dataset.themePref=t;r.dataset.fontsize=p.fontsize||'md';r.style.fontSize=s[p.fontsize]||'16px';r.dataset.density=p.uiDensity||'comfortable';if(p.contrast)r.dataset.contrast='high';else delete r.dataset.contrast;}catch(e){}}();</script>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Nuova Password — Pro Loco Rivalta sul Mincio</title>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,550&display=swap" rel="stylesheet">
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-    :root{
-      --ink: #10192b;
-      --ink-soft: #5a6882;
-      --cream: #f4f7ff;
-      --paper: #fbfdff;
-      --marsh: #12203a;
-      --water: #4a9bff;
-      --reed: #1fbf7d;
-      --line: rgba(18,32,58,0.14);
-      --ok: #1fbf7d;
-      --err: #b53838;
-      --sans: "Cabinet Grotesk", system-ui, sans-serif;
-      --serif: "Fraunces", Georgia, serif;
-    }
-
-    html,body{
-      height:100%;
-      font-family: var(--sans);
-      background:
-        radial-gradient(ellipse 80% 52% at 18% 8%, rgba(31,191,125,.16) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 44% at 82% 10%, rgba(74,155,255,.18) 0%, transparent 58%),
-        radial-gradient(ellipse 56% 42% at 84% 84%, rgba(139,92,246,.12) 0%, transparent 60%),
-        linear-gradient(160deg, #f8fbff 0%, #eef4ff 46%, #e8eefb 100%);
-      color: var(--ink);
-      overflow-x:hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image: radial-gradient(circle, rgba(18,32,58,.08) 1px, transparent 1px);
-      background-size: 18px 18px;
-      mix-blend-mode: multiply;
-      opacity: 0.16;
-    }
-
-    #particles{position:fixed;inset:0;pointer-events:none;z-index:0}
-
-    
-
-    /* ── Layout ── */
-    .page{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:84px 24px 32px}
-
-    /* ── Card ── */
-    .card{
-      width:100%;max-width:440px;
-      background:rgba(255,250,240,.92);
-      border:1px solid var(--line);
-      border-radius:24px;
-      backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-      padding:38px 34px 34px;
-      box-shadow:0 32px 80px rgba(37,63,53,.10),0 0 0 1px rgba(37,63,53,.06);
-      animation:cardIn .6s cubic-bezier(.22,1,.36,1) both
-    }
-    @keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
-
-    /* ── Brand ── */
-    .brand-card{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .brand-card-img{width:40px;height:40px;border-radius:12px;object-fit:cover}
-    .brand-card-name{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
-
-    .card-summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-    .card-chip{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,250,240,.74);color:var(--ink-soft);font-size:.76rem;font-weight:800;letter-spacing:.02em}
-
-    /* ── Headings ── */
-    .card-title{font-family:var(--serif);font-size:1.9rem;font-weight:650;line-height:1.2;margin-bottom:8px}
-    .card-sub{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:22px}
-
-    /* ── Form ── */
-    .field{margin-bottom:20px}
-    label{display:block;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
-    .input-wrap{position:relative}
-    input[type=password],input[type=text]{
-      width:100%;padding:14px 48px 14px 16px;
-      background:var(--paper);border:1px solid var(--line);border-radius:12px;
-      color:var(--ink);font-size:.95rem;font-family:var(--sans);
-      transition:border-color .2s,box-shadow .2s;outline:none
-    }
-    input:focus{border-color:rgba(47,107,103,.6);box-shadow:0 0 0 3px rgba(47,107,103,.12)}
-    .eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:1.1rem;padding:2px;transition:color .2s}
-    .eye-btn:hover{color:var(--ink)}
-
-    /* ── Strength meter ── */
-    .strength-bar{display:flex;gap:4px;margin-top:8px}
-    .seg{flex:1;height:3px;border-radius:99px;background:rgba(37,63,53,.10);transition:background .3s}
-    .seg.s1{background:#c0392b}
-    .seg.s2{background:#e67e22}
-    .seg.s3{background:#e6c040}
-    .seg.s4{background:#27ae60}
-    .strength-label{font-size:.72rem;color:var(--ink-soft);margin-top:5px;height:14px}
-
-    /* ── Button ── */
-    .btn-main{
-      width:100%;padding:15px;margin-top:8px;
-      background:var(--marsh);
-      border:none;border-radius:12px;
-      color:var(--cream);font-size:1rem;font-weight:700;font-family:var(--sans);
-      cursor:pointer;letter-spacing:.03em;
-      box-shadow:0 8px 28px rgba(37,63,53,.22);
-      transition:opacity .2s,transform .15s,box-shadow .2s;
-      position:relative;overflow:hidden
-    }
-    .btn-main:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 12px 36px rgba(37,63,53,.30)}
-    .btn-main:active{transform:translateY(0)}
-    .btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none}
-    .btn-main .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
-    .btn-main.loading .btn-text{display:none}
-    .btn-main.loading .spinner{display:block}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* ── States ── */
-    .state{display:none}
-    .state.active{display:block;animation:fadeIn .4s ease both}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-    /* ── Success / Error ── */
-    .big-icon{font-size:3.5rem;margin-bottom:16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
-    @keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
-    .success-title{font-family:var(--serif);font-size:1.7rem;font-weight:650;margin-bottom:10px}
-    .success-sub{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:28px}
-    .btn-outline{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:12px 24px;border-radius:10px;
-      border:1px solid var(--line);background:rgba(37,63,53,.05);
-      color:var(--ink);font-size:.9rem;font-family:var(--sans);cursor:pointer;
-      transition:background .2s,border-color .2s;text-decoration:none
-    }
-    .btn-outline:hover{background:rgba(37,63,53,.09);border-color:rgba(37,63,53,.22)}
-
-    /* ── Error banner ── */
-    .err-banner{
-      display:none;
-      background:rgba(181,56,56,.08);border:1px solid rgba(181,56,56,.25);
-      border-radius:10px;padding:12px 14px;
-      font-size:.85rem;color:#b53838;margin-bottom:20px;
-      animation:fadeIn .3s ease
-    }
-    .err-banner.show{display:flex;gap:10px;align-items:flex-start}
-
-    /* ── Back link ── */
-    .back-link{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:.82rem;color:var(--ink-soft);text-decoration:none;
-      margin-top:24px;transition:color .2s
-    }
-    .back-link:hover{color:var(--ink)}
-
-    .token-err{text-align:center;padding:8px 0}
-  </style>
-  <link rel="stylesheet" href="/theme.css" />
+  <meta name="robots" content="noindex" />
 </head>
 <body>
 
-<canvas id="particles"></canvas>
-
 <!--PARTIAL:nav-->
 
-<div class="page">
-  <div class="card">
-    <div class="brand-card">
-      <img src="/img/favicon.png" alt="" class="brand-card-img" onerror="this.style.display='none'">
-      <span class="brand-card-name">Rivalta sul Mincio · Parco del Mincio · Mantova</span>
-    </div>
+<main class="container rsm-page">
+  <div class="row justify-content-center align-items-start">
+    <div class="col-12 col-md-6 col-lg-5">
+      <div class="card-wrapper">
+        <div class="card card-bg">
+          <div class="card-body">
 
-    <div class="card-summary" aria-label="Struttura reset password">
-      <span class="card-chip">1 passaggio</span>
-      <span class="card-chip">nuova password qui</span>
-      <span class="card-chip">ritorno al login</span>
-    </div>
+            <p class="text-muted text-uppercase small mb-3">Rivalta sul Mincio · Parco del Mincio · Mantova</p>
 
-    <!-- State: loading -->
-    <div class="state active" id="s-loading">
-      <div style="text-align:center;padding:20px 0">
-        <div style="width:40px;height:40px;border:3px solid rgba(37,63,53,.12);border-top-color:var(--marsh);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px"></div>
-        <p style="color:var(--ink-soft);font-size:.9rem">Verifica del link in corso…</p>
-      </div>
-    </div>
+            <!-- State: loading -->
+            <div class="state active text-center py-4" id="s-loading">
+              <div class="progress-spinner progress-spinner-active" role="status">
+                <span class="visually-hidden">Caricamento…</span>
+              </div>
+              <p class="text-muted mt-3">Verifica del link in corso…</p>
+            </div>
 
-    <!-- State: invalid token -->
-    <div class="state" id="s-invalid">
-      <div class="token-err">
-        <div class="big-icon">🔗</div>
-        <div class="success-title" style="color:var(--err)">Link non valido</div>
-        <p class="success-sub">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
-        <a href="login" class="btn-outline">← Torna al login</a>
-      </div>
-    </div>
+            <!-- State: invalid token -->
+            <div class="state text-center" id="s-invalid">
+              <h1 class="h4 text-danger">Link non valido</h1>
+              <p class="text-muted">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
+              <a href="/login" class="btn btn-outline-primary">← Torna al login</a>
+            </div>
 
-    <!-- State: reset form -->
-    <div class="state" id="s-form">
-      <h1 class="card-title">Nuova password</h1>
-      <p class="card-sub">Scegli una password sicura per il tuo account.</p>
+            <!-- State: reset form -->
+            <div class="state" id="s-form">
+              <h1 class="h4">Nuova password</h1>
+              <p class="text-muted">Scegli una password sicura per il tuo account.</p>
 
-      <div class="err-banner" id="err-banner">
-        <span>⚠️</span><span id="err-text"></span>
-      </div>
+              <div class="alert alert-danger err-banner" role="alert" id="err-banner">
+                <span id="err-text"></span>
+              </div>
 
-      <div class="field">
-        <label>Nuova password</label>
-        <div class="input-wrap">
-          <input type="password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password">
-          <button class="eye-btn" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1">👁</button>
+              <div class="form-group">
+                <label for="pwd1">Nuova password</label>
+                <div class="input-group">
+                  <input type="password" id="pwd1" class="form-control" placeholder="Almeno 8 caratteri" autocomplete="new-password">
+                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
+                </div>
+                <div class="progress mt-2" style="height:6px">
+                  <div class="progress-bar" role="progressbar" id="strBar" style="width:0%"></div>
+                </div>
+                <small class="form-text" id="str-label"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="pwd2">Conferma password</label>
+                <div class="input-group">
+                  <input type="password" id="pwd2" class="form-control" placeholder="Ripeti la password" autocomplete="new-password">
+                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100" id="reset-btn" onclick="doReset()">
+                <span class="btn-text">Imposta nuova password</span>
+              </button>
+
+              <div class="mt-3">
+                <a href="/login" class="link-dark">← Torna al login</a>
+              </div>
+            </div>
+
+            <!-- State: success -->
+            <div class="state text-center" id="s-success">
+              <h1 class="h4">Password aggiornata!</h1>
+              <p class="text-muted">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
+              <a href="/login" class="btn btn-primary">Vai al login →</a>
+            </div>
+
+          </div>
         </div>
-        <div class="strength-bar">
-          <div class="seg" id="seg0"></div>
-          <div class="seg" id="seg1"></div>
-          <div class="seg" id="seg2"></div>
-          <div class="seg" id="seg3"></div>
-        </div>
-        <div class="strength-label" id="str-label"></div>
-      </div>
-
-      <div class="field">
-        <label>Conferma password</label>
-        <div class="input-wrap">
-          <input type="password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password">
-          <button class="eye-btn" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1">👁</button>
-        </div>
-      </div>
-
-      <button class="btn-main" id="reset-btn" onclick="doReset()">
-        <span class="btn-text">Imposta nuova password</span>
-        <div class="spinner"></div>
-      </button>
-
-      <a href="login" class="back-link">← Torna al login</a>
-    </div>
-
-    <!-- State: success -->
-    <div class="state" id="s-success">
-      <div style="text-align:center;padding:8px 0">
-        <div class="big-icon">✅</div>
-        <div class="success-title">Password aggiornata!</div>
-        <p class="success-sub">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
-        <a href="login" class="btn-outline" style="margin:0 auto">Vai al login →</a>
       </div>
     </div>
   </div>
-</div>
+</main>
+
+<!--PARTIAL:footer-->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="supabase.config.js"></script>
+<script src="/supabase.config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ── Particles ──
-(function(){
-  const c = document.getElementById('particles');
-  const ctx = c.getContext('2d');
-  let W, H, pts = [];
-  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
-  resize(); window.addEventListener('resize',resize);
-  for(let i=0;i<22;i++) pts.push({x:Math.random()*1e4,y:Math.random()*1e4,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.6,a:Math.random()*.6+.2});
-  function frame(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x%W,p.y%H,p.r,0,6.28);
-      ctx.fillStyle=`rgba(198,164,98,${p.a})`;ctx.fill();
-    });
-    requestAnimationFrame(frame);
-  }
-  frame();
-})();
 
 // ── Eye toggle ──
 function toggleEye(id, btn){
   const el = document.getElementById(id);
   el.type = el.type==='password' ? 'text' : 'password';
-  btn.textContent = el.type==='password' ? '👁' : '🙈';
+  btn.textContent = el.type==='password' ? 'Mostra' : 'Nascondi';
+  btn.setAttribute('aria-label', el.type==='password' ? 'Mostra password' : 'Nascondi password');
 }
 
 // ── Strength meter ──
@@ -299,11 +111,10 @@ document.getElementById('pwd1').addEventListener('input', function(){
   if(/[0-9]/.test(v)) s++;
   if(/[^A-Za-z0-9]/.test(v)) s++;
   const labels=['','Debole','Discreta','Buona','Ottima'];
-  const cls=['','s1','s2','s3','s4'];
-  for(let i=0;i<4;i++){
-    const seg=document.getElementById('seg'+i);
-    seg.className='seg'+(i<s?' '+cls[s]:'');
-  }
+  const colors=['bg-secondary','bg-danger','bg-warning','bg-warning','bg-success'];
+  const bar = document.getElementById('strBar');
+  bar.className = 'progress-bar ' + (v.length ? colors[s] : '');
+  bar.style.width = (v.length ? (s*25) : 0) + '%';
   document.getElementById('str-label').textContent = v.length ? labels[s] : '';
 });
 
@@ -331,7 +142,6 @@ sb.auth.onAuthStateChange((event, session) => {
     showState('s-form');
     _ready = true;
   } else if(event === 'SIGNED_IN' && session) {
-    // already signed in (token in hash), treat as recovery ready
     _session = session;
     if(!_ready) {
       showState('s-form');
@@ -340,22 +150,16 @@ sb.auth.onAuthStateChange((event, session) => {
   }
 });
 
-// Check for hash params from Supabase email link
-// Supabase puts access_token in the URL hash; the SDK handles it automatically.
-// If after a short delay no recovery event fired, the token is invalid.
 setTimeout(()=>{
   if(!_ready){
-    // also check if there's any session at all via getSession
     sb.auth.getSession().then(({data:{session}})=>{
       if(session){
         _session = session;
         showState('s-form');
         _ready = true;
       } else {
-        // check URL hash manually — Supabase may have already consumed it
         const hash = window.location.hash;
         if(hash && hash.includes('access_token')){
-          // still waiting, give more time
           setTimeout(()=>{
             if(!_ready) showState('s-invalid');
           }, 2000);
@@ -375,12 +179,10 @@ async function doReset(){
   if(p1 !== p2){ showErr('Le password non coincidono.'); return; }
 
   const btn = document.getElementById('reset-btn');
-  btn.classList.add('loading');
   btn.disabled = true;
 
   const {error} = await sb.auth.updateUser({password: p1});
 
-  btn.classList.remove('loading');
   btn.disabled = false;
 
   if(error){
@@ -389,8 +191,7 @@ async function doReset(){
   }
 
   showState('s-success');
-  // Auto-redirect after 3s
-  setTimeout(()=>{ window.location.href='login'; }, 3000);
+  setTimeout(()=>{ window.location.href='/login'; }, 3000);
 }
 
 // Allow Enter key
@@ -398,6 +199,6 @@ document.addEventListener('keydown', e=>{
   if(e.key==='Enter' && document.getElementById('s-form').classList.contains('active')) doReset();
 });
 </script>
-  <!--PARTIAL:footer-->
+
 </body>
 </html>
