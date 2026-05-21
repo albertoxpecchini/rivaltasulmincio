@@ -6,6 +6,9 @@
   <title>Accedi | Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
   <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <style>
+    .login-tab-bar .btn[aria-pressed="true"] { font-weight: 700; }
+  </style>
 </head>
 <body>
 
@@ -17,15 +20,11 @@
 
       <p class="text-primary fw-semibold text-uppercase small mb-1">Accesso locale · Rivalta sul Mincio</p>
       <h1>Entra nel borgo digitale del Mincio</h1>
-      <p class="lead">Accesso con password o link magico e recupero account per profili autorizzati.</p>
+      <p class="text-muted">Accesso con password o link magico, recupero account per profili autorizzati.</p>
 
-      <div class="d-flex flex-wrap gap-2 mb-4">
-        <button class="btn btn-primary" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
-        <button class="btn btn-outline-primary" type="button" data-view-link="register1" aria-pressed="false">Crea account</button>
-        <button class="btn btn-outline-secondary" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
-        <button class="btn btn-primary magnetic" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
-        
-        <button class="btn btn-outline-secondary magnetic" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
+      <div class="d-flex flex-wrap gap-2 mb-4 login-tab-bar">
+        <button class="btn btn-outline-primary" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
+        <button class="btn btn-outline-secondary" type="button" data-view-link="forgot" aria-pressed="false">Recupera password</button>
       </div>
 
       <div class="card-wrapper" id="login-panel-card">
