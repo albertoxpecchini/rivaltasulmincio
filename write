@@ -55,6 +55,26 @@
             <div class="img-grid" id="img-grid"></div>
           </div>
         </div>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="f-event-date">Data evento</label>
+              <input id="f-event-date" class="form-control" type="datetime-local" />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="f-source-url">Link sorgente</label>
+              <input id="f-source-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="f-image-url">URL immagine copertina</label>
+              <input id="f-image-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
+            </div>
+          </div>
+        </div>
         <div class="d-flex flex-wrap gap-2 justify-content-end mt-3">
           <a class="btn btn-outline-secondary" href="/dashboard">Annulla</a>
           <button class="btn btn-outline-primary" id="btn-draft" type="button">Salva bozza</button>
@@ -351,6 +371,9 @@
     $('title-count').textContent       = `${(data.title   || '').length} / 120`;
     $('excerpt-count').textContent     = `${(data.excerpt || '').length} / 200`;
     if (data.image_type) selectImg(data.image_type);
+    $('f-source-url').value = data.source_url || '';
+    $('f-image-url').value = data.image_url || '';
+    $('f-event-date').value = data.event_date ? new Date(data.event_date).toISOString().slice(0,16) : '';
     const pill = $('status-pill');
     if (data.published) { pill.className = 'badge bg-success rounded-pill';  pill.textContent = 'Pubblicato'; }
     else                { pill.className = 'badge bg-warning rounded-pill';  pill.textContent = 'Bozza'; }
@@ -367,6 +390,9 @@
     const title    = $('f-title').value.trim();
     const excerpt  = $('f-excerpt').value.trim();
     const category = $('f-category').value.trim();
+    const sourceUrl = $('f-source-url').value.trim();
+    const imageUrl = $('f-image-url').value.trim();
+    const eventDateRaw = $('f-event-date').value;
     if (!content)  { setErr('Il contenuto è obbligatorio.'); return; }
     if (!category) { setErr('Seleziona una categoria.'); return; }
     $('btn-draft').disabled = $('btn-publish').disabled = true;
@@ -377,6 +403,9 @@
       content, category,
       badge_color: badgeColor,
       image_type:  selectedImg || null,
+      source_url: sourceUrl || null,
+      image_url: imageUrl || null,
+      event_date: eventDateRaw ? new Date(eventDateRaw).toISOString() : null,
       published:   publish,
       published_at: publish ? new Date().toISOString() : (currentPost?.published_at || null),
     };
