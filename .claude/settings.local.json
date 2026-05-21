@@ -5,6 +5,8 @@
       "Bash(Select-Object -ExpandProperty Name)",
       "Bash(findstr /r \"^\\\\.rsm-\" theme.css partials\\\\*.css)",
       "Bash(node --check \"c:\\\\Users\\\\alberto\\\\Documents\\\\rivaltasulmincio\\\\partials\\\\carousel.js\")",
+      "Bash(git branch *)",
+      "Bash(git log *)"
       "PowerShell($dest = 'C:\\\\Users\\\\alberto\\\\Documents\\\\rivaltasulmincio\\\\vendor\\\\bootstrap-italia'; if \\(Test-Path $dest\\) { Remove-Item -Recurse -Force $dest }; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory\\('C:\\\\Users\\\\alberto\\\\Downloads\\\\bootstrap-italia.zip', $dest\\); \"Extracted. Top-level entries:\"; Get-ChildItem $dest | Select-Object Name, Mode | Format-Table -AutoSize | Out-String | Write-Output)",
       "Bash(grep -oE \".{0,30}titillium-web-v10-latin-ext_latin-300.eot.{0,10}\" js/bootstrap-italia.bundle.min.js)",
       "Bash(grep -oE \".{0,160}version:[^,]*,.{0,40}loadFonts\" js/bootstrap-italia.bundle.min.js)",
