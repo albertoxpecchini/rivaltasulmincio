@@ -4,152 +4,147 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scrivi un post – Rivalta sul Mincio</title>
+  <title>Laboratorio di scrittura – Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
 </head>
 <body>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="g-water"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d8b89"/><stop offset="100%" stop-color="#0F2A30"/></linearGradient>
-  <linearGradient id="g-marsh"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5fb085"/><stop offset="100%" stop-color="#15433a"/></linearGradient>
-  <linearGradient id="g-sunset" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0c084"/><stop offset="100%" stop-color="#c0392b"/></linearGradient>
-  <linearGradient id="g-spring" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a8d8a8"/><stop offset="100%" stop-color="#2d8b60"/></linearGradient>
-  <linearGradient id="g-deep"   x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2f3a"/><stop offset="100%" stop-color="#030d12"/></linearGradient>
-</defs></svg>
-
 <!--PARTIAL:nav-->
 
-<main class="container rsm-page">
+<main class="container rsm-page py-4">
   <p class="text-primary fw-semibold text-uppercase small mb-1">Rivalta sul Mincio</p>
-  <h1 class="page-title" id="page-title">Scrivi un post</h1>
-  <p class="text-muted" id="page-sub">Crea un nuovo contenuto per la comunità: titolo, estratto, testo, categoria e illustrazione.</p>
+  <h1 class="page-title" id="page-title">Laboratorio di scrittura</h1>
+  <p class="text-muted" id="page-sub">Nuovo editor completo: campi narrativi, SEO, metadati evento e controllo qualità del testo.</p>
 
   <div class="row g-4 mt-1">
-    <div class="col-12 col-lg-8">
+    <section class="col-12 col-xl-8">
       <div class="alert alert-danger" id="err-msg" style="display:none"></div>
-      <div class="card-wrapper"><div class="card card-bg"><div class="card-body">
-        <div class="form-group">
-          <label for="f-title">Titolo</label>
-          <input id="f-title" class="form-control" type="text" maxlength="120" placeholder="Titolo del post..." />
-          <small class="form-text"><span id="title-count">0 / 120</span></small>
-        </div>
-        <div class="form-group">
-          <label for="f-excerpt">Estratto</label>
-          <input id="f-excerpt" class="form-control" type="text" maxlength="200" placeholder="Breve descrizione (facoltativa)..." />
-          <small class="form-text"><span id="excerpt-count">0 / 200</span></small>
-        </div>
-        <div class="form-group">
-          <label for="f-content">Testo</label>
-          <textarea id="f-content" class="form-control" rows="12" placeholder="Inizia a scrivere... Racconta di Rivalta, degli eventi, della natura del Mincio..."></textarea>
-          <small class="form-text"><span id="content-count">0 car.</span></small>
-        </div>
+
+      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
+        <h2 class="h5 mb-3">Identità del contenuto</h2>
         <div class="row g-3">
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <label for="f-category">Categoria</label>
-              <select id="f-category" class="form-select"></select>
-            </div>
+          <div class="col-12">
+            <label for="f-title" class="form-label">Titolo principale</label>
+            <input id="f-title" class="form-control" maxlength="120" placeholder="Titolo del post" />
+            <small class="form-text"><span id="title-count">0 / 120</span></small>
           </div>
           <div class="col-12 col-md-6">
-            <label class="d-block">Illustrazione <span id="img-btn-label" class="visually-hidden"></span></label>
-            <div class="img-grid" id="img-grid"></div>
+            <label for="f-subtitle" class="form-label">Sottotitolo</label>
+            <input id="f-subtitle" class="form-control" maxlength="160" placeholder="Taglio giornalistico o poetico" />
+            <small class="form-text"><span id="subtitle-count">0 / 160</span></small>
           </div>
-        </div>
-        <div class="d-flex flex-wrap gap-2 justify-content-end mt-3">
-          <a class="btn btn-outline-secondary" href="/dashboard">Annulla</a>
-          <button class="btn btn-outline-primary" id="btn-draft" type="button">Salva bozza</button>
-          <button class="btn btn-primary" id="btn-publish" type="button">Pubblica</button>
+          <div class="col-12 col-md-6">
+            <label for="f-category" class="form-label">Categoria editoriale</label>
+            <select id="f-category" class="form-select"></select>
+          </div>
+          <div class="col-12">
+            <label for="f-excerpt" class="form-label">Estratto</label>
+            <textarea id="f-excerpt" class="form-control" rows="2" maxlength="240" placeholder="Riassunto breve per anteprime"></textarea>
+            <small class="form-text"><span id="excerpt-count">0 / 240</span></small>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="f-tone" class="form-label">Tono editoriale</label>
+            <select id="f-tone" class="form-select">
+              <option value="istituzionale">Istituzionale</option>
+              <option value="narrativo">Narrativo</option>
+              <option value="giornalistico">Giornalistico</option>
+              <option value="conviviale">Conviviale</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="f-reading-level" class="form-label">Livello di lettura</label>
+            <select id="f-reading-level" class="form-select">
+              <option value="semplice">Semplice</option>
+              <option value="medio">Medio</option>
+              <option value="approfondito">Approfondito</option>
+            </select>
+          </div>
         </div>
       </div></div></div>
-    </div>
 
-    <aside class="col-12 col-lg-4">
-      <div class="card-wrapper"><div class="card card-bg"><div class="card-body">
-        <p class="text-uppercase small text-muted mb-1">Dati rapidi</p>
-        <h2 class="h5">Stato del post</h2>
-        <div id="card-status" class="mb-3">
-          <span class="badge bg-warning rounded-pill" id="status-pill">Bozza</span>
-          <div class="text-muted small" id="status-date"></div>
-          <div class="mt-2"><span class="h4" id="status-num">0</span> <span class="text-muted small" id="status-num-label">caratteri</span></div>
-          <div class="mt-2"><strong id="meta-username">@...</strong> <span class="text-muted" id="meta-displayname"></span></div>
-          <div class="text-muted small" id="actions-label"></div>
+      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
+        <h2 class="h5 mb-3">Corpo del post</h2>
+        <label for="f-content" class="form-label">Testo completo</label>
+        <textarea id="f-content" class="form-control font-monospace" rows="14" placeholder="Scrivi il testo completo..."></textarea>
+        <small class="form-text"><span id="content-count">0 caratteri</span> · <span id="content-words">0 parole</span></small>
+
+        <div class="row g-3 mt-1">
+          <div class="col-12 col-md-6">
+            <label for="f-keywords" class="form-label">Parole chiave (virgola separate)</label>
+            <input id="f-keywords" class="form-control" placeholder="mincio, evento, comunità" />
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="f-tags" class="form-label">Tag pubblici</label>
+            <input id="f-tags" class="form-control" placeholder="festival, natura" />
+          </div>
+          <div class="col-12">
+            <label for="f-cta" class="form-label">Call to action</label>
+            <input id="f-cta" class="form-control" maxlength="180" placeholder="Partecipa, condividi, prenota..." />
+          </div>
         </div>
-        <div class="row text-center g-2">
-          <div class="col-6"><div class="h4 mb-0" id="ps-published">0</div><div class="small text-muted">Pubblicati</div></div>
-          <div class="col-6"><div class="h4 mb-0" id="ps-drafts">0</div><div class="small text-muted">Bozze</div></div>
-          <div class="col-6"><div class="h4 mb-0" id="ps-total">0</div><div class="small text-muted">Totali</div></div>
-          <div class="col-6"><div class="h6 mb-0" id="ps-top-category">–</div><div class="small text-muted">Categoria top</div></div>
+      </div></div></div>
+
+      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
+        <h2 class="h5 mb-3">Campi evento e sorgenti</h2>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <label for="f-event-start" class="form-label">Inizio evento</label>
+            <input id="f-event-start" class="form-control" type="datetime-local" />
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="f-event-end" class="form-label">Fine evento</label>
+            <input id="f-event-end" class="form-control" type="datetime-local" />
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="f-location" class="form-label">Luogo</label>
+            <input id="f-location" class="form-control" maxlength="180" placeholder="Piazza / sede / indirizzo" />
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="f-source-url" class="form-label">URL sorgente primaria</label>
+            <input id="f-source-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="f-image-url" class="form-label">URL immagine cover</label>
+            <input id="f-image-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
+          </div>
         </div>
+      </div></div></div>
+
+      <div class="d-flex flex-wrap gap-2 justify-content-end">
+        <a class="btn btn-outline-secondary" href="/dashboard">Annulla</a>
+        <button class="btn btn-outline-primary" id="btn-draft" type="button">Salva bozza evoluta</button>
+        <button class="btn btn-primary" id="btn-publish" type="button">Pubblica versione finale</button>
+      </div>
+    </section>
+
+    <aside class="col-12 col-xl-4">
+      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
+        <h2 class="h5">Diagnostica scrittura</h2>
+        <ul class="list-unstyled small mb-0" id="diagnostics"></ul>
+      </div></div></div>
+
+      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
+        <h2 class="h5">Schema payload inventato</h2>
+        <pre id="payload-preview" class="small mb-0" style="white-space:pre-wrap"></pre>
       </div></div></div>
     </aside>
   </div>
-
-  <div aria-hidden="true" style="display:none">
-    <div id="ps-bars"></div>
-    <div id="ps-chart-growth"></div>
-    <div id="ps-meta"></div>
-    <div id="ps-date"></div>
-  </div>
 </main>
-
-<div class="notification fade dismissable" role="alert" id="toast" aria-hidden="true">
-  <h5 id="toast-title">Notifica</h5>
-  <p id="toast-msg"></p>
-  <button type="button" class="notification-close" data-bs-dismiss="notification" aria-label="Chiudi">
-    <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-close"></use></svg>
-  </button>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/supabase.config.js"></script>
 <script>
-(function () {
+(() => {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const $ = id => document.getElementById(id);
-
-  const ILL_DEFS = [
-    { key: 'festival', label: 'Festival',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-sunset)"/><g fill="#143B43" opacity=".85"><rect x="8" y="26" width="13" height="18"/><polygon points="6,26 15,16 24,26"/><rect x="26" y="20" width="18" height="24"/><polygon points="24,20 35,8 46,20"/><rect x="58" y="18" width="16" height="26"/><polygon points="56,18 66,6 76,18"/></g></svg>' },
-    { key: 'heron', label: 'Airone',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-marsh)"/><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/><g transform="translate(45 3)"><path d="M5 20 L5 34" stroke="#0F2A30" stroke-width="1.5" stroke-linecap="round"/><path d="M1 16 Q5 10 13 15 Q17 17 19 21 Q17 24 13 23 L7 24 Q3 22 1 16Z" fill="#0F2A30"/><path d="M12 16 Q10 6 11 1" stroke="#0F2A30" stroke-width="2.5" stroke-linecap="round" fill="none"/><ellipse cx="11" cy="0" rx="3.5" ry="2.5" fill="#0F2A30"/><path d="M13 0 L18 -2" stroke="#F9A825" stroke-width="1.2" stroke-linecap="round"/></g></svg>' },
-    { key: 'cycling', label: 'Ciclismo',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-spring)"/><path d="M0,30 Q50,40 100,30 L100,44 L0,44Z" fill="url(#g-water)"/><g transform="translate(42 18)"><circle cx="0" cy="7" r="5.5" fill="none" stroke="#0F2A30" stroke-width="1.5"/><circle cx="15" cy="7" r="5.5" fill="none" stroke="#0F2A30" stroke-width="1.5"/><path d="M0,7 L5,0 L11,7 L15,7" stroke="#0F2A30" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="8" cy="-6" r="2.5" fill="#0F2A30"/></g></svg>' },
-    { key: 'village', label: 'Borgo',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-deep)"/><circle cx="80" cy="9" r="7" fill="#EAF4F4" opacity=".8"/><circle cx="78" cy="7" r="6" fill="#0F2A30"/><g fill="#0F2A30"><rect x="8" y="28" width="12" height="16"/><polygon points="6,28 14,18 22,28"/><rect x="37" y="15" width="5" height="29"/><polygon points="35,15 39,7 44,15"/><rect x="44" y="30" width="12" height="14"/><polygon points="42,30 50,21 58,30"/></g></svg>' },
-    { key: 'reeds', label: 'Canneto',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-marsh)"/><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/><g stroke="#143B43" stroke-width="1.5" stroke-linecap="round" fill="none"><path d="M5,44 L5,18"/><path d="M13,44 L13,14"/><path d="M21,44 L21,20"/><path d="M80,44 L80,22"/><path d="M88,44 L88,15"/><path d="M96,44 L96,19"/></g><g fill="#5b3a1f"><ellipse cx="5" cy="16" rx="1.5" ry="3.5"/><ellipse cx="13" cy="12" rx="1.5" ry="3.5"/><ellipse cx="88" cy="13" rx="1.5" ry="3.5"/></g></svg>' },
-    { key: 'nature', label: 'Natura',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-water)"/><ellipse cx="25" cy="38" rx="16" ry="4" fill="#43A047"/><ellipse cx="55" cy="30" rx="18" ry="4" fill="#43A047"/><ellipse cx="87" cy="40" rx="13" ry="3.5" fill="#43A047"/></svg>' },
-    { key: 'fishing', label: 'Pesca',
-      svg: '<svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="44" fill="url(#g-deep)"/><g transform="translate(20 18)"><path d="M0,0 L24,0 L22,8 L2,8Z" fill="#0F2A30"/><g transform="translate(9 -13)"><circle cx="2" cy="0" r="2.5" fill="#0F2A30"/><path d="M-1,2 L-2,10 L0,13 L3,13 L5,10 L3,2Z" fill="#0F2A30"/><path d="M3,4 L15,-5" stroke="#5b3a1f" stroke-width="1" stroke-linecap="round"/></g></g><rect x="0" y="28" width="100" height="16" fill="url(#g-water)"/></svg>' },
+  const $ = (id) => document.getElementById(id);
+  const categories = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [
+    'Ambiente','Assemblea','Ciclismo','Eventi','Iniziative','Video'
   ];
 
-  const CATEGORIES = window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.all()
-    : ['Ambiente', 'Anniversari', 'Assemblea', 'Canoa', 'Ciclismo',
-       'Festa del Pesce', 'Iniziative', 'Love-luccio', 'Mincio-art',
-       'Natale', 'Rassegna Stampa', 'Tesseramento', 'Video'];
+  const state = { session: null, profile: null };
 
-  let session = null, profile = null, editId = null, selectedImg = null, currentPost = null;
-
-  function escapeHtml(v) {
-    return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-  }
-
-  function toast(msg, type) {
-    const el = $('toast');
-    if (!el) return;
-    const titleEl = $('toast-title');
-    const msgEl = $('toast-msg');
-    if (msgEl) msgEl.textContent = msg;
-    el.classList.remove('success', 'error');
-    if (type === 'ok') { el.classList.add('success'); if (titleEl) titleEl.textContent = 'Fatto'; }
-    else if (type === 'err') { el.classList.add('error'); if (titleEl) titleEl.textContent = 'Errore'; }
-    else if (titleEl) titleEl.textContent = 'Notifica';
-    if (window.bootstrap && bootstrap.Notification) {
-      bootstrap.Notification.getOrCreateInstance(el).show(2800);
-    }
-  }
+  const fields = [
+    'f-title','f-subtitle','f-excerpt','f-content','f-keywords','f-tags','f-cta','f-location','f-source-url','f-image-url'
+  ];
 
   function setErr(msg) {
     const el = $('err-msg');
@@ -157,287 +152,124 @@
     el.style.display = msg ? 'block' : 'none';
   }
 
-  function fmtDate(iso) {
-    if (!iso) return '';
-    return new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  function listFromCsv(value) {
+    return String(value || '').split(',').map(s => s.trim()).filter(Boolean);
   }
 
-  function fmtNum(v) {
-    return Number(v || 0).toLocaleString('it-IT');
+  function readabilityScore(text) {
+    const clean = String(text || '').trim();
+    const words = clean ? clean.split(/\s+/).length : 0;
+    const sentences = Math.max(1, (clean.match(/[.!?]+/g) || []).length);
+    const avg = words / sentences;
+    if (avg < 12) return 'scorrevole';
+    if (avg < 22) return 'equilibrato';
+    return 'denso';
   }
 
-  function monthKey(dateObj) {
-    return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
+  function buildPayload(published) {
+    const content = $('f-content').value;
+    const nowIso = new Date().toISOString();
+    const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+
+    return {
+      title: $('f-title').value.trim(),
+      subtitle: $('f-subtitle').value.trim(),
+      excerpt: $('f-excerpt').value.trim(),
+      content,
+      category: $('f-category').value,
+      tone: $('f-tone').value,
+      reading_level: $('f-reading-level').value,
+      cta_text: $('f-cta').value.trim(),
+      keywords: listFromCsv($('f-keywords').value),
+      tags: listFromCsv($('f-tags').value),
+      source_url: $('f-source-url').value.trim() || null,
+      image_url: $('f-image-url').value.trim() || null,
+      location_text: $('f-location').value.trim() || null,
+      event_start_at: $('f-event-start').value || null,
+      event_end_at: $('f-event-end').value || null,
+      quality: {
+        chars: content.length,
+        words,
+        readability: readabilityScore(content),
+        generated_at: nowIso
+      },
+      meta: {
+        editor_version: 'write-lab-v2',
+        created_in_ui: 'laboratorio_scrittura',
+        locale: 'it-IT'
+      },
+      published,
+      published_at: published ? nowIso : null,
+      author_id: state.session?.user?.id || null
+    };
   }
 
-  function monthLabel(dateObj) {
-    return dateObj.toLocaleDateString('it-IT', { month: 'short' }).replace('.', '').toUpperCase();
-  }
-
-  function trendPct(curr, prev) {
-    if (prev <= 0 && curr <= 0) return 0;
-    if (prev <= 0) return 100;
-    return Math.round(((curr - prev) / prev) * 100);
-  }
-
-  function renderProjectStats(posts) {
-    const allPosts = Array.isArray(posts) ? posts : [];
-    const published = allPosts.filter(p => p.published);
-    const drafts = allPosts.length - published.length;
-
-    const categoryCount = {};
-    let totalChars = 0;
-
-    allPosts.forEach((p) => {
-      const cat = String(p.category || '').trim();
-      if (cat) categoryCount[cat] = (categoryCount[cat] || 0) + 1;
-      totalChars += String(p.content || '').trim().length;
-    });
-
-    let topCategory = 'N/A';
-    let topCount = 0;
-    Object.keys(categoryCount).forEach((key) => {
-      if (categoryCount[key] > topCount) {
-        topCount = categoryCount[key];
-        topCategory = key;
-      }
-    });
-
-    const avgChars = allPosts.length ? Math.round(totalChars / allPosts.length) : 0;
-
-    const now = new Date();
-    const months = [];
-    for (let i = 3; i >= 0; i -= 1) {
-      months.push(new Date(now.getFullYear(), now.getMonth() - i, 1));
+  async function save(published) {
+    setErr('');
+    const payload = buildPayload(published);
+    if (!payload.title || payload.title.length < 6) {
+      setErr('Titolo troppo corto (minimo 6 caratteri).');
+      return;
     }
-
-    const publishedByMonth = {};
-    published.forEach((p) => {
-      const raw = p.published_at || p.created_at;
-      if (!raw) return;
-      const d = new Date(raw);
-      if (Number.isNaN(d.getTime())) return;
-      const key = monthKey(new Date(d.getFullYear(), d.getMonth(), 1));
-      publishedByMonth[key] = (publishedByMonth[key] || 0) + 1;
-    });
-
-    const monthCounts = months.map((m) => ({
-      label: monthLabel(m),
-      count: publishedByMonth[monthKey(m)] || 0,
-    }));
-
-    const currentMonth = monthCounts[monthCounts.length - 1]?.count || 0;
-    const prevMonth = monthCounts[monthCounts.length - 2]?.count || 0;
-    const growth = trendPct(currentMonth, prevMonth);
-
-    const barsWrap = $('ps-bars');
-    const maxValue = Math.max(1, ...monthCounts.map(x => x.count));
-    if (barsWrap) {
-      barsWrap.innerHTML = monthCounts.map((item) => {
-        const h = Math.max(10, Math.round((item.count / maxValue) * 78));
-        return `<div>${item.label}: ${item.count}</div>`;
-      }).join('');
-    }
-
-    const publishedNode = $('ps-published');
-    const draftsNode = $('ps-drafts');
-    const totalNode = $('ps-total');
-    const topNode = $('ps-top-category');
-    const growthNode = $('ps-chart-growth');
-    const metaNode = $('ps-meta');
-    const dateNode = $('ps-date');
-
-    if (publishedNode) publishedNode.textContent = fmtNum(published.length);
-    if (draftsNode) draftsNode.textContent = fmtNum(drafts);
-    if (totalNode) totalNode.textContent = fmtNum(allPosts.length);
-    if (topNode) topNode.textContent = topCategory;
-
-    if (growthNode) {
-      const sign = growth > 0 ? '+' : '';
-      growthNode.textContent = `${sign}${growth}%`;
-    }
-    if (metaNode) metaNode.textContent = `${fmtNum(avgChars)} caratteri medi per contenuto`;
-    if (dateNode) {
-      const stamp = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
-      dateNode.textContent = `Aggiornato il ${stamp}`;
-    }
-  }
-
-  async function refreshProjectStats() {
-    if (!session?.user?.id) return;
-    const { data, error } = await sb.from('posts')
-      .select('id,category,published,content,created_at,published_at')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: false })
-      .limit(500);
-
-    if (error) {
-      renderProjectStats([]);
+    if (!payload.content || payload.content.length < 80) {
+      setErr('Testo troppo corto (minimo 80 caratteri).');
       return;
     }
 
-    renderProjectStats(data || []);
-  }
-
-  function autoTitle(content) {
-    const c = String(content || '').replace(/\s+/g, ' ').trim();
-    if (!c) return 'Nuovo post';
-    return c.length <= 64 ? c : c.slice(0, 61).trim() + '…';
-  }
-
-  function buildCategories() {
-    const sel  = $('f-category');
-    const lbl  = $('cat-label');
-    sel.innerHTML = CATEGORIES
-      .map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
-      .join('');
-    const first = CATEGORIES[0] || 'Categoria';
-    if (lbl) lbl.textContent = first;
-  }
-
-  function buildImgPicker() {
-    const grid = $('img-grid');
-    grid.innerHTML = ILL_DEFS.map(def =>
-      `<label class="img-opt" data-key="${def.key}" title="${def.label}">` +
-      `<input type="radio" name="img_type" value="${def.key}" />` +
-      `<div class="img-thumb">${def.svg}</div>` +
-      `<div class="img-label">${def.label}</div>` +
-      `</label>`
-    ).join('');
-
-    grid.querySelectorAll('.img-opt').forEach(opt => {
-      opt.addEventListener('click', () => {
-        grid.querySelectorAll('.img-opt').forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        selectedImg = opt.dataset.key;
-        const btnLbl = $('img-btn-label');
-        if (btnLbl) btnLbl.textContent = opt.querySelector('.img-label')?.textContent || opt.dataset.key;
-      });
-    });
-  }
-
-  function selectImg(key) {
-    selectedImg = key || null;
-    document.querySelectorAll('.img-opt').forEach(o => {
-      o.classList.toggle('selected', o.dataset.key === key);
-    });
-  }
-
-  function bindCounters() {
-    const titleEl   = $('f-title');
-    const excerptEl = $('f-excerpt');
-    const contentEl = $('f-content');
-    titleEl.addEventListener('input',   () => { $('title-count').textContent   = `${titleEl.value.length} / 120`; });
-    excerptEl.addEventListener('input', () => { $('excerpt-count').textContent = `${excerptEl.value.length} / 200`; });
-    contentEl.addEventListener('input', () => {
-      $('status-num').textContent = contentEl.value.length.toLocaleString('it-IT');
-    });
-  }
-
-  async function loadPost(id) {
-    const { data, error } = await sb.from('posts')
-      .select('*').eq('id', id).eq('user_id', session.user.id).single();
-    if (error || !data) { toast('Post non trovato o accesso negato.', 'err'); return; }
-    currentPost = data;
-    $('page-title').textContent        = 'Modifica post';
-    $('page-sub').textContent          = 'Stai modificando un contenuto esistente.';
-    $('actions-label').textContent     = data.published ? 'Aggiorna o rimuovi' : 'Pronto a pubblicare?';
-    $('btn-publish').textContent       = data.published ? 'Ripubblica' : 'Pubblica';
-    $('f-title').value                 = data.title   || '';
-    $('f-excerpt').value               = data.excerpt || '';
-    $('f-content').value               = data.content || '';
-    const loadedCat = data.category || CATEGORIES[0];
-    $('f-category').value = loadedCat;
-    $('title-count').textContent       = `${(data.title   || '').length} / 120`;
-    $('excerpt-count').textContent     = `${(data.excerpt || '').length} / 200`;
-    if (data.image_type) selectImg(data.image_type);
-    const pill = $('status-pill');
-    if (data.published) { pill.className = 'badge bg-success rounded-pill';  pill.textContent = 'Pubblicato'; }
-    else                { pill.className = 'badge bg-warning rounded-pill';  pill.textContent = 'Bozza'; }
-    $('status-num').textContent       = (data.content || '').length.toLocaleString('it-IT');
-    $('status-num-label').textContent = 'caratteri';
-    $('status-date').textContent      = data.published
-      ? `Pubblicato il ${fmtDate(data.published_at)}`
-      : `Ultima modifica ${fmtDate(data.updated_at || data.created_at)}`;
-  }
-
-  async function save(publish) {
-    setErr('');
-    const content  = $('f-content').value.trim();
-    const title    = $('f-title').value.trim();
-    const excerpt  = $('f-excerpt').value.trim();
-    const category = $('f-category').value.trim();
-    if (!content)  { setErr('Il contenuto è obbligatorio.'); return; }
-    if (!category) { setErr('Seleziona una categoria.'); return; }
-    $('btn-draft').disabled = $('btn-publish').disabled = true;
-    const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
-    const payload = {
-      title:       title || autoTitle(content),
-      excerpt:     excerpt || null,
-      content, category,
-      badge_color: badgeColor,
-      image_type:  selectedImg || null,
-      published:   publish,
-      published_at: publish ? new Date().toISOString() : (currentPost?.published_at || null),
-    };
-    let error;
-    if (editId) {
-      ({ error } = await sb.from('posts').update(payload).eq('id', editId).eq('user_id', session.user.id));
-    } else {
-      let ins;
-      ({ data: ins, error } = await sb.from('posts').insert({
-        ...payload, user_id: session.user.id,
-        author_username: profile?.username || null,
-      }).select('id').single());
-      if (!error && ins) {
-        editId = ins.id;
-        history.replaceState(null, '', `?id=${editId}`);
-      }
+    const { error } = await sb.from('posts').insert(payload);
+    if (error) {
+      setErr(`Salvataggio fallito: ${error.message}`);
+      return;
     }
-    $('btn-draft').disabled = $('btn-publish').disabled = false;
-    if (error) { setErr('Errore: ' + error.message); return; }
-    toast(publish ? 'Post pubblicato!' : 'Bozza salvata.', 'ok');
-    await refreshProjectStats();
-    if (editId) await loadPost(editId);
+    location.href = '/dashboard';
   }
 
-  async function deletePost() {
-    if (!editId) return;
-    if (!confirm('Eliminare questo post? L’azione è irreversibile.')) return;
-    const { error } = await sb.from('posts').delete().eq('id', editId).eq('user_id', session.user.id);
-    if (error) { toast('Errore: ' + error.message, 'err'); return; }
-    toast('Post eliminato.', 'ok');
-    setTimeout(() => { window.location.href = '/dashboard'; }, 900);
+  function renderDiagnostics() {
+    const content = $('f-content').value;
+    const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+    $('content-count').textContent = `${content.length} caratteri`;
+    $('content-words').textContent = `${words} parole`;
+    $('title-count').textContent = `${$('f-title').value.length} / 120`;
+    $('subtitle-count').textContent = `${$('f-subtitle').value.length} / 160`;
+    $('excerpt-count').textContent = `${$('f-excerpt').value.length} / 240`;
+
+    const points = [
+      ['Leggibilità', readabilityScore(content)],
+      ['Paragrafi', (content.split(/\n{2,}/).filter(Boolean).length || 0)],
+      ['Keyword', listFromCsv($('f-keywords').value).length],
+      ['Tag', listFromCsv($('f-tags').value).length]
+    ];
+
+    $('diagnostics').innerHTML = points.map(([k,v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('');
+    $('payload-preview').textContent = JSON.stringify(buildPayload(false), null, 2);
   }
 
-  async function init() {
-    const { data: sd } = await sb.auth.getSession();
-    session = sd?.session || null;
-    if (!session) { window.location.href = '/login'; return; }
-    const { data: prof } = await sb.from('profiles')
-      .select('id,username,display_name,avatar_emoji,avatar_color').eq('id', session.user.id).single();
-    profile = prof;
-    if (prof) {
-      $('meta-username').textContent    = '@' + (prof.username || '–');
-      $('meta-displayname').textContent = prof.display_name || '';
+  async function bootstrap() {
+    const [{ data: auth }, { data: profileData }] = await Promise.all([
+      sb.auth.getSession(),
+      sb.from('profiles').select('id, username, display_name').limit(1)
+    ]);
+
+    state.session = auth?.session || null;
+    state.profile = (profileData && profileData[0]) || null;
+
+    if (!state.session) {
+      location.href = '/login';
+      return;
     }
 
-    buildCategories();
-    buildImgPicker();
-    bindCounters();
-    await refreshProjectStats();
-    const params = new URLSearchParams(location.search);
-    editId = params.get('id') || null;
-    if (editId) await loadPost(editId);
-    $('btn-draft').addEventListener('click',   () => save(false));
+    $('f-category').innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+    fields.forEach((id) => $(id).addEventListener('input', renderDiagnostics));
+    ['f-event-start','f-event-end','f-tone','f-reading-level','f-category'].forEach((id) => $(id).addEventListener('change', renderDiagnostics));
+
+    $('btn-draft').addEventListener('click', () => save(false));
     $('btn-publish').addEventListener('click', () => save(true));
-    const del = $('btn-delete');
-    if (del) del.addEventListener('click', deletePost);
+
+    renderDiagnostics();
   }
 
-  init();
+  bootstrap().catch((e) => setErr(`Errore inizializzazione: ${e.message}`));
 })();
 </script>
-
 </body>
 </html>

@@ -19,6 +19,14 @@
     return '<svg class="icon icon-sm"><use href="' + SPRITES + '#' + name + '"></use></svg>';
   }
 
+  function sanitizeHref(value) {
+    var href = String(value || '').trim();
+    if (!href) return '/';
+    if (href[0] === '/' || href[0] === '#') return href;
+    if (/^(https?:|mailto:|tel:)/i.test(href)) return href;
+    return '/';
+  }
+
   /* ── Supabase helpers ──────────────────────────────────────── */
   function createClient() {
     if (window.RSM_SUPABASE && typeof window.RSM_SUPABASE.createClient === 'function') {
@@ -146,7 +154,7 @@
       return;
     }
     list.innerHTML = results.map(function (r) {
-      return '<li><a class="list-item" href="' + escapeHtml(r.url) + '">' +
+      return '<li><a class="list-item" href="' + escapeHtml(sanitizeHref(r.url)) + '">' +
         '<span class="d-flex flex-column">' +
           '<span class="fw-semibold">' + escapeHtml(r.title) + '</span>' +
           '<small class="text-muted">' + escapeHtml(r.desc) + '</small>' +

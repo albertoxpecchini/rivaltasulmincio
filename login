@@ -17,12 +17,15 @@
 
       <p class="text-primary fw-semibold text-uppercase small mb-1">Accesso locale · Rivalta sul Mincio</p>
       <h1>Entra nel borgo digitale del Mincio</h1>
-      <p class="lead">Accesso con password o link magico, registrazione guidata in due passaggi e recupero account.</p>
+      <p class="lead">Accesso con password o link magico e recupero account per profili autorizzati.</p>
 
       <div class="d-flex flex-wrap gap-2 mb-4">
         <button class="btn btn-primary" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
         <button class="btn btn-outline-primary" type="button" data-view-link="register1" aria-pressed="false">Crea account</button>
         <button class="btn btn-outline-secondary" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
+        <button class="btn btn-primary magnetic" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
+        
+        <button class="btn btn-outline-secondary magnetic" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
       </div>
 
       <div class="card-wrapper" id="login-panel-card">
@@ -32,7 +35,7 @@
             <!-- LOGIN -->
             <section class="view is-active" id="view-login" aria-label="Login">
               <h2 class="h4">Accedi al tuo account</h2>
-              <p class="text-muted">Non hai ancora un account? <button class="btn btn-link p-0 align-baseline" type="button" id="login-to-register">Registrati ora</button></p>
+              <p class="text-muted">Accesso riservato ai profili già abilitati</p>
               <div class="msg-slot" id="msg-login" role="status" aria-live="polite"></div>
               <form id="form-login" novalidate>
                 <div class="form-group">
@@ -220,6 +223,7 @@
 
     function setView(viewName) {
       document.querySelectorAll('.view').forEach((view) => view.classList.remove('is-active'));
+      if (viewName && String(viewName).startsWith('register')) viewName = 'login';
       const target = byId('view-' + viewName);
       if (target) {
         target.classList.add('is-active');
@@ -497,6 +501,9 @@
         community_rules_accepted: true, community_rules_accepted_at: acceptedAt,
         community_rules_version: COMMUNITY_RULES_VERSION
       };
+      showMessage('msg-reg2', 'error', 'Registrazione disattivata.');
+      setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
+      return;
       const { error: signUpError } = await sb.auth.signUp({
         email: state.regAccount.email, password: state.regAccount.password,
         options: { emailRedirectTo: redirectUrl, data: metadata }
@@ -580,13 +587,13 @@
           setView(targetView);
         });
       });
-      byId('login-to-register').addEventListener('click', () => { clearMessages(); setView('register1'); });
+      const _disabledRegister = byId('login-to-register'); if (_disabledRegister) _disabledRegister.remove();
       byId('reg1-to-login').addEventListener('click', () => { clearMessages(); setView('login'); });
       byId('login-to-forgot').addEventListener('click', () => { clearMessages(); byId('forgot-email').value = byId('login-email').value.trim(); setView('forgot'); });
       byId('forgot-back-login').addEventListener('click', () => { clearMessages(); setView('login'); });
       byId('verify-to-login').addEventListener('click', () => { clearMessages(); setView('login'); if (state.verifyEmail) byId('login-email').value = state.verifyEmail; });
-      byId('verify-to-register').addEventListener('click', () => { clearMessages(); setView('register1'); });
-      byId('reg2-back').addEventListener('click', () => { clearMessages(); setView('register1'); });
+      const _disabledRegister2 = byId('verify-to-register'); if (_disabledRegister2) _disabledRegister2.remove();
+      byId('reg2-back').addEventListener('click', () => { clearMessages(); setView('login'); });
       byId('reg1-back-home').addEventListener('click', () => { window.location.href = '/'; });
       byId('reg2-username').addEventListener('input', updateIdentityPreview);
       byId('reg2-display').addEventListener('input', updateIdentityPreview);
