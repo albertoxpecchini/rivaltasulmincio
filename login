@@ -12,7 +12,7 @@
 <!--PARTIAL:nav-->
 
 <main id="main" class="container rsm-page">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center align-items-start">
     <div class="col-12 col-lg-7 col-xl-6">
 
       <p class="text-primary fw-semibold text-uppercase small mb-1">Accesso locale · Rivalta sul Mincio</p>
@@ -20,9 +20,9 @@
       <p class="lead">Accesso con password o link magico, registrazione guidata in due passaggi e recupero account.</p>
 
       <div class="d-flex flex-wrap gap-2 mb-4">
-        <button class="btn btn-primary magnetic" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
-        <button class="btn btn-outline-primary magnetic" type="button" data-view-link="register1" aria-pressed="false">Crea account</button>
-        <button class="btn btn-outline-secondary magnetic" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
+        <button class="btn btn-primary" type="button" data-view-link="login" aria-pressed="true">Accedi</button>
+        <button class="btn btn-outline-primary" type="button" data-view-link="register1" aria-pressed="false">Crea account</button>
+        <button class="btn btn-outline-secondary" type="button" data-view-link="forgot" aria-pressed="false">Recupera</button>
       </div>
 
       <div class="card-wrapper" id="login-panel-card">
@@ -43,12 +43,12 @@
                   <label for="login-password">Password</label>
                   <div class="input-group">
                     <input class="form-control" type="password" id="login-password" autocomplete="current-password" placeholder="Inserisci la password" required />
-                    <button class="btn btn-outline-secondary" type="button" data-toggle="login-password">Mostra</button>
+                    <button class="btn btn-link" type="button" data-toggle="login-password">Mostra</button>
                   </div>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-3">
-                  <button class="btn btn-primary magnetic" id="btn-login" type="submit" data-default-label="Accedi" data-loading-label="Accesso in corso..."><span data-btn-label>Accedi</span></button>
-                  <button class="btn btn-outline-primary magnetic" id="btn-magic" type="button" data-default-label="Invia link magico" data-loading-label="Invio in corso..."><span data-btn-label>Invia link magico</span></button>
+                  <button class="btn btn-primary" id="btn-login" type="submit" data-default-label="Accedi" data-loading-label="Accesso in corso..."><span data-btn-label>Accedi</span></button>
+                  <button class="btn btn-outline-primary" id="btn-magic" type="button" data-default-label="Invia link magico" data-loading-label="Invio in corso..."><span data-btn-label>Invia link magico</span></button>
                 </div>
               </form>
               <div class="mt-3 d-flex gap-3 flex-wrap">
@@ -71,19 +71,19 @@
                   <label for="reg1-password">Password</label>
                   <div class="input-group">
                     <input class="form-control" type="password" id="reg1-password" autocomplete="new-password" placeholder="Almeno 6 caratteri" minlength="6" required />
-                    <button class="btn btn-outline-secondary" type="button" data-toggle="reg1-password">Mostra</button>
+                    <button class="btn btn-link" type="button" data-toggle="reg1-password">Mostra</button>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="reg1-password2">Conferma password</label>
                   <div class="input-group">
                     <input class="form-control" type="password" id="reg1-password2" autocomplete="new-password" placeholder="Ripeti la password" minlength="6" required />
-                    <button class="btn btn-outline-secondary" type="button" data-toggle="reg1-password2">Mostra</button>
+                    <button class="btn btn-link" type="button" data-toggle="reg1-password2">Mostra</button>
                   </div>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-3">
-                  <button class="btn btn-primary magnetic" id="btn-reg1-next" type="submit" data-default-label="Continua" data-loading-label="Controllo in corso..."><span data-btn-label>Continua</span></button>
-                  <button class="btn btn-outline-secondary magnetic" type="button" id="reg1-back-home"><span data-btn-label>Annulla</span></button>
+                  <button class="btn btn-primary" id="btn-reg1-next" type="submit" data-default-label="Continua" data-loading-label="Controllo in corso..."><span data-btn-label>Continua</span></button>
+                  <button class="btn btn-outline-secondary" type="button" id="reg1-back-home"><span data-btn-label>Annulla</span></button>
                 </div>
               </form>
             </section>
@@ -142,8 +142,8 @@
                   <label class="form-check-label" for="reg2-rules">Dichiaro di accettare i <a href="/note-legali">termini e condizioni</a>.</label>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-3">
-                  <button class="btn btn-primary magnetic" id="btn-signup" type="submit" data-default-label="Conferma e chiudi" data-loading-label="Conferma..."><span data-btn-label>Conferma e chiudi</span></button>
-                  <button class="btn btn-outline-secondary magnetic" id="reg2-back" type="button"><span data-btn-label>Indietro</span></button>
+                  <button class="btn btn-primary" id="btn-signup" type="submit" data-default-label="Conferma e chiudi" data-loading-label="Conferma..."><span data-btn-label>Conferma e chiudi</span></button>
+                  <button class="btn btn-outline-secondary" id="reg2-back" type="button"><span data-btn-label>Indietro</span></button>
                 </div>
               </form>
             </section>
@@ -159,8 +159,8 @@
                   <input class="form-control" type="email" id="forgot-email" autocomplete="email" placeholder="tu@email.it" required />
                 </div>
                 <div class="d-flex flex-wrap gap-2 mt-3">
-                  <button class="btn btn-primary magnetic" id="btn-forgot" type="submit" data-default-label="Invia email reset" data-loading-label="Invio in corso..."><span data-btn-label>Invia email reset</span></button>
-                  <button class="btn btn-outline-secondary magnetic" id="forgot-back-login" type="button"><span data-btn-label>Torna al login</span></button>
+                  <button class="btn btn-primary" id="btn-forgot" type="submit" data-default-label="Invia email reset" data-loading-label="Invio in corso..."><span data-btn-label>Invia email reset</span></button>
+                  <button class="btn btn-outline-secondary" id="forgot-back-login" type="button"><span data-btn-label>Torna al login</span></button>
                 </div>
               </form>
             </section>
@@ -174,8 +174,8 @@
               </div>
               <div class="msg-slot" id="msg-verify" role="status" aria-live="polite"></div>
               <div class="d-flex flex-wrap gap-2 mt-3">
-                <button class="btn btn-primary magnetic" id="verify-to-login" type="button"><span data-btn-label>Ho verificato, torno al login</span></button>
-                <button class="btn btn-outline-secondary magnetic" id="verify-to-register" type="button"><span data-btn-label>Usa un'altra email</span></button>
+                <button class="btn btn-primary" id="verify-to-login" type="button"><span data-btn-label>Ho verificato, torno al login</span></button>
+                <button class="btn btn-outline-secondary" id="verify-to-register" type="button"><span data-btn-label>Usa un'altra email</span></button>
               </div>
             </section>
 
