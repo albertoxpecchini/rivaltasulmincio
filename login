@@ -95,7 +95,7 @@
               <div class="msg-slot" id="msg-reg2" role="status" aria-live="polite"></div>
 
               <div class="d-flex align-items-center gap-2 mb-3">
-                <div class="preview-avatar" id="preview-avatar" aria-hidden="true" style="width:48px;height:48px;font-size:1.4rem">🌿</div>
+                <div class="avatar size-md" id="preview-avatar" aria-hidden="true"><p>🌿</p></div>
                 <div>
                   <div class="fw-semibold" id="preview-name">@username</div>
                   <div class="text-muted small" id="preview-comune">Comune non impostato</div>
@@ -233,8 +233,10 @@
       if (!slot) return;
       slot.innerHTML = '';
       if (!text) return;
+      const variant = type === 'error' ? 'alert-danger' : (type === 'success' ? 'alert-success' : 'alert-info');
       const box = document.createElement('div');
-      box.className = 'notice ' + type;
+      box.className = 'alert ' + variant;
+      box.setAttribute('role', 'alert');
       box.textContent = text;
       slot.appendChild(box);
     }
@@ -342,7 +344,7 @@
       const displayName = displayInput.value.trim();
       const comune = comuneInput.value || 'Comune non impostato';
       const avatar = getSelectedAvatar();
-      previewAvatar.textContent = avatar.emoji;
+      previewAvatar.querySelector('p').textContent = avatar.emoji;
       previewAvatar.style.background = avatar.color;
       previewName.textContent = displayName || (sanitized ? '@' + sanitized : '@username');
       previewComune.textContent = comune;

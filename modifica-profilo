@@ -26,7 +26,7 @@
             <div class="card card-bg h-100">
               <div class="card-body text-center">
                 <p class="text-uppercase small text-muted">Anteprima</p>
-                <div class="preview-avatar mx-auto mb-2" id="prev-avatar" style="background:#1F6F8B">🌿</div>
+                <div class="avatar size-xl mx-auto mb-2" id="prev-avatar" style="background:#1F6F8B"><p aria-hidden="true">🌿</p></div>
                 <div class="fw-semibold text-muted" id="prev-username">@...</div>
                 <div class="h5 mb-1" id="prev-display">—</div>
                 <div class="small text-muted" id="prev-bio"></div>
@@ -142,7 +142,7 @@ function updatePreview() {
   const bio = $('p-bio').value.trim();
 
   const av = $('prev-avatar');
-  av.textContent = emoji;
+  av.querySelector('p').textContent = emoji;
   av.style.background = color;
   $('prev-display').textContent = display || '—';
   $('prev-bio').textContent = bio;

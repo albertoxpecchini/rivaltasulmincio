@@ -56,10 +56,10 @@
         <div class="text-uppercase small text-muted">Ritmo</div>
         <h2 class="h5 mb-0">Traccia delle interazioni</h2>
       </div>
-      <div class="group-switch d-flex gap-1" role="group" aria-label="Filtri andamento">
-        <button class="switch-btn on" type="button" data-group="day">Giorno</button>
-        <button class="switch-btn" type="button" data-group="week">Settimana</button>
-        <button class="switch-btn" type="button" data-group="month">Mese</button>
+      <div class="btn-group" role="group" aria-label="Filtri andamento">
+        <button class="btn btn-outline-primary btn-sm active" type="button" data-group="day">Giorno</button>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-group="week">Settimana</button>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-group="month">Mese</button>
       </div>
     </div>
     <div class="d-flex justify-content-between small text-muted mb-1">
@@ -75,24 +75,24 @@
     <div class="col-12 col-lg-4" id="contenuti"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
       <div class="text-uppercase small text-muted">In lavorazione</div>
       <h3 class="h5">Bozze da rifinire</h3>
-      <div class="list dash-list" id="drafts-list"></div>
+      <div class="d-grid gap-3" id="drafts-list"></div>
     </div></div></div></div>
     <div class="col-12 col-lg-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
       <div class="text-uppercase small text-muted">Movimenti</div>
       <h3 class="h5">Ultimi cambiamenti</h3>
-      <div class="list dash-list" id="recent-list"></div>
+      <div class="d-grid gap-3" id="recent-list"></div>
     </div></div></div></div>
     <div class="col-12 col-lg-4" id="media"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
       <div class="text-uppercase small text-muted">Segnali</div>
       <h3 class="h5">Centro notifiche</h3>
-      <div class="list dash-list" id="notif-list"></div>
+      <div class="d-grid gap-3" id="notif-list"></div>
     </div></div></div></div>
   </div>
 
-  <div class="empty-state mt-3" id="empty-dashboard" style="display:none">
-    <p><strong>Ancora nessun contenuto in archivio.</strong></p>
+  <div class="callout note mt-3" id="empty-dashboard" style="display:none">
+    <div class="callout-title">Ancora nessun contenuto in archivio</div>
     <p>Pubblica il primo post e qui inizierai a vedere ritmo, bozze, notifiche e ultimi movimenti.</p>
-    <div class="d-flex justify-content-center gap-2">
+    <div class="d-flex flex-wrap gap-2">
       <button class="btn btn-primary" type="button" id="empty-create">Apri mini editor</button>
       <a class="btn btn-outline-primary" href="/write">Editor completo</a>
     </div>
@@ -100,29 +100,37 @@
 
 </main>
 
-<!-- Create modal (custom) -->
-<div class="modal-backdrop" id="create-modal-backdrop" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
-    <div class="modal-head">
-      <h3 class="h5 mb-0" id="create-modal-title">Crea post</h3>
-      <button class="btn btn-outline-secondary btn-sm" type="button" id="close-create">Chiudi</button>
-    </div>
-    <div class="modal-body" id="write">
-      <input type="hidden" id="create-id" />
-      <div class="field"><label for="create-title">Titolo (facoltativo)</label><input id="create-title" type="text" placeholder="Titolo del post" /></div>
-      <div class="field"><label for="create-excerpt">Sommario (facoltativo)</label><input id="create-excerpt" type="text" placeholder="Breve descrizione" /></div>
-      <div class="field"><label for="create-content">Contenuto *</label><textarea id="create-content" placeholder="Scrivi il contenuto del post..."></textarea></div>
-      <div class="field"><label for="create-category">Categoria *</label><select id="create-category"></select></div>
-    </div>
-    <div class="modal-msg" id="create-msg"></div>
-    <div class="modal-actions">
-      <button class="btn btn-outline-primary" type="button" id="save-draft">Salva bozza</button>
-      <button class="btn btn-primary" type="button" id="publish-post">Pubblica</button>
+<!-- Create modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="create-modal" aria-labelledby="create-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="create-modal-title">Crea post</h2>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="create-id" />
+        <div class="form-group"><label for="create-title">Titolo (facoltativo)</label><input class="form-control" id="create-title" type="text" /></div>
+        <div class="form-group"><label for="create-excerpt">Sommario (facoltativo)</label><input class="form-control" id="create-excerpt" type="text" /></div>
+        <div class="form-group"><label for="create-content">Contenuto *</label><textarea class="form-control" id="create-content" rows="6"></textarea></div>
+        <div class="form-group"><label for="create-category">Categoria *</label><select class="form-select" id="create-category"></select></div>
+        <div class="alert" role="alert" id="create-msg" style="display:none"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-primary" type="button" id="save-draft">Salva bozza</button>
+        <button class="btn btn-primary" type="button" id="publish-post">Pubblica</button>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="notification fade dismissable" role="alert" id="toast" aria-hidden="true">
+  <h5 id="toast-title">Notifica</h5>
+  <p id="toast-msg"></p>
+  <button type="button" class="notification-close" data-bs-dismiss="notification" aria-label="Chiudi">
+    <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-close"></use></svg>
+  </button>
+</div>
 
 <!--PARTIAL:footer-->
 
@@ -153,10 +161,16 @@
   function toast(message, type) {
     const box = $('toast');
     if (!box) return;
-    box.textContent = message;
-    box.className = 'toast show ' + (type || '');
-    window.clearTimeout(box._to);
-    box._to = window.setTimeout(() => { box.className = 'toast'; }, 2600);
+    const titleEl = $('toast-title');
+    const msgEl = $('toast-msg');
+    if (msgEl) msgEl.textContent = message;
+    box.classList.remove('success', 'error');
+    if (type === 'ok') { box.classList.add('success'); if (titleEl) titleEl.textContent = 'Fatto'; }
+    else if (type === 'err') { box.classList.add('error'); if (titleEl) titleEl.textContent = 'Errore'; }
+    else if (titleEl) titleEl.textContent = 'Notifica';
+    if (window.bootstrap && bootstrap.Notification) {
+      bootstrap.Notification.getOrCreateInstance(box).show(2600);
+    }
   }
   function isMissingRelationError(error) {
     const msg = String(error?.message || '').toLowerCase();
@@ -198,11 +212,21 @@
     return Math.round(((curr - prev) / prev) * 100);
   }
   function deltaBadge(value) {
-    if (value > 0) return `<span class="delta up">+${value}%</span>`;
-    if (value < 0) return `<span class="delta down">-${Math.abs(value)}%</span>`;
-    return '<span class="delta same">=0%</span>';
+    if (value > 0) return `<span class="text-success fw-semibold">+${value}%</span>`;
+    if (value < 0) return `<span class="text-danger fw-semibold">-${Math.abs(value)}%</span>`;
+    return '<span class="text-muted fw-semibold">=0%</span>';
   }
   function fmtNum(value) { return Number(value || 0).toLocaleString('it-IT'); }
+  function emptyCallout(title, hint) {
+    return `<div class="callout note"><p class="mb-1">${escapeHtml(title)}</p><p class="text-muted small mb-0">${escapeHtml(hint)}</p></div>`;
+  }
+  function setCreateMsg(text) {
+    const el = $('create-msg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.className = 'alert alert-danger';
+    el.style.display = text ? '' : 'none';
+  }
 
   function renderKpis() {
     const days = PERIOD_DAYS[STATE.period] || 7;
@@ -290,16 +314,16 @@
     if (!wrap) return;
     const recent = STATE.posts.slice().sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime()).slice(0, 6);
     if (!recent.length) {
-      wrap.innerHTML = '<div class="empty-state"><p>Nessun movimento recente.</p><span class="tiny">Le prossime modifiche compariranno qui in ordine cronologico.</span></div>';
+      wrap.innerHTML = emptyCallout('Nessun movimento recente.', 'Le prossime modifiche compariranno qui in ordine cronologico.');
       return;
     }
     wrap.innerHTML = recent.map((p) => {
-      const statePill = p.published ? '<span class="pill pub">Online</span>' : '<span class="pill draft">Bozza</span>';
+      const statePill = p.published ? '<span class="badge bg-success rounded-pill">Online</span>' : '<span class="badge bg-warning rounded-pill">Bozza</span>';
       const safeTitle = escapeHtml(p.title || '(Senza titolo)');
       const safeCategory = escapeHtml(p.category || 'Contenuto');
       const href = p.published ? '/post?id=' + encodeURIComponent(p.id) : '/write?id=' + encodeURIComponent(p.id);
       const actionLabel = p.published ? 'Apri articolo' : 'Apri bozza';
-      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta">${statePill}<span class="pill">${safeCategory}</span></div><span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span></div><strong class="list-item__title">${safeTitle}</strong><div class="list-item__footer"><div class="mini-meta"><span class="tiny">${p.published ? 'Ultima pubblicazione' : 'Ultima modifica'}</span></div><a class="list-link" href="${href}">${actionLabel}</a></div></article>`;
+      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap">${statePill}<span class="badge bg-secondary rounded-pill">${safeCategory}</span></div><span class="text-muted small">${relativeTime(p.updated_at || p.created_at)}</span></div><strong>${safeTitle}</strong><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><span class="text-muted small">${p.published ? 'Ultima pubblicazione' : 'Ultima modifica'}</span><a class="fw-semibold" href="${href}">${actionLabel}</a></div></article>`;
     }).join('');
   }
 
@@ -309,16 +333,18 @@
     $('create-excerpt').value = post?.excerpt || '';
     $('create-content').value = post?.content || '';
     $('create-category').value = post?.category || CATEGORIES[0] || 'Territorio';
-    $('create-msg').textContent = '';
+    setCreateMsg('');
   }
   function openCreateModal(post) {
     fillCreateModal(post || null);
-    $('create-modal-backdrop').classList.add('open');
-    $('create-modal-backdrop').setAttribute('aria-hidden', 'false');
+    if (window.bootstrap && bootstrap.Modal) {
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('create-modal')).show();
+    }
   }
   function closeCreateModal() {
-    $('create-modal-backdrop').classList.remove('open');
-    $('create-modal-backdrop').setAttribute('aria-hidden', 'true');
+    const el = document.getElementById('create-modal');
+    const inst = (window.bootstrap && bootstrap.Modal) ? bootstrap.Modal.getInstance(el) : null;
+    if (inst) inst.hide();
   }
   function autoTitleFromContent(content) {
     const clean = String(content || '').replace(/\s+/g, ' ').trim();
@@ -328,7 +354,6 @@
   }
 
   async function savePost(publish) {
-    const msg = $('create-msg');
     const draftBtn = $('save-draft');
     const pubBtn = $('publish-post');
     const id = $('create-id').value;
@@ -336,9 +361,9 @@
     const excerpt = String($('create-excerpt').value || '').trim();
     const content = String($('create-content').value || '').trim();
     const category = String($('create-category').value || '').trim();
-    if (!content) { msg.textContent = 'Il contenuto e obbligatorio.'; return; }
-    if (!category) { msg.textContent = 'Seleziona una categoria.'; return; }
-    draftBtn.disabled = true; pubBtn.disabled = true; msg.textContent = '';
+    if (!content) { setCreateMsg('Il contenuto è obbligatorio.'); return; }
+    if (!category) { setCreateMsg('Seleziona una categoria.'); return; }
+    draftBtn.disabled = true; pubBtn.disabled = true; setCreateMsg('');
     const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
     const payload = {
       title: titleInput || autoTitleFromContent(content),
@@ -353,7 +378,7 @@
       ({ error } = await sb.from('posts').insert({ ...payload, user_id: STATE.session.user.id, author_username: STATE.profile.username || null }));
     }
     draftBtn.disabled = false; pubBtn.disabled = false;
-    if (error) { msg.textContent = 'Salvataggio non riuscito: ' + error.message; return; }
+    if (error) { setCreateMsg('Salvataggio non riuscito: ' + error.message); return; }
     closeCreateModal();
     toast(publish ? 'Post pubblicato.' : 'Bozza salvata.', 'ok');
     await refreshData();
@@ -364,13 +389,13 @@
     if (!wrap) return;
     const drafts = STATE.posts.filter((p) => !p.published).slice(0, 6);
     if (!drafts.length) {
-      wrap.innerHTML = '<div class="empty-state"><p>Nessuna bozza aperta.</p><span class="tiny">Quando salvi una bozza, la ritrovi subito qui.</span></div>';
+      wrap.innerHTML = emptyCallout('Nessuna bozza aperta.', 'Quando salvi una bozza, la ritrovi subito qui.');
       return;
     }
     wrap.innerHTML = drafts.map((p) => {
       const safeTitle = escapeHtml(p.title || '(Senza titolo)');
       const safeCategory = escapeHtml(p.category || 'Contenuto');
-      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta"><span class="pill draft">Bozza</span><span class="pill">${safeCategory}</span></div><span class="tiny">${relativeTime(p.updated_at || p.created_at)}</span></div><strong class="list-item__title">${safeTitle}</strong><div class="list-item__footer"><div class="mini-meta"><span class="tiny">Pronta per essere completata o pubblicata</span></div><a class="list-link" href="/write?id=${encodeURIComponent(p.id)}">Riprendi</a></div></article>`;
+      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap"><span class="badge bg-warning rounded-pill">Bozza</span><span class="badge bg-secondary rounded-pill">${safeCategory}</span></div><span class="text-muted small">${relativeTime(p.updated_at || p.created_at)}</span></div><strong>${safeTitle}</strong><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><span class="text-muted small">Pronta per essere completata o pubblicata</span><a class="fw-semibold" href="/write?id=${encodeURIComponent(p.id)}">Riprendi</a></div></article>`;
     }).join('');
   }
 
@@ -378,19 +403,19 @@
     const wrap = $('notif-list');
     if (!wrap) return;
     if (STATE.missing.notifications) {
-      wrap.innerHTML = '<div class="empty-state"><p>Centro notifiche non attivo.</p><span class="tiny">Per abilitarlo applica lo script Supabase completo o il layer sicurezza.</span></div>';
+      wrap.innerHTML = emptyCallout('Centro notifiche non attivo.', 'Per abilitarlo applica lo script Supabase completo o il layer sicurezza.');
       return;
     }
     const notifs = STATE.notifications.slice(0, 6);
     if (!notifs.length) {
-      wrap.innerHTML = '<div class="empty-state"><p>Nessun segnale da mostrare.</p><span class="tiny">Quando arrivano like o commenti li vedrai comparire qui.</span></div>';
+      wrap.innerHTML = emptyCallout('Nessun segnale da mostrare.', 'Quando arrivano like o commenti li vedrai comparire qui.');
       return;
     }
     wrap.innerHTML = notifs.map((n) => {
       const type = n.type === 'comment' ? 'Commento' : 'Mi piace';
       const safeMsg = escapeHtml(n.message || 'Nuova notifica');
-      const state = n.is_read ? '<span class="pill">Letta</span>' : '<span class="pill pill-live">Nuova</span>';
-      return `<article class="list-item"><div class="list-item__top"><div class="mini-meta"><span class="pill">${type}</span>${state}</div><span class="tiny">${relativeTime(n.created_at)}</span></div><strong class="list-item__title">${safeMsg}</strong></article>`;
+      const state = n.is_read ? '<span class="badge bg-secondary rounded-pill">Letta</span>' : '<span class="badge bg-primary rounded-pill">Nuova</span>';
+      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap"><span class="badge bg-secondary rounded-pill">${type}</span>${state}</div><span class="text-muted small">${relativeTime(n.created_at)}</span></div><strong>${safeMsg}</strong></article>`;
     }).join('');
   }
 
@@ -479,20 +504,15 @@
     document.querySelectorAll('[data-group]').forEach((btn) => {
       btn.addEventListener('click', () => {
         STATE.group = btn.getAttribute('data-group');
-        document.querySelectorAll('[data-group]').forEach((x) => x.classList.remove('on'));
-        btn.classList.add('on');
+        document.querySelectorAll('[data-group]').forEach((x) => x.classList.remove('active'));
+        btn.classList.add('active');
         renderChart();
       });
     });
     $('open-create')?.addEventListener('click', () => openCreateModal(null));
     $('empty-create')?.addEventListener('click', () => openCreateModal(null));
-    $('close-create')?.addEventListener('click', closeCreateModal);
-    $('create-modal-backdrop')?.addEventListener('click', (event) => {
-      if (event.target.id === 'create-modal-backdrop') closeCreateModal();
-    });
     $('save-draft')?.addEventListener('click', () => savePost(false));
     $('publish-post')?.addEventListener('click', () => savePost(true));
-    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeCreateModal(); });
   }
 
   async function init() {
