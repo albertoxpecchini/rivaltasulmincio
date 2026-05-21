@@ -4,129 +4,552 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/img/favicon.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Laboratorio di scrittura – Rivalta sul Mincio</title>
+  <title>Editor – Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="/vendor/bootstrap-italia/css/bootstrap-italia.min.css" />
+  <link rel="stylesheet" href="/rsm-bi.css" />
+  <style>
+    /* ── celle compatte ── */
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: #dde3ea;
+      border: 1px solid #dde3ea;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .field-grid .f-cell {
+      background: #fff;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .field-grid .f-cell.span2 { grid-column: span 2; }
+    .field-grid .f-cell.span3 { grid-column: span 3; }
+    .field-grid .f-cell label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #5a6882;
+      margin: 0;
+      white-space: nowrap;
+    }
+    .field-grid .f-cell input,
+    .field-grid .f-cell select,
+    .field-grid .f-cell textarea {
+      border: none;
+      outline: none;
+      font-size: .9rem;
+      padding: 0;
+      background: transparent;
+      color: #17324d;
+      width: 100%;
+      font-family: inherit;
+    }
+    .field-grid .f-cell input:focus,
+    .field-grid .f-cell select:focus,
+    .field-grid .f-cell textarea:focus {
+      background: #f0f5ff;
+      margin: -8px -10px;
+      padding: 8px 10px;
+      border-radius: 0;
+      outline: 2px solid #06c;
+      outline-offset: -2px;
+    }
+    .field-grid .f-cell textarea {
+      resize: none;
+      line-height: 1.5;
+    }
+    .field-grid .f-cell .char-hint {
+      font-size: .65rem;
+      color: #8a9bb0;
+      text-align: right;
+      margin-top: 2px;
+    }
+
+    /* ── accordion section ── */
+    .w-section { border: 1px solid #dde3ea; border-radius: 10px; overflow: hidden; margin-bottom: .5rem; }
+    .w-section summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #17324d;
+      background: #f5f7fa;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .w-section summary::-webkit-details-marker { display: none; }
+    .w-section summary .arrow {
+      margin-left: auto;
+      font-size: .7rem;
+      color: #8a9bb0;
+      transition: transform .15s;
+    }
+    .w-section[open] summary .arrow { transform: rotate(90deg); }
+    .w-section summary .badge-num {
+      font-size: .65rem;
+      background: #e3e8f0;
+      color: #5a6882;
+      border-radius: 99px;
+      padding: 1px 7px;
+      font-weight: 600;
+    }
+    .w-section .section-body { padding: 10px; background: #fff; }
+
+    /* ── testo completo separato ── */
+    #f-content {
+      width: 100%;
+      font-family: ui-monospace, monospace;
+      font-size: .88rem;
+      line-height: 1.65;
+      border: none;
+      outline: none;
+      padding: 10px;
+      resize: vertical;
+      min-height: 180px;
+      background: transparent;
+      color: #17324d;
+    }
+    #f-content:focus {
+      outline: 2px solid #06c;
+      outline-offset: -2px;
+      background: #f8fbff;
+    }
+    .content-wrap { background: #fff; border: 1px solid #dde3ea; border-radius: 10px; overflow: hidden; margin-bottom: .5rem; }
+    .content-header { padding: 10px 14px; background: #f5f7fa; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #17324d; }
+    .content-hint { padding: 6px 14px; font-size: .72rem; color: #8a9bb0; background: #f5f7fa; border-bottom: 1px solid #eaedf1; }
+
+    /* ── azioni sticky ── */
+    .sticky-bar {
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid #dde3ea;
+      padding: .6rem 0;
+      margin-top: .5rem;
+      z-index: 20;
+    }
+
+    /* ── anteprima post ── */
+    #preview-pane {
+      position: sticky;
+      top: 76px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .preview-shell {
+      border: 1px solid #dde3ea;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .preview-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f5f7fa;
+      border-bottom: 1px solid #dde3ea;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #5a6882;
+    }
+    .preview-body {
+      padding: 20px 18px;
+      background: #fff;
+      font-size: .9rem;
+    }
+    /* mini post render */
+    .pv-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .7rem; }
+    .pv-meta { font-size: .78rem; color: #5a6882; display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: .6rem; }
+    .pv-title { font-size: 1.35rem; font-weight: 700; color: #17324d; line-height: 1.25; margin-bottom: .5rem; }
+    .pv-subtitle { font-size: .95rem; color: #45526b; margin-bottom: .75rem; font-style: italic; }
+    .pv-lead { font-size: .9rem; color: #45526b; border-left: 3px solid #06c; padding-left: 12px; margin-bottom: 1rem; }
+    .pv-cover { width: 100%; border-radius: 8px; margin-bottom: 1rem; max-height: 180px; object-fit: cover; display: block; }
+    .pv-cover-empty { width: 100%; height: 120px; border-radius: 8px; margin-bottom: 1rem; background: linear-gradient(135deg, #0b1626, #1e2338); display: flex; align-items: center; justify-content: center; color: #5a7a8a; font-size: .75rem; }
+    .pv-content { font-size: .88rem; line-height: 1.7; color: #3b4c60; white-space: pre-wrap; word-break: break-word; }
+    .pv-meta-table { margin-top: 1rem; border-top: 1px solid #e8ecf2; padding-top: .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: .75rem; }
+    .pv-meta-table dt { color: #8a9bb0; font-weight: 600; }
+    .pv-meta-table dd { color: #17324d; margin: 0; }
+    .pv-cta { display: inline-block; margin-top: .75rem; padding: 7px 16px; background: #06c; color: #fff; border-radius: 6px; font-size: .82rem; font-weight: 600; text-decoration: none; }
+    .pv-empty { color: #8a9bb0; font-size: .82rem; text-align: center; padding: 2rem 0; }
+    .pv-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: .75rem; }
+    .pv-tag { font-size: .7rem; background: #e8f0fe; color: #0a4dae; border-radius: 99px; padding: 2px 9px; font-weight: 600; }
+
+    /* ── upload immagine ── */
+    .img-upload-area {
+      border: 2px dashed #c8d2de;
+      border-radius: 8px;
+      padding: 14px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .img-upload-area:hover, .img-upload-area.drag-over {
+      border-color: #06c;
+      background: #f0f5ff;
+    }
+    .img-upload-area.has-image {
+      border-style: solid;
+      border-color: #a8c4f0;
+    }
+    .img-upload-thumb {
+      width: 56px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 5px;
+      flex-shrink: 0;
+      display: none;
+    }
+    .img-upload-thumb.visible { display: block; }
+    .img-upload-placeholder {
+      width: 56px;
+      height: 40px;
+      border-radius: 5px;
+      background: #e3e8f0;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8a9bb0;
+      font-size: 1.1rem;
+    }
+    .img-upload-info { flex: 1; min-width: 0; }
+    .img-upload-info .up-label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #17324d;
+    }
+    .img-upload-info .up-sub {
+      font-size: .68rem;
+      color: #8a9bb0;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .img-upload-progress {
+      height: 3px;
+      background: #e0e8f0;
+      border-radius: 99px;
+      margin-top: 6px;
+      display: none;
+    }
+    .img-upload-progress.visible { display: block; }
+    .img-upload-progress-bar {
+      height: 3px;
+      background: #06c;
+      border-radius: 99px;
+      width: 0%;
+      transition: width .2s;
+    }
+    .img-upload-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .img-upload-actions button {
+      font-size: .72rem;
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: 1px solid #c8d2de;
+      background: #fff;
+      color: #17324d;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .img-upload-actions button:hover { background: #f0f5ff; border-color: #06c; color: #06c; }
+    .img-upload-actions button.danger:hover { background: #fff5f5; border-color: #cc1f1f; color: #cc1f1f; }
+    .img-url-row { margin-top: 8px; }
+    .img-url-row label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #8a9bb0;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .img-url-row input {
+      width: 100%;
+      font-size: .8rem;
+      border: 1px solid #dde3ea;
+      border-radius: 5px;
+      padding: 5px 8px;
+      color: #5a6882;
+      background: #f8fafc;
+      font-family: ui-monospace, monospace;
+    }
+    .img-url-row input:focus { outline: 2px solid #06c; outline-offset: -1px; }
+  </style>
 </head>
 <body>
 <!--PARTIAL:nav-->
 
-<main class="container rsm-page py-4">
-  <p class="text-primary fw-semibold text-uppercase small mb-1">Rivalta sul Mincio</p>
-  <h1 class="page-title" id="page-title">Laboratorio di scrittura</h1>
-  <p class="text-muted" id="page-sub">Nuovo editor completo: campi narrativi, SEO, metadati evento e controllo qualità del testo.</p>
+<main class="container rsm-page">
 
-  <div class="row g-4 mt-1">
-    <section class="col-12 col-xl-8">
-      <div class="alert alert-danger" id="err-msg" style="display:none"></div>
+  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div>
+      <p class="text-primary fw-semibold text-uppercase small mb-0">Editor · Rivalta sul Mincio</p>
+      <h1 class="h4 mb-0" id="page-title">Nuovo post</h1>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-secondary btn-sm" href="/dashboard">← Esci</a>
+    </div>
+  </div>
 
-      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
-        <h2 class="h5 mb-3">Identità del contenuto</h2>
-        <div class="row g-3">
-          <div class="col-12">
-            <label for="f-title" class="form-label">Titolo principale</label>
-            <input id="f-title" class="form-control" maxlength="120" placeholder="Titolo del post" />
-            <small class="form-text"><span id="title-count">0 / 120</span></small>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-subtitle" class="form-label">Sottotitolo</label>
-            <input id="f-subtitle" class="form-control" maxlength="160" placeholder="Taglio giornalistico o poetico" />
-            <small class="form-text"><span id="subtitle-count">0 / 160</span></small>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-category" class="form-label">Categoria editoriale</label>
-            <select id="f-category" class="form-select"></select>
-          </div>
-          <div class="col-12">
-            <label for="f-excerpt" class="form-label">Estratto</label>
-            <textarea id="f-excerpt" class="form-control" rows="2" maxlength="240" placeholder="Riassunto breve per anteprime"></textarea>
-            <small class="form-text"><span id="excerpt-count">0 / 240</span></small>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-tone" class="form-label">Tono editoriale</label>
-            <select id="f-tone" class="form-select">
-              <option value="istituzionale">Istituzionale</option>
-              <option value="narrativo">Narrativo</option>
-              <option value="giornalistico">Giornalistico</option>
-              <option value="conviviale">Conviviale</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-reading-level" class="form-label">Livello di lettura</label>
-            <select id="f-reading-level" class="form-select">
-              <option value="semplice">Semplice</option>
-              <option value="medio">Medio</option>
-              <option value="approfondito">Approfondito</option>
-            </select>
+  <div class="alert alert-danger" id="err-msg" style="display:none" role="alert"></div>
+  <div class="alert alert-success" id="ok-msg" style="display:none" role="status"></div>
+
+  <div class="row g-3">
+
+    <!-- ── FORM ── -->
+    <div class="col-12 col-xl-7">
+
+      <!-- 1. IDENTITÀ -->
+      <details class="w-section" open>
+        <summary>
+          <span>1 · Identità</span>
+          <span class="badge-num">5 campi</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <div class="field-grid">
+            <div class="f-cell span3">
+              <label for="f-title">Titolo *</label>
+              <input id="f-title" maxlength="120" placeholder="Titolo principale" />
+              <span class="char-hint"><span id="title-count">0</span>/120</span>
+            </div>
+            <div class="f-cell span2">
+              <label for="f-subtitle">Sottotitolo</label>
+              <input id="f-subtitle" maxlength="160" placeholder="Taglio giornalistico o poetico" />
+            </div>
+            <div class="f-cell">
+              <label for="f-category">Categoria *</label>
+              <select id="f-category"></select>
+            </div>
+            <div class="f-cell span2">
+              <label for="f-tone">Tono</label>
+              <select id="f-tone">
+                <option value="narrativo">Narrativo</option>
+                <option value="istituzionale">Istituzionale</option>
+                <option value="giornalistico">Giornalistico</option>
+                <option value="conviviale">Conviviale</option>
+              </select>
+            </div>
+            <div class="f-cell">
+              <label for="f-target">Pubblico</label>
+              <select id="f-target">
+                <option value="">Tutti</option>
+                <option value="famiglie">Famiglie</option>
+                <option value="bambini">Bambini</option>
+                <option value="giovani">Giovani</option>
+                <option value="turisti">Turisti</option>
+                <option value="escursionisti">Escursionisti</option>
+                <option value="appassionati_natura">Appassionati natura</option>
+              </select>
+            </div>
+            <div class="f-cell span3">
+              <label for="f-excerpt">Descrizione breve (estratto)</label>
+              <textarea id="f-excerpt" rows="2" maxlength="280" placeholder="Riassunto per anteprime e share social…"></textarea>
+              <span class="char-hint"><span id="excerpt-count">0</span>/280</span>
+            </div>
           </div>
         </div>
-      </div></div></div>
+      </details>
 
-      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
-        <h2 class="h5 mb-3">Corpo del post</h2>
-        <label for="f-content" class="form-label">Testo completo</label>
-        <textarea id="f-content" class="form-control font-monospace" rows="14" placeholder="Scrivi il testo completo..."></textarea>
-        <small class="form-text"><span id="content-count">0 caratteri</span> · <span id="content-words">0 parole</span></small>
-
-        <div class="row g-3 mt-1">
-          <div class="col-12 col-md-6">
-            <label for="f-keywords" class="form-label">Parole chiave (virgola separate)</label>
-            <input id="f-keywords" class="form-control" placeholder="mincio, evento, comunità" />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-tags" class="form-label">Tag pubblici</label>
-            <input id="f-tags" class="form-control" placeholder="festival, natura" />
-          </div>
-          <div class="col-12">
-            <label for="f-cta" class="form-label">Call to action</label>
-            <input id="f-cta" class="form-control" maxlength="180" placeholder="Partecipa, condividi, prenota..." />
-          </div>
+      <!-- 2. TESTO -->
+      <div class="content-wrap">
+        <div class="content-header">2 · Testo completo *</div>
+        <div class="content-hint">Struttura: Cos'è · Quando · Dove · Cosa ci sarà · Chi partecipa · Come · Note utili</div>
+        <textarea id="f-content" placeholder="Scrivi qui il testo completo…"></textarea>
+        <div class="px-3 pb-2 d-flex justify-content-end">
+          <span style="font-size:.65rem;color:#8a9bb0"><span id="content-words">0</span> parole · <span id="content-count">0</span> car.</span>
         </div>
-      </div></div></div>
-
-      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
-        <h2 class="h5 mb-3">Campi evento e sorgenti</h2>
-        <div class="row g-3">
-          <div class="col-12 col-md-4">
-            <label for="f-event-start" class="form-label">Inizio evento</label>
-            <input id="f-event-start" class="form-control" type="datetime-local" />
-          </div>
-          <div class="col-12 col-md-4">
-            <label for="f-event-end" class="form-label">Fine evento</label>
-            <input id="f-event-end" class="form-control" type="datetime-local" />
-          </div>
-          <div class="col-12 col-md-4">
-            <label for="f-location" class="form-label">Luogo</label>
-            <input id="f-location" class="form-control" maxlength="180" placeholder="Piazza / sede / indirizzo" />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-source-url" class="form-label">URL sorgente primaria</label>
-            <input id="f-source-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="f-image-url" class="form-label">URL immagine cover</label>
-            <input id="f-image-url" class="form-control" type="url" maxlength="500" placeholder="https://..." />
-          </div>
-        </div>
-      </div></div></div>
-
-      <div class="d-flex flex-wrap gap-2 justify-content-end">
-        <a class="btn btn-outline-secondary" href="/dashboard">Annulla</a>
-        <button class="btn btn-outline-primary" id="btn-draft" type="button">Salva bozza evoluta</button>
-        <button class="btn btn-primary" id="btn-publish" type="button">Pubblica versione finale</button>
       </div>
-    </section>
 
-    <aside class="col-12 col-xl-4">
-      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
-        <h2 class="h5">Diagnostica scrittura</h2>
-        <ul class="list-unstyled small mb-0" id="diagnostics"></ul>
-      </div></div></div>
+      <!-- 3. EVENTO -->
+      <details class="w-section">
+        <summary>
+          <span>3 · Date e luogo</span>
+          <span class="badge-num">5 campi</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <div class="field-grid">
+            <div class="f-cell">
+              <label for="f-event-start">Data inizio</label>
+              <input id="f-event-start" type="datetime-local" />
+            </div>
+            <div class="f-cell">
+              <label for="f-event-end">Data fine</label>
+              <input id="f-event-end" type="datetime-local" />
+            </div>
+            <div class="f-cell">
+              <label for="f-event-time">Orario</label>
+              <input id="f-event-time" maxlength="80" placeholder="Es. 10:00 – 23:00" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-location">Luogo / sede</label>
+              <input id="f-location" maxlength="180" placeholder="Es. Piazza Municipio" />
+            </div>
+            <div class="f-cell span3">
+              <label for="f-address">Indirizzo completo</label>
+              <input id="f-address" maxlength="240" placeholder="Via, numero, CAP, città" />
+            </div>
+          </div>
+        </div>
+      </details>
 
-      <div class="card-wrapper mb-3"><div class="card card-bg"><div class="card-body">
-        <h2 class="h5">Schema payload inventato</h2>
-        <pre id="payload-preview" class="small mb-0" style="white-space:pre-wrap"></pre>
-      </div></div></div>
-    </aside>
+      <!-- 4. ORGANIZZAZIONE -->
+      <details class="w-section">
+        <summary>
+          <span>4 · Organizzazione</span>
+          <span class="badge-num">4 campi</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <div class="field-grid">
+            <div class="f-cell span2">
+              <label for="f-organizer">Organizzatore</label>
+              <input id="f-organizer" maxlength="160" placeholder="Es. Pro Loco Rivalta sul Mincio" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-contacts">Contatti</label>
+              <input id="f-contacts" maxlength="240" placeholder="Tel, email o link pagina" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-booking-url">Link prenotazione / iscrizione</label>
+              <input id="f-booking-url" type="url" maxlength="500" placeholder="https://…" />
+            </div>
+            <div class="f-cell">
+              <label for="f-price">Prezzo ingresso</label>
+              <input id="f-price" maxlength="80" placeholder="Gratuito / €5" />
+            </div>
+            <div class="f-cell">
+              <label for="f-reading-level">Livello lettura</label>
+              <select id="f-reading-level">
+                <option value="semplice">Semplice</option>
+                <option value="medio" selected>Medio</option>
+                <option value="approfondito">Approfondito</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 5. MEDIA E CTA -->
+      <details class="w-section">
+        <summary>
+          <span>5 · Media e CTA</span>
+          <span class="badge-num">3 campi</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <!-- upload immagine -->
+          <input type="file" id="f-image-file" accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/tiff,image/heic,image/heif,.heic,.heif,.dng,.raw,.cr2,.cr3,.nef,.arw,.orf,.rw2,.pef,.srw,.x3f,.raf,.3fr,.erf,.fff,.iiq,.kdc,.mos,.mrw,.nrw,.ptx" style="display:none" />
+          <div class="img-upload-area" id="img-upload-area">
+            <img class="img-upload-thumb" id="img-thumb" src="" alt="anteprima" />
+            <div class="img-upload-placeholder" id="img-placeholder">🖼</div>
+            <div class="img-upload-info">
+              <div class="up-label" id="up-label">Carica immagine copertina</div>
+              <div class="up-sub" id="up-sub">JPG · PNG · WebP · HEIC · DNG · RAW · CR2 · NEF · ARW e altri</div>
+              <div class="img-upload-progress" id="up-progress"><div class="img-upload-progress-bar" id="up-bar"></div></div>
+            </div>
+            <div class="img-upload-actions">
+              <button type="button" id="up-btn">Scegli file</button>
+              <button type="button" id="up-remove" class="danger" style="display:none">✕</button>
+            </div>
+          </div>
+          <div class="img-url-row">
+            <label for="f-image-url">URL immagine</label>
+            <input id="f-image-url" type="url" maxlength="500" placeholder="Oppure incolla direttamente un URL…" />
+          </div>
+
+          <!-- cta -->
+          <div class="field-grid mt-2">
+            <div class="f-cell span2">
+              <label for="f-cta">Call to action</label>
+              <input id="f-cta" maxlength="120" placeholder="Es. Prenota ora · Scopri il programma" />
+            </div>
+            <div class="f-cell">
+              <label for="f-cta-url">URL CTA</label>
+              <input id="f-cta-url" type="url" maxlength="500" placeholder="https://…" />
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 6. SEO -->
+      <details class="w-section">
+        <summary>
+          <span>6 · SEO e riferimenti</span>
+          <span class="badge-num">5 campi</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <div class="field-grid">
+            <div class="f-cell span2">
+              <label for="f-keywords">Parole chiave (virgola)</label>
+              <input id="f-keywords" placeholder="mincio, luccio, sagra" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-tags">Tag pubblici (virgola)</label>
+              <input id="f-tags" placeholder="festival, natura, tradizioni" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-source-url">Fonte primaria</label>
+              <input id="f-source-url" type="url" maxlength="500" placeholder="https://…" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-references">Riferimenti aggiuntivi</label>
+              <input id="f-references" maxlength="500" placeholder="Altre URL o note bibliografiche" />
+            </div>
+            <div class="f-cell span3">
+              <label for="f-notes">Note interne (non pubblicate)</label>
+              <textarea id="f-notes" rows="2" maxlength="500" placeholder="Annotazioni redazionali, todo…"></textarea>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- AZIONI -->
+      <div class="sticky-bar">
+        <div class="d-flex gap-2 justify-content-end">
+          <button class="btn btn-outline-primary btn-sm" id="btn-draft" type="button">
+            <span data-btn-label>Salva bozza</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-publish" type="button">
+            <span data-btn-label>Pubblica</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANTEPRIMA LIVE ── -->
+    <div class="col-12 col-xl-5">
+      <div id="preview-pane">
+        <div class="preview-shell">
+          <div class="preview-topbar">
+            <span>Anteprima post</span>
+            <span id="pv-status" style="color:#06c;font-weight:600">bozza</span>
+          </div>
+          <div class="preview-body" id="preview-body">
+            <div class="pv-empty">Inizia a compilare per vedere l'anteprima.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </main>
 
@@ -135,140 +558,272 @@
 <script>
 (() => {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const $ = (id) => document.getElementById(id);
-  const categories = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [
-    'Ambiente','Assemblea','Ciclismo','Eventi','Iniziative','Video'
+  const $ = id => document.getElementById(id);
+
+  const CATEGORIES = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [
+    'Ambiente','Assemblea','Ciclismo','Cultura','Enogastronomia','Eventi',
+    'Iniziative','Natura','Sagre','Sport','Turismo','Video'
   ];
 
-  const state = { session: null, profile: null };
+  function csv(v) { return String(v||'').split(',').map(s=>s.trim()).filter(Boolean); }
+  function esc(t) { return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  const fields = [
-    'f-title','f-subtitle','f-excerpt','f-content','f-keywords','f-tags','f-cta','f-location','f-source-url','f-image-url'
-  ];
-
-  function setErr(msg) {
-    const el = $('err-msg');
-    el.textContent = msg || '';
-    el.style.display = msg ? 'block' : 'none';
+  function fmtDate(iso) {
+    if (!iso) return null;
+    try { return new Date(iso).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+    catch { return iso; }
   }
 
-  function listFromCsv(value) {
-    return String(value || '').split(',').map(s => s.trim()).filter(Boolean);
+  /* ── upload immagine ── */
+  function initUpload(session) {
+    const area    = $('img-upload-area');
+    const fileIn  = $('f-image-file');
+    const thumb   = $('img-thumb');
+    const ph      = $('img-placeholder');
+    const label   = $('up-label');
+    const sub     = $('up-sub');
+    const prog    = $('up-progress');
+    const bar     = $('up-bar');
+    const btn     = $('up-btn');
+    const rmv     = $('up-remove');
+    const urlIn   = $('f-image-url');
+
+    function showThumb(url) {
+      thumb.src = url;
+      thumb.classList.add('visible');
+      ph.style.display = 'none';
+      area.classList.add('has-image');
+      rmv.style.display = '';
+    }
+    function reset() {
+      thumb.src = ''; thumb.classList.remove('visible');
+      ph.style.display = ''; area.classList.remove('has-image');
+      rmv.style.display = 'none';
+      label.textContent = 'Carica immagine copertina';
+      sub.textContent = 'JPG · PNG · WebP · HEIC · DNG · RAW · CR2 · NEF · ARW e altri';
+      prog.classList.remove('visible'); bar.style.width = '0%';
+      fileIn.value = '';
+    }
+
+    async function uploadFile(file) {
+      // valida sessione e rimuovi token corrotto
+      const { data: { session: freshSession } } = await sb.auth.getSession();
+      const token = freshSession?.access_token;
+      if (token && !/^[^.]+\.[^.]+\.[^.]+$/.test(token)) {
+        await sb.auth.signOut();
+        label.textContent = 'Sessione scaduta, ricarica la pagina.';
+        return;
+      }
+
+      const uid = freshSession?.user?.id || 'anon';
+      const ext = file.name.split('.').pop().toLowerCase();
+      const path = uid + '/' + Date.now() + '-' + Math.random().toString(36).slice(2,7) + '.' + ext;
+
+      label.textContent = 'Caricamento…';
+      sub.textContent = file.name;
+      prog.classList.add('visible'); bar.style.width = '20%';
+
+      const { data, error } = await sb.storage.from('post-images').upload(path, file, {
+        cacheControl: '31536000', upsert: false, contentType: file.type || 'application/octet-stream'
+      });
+      if (error) {
+        label.textContent = 'Errore: ' + error.message;
+        bar.style.width = '0%'; prog.classList.remove('visible');
+        return;
+      }
+      bar.style.width = '100%';
+      const { data: pub } = sb.storage.from('post-images').getPublicUrl(data.path);
+      const publicUrl = pub.publicUrl;
+      urlIn.value = publicUrl;
+      urlIn.dispatchEvent(new Event('input'));
+      showThumb(publicUrl);
+      label.textContent = file.name;
+      sub.textContent = (file.size / 1024).toFixed(0) + ' KB · caricato';
+      setTimeout(() => { prog.classList.remove('visible'); bar.style.width = '0%'; }, 800);
+    }
+
+    btn.addEventListener('click', () => fileIn.click());
+    area.addEventListener('click', e => { if (e.target !== btn && e.target !== rmv) fileIn.click(); });
+    fileIn.addEventListener('change', () => { if (fileIn.files[0]) uploadFile(fileIn.files[0]); });
+
+    area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+    area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+    area.addEventListener('drop', e => {
+      e.preventDefault(); area.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f) uploadFile(f);
+    });
+
+    rmv.addEventListener('click', e => {
+      e.stopPropagation();
+      reset();
+      urlIn.value = '';
+      urlIn.dispatchEvent(new Event('input'));
+    });
+
+    urlIn.addEventListener('input', () => {
+      const v = urlIn.value.trim();
+      if (v && !thumb.classList.contains('visible')) showThumb(v);
+      else if (!v) reset();
+    });
   }
 
-  function readabilityScore(text) {
-    const clean = String(text || '').trim();
-    const words = clean ? clean.split(/\s+/).length : 0;
-    const sentences = Math.max(1, (clean.match(/[.!?]+/g) || []).length);
-    const avg = words / sentences;
-    if (avg < 12) return 'scorrevole';
-    if (avg < 22) return 'equilibrato';
-    return 'denso';
+  /* ── anteprima live ── */
+  function renderPreview() {
+    const title    = $('f-title').value.trim();
+    const subtitle = $('f-subtitle').value.trim();
+    const excerpt  = $('f-excerpt').value.trim();
+    const content  = $('f-content').value.trim();
+    const category = $('f-category').value;
+    const imageUrl = $('f-image-url').value.trim();
+    const cta      = $('f-cta').value.trim();
+    const ctaUrl   = $('f-cta-url').value.trim();
+    const tags     = csv($('f-tags').value);
+    const evStart  = $('f-event-start').value;
+    const evEnd    = $('f-event-end').value;
+    const evTime   = $('f-event-time').value.trim();
+    const location = $('f-location').value.trim();
+    const address  = $('f-address').value.trim();
+    const org      = $('f-organizer').value.trim();
+    const contacts = $('f-contacts').value.trim();
+    const price    = $('f-price').value.trim();
+    const booking  = $('f-booking-url').value.trim();
+
+    if (!title && !content) {
+      $('preview-body').innerHTML = '<div class="pv-empty">Inizia a compilare per vedere l\'anteprima.</div>';
+      return;
+    }
+
+    const hasMeta = evStart || evEnd || location || org || price;
+    const meta = hasMeta ? `<dl class="pv-meta-table">
+      ${evStart ? `<dt>Inizio</dt><dd>${esc(fmtDate(evStart))}</dd>` : ''}
+      ${evEnd   ? `<dt>Fine</dt><dd>${esc(fmtDate(evEnd))}</dd>` : ''}
+      ${evTime  ? `<dt>Orario</dt><dd>${esc(evTime)}</dd>` : ''}
+      ${location? `<dt>Luogo</dt><dd>${esc(location)}</dd>` : ''}
+      ${address ? `<dt>Indirizzo</dt><dd>${esc(address)}</dd>` : ''}
+      ${org     ? `<dt>Organizzatore</dt><dd>${esc(org)}</dd>` : ''}
+      ${contacts? `<dt>Contatti</dt><dd>${esc(contacts)}</dd>` : ''}
+      ${price   ? `<dt>Ingresso</dt><dd>${esc(price)}</dd>` : ''}
+    </dl>` : '';
+
+    const ctaHtml = (cta && ctaUrl)
+      ? `<a class="pv-cta" href="${esc(ctaUrl)}" target="_blank" rel="noopener">${esc(cta)}</a>`
+      : (cta ? `<span class="pv-cta" style="opacity:.5;cursor:default">${esc(cta)}</span>` : '');
+
+    const tagsHtml = tags.length
+      ? `<div class="pv-tags">${tags.map(t=>`<span class="pv-tag">${esc(t)}</span>`).join('')}</div>`
+      : '';
+
+    const coverHtml = imageUrl
+      ? `<img class="pv-cover" src="${esc(imageUrl)}" alt="${esc(title)}" onerror="this.style.display='none'" />`
+      : `<div class="pv-cover-empty">Nessuna immagine copertina</div>`;
+
+    const bookingHtml = booking
+      ? `<div style="margin-top:.5rem;font-size:.75rem;color:#5a6882">Prenotazione: <a href="${esc(booking)}" target="_blank" rel="noopener">${esc(booking.replace(/^https?:\/\//,''))}</a></div>`
+      : '';
+
+    $('preview-body').innerHTML = `
+      <div class="pv-badges">${category ? `<span class="badge bg-primary">${esc(category)}</span>` : ''}</div>
+      <div class="pv-meta">
+        <span>Oggi</span>
+        ${category ? `<span>·</span><span>${esc(category)}</span>` : ''}
+      </div>
+      ${title ? `<div class="pv-title">${esc(title)}</div>` : ''}
+      ${subtitle ? `<div class="pv-subtitle">${esc(subtitle)}</div>` : ''}
+      ${excerpt ? `<div class="pv-lead">${esc(excerpt)}</div>` : ''}
+      ${coverHtml}
+      ${content ? `<div class="pv-content">${esc(content)}</div>` : ''}
+      ${meta}
+      ${bookingHtml}
+      ${ctaHtml}
+      ${tagsHtml}
+    `;
+  }
+
+  /* ── contatori ── */
+  function updateCounts() {
+    const title = $('f-title').value;
+    const excerpt = $('f-excerpt').value;
+    const content = $('f-content').value;
+    $('title-count').textContent = title.length;
+    $('excerpt-count').textContent = excerpt.length;
+    $('content-count').textContent = content.length;
+    $('content-words').textContent = content.trim() ? content.trim().split(/\s+/).length : 0;
+    renderPreview();
+  }
+
+  /* ── salvataggio ── */
+  function setErr(msg) { const e=$('err-msg'); e.textContent=msg||''; e.style.display=msg?'block':'none'; if(msg) e.scrollIntoView({behavior:'smooth',block:'center'}); }
+  function setOk(msg) { const e=$('ok-msg'); e.textContent=msg||''; e.style.display=msg?'block':'none'; }
+  function setBtnLoading(id, loading) {
+    const btn=$(id); if(!btn) return;
+    const lbl=btn.querySelector('[data-btn-label]');
+    btn.disabled=loading;
+    if(lbl) lbl.textContent=loading?'Attendere…':(id==='btn-draft'?'Salva bozza':'Pubblica');
   }
 
   function buildPayload(published) {
-    const content = $('f-content').value;
-    const nowIso = new Date().toISOString();
-    const words = content.trim() ? content.trim().split(/\s+/).length : 0;
-
+    const content=$('f-content').value;
+    const now=new Date().toISOString();
+    const words=content.trim()?content.trim().split(/\s+/).length:0;
     return {
-      title: $('f-title').value.trim(),
-      subtitle: $('f-subtitle').value.trim(),
-      excerpt: $('f-excerpt').value.trim(),
-      content,
-      category: $('f-category').value,
-      tone: $('f-tone').value,
-      reading_level: $('f-reading-level').value,
-      cta_text: $('f-cta').value.trim(),
-      keywords: listFromCsv($('f-keywords').value),
-      tags: listFromCsv($('f-tags').value),
-      source_url: $('f-source-url').value.trim() || null,
-      image_url: $('f-image-url').value.trim() || null,
-      location_text: $('f-location').value.trim() || null,
-      event_start_at: $('f-event-start').value || null,
-      event_end_at: $('f-event-end').value || null,
-      quality: {
-        chars: content.length,
-        words,
-        readability: readabilityScore(content),
-        generated_at: nowIso
-      },
-      meta: {
-        editor_version: 'write-lab-v2',
-        created_in_ui: 'laboratorio_scrittura',
-        locale: 'it-IT'
-      },
-      published,
-      published_at: published ? nowIso : null,
-      author_id: state.session?.user?.id || null
+      title:$('f-title').value.trim(), subtitle:$('f-subtitle').value.trim()||null,
+      excerpt:$('f-excerpt').value.trim()||null, content,
+      category:$('f-category').value, tone:$('f-tone').value,
+      reading_level:$('f-reading-level').value, target_audience:$('f-target').value||null,
+      event_start_at:$('f-event-start').value||null, event_end_at:$('f-event-end').value||null,
+      event_time_text:$('f-event-time').value.trim()||null,
+      location_text:$('f-location').value.trim()||null, address_text:$('f-address').value.trim()||null,
+      organizer:$('f-organizer').value.trim()||null, contacts:$('f-contacts').value.trim()||null,
+      booking_url:$('f-booking-url').value.trim()||null, price_text:$('f-price').value.trim()||null,
+      image_url:$('f-image-url').value.trim()||null,
+      cta_text:$('f-cta').value.trim()||null, cta_url:$('f-cta-url').value.trim()||null,
+      keywords:csv($('f-keywords').value), tags:csv($('f-tags').value),
+      source_url:$('f-source-url').value.trim()||null, references:$('f-references').value.trim()||null,
+      notes:$('f-notes').value.trim()||null,
+      quality:{chars:content.length,words,generated_at:now},
+      meta:{editor_version:'write-lab-v3',locale:'it-IT'},
+      published, published_at:published?now:null
     };
   }
 
   async function save(published) {
-    setErr('');
-    const payload = buildPayload(published);
-    if (!payload.title || payload.title.length < 6) {
-      setErr('Titolo troppo corto (minimo 6 caratteri).');
-      return;
-    }
-    if (!payload.content || payload.content.length < 80) {
-      setErr('Testo troppo corto (minimo 80 caratteri).');
-      return;
-    }
-
-    const { error } = await sb.from('posts').insert(payload);
-    if (error) {
-      setErr(`Salvataggio fallito: ${error.message}`);
-      return;
-    }
-    location.href = '/dashboard';
+    setErr(''); setOk('');
+    const p=buildPayload(published);
+    if(!p.title||p.title.length<6) { setErr('Titolo troppo corto (min 6 caratteri).'); return; }
+    if(!p.content||p.content.length<80) { setErr('Testo troppo corto (min 80 caratteri).'); return; }
+    const btnId=published?'btn-publish':'btn-draft';
+    setBtnLoading(btnId,true);
+    const {error}=await sb.from('posts').insert(p);
+    setBtnLoading(btnId,false);
+    if(error){ setErr('Salvataggio fallito: '+error.message); return; }
+    $('pv-status').textContent=published?'pubblicato':'bozza salvata';
+    setOk(published?'Post pubblicato con successo.':'Bozza salvata.');
+    setTimeout(()=>{ location.href='/dashboard'; },1200);
   }
 
-  function renderDiagnostics() {
-    const content = $('f-content').value;
-    const words = content.trim() ? content.trim().split(/\s+/).length : 0;
-    $('content-count').textContent = `${content.length} caratteri`;
-    $('content-words').textContent = `${words} parole`;
-    $('title-count').textContent = `${$('f-title').value.length} / 120`;
-    $('subtitle-count').textContent = `${$('f-subtitle').value.length} / 160`;
-    $('excerpt-count').textContent = `${$('f-excerpt').value.length} / 240`;
+  /* ── init ── */
+  async function init() {
+    const {data:auth}=await sb.auth.getSession();
+    if(!auth?.session){ location.href='/login'; return; }
 
-    const points = [
-      ['Leggibilità', readabilityScore(content)],
-      ['Paragrafi', (content.split(/\n{2,}/).filter(Boolean).length || 0)],
-      ['Keyword', listFromCsv($('f-keywords').value).length],
-      ['Tag', listFromCsv($('f-tags').value).length]
-    ];
+    initUpload(auth.session);
+    $('f-category').innerHTML=CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('');
 
-    $('diagnostics').innerHTML = points.map(([k,v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('');
-    $('payload-preview').textContent = JSON.stringify(buildPayload(false), null, 2);
+    const allInputs=['f-title','f-subtitle','f-excerpt','f-content','f-keywords','f-tags',
+      'f-cta','f-location','f-address','f-source-url','f-image-url','f-cta-url',
+      'f-organizer','f-contacts','f-booking-url','f-price','f-event-time','f-references','f-notes'];
+    allInputs.forEach(id=>{ const el=$(id); if(el) el.addEventListener('input',updateCounts); });
+    ['f-event-start','f-event-end','f-tone','f-reading-level','f-category','f-target']
+      .forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',updateCounts); });
+
+    $('btn-draft').addEventListener('click',()=>save(false));
+    $('btn-publish').addEventListener('click',()=>save(true));
+
+    updateCounts();
   }
 
-  async function bootstrap() {
-    const [{ data: auth }, { data: profileData }] = await Promise.all([
-      sb.auth.getSession(),
-      sb.from('profiles').select('id, username, display_name').limit(1)
-    ]);
-
-    state.session = auth?.session || null;
-    state.profile = (profileData && profileData[0]) || null;
-
-    if (!state.session) {
-      location.href = '/login';
-      return;
-    }
-
-    $('f-category').innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
-    fields.forEach((id) => $(id).addEventListener('input', renderDiagnostics));
-    ['f-event-start','f-event-end','f-tone','f-reading-level','f-category'].forEach((id) => $(id).addEventListener('change', renderDiagnostics));
-
-    $('btn-draft').addEventListener('click', () => save(false));
-    $('btn-publish').addEventListener('click', () => save(true));
-
-    renderDiagnostics();
-  }
-
-  bootstrap().catch((e) => setErr(`Errore inizializzazione: ${e.message}`));
+  init().catch(e=>setErr('Errore: '+e.message));
 })();
 </script>
 </body>
