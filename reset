@@ -12,7 +12,7 @@
 <!--PARTIAL:nav-->
 
 <main class="container rsm-page">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center align-items-start">
     <div class="col-12 col-md-6 col-lg-5">
       <div class="card-wrapper">
         <div class="card card-bg">
@@ -48,7 +48,7 @@
                 <label for="pwd1">Nuova password</label>
                 <div class="input-group">
                   <input type="password" id="pwd1" class="form-control" placeholder="Almeno 8 caratteri" autocomplete="new-password">
-                  <button class="btn btn-outline-secondary" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
+                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
                 </div>
                 <div class="progress mt-2" style="height:6px">
                   <div class="progress-bar" role="progressbar" id="strBar" style="width:0%"></div>
@@ -60,7 +60,7 @@
                 <label for="pwd2">Conferma password</label>
                 <div class="input-group">
                   <input type="password" id="pwd2" class="form-control" placeholder="Ripeti la password" autocomplete="new-password">
-                  <button class="btn btn-outline-secondary" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
+                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
                 </div>
               </div>
 
