@@ -302,6 +302,47 @@
     .rel-badge { font-size: .65rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; color: #fff; }
     .rel-date  { font-size: .7rem; color: #5a6882; }
     .rel-title { font-size: .82rem; font-weight: 600; line-height: 1.35; color: #1a2744; }
+    /* ── Author management bar ───────────────────────────── */
+    .author-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 1.25rem;
+    }
+    .author-bar-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #92400e;
+      white-space: nowrap;
+    }
+    .author-bar-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+    .author-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      color: #1a2744;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .author-btn:hover { border-color: #374151; color: #374151; text-decoration: none; }
+    .author-btn--warn { border-color: #fcd34d; color: #92400e; }
+    .author-btn--warn:hover { background: #fef3c7; border-color: #d97706; color: #78350f; }
+    .author-btn--danger { border-color: #fca5a5; color: #b91c1c; }
+    .author-btn--danger:hover { background: #fff1f2; border-color: #dc2626; color: #991b1b; }
   </style>
 </head>
 <body>
@@ -540,7 +581,7 @@
      DETAIL VIEW
   ───────────────────────────────────────────────────────── */
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
-    wrap.innerHTML = '<div class="error-wrap"><h2>Configurazione mancante</h2><p>Supabase non configurato.</p><a href="/category" class="btn btn-primary">← Torna alle notizie</a></div>';
+    wrap.innerHTML = '<div class="error-wrap"><h2>Configurazione mancante</h2><p>Supabase non configurato.</p><a href="/post" class="btn btn-primary">← Torna alle notizie</a></div>';
     return;
   }
 
@@ -552,12 +593,14 @@
   var postError = postResult.error;
 
   if (postError || !post) {
-    wrap.innerHTML = '<div class="error-wrap"><h2>Articolo non trovato</h2><p>L\'articolo non esiste o non è ancora pubblicato.</p><a href="/category" class="btn btn-primary">← Torna alle notizie</a></div>';
+    wrap.innerHTML = '<div class="error-wrap"><h2>Articolo non trovato</h2><p>L\'articolo non esiste o non è ancora pubblicato.</p><a href="/post" class="btn btn-primary">← Torna alle notizie</a></div>';
     return;
   }
 
   document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
   activePost = Object.assign({}, post, { category: canonicalCategory(post.category) || 'Territorio' });
+
+  var isAuthor = !!(viewerSession && viewerSession.user && viewerSession.user.id === activePost.user_id);
 
   var cat    = activePost.category;
   var color  = catColor(cat);
@@ -620,11 +663,23 @@
   var imgSafe    = activePost.image_url ? escapeHtml(activePost.image_url) : '';
   var titleSafe  = escapeHtml(activePost.title || 'Articolo');
 
+  var authorBarHtml = isAuthor
+    ? '<div class="author-bar">'
+      + '<span class="author-bar-label">⚙ Gestisci articolo</span>'
+      + '<div class="author-bar-actions">'
+      + '<a href="/write?edit=' + encodeURIComponent(activePost.id) + '" class="author-btn">✏ Modifica</a>'
+      + '<button class="author-btn author-btn--warn" id="hide-post-btn" type="button">👁 Nascondi al pubblico</button>'
+      + '<button class="author-btn author-btn--danger" id="delete-post-btn" type="button">🗑 Elimina articolo</button>'
+      + '</div>'
+      + '</div>'
+    : '';
+
   wrap.innerHTML =
     '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem">'
-    +  '<a href="/category" class="btn btn-outline-secondary btn-sm">← Torna alle notizie</a>'
+    +  '<a href="/post" class="btn btn-outline-secondary btn-sm">← Torna alle notizie</a>'
     +  '<a href="/" class="btn btn-outline-secondary btn-sm">Home</a>'
     + '</div>'
+    + authorBarHtml
     + '<div class="post-layout">'
     +   '<div class="post-main">'
     +     '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">'
@@ -646,7 +701,7 @@
     +     linksHtml
     +     '<div class="post-pub-date">Pubblicato il ' + escapeHtml(fmtDate(activePost.published_at)) + '</div>'
     +     '<div class="post-footer">'
-    +       '<a href="/category" class="btn btn-outline-secondary btn-sm">← Tutte le notizie</a>'
+    +       '<a href="/post" class="btn btn-outline-secondary btn-sm">← Tutte le notizie</a>'
     +       authorFooterHtml
     +     '</div>'
     +     '<div class="post-reactions">'
@@ -1097,13 +1152,47 @@
     showDiscussionMessage('Segnalazione inviata alla moderazione. Grazie.', 'ok');
   }
 
+  /* ── author controls ────────────────────────────────────── */
+  async function hidePost() {
+    if (!isAuthor || !activePost || !activePost.id) return;
+    var btn = document.getElementById('hide-post-btn');
+    if (!confirm('Nascondere questo articolo al pubblico? Sarà salvato come bozza.')) return;
+    if (btn) { btn.disabled = true; btn.textContent = 'Attendere…'; }
+    var res = await sb.from('posts').update({ published: false, published_at: null }).eq('id', activePost.id);
+    if (res.error) {
+      if (btn) { btn.disabled = false; btn.textContent = '👁 Nascondi al pubblico'; }
+      showDiscussionMessage('Operazione non riuscita: ' + res.error.message, 'err'); return;
+    }
+    showDiscussionMessage('Articolo nascosto. Verrai reindirizzato alla dashboard…', 'ok');
+    setTimeout(function () { location.href = '/dashboard'; }, 1500);
+  }
+
+  async function deletePost() {
+    if (!isAuthor || !activePost || !activePost.id) return;
+    var btn = document.getElementById('delete-post-btn');
+    if (!confirm('Eliminare definitivamente questo articolo? L\'operazione non può essere annullata.')) return;
+    if (!confirm('Sei sicuro? L\'articolo sarà cancellato per sempre.')) return;
+    if (btn) { btn.disabled = true; btn.textContent = 'Eliminazione…'; }
+    var res = await sb.from('posts').delete().eq('id', activePost.id);
+    if (res.error) {
+      if (btn) { btn.disabled = false; btn.textContent = '🗑 Elimina articolo'; }
+      showDiscussionMessage('Eliminazione non riuscita: ' + res.error.message, 'err'); return;
+    }
+    showDiscussionMessage('Articolo eliminato. Verrai reindirizzato…', 'ok');
+    setTimeout(function () { location.href = '/post'; }, 1500);
+  }
+
   function bindDiscussionHandlers() {
     var form      = document.getElementById('comment-form');
     var reportBtn = document.getElementById('report-post-btn');
     var likeBtn   = document.getElementById('like-btn');
+    var hideBtn   = document.getElementById('hide-post-btn');
+    var deleteBtn = document.getElementById('delete-post-btn');
     if (form)      form.addEventListener('submit', submitComment);
     if (reportBtn) reportBtn.addEventListener('click', reportPost);
     if (likeBtn)   likeBtn.addEventListener('click', toggleLike);
+    if (hideBtn)   hideBtn.addEventListener('click', hidePost);
+    if (deleteBtn) deleteBtn.addEventListener('click', deletePost);
   }
 
 })();

@@ -82,7 +82,7 @@
             it('Profilo', profileHref, 'it-user') +
             it('Dashboard', '/dashboard', 'it-pa') +
             it('Scrivi', '/write', 'it-pencil') +
-            it('Categorie', '/category', 'it-folder') +
+            it('Post', '/post', 'it-folder') +
             it('Reimposta password', '/reset', 'it-key') +
             '<li><span class="divider"></span></li>' +
             '<li><a class="dropdown-item list-item" href="#" data-action="logout">' + icon('it-logout') + '<span>Esci</span></a></li>' +
@@ -147,7 +147,7 @@
     { title: 'Galleria',           desc: 'Foto e video dal territorio',             url: '/#galleria' },
     { title: 'Territorio',         desc: 'Atlante, valli ed esperienze sul Mincio', url: '/#territorio' },
     { title: 'Contatti',           desc: 'Come raggiungerci e scriverci',           url: '/#contatti' },
-    { title: 'Categorie',          desc: 'Tutti gli argomenti e le sezioni',        url: '/category' },
+    { title: 'Post',               desc: 'Tutti gli argomenti e le sezioni',        url: '/post' },
     { title: 'Origini di Rivalta', desc: 'Le origini storiche del borgo',           url: '/origini' },
     { title: 'Storia del sito',    desc: 'Come è nato e cresciuto il sito',         url: '/storia' },
     { title: 'Dashboard',          desc: 'Il tuo spazio personale',                 url: '/dashboard' },

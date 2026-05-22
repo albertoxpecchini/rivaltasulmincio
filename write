@@ -502,7 +502,7 @@
       <!-- 2. TESTO -->
       <div class="content-wrap">
         <div class="content-header">2 · Testo completo *</div>
-        <textarea id="f-content" placeholder="Struttura consigliata:&#10;Cos'è · Quando · Dove · Cosa ci sarà · Chi partecipa · Come · Note utili&#10;&#10;Inizia a scrivere qui…"></textarea>
+        <textarea id="f-content" placeholder="Inizia descrivendo di cosa si tratta, poi quando e dove si svolge.&#10;Racconta chi organizza, chi può partecipare e cosa ci sarà da fare o vedere.&#10;Chiudi con contatti, link utili o note aggiuntive."></textarea>
         <div class="px-3 pb-2 d-flex justify-content-end">
           <span style="font-size:.65rem;color:#8a9bb0"><span id="content-words">0</span> parole · <span id="content-count">0</span> car.</span>
         </div>
@@ -661,7 +661,7 @@
       <!-- 7. JSON PAYLOAD -->
       <details class="w-section">
         <summary>
-          <span>7 · JSON Payload · Supabase</span>
+          <span>7 · Editor JSON</span>
           <span class="badge-num">live</span>
           <span class="arrow">▶</span>
         </summary>
@@ -714,6 +714,8 @@
 (() => {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const $ = id => document.getElementById(id);
+  const editId = new URLSearchParams(location.search).get('edit');
+  let editPostOriginal = null;
 
   const CATEGORIES = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [
     'Ambiente','Assemblea','Ciclismo','Cultura','Enogastronomia','Eventi',
@@ -1096,7 +1098,11 @@
     const btn=$(id); if(!btn) return;
     const lbl=btn.querySelector('[data-btn-label]');
     btn.disabled=loading;
-    if(lbl) lbl.textContent=loading?'Attendere…':(id==='btn-draft'?'Salva bozza':'Pubblica');
+    if(lbl) {
+      if(loading) { lbl.textContent='Attendere…'; return; }
+      if(id==='btn-draft') { lbl.textContent='Salva bozza'; return; }
+      lbl.textContent = editId ? 'Aggiorna' : 'Pubblica';
+    }
   }
 
   function buildPayload(published) {
@@ -1132,12 +1138,23 @@
     if(!p.content||p.content.length<80) { setErr('Testo troppo corto (min 80 caratteri).'); return; }
     const btnId=published?'btn-publish':'btn-draft';
     setBtnLoading(btnId,true);
-    const {error}=await sb.from('posts').insert(p);
+    let error;
+    if (editId) {
+      // Preserve original published_at when article was already published
+      if (published && editPostOriginal && editPostOriginal.published_at) {
+        p.published_at = editPostOriginal.published_at;
+      }
+      const res = await sb.from('posts').update(p).eq('id', editId);
+      error = res.error;
+    } else {
+      const res = await sb.from('posts').insert(p);
+      error = res.error;
+    }
     setBtnLoading(btnId,false);
     if(error){ setErr('Salvataggio fallito: '+error.message); return; }
     $('pv-status').textContent=published?'pubblicato':'bozza salvata';
-    setOk(published?'Post pubblicato con successo.':'Bozza salvata.');
-    setTimeout(()=>{ location.href='/dashboard'; },1200);
+    setOk(editId ? 'Articolo aggiornato.' : (published ? 'Post pubblicato con successo.' : 'Bozza salvata.'));
+    setTimeout(()=>{ location.href = editId ? '/post?id='+editId : '/dashboard'; },1200);
   }
 
   /* ── AI autofill ── */
@@ -1193,6 +1210,17 @@
     set('f-contacts',      d.contacts);
     set('f-price',         d.price_text);
     set('f-ig-url',        d.instagram_url);
+    set('f-image-url',     d.image_url);
+    set('f-source-url',    d.source_url);
+    set('f-cta',           d.cta_text);
+    set('f-cta-url',       d.cta_url);
+    set('f-booking-url',   d.booking_url);
+    set('f-references',    d.references);
+    set('f-notes',         d.notes);
+    if (d.reading_level) {
+      const sel=$('f-reading-level');
+      if(sel) { const opt=[...sel.options].find(o=>o.value===String(d.reading_level).toLowerCase()); if(opt){ sel.value=opt.value; filled.push('Livello'); } }
+    }
     if (Array.isArray(d.keywords) && d.keywords.length) { set('f-keywords', d.keywords.join(', ')); }
     if (Array.isArray(d.tags)     && d.tags.length)     { set('f-tags',     d.tags.join(', ')); }
     updateCounts();
@@ -1295,6 +1323,19 @@
 
     initJsonPane();
     initAiSection();
+
+    if (editId) {
+      const {data:post, error} = await sb.from('posts').select('*').eq('id', editId).eq('user_id', auth.session.user.id).single();
+      if (error || !post) { setErr('Articolo non trovato o non sei l\'autore.'); return; }
+      editPostOriginal = post;
+      fillFields(post);
+      document.title = 'Modifica articolo – Rivalta sul Mincio';
+      const h1 = document.querySelector('h1');
+      if (h1) h1.textContent = 'Modifica articolo';
+      const publishLbl = document.querySelector('#btn-publish [data-btn-label]');
+      if (publishLbl) publishLbl.textContent = 'Aggiorna';
+    }
+
     updateCounts();
   }
 
