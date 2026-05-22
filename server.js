@@ -601,22 +601,30 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
       } else {
         parts.push({ text: String(body.text || '').slice(0, 8000) });
       }
-      const geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: [{ parts }],
-            generationConfig: {
-              temperature: 0.1,
-              maxOutputTokens: 2048,
-              responseMimeType: 'application/json'
-            }
-          })
-        }
-      );
+      const geminiAbort = new AbortController();
+      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 8000);
+      let geminiRes;
+      try {
+        geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: geminiAbort.signal,
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+              contents: [{ parts }],
+              generationConfig: {
+                temperature: 0.1,
+                maxOutputTokens: 2048,
+                responseMimeType: 'application/json'
+              }
+            })
+          }
+        );
+      } finally {
+        clearTimeout(geminiTimeout);
+      }
       if (!geminiRes.ok) {
         const errText = await geminiRes.text().catch(() => '');
         console.error('[ai-autofill] Gemini error', geminiRes.status, errText);
