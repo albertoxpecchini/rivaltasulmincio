@@ -1,90 +1,153 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Nuova Password — Pro Loco Rivalta sul Mincio</title>
-  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuova password | Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
+  <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <style>
+    .c1 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--bs-primary, #06c); }
+    .c2 { color: #555; font-size: .9rem; }
+    .ipzs-validator { color: #d9364f; font-size: .8rem; min-height: 1.2em; }
+    .view { display: none; }
+    .view.is-active { display: block; }
+  </style>
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<main class="container rsm-page">
-  <div class="row justify-content-center align-items-start">
-    <div class="col-12 col-md-6 col-lg-5">
-      <div class="card-wrapper">
-        <div class="card card-bg">
-          <div class="card-body">
+<main id="main" class="container rsm-page">
 
-            <p class="text-muted text-uppercase small mb-3">Rivalta sul Mincio · Parco del Mincio · Mantova</p>
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col">
+      <div class="row">
+        <div id="title" class="mb-4 col">
+          <p class="c1">
+            <strong>AREA RISERVATA · RIVALTA SUL MINCIO</strong>
+          </p>
+          <h1>Nuova password</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
 
-            <!-- State: loading -->
-            <div class="state active text-center py-4" id="s-loading">
-              <div class="progress-spinner progress-spinner-active" role="status">
-                <span class="visually-hidden">Caricamento…</span>
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col mx-0 mx-sm-n4">
+      <div class="card-wrapper card-space">
+        <div class="card card-bg card-bg-small-none card-big py-0 mx-0 mx-md-1">
+          <div class="card-body p-0 p-sm-4">
+            <div class="row">
+              <div class="col-12">
+
+                <!-- CARICAMENTO -->
+                <section class="view is-active" id="view-loading">
+                  <div class="text-center py-5">
+                    <div class="progress-spinner progress-spinner-active" role="status">
+                      <span class="visually-hidden">Caricamento…</span>
+                    </div>
+                    <p class="c2 mt-3 mb-0">Verifica del link in corso…</p>
+                  </div>
+                </section>
+
+                <!-- LINK NON VALIDO -->
+                <section class="view" id="view-invalid">
+                  <h2>Link non valido</h2>
+                  <p class="c2">Il link di recupero è scaduto o non è valido.</p>
+
+                  <div class="callout danger">
+                    <div class="callout-title">Link scaduto</div>
+                    <p class="mb-0">Torna al login e richiedi un nuovo link di reset dalla sezione "Hai dimenticato la password?".</p>
+                  </div>
+
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <a href="/login" class="btn btn-primary w-100 text-nowrap">← Torna al login</a>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- FORM NUOVA PASSWORD -->
+                <section class="view" id="view-form">
+                  <h2>Scegli una nuova password</h2>
+                  <p class="c2">Inserisci e conferma la nuova password per il tuo account.</p>
+
+                  <div id="msg-reset" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <form id="form-reset" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-2">
+                          <div class="input-group">
+                            <label for="pwd1" class="sr-only active" style="transition: none;">Nuova password</label>
+                            <input type="password" class="form-control input-password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password" tabindex="1">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="progress mt-2" style="height: 6px">
+                            <div class="progress-bar" role="progressbar" id="str-bar" style="width: 0%"></div>
+                          </div>
+                          <small class="form-text" id="str-label"></small>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="pwd2" class="sr-only active" style="transition: none;">Conferma password</label>
+                            <input type="password" class="form-control input-password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password" tabindex="2">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="ipzs-validator" id="pwd2-error">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="row buttons mt-2 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <a href="/login" class="btn btn-outline-primary w-100 text-nowrap">Annulla</a>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-reset" data-default-label="Imposta password" data-loading-label="Aggiornamento…"><span data-btn-label>Imposta password</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- SUCCESSO -->
+                <section class="view" id="view-success">
+                  <h2>Password aggiornata</h2>
+
+                  <div class="callout success">
+                    <div class="callout-title">Fatto!</div>
+                    <p class="mb-0">La tua password è stata aggiornata con successo. Verrai reindirizzato al login tra pochi secondi.</p>
+                  </div>
+
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <a href="/login" class="btn btn-primary w-100 text-nowrap">Vai al login →</a>
+                    </div>
+                  </div>
+                </section>
+
               </div>
-              <p class="text-muted mt-3">Verifica del link in corso…</p>
             </div>
-
-            <!-- State: invalid token -->
-            <div class="state text-center" id="s-invalid">
-              <h1 class="h4 text-danger">Link non valido</h1>
-              <p class="text-muted">Il link di recupero è scaduto o non è valido. Richiedi un nuovo link dalla pagina di accesso.</p>
-              <a href="/login" class="btn btn-outline-primary">← Torna al login</a>
-            </div>
-
-            <!-- State: reset form -->
-            <div class="state" id="s-form">
-              <h1 class="h4">Nuova password</h1>
-              <p class="text-muted">Scegli una password sicura per il tuo account.</p>
-
-              <div class="alert alert-danger err-banner" role="alert" id="err-banner">
-                <span id="err-text"></span>
-              </div>
-
-              <div class="form-group">
-                <label for="pwd1">Nuova password</label>
-                <div class="input-group">
-                  <input type="password" id="pwd1" class="form-control" placeholder="Almeno 8 caratteri" autocomplete="new-password">
-                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd1',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
-                </div>
-                <div class="progress mt-2" style="height:6px">
-                  <div class="progress-bar" role="progressbar" id="strBar" style="width:0%"></div>
-                </div>
-                <small class="form-text" id="str-label"></small>
-              </div>
-
-              <div class="form-group">
-                <label for="pwd2">Conferma password</label>
-                <div class="input-group">
-                  <input type="password" id="pwd2" class="form-control" placeholder="Ripeti la password" autocomplete="new-password">
-                  <button class="btn btn-link" type="button" onclick="toggleEye('pwd2',this)" tabindex="-1" aria-label="Mostra password">Mostra</button>
-                </div>
-              </div>
-
-              <button class="btn btn-primary w-100" id="reset-btn" onclick="doReset()">
-                <span class="btn-text">Imposta nuova password</span>
-              </button>
-
-              <div class="mt-3">
-                <a href="/login" class="link-dark">← Torna al login</a>
-              </div>
-            </div>
-
-            <!-- State: success -->
-            <div class="state text-center" id="s-success">
-              <h1 class="h4">Password aggiornata!</h1>
-              <p class="text-muted">La tua password è stata cambiata con successo. Puoi ora accedere al tuo account.</p>
-              <a href="/login" class="btn btn-primary">Vai al login →</a>
-            </div>
-
           </div>
         </div>
       </div>
     </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
   </div>
+
 </main>
 
 <!--PARTIAL:footer-->
@@ -92,112 +155,129 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/supabase.config.js"></script>
 <script>
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+(function () {
+  if (typeof SUPABASE_URL === 'undefined') return;
 
-// ── Eye toggle ──
-function toggleEye(id, btn){
-  const el = document.getElementById(id);
-  el.type = el.type==='password' ? 'text' : 'password';
-  btn.textContent = el.type==='password' ? 'Mostra' : 'Nascondi';
-  btn.setAttribute('aria-label', el.type==='password' ? 'Mostra password' : 'Nascondi password');
-}
+  const sb    = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const byId  = (id) => document.getElementById(id);
 
-// ── Strength meter ──
-document.getElementById('pwd1').addEventListener('input', function(){
-  const v = this.value;
-  let s = 0;
-  if(v.length>=8) s++;
-  if(/[A-Z]/.test(v)) s++;
-  if(/[0-9]/.test(v)) s++;
-  if(/[^A-Za-z0-9]/.test(v)) s++;
-  const labels=['','Debole','Discreta','Buona','Ottima'];
-  const colors=['bg-secondary','bg-danger','bg-warning','bg-warning','bg-success'];
-  const bar = document.getElementById('strBar');
-  bar.className = 'progress-bar ' + (v.length ? colors[s] : '');
-  bar.style.width = (v.length ? (s*25) : 0) + '%';
-  document.getElementById('str-label').textContent = v.length ? labels[s] : '';
-});
-
-// ── Show state ──
-function showState(id){
-  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-// ── Error ──
-function showErr(msg){
-  const b=document.getElementById('err-banner');
-  document.getElementById('err-text').textContent=msg;
-  b.classList.add('show');
-  setTimeout(()=>b.classList.remove('show'),5000);
-}
-
-// ── Auth state listener ──
-let _session = null;
-let _ready = false;
-
-sb.auth.onAuthStateChange((event, session) => {
-  if(event === 'PASSWORD_RECOVERY'){
-    _session = session;
-    showState('s-form');
-    _ready = true;
-  } else if(event === 'SIGNED_IN' && session) {
-    _session = session;
-    if(!_ready) {
-      showState('s-form');
-      _ready = true;
-    }
+  /* ── View switching ───────────────────────────────────── */
+  function setView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+    const t = byId('view-' + name);
+    if (t) t.classList.add('is-active');
   }
-});
 
-setTimeout(()=>{
-  if(!_ready){
-    sb.auth.getSession().then(({data:{session}})=>{
-      if(session){
-        _session = session;
-        showState('s-form');
+  /* ── Alert messages ───────────────────────────────────── */
+  function showMessage(type, text) {
+    const slot = byId('msg-reset');
+    if (!slot) return;
+    slot.innerHTML = '';
+    if (!text) { slot.innerHTML = '<div class="col"></div>'; return; }
+    const variant = type === 'error' ? 'alert-danger' : (type === 'success' ? 'alert-success' : 'alert-info');
+    const col = document.createElement('div');
+    col.className = 'col';
+    const box = document.createElement('div');
+    box.className = 'alert ' + variant;
+    box.setAttribute('role', 'alert');
+    box.textContent = text;
+    col.appendChild(box);
+    slot.appendChild(col);
+  }
+
+  /* ── Button loading state ─────────────────────────────── */
+  function setButtonLoading(loading) {
+    const btn = byId('btn-reset');
+    if (!btn) return;
+    const lbl = btn.querySelector('[data-btn-label]');
+    btn.disabled = loading;
+    btn.setAttribute('aria-busy', loading ? 'true' : 'false');
+    const next = loading
+      ? (btn.dataset.loadingLabel || 'Attendere…')
+      : (btn.dataset.defaultLabel || 'Imposta password');
+    if (lbl) lbl.textContent = next; else btn.textContent = next;
+  }
+
+  /* ── Strength meter ───────────────────────────────────── */
+  byId('pwd1').addEventListener('input', function () {
+    const v = this.value;
+    let s = 0;
+    if (v.length >= 8)            s++;
+    if (/[A-Z]/.test(v))          s++;
+    if (/[0-9]/.test(v))          s++;
+    if (/[^A-Za-z0-9]/.test(v))   s++;
+    const labels = ['', 'Debole', 'Discreta', 'Buona', 'Ottima'];
+    const colors  = ['', 'bg-danger', 'bg-warning', 'bg-warning', 'bg-success'];
+    const bar = byId('str-bar');
+    bar.className  = 'progress-bar' + (v.length && s ? ' ' + colors[s] : '');
+    bar.style.width = (v.length ? s * 25 : 0) + '%';
+    byId('str-label').textContent = v.length ? labels[s] : '';
+  });
+
+  /* ── Auth state ───────────────────────────────────────── */
+  let _ready = false;
+
+  sb.auth.onAuthStateChange(function (event, session) {
+    if ((event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') && session && !_ready) {
+      _ready = true;
+      setView('form');
+    }
+  });
+
+  // Fallback: if onAuthStateChange doesn't fire within 2s, check manually
+  setTimeout(function () {
+    if (_ready) return;
+    sb.auth.getSession().then(function ({ data: { session } }) {
+      if (session) {
         _ready = true;
+        setView('form');
       } else {
-        const hash = window.location.hash;
-        if(hash && hash.includes('access_token')){
-          setTimeout(()=>{
-            if(!_ready) showState('s-invalid');
-          }, 2000);
-        } else if(!hash || (!hash.includes('type=recovery') && !hash.includes('access_token'))){
-          showState('s-invalid');
-        }
+        setView('invalid');
       }
     });
+  }, 2000);
+
+  /* ── Submit handler ───────────────────────────────────── */
+  async function doReset(e) {
+    if (e) e.preventDefault();
+    showMessage('info', '');
+    const p1   = byId('pwd1').value;
+    const p2   = byId('pwd2').value;
+    const err2 = byId('pwd2-error');
+    if (err2) err2.innerHTML = '&nbsp;';
+
+    if (!p1 || p1.length < 8) {
+      showMessage('error', 'La password deve essere di almeno 8 caratteri.');
+      return;
+    }
+    if (p1 !== p2) {
+      if (err2) err2.textContent = 'Le password non coincidono.';
+      showMessage('error', 'Le due password non coincidono.');
+      return;
+    }
+
+    setButtonLoading(true);
+    const { error } = await sb.auth.updateUser({ password: p1 });
+    setButtonLoading(false);
+
+    if (error) {
+      showMessage('error', error.message || 'Errore durante l\'aggiornamento della password.');
+      return;
+    }
+
+    setView('success');
+    setTimeout(function () { window.location.href = '/login'; }, 3000);
   }
-}, 1500);
 
-// ── Submit ──
-async function doReset(){
-  const p1 = document.getElementById('pwd1').value;
-  const p2 = document.getElementById('pwd2').value;
-  if(!p1 || p1.length < 8){ showErr('La password deve essere di almeno 8 caratteri.'); return; }
-  if(p1 !== p2){ showErr('Le password non coincidono.'); return; }
+  byId('form-reset').addEventListener('submit', doReset);
 
-  const btn = document.getElementById('reset-btn');
-  btn.disabled = true;
-
-  const {error} = await sb.auth.updateUser({password: p1});
-
-  btn.disabled = false;
-
-  if(error){
-    showErr(error.message || 'Errore durante l\'aggiornamento della password.');
-    return;
-  }
-
-  showState('s-success');
-  setTimeout(()=>{ window.location.href='/login'; }, 3000);
-}
-
-// Allow Enter key
-document.addEventListener('keydown', e=>{
-  if(e.key==='Enter' && document.getElementById('s-form').classList.contains('active')) doReset();
-});
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && byId('view-form').classList.contains('is-active')) {
+      e.preventDefault();
+      doReset();
+    }
+  });
+})();
 </script>
 
 </body>

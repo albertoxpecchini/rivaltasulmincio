@@ -70,7 +70,7 @@
   const isAllView = activeCategory === 'all';
 
   function categoryUrl(category) {
-    return category === 'all' ? '/category' : '/category?name=' + encodeURIComponent(category);
+    return category === 'all' ? '/post' : '/post?name=' + encodeURIComponent(category);
   }
 
   function renderCategoryLinks() {
