@@ -1,41 +1,94 @@
-# Rivalta sul Mincio — Sito Ufficiale Pro Loco
+<p align="center">
+  <img src="img/favicon.png" width="96" alt="Logo Rivalta sul Mincio" />
+</p>
 
-Sito ufficiale della **Pro Loco di Rivalta sul Mincio**, frazione di Rodigo (MN).  
-Promozione turistica, culturale e ambientale del borgo nel cuore del **Parco Regionale del Mincio**.
+<h1 align="center">Rivalta sul Mincio</h1>
 
-**[www.rivaltasulmincio.it](https://www.rivaltasulmincio.it)**  
-Via Porto, 31 — Rivalta sul Mincio, 46040 MN  
-+39 339 899 5680 · info@prolocorivalta.mn.it
+<p align="center">
+  Sito ufficiale della Pro Loco di Rivalta sul Mincio (MN)<br/>
+  Piattaforma di promozione turistica, notizie e community per il borgo nel cuore del Parco Regionale del Mincio
+</p>
+
+<p align="center">
+  <a href="https://www.rivaltasulmincio.it"><strong>www.rivaltasulmincio.it</strong></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/versione-2.0-blue?style=flat-square" alt="versione" />
+  <img src="https://img.shields.io/badge/Node.js-v18%2B-43853d?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Bootstrap%20Italia-2.x-0066CC?style=flat-square&logo=bootstrap&logoColor=white" alt="Bootstrap Italia" />
+  <img src="https://img.shields.io/badge/Vercel-deploy-black?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/github/last-commit/albertoxpecchini/rivaltasulmincio?style=flat-square&color=green&label=ultimo%20commit" alt="Ultimo commit" />
+  <img src="https://img.shields.io/github/repo-size/albertoxpecchini/rivaltasulmincio?style=flat-square&label=dimensione" alt="Dimensione repo" />
+</p>
 
 ---
 
-## La storia del sito
+## Cos'è
 
-### Fase 1 — Ideazione e costruzione (aprile 2026)
+**Rivalta sul Mincio** è la piattaforma digitale ufficiale della Pro Loco di Rivalta sul Mincio, frazione di Rodigo (MN). Non è un semplice sito vetrina: è una piattaforma completa con sistema di autenticazione, editor di contenuti con AI integrata, community, commenti, like e gestione articoli.
 
-Il progetto nasce dall'esigenza della Pro Loco di avere una presenza online moderna, accessibile e rappresentativa del borgo e delle sue tradizioni. Niente template, niente WordPress: il sito viene costruito da zero, con HTML puro, CSS custom e JavaScript vanilla, per avere controllo totale su ogni pixel e ogni millisecondo di caricamento.
+Il backend è interamente basato su **Supabase** (PostgreSQL + Auth + RLS). Il server è **Node.js puro**, senza framework. Il design segue il sistema **Bootstrap Italia** (la libreria UI istituzionale italiana).
 
-Il focus iniziale è la **homepage**: un'esperienza visiva immersiva con video delle Valli del Mincio, carousel fotografici, sezioni dedicate all'ecoturismo, alla Festa del Pesce (40ª edizione 2025 — in corso dal 1985) e ai percorsi naturalistici.
+---
 
-### Fase 2 — Sistema di autenticazione e community (aprile–maggio 2026)
+## Funzioni principali
 
-Viene integrato **Supabase** come backend: database PostgreSQL, autenticazione JWT, Row-Level Security. Nascono le pagine per la community: login, dashboard utente, editor di post, profilo pubblico, modifica profilo. Il sito diventa una piattaforma, non solo un depliant digitale.
+### Homepage pubblica
+- Hero con video MP4 delle Valli del Mincio
+- Carousel fotografici multi-tema (paesaggi, eventi, natura)
+- Sezioni contenuto: esperienze naturalistiche, Festa del Pesce, news, contatti
+- Pagina **Origini** — fotogallery storica del borgo con atlante immagini
+- Schema.org JSON-LD completo (Organization, WebSite, TouristDestination, Festival)
+- Open Graph e Twitter Cards per la condivisione social
+- SEO: meta canonici, geo-tag, markup strutturato
 
-### Fase 3 — Sicurezza, accessibilità e rifinitura (maggio 2026)
+### Autenticazione e sicurezza
+- Accesso con email e password via Supabase Auth (JWT)
+- Rate limiting client-side: blocco dopo 5 tentativi in 10 minuti (lock 15 min)
+- Reset password tramite email
+- Row-Level Security (RLS) su tutte le tabelle del database
+- Funzioni SQL `is_admin()` e `is_member()` per il controllo degli accessi
+- Trigger anti-spam sui contenuti (parole bloccate, titolo breve, troppi link)
+- Security headers HTTP: `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`
+- Protezione path traversal lato server
 
-Viene scritto `security.client.js`: rate limiting client-side (5 tentativi / 10 min, blocco 15 min), filtro contenuti inappropriati in italiano, gestione localStorage con fallback in memoria. Le pagine legali (privacy, cookie, note legali) vengono redatte e rese disponibili. Il sistema di preferenze utente introduce supporto per tema chiaro/scuro, 4 dimensioni di testo, densità UI e modalità alto contrasto.
+### Editor articoli (Write)
+L'editor è il cuore della piattaforma: un form strutturato con anteprima live e integrazione AI.
 
-### Versione 1.0 — Prima release ufficiale
+- **Campi contenuto**: titolo, sottotitolo, estratto, testo, categoria, tono, livello lettura, pubblico target
+- **Campi evento**: data inizio/fine, orario, luogo, indirizzo, organizzatore, contatti, link prenotazione, prezzo
+- **Campi media**: immagine di copertina con upload diretto (Supabase Storage), link Instagram, fonte
+- **Campi SEO**: keywords, tag, riferimenti esterni, note interne
+- **AI autofill** via Gemini Vision: carica una foto o incolla testo → i campi vengono compilati automaticamente
+- Anteprima live del post con indicatore di stato (bozza / pubblicato)
+- Contatore parole e tempo di lettura stimato
+- Salvataggio bozza e pubblicazione separati
+- Modifica post esistente (`/write?edit=<id>`)
 
-| Campo | Valore |
-|---|---|
-| **Data commit** | Lunedì 4 maggio 2026, ore 22:11:56 (CEST +0200) |
-| **Hash** | `ab399aa7927720ae882630460e11079a57d82902` |
-| **Autore** | Alberto Pecchini |
-| **Versione** | `04052026` |
-| **File committati** | 45 file |
-| **Righe di codice** | 16.630 righe |
-| **Deployment** | 125 deployment su Vercel |
+### Dashboard utente
+- KPI personali: articoli pubblicati, bozze in corso, like totali ricevuti
+- Lista bozze con tasto "Riprendi" per tornare all'editor
+- Lista articoli pubblicati con link di visualizzazione e modifica
+- Accesso rapido al profilo e alla scrittura di un nuovo articolo
+
+### Community — Post e commenti
+- Visualizzazione articolo con immagine copertina, metadati evento e corpo del testo
+- Sistema commenti con invio, moderazione automatica e policy di visibilità
+- Sistema like con contatore in tempo reale
+- Badge categoria colorati per tipo contenuto
+- Regole di convivenza mostrate a ogni utente prima di commentare
+
+### Profilo utente
+- Profilo pubblico con avatar emoji/colore, bio e comune
+- Pagina di modifica profilo (username, display_name, bio, comune)
+
+### Pagine di servizio
+- **Privacy Policy** (GDPR)
+- **Cookie Policy** con gestione dei consensi
+- **Note Legali**
+- **Storia del sito** — cronologia dello sviluppo
 
 ---
 
@@ -43,136 +96,37 @@ Viene scritto `security.client.js`: rate limiting client-side (5 tentativi / 10 
 
 | Livello | Tecnologia |
 |---|---|
-| **Server** | Node.js (HTTP nativo, nessun framework) |
-| **Frontend** | HTML5 + CSS3 + JavaScript ES5/ES6+ vanilla |
+| **Server** | Node.js 18+ (HTTP nativo, zero framework) |
+| **Frontend** | HTML5 · CSS3 · JavaScript ES2020+ vanilla |
+| **UI Kit** | Bootstrap Italia 2.x |
 | **Database** | PostgreSQL via Supabase |
 | **Autenticazione** | Supabase Auth (JWT) |
-| **Animazioni** | Anime.js v4.4.1 |
-| **Carousel** | Swiper.js v12.1.4 |
-| **Deployment** | Vercel (serverless) |
-| **Font** | Cabinet Grotesk (sans) + Fraunces (serif) |
+| **Storage** | Supabase Storage (immagini copertina) |
+| **AI** | Google Gemini Vision (autofill editor) |
+| **Deployment** | Vercel (serverless, `server.js` come entry point) |
+| **Font** | Cabinet Grotesk · Fraunces · JetBrains Mono |
 
 ---
 
-## Pagine e funzioni
+## Pagine e route
 
-### Pagine pubbliche
-
-| Pagina | Route | Righe | Descrizione |
-|---|---|---|---|
-| Homepage | `/` | 3.641 | Hero video, carousel, esperienze, galleria, Festa del Pesce, news, contatti |
-| Categoria | `/category` | 448 | Browsing per categoria degli articoli |
-| Singolo post | `/post` | 1.158 | Visualizzazione articolo con commenti |
-| Privacy Policy | `/privacy` | 676 | Informativa privacy GDPR |
-| Cookie Policy | `/cookie` | 644 | Gestione cookie e consensi |
-| Note Legali | `/note-legali` | 582 | Termini e condizioni d'uso |
-| Storia | `/storia` | — | Cronologia e funzioni del sito |
-
-### Area autenticata
-
-| Pagina | Route | Righe | Descrizione |
-|---|---|---|---|
-| Login | `/login` | 1.725 | Accesso con email/password, rate limiting |
-| Reset password | `/reset` | 576 | Recupero credenziali via email |
-| Dashboard | `/dashboard` | 2.134 | Area personale, gestione contenuti |
-| Scrivi | `/write` | 1.224 | Editor post con upload immagini |
-| Profilo | `/profile` | 711 | Profilo pubblico utente |
-| Modifica profilo | `/modifica-profilo` | 616 | Modifica dati anagrafici e bio |
-| Preferenze | `/preferenze` | 873 | Tema, font, densità, contrasto, notifiche |
-
-### Utility
-
-| Pagina | Route | Righe | Descrizione |
-|---|---|---|---|
-| Test database | `/db-test` | 549 | Diagnostica connessione Supabase |
-
----
-
-## Funzioni principali
-
-### Homepage
-- Hero con video MP4 (fallback GIF) delle Valli del Mincio
-- Carousel immagini con Swiper.js (4 foto hero, 5 foto galleria, 4 foto valli)
-- Sezione esperienze: "Dal livello dell'acqua", "La valle a pedali", "Aironi"
-- Sezione Festa del Pesce (40ª edizione luglio 2025, tradizione dal 1985)
-- News dinamiche
-- Sezione contatti
-- Markup Schema.org: Organization, WebSite, TouristDestination, Festival
-- Open Graph + Twitter Cards per condivisione social
-- Coordinate geografiche: 45.181°N, 10.665°E
-
-### Autenticazione e sicurezza
-- Login con Supabase Auth (email + password)
-- Token JWT, sessioni persistenti
-- Rate limiting: blocco dopo 5 tentativi in 10 minuti (lock 15 minuti)
-- Filtro parole inappropriate in italiano (11 termini)
-- Row-Level Security (RLS) su tutte le tabelle sensibili
-- Funzioni SQL `is_admin()` e `is_member()` per autorizzazione
-- Security headers HTTP: `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`
-- Path traversal protection lato server
-- Redirect permanente (308) per URL legacy con `.html`
-
-### Preferenze utente
-- **Tema**: chiaro / scuro / auto (segue sistema)
-- **Dimensione testo**: sm (14px) / md (16px) / lg (18px) / xl (20px)
-- **Densità UI**: compatta / normale / spaziosa
-- **Alto contrasto**: attributo `data-contrast="high"` con palette e focus rinforzati
-- **Privacy commenti**: pubblica / solo membri / disabilitata
-- **Notifiche**: mai / settimanale / immediata
-- Persistenza via `localStorage` con chiave `rsm_prefs_v1`
-- Applicazione immediata senza refresh (script inline `<head>`)
-
-### SEO
-- Tag canonici, meta description, meta keywords
-- Schema.org JSON-LD completo
-- Meta geo (`geo.region`, `geo.position`, `ICBM`)
-- `robots: index, follow, max-image-preview:large`
-
-### Performance
-- Asset statici cachati 24h (`max-age=86400`) in produzione
-- Pagine HTML servite con `no-store` (sempre fresche)
-- Font preconnect per ridurre latenza
-- Video con doppio formato MP4+GIF per compatibilità massima
-
-### Routing server
-- Clean URL senza estensione `.html` (308 redirect automatico)
-- `/index` → `/` (308)
-- `/me` → `/dashboard` (308)
-- Protezione path traversal
-- 403 su tentativi di accesso fuori root
-- 404 personalizzato
-
----
-
-## Struttura repository
-
-```
-rivaltasulmincio/
-├── index               # Homepage (3.641 righe)
-├── login               # Autenticazione
-├── dashboard           # Area utente
-├── write               # Editor post
-├── post                # Singolo articolo
-├── preferenze          # Impostazioni utente
-├── profile             # Profilo pubblico
-├── modifica-profilo    # Modifica dati
-├── category            # Pagina categoria
-├── reset               # Reset password
-├── privacy             # Privacy Policy
-├── cookie              # Cookie Policy
-├── note-legali         # Note Legali
-├── storia              # Storia del sito
-├── db-test             # Test database
-├── server.js           # HTTP server Node.js
-├── security.client.js  # Sicurezza frontend
-├── supabase.config.js  # Configurazione Supabase
-├── supabase-complete-setup.sql  # Setup database completo (schema + RLS)
-├── supabase-security.sql  # Layer sicurezza/RLS per database gia esistenti
-├── vercel.json         # Configurazione deployment Vercel
-├── package.json        # Dipendenze
-├── img/                # Immagini (12 file)
-└── video/              # Video (9 file MP4+GIF)
-```
+| Pagina | Route | Descrizione |
+|---|---|---|
+| Homepage | `/` | Hero video, carousel, esperienze, news |
+| Origini | `/origini` | Fotogallery storica del borgo |
+| Categoria | `/category` | Articoli filtrati per categoria |
+| Articolo | `/post` | Visualizzazione articolo con commenti e like |
+| Privacy | `/privacy` | Informativa privacy GDPR |
+| Cookie | `/cookie` | Gestione cookie e consensi |
+| Note Legali | `/note-legali` | Termini e condizioni |
+| Storia | `/storia` | Cronologia sviluppo sito |
+| **Login** | `/login` | Accesso con email/password |
+| **Reset** | `/reset` | Recupero password via email |
+| **Dashboard** | `/dashboard` | Area personale, bozze e articoli |
+| **Scrivi** | `/write` | Editor articoli con AI |
+| **Profilo** | `/profile` | Profilo pubblico utente |
+| **Modifica profilo** | `/modifica-profilo` | Modifica dati e avatar |
+| `/me` | → `/dashboard` | Redirect permanente (308) |
 
 ---
 
@@ -184,67 +138,107 @@ npm run dev
 # → http://localhost:2858
 ```
 
-### Collegamento rapido a Supabase
+### Configurare Supabase in locale
 
-Il progetto legge Supabase da `supabase.config.js`, ma ora puoi cambiarlo senza modificare il codice solo in ambiente locale (`localhost` / `127.0.0.1`):
+Il progetto legge le credenziali Supabase da `supabase.config.js`. In locale puoi cambiarle senza toccare il codice:
 
 1. Apri `/db-test`
-2. Incolla `Project URL` e `Anon Key`
-3. Premi `Salva e ricarica`
+2. Incolla **Project URL** e **Anon Key** dal tuo progetto Supabase
+3. Premi **Salva e ricarica**
 
-La configurazione viene salvata nel browser in `localStorage` con chiave `rsm_supabase_config_v1` e viene riusata da tutte le pagine (`/login`, `/dashboard`, `/write`, `/post`, `/profile`, `/category`, `/`). Fuori dall'ambiente locale questi override vengono ignorati.
+La configurazione viene salvata in `localStorage` (`rsm_supabase_config_v1`) e viene usata da tutte le pagine. In produzione questi override vengono ignorati.
 
-In alternativa puoi passare una configurazione una sola volta via URL:
+In alternativa, passala una sola volta via URL:
 
-```text
+```
 /db-test?sbUrl=https://TUO-PROGETTO.supabase.co&sbKey=LA_TUA_ANON_KEY
 ```
 
-Dopo il primo caricamento il sito salva automaticamente questi valori e rimuove i parametri dalla barra indirizzi.
+---
 
-### Bootstrap database Supabase
+## Setup database Supabase
 
-Per un database nuovo esegui in Supabase SQL Editor:
+Per un database nuovo, esegui nel **SQL Editor** di Supabase:
 
-1. `supabase-complete-setup.sql`
+```
+supabase-complete-setup.sql
+```
 
-Lo script crea e collega tra loro:
+Lo script crea le tabelle, gli indici, i trigger e le policy RLS:
 
-- `profiles` e `posts`
-- `categories`, `user_settings`, `comments`, `reports`
-- `post_likes`, `notifications`, `site_stats`, `site_releases`
-- trigger `updated_at`, filtri anti-spam e policy RLS
+| Tabella | Scopo |
+|---|---|
+| `profiles` | Dati utente, ruolo (`admin` / `user` / `reader`) |
+| `posts` | Articoli con tutti i campi dell'editor |
+| `categories` | Categorie contenuto |
+| `comments` | Commenti ai post |
+| `post_likes` | Like ai post |
+| `user_settings` | Preferenze UI per utente |
+| `notifications` | Notifiche community |
+| `reports` | Segnalazioni contenuti |
+| `site_stats` | Statistiche aggregate del sito |
+| `site_releases` | Log delle versioni |
 
-`supabase-migration-add-import-columns.sql` resta utile solo per aggiornare un database vecchio: in un setup nuovo le colonne import (`image_url`, `source_url`, `event_date`) sono gia incluse nello script completo.
+Per aggiornare un database esistente usa i file di migrazione:
+
+| File | Scopo |
+|---|---|
+| `supabase-migration-write-fields.sql` | Aggiunge i campi estesi all'editor |
+| `supabase-migration-newsletter.sql` | Aggiunge il modulo newsletter |
+| `supabase-migration-draft-content-fix.sql` | Permette bozze senza contenuto minimo |
+| `supabase-security.sql` | Riscrive le policy RLS (solo per DB esistenti) |
 
 ---
 
 ## Deployment
 
-Il sito è deployato su **Vercel** in modalità serverless. Ogni push su `main` genera un nuovo deployment automatico.
+Il sito è deployato su **Vercel** in modalità serverless. Ogni push su `main` genera automaticamente un nuovo deployment.
 
-```
-125 deployment completati al 4 maggio 2026
+`vercel.json` instrada tutte le route verso `server.js`:
+
+```json
+{ "routes": [{ "src": "/(.*)", "dest": "/server.js" }] }
 ```
 
-Configurazione in `vercel.json`: tutte le route vengono gestite da `server.js` (`"src": "/(.*)", "dest": "/server.js"`).
+**Variabili d'ambiente Vercel:**
+
+| Variabile | Descrizione |
+|---|---|
+| `GEMINI_API_KEY` | Chiave API Google Gemini (AI autofill) |
 
 ---
 
-## Identità visiva
+## Struttura del repository
 
-| Token | Valore | Uso |
-|---|---|---|
-| `--marsh` | `#253f35` | Verde palude — colore primario |
-| `--water` | `#2f6b67` | Verde acqua — interazioni |
-| `--clay` | `#b8663f` | Terracotta — accenti |
-| `--reed` | `#c6a462` | Sabbia/canna — dettagli |
-| `--cream` | `#f7f0e4` | Crema — sfondi |
-| `--ink` | `#17221d` | Verde scuro — testo |
+```
+rivaltasulmincio/
+├── index                  # Homepage
+├── origini                # Fotogallery storica
+├── category               # Pagina categoria
+├── post                   # Singolo articolo
+├── login / reset          # Autenticazione
+├── dashboard              # Area utente
+├── write                  # Editor articoli
+├── profile                # Profilo pubblico
+├── modifica-profilo       # Modifica dati utente
+├── privacy / cookie / note-legali / storia
+├── server.js              # HTTP server Node.js
+├── security.client.js     # Rate limiting e filtri frontend
+├── supabase.config.js     # Configurazione Supabase (singleton)
+├── rsm-bi.css             # Override CSS Bootstrap Italia
+├── supabase-complete-setup.sql
+├── supabase-migration-*.sql
+├── vercel.json
+├── package.json
+├── img/                   # Immagini statiche + atlante fotografico
+├── partials/              # Navbar, footer e newsletter (HTML + JS)
+├── scripts/               # Script di manutenzione (Node.js ESM)
+└── vendor/                # Bootstrap Italia (bundle locale)
+```
 
 ---
 
-## Contatti e social
+## Contatti
 
 - **Sito**: [www.rivaltasulmincio.it](https://www.rivaltasulmincio.it)
 - **Email**: info@prolocorivalta.mn.it
@@ -255,4 +249,6 @@ Configurazione in `vercel.json`: tutte le route vengono gestite da `server.js` (
 
 ---
 
-*Pro Loco Rivalta sul Mincio · Frazione di Rodigo · Parco Regionale del Mincio*
+<p align="center">
+  <em>Pro Loco Rivalta sul Mincio · Frazione di Rodigo · Parco Regionale del Mincio</em>
+</p>

@@ -283,7 +283,7 @@ begin
     raise exception 'Titolo troppo breve';
   end if;
 
-  if char_length(trim(coalesce(new.content, ''))) < 10 then
+  if new.published and char_length(trim(coalesce(new.content, ''))) < 10 then
     raise exception 'Contenuto troppo breve';
   end if;
 
