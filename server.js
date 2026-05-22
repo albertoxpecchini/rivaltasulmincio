@@ -606,7 +606,7 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
       let geminiRes;
       try {
         geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -616,8 +616,7 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
               contents: [{ parts }],
               generationConfig: {
                 temperature: 0.1,
-                maxOutputTokens: 2048,
-                responseMimeType: 'application/json'
+                maxOutputTokens: 2048
               }
             })
           }
