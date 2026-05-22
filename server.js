@@ -878,6 +878,128 @@ async function handleNewsletterSend(req, res) {
   res.end(JSON.stringify({ ok, sent, errors: errors.length ? errors : undefined }));
 }
 
+async function handleScanPhoto(req, res) {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+  if (!token) {
+    res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Non autorizzato.' }));
+    return;
+  }
+
+  try {
+    const verifyRes = await fetch(`${SUPABASE_PROJECT_URL}/auth/v1/user`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'apikey': SUPABASE_ANON_KEY }
+    });
+    if (!verifyRes.ok) {
+      res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Sessione scaduta.' }));
+      return;
+    }
+  } catch (_) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Errore di autenticazione.' }));
+    return;
+  }
+
+  const GEMINI_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_KEY) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'AI non configurata (GEMINI_API_KEY mancante).' }));
+    return;
+  }
+
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+  const imageUrl = String(body.imageUrl || '').trim();
+  if (!imageUrl || !imageUrl.startsWith('https://')) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'URL immagine non valido.' }));
+    return;
+  }
+
+  let imageBase64, mimeType;
+  try {
+    const imgRes = await fetch(imageUrl, { headers: { 'User-Agent': 'rivaltasulmincio-server/1.0' } });
+    if (!imgRes.ok) throw new Error(`image-fetch-${imgRes.status}`);
+    const ct = imgRes.headers.get('content-type') || 'image/jpeg';
+    mimeType = ct.split(';')[0].trim();
+    const buf = await imgRes.arrayBuffer();
+    if (buf.byteLength > 10 * 1024 * 1024) throw new Error('Immagine troppo grande (max 10 MB).');
+    imageBase64 = Buffer.from(buf).toString('base64');
+  } catch (e) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: "Impossibile leggere l'immagine: " + e.message }));
+    return;
+  }
+
+  const PROMPT = `Sei un redattore per il sito di notizie locali di Rivalta sul Mincio (MN), Italia.
+Analizza questa immagine e restituisci ESCLUSIVAMENTE un oggetto JSON valido.
+Non scrivere nulla prima o dopo il JSON. Non usare markdown o backtick.
+
+Restituisci questo schema JSON (rispetta esattamente i nomi dei campi):
+{
+  "title": "titolo articolo in italiano, max 80 caratteri",
+  "subtitle": "sottotitolo opzionale max 120 caratteri, oppure null",
+  "excerpt": "riassunto 1-2 frasi, max 160 caratteri",
+  "content": "testo articolo in italiano, minimo 80 parole",
+  "category": "una tra: Ambiente|Assemblea|Ciclismo|Cultura|Enogastronomia|Eventi|Iniziative|Natura|Sagre|Sport|Turismo|Video",
+  "tone": "una tra: narrativo|istituzionale|giornalistico|promozionale",
+  "reading_level": "una tra: semplice|medio|approfondito",
+  "target_audience": "una tra: famiglie|bambini|giovani|turisti|escursionisti|appassionati_natura oppure null",
+  "location_text": "nome del luogo visibile nell'immagine oppure null",
+  "address_text": "indirizzo completo se visibile oppure null",
+  "organizer": "nome organizzatore se visibile oppure null",
+  "event_start_at": "data ISO8601 se visibile es. 2025-06-15T10:00:00 oppure null",
+  "event_end_at": "data ISO8601 fine evento se visibile oppure null",
+  "event_time_text": "orario leggibile es. 10:00–23:00 oppure null",
+  "contacts": "telefono o email se visibili oppure null",
+  "price_text": "Gratuito oppure €5 oppure null",
+  "booking_url": "URL prenotazione se visibile oppure null",
+  "cta_text": "testo pulsante azione es. Scopri il programma oppure null",
+  "cta_url": "URL azione se visibile oppure null",
+  "keywords": ["parola1", "parola2", "parola3"],
+  "tags": ["tag1", "tag2"]
+}`;
+
+  try {
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [
+            { inlineData: { mimeType, data: imageBase64 } },
+            { text: PROMPT }
+          ]}],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
+        })
+      }
+    );
+
+    if (!geminiRes.ok) {
+      const errText = await geminiRes.text().catch(() => '');
+      console.error('[scan-photo] Gemini error', geminiRes.status, errText);
+      res.writeHead(geminiRes.status >= 500 ? 503 : 400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: `AI non disponibile (${geminiRes.status}).` }));
+      return;
+    }
+
+    const geminiData = await geminiRes.json();
+    const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('risposta AI non valida');
+    const fields = JSON.parse(jsonMatch[0]);
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify(fields));
+  } catch (e) {
+    console.error('[scan-photo]', e.message);
+    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Errore AI: ' + e.message }));
+  }
+}
+
 function getSafeFilePath(rawUrl) {
   const requestPath = (rawUrl || '/').split('?')[0].split('#')[0] || '/';
   let decodedPath;
@@ -991,6 +1113,11 @@ function handler(req, res) {
 
   if (req.method === 'POST' && requestPathLower === '/api/newsletter/send') {
     handleNewsletterSend(req, res);
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/ai/scan-photo') {
+    handleScanPhoto(req, res);
     return;
   }
 
