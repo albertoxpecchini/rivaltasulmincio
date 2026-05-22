@@ -525,14 +525,16 @@ async function handleKwContext(req, res) {
 }
 
 async function handleAiAutofill(req, res) {
+  const GEMINI_KEY    = process.env.GEMINI_API_KEY;
   const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_KEY) {
+  const useGemini     = Boolean(GEMINI_KEY);
+
+  if (!GEMINI_KEY && !ANTHROPIC_KEY) {
     res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Chiave API AI non configurata sul server.' }));
+    res.end(JSON.stringify({ error: 'Chiave API AI non configurata. Imposta GEMINI_API_KEY o ANTHROPIC_API_KEY nelle variabili ambiente Vercel.' }));
     return;
   }
 
-  // Read body with a generous limit for image data (~6 MB base64)
   const MAX_AI_BODY = 8 * 1024 * 1024;
   let rawBody = '';
   try {
@@ -578,76 +580,94 @@ Analizza il testo o l'immagine forniti e restituisci SOLO un oggetto JSON valido
 }
 Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni non presenti. Rispondi SOLO con il JSON.`;
 
-  let messages;
-  if (mode === 'image') {
-    const imgData = String(body.data || '').slice(0, MAX_AI_BODY);
-    const mediaType = String(body.mediaType || 'image/jpeg');
-    if (!imgData) {
-      res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Immagine mancante.' }));
-      return;
-    }
-    messages = [{
-      role: 'user',
-      content: [
-        { type: 'image', source: { type: 'base64', media_type: mediaType, data: imgData } },
-        { type: 'text', text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' }
-      ]
-    }];
-  } else {
-    const text = String(body.text || '').slice(0, 8000);
-    if (!text.trim()) {
-      res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Testo mancante.' }));
-      return;
-    }
-    messages = [{ role: 'user', content: text }];
+  if (mode === 'image' && !String(body.data || '')) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Immagine mancante.' }));
+    return;
+  }
+  if (mode === 'text' && !String(body.text || '').trim()) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Testo mancante.' }));
+    return;
   }
 
+  let raw = '';
   try {
-    const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages
-      })
-    });
-
-    if (!aiRes.ok) {
-      const errText = await aiRes.text().catch(() => '');
-      console.error('[ai-autofill] Claude error', aiRes.status, errText);
-      res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Errore AI (' + aiRes.status + ').' }));
-      return;
+    if (useGemini) {
+      const parts = [];
+      if (mode === 'image') {
+        parts.push({ inline_data: { mime_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } });
+        parts.push({ text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' });
+      } else {
+        parts.push({ text: String(body.text || '').slice(0, 8000) });
+      }
+      const geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents: [{ parts }],
+            generationConfig: { temperature: 0.1, maxOutputTokens: 1024 }
+          })
+        }
+      );
+      if (!geminiRes.ok) {
+        const errText = await geminiRes.text().catch(() => '');
+        console.error('[ai-autofill] Gemini error', geminiRes.status, errText);
+        res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Errore Gemini (' + geminiRes.status + ').' }));
+        return;
+      }
+      const geminiData = await geminiRes.json();
+      raw = (geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+    } else {
+      let messages;
+      if (mode === 'image') {
+        messages = [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } },
+            { type: 'text', text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' }
+          ]
+        }];
+      } else {
+        messages = [{ role: 'user', content: String(body.text || '').slice(0, 8000) }];
+      }
+      const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: SYSTEM_PROMPT, messages })
+      });
+      if (!claudeRes.ok) {
+        const errText = await claudeRes.text().catch(() => '');
+        console.error('[ai-autofill] Claude error', claudeRes.status, errText);
+        res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Errore AI (' + claudeRes.status + ').' }));
+        return;
+      }
+      const claudeData = await claudeRes.json();
+      raw = (claudeData.content?.[0]?.text || '').trim();
     }
-
-    const aiData = await aiRes.json();
-    const raw = (aiData.content?.[0]?.text || '').trim();
-
-    // Extract JSON even if Claude wraps it in backtick code fence
-    const jsonMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/) || raw.match(/(\{[\s\S]*\})/);
-    const jsonStr = jsonMatch ? jsonMatch[1].trim() : raw;
-    let parsed;
-    try { parsed = JSON.parse(jsonStr); } catch(_) {
-      res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Risposta AI non analizzabile. Prova con un testo più strutturato.' }));
-      return;
-    }
-
-    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
-    res.end(JSON.stringify(parsed));
   } catch (e) {
     console.error('[ai-autofill]', e.message);
     res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Errore interno del server.' }));
+    return;
   }
+
+  const jsonMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/) || raw.match(/(\{[\s\S]*\})/);
+  const jsonStr = jsonMatch ? jsonMatch[1].trim() : raw;
+  let parsed;
+  try { parsed = JSON.parse(jsonStr); } catch (_) {
+    res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Risposta AI non analizzabile. Prova con un testo più strutturato.' }));
+    return;
+  }
+
+  res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+  res.end(JSON.stringify(parsed));
 }
 
 const MAX_REQUEST_BODY_SIZE = 4096; // bytes
