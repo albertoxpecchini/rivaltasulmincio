@@ -1143,6 +1143,13 @@ function handler(req, res) {
     return;
   }
 
+  if (req.method === 'GET' && requestPathLower === '/category') {
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, { ...SECURITY_HEADERS, 'Location': '/post' + qs, 'Cache-Control': 'public, max-age=3600' });
+    res.end();
+    return;
+  }
+
   const filePath  = getSafeFilePath(req.url);
   if (!filePath) {
     res.writeHead(403, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
