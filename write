@@ -1127,8 +1127,6 @@
       source_url:$('f-source-url').value.trim()||null, instagram_url:$('f-ig-url').value.trim()||null,
       references:$('f-references').value.trim()||null,
       notes:$('f-notes').value.trim()||null,
-      quality:{chars:content.length,words,generated_at:now},
-      meta:{editor_version:'write-lab-v3',locale:'it-IT'},
       published, published_at:published?now:null
     };
   }
@@ -1136,24 +1134,32 @@
   async function save(published) {
     setErr(''); setOk('');
     const p=buildPayload(published);
+    console.log('[write] save payload:', { published, user_id: p.user_id, title: p.title });
     if(!p.title||p.title.length<2) { setErr('Inserisci un titolo.'); return; }
     if(published && (!p.content||p.content.length<80)) { setErr('Testo troppo corto per pubblicare (min 80 caratteri).'); return; }
     const btnId=published?'btn-publish':'btn-draft';
     setBtnLoading(btnId,true);
     let error;
     if (editId) {
-      // Preserve original published_at when article was already published
       if (published && editPostOriginal && editPostOriginal.published_at) {
         p.published_at = editPostOriginal.published_at;
       }
       const res = await sb.from('posts').update(p).eq('id', editId);
+      console.log('[write] update res:', res);
       error = res.error;
     } else {
       const res = await sb.from('posts').insert(p);
+      console.log('[write] insert res:', res);
       error = res.error;
     }
     setBtnLoading(btnId,false);
-    if(error){ setErr('Salvataggio fallito: '+error.message); return; }
+    if(error){
+      const detail = error.code ? ' [' + error.code + ']' : '';
+      console.error('[write] save error:', error);
+      setErr('Salvataggio fallito: ' + error.message + detail);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     $('pv-status').textContent=published?'pubblicato':'bozza salvata';
     setOk(editId ? 'Articolo aggiornato.' : (published ? 'Post pubblicato con successo.' : 'Bozza salvata.'));
     setTimeout(()=>{ location.href = editId ? '/post?id='+editId : '/dashboard'; },1200);

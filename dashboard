@@ -197,6 +197,14 @@
       .select('id,title,excerpt,category,published,published_at,created_at,updated_at')
       .eq('user_id', STATE.session.user.id)
       .order('created_at', { ascending: false });
+    console.log('[dashboard] fetchPosts:', {
+      userId: STATE.session.user.id,
+      total: data?.length,
+      drafts: data?.filter(p => !p.published).length,
+      published: data?.filter(p => p.published).length,
+      error: error?.message,
+      rows: data?.map(p => ({ id: p.id, title: p.title, published: p.published }))
+    });
     if (error) throw error;
     STATE.posts = data || [];
   }
