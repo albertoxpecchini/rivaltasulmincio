@@ -108,8 +108,8 @@
     /* ── testo completo separato ── */
     #f-content {
       width: 100%;
-      font-family: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
-      font-size: .88rem;
+      font-family: inherit;
+      font-size: .9rem;
       line-height: 1.65;
       border: none;
       outline: none;
@@ -294,7 +294,7 @@
       padding: 5px 8px;
       color: #5a6882;
       background: #f8fafc;
-      font-family: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: inherit;
     }
     .img-url-row input:focus { outline: 2px solid #06c; outline-offset: -1px; }
 
@@ -346,13 +346,37 @@
     #f-json-payload:focus { background: #0d1117; outline: 2px solid #1f6feb; outline-offset: -2px; }
     .json-hint { padding: 6px 12px 8px; font-size: .66rem; color: #484f58; background: #0d1117; }
     /* ── sezione AI ── */
-    .ai-tabs { display: flex; border-bottom: 1px solid #dde3ea; margin-bottom: 12px; }
-    .ai-tab-btn { flex: 1; padding: 7px 10px; font-size: .75rem; font-weight: 600; letter-spacing: .04em; border: none; background: transparent; cursor: pointer; color: #5a6882; border-bottom: 2px solid transparent; transition: color .12s, border-color .12s; }
-    .ai-tab-btn.active { color: #06c; border-bottom-color: #06c; }
-    .ai-tab-panel { display: none; }
-    .ai-tab-panel.active { display: block; }
     .ai-result-ok { font-size: .72rem; padding: 6px 10px; border-radius: 5px; background: #e6f5ec; color: #1a6630; border: 1px solid #b8dfc6; margin-top: 8px; display: none; }
     .ai-result-ok.visible { display: block; }
+
+    /* ── AI gemini glow border ── */
+    .ai-glow-wrap {
+      position: relative;
+      border-radius: 14px;
+      padding: 2px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .ai-glow-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -120%;
+      width: 340%;
+      height: 340%;
+      background: conic-gradient(from 0deg,
+        #4285f4 0%, #8b5cf6 20%, #f43f5e 40%,
+        #f97316 55%, #10b981 70%, #06b6d4 85%, #4285f4 100%);
+      animation: ai-spin-border 6s linear infinite;
+      opacity: .65;
+    }
+    .ai-glow-inner {
+      position: relative;
+      z-index: 1;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    @keyframes ai-spin-border { to { transform: rotate(360deg); } }
 
     /* ── volantino upload area ── */
     .vol-upload-area { border: 2px dashed #c8d2de; border-radius: 8px; padding: 14px 12px; display: flex; align-items: center; gap: 12px; background: #f8fafc; cursor: pointer; transition: border-color .15s, background .15s; }
@@ -363,15 +387,6 @@
     .vol-info .vup-label { font-size: .78rem; font-weight: 600; color: #17324d; }
     .vol-info .vup-sub { font-size: .67rem; color: #8a9bb0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* ── code panel JSON ── */
-    #code-panel { display: none; background: #111d2b; border-radius: 8px; padding: 12px 14px; margin-top: 8px; }
-    #code-panel.visible { display: block; }
-    #code-panel pre { margin: 0; overflow-x: auto; max-height: 320px; }
-    #code-panel code { font-family: 'Courier New', monospace; font-size: .7rem; color: #a8d4ff; white-space: pre; }
-    .code-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .code-panel-header span { font-size: .67rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #5a7a9a; }
-    .code-panel-header button { font-size: .67rem; padding: 3px 9px; border-radius: 4px; border: 1px solid #2a4a6a; background: transparent; color: #7ab4d4; cursor: pointer; }
-    .code-panel-header button:hover { background: #1a3a5a; }
   </style>
 </head>
 <body>
@@ -405,34 +420,27 @@
           <span class="arrow">▶</span>
         </summary>
         <div class="section-body">
-          <p style="font-size:.78rem;color:#5a6882;margin:0 0 10px">Incolla il testo di un volantino o carica una foto: l'AI compila i campi del post in automatico.</p>
-          <div class="ai-tabs">
-            <button class="ai-tab-btn active" data-tab="text" type="button">Incolla testo</button>
-            <button class="ai-tab-btn" data-tab="image" type="button">Carica immagine</button>
-          </div>
-
-          <div class="ai-tab-panel active" id="ai-panel-text">
-            <textarea id="ai-text-input" rows="5"
-              style="width:100%;border:1px solid #dde3ea;border-radius:6px;padding:8px 10px;font-size:.85rem;font-family:inherit;resize:vertical;outline:none;color:#17324d"
-              placeholder="Incolla qui il testo del volantino, dell'annuncio o del comunicato stampa…"></textarea>
-          </div>
-
-          <div class="ai-tab-panel" id="ai-panel-image">
-            <input type="file" id="ai-image-file" accept="image/*" style="display:none" />
-            <div class="vol-upload-area" id="vol-upload-area">
-              <div class="vol-icon" id="vol-icon">📷</div>
-              <div class="vol-info">
-                <div class="vup-label" id="vol-label">Carica la foto del volantino</div>
-                <div class="vup-sub" id="vol-sub">JPG · PNG · WebP · qualsiasi immagine con testo leggibile</div>
+          <p style="font-size:.78rem;color:#5a6882;margin:0 0 10px">Incolla il testo del volantino, aggiungi anche la foto, o usali insieme: l'AI compila tutti i campi del post.</p>
+          <div class="ai-glow-wrap">
+            <div class="ai-glow-inner">
+              <textarea id="ai-text-input" rows="4"
+                style="width:100%;border:1px solid #d1d9e0;border-radius:8px;padding:10px 12px;font-size:.85rem;font-family:inherit;resize:vertical;outline:none;color:#17324d;background:#fff;margin-bottom:10px;display:block"
+                placeholder="Incolla qui il testo del volantino, dell'annuncio o del comunicato stampa…"></textarea>
+              <input type="file" id="ai-image-file" accept="image/*" style="display:none" />
+              <div class="vol-upload-area" id="vol-upload-area">
+                <div class="vol-icon" id="vol-icon">📷</div>
+                <div class="vol-info">
+                  <div class="vup-label" id="vol-label">Aggiungi anche la foto <span style="font-weight:400;color:#8a9bb0;font-size:.9em">(opzionale)</span></div>
+                  <div class="vup-sub" id="vol-sub">JPG · PNG · WebP · qualsiasi immagine con testo</div>
+                </div>
+                <button type="button" id="vol-btn"
+                  style="font-size:.72rem;padding:4px 10px;border-radius:5px;border:1px solid #c8d2de;background:#fff;color:#17324d;cursor:pointer;flex-shrink:0">Scegli</button>
               </div>
-              <button type="button" id="vol-btn"
-                style="font-size:.72rem;padding:4px 10px;border-radius:5px;border:1px solid #c8d2de;background:#fff;color:#17324d;cursor:pointer;flex-shrink:0">Scegli</button>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap">
+                <button id="btn-ai-fill" type="button" class="btn btn-primary btn-sm">✦ Elabora e compila</button>
+                <span id="ai-spinner" style="display:none;font-size:.78rem;color:#5a6882">⏳ Elaborazione AI in corso…</span>
+              </div>
             </div>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap">
-            <button id="btn-ai-fill" type="button" class="btn btn-primary btn-sm">Elabora e compila</button>
-            <span id="ai-spinner" style="display:none;font-size:.78rem;color:#5a6882">⏳ Elaborazione in corso…</span>
           </div>
           <div class="ai-result-ok" id="ai-result-ok"></div>
           <div class="alert alert-danger mt-2 p-2" id="ai-err" style="display:none;font-size:.8rem" role="alert"></div>
@@ -494,8 +502,7 @@
       <!-- 2. TESTO -->
       <div class="content-wrap">
         <div class="content-header">2 · Testo completo *</div>
-        <div class="content-hint">Struttura: Cos'è · Quando · Dove · Cosa ci sarà · Chi partecipa · Come · Note utili</div>
-        <textarea id="f-content" placeholder="Scrivi qui il testo completo…"></textarea>
+        <textarea id="f-content" placeholder="Struttura consigliata:&#10;Cos'è · Quando · Dove · Cosa ci sarà · Chi partecipa · Come · Note utili&#10;&#10;Inizia a scrivere qui…"></textarea>
         <div class="px-3 pb-2 d-flex justify-content-end">
           <span style="font-size:.65rem;color:#8a9bb0"><span id="content-words">0</span> parole · <span id="content-count">0</span> car.</span>
         </div>
@@ -512,11 +519,11 @@
           <div class="field-grid">
             <div class="f-cell">
               <label for="f-event-start">Data inizio</label>
-              <input id="f-event-start" type="datetime-local" />
+              <input id="f-event-start" type="date" />
             </div>
             <div class="f-cell">
               <label for="f-event-end">Data fine</label>
-              <input id="f-event-end" type="datetime-local" />
+              <input id="f-event-end" type="date" />
             </div>
             <div class="f-cell">
               <label for="f-event-time">Orario</label>
@@ -617,7 +624,7 @@
       <!-- 6. SEO -->
       <details class="w-section">
         <summary>
-          <span>6 · SEO e riferimenti</span>
+          <span>6 · SEO, social e riferimenti</span>
           <span class="badge-num">5 campi</span>
           <span class="arrow">▶</span>
         </summary>
@@ -634,6 +641,10 @@
             <div class="f-cell span2">
               <label for="f-source-url">Fonte primaria</label>
               <input id="f-source-url" type="url" maxlength="500" placeholder="https://…" />
+            </div>
+            <div class="f-cell span2">
+              <label for="f-ig-url">Post Instagram</label>
+              <input id="f-ig-url" type="url" maxlength="500" placeholder="https://www.instagram.com/p/…" />
             </div>
             <div class="f-cell span2">
               <label for="f-references">Riferimenti aggiuntivi</label>
@@ -669,20 +680,12 @@
       <!-- AZIONI -->
       <div class="sticky-bar">
         <div class="d-flex gap-2 justify-content-end flex-wrap">
-          <button class="btn btn-outline-secondary btn-sm" id="btn-code-preview" type="button" title="Mostra il payload JSON che verrà inviato a Supabase">&lt;/&gt; JSON</button>
           <button class="btn btn-outline-primary btn-sm" id="btn-draft" type="button">
             <span data-btn-label>Salva bozza</span>
           </button>
           <button class="btn btn-primary btn-sm" id="btn-publish" type="button">
             <span data-btn-label>Pubblica</span>
           </button>
-        </div>
-        <div id="code-panel">
-          <div class="code-panel-header">
-            <span>payload JSON · Supabase</span>
-            <button type="button" id="btn-copy-code">Copia</button>
-          </div>
-          <pre><code id="code-output"></code></pre>
         </div>
       </div>
     </div>
@@ -717,12 +720,38 @@
     'Iniziative','Natura','Sagre','Sport','Turismo','Video'
   ];
 
+  const CAT_COLOR = {
+    'Ambiente':       '#2d6a4f',
+    'Anniversari':    '#6d28d9',
+    'Assemblea':      '#374151',
+    'Canoa':          '#0e7490',
+    'Ciclismo':       '#b45309',
+    'Cultura':        '#6b21a8',
+    'Enogastronomia': '#991b1b',
+    'Eventi':         '#1d4ed8',
+    'Festa del Pesce':'#155e75',
+    'Iniziative':     '#0369a1',
+    'Love-luccio':    '#9d174d',
+    'Mincio-art':     '#166534',
+    'Natale':         '#b91c1c',
+    'Natura':         '#15803d',
+    'Rassegna Stampa':'#334155',
+    'Sagre':          '#92400e',
+    'Sport':          '#dc2626',
+    'Tesseramento':   '#4338ca',
+    'Turismo':        '#1e40af',
+    'Video':          '#111827',
+  };
+
   function csv(v) { return String(v||'').split(',').map(s=>s.trim()).filter(Boolean); }
   function esc(t) { return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
   function fmtDate(iso) {
     if (!iso) return null;
-    try { return new Date(iso).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+    try {
+      const d = iso.length <= 10 ? new Date(iso + 'T12:00:00') : new Date(iso);
+      return d.toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
+    }
     catch { return iso; }
   }
 
@@ -754,9 +783,12 @@
     el.value = value || '';
   }
 
-  function isoToDatetimeLocal(iso) {
+  function isoToDateLocal(iso) {
     if (!iso) return '';
-    try { return new Date(iso).toISOString().slice(0, 16); } catch { return ''; }
+    try {
+      const d = iso.length <= 10 ? iso : new Date(iso).toISOString().slice(0, 10);
+      return d;
+    } catch { return ''; }
   }
 
   function applyAiFields(f) {
@@ -777,10 +809,11 @@
     setInputIfEmpty('f-cta',         f.cta_text      || '');
     setInputIfEmpty('f-cta-url',     f.cta_url       || '');
     setInputIfEmpty('f-event-time',  f.event_time_text || '');
+    setInputIfEmpty('f-ig-url',      f.instagram_url  || '');
     const evStart = $('f-event-start');
-    if (evStart && !evStart.value && f.event_start_at) evStart.value = isoToDatetimeLocal(f.event_start_at);
+    if (evStart && !evStart.value && f.event_start_at) evStart.value = isoToDateLocal(f.event_start_at);
     const evEnd = $('f-event-end');
-    if (evEnd && !evEnd.value && f.event_end_at) evEnd.value = isoToDatetimeLocal(f.event_end_at);
+    if (evEnd && !evEnd.value && f.event_end_at) evEnd.value = isoToDateLocal(f.event_end_at);
     const kwEl = $('f-keywords');
     if (kwEl && !kwEl.value.trim() && Array.isArray(f.keywords) && f.keywords.length) kwEl.value = f.keywords.join(', ');
     const tagsEl = $('f-tags');
@@ -854,6 +887,7 @@
       label.textContent = file.name;
       sub.textContent = (file.size / 1024).toFixed(0) + ' KB · caricato';
       setTimeout(() => { prog.classList.remove('visible'); bar.style.width = '0%'; }, 800);
+      updateCounts(); // aggiorna subito la preview con la copertina
 
       // scansione AI
       setAiStatus('reading');
@@ -866,7 +900,12 @@
         if (aiRes.ok) {
           const fields = await aiRes.json();
           if (fields.error) { setAiStatus('error', fields.error); }
-          else { applyAiFields(fields); setAiStatus('done'); }
+          else {
+            applyAiFields(fields);
+            urlIn.value = publicUrl; // ripristina copertina dopo fill AI
+            updateCounts();
+            setAiStatus('done');
+          }
         } else {
           const err = await aiRes.json().catch(() => ({}));
           setAiStatus('error', err.error || 'Errore ' + aiRes.status);
@@ -956,11 +995,13 @@
       ? `<div style="margin-top:.5rem;font-size:.75rem;color:#5a6882">Prenotazione: <a href="${esc(booking)}" target="_blank" rel="noopener">${esc(booking.replace(/^https?:\/\//,''))}</a></div>`
       : '';
 
+    const catColor = CAT_COLOR[category] || '#1d4ed8';
+    const dateLabel = evStart ? 'Programmato per il ' + fmtDate(evStart) : 'Bozza';
     $('preview-body').innerHTML = `
-      <div class="pv-badges">${category ? `<span class="badge bg-primary">${esc(category)}</span>` : ''}</div>
+      <div class="pv-badges">${category ? `<span class="badge" style="background:${catColor};color:#fff">${esc(category)}</span>` : ''}</div>
       <div class="pv-meta">
-        <span>Oggi</span>
-        ${category ? `<span>·</span><span>${esc(category)}</span>` : ''}
+        <span>${esc(dateLabel)}</span>
+        ${category ? `<span>·</span><span style="color:${catColor};font-weight:600">${esc(category)}</span>` : ''}
       </div>
       ${title ? `<div class="pv-title">${esc(title)}</div>` : ''}
       ${subtitle ? `<div class="pv-subtitle">${esc(subtitle)}</div>` : ''}
@@ -1007,8 +1048,9 @@
     setVal('f-references',  f.references      || '');
     setVal('f-notes',       f.notes           || '');
     setVal('f-event-time',  f.event_time_text || '');
-    if (f.event_start_at) { const el=$('f-event-start'); if (el) el.value = f.event_start_at.slice(0,16); }
-    if (f.event_end_at)   { const el=$('f-event-end');   if (el) el.value = f.event_end_at.slice(0,16); }
+    setVal('f-ig-url',      f.instagram_url   || '');
+    if (f.event_start_at) { const el=$('f-event-start'); if (el) el.value = isoToDateLocal(f.event_start_at); }
+    if (f.event_end_at)   { const el=$('f-event-end');   if (el) el.value = isoToDateLocal(f.event_end_at); }
     if (Array.isArray(f.keywords)) { const el=$('f-keywords'); if (el) el.value = f.keywords.join(', '); }
     if (Array.isArray(f.tags))     { const el=$('f-tags');     if (el) el.value = f.tags.join(', '); }
     renderPreview();
@@ -1045,7 +1087,6 @@
     $('content-words').textContent = content.trim() ? content.trim().split(/\s+/).length : 0;
     renderPreview();
     renderJsonPane();
-    refreshCodePanel();
   }
 
   /* ── salvataggio ── */
@@ -1075,7 +1116,8 @@
       image_url:$('f-image-url').value.trim()||null,
       cta_text:$('f-cta').value.trim()||null, cta_url:$('f-cta-url').value.trim()||null,
       keywords:csv($('f-keywords').value), tags:csv($('f-tags').value),
-      source_url:$('f-source-url').value.trim()||null, references:$('f-references').value.trim()||null,
+      source_url:$('f-source-url').value.trim()||null, instagram_url:$('f-ig-url').value.trim()||null,
+      references:$('f-references').value.trim()||null,
       notes:$('f-notes').value.trim()||null,
       quality:{chars:content.length,words,generated_at:now},
       meta:{editor_version:'write-lab-v3',locale:'it-IT'},
@@ -1098,17 +1140,7 @@
     setTimeout(()=>{ location.href='/dashboard'; },1200);
   }
 
-  /* ── code panel JSON ── */
-  let codePanelOpen = false;
-  function refreshCodePanel() {
-    if (!codePanelOpen) return;
-    try {
-      $('code-output').textContent = JSON.stringify(buildPayload(false), null, 2);
-    } catch(_) {}
-  }
-
   /* ── AI autofill ── */
-  let aiMode = 'text';
   let aiImageData = null;
   let aiImageType = null;
 
@@ -1144,14 +1176,14 @@
     }
     if (d.event_start_at) {
       try {
-        const dt = new Date(d.event_start_at);
-        if(!isNaN(dt)) { $('f-event-start').value=dt.toISOString().slice(0,16); filled.push('Data inizio'); }
+        const v = isoToDateLocal(d.event_start_at);
+        if(v) { $('f-event-start').value=v; filled.push('Data inizio'); }
       } catch(_){}
     }
     if (d.event_end_at) {
       try {
-        const dt = new Date(d.event_end_at);
-        if(!isNaN(dt)) { $('f-event-end').value=dt.toISOString().slice(0,16); filled.push('Data fine'); }
+        const v = isoToDateLocal(d.event_end_at);
+        if(v) { $('f-event-end').value=v; filled.push('Data fine'); }
       } catch(_){}
     }
     set('f-event-time',    d.event_time_text);
@@ -1160,6 +1192,7 @@
     set('f-organizer',     d.organizer);
     set('f-contacts',      d.contacts);
     set('f-price',         d.price_text);
+    set('f-ig-url',        d.instagram_url);
     if (Array.isArray(d.keywords) && d.keywords.length) { set('f-keywords', d.keywords.join(', ')); }
     if (Array.isArray(d.tags)     && d.tags.length)     { set('f-tags',     d.tags.join(', ')); }
     updateCounts();
@@ -1170,14 +1203,17 @@
     aiSetErr(''); aiSetOk('');
     const spinner = $('ai-spinner');
     const btn = $('btn-ai-fill');
+    const txt = $('ai-text-input').value.trim();
+    const hasText = txt.length > 0;
+    const hasImage = !!aiImageData;
+    if (!hasText && !hasImage) { aiSetErr('Incolla del testo o carica una foto del volantino.'); return; }
     let body;
-    if (aiMode === 'text') {
-      const txt = $('ai-text-input').value.trim();
-      if (!txt) { aiSetErr('Incolla prima il testo del volantino.'); return; }
-      body = JSON.stringify({ mode: 'text', text: txt });
-    } else {
-      if (!aiImageData) { aiSetErr('Carica prima la foto del volantino.'); return; }
+    if (hasImage && hasText) {
+      body = JSON.stringify({ mode: 'both', text: txt, data: aiImageData, mediaType: aiImageType });
+    } else if (hasImage) {
       body = JSON.stringify({ mode: 'image', data: aiImageData, mediaType: aiImageType });
+    } else {
+      body = JSON.stringify({ mode: 'text', text: txt });
     }
     btn.disabled = true;
     spinner.style.display = '';
@@ -1204,19 +1240,7 @@
   }
 
   function initAiSection() {
-    // Tabs
-    document.querySelectorAll('.ai-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.ai-tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.ai-tab-panel').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        aiMode = btn.dataset.tab;
-        $('ai-panel-' + aiMode).classList.add('active');
-        aiSetErr(''); aiSetOk('');
-      });
-    });
-
-    // Volantino image upload
+    // Image upload
     const volArea = $('vol-upload-area');
     const volFile = $('ai-image-file');
     const volBtn  = $('vol-btn');
@@ -1251,22 +1275,6 @@
     $('btn-ai-fill').addEventListener('click', runAiAutofill);
   }
 
-  function initCodePanel() {
-    $('btn-code-preview').addEventListener('click', () => {
-      codePanelOpen = !codePanelOpen;
-      $('code-panel').classList.toggle('visible', codePanelOpen);
-      $('btn-code-preview').textContent = codePanelOpen ? '✕ JSON' : '</> JSON';
-      if (codePanelOpen) refreshCodePanel();
-    });
-    $('btn-copy-code').addEventListener('click', () => {
-      const txt = $('code-output').textContent;
-      navigator.clipboard.writeText(txt).then(() => {
-        $('btn-copy-code').textContent = 'Copiato!';
-        setTimeout(() => { $('btn-copy-code').textContent = 'Copia'; }, 1500);
-      }).catch(() => {});
-    });
-  }
-
   /* ── init ── */
   async function init() {
     const {data:auth}=await sb.auth.getSession();
@@ -1277,7 +1285,7 @@
 
     const allInputs=['f-title','f-subtitle','f-excerpt','f-content','f-keywords','f-tags',
       'f-cta','f-location','f-address','f-source-url','f-image-url','f-cta-url',
-      'f-organizer','f-contacts','f-booking-url','f-price','f-event-time','f-references','f-notes'];
+      'f-organizer','f-contacts','f-booking-url','f-price','f-event-time','f-ig-url','f-references','f-notes'];
     allInputs.forEach(id=>{ const el=$(id); if(el) el.addEventListener('input',updateCounts); });
     ['f-event-start','f-event-end','f-tone','f-reading-level','f-category','f-target']
       .forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',updateCounts); });
@@ -1287,7 +1295,6 @@
 
     initJsonPane();
     initAiSection();
-    initCodePanel();
     updateCounts();
   }
 

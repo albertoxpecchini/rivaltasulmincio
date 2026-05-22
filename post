@@ -5,36 +5,295 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Articolo – Pro Loco Rivalta sul Mincio</title>
   <link rel="icon" href="/img/favicon.png" type="image/png" />
+  <style>
+    /* ── Post detail: 2-column grid ────────────────────────── */
+    .post-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .post-layout { grid-template-columns: 1fr; }
+      .post-aside  { display: none; }
+    }
+    .post-aside { position: sticky; top: 88px; }
+    .post-aside-fig {
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.13);
+    }
+    .post-aside-fig img { width: 100%; height: auto; display: block; }
+
+    /* mobile image: visible only below 860px */
+    .post-img-mob { display: none; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; }
+    .post-img-mob img { width: 100%; height: auto; display: block; }
+    @media (max-width: 860px) { .post-img-mob { display: block; } }
+
+    /* ── Category badge ──────────────────────────────────── */
+    .cat-badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: #fff;
+    }
+    /* ── Scheduled date chip ─────────────────────────────── */
+    .post-sched {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    /* ── Subtitle ────────────────────────────────────────── */
+    .post-subtitle {
+      font-size: 1.05rem;
+      color: #45526b;
+      font-style: italic;
+      margin: .25rem 0 1.25rem;
+    }
+    /* ── Reading guide ───────────────────────────────────── */
+    .reading-brief {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 9px 0;
+      border-top: 1px solid #e3e7ee;
+      border-bottom: 1px solid #e3e7ee;
+      margin-bottom: 1.5rem;
+    }
+    .reading-kicker {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #5a6882;
+      margin-right: 2px;
+    }
+    .reading-chip {
+      font-size: .75rem;
+      color: #45526b;
+      background: #f0f3f8;
+      border-radius: 999px;
+      padding: 2px 9px;
+    }
+    /* ── Event box ───────────────────────────────────────── */
+    .event-box {
+      border: 1px solid #dde6f5;
+      border-left: 4px solid #06c;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 0 0 1.75rem;
+      background: #f4f8ff;
+    }
+    .event-kicker {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    .event-dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3px 14px;
+      font-size: .88rem;
+      margin: 0;
+    }
+    .event-dl dt { font-weight: 600; color: #45526b; white-space: nowrap; }
+    .event-dl dd { margin: 0; color: #1a2744; }
+    .event-cta { margin-top: 10px; }
+    /* ── Tags ────────────────────────────────────────────── */
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 1.25rem 0 0;
+    }
+    .post-tag {
+      font-size: .7rem;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: #e8ecf3;
+      color: #45526b;
+    }
+    /* ── Extra links (instagram, source) ────────────────── */
+    .post-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: .75rem;
+    }
+    .post-link-pill {
+      font-size: .8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 13px;
+      border: 1.5px solid #dde2ec;
+      border-radius: 999px;
+      color: #45526b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: border-color .15s, color .15s;
+    }
+    .post-link-pill:hover { border-color: #06c; color: #06c; text-decoration: none; }
+    /* ── Published date (bottom) ─────────────────────────── */
+    .post-pub-date {
+      font-size: .8rem;
+      color: #5a6882;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e3e7ee;
+    }
+    /* ── Author footer ───────────────────────────────────── */
+    .post-footer {
+      margin-top: .75rem;
+      padding: .75rem 0;
+      border-top: 1px solid #e3e7ee;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    /* ── Reactions (likes) ───────────────────────────────── */
+    .post-reactions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 0;
+      flex-wrap: wrap;
+    }
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1.5px solid #dde2ec;
+      border-radius: 999px;
+      background: #fff;
+      font-size: .88rem;
+      font-weight: 600;
+      color: #45526b;
+      cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+      line-height: 1;
+    }
+    .like-btn:hover, .like-btn.active {
+      border-color: #e11d48;
+      color: #e11d48;
+      background: #fff5f5;
+    }
+    .like-btn.active svg { fill: currentColor; }
+    .like-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .like-hint { font-size: .78rem; color: #5a6882; }
+    /* ── Discussion ──────────────────────────────────────── */
+    .discussion-sec {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid #e3e7ee;
+    }
+    .discussion-sec h2 { font-size: 1rem; font-weight: 700; margin-bottom: .75rem; }
+    .comment-composer textarea {
+      display: block;
+      width: 100%;
+      border: 1.5px solid #dde2ec;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-family: inherit;
+      font-size: .88rem;
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 8px;
+      background: #fff;
+      color: inherit;
+    }
+    .comment-composer textarea:focus { outline: none; border-color: #06c; }
+    .comment-composer-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .comments-list { display: grid; gap: 7px; margin-top: 1rem; }
+    .comment-item {
+      padding: 11px 13px;
+      border: 1px solid #e8ecf3;
+      border-radius: 10px;
+      background: #f8f9fc;
+    }
+    .comment-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .comment-author { font-size: .8rem; font-weight: 700; color: #1a2744; }
+    .comment-time   { font-size: .72rem; color: #5a6882; white-space: nowrap; }
+    .comment-body   { font-size: .88rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .comment-ftr    { display: flex; gap: 8px; margin-top: 7px; }
+    /* ── Related posts ───────────────────────────────────── */
+    .related-sec {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e3e7ee;
+    }
+    .related-kicker {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #5a6882;
+      margin-bottom: .75rem;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 640px) { .related-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 641px) and (max-width: 860px) { .related-grid { grid-template-columns: repeat(2, 1fr); } }
+    .rel-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #e3e7ee;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color .15s;
+    }
+    .rel-card:hover { border-color: #06c; text-decoration: none; }
+    .rel-thumb { width: 100%; height: 100px; object-fit: cover; display: block; }
+    .rel-thumb-empty { width: 100%; height: 100px; background: #e8ecf3; display: block; }
+    .rel-body { padding: 9px 11px 11px; }
+    .rel-meta { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
+    .rel-badge { font-size: .65rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; color: #fff; }
+    .rel-date  { font-size: .7rem; color: #5a6882; }
+    .rel-title { font-size: .82rem; font-weight: 600; line-height: 1.35; color: #1a2744; }
+  </style>
 </head>
 <body>
 
 <!--PARTIAL:nav-->
 
-<main class="container rsm-page rsm-article">
-  <div class="row">
-    <div class="col-12 col-lg-9 mx-auto">
-
-      <div class="post-nav">
-        <a href="/#news" class="btn btn-outline-secondary btn-sm">← Torna alle notizie</a>
-        <a href="/" class="btn btn-outline-secondary btn-sm">Home</a>
+<main class="container rsm-page" id="page-main">
+  <div id="post-content">
+    <div id="skeleton">
+      <div class="post-badges">
+        <div class="skel" style="width:70px;height:24px;border-radius:20px"></div>
       </div>
-
-      <div id="post-content">
-        <div id="skeleton">
-          <div class="post-badges">
-            <div class="skel" style="width:70px;height:24px;border-radius:20px"></div>
-          </div>
-          <div class="skel" style="width:30%;height:12px;margin-bottom:14px"></div>
-          <div class="skel" style="width:88%;height:40px;margin-bottom:10px;border-radius:10px"></div>
-          <div class="skel" style="width:65%;height:40px;margin-bottom:32px;border-radius:10px"></div>
-          <div class="skel" style="height:16px;margin-bottom:10px"></div>
-          <div class="skel" style="width:94%;height:16px;margin-bottom:10px"></div>
-          <div class="skel" style="width:80%;height:16px;margin-bottom:10px"></div>
-          <div class="skel" style="width:88%;height:16px;margin-bottom:10px"></div>
-          <div class="skel" style="width:72%;height:16px"></div>
-        </div>
-      </div>
-
+      <div class="skel" style="width:30%;height:12px;margin-bottom:14px"></div>
+      <div class="skel" style="width:88%;height:40px;margin-bottom:10px;border-radius:10px"></div>
+      <div class="skel" style="width:65%;height:40px;margin-bottom:32px;border-radius:10px"></div>
+      <div class="skel" style="height:16px;margin-bottom:10px"></div>
+      <div class="skel" style="width:94%;height:16px;margin-bottom:10px"></div>
+      <div class="skel" style="width:80%;height:16px;margin-bottom:10px"></div>
+      <div class="skel" style="width:88%;height:16px;margin-bottom:10px"></div>
+      <div class="skel" style="width:72%;height:16px"></div>
     </div>
   </div>
 </main>
@@ -43,40 +302,69 @@
 <script src="/supabase.config.js"></script>
 <script src="/security.client.js"></script>
 <script>
-(async function() {
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const id = new URLSearchParams(location.search).get('id');
-  const wrap = document.getElementById('post-content');
+(async function () {
+  'use strict';
 
-  let viewerSession = null;
-  let viewerProfile = null;
-  let activePost = null;
-  let commentsCache = [];
-  let commentPrivacy = 'all';
-  let likesCount = 0;
-  let viewerLikedPost = false;
+  const sb      = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const params  = new URLSearchParams(location.search);
+  const id      = params.get('id');
+  const wrap    = document.getElementById('post-content');
+  const pagMain = document.getElementById('page-main');
 
-  const COMMENT_RATE_CFG = { maxAttempts: 6, windowMs: 10 * 60 * 1000, lockMs: 30 * 60 * 1000 };
-  const REPORT_RATE_CFG = { maxAttempts: 4, windowMs: 24 * 60 * 60 * 1000, lockMs: 24 * 60 * 60 * 1000 };
-  const LIKE_RATE_CFG = { maxAttempts: 20, windowMs: 10 * 60 * 1000, lockMs: 10 * 60 * 1000 };
+  /* ── state ───────────────────────────────────────────────── */
+  var viewerSession    = null;
+  var viewerProfile    = null;
+  var activePost       = null;
+  var commentsCache    = [];
+  var commentPrivacy   = 'all';
+  var likesCount       = 0;
+  var viewerLikedPost  = false;
 
+  var COMMENT_RATE_CFG = { maxAttempts: 6,  windowMs: 10 * 60 * 1000,       lockMs: 30 * 60 * 1000 };
+  var REPORT_RATE_CFG  = { maxAttempts: 4,  windowMs: 24 * 60 * 60 * 1000,  lockMs: 24 * 60 * 60 * 1000 };
+  var LIKE_RATE_CFG    = { maxAttempts: 20, windowMs: 10 * 60 * 1000,       lockMs: 10 * 60 * 1000 };
+
+  /* ── category colors ─────────────────────────────────────── */
+  var CAT_COLOR = {
+    'Ambiente': '#2d6a4f',     'Anniversari': '#6d28d9',  'Assemblea': '#374151',
+    'Canoa': '#0e7490',        'Ciclismo': '#b45309',     'Cultura': '#6b21a8',
+    'Enogastronomia': '#991b1b','Eventi': '#1d4ed8',      'Festa del Pesce': '#155e75',
+    'Iniziative': '#0369a1',   'Love-luccio': '#9d174d',  'Mincio-art': '#166534',
+    'Natale': '#b91c1c',       'Natura': '#15803d',       'Rassegna Stampa': '#334155',
+    'Sagre': '#92400e',        'Sport': '#dc2626',        'Tesseramento': '#4338ca',
+    'Turismo': '#1e40af',      'Video': '#111827'
+  };
+
+  /* ── utilities ───────────────────────────────────────────── */
   function isMissingRelationError(error) {
-    const msg = String(error?.message || '').toLowerCase();
+    var msg = String((error && error.message) || '').toLowerCase();
     return !!error && (
-      error.code === '42P01'
-      || error.code === 'PGRST205'
-      || msg.includes('does not exist')
-      || msg.includes('could not find the table')
+      error.code === '42P01' || error.code === 'PGRST205'
+      || msg.indexOf('does not exist') >= 0 || msg.indexOf('could not find the table') >= 0
     );
   }
 
   function escapeHtml(text) {
     return String(text || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function catColor(cat) { return CAT_COLOR[cat] || '#374151'; }
+
+  function canonicalCategory(v) {
+    return window.RSM_CATEGORIES ? window.RSM_CATEGORIES.canonical(v) : String(v || '').trim();
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? new Date(iso + 'T00:00:00') : new Date(iso);
+    return d.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function fmtDateShort(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   function renderInlineText(text) {
@@ -86,188 +374,452 @@
   }
 
   function getContentBlocks(text) {
-    return String(text || '')
-      .split(/\n\s*\n+/)
-      .map((block) => block.trim())
-      .filter(Boolean);
+    return String(text || '').split(/\n\s*\n+/).map(function (b) { return b.trim(); }).filter(Boolean);
   }
-
   function getBlockLines(block) {
-    return String(block || '')
-      .split(/\n+/)
-      .map((line) => line.trim())
-      .filter(Boolean);
+    return String(block || '').split(/\n+/).map(function (l) { return l.trim(); }).filter(Boolean);
   }
-
-  function normalizeBlockText(block) {
-    return getBlockLines(block).join(' ');
-  }
+  function normalizeBlockText(block) { return getBlockLines(block).join(' '); }
 
   function parseListMarker(line) {
-    const unordered = String(line || '').match(/^[-*+•–]\s+(.+)$/);
-    if (unordered) {
-      return { type: 'ul', text: unordered[1].trim() };
-    }
-
-    const ordered = String(line || '').match(/^\d+[.)]\s+(.+)$/);
-    if (ordered) {
-      return { type: 'ol', text: ordered[1].trim() };
-    }
-
+    var u = String(line || '').match(/^[-*+•–]\s+(.+)$/);
+    if (u) return { type: 'ul', text: u[1].trim() };
+    var o = String(line || '').match(/^\d+[.)]\s+(.+)$/);
+    if (o) return { type: 'ol', text: o[1].trim() };
     return null;
   }
-
   function parseListBlock(block) {
-    const lines = getBlockLines(block);
+    var lines = getBlockLines(block);
     if (lines.length < 2) return null;
-
-    let type = null;
-    const items = [];
-
-    for (const line of lines) {
-      const item = parseListMarker(line);
+    var type = null; var items = [];
+    for (var i = 0; i < lines.length; i++) {
+      var item = parseListMarker(lines[i]);
       if (!item) return null;
       if (!type) type = item.type;
       if (type !== item.type) return null;
       items.push(item.text);
     }
-
-    return items.length ? { type, items } : null;
+    return items.length ? { type: type, items: items } : null;
   }
-
   function getSequenceItem(block) {
-    const text = normalizeBlockText(block);
+    var text = normalizeBlockText(block);
     if (!text || /^#{1,6}\s+/.test(text) || /^>\s?/.test(text)) return null;
-
-    const marked = parseListMarker(text);
+    var marked = parseListMarker(text);
     if (marked) return marked;
-
     if (text.length > 140 || /[.!?;:]$/.test(text)) return null;
-    return { type: 'ul', text };
+    return { type: 'ul', text: text };
   }
-
   function collectSequenceBlocks(blocks, startIndex) {
-    const items = [];
-    let type = null;
-    let index = startIndex;
-
+    var items = []; var type = null; var index = startIndex;
     while (index < blocks.length) {
-      const item = getSequenceItem(blocks[index]);
+      var item = getSequenceItem(blocks[index]);
       if (!item) break;
       if (!type) type = item.type;
       if (type !== item.type) break;
-      items.push(item.text);
-      index += 1;
+      items.push(item.text); index++;
     }
-
     return items.length >= 2
-      ? { type: type || 'ul', items, consumed: index - startIndex }
+      ? { type: type || 'ul', items: items, consumed: index - startIndex }
       : { type: null, items: [], consumed: 0 };
   }
-
   function collectSequenceLines(lines) {
-    const items = [];
-    let type = null;
-
-    for (const line of lines) {
-      const item = getSequenceItem(line);
-      if (!item) {
-        return { type: null, items: [] };
-      }
+    var items = []; var type = null;
+    for (var i = 0; i < lines.length; i++) {
+      var item = getSequenceItem(lines[i]);
+      if (!item) return { type: null, items: [] };
       if (!type) type = item.type;
-      if (type !== item.type) {
-        return { type: null, items: [] };
-      }
+      if (type !== item.type) return { type: null, items: [] };
       items.push(item.text);
     }
-
-    return items.length >= 2 ? { type: type || 'ul', items } : { type: null, items: [] };
+    return items.length >= 2 ? { type: type || 'ul', items: items } : { type: null, items: [] };
   }
-
   function renderList(type, items) {
-    return `<${type}>${items.map((item) => `<li>${renderInlineText(item)}</li>`).join('')}</${type}>`;
+    return '<' + type + '>' + items.map(function (i) { return '<li>' + renderInlineText(i) + '</li>'; }).join('') + '</' + type + '>';
   }
-
   function getReadingStats(text) {
-    const raw = String(text || '');
-    const blocks = getContentBlocks(raw);
-    let headingCount = 0;
-    let paragraphCount = 0;
-
-    for (let index = 0; index < blocks.length; index += 1) {
-      const block = blocks[index];
-      const lines = getBlockLines(block);
-      const normalized = normalizeBlockText(block);
-
-      if (/^#{1,6}\s+/.test(block)) {
-        headingCount += 1;
-        continue;
-      }
-
-      if (/^>\s?/.test(block)) {
-        paragraphCount += 1;
-        continue;
-      }
-
-      if (parseListBlock(block)) {
-        paragraphCount += 1;
-        continue;
-      }
-
+    var raw = String(text || '');
+    var blocks = getContentBlocks(raw);
+    var headingCount = 0; var paragraphCount = 0;
+    for (var i = 0; i < blocks.length; i++) {
+      var block = blocks[i];
+      var lines = getBlockLines(block);
+      var normalized = normalizeBlockText(block);
+      if (/^#{1,6}\s+/.test(block)) { headingCount++; continue; }
+      if (/^>\s?/.test(block)) { paragraphCount++; continue; }
+      if (parseListBlock(block)) { paragraphCount++; continue; }
       if (lines.length > 2 && /:$/.test(lines[0])) {
-        const inlineSequence = collectSequenceLines(lines.slice(1));
-        if (inlineSequence.items.length) {
-          paragraphCount += 2;
-          continue;
-        }
+        var seq = collectSequenceLines(lines.slice(1));
+        if (seq.items.length) { paragraphCount += 2; continue; }
       }
-
       if (/:$/.test(normalized)) {
-        const blockSequence = collectSequenceBlocks(blocks, index + 1);
-        if (blockSequence.items.length) {
-          paragraphCount += 2;
-          index += blockSequence.consumed;
+        var bseq = collectSequenceBlocks(blocks, i + 1);
+        if (bseq.items.length) { paragraphCount += 2; i += bseq.consumed; continue; }
+      }
+      paragraphCount++;
+    }
+    return { headingCount: headingCount, paragraphCount: Math.max(1, paragraphCount) };
+  }
+  function renderContent(text) {
+    if (!text) return '';
+    var blocks = getContentBlocks(text);
+    var html = [];
+    for (var i = 0; i < blocks.length; i++) {
+      var block = blocks[i];
+      var lines = getBlockLines(block);
+      var normalized = normalizeBlockText(block);
+      var headingMatch = block.match(/^(#{1,6})\s+(.+)$/);
+      if (headingMatch) {
+        var level = Math.min(4, Math.max(2, headingMatch[1].length + 1));
+        html.push('<h' + level + '>' + renderInlineText(headingMatch[2].trim()) + '</h' + level + '>');
+        continue;
+      }
+      if (/^>\s?/.test(block)) {
+        var quote = block.replace(/^>\s?/gm, '').split(/\n+/).map(function (l) { return renderInlineText(l.trim()); }).join('<br>');
+        html.push('<blockquote>' + quote + '</blockquote>');
+        continue;
+      }
+      var ml = parseListBlock(block);
+      if (ml) { html.push(renderList(ml.type, ml.items)); continue; }
+      if (lines.length > 2 && /:$/.test(lines[0])) {
+        var seq2 = collectSequenceLines(lines.slice(1));
+        if (seq2.items.length) {
+          html.push('<p>' + renderInlineText(lines[0]) + '</p>');
+          html.push(renderList(seq2.type, seq2.items));
           continue;
         }
       }
-
-      paragraphCount += 1;
+      if (/:$/.test(normalized)) {
+        var bseq2 = collectSequenceBlocks(blocks, i + 1);
+        if (bseq2.items.length) {
+          html.push('<p>' + renderInlineText(normalized) + '</p>');
+          html.push(renderList(bseq2.type, bseq2.items));
+          i += bseq2.consumed;
+          continue;
+        }
+      }
+      html.push('<p>' + lines.map(function (l) { return renderInlineText(l.trim()); }).join('<br>') + '</p>');
     }
-
-    const plain = raw
-      .replace(/^#{1,6}\s+/gm, '')
-      .replace(/^>\s?/gm, '')
-      .replace(/\*\*(.+?)\*\*/g, '$1')
-      .replace(/\*(.+?)\*/g, '$1');
-    const words = plain.trim().split(/\s+/).filter(Boolean).length;
-
-    return {
-      minutes: Math.max(1, Math.round(words / 180)),
-      headingCount,
-      paragraphCount: Math.max(1, paragraphCount),
-    };
+    return html.join('');
   }
 
-  const canonicalCategory = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.canonical(value)
-    : String(value || '').trim();
-  const categoryHref = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.categoryHref(value)
-    : ('category?name=' + encodeURIComponent(canonicalCategory(value)));
-  const badgeColorByCategory = (value) => window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.badgeColor(value)
-    : 'default';
+  /* ── BRANCH: list vs detail ──────────────────────────────── */
+  if (!id) {
+    renderListView();
+    return;
+  }
 
-  function showDiscussionMessage(message, type) {
-    const box = document.getElementById('discussion-msg');
-    if (!box) return;
-    if (!message) {
-      box.style.display = 'none';
-      box.className = 'alert';
-      box.textContent = '';
+  /* ─────────────────────────────────────────────────────────
+     DETAIL VIEW
+  ───────────────────────────────────────────────────────── */
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
+    wrap.innerHTML = '<div class="error-wrap"><h2>Configurazione mancante</h2><p>Supabase non configurato.</p><a href="/category" class="btn btn-primary">← Torna alle notizie</a></div>';
+    return;
+  }
+
+  pagMain.classList.add('rsm-article');
+  await loadViewerContext();
+
+  var postResult = await sb.from('posts').select('*').eq('id', id).eq('published', true).single();
+  var post = postResult.data;
+  var postError = postResult.error;
+
+  if (postError || !post) {
+    wrap.innerHTML = '<div class="error-wrap"><h2>Articolo non trovato</h2><p>L\'articolo non esiste o non è ancora pubblicato.</p><a href="/category" class="btn btn-primary">← Torna alle notizie</a></div>';
+    return;
+  }
+
+  document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
+  activePost = Object.assign({}, post, { category: canonicalCategory(post.category) || 'Territorio' });
+
+  var cat    = activePost.category;
+  var color  = catColor(cat);
+  var stats  = getReadingStats(activePost.content);
+  var readingShape = stats.headingCount ? (stats.headingCount + ' sezioni') : (stats.paragraphCount + ' paragrafi');
+  var readingEntry = activePost.image_url ? 'apertura visiva' : 'testo diretto';
+
+  var isImportedAuthor = activePost.author_username === 'proloco';
+  var authorHref = (!isImportedAuthor && activePost.author_username) ? 'profile?u=' + encodeURIComponent(activePost.author_username) : '';
+  var authorFooterHtml = isImportedAuthor
+    ? '<a href="https://rivaltasulmincio.com" class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener">rivaltasulmincio.com →</a>'
+    : (activePost.author_username ? '<a href="' + authorHref + '" class="btn btn-outline-secondary btn-sm">Autore: @' + escapeHtml(activePost.author_username) + ' →</a>' : '');
+
+  /* scheduled date chip at top */
+  var schedHtml = activePost.event_start_at
+    ? '<span class="post-sched">Programmato per il ' + escapeHtml(fmtDate(activePost.event_start_at)) + '</span>'
+    : '';
+
+  /* event box */
+  var evKeys = ['event_start_at', 'event_time_text', 'location_text', 'address_text', 'organizer', 'contacts', 'price_text', 'booking_url'];
+  var hasEvent = evKeys.some(function (k) { return !!activePost[k]; });
+  var eventBoxHtml = '';
+  if (hasEvent) {
+    var rows = [];
+    if (activePost.event_start_at)   rows.push('<dt>Data</dt><dd>' + escapeHtml(fmtDate(activePost.event_start_at)) + '</dd>');
+    if (activePost.event_time_text)  rows.push('<dt>Orario</dt><dd>' + escapeHtml(activePost.event_time_text) + '</dd>');
+    if (activePost.location_text)    rows.push('<dt>Luogo</dt><dd>' + escapeHtml(activePost.location_text) + '</dd>');
+    if (activePost.address_text)     rows.push('<dt>Indirizzo</dt><dd>' + escapeHtml(activePost.address_text) + '</dd>');
+    if (activePost.organizer)        rows.push('<dt>Organizzatore</dt><dd>' + escapeHtml(activePost.organizer) + '</dd>');
+    if (activePost.contacts)         rows.push('<dt>Contatti</dt><dd>' + escapeHtml(activePost.contacts) + '</dd>');
+    if (activePost.price_text)       rows.push('<dt>Ingresso</dt><dd>' + escapeHtml(activePost.price_text) + '</dd>');
+    var ctaUrl  = String((activePost.cta_url || activePost.booking_url) || '').trim();
+    var ctaText = String((activePost.cta_text || (activePost.booking_url ? 'Prenota ora' : '')) || '').trim();
+    var ctaBtnHtml = (ctaUrl && ctaText)
+      ? '<div class="event-cta"><a href="' + escapeHtml(ctaUrl) + '" class="btn btn-primary btn-sm" target="_blank" rel="noopener">' + escapeHtml(ctaText) + '</a></div>'
+      : '';
+    eventBoxHtml = '<div class="event-box"><div class="event-kicker">Dettagli evento</div><dl class="event-dl">' + rows.join('') + '</dl>' + ctaBtnHtml + '</div>';
+  }
+
+  /* tags + keywords */
+  var allTags = (activePost.tags || []).concat(activePost.keywords || []).filter(Boolean);
+  var tagsHtml = allTags.length
+    ? '<div class="post-tags">' + allTags.map(function (t) { return '<span class="post-tag">' + escapeHtml(t) + '</span>'; }).join('') + '</div>'
+    : '';
+
+  /* extra links */
+  var linkPills = [];
+  if (activePost.instagram_url) {
+    linkPills.push('<a href="' + escapeHtml(activePost.instagram_url) + '" class="post-link-pill" target="_blank" rel="noopener">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>'
+      + 'Post Instagram</a>');
+  }
+  if (activePost.source_url) {
+    linkPills.push('<a href="' + escapeHtml(activePost.source_url) + '" class="post-link-pill" target="_blank" rel="noopener">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+      + 'Fonte originale</a>');
+  }
+  var linksHtml = linkPills.length ? '<div class="post-links">' + linkPills.join('') + '</div>' : '';
+
+  var imgSafe    = activePost.image_url ? escapeHtml(activePost.image_url) : '';
+  var titleSafe  = escapeHtml(activePost.title || 'Articolo');
+
+  wrap.innerHTML =
+    '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem">'
+    +  '<a href="/category" class="btn btn-outline-secondary btn-sm">← Torna alle notizie</a>'
+    +  '<a href="/" class="btn btn-outline-secondary btn-sm">Home</a>'
+    + '</div>'
+    + '<div class="post-layout">'
+    +   '<div class="post-main">'
+    +     '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">'
+    +       '<span class="cat-badge" style="background:' + color + '">' + escapeHtml(cat) + '</span>'
+    +       schedHtml
+    +     '</div>'
+    +     '<h1 class="post-title">' + titleSafe + '</h1>'
+    +     (activePost.subtitle ? '<p class="post-subtitle">' + escapeHtml(activePost.subtitle) + '</p>' : '')
+    +     (activePost.excerpt  ? '<p class="post-lead">'     + escapeHtml(activePost.excerpt)  + '</p>' : '')
+    +     '<div class="reading-brief">'
+    +       '<span class="reading-kicker">Guida di lettura</span>'
+    +       '<span class="reading-chip">' + readingShape + '</span>'
+    +       '<span class="reading-chip">' + readingEntry + '</span>'
+    +     '</div>'
+    +     (imgSafe ? '<div class="post-img-mob"><img src="' + imgSafe + '" alt="' + titleSafe + '" loading="lazy" /></div>' : '')
+    +     eventBoxHtml
+    +     '<div class="content" id="article-body">' + renderContent(activePost.content) + '</div>'
+    +     tagsHtml
+    +     linksHtml
+    +     '<div class="post-pub-date">Pubblicato il ' + escapeHtml(fmtDate(activePost.published_at)) + '</div>'
+    +     '<div class="post-footer">'
+    +       '<a href="/category" class="btn btn-outline-secondary btn-sm">← Tutte le notizie</a>'
+    +       authorFooterHtml
+    +     '</div>'
+    +     '<div class="post-reactions">'
+    +       '<button class="like-btn" id="like-btn" type="button" aria-pressed="false">'
+    +         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+    +           '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>'
+    +         '</svg>'
+    +         '<span id="like-count">0</span>'
+    +       '</button>'
+    +       '<span class="like-hint" id="like-hint"></span>'
+    +     '</div>'
+    +     '<section class="discussion-sec" id="discussion">'
+    +       '<h2>Commenti</h2>'
+    +       '<div id="discussion-msg" class="alert" role="alert" style="display:none"></div>'
+    +       '<div class="comment-composer">'
+    +         '<form id="comment-form">'
+    +           '<textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>'
+    +           '<div class="comment-composer-btns">'
+    +             '<button class="btn btn-primary btn-sm" id="comment-submit" type="submit">Pubblica</button>'
+    +             '<button class="btn btn-outline-secondary btn-sm" id="report-post-btn" type="button">Segnala post</button>'
+    +           '</div>'
+    +         '</form>'
+    +       '</div>'
+    +       '<div class="callout note">'
+    +         '<div class="callout-title">Regole di convivenza</div>'
+    +         '<ul>'
+    +           '<li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>'
+    +           '<li>Resta sul tema e usa un linguaggio costruttivo.</li>'
+    +         '</ul>'
+    +       '</div>'
+    +       '<div id="comments-list" class="comments-list"><p class="text-muted small">Caricamento commenti...</p></div>'
+    +     '</section>'
+    +     '<section class="related-sec">'
+    +       '<div class="related-kicker">Leggi anche</div>'
+    +       '<div class="related-grid" id="related-posts">'
+    +         '<div class="skel" style="height:180px;border-radius:12px"></div>'
+    +         '<div class="skel" style="height:180px;border-radius:12px"></div>'
+    +         '<div class="skel" style="height:180px;border-radius:12px"></div>'
+    +       '</div>'
+    +     '</section>'
+    +   '</div>'
+    +   '<aside class="post-aside">'
+    +     (imgSafe ? '<figure class="post-aside-fig"><img src="' + imgSafe + '" alt="' + titleSafe + '" loading="lazy" /></figure>' : '')
+    +   '</aside>'
+    + '</div>';
+
+  await resolveCommentPrivacy();
+  bindDiscussionHandlers();
+  await loadLikes();
+  syncCommentComposerState();
+  await loadComments();
+  await loadRelatedPosts(id);
+
+  window.editComment   = editComment;
+  window.deleteComment = deleteComment;
+
+  /* ─────────────────────────────────────────────────────────
+     LIST VIEW
+  ───────────────────────────────────────────────────────── */
+  function renderListView() {
+    if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project') || typeof supabase === 'undefined') {
+      wrap.innerHTML = '<p class="text-muted">Configura Supabase per visualizzare i post.</p>';
       return;
     }
-    const variant = type === 'err' ? 'alert-danger' : (type === 'ok' ? 'alert-success' : 'alert-info');
+    var SPRITES   = '/vendor/bootstrap-italia/svg/sprites.svg';
+    var allCats   = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [];
+    var requested = canonicalCategory(params.get('name') || '');
+    var activeCat = allCats.includes(requested) ? requested : 'all';
+    var isAll     = activeCat === 'all';
+
+    function catUrl(c) { return c === 'all' ? '/post' : '/post?name=' + encodeURIComponent(c); }
+
+    var chipsHtml = [{ label: 'Tutto', value: 'all' }]
+      .concat(allCats.map(function (c) { return { label: c, value: c }; }))
+      .map(function (item) {
+        var active = item.value === activeCat ? ' chip-primary' : '';
+        return '<a class="chip chip-simple' + active + '" href="' + catUrl(item.value) + '">'
+          + '<span class="chip-label">' + escapeHtml(item.label) + '</span></a>';
+      }).join('');
+
+    document.title = (isAll ? 'Tutti i post' : activeCat) + ' - Rivalta sul Mincio';
+
+    wrap.innerHTML =
+      '<p class="text-primary fw-semibold text-uppercase small mb-1">Archivio Rivalta sul Mincio</p>'
+      + '<h1>' + (isAll ? 'Tutti i post' : escapeHtml(activeCat)) + '</h1>'
+      + '<p class="text-muted lead">' + (isAll
+          ? 'Archivio completo di tutti i post pubblicati: eventi, territorio, vita locale e storie della comunità.'
+          : 'Articoli pubblicati nella categoria ' + escapeHtml(activeCat) + '.')
+      + '</p>'
+      + '<nav class="d-flex flex-wrap gap-2 my-3" aria-label="Categorie">' + chipsHtml + '</nav>'
+      + '<div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">'
+      +   '<h2 class="h5 mb-0">' + (isAll ? 'Ultimi articoli' : 'Archivio ' + escapeHtml(activeCat)) + '</h2>'
+      +   '<span class="badge bg-secondary" id="feed-count">In caricamento</span>'
+      + '</div>'
+      + '<div class="row g-3" id="posts-grid"></div>'
+      + '<div class="callout note" id="posts-empty" style="display:none"></div>';
+
+    var postsGrid = document.getElementById('posts-grid');
+    var emptyEl   = document.getElementById('posts-empty');
+    var countEl   = document.getElementById('feed-count');
+
+    sb.from('posts')
+      .select('id,title,excerpt,category,image_url,published_at')
+      .eq('published', true)
+      .order('published_at', { ascending: false })
+      .then(function (res) {
+        if (res.error) {
+          if (emptyEl) { emptyEl.style.display = 'block'; emptyEl.textContent = 'Errore: ' + res.error.message; }
+          if (countEl) countEl.textContent = '0 articoli';
+          return;
+        }
+        var rows = (res.data || [])
+          .map(function (p) { return Object.assign({}, p, { category: canonicalCategory(p.category) || 'Territorio' }); })
+          .filter(function (p) { return isAll || p.category === activeCat; });
+
+        if (!rows.length) {
+          if (emptyEl) { emptyEl.style.display = 'block'; emptyEl.textContent = isAll ? 'Nessun articolo disponibile.' : 'Nessun articolo in questa categoria.'; }
+          if (countEl) countEl.textContent = '0 articoli';
+          return;
+        }
+
+        if (countEl) countEl.textContent = rows.length + (rows.length === 1 ? ' articolo' : ' articoli');
+        if (postsGrid) postsGrid.innerHTML = rows.map(function (p) {
+          var pColor = catColor(p.category);
+          var href  = '/post?id=' + encodeURIComponent(p.id);
+          var media = p.image_url
+            ? '<a href="' + href + '"><img class="rsm-post-thumb" src="' + escapeHtml(p.image_url) + '" alt="" loading="lazy" /></a>'
+            : '<a href="' + href + '"><span class="rsm-post-thumb rsm-post-thumb--empty"></span></a>';
+          var dateStr = p.published_at ? new Date(p.published_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+          return '<div class="col-12 col-sm-6 col-lg-4">'
+            + '<div class="card-wrapper h-100"><div class="card card-bg h-100">'
+            + media
+            + '<div class="card-body">'
+            + '<div class="d-flex align-items-center gap-2 mb-2">'
+            + '<span style="background:' + pColor + ';color:#fff;display:inline-block;padding:2px 10px;border-radius:999px;font-size:.7rem;font-weight:700">' + escapeHtml(p.category) + '</span>'
+            + '<span class="text-muted small">' + escapeHtml(dateStr) + '</span>'
+            + '</div>'
+            + '<h3 class="card-title h5"><a href="' + href + '">' + escapeHtml(p.title || 'Articolo') + '</a></h3>'
+            + '<p class="card-text">' + escapeHtml(p.excerpt || '') + '</p>'
+            + '<a class="read-more" href="' + href + '"><span class="text">Leggi articolo</span>'
+            + '<svg class="icon"><use href="' + SPRITES + '#it-arrow-right"></use></svg></a>'
+            + '</div></div></div></div>';
+        }).join('');
+      });
+  }
+
+  /* ── related posts ────────────────────────────────────────── */
+  async function loadRelatedPosts(currentId) {
+    var res = await sb.from('posts')
+      .select('id,title,category,image_url,published_at')
+      .eq('published', true)
+      .neq('id', currentId)
+      .order('published_at', { ascending: false })
+      .limit(3);
+
+    var grid = document.getElementById('related-posts');
+    if (!grid) return;
+
+    if (!res.data || !res.data.length) {
+      var sec = grid.closest('.related-sec');
+      if (sec) sec.style.display = 'none';
+      return;
+    }
+
+    grid.innerHTML = res.data.map(function (p) {
+      var pCat   = canonicalCategory(p.category) || 'Territorio';
+      var pColor = catColor(pCat);
+      var href   = '/post?id=' + encodeURIComponent(p.id);
+      var thumb  = p.image_url
+        ? '<img class="rel-thumb" src="' + escapeHtml(p.image_url) + '" alt="" loading="lazy" />'
+        : '<span class="rel-thumb-empty"></span>';
+      return '<a class="rel-card" href="' + href + '">'
+        + thumb
+        + '<div class="rel-body">'
+        + '<div class="rel-meta">'
+        + '<span class="rel-badge" style="background:' + pColor + '">' + escapeHtml(pCat) + '</span>'
+        + '<span class="rel-date">' + escapeHtml(fmtDateShort(p.published_at)) + '</span>'
+        + '</div>'
+        + '<div class="rel-title">' + escapeHtml(p.title || 'Articolo') + '</div>'
+        + '</div></a>';
+    }).join('');
+  }
+
+  /* ── auth / viewer context ────────────────────────────────── */
+  async function loadViewerContext() {
+    var sessionData = await sb.auth.getSession();
+    viewerSession = (sessionData.data && sessionData.data.session) || null;
+    if (!viewerSession) { viewerProfile = null; return; }
+    var profileRes = await sb.from('profiles')
+      .select('id,username,role,avatar_emoji,avatar_color')
+      .eq('id', viewerSession.user.id)
+      .single();
+    viewerProfile = profileRes.data || null;
+  }
+
+  /* ── discussion UI helpers ────────────────────────────────── */
+  function showDiscussionMessage(message, type) {
+    var box = document.getElementById('discussion-msg');
+    if (!box) return;
+    if (!message) { box.style.display = 'none'; box.className = 'alert'; box.textContent = ''; return; }
+    var variant = type === 'err' ? 'alert-danger' : (type === 'ok' ? 'alert-success' : 'alert-info');
     box.style.display = '';
     box.className = 'alert ' + variant;
     box.setAttribute('role', 'alert');
@@ -275,411 +827,185 @@
   }
 
   function syncLikeUi() {
-    const btn = document.getElementById('like-btn');
-    const count = document.getElementById('like-count');
-    const hint = document.getElementById('like-hint');
+    var btn   = document.getElementById('like-btn');
+    var count = document.getElementById('like-count');
+    var hint  = document.getElementById('like-hint');
     if (!btn || !count) return;
-
     btn.classList.toggle('active', viewerLikedPost);
     btn.setAttribute('aria-pressed', viewerLikedPost ? 'true' : 'false');
     count.textContent = String(Math.max(0, likesCount));
-
     if (hint) {
       if (!viewerSession) {
-        hint.textContent = 'Accedi per mettere Mi piace e interagire con il post.';
+        hint.textContent = 'Accedi per mettere Mi piace.';
       } else if (viewerLikedPost) {
         hint.textContent = 'Hai messo Mi piace a questo articolo.';
       } else {
-        hint.textContent = 'Un singolo Mi piace per utente (toggle).';
+        hint.textContent = 'Un Mi piace per utente.';
       }
     }
   }
 
   function disableLikeUi(reason) {
-    const btn = document.getElementById('like-btn');
-    const hint = document.getElementById('like-hint');
+    var btn  = document.getElementById('like-btn');
+    var hint = document.getElementById('like-hint');
     if (btn) btn.disabled = true;
     if (hint && reason) hint.textContent = reason;
   }
 
   async function createInteractionNotification(type, commentId) {
-    if (!viewerSession?.user?.id || !activePost?.id || !activePost?.user_id) return;
+    if (!viewerSession || !viewerSession.user || !viewerSession.user.id) return;
+    if (!activePost || !activePost.id || !activePost.user_id) return;
     if (activePost.user_id === viewerSession.user.id) return;
-
-    const actor = viewerProfile?.username ? ('@' + viewerProfile.username) : 'Un utente';
-    const message = type === 'comment'
-      ? actor + ' ha commentato il tuo articolo.'
-      : actor + ' ha messo Mi piace al tuo articolo.';
-
-    const payload = {
+    var actor   = viewerProfile && viewerProfile.username ? ('@' + viewerProfile.username) : 'Un utente';
+    var message = type === 'comment' ? actor + ' ha commentato il tuo articolo.' : actor + ' ha messo Mi piace al tuo articolo.';
+    var payload = {
       user_id: activePost.user_id,
       actor_id: viewerSession.user.id,
-      actor_username: viewerProfile?.username || null,
+      actor_username: (viewerProfile && viewerProfile.username) || null,
       post_id: activePost.id,
       comment_id: commentId || null,
       type: type,
       message: message,
-      is_read: false,
+      is_read: false
     };
-
-    const { error } = await sb.from('notifications').insert(payload);
-    if (!error) return;
-
-    const errMsg = String(error.message || '').toLowerCase();
-    if (isMissingRelationError(error) || errMsg.includes('duplicate key')) return;
-    console.warn('[notifications] insert failed:', error.message);
+    var res = await sb.from('notifications').insert(payload);
+    if (!res.error) return;
+    var errMsg = String((res.error && res.error.message) || '').toLowerCase();
+    if (isMissingRelationError(res.error) || errMsg.indexOf('duplicate key') >= 0) return;
+    console.warn('[notifications] insert failed:', res.error.message);
   }
 
+  /* ── likes ────────────────────────────────────────────────── */
   async function loadLikes() {
-    const likeBtn = document.getElementById('like-btn');
-    if (!likeBtn || !activePost?.id) return;
-
-    const { count, error: countError } = await sb.from('post_likes')
-      .select('id', { count: 'exact', head: true })
-      .eq('post_id', activePost.id);
-
-    if (countError) {
-      if (isMissingRelationError(countError)) {
-        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
-        return;
-      }
+    var likeBtn = document.getElementById('like-btn');
+    if (!likeBtn || !activePost || !activePost.id) return;
+    var countRes = await sb.from('post_likes').select('id', { count: 'exact', head: true }).eq('post_id', activePost.id);
+    if (countRes.error) {
+      if (isMissingRelationError(countRes.error)) { disableLikeUi('Like non attivi: applica supabase-security.sql.'); return; }
       disableLikeUi('Like temporaneamente non disponibili.');
       return;
     }
-
-    likesCount = count || 0;
+    likesCount = countRes.count || 0;
     viewerLikedPost = false;
-
-    if (viewerSession?.user?.id) {
-      const { data: likeRow, error: likeError } = await sb.from('post_likes')
-        .select('id')
-        .eq('post_id', activePost.id)
-        .eq('user_id', viewerSession.user.id)
-        .maybeSingle();
-
-      if (!likeError) viewerLikedPost = !!likeRow;
+    if (viewerSession && viewerSession.user && viewerSession.user.id) {
+      var likeRes = await sb.from('post_likes').select('id').eq('post_id', activePost.id).eq('user_id', viewerSession.user.id).maybeSingle();
+      if (!likeRes.error) viewerLikedPost = !!likeRes.data;
     }
-
     syncLikeUi();
   }
 
   async function toggleLike() {
-    const likeBtn = document.getElementById('like-btn');
-    if (likeBtn?.disabled) return;
-
-    if (!viewerSession || !viewerProfile) {
-      showDiscussionMessage('Accedi per mettere Mi piace.', 'err');
-      return;
-    }
-    if (!activePost?.id) return;
-
+    var likeBtn = document.getElementById('like-btn');
+    if (likeBtn && likeBtn.disabled) return;
+    if (!viewerSession || !viewerProfile) { showDiscussionMessage('Accedi per mettere Mi piace.', 'err'); return; }
+    if (!activePost || !activePost.id) return;
     if (window.RSM_SECURITY) {
-      const likeLimit = window.RSM_SECURITY.checkRateLimit('like_toggle', viewerSession.user.id, LIKE_RATE_CFG);
-      if (!likeLimit.ok) {
-        showDiscussionMessage('Troppi click su Mi piace. Riprova tra ' + window.RSM_SECURITY.formatRetry(likeLimit.retryAfterMs) + '.', 'err');
-        return;
-      }
+      var likeLimit = window.RSM_SECURITY.checkRateLimit('like_toggle', viewerSession.user.id, LIKE_RATE_CFG);
+      if (!likeLimit.ok) { showDiscussionMessage('Troppi click su Mi piace. Riprova tra ' + window.RSM_SECURITY.formatRetry(likeLimit.retryAfterMs) + '.', 'err'); return; }
     }
-
     if (viewerLikedPost) {
-      const { error } = await sb.from('post_likes')
-        .delete()
-        .eq('post_id', activePost.id)
-        .eq('user_id', viewerSession.user.id);
-      if (error) {
-        showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
-        return;
-      }
-      viewerLikedPost = false;
-      likesCount = Math.max(0, likesCount - 1);
-      syncLikeUi();
-      showDiscussionMessage('Mi piace rimosso.', 'ok');
-      return;
+      var delRes = await sb.from('post_likes').delete().eq('post_id', activePost.id).eq('user_id', viewerSession.user.id);
+      if (delRes.error) { showDiscussionMessage('Operazione Mi piace non riuscita: ' + delRes.error.message, 'err'); return; }
+      viewerLikedPost = false; likesCount = Math.max(0, likesCount - 1); syncLikeUi(); showDiscussionMessage('Mi piace rimosso.', 'ok'); return;
     }
-
-    const payload = {
-      post_id: activePost.id,
-      user_id: viewerSession.user.id,
-      actor_username: viewerProfile.username || null,
-    };
-
-    const { error } = await sb.from('post_likes').insert(payload);
-    if (error) {
-      const errMsg = String(error.message || '').toLowerCase();
-      if (errMsg.includes('duplicate key')) {
-        viewerLikedPost = true;
-        await loadLikes();
-        return;
-      }
-      if (isMissingRelationError(error)) {
-        disableLikeUi('Like non attivi: applica supabase-security.sql su Supabase.');
-        showDiscussionMessage('Like non attivi nel database. Esegui supabase-security.sql.', 'err');
-        return;
-      }
-      showDiscussionMessage('Operazione Mi piace non riuscita: ' + error.message, 'err');
-      return;
+    var payload = { post_id: activePost.id, user_id: viewerSession.user.id, actor_username: viewerProfile.username || null };
+    var insRes = await sb.from('post_likes').insert(payload);
+    if (insRes.error) {
+      var errMsg = String((insRes.error && insRes.error.message) || '').toLowerCase();
+      if (errMsg.indexOf('duplicate key') >= 0) { viewerLikedPost = true; await loadLikes(); return; }
+      if (isMissingRelationError(insRes.error)) { disableLikeUi('Like non attivi: applica supabase-security.sql.'); return; }
+      showDiscussionMessage('Operazione Mi piace non riuscita: ' + insRes.error.message, 'err'); return;
     }
-
-    viewerLikedPost = true;
-    likesCount += 1;
-    syncLikeUi();
-    showDiscussionMessage('Mi piace registrato.', 'ok');
+    viewerLikedPost = true; likesCount++; syncLikeUi(); showDiscussionMessage('Mi piace registrato.', 'ok');
     await createInteractionNotification('like', null);
   }
 
-  async function loadViewerContext() {
-    const { data: sessionData } = await sb.auth.getSession();
-    viewerSession = sessionData?.session || null;
-
-    if (!viewerSession) {
-      viewerProfile = null;
-      return;
-    }
-
-    const { data: profile } = await sb.from('profiles')
-      .select('id,username,role,avatar_emoji,avatar_color')
-      .eq('id', viewerSession.user.id)
-      .single();
-
-    viewerProfile = profile || null;
-  }
-
-  function renderContent(text) {
-    if (!text) return '';
-    const blocks = getContentBlocks(text);
-    const html = [];
-
-    for (let index = 0; index < blocks.length; index += 1) {
-      const block = blocks[index];
-      const lines = getBlockLines(block);
-      const normalized = normalizeBlockText(block);
-      const headingMatch = block.match(/^(#{1,6})\s+(.+)$/);
-
-      if (headingMatch) {
-        const level = Math.min(4, Math.max(2, headingMatch[1].length + 1));
-        html.push(`<h${level}>${renderInlineText(headingMatch[2].trim())}</h${level}>`);
-        continue;
-      }
-
-      if (/^>\s?/.test(block)) {
-        const quote = block
-          .replace(/^>\s?/gm, '')
-          .split(/\n+/)
-          .map((line) => renderInlineText(line.trim()))
-          .join('<br>');
-        html.push(`<blockquote>${quote}</blockquote>`);
-        continue;
-      }
-
-      const markdownList = parseListBlock(block);
-      if (markdownList) {
-        html.push(renderList(markdownList.type, markdownList.items));
-        continue;
-      }
-
-      if (lines.length > 2 && /:$/.test(lines[0])) {
-        const inlineSequence = collectSequenceLines(lines.slice(1));
-        if (inlineSequence.items.length) {
-          html.push(`<p>${renderInlineText(lines[0])}</p>`);
-          html.push(renderList(inlineSequence.type, inlineSequence.items));
-          continue;
-        }
-      }
-
-      if (/:$/.test(normalized)) {
-        const blockSequence = collectSequenceBlocks(blocks, index + 1);
-        if (blockSequence.items.length) {
-          html.push(`<p>${renderInlineText(normalized)}</p>`);
-          html.push(renderList(blockSequence.type, blockSequence.items));
-          index += blockSequence.consumed;
-          continue;
-        }
-      }
-
-      const paragraph = lines
-        .map((line) => renderInlineText(line.trim()))
-        .join('<br>');
-      html.push(`<p>${paragraph}</p>`);
-    }
-
-    return html.join('');
-  }
-
+  /* ── comments ────────────────────────────────────────────── */
   function canViewerComment() {
-    if (commentPrivacy === 'none') {
-      return { ok: false, reason: 'I commenti per questo autore sono disattivati.' };
-    }
-    if (!viewerSession || !viewerProfile) {
-      return { ok: false, reason: 'Accedi per poter commentare.' };
-    }
-    if (commentPrivacy === 'members' && !['user', 'admin'].includes(viewerProfile.role || '')) {
-      return { ok: false, reason: 'Solo i membri verificati possono commentare questo post.' };
-    }
+    if (commentPrivacy === 'none') return { ok: false, reason: 'I commenti sono disattivati.' };
+    if (!viewerSession || !viewerProfile) return { ok: false, reason: 'Accedi per poter commentare.' };
+    if (commentPrivacy === 'members' && !['user', 'admin'].includes(viewerProfile.role || '')) return { ok: false, reason: 'Solo i membri verificati possono commentare.' };
     return { ok: true, reason: '' };
   }
 
   function syncCommentComposerState() {
-    const status = canViewerComment();
-    const textarea = document.getElementById('comment-text');
-    const submitBtn = document.getElementById('comment-submit');
+    var status    = canViewerComment();
+    var textarea  = document.getElementById('comment-text');
+    var submitBtn = document.getElementById('comment-submit');
     if (!textarea || !submitBtn) return;
-
-    textarea.disabled = !status.ok;
+    textarea.disabled  = !status.ok;
     submitBtn.disabled = !status.ok;
-
-    if (!status.ok) {
-      textarea.placeholder = status.reason;
-      showDiscussionMessage(status.reason, '');
-    } else {
-      textarea.placeholder = 'Scrivi un commento rispettoso e costruttivo...';
-      showDiscussionMessage('', '');
-    }
+    if (!status.ok) { textarea.placeholder = status.reason; showDiscussionMessage(status.reason, ''); }
+    else { textarea.placeholder = 'Scrivi un commento rispettoso e costruttivo...'; showDiscussionMessage('', ''); }
   }
 
   async function resolveCommentPrivacy() {
-    if (!activePost?.user_id) {
-      commentPrivacy = 'all';
-      return;
-    }
-
-    const { data, error } = await sb.from('user_settings')
-      .select('comment_privacy')
-      .eq('user_id', activePost.user_id)
-      .maybeSingle();
-
-    if (error) {
-      commentPrivacy = 'all';
-      return;
-    }
-
-    commentPrivacy = data?.comment_privacy || 'all';
+    if (!activePost || !activePost.user_id) { commentPrivacy = 'all'; return; }
+    var res = await sb.from('user_settings').select('comment_privacy').eq('user_id', activePost.user_id).maybeSingle();
+    commentPrivacy = (res.data && res.data.comment_privacy) || 'all';
   }
 
   function renderComments() {
-    const list = document.getElementById('comments-list');
+    var list = document.getElementById('comments-list');
     if (!list) return;
-
-    if (!commentsCache.length) {
-      list.innerHTML = '<p class="text-muted small">Nessun commento ancora. Inizia tu la discussione.</p>';
-      return;
-    }
-
-    const nowTs = Date.now();
-    list.innerHTML = commentsCache.map((comment) => {
-      const author = comment.author_username ? '@' + escapeHtml(comment.author_username) : 'Utente';
-      const ownComment = !!viewerSession && comment.user_id === viewerSession.user.id;
-      const createdAt = new Date(comment.created_at).getTime();
-      const canEdit = ownComment && (nowTs - createdAt) <= (10 * 60 * 1000);
-
-      return `
-        <article class="card-wrapper">
-          <div class="card card-bg">
-            <div class="card-body">
-              <div class="comment-meta">
-                <span>${author}</span>
-                <time>${new Date(comment.created_at).toLocaleString('it-IT')}</time>
-              </div>
-              <div class="comment-body">${escapeHtml(comment.content)}</div>
-              <div class="comment-actions">
-                ${canEdit ? `<button class="btn btn-outline-secondary btn-sm" type="button" onclick="editComment('${comment.id}')">Modifica</button>` : ''}
-                ${ownComment ? `<button class="btn btn-outline-secondary btn-sm" type="button" onclick="deleteComment('${comment.id}')">Elimina</button>` : ''}
-              </div>
-            </div>
-          </div>
-        </article>`;
+    if (!commentsCache.length) { list.innerHTML = '<p class="text-muted small">Nessun commento ancora. Inizia tu la discussione.</p>'; return; }
+    var nowTs = Date.now();
+    list.innerHTML = commentsCache.map(function (comment) {
+      var author    = comment.author_username ? '@' + escapeHtml(comment.author_username) : 'Utente';
+      var ownComment = !!(viewerSession && comment.user_id === viewerSession.user.id);
+      var createdAt  = new Date(comment.created_at).getTime();
+      var canEdit    = ownComment && (nowTs - createdAt) <= (10 * 60 * 1000);
+      return '<div class="comment-item">'
+        + '<div class="comment-head">'
+        + '<span class="comment-author">' + author + '</span>'
+        + '<time class="comment-time">' + new Date(comment.created_at).toLocaleString('it-IT') + '</time>'
+        + '</div>'
+        + '<div class="comment-body">' + escapeHtml(comment.content) + '</div>'
+        + (canEdit || ownComment
+          ? '<div class="comment-ftr">'
+            + (canEdit ? '<button class="btn btn-outline-secondary btn-sm" type="button" onclick="editComment(\'' + comment.id + '\')">Modifica</button>' : '')
+            + (ownComment ? '<button class="btn btn-outline-secondary btn-sm" type="button" onclick="deleteComment(\'' + comment.id + '\')">Elimina</button>' : '')
+            + '</div>'
+          : '')
+        + '</div>';
     }).join('');
   }
 
   async function loadComments() {
-    const list = document.getElementById('comments-list');
-    if (!list || !activePost?.id) return;
-
-    const { data, error } = await sb.from('comments')
-      .select('id,post_id,user_id,author_username,content,created_at,is_hidden')
-      .eq('post_id', activePost.id)
-      .eq('is_hidden', false)
-      .order('created_at', { ascending: true });
-
-    if (error) {
-      if (isMissingRelationError(error)) {
-        list.innerHTML = '<p class="text-muted small">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>';
-        return;
-      }
-      list.innerHTML = `<p class="text-muted small">Errore caricamento commenti: ${escapeHtml(error.message)}</p>`;
-      return;
+    var list = document.getElementById('comments-list');
+    if (!list || !activePost || !activePost.id) return;
+    var res = await sb.from('comments').select('id,post_id,user_id,author_username,content,created_at,is_hidden').eq('post_id', activePost.id).eq('is_hidden', false).order('created_at', { ascending: true });
+    if (res.error) {
+      if (isMissingRelationError(res.error)) { list.innerHTML = '<p class="text-muted small">Commenti non disponibili: applica supabase-security.sql su Supabase.</p>'; return; }
+      list.innerHTML = '<p class="text-muted small">Errore caricamento commenti: ' + escapeHtml(res.error.message) + '</p>'; return;
     }
-
-    commentsCache = data || [];
+    commentsCache = res.data || [];
     renderComments();
   }
 
   async function submitComment(event) {
     event.preventDefault();
-    const textarea = document.getElementById('comment-text');
-    if (!textarea || !viewerSession || !viewerProfile || !activePost?.id) {
-      showDiscussionMessage('Accedi per poter commentare.', 'err');
-      return;
-    }
-
-    const access = canViewerComment();
-    if (!access.ok) {
-      showDiscussionMessage(access.reason, 'err');
-      return;
-    }
-
-    const content = textarea.value.trim();
-    if (!content) {
-      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
-      return;
-    }
-
+    var textarea = document.getElementById('comment-text');
+    if (!textarea || !viewerSession || !viewerProfile || !activePost || !activePost.id) { showDiscussionMessage('Accedi per poter commentare.', 'err'); return; }
+    var access = canViewerComment();
+    if (!access.ok) { showDiscussionMessage(access.reason, 'err'); return; }
+    var content = textarea.value.trim();
+    if (!content) { showDiscussionMessage('Il commento non può essere vuoto.', 'err'); return; }
     if (window.RSM_SECURITY) {
-      const commentLimit = window.RSM_SECURITY.checkRateLimit('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
-      if (!commentLimit.ok) {
-        showDiscussionMessage('Stai commentando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(commentLimit.retryAfterMs) + '.', 'err');
-        return;
-      }
-
-      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
-        minChars: 3,
-        maxChars: 1200,
-        maxLinks: 2,
-        maxRepeatedChar: 6,
-        maxRepeatedLine: 3,
-      });
-      if (!safety.ok) {
-        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
-        showDiscussionMessage(safety.message, 'err');
-        return;
-      }
+      var commentLimit = window.RSM_SECURITY.checkRateLimit('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      if (!commentLimit.ok) { showDiscussionMessage('Stai commentando troppo velocemente. Riprova tra ' + window.RSM_SECURITY.formatRetry(commentLimit.retryAfterMs) + '.', 'err'); return; }
+      var safety = window.RSM_SECURITY.evaluateTextSafety(content, { minChars: 3, maxChars: 1200, maxLinks: 2, maxRepeatedChar: 6, maxRepeatedLine: 3 });
+      if (!safety.ok) { window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG); showDiscussionMessage(safety.message, 'err'); return; }
     }
-
-    const payload = {
-      post_id: activePost.id,
-      user_id: viewerSession.user.id,
-      author_username: viewerProfile.username || null,
-      content: content,
-      is_hidden: false,
-    };
-    const { data: insertedComment, error } = await sb.from('comments').insert(payload).select('id').single();
-
-    if (error) {
-      if (window.RSM_SECURITY) {
-        window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
-      }
-      if (isMissingRelationError(error)) {
-        showDiscussionMessage('Commenti non attivi nel database. Esegui supabase-security.sql.', 'err');
-        return;
-      }
-      showDiscussionMessage('Commento non salvato: ' + error.message, 'err');
-      return;
+    var payload = { post_id: activePost.id, user_id: viewerSession.user.id, author_username: viewerProfile.username || null, content: content, is_hidden: false };
+    var res = await sb.from('comments').insert(payload).select('id').single();
+    if (res.error) {
+      if (window.RSM_SECURITY) window.RSM_SECURITY.recordRateFailure('comment_write', viewerSession.user.id, COMMENT_RATE_CFG);
+      if (isMissingRelationError(res.error)) { showDiscussionMessage('Commenti non attivi nel database. Esegui supabase-security.sql.', 'err'); return; }
+      showDiscussionMessage('Commento non salvato: ' + res.error.message, 'err'); return;
     }
-
-    if (window.RSM_SECURITY) {
-      window.RSM_SECURITY.clearRateFailures('comment_write', viewerSession.user.id);
-    }
-
-    await createInteractionNotification('comment', insertedComment?.id || null);
+    if (window.RSM_SECURITY) window.RSM_SECURITY.clearRateFailures('comment_write', viewerSession.user.id);
+    await createInteractionNotification('comment', (res.data && res.data.id) || null);
     textarea.value = '';
     showDiscussionMessage('Commento pubblicato.', 'ok');
     await loadComments();
@@ -687,270 +1013,72 @@
 
   async function editComment(commentId) {
     if (!viewerSession) return;
-    const comment = commentsCache.find((item) => item.id === commentId);
+    var comment = commentsCache.find(function (c) { return c.id === commentId; });
     if (!comment || comment.user_id !== viewerSession.user.id) return;
-
-    const ageMs = Date.now() - new Date(comment.created_at).getTime();
-    if (ageMs > 10 * 60 * 1000) {
-      showDiscussionMessage('Puoi modificare un commento solo entro 10 minuti.', 'err');
-      return;
-    }
-
-    const next = prompt('Modifica commento:', comment.content || '');
+    if (Date.now() - new Date(comment.created_at).getTime() > 10 * 60 * 1000) { showDiscussionMessage('Puoi modificare un commento solo entro 10 minuti.', 'err'); return; }
+    var next = prompt('Modifica commento:', comment.content || '');
     if (next === null) return;
-    const content = String(next).trim();
-    if (!content) {
-      showDiscussionMessage('Il commento non puo essere vuoto.', 'err');
-      return;
-    }
-
+    var content = String(next).trim();
+    if (!content) { showDiscussionMessage('Il commento non può essere vuoto.', 'err'); return; }
     if (window.RSM_SECURITY) {
-      const safety = window.RSM_SECURITY.evaluateTextSafety(content, {
-        minChars: 3,
-        maxChars: 1200,
-        maxLinks: 2,
-        maxRepeatedChar: 6,
-        maxRepeatedLine: 3,
-      });
-      if (!safety.ok) {
-        showDiscussionMessage(safety.message, 'err');
-        return;
-      }
+      var safety = window.RSM_SECURITY.evaluateTextSafety(content, { minChars: 3, maxChars: 1200, maxLinks: 2, maxRepeatedChar: 6, maxRepeatedLine: 3 });
+      if (!safety.ok) { showDiscussionMessage(safety.message, 'err'); return; }
     }
-
-    const { error } = await sb.from('comments').update({ content: content }).eq('id', commentId);
-    if (error) {
-      showDiscussionMessage('Modifica non riuscita: ' + error.message, 'err');
-      return;
-    }
-
+    var res = await sb.from('comments').update({ content: content }).eq('id', commentId);
+    if (res.error) { showDiscussionMessage('Modifica non riuscita: ' + res.error.message, 'err'); return; }
     showDiscussionMessage('Commento aggiornato.', 'ok');
     await loadComments();
   }
 
   async function deleteComment(commentId) {
     if (!viewerSession) return;
-    const comment = commentsCache.find((item) => item.id === commentId);
+    var comment = commentsCache.find(function (c) { return c.id === commentId; });
     if (!comment || comment.user_id !== viewerSession.user.id) return;
     if (!confirm('Eliminare questo commento?')) return;
-
-    const { error } = await sb.from('comments').delete().eq('id', commentId);
-    if (error) {
-      showDiscussionMessage('Eliminazione non riuscita: ' + error.message, 'err');
-      return;
-    }
-
+    var res = await sb.from('comments').delete().eq('id', commentId);
+    if (res.error) { showDiscussionMessage('Eliminazione non riuscita: ' + res.error.message, 'err'); return; }
     showDiscussionMessage('Commento eliminato.', 'ok');
     await loadComments();
   }
 
   async function reportPost() {
-    if (!viewerSession || !activePost?.id) {
-      showDiscussionMessage('Accedi per inviare una segnalazione.', 'err');
-      return;
-    }
-
+    if (!viewerSession || !activePost || !activePost.id) { showDiscussionMessage('Accedi per inviare una segnalazione.', 'err'); return; }
     if (window.RSM_SECURITY) {
-      const reportLimit = window.RSM_SECURITY.checkRateLimit('report_write', viewerSession.user.id, REPORT_RATE_CFG);
-      if (!reportLimit.ok) {
-        showDiscussionMessage('Hai inviato troppe segnalazioni. Riprova tra ' + window.RSM_SECURITY.formatRetry(reportLimit.retryAfterMs) + '.', 'err');
-        return;
-      }
+      var reportLimit = window.RSM_SECURITY.checkRateLimit('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      if (!reportLimit.ok) { showDiscussionMessage('Hai inviato troppe segnalazioni. Riprova tra ' + window.RSM_SECURITY.formatRetry(reportLimit.retryAfterMs) + '.', 'err'); return; }
     }
-
-    const reason = prompt('Motivo segnalazione (es: spam, offese, disinformazione):', 'spam');
+    var reason = prompt('Motivo segnalazione (es: spam, offese, disinformazione):', 'spam');
     if (reason === null) return;
-    const reasonText = String(reason || '').trim();
-    if (!reasonText) {
-      showDiscussionMessage('Inserisci un motivo valido per la segnalazione.', 'err');
-      return;
+    var reasonText = String(reason || '').trim();
+    if (!reasonText || reasonText.length < 3) { showDiscussionMessage('Inserisci un motivo valido (min 3 caratteri).', 'err'); return; }
+    if (reasonText.length > 120) { showDiscussionMessage('Motivo troppo lungo.', 'err'); return; }
+    var details = prompt('Dettagli (opzionale):', '') || '';
+    var detailsText = String(details).trim();
+    if (detailsText.length > 1000) { showDiscussionMessage('Dettagli troppo lunghi.', 'err'); return; }
+    var links = (reasonText + '\n' + detailsText).match(/https?:\/\/|www\./gi);
+    if (links && links.length > 1) { showDiscussionMessage('Segnalazione bloccata: troppi link.', 'err'); return; }
+    var payload = { post_id: activePost.id, reporter_id: viewerSession.user.id, reason: reasonText, details: detailsText || null, status: 'pending' };
+    var res = await sb.from('reports').insert(payload);
+    if (res.error) {
+      if (window.RSM_SECURITY) window.RSM_SECURITY.recordRateFailure('report_write', viewerSession.user.id, REPORT_RATE_CFG);
+      var errMsg = String((res.error && res.error.message) || '').toLowerCase();
+      if (errMsg.indexOf('duplicate key') >= 0) { showDiscussionMessage('Hai già segnalato questo contenuto.', 'err'); return; }
+      if (isMissingRelationError(res.error)) { showDiscussionMessage('Segnalazioni non attive nel database. Esegui supabase-security.sql.', 'err'); return; }
+      showDiscussionMessage('Segnalazione non inviata: ' + res.error.message, 'err'); return;
     }
-
-    const details = prompt('Dettagli (opzionale):', '') || '';
-    const detailsText = String(details).trim();
-
-    if (reasonText.length < 3) {
-      showDiscussionMessage('Motivo troppo breve.', 'err');
-      return;
-    }
-    if (reasonText.length > 120) {
-      showDiscussionMessage('Motivo troppo lungo.', 'err');
-      return;
-    }
-    if (detailsText.length > 1000) {
-      showDiscussionMessage('Dettagli troppo lunghi.', 'err');
-      return;
-    }
-
-    const reportLinks = (reasonText + '\n' + detailsText).match(/https?:\/\/|www\./gi);
-    if (reportLinks && reportLinks.length > 1) {
-      showDiscussionMessage('Segnalazione bloccata: troppi link.', 'err');
-      return;
-    }
-
-    const payload = {
-      post_id: activePost.id,
-      reporter_id: viewerSession.user.id,
-      reason: reasonText,
-      details: detailsText || null,
-      status: 'pending',
-    };
-
-    const { error } = await sb.from('reports').insert(payload);
-    if (error) {
-      if (window.RSM_SECURITY) {
-        window.RSM_SECURITY.recordRateFailure('report_write', viewerSession.user.id, REPORT_RATE_CFG);
-      }
-
-      const errMsg = String(error.message || '').toLowerCase();
-      if (errMsg.includes('duplicate key')) {
-        showDiscussionMessage('Hai gia segnalato questo contenuto.', 'err');
-        return;
-      }
-      if (isMissingRelationError(error)) {
-        showDiscussionMessage('Segnalazioni non attive nel database. Esegui supabase-security.sql.', 'err');
-        return;
-      }
-      showDiscussionMessage('Segnalazione non inviata: ' + error.message, 'err');
-      return;
-    }
-
-    if (window.RSM_SECURITY) {
-      window.RSM_SECURITY.clearRateFailures('report_write', viewerSession.user.id);
-    }
+    if (window.RSM_SECURITY) window.RSM_SECURITY.clearRateFailures('report_write', viewerSession.user.id);
     showDiscussionMessage('Segnalazione inviata alla moderazione. Grazie.', 'ok');
   }
 
   function bindDiscussionHandlers() {
-    const form = document.getElementById('comment-form');
-    if (form) form.addEventListener('submit', submitComment);
-
-    const reportBtn = document.getElementById('report-post-btn');
+    var form      = document.getElementById('comment-form');
+    var reportBtn = document.getElementById('report-post-btn');
+    var likeBtn   = document.getElementById('like-btn');
+    if (form)      form.addEventListener('submit', submitComment);
     if (reportBtn) reportBtn.addEventListener('click', reportPost);
-
-    const likeBtn = document.getElementById('like-btn');
-    if (likeBtn) likeBtn.addEventListener('click', toggleLike);
+    if (likeBtn)   likeBtn.addEventListener('click', toggleLike);
   }
 
-  await loadViewerContext();
-
-  if (!id || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) {
-    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>Nessun ID specificato.</p><a href="/#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
-    return;
-  }
-
-  const { data: post, error } = await sb.from('posts').select('*').eq('id', id).eq('published', true).single();
-
-  if (error || !post) {
-    wrap.innerHTML = `<div class="error-wrap"><h2>Articolo non trovato</h2><p>L'articolo non esiste o non è ancora pubblicato.</p><a href="/#news" class="btn btn-primary">← Torna alle notizie</a></div>`;
-    return;
-  }
-
-  document.title = post.title + ' – Pro Loco Rivalta sul Mincio';
-  const fmt = iso => new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
-
-  const badgeCls = c => c === 'green' ? 'badge bg-success' : 'badge bg-primary';
-
-  activePost = {
-    ...post,
-    category: canonicalCategory(post.category) || 'Territorio',
-    badge_color: post.badge_color || badgeColorByCategory(post.category)
-  };
-  const safeTitle = escapeHtml(activePost.title || 'Articolo');
-  const safeExcerpt = escapeHtml(activePost.excerpt || '');
-  const safeCategory = escapeHtml(activePost.category || '');
-  const safeBadge = escapeHtml(activePost.badge || activePost.category || '');
-  const safeAuthor = escapeHtml(activePost.author_username || '');
-  const safeCategoryHref = categoryHref(activePost.category);
-  const readingStats = getReadingStats(activePost.content);
-  const readingShape = readingStats.headingCount
-    ? `${readingStats.headingCount} sezioni`
-    : `${readingStats.paragraphCount} paragrafi`;
-  const readingEntry = activePost.image_url ? 'apertura visiva' : 'testo diretto';
-  const isImportedAuthor = activePost.author_username === 'proloco';
-  const authorHref = (!isImportedAuthor && activePost.author_username) ? `profile?u=${encodeURIComponent(activePost.author_username)}` : '';
-  const authorDisplay = isImportedAuthor
-    ? `<span class="meta-dot"></span><a href="https://rivaltasulmincio.com">rivaltasulmincio.com</a>`
-    : (activePost.author_username ? `<span class="meta-dot"></span><a href="${authorHref}">@${safeAuthor}</a>` : '');
-  const authorFooter = isImportedAuthor
-    ? `<a href="https://rivaltasulmincio.com" class="btn btn-outline-secondary">rivaltasulmincio.com →</a>`
-    : (activePost.author_username ? `<a href="${authorHref}" class="btn btn-outline-secondary">Autore: @${safeAuthor} →</a>` : '');
-
-  wrap.innerHTML = `
-    <div class="post-badges">
-      <span class="${badgeCls(activePost.badge_color)}">${safeBadge}</span>
-      ${activePost.category && activePost.badge && activePost.category !== activePost.badge ? `<a class="badge bg-primary" href="${safeCategoryHref}">${safeCategory}</a>` : ''}
-    </div>
-    <div class="post-meta">
-      <time>${fmt(activePost.published_at)}</time>
-      <span class="meta-dot"></span>
-      <a href="${safeCategoryHref}">${safeCategory}</a>
-      ${authorDisplay}
-    </div>
-    <h1 class="post-title">${safeTitle}</h1>
-    ${activePost.excerpt ? `<p class="post-lead">${safeExcerpt}</p>` : ''}
-    <div class="reading-brief" aria-label="Guida di lettura">
-      <div class="reading-kicker">Guida di lettura</div>
-      <div class="reading-stats">
-        <span class="chip chip-simple"><span class="chip-label">${readingStats.minutes} min di lettura</span></span>
-        <span class="chip chip-simple"><span class="chip-label">${readingShape}</span></span>
-        <span class="chip chip-simple"><span class="chip-label">${readingEntry}</span></span>
-      </div>
-      <div class="reading-links">
-        <a href="#article-body">Vai al testo</a>
-        <a href="#discussion">Vai alla discussione</a>
-      </div>
-    </div>
-    <div class="content-divider"></div>
-    ${activePost.image_url ? `<figure class="post-hero-img"><img src="${escapeHtml(activePost.image_url)}" alt="${safeTitle}" loading="lazy" /></figure>` : ''}
-    <div class="content" id="article-body">${renderContent(activePost.content)}</div>
-    <div class="post-footer">
-      <a href="/#news" class="btn btn-primary">← Tutte le notizie</a>
-      ${authorFooter}
-    </div>
-    <div class="post-reactions">
-      <button class="btn btn-outline-primary btn-sm" id="like-btn" type="button" aria-pressed="false">
-        <svg class="icon icon-sm icon-primary"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-favourite"></use></svg>
-        <span>Mi piace</span>
-        <span class="badge bg-primary rounded-pill" id="like-count">0</span>
-      </button>
-      <span class="text-muted small" id="like-hint">Un singolo Mi piace per utente (toggle).</span>
-    </div>
-    <section class="discussion" id="discussion">
-      <div class="discussion-head">
-        <h2>Discussione</h2>
-      </div>
-      <p class="text-muted small">Commenti con filtro anti-spam e moderazione. Modifica consentita entro 10 minuti.</p>
-      <div id="discussion-msg" class="alert" role="alert" style="display:none"></div>
-      <form class="comment-form" id="comment-form">
-        <textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary btn-sm" id="comment-submit" type="submit">Pubblica commento</button>
-          <button class="btn btn-outline-secondary btn-sm" id="report-post-btn" type="button">Segnala post</button>
-        </div>
-      </form>
-      <div class="callout note">
-        <div class="callout-title">Regole di convivenza</div>
-        <ul>
-          <li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>
-          <li>Resta sul tema del post e usa un linguaggio costruttivo.</li>
-          <li>Evita spam, link ripetuti e contenuti offensivi.</li>
-        </ul>
-      </div>
-      <div id="comments-list" class="comments-list">
-        <p class="text-muted small">Caricamento commenti...</p>
-      </div>
-    </section>
-  `;
-
-  await resolveCommentPrivacy();
-  bindDiscussionHandlers();
-  await loadLikes();
-  syncCommentComposerState();
-  await loadComments();
-
-  window.editComment = editComment;
-  window.deleteComment = deleteComment;
 })();
 </script>
 

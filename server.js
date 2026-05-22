@@ -557,37 +557,56 @@ async function handleAiAutofill(req, res) {
 
   const mode = body.mode === 'image' ? 'image' : 'text';
 
-  const SYSTEM_PROMPT = `Sei un assistente editoriale per Pro Loco di Rivalta sul Mincio, associazione culturale e turistica del territorio.
-Analizza il testo o l'immagine forniti e restituisci SOLO un oggetto JSON valido (nessun testo extra, nessun markdown) con questi campi:
-{
-  "title": stringa max 120 caratteri (obbligatorio se presente),
-  "subtitle": stringa max 160 caratteri o null,
-  "excerpt": stringa max 280 caratteri riassunto per social o null,
-  "content": testo completo dell'evento/notizia o null,
-  "category": una di [Ambiente, Anniversari, Assemblea, Canoa, Ciclismo, Festa del Pesce, Iniziative, Love-luccio, Mincio-art, Natale, Rassegna Stampa, Tesseramento, Video] o null,
-  "tone": una di [narrativo, istituzionale, giornalistico, conviviale] o null,
-  "target_audience": una di [famiglie, bambini, giovani, turisti, escursionisti, appassionati_natura] o null,
-  "event_start_at": stringa ISO 8601 o null,
-  "event_end_at": stringa ISO 8601 o null,
-  "event_time_text": orario leggibile come "10:00 – 23:00" o null,
-  "location_text": nome luogo o null,
-  "address_text": indirizzo completo o null,
-  "organizer": ente organizzatore o null,
-  "contacts": telefono o email o null,
-  "price_text": prezzo come "Gratuito" o "€5" o null,
-  "keywords": array di stringhe o [],
-  "tags": array di stringhe o []
-}
-Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni non presenti. Rispondi SOLO con il JSON.`;
+  const SYSTEM_PROMPT = `Sei un redattore esperto per il sito di notizie locali di Rivalta sul Mincio (MN), Italia, gestito dalla Pro Loco.
+Analizza il contenuto fornito e restituisci SOLO un oggetto JSON valido (nessun testo extra, nessun markdown, nessun backtick).
 
-  if (mode === 'image' && !String(body.data || '')) {
+Istruzioni per la qualità del testo:
+- "title": titolo giornalistico preciso, max 90 caratteri, in italiano corretto
+- "subtitle": sottotitolo evocativo o contestuale, max 140 caratteri, stile editoriale
+- "excerpt": 1-2 frasi di introduzione accattivanti, max 260 caratteri, tono caldo e invitante
+- "content": articolo completo in italiano elegante, minimo 120 parole. Struttura: apertura coinvolgente → cos'è → quando e dove → chi organizza → cosa aspettarsi → come partecipare → chiusura. Paragrafi separati da \\n\\n.
+- "event_start_at": solo la data in formato YYYY-MM-DD (es. 2026-05-24), NON includere l'ora
+- "event_end_at": solo la data in formato YYYY-MM-DD oppure null
+- "event_time_text": orario come "15:15" o "10:00 – 23:00" o null (separato dalla data)
+
+Schema JSON richiesto (rispetta esattamente i nomi):
+{
+  "title": "...",
+  "subtitle": "... o null",
+  "excerpt": "...",
+  "content": "...",
+  "category": "una di: Ambiente|Anniversari|Assemblea|Canoa|Ciclismo|Cultura|Enogastronomia|Eventi|Festa del Pesce|Iniziative|Love-luccio|Mincio-art|Natale|Natura|Rassegna Stampa|Sagre|Sport|Tesseramento|Turismo|Video",
+  "tone": "narrativo|istituzionale|giornalistico|conviviale",
+  "target_audience": "famiglie|bambini|giovani|turisti|escursionisti|appassionati_natura o null",
+  "event_start_at": "YYYY-MM-DD o null",
+  "event_end_at": "YYYY-MM-DD o null",
+  "event_time_text": "HH:MM o HH:MM – HH:MM o null",
+  "location_text": "nome luogo o null",
+  "address_text": "indirizzo completo o null",
+  "organizer": "ente organizzatore o null",
+  "contacts": "telefono o email o null",
+  "price_text": "Gratuito o €5 o null",
+  "keywords": ["parola1","parola2","parola3"],
+  "tags": ["tag1","tag2"]
+}
+Non inventare informazioni non presenti. Rispondi SOLO con il JSON.`;
+
+  if ((mode === 'image' || mode === 'both') && !String(body.data || '')) {
     res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Immagine mancante.' }));
     return;
   }
+  if ((mode === 'text' || mode === 'both') && !String(body.text || '').trim() && mode !== 'image') {
+    // text is optional for 'both' if image is provided
+  }
   if (mode === 'text' && !String(body.text || '').trim()) {
     res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Testo mancante.' }));
+    return;
+  }
+  if (!['text','image','both'].includes(mode)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'mode non valido.' }));
     return;
   }
 
@@ -597,16 +616,20 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
       const parts = [];
       if (mode === 'image') {
         parts.push({ inline_data: { mime_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } });
-        parts.push({ text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' });
+        parts.push({ text: 'Analizza questo volantino ed estrai le informazioni.' });
+      } else if (mode === 'both') {
+        const txt = String(body.text || '').trim().slice(0, 4000);
+        parts.push({ inline_data: { mime_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } });
+        parts.push({ text: 'Analizza questa immagine' + (txt ? ' e usa il seguente testo come contesto aggiuntivo:\n"""\n' + txt + '\n"""' : '') + '. Estrai tutte le informazioni disponibili.' });
       } else {
         parts.push({ text: String(body.text || '').slice(0, 8000) });
       }
       const geminiAbort = new AbortController();
-      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 8000);
+      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 20000);
       let geminiRes;
       try {
         geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -616,8 +639,7 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
               contents: [{ parts }],
               generationConfig: {
                 temperature: 0.1,
-                maxOutputTokens: 2048,
-                thinkingConfig: { thinkingBudget: 0 }
+                maxOutputTokens: 2048
               }
             })
           }
@@ -950,8 +972,8 @@ Restituisci questo schema JSON (rispetta esattamente i nomi dei campi):
   "location_text": "nome del luogo visibile nell'immagine oppure null",
   "address_text": "indirizzo completo se visibile oppure null",
   "organizer": "nome organizzatore se visibile oppure null",
-  "event_start_at": "data ISO8601 se visibile es. 2025-06-15T10:00:00 oppure null",
-  "event_end_at": "data ISO8601 fine evento se visibile oppure null",
+  "event_start_at": "solo la data YYYY-MM-DD se visibile es. 2026-06-15 oppure null (NON includere l'ora)",
+  "event_end_at": "solo la data YYYY-MM-DD fine evento se visibile oppure null",
   "event_time_text": "orario leggibile es. 10:00–23:00 oppure null",
   "contacts": "telefono o email se visibili oppure null",
   "price_text": "Gratuito oppure €5 oppure null",
@@ -1118,6 +1140,13 @@ function handler(req, res) {
 
   if (req.method === 'POST' && requestPathLower === '/api/ai/scan-photo') {
     handleScanPhoto(req, res);
+    return;
+  }
+
+  if (req.method === 'GET' && requestPathLower === '/category') {
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, { ...SECURITY_HEADERS, 'Location': '/post' + qs, 'Cache-Control': 'public, max-age=3600' });
+    res.end();
     return;
   }
 

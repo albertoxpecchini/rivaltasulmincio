@@ -6,6 +6,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard – Rivalta sul Mincio</title>
   <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="/vendor/bootstrap-italia/css/bootstrap-italia.min.css" />
+  <link rel="stylesheet" href="/rsm-bi.css" />
+  <style>
+    /* ── banner fotografico ── */
+    .db-banner {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      padding: 36px 28px 28px;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(150deg, #0a1f18 0%, #0d3326 35%, #155240 60%, #1c7a60 85%, #22a07e 100%);
+      color: #fff;
+    }
+    .db-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(255,255,255,.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(34,160,126,.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .db-banner-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1;
+      margin: 0 0 4px;
+      position: relative;
+    }
+    .db-banner-user {
+      font-size: .78rem;
+      opacity: .55;
+      font-weight: 500;
+      letter-spacing: .04em;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .db-stats {
+      display: flex;
+      gap: 24px;
+      position: relative;
+      margin-bottom: 22px;
+    }
+    .db-stat-num { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .db-stat-label { font-size: .63rem; opacity: .5; text-transform: uppercase; letter-spacing: .1em; margin-top: 3px; }
+    .db-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+    }
+    .db-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.08);
+      transition: background .15s;
+    }
+    .db-action:hover { background: rgba(255,255,255,.18); color: #fff; }
+    .db-action.primary { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.35); }
+
+    /* ── kpi compatti ── */
+    .db-kpi-num { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin: 6px 0 2px; }
+    .db-kpi-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: #6c757d; }
+    .db-kpi-meta { font-size: .72rem; margin-top: 2px; }
+
+    /* ── sync note ── */
+    #sync-note { font-size: .72rem; color: #6c757d; }
+
+    /* ── chart bars (invariato) ── */
+    .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 64px; }
+    .chart-bars .bar { flex: 1; border-radius: 3px 3px 0 0; background: #0066cc; opacity: .7; min-height: 3px; transition: opacity .15s; }
+    .chart-bars .bar:hover { opacity: 1; }
+    .chart-labels { display: flex; gap: 3px; margin-top: 4px; }
+    .chart-label { flex: 1; font-size: .58rem; color: #8a9bb0; text-align: center; overflow: hidden; white-space: nowrap; }
+  </style>
 </head>
 <body>
 
@@ -13,124 +97,105 @@
 
 <main class="container rsm-page">
 
-  <!-- HERO -->
-  <section id="dashboard" class="card-wrapper mb-4">
-    <div class="card card-bg">
-      <div class="card-body">
-        <p class="text-primary fw-semibold text-uppercase small mb-1">Cabina editoriale · dati live</p>
-        <h1 class="h3">Tutto il tuo flusso in una schermata sola.</h1>
-        <p class="text-muted">Pubblica, controlla il ritmo delle reazioni e riprendi le bozze senza uscire dal contesto.</p>
-        <div class="d-flex flex-wrap align-items-center gap-2 my-3">
-          <span class="badge bg-secondary" id="chip-user">@utente</span>
-          <label class="d-flex align-items-center gap-2 mb-0"><strong class="small">Periodo</strong>
-            <select class="form-select form-select-sm w-auto" id="global-period" aria-label="Periodo globale">
-              <option value="7d">Ultimi 7 giorni</option>
-              <option value="30d">Ultimi 30 giorni</option>
-              <option value="90d">Ultimi 90 giorni</option>
-            </select>
-          </label>
-          <button class="btn btn-primary btn-sm" type="button" id="open-create">Nuovo post</button>
-          <a class="btn btn-outline-primary btn-sm" href="/write">Editor completo</a>
-        </div>
-        <div class="text-muted small" id="sync-note">Allineamento dati in corso...</div>
-        <div class="row text-center mt-3 g-3">
-          <div class="col-4"><div class="h3 mb-0" id="hero-published">0</div><div class="small text-muted">Già online</div></div>
-          <div class="col-4"><div class="h3 mb-0" id="hero-drafts">0</div><div class="small text-muted">In lavorazione</div></div>
-          <div class="col-4"><div class="h3 mb-0" id="hero-likes">0</div><div class="small text-muted">Apprezzamenti</div></div>
-        </div>
-      </div>
+  <!-- BANNER FOTOGRAFICO -->
+  <div class="db-banner">
+    <div class="db-banner-title">Dashboard</div>
+    <div class="db-banner-user" id="chip-user">@utente</div>
+    <div class="db-stats">
+      <div><div class="db-stat-num" id="hero-published">0</div><div class="db-stat-label">Online</div></div>
+      <div><div class="db-stat-num" id="hero-drafts">0</div><div class="db-stat-label">Bozze</div></div>
+      <div><div class="db-stat-num" id="hero-likes">0</div><div class="db-stat-label">Like</div></div>
     </div>
-  </section>
+    <div class="db-actions">
+      <a class="db-action primary" href="/write">+ Nuovo post</a>
+      <a class="db-action" href="/">Vedi il sito</a>
+      <a class="db-action" href="/category">Tutti i post</a>
+      <a class="db-action" href="/modifica-profilo">Profilo</a>
+    </div>
+  </div>
+
+  <!-- PERIODO + SYNC -->
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+    <label class="d-flex align-items-center gap-2 mb-0">
+      <span class="small fw-semibold text-muted">Periodo</span>
+      <select class="form-select form-select-sm w-auto" id="global-period" aria-label="Periodo">
+        <option value="7d">7 giorni</option>
+        <option value="30d">30 giorni</option>
+        <option value="90d">90 giorni</option>
+      </select>
+    </label>
+    <div id="sync-note">Caricamento…</div>
+  </div>
 
   <!-- KPI -->
   <div class="row g-3 mb-4">
-    <div class="col-12 col-md-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Uscite nel periodo</div><div class="h2" id="bc-val-posts">–</div><div class="small" id="bc-meta-posts"><span>confronto con la finestra precedente</span></div></div></div></div></div>
-    <div class="col-12 col-md-4" id="analytics"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Polso della community</div><div class="h2" id="bc-val-inter">–</div><div class="small text-muted">Somma di like e commenti nel periodo.</div><div class="small mt-1" id="bc-meta-inter"></div></div></div></div></div>
-    <div class="col-12 col-md-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body"><div class="text-uppercase small text-muted">Commenti raccolti</div><div class="h2" id="bc-val-comments">–</div><div class="small" id="bc-meta-comments"><span>dialogo generato nella stessa finestra</span></div></div></div></div></div>
+    <div class="col-12 col-md-4">
+      <div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+        <div class="db-kpi-label">Post pubblicati</div>
+        <div class="db-kpi-num" id="bc-val-posts">–</div>
+        <div class="db-kpi-meta" id="bc-meta-posts"></div>
+      </div></div></div>
+    </div>
+    <div class="col-12 col-md-4" id="analytics">
+      <div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+        <div class="db-kpi-label">Interazioni</div>
+        <div class="db-kpi-num" id="bc-val-inter">–</div>
+        <div class="db-kpi-meta" id="bc-meta-inter"></div>
+      </div></div></div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
+        <div class="db-kpi-label">Commenti</div>
+        <div class="db-kpi-num" id="bc-val-comments">–</div>
+        <div class="db-kpi-meta" id="bc-meta-comments"></div>
+      </div></div></div>
+    </div>
   </div>
 
   <!-- CHART -->
   <div class="card-wrapper mb-4"><div class="card card-bg"><div class="card-body">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
       <div>
-        <div class="text-uppercase small text-muted">Ritmo</div>
-        <h2 class="h5 mb-0">Traccia delle interazioni</h2>
+        <div class="db-kpi-label">Andamento</div>
+        <strong class="small">Interazioni nel periodo</strong>
       </div>
-      <div class="btn-group" role="group" aria-label="Filtri andamento">
-        <button class="btn btn-outline-primary btn-sm active" type="button" data-group="day">Giorno</button>
-        <button class="btn btn-outline-primary btn-sm" type="button" data-group="week">Settimana</button>
-        <button class="btn btn-outline-primary btn-sm" type="button" data-group="month">Mese</button>
+      <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-outline-primary active" type="button" data-group="day">Giorno</button>
+        <button class="btn btn-outline-primary" type="button" data-group="week">Sett.</button>
+        <button class="btn btn-outline-primary" type="button" data-group="month">Mese</button>
       </div>
     </div>
-    <div class="d-flex justify-content-between small text-muted mb-1">
-      <span id="chart-title">Volume di risposta nel periodo</span>
-      <span id="chart-total">Totale: 0</span>
+    <div class="d-flex justify-content-end mb-1">
+      <span class="small text-muted" id="chart-total">Totale: 0</span>
     </div>
     <div class="chart-bars" id="chart-bars"></div>
     <div class="chart-labels" id="chart-labels"></div>
   </div></div></div>
 
-  <!-- LISTS -->
+  <!-- LISTE -->
   <div class="row g-3">
     <div class="col-12 col-lg-4" id="contenuti"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
-      <div class="text-uppercase small text-muted">In lavorazione</div>
-      <h3 class="h5">Bozze da rifinire</h3>
+      <div class="db-kpi-label mb-2">Bozze</div>
       <div class="d-grid gap-3" id="drafts-list"></div>
     </div></div></div></div>
+
     <div class="col-12 col-lg-4"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
-      <div class="text-uppercase small text-muted">Movimenti</div>
-      <h3 class="h5">Ultimi cambiamenti</h3>
+      <div class="db-kpi-label mb-2">Movimenti recenti</div>
       <div class="d-grid gap-3" id="recent-list"></div>
     </div></div></div></div>
+
     <div class="col-12 col-lg-4" id="media"><div class="card-wrapper h-100"><div class="card card-bg h-100"><div class="card-body">
-      <div class="text-uppercase small text-muted">Segnali</div>
-      <h3 class="h5">Centro notifiche</h3>
+      <div class="db-kpi-label mb-2">Notifiche</div>
       <div class="d-grid gap-3" id="notif-list"></div>
     </div></div></div></div>
   </div>
 
   <div class="callout note mt-3" id="empty-dashboard" style="display:none">
-    <div class="callout-title">Ancora nessun contenuto in archivio</div>
-    <p>Pubblica il primo post e qui inizierai a vedere ritmo, bozze, notifiche e ultimi movimenti.</p>
-    <div class="d-flex flex-wrap gap-2">
-      <button class="btn btn-primary" type="button" id="empty-create">Apri mini editor</button>
-      <a class="btn btn-outline-primary" href="/write">Editor completo</a>
-    </div>
+    <div class="callout-title">Nessun contenuto ancora</div>
+    <a class="btn btn-primary mt-2" href="/write">+ Crea il primo post</a>
   </div>
 
 </main>
-
-<!-- Create modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="create-modal" aria-labelledby="create-modal-title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title h5" id="create-modal-title">Crea post</h2>
-        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="create-id" />
-        <div class="form-group"><label for="create-title">Titolo (facoltativo)</label><input class="form-control" id="create-title" type="text" /></div>
-        <div class="form-group"><label for="create-excerpt">Sommario (facoltativo)</label><input class="form-control" id="create-excerpt" type="text" /></div>
-        <div class="form-group"><label for="create-content">Contenuto *</label><textarea class="form-control" id="create-content" rows="6"></textarea></div>
-        <div class="form-group"><label for="create-category">Categoria *</label><select class="form-select" id="create-category"></select></div>
-        <div class="alert" role="alert" id="create-msg" style="display:none"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-primary" type="button" id="save-draft">Salva bozza</button>
-        <button class="btn btn-primary" type="button" id="publish-post">Pubblica</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="notification fade dismissable" role="alert" id="toast" aria-hidden="true">
-  <h5 id="toast-title">Notifica</h5>
-  <p id="toast-msg"></p>
-  <button type="button" class="notification-close" data-bs-dismiss="notification" aria-label="Chiudi">
-    <svg class="icon"><use href="/vendor/bootstrap-italia/svg/sprites.svg#it-close"></use></svg>
-  </button>
-</div>
 
 <!--PARTIAL:footer-->
 
@@ -151,30 +216,13 @@
   };
 
   const PERIOD_DAYS = { '7d': 7, '30d': 30, '90d': 90 };
-  const CATEGORIES = window.RSM_CATEGORIES
-    ? window.RSM_CATEGORIES.all()
-    : ['Eventi', 'Territorio', 'Vita locale', 'Avvisi', 'Richieste', 'Storie'];
 
-  function escapeHtml(value) {
-    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  function escapeHtml(v) {
+    return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
-  function toast(message, type) {
-    const box = $('toast');
-    if (!box) return;
-    const titleEl = $('toast-title');
-    const msgEl = $('toast-msg');
-    if (msgEl) msgEl.textContent = message;
-    box.classList.remove('success', 'error');
-    if (type === 'ok') { box.classList.add('success'); if (titleEl) titleEl.textContent = 'Fatto'; }
-    else if (type === 'err') { box.classList.add('error'); if (titleEl) titleEl.textContent = 'Errore'; }
-    else if (titleEl) titleEl.textContent = 'Notifica';
-    if (window.bootstrap && bootstrap.Notification) {
-      bootstrap.Notification.getOrCreateInstance(box).show(2600);
-    }
-  }
-  function isMissingRelationError(error) {
-    const msg = String(error?.message || '').toLowerCase();
-    return !!error && (error.code === '42P01' || error.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table'));
+  function isMissingRelationError(e) {
+    const msg = String(e?.message || '').toLowerCase();
+    return !!e && (e.code === '42P01' || e.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table'));
   }
   function fmtDate(iso) {
     if (!iso) return '-';
@@ -182,95 +230,65 @@
   }
   function relativeTime(iso) {
     if (!iso) return 'ora';
-    const ts = new Date(iso).getTime();
-    const diff = Date.now() - ts;
-    const mins = Math.floor(diff / 60000);
+    const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
     if (mins < 1) return 'adesso';
     if (mins < 60) return mins + ' min fa';
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return hours + ' h fa';
-    const days = Math.floor(hours / 24);
-    if (days < 7) return days + ' g fa';
+    const h = Math.floor(mins / 60);
+    if (h < 24) return h + ' h fa';
+    const d = Math.floor(h / 24);
+    if (d < 7) return d + ' g fa';
     return fmtDate(iso);
   }
-  function startOfDay(date) { const x = new Date(date); x.setHours(0, 0, 0, 0); return x; }
-  function rangeBounds(days) {
-    const end = new Date();
-    const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000);
-    return { start, end };
-  }
-  function inRange(ts, start, end) {
-    const value = new Date(ts).getTime();
-    return value >= start.getTime() && value <= end.getTime();
-  }
-  function countByRange(items, getDate, start, end) {
-    return items.filter((item) => { const d = getDate(item); if (!d) return false; return inRange(d, start, end); }).length;
-  }
-  function percentChange(curr, prev) {
-    if (prev <= 0 && curr <= 0) return 0;
-    if (prev <= 0 && curr > 0) return 100;
-    return Math.round(((curr - prev) / prev) * 100);
-  }
-  function deltaBadge(value) {
-    if (value > 0) return `<span class="text-success fw-semibold">+${value}%</span>`;
-    if (value < 0) return `<span class="text-danger fw-semibold">-${Math.abs(value)}%</span>`;
+  function startOfDay(d) { const x = new Date(d); x.setHours(0,0,0,0); return x; }
+  function rangeBounds(days) { const end = new Date(); return { end, start: new Date(end - days * 864e5) }; }
+  function inRange(ts, s, e) { const v = new Date(ts).getTime(); return v >= s.getTime() && v <= e.getTime(); }
+  function countByRange(items, getDate, s, e) { return items.filter(i => { const d = getDate(i); return d && inRange(d, s, e); }).length; }
+  function percentChange(c, p) { if (p <= 0 && c <= 0) return 0; if (p <= 0) return 100; return Math.round(((c-p)/p)*100); }
+  function deltaBadge(v) {
+    if (v > 0) return `<span class="text-success fw-semibold">+${v}%</span>`;
+    if (v < 0) return `<span class="text-danger fw-semibold">-${Math.abs(v)}%</span>`;
     return '<span class="text-muted fw-semibold">=0%</span>';
   }
-  function fmtNum(value) { return Number(value || 0).toLocaleString('it-IT'); }
   function emptyCallout(title, hint) {
-    return `<div class="callout note"><p class="mb-1">${escapeHtml(title)}</p><p class="text-muted small mb-0">${escapeHtml(hint)}</p></div>`;
-  }
-  function setCreateMsg(text) {
-    const el = $('create-msg');
-    if (!el) return;
-    el.textContent = text || '';
-    el.className = 'alert alert-danger';
-    el.style.display = text ? '' : 'none';
+    return `<div class="callout note"><p class="mb-1 small">${escapeHtml(title)}</p><p class="text-muted small mb-0">${escapeHtml(hint)}</p></div>`;
   }
 
   function renderKpis() {
     const days = PERIOD_DAYS[STATE.period] || 7;
-    const periodText = days === 7 ? 'ultimi 7 giorni' : (days === 30 ? 'ultimi 30 giorni' : 'ultimi 90 giorni');
+    const label = days + ' g';
     const curr = rangeBounds(days);
-    const prev = { end: new Date(curr.start.getTime() - 1), start: new Date(curr.start.getTime() - days * 24 * 60 * 60 * 1000) };
+    const prev = { end: new Date(curr.start - 1), start: new Date(+curr.start - days * 864e5) };
 
-    const currPublished = countByRange(STATE.posts.filter(p => p.published), p => p.published_at || p.created_at, curr.start, curr.end);
-    const prevPublished = countByRange(STATE.posts.filter(p => p.published), p => p.published_at || p.created_at, prev.start, prev.end);
-    const currLikes = countByRange(STATE.likes, x => x.created_at, curr.start, curr.end);
-    const prevLikes = countByRange(STATE.likes, x => x.created_at, prev.start, prev.end);
-    const currComments = countByRange(STATE.comments, x => x.created_at, curr.start, curr.end);
-    const prevComments = countByRange(STATE.comments, x => x.created_at, prev.start, prev.end);
-    const currInteractions = currLikes + currComments;
-    const prevInteractions = prevLikes + prevComments;
-    const totalPublished = STATE.posts.filter((p) => p.published).length;
-    const totalDrafts = STATE.posts.filter((p) => !p.published).length;
-    const totalLikes = STATE.totals.likes || 0;
+    const pub = STATE.posts.filter(p => p.published);
+    const cP = countByRange(pub, p => p.published_at || p.created_at, curr.start, curr.end);
+    const pP = countByRange(pub, p => p.published_at || p.created_at, prev.start, prev.end);
+    const cL = countByRange(STATE.likes, x => x.created_at, curr.start, curr.end);
+    const pL = countByRange(STATE.likes, x => x.created_at, prev.start, prev.end);
+    const cC = countByRange(STATE.comments, x => x.created_at, curr.start, curr.end);
+    const pC = countByRange(STATE.comments, x => x.created_at, prev.start, prev.end);
 
-    function setKpi(valId, metaId, value, delta) {
-      const valEl = $(valId);
-      const metaEl = $(metaId);
-      if (valEl) valEl.textContent = typeof value === 'number' ? value.toLocaleString('it-IT') : value;
-      if (metaEl) metaEl.innerHTML = deltaBadge(delta) + ' <span>' + periodText + '</span>';
+    function setKpi(valId, metaId, val, delta) {
+      const ve = $(valId); const me = $(metaId);
+      if (ve) ve.textContent = val;
+      if (me) me.innerHTML = deltaBadge(delta) + ' <span class="text-muted">' + label + '</span>';
     }
-    setKpi('bc-val-posts', 'bc-meta-posts', currPublished, percentChange(currPublished, prevPublished));
-    setKpi('bc-val-comments', 'bc-meta-comments', currComments, percentChange(currComments, prevComments));
-    const interEl = $('bc-val-inter');
-    const interMetaEl = $('bc-meta-inter');
-    if (interEl) interEl.textContent = fmtNum(currInteractions);
-    if (interMetaEl) interMetaEl.innerHTML = deltaBadge(percentChange(currInteractions, prevInteractions));
-    const heroPublished = $('hero-published');
-    const heroDrafts = $('hero-drafts');
-    const heroLikes = $('hero-likes');
-    if (heroPublished) heroPublished.textContent = fmtNum(totalPublished);
-    if (heroDrafts) heroDrafts.textContent = fmtNum(totalDrafts);
-    if (heroLikes) heroLikes.textContent = fmtNum(totalLikes);
+    setKpi('bc-val-posts', 'bc-meta-posts', cP, percentChange(cP, pP));
+    setKpi('bc-val-comments', 'bc-meta-comments', cC, percentChange(cC, pC));
+    const ie = $('bc-val-inter'); const im = $('bc-meta-inter');
+    if (ie) ie.textContent = cL + cC;
+    if (im) im.innerHTML = deltaBadge(percentChange(cL+cC, pL+pC)) + ' <span class="text-muted">' + label + '</span>';
+
+    const hp = $('hero-published'); const hd = $('hero-drafts'); const hl = $('hero-likes');
+    if (hp) hp.textContent = pub.length;
+    if (hd) hd.textContent = STATE.posts.filter(p => !p.published).length;
+    if (hl) hl.textContent = STATE.totals.likes || 0;
   }
 
   function buildBuckets(start, end, group) {
     const items = [];
-    let stepMs = 24 * 60 * 60 * 1000;
-    if (group === 'week') stepMs = 7 * 24 * 60 * 60 * 1000;
-    if (group === 'month') stepMs = 30 * 24 * 60 * 60 * 1000;
+    let stepMs = 864e5;
+    if (group === 'week') stepMs = 7 * 864e5;
+    if (group === 'month') stepMs = 30 * 864e5;
     let cursor = startOfDay(start);
     while (cursor.getTime() < end.getTime()) {
       const next = new Date(cursor.getTime() + stepMs);
@@ -278,169 +296,103 @@
       cursor = next;
       if (items.length > 120) break;
     }
-    if (!items.length) items.push({ start: startOfDay(start), end: end });
+    if (!items.length) items.push({ start: startOfDay(start), end });
     return items;
   }
 
   function renderChart() {
-    const bars = $('chart-bars');
-    const labels = $('chart-labels');
-    const totalNode = $('chart-total');
-    if (!bars || !labels || !totalNode) return;
+    const bars = $('chart-bars'); const labels = $('chart-labels'); const tot = $('chart-total');
+    if (!bars || !labels) return;
     const days = PERIOD_DAYS[STATE.period] || 7;
     const { start, end } = rangeBounds(days);
     const buckets = buildBuckets(start, end, STATE.group);
-    const events = [];
-    STATE.likes.forEach((x) => { if (x.created_at) events.push(new Date(x.created_at).getTime()); });
-    STATE.comments.forEach((x) => { if (x.created_at) events.push(new Date(x.created_at).getTime()); });
-    const values = buckets.map((bucket) => events.filter((ts) => ts >= bucket.start.getTime() && ts < bucket.end.getTime()).length);
-    const sum = values.reduce((a, b) => a + b, 0);
-    totalNode.textContent = 'Totale: ' + sum.toLocaleString('it-IT');
+    const events = [
+      ...STATE.likes.filter(x => x.created_at).map(x => new Date(x.created_at).getTime()),
+      ...STATE.comments.filter(x => x.created_at).map(x => new Date(x.created_at).getTime()),
+    ];
+    const values = buckets.map(b => events.filter(ts => ts >= b.start.getTime() && ts < b.end.getTime()).length);
+    const sum = values.reduce((a,b) => a+b, 0);
+    if (tot) tot.textContent = 'Totale: ' + sum;
     const max = Math.max(1, ...values);
-    bars.innerHTML = values.map((v) => {
-      const h = Math.max(3, Math.round((v / max) * 100));
-      return `<div class="bar" style="height:${h}%" data-v="${v}"></div>`;
-    }).join('');
-    labels.innerHTML = buckets.map((bucket, idx) => {
-      let label = fmtDate(bucket.start);
-      if (STATE.group === 'week') label = 'W' + (idx + 1);
-      if (STATE.group === 'month') label = new Date(bucket.start).toLocaleDateString('it-IT', { month: 'short' });
-      return `<div class="chart-label">${label}</div>`;
+    bars.innerHTML = values.map(v => `<div class="bar" style="height:${Math.max(3,Math.round(v/max*100))}%" data-v="${v}"></div>`).join('');
+    labels.innerHTML = buckets.map((b, i) => {
+      let l = fmtDate(b.start);
+      if (STATE.group === 'week') l = 'W' + (i+1);
+      if (STATE.group === 'month') l = new Date(b.start).toLocaleDateString('it-IT', { month: 'short' });
+      return `<div class="chart-label">${l}</div>`;
     }).join('');
   }
 
   function renderRecent() {
-    const wrap = $('recent-list');
-    if (!wrap) return;
-    const recent = STATE.posts.slice().sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime()).slice(0, 6);
-    if (!recent.length) {
-      wrap.innerHTML = emptyCallout('Nessun movimento recente.', 'Le prossime modifiche compariranno qui in ordine cronologico.');
-      return;
-    }
-    wrap.innerHTML = recent.map((p) => {
-      const statePill = p.published ? '<span class="badge bg-success rounded-pill">Online</span>' : '<span class="badge bg-warning rounded-pill">Bozza</span>';
-      const safeTitle = escapeHtml(p.title || '(Senza titolo)');
-      const safeCategory = escapeHtml(p.category || 'Contenuto');
+    const wrap = $('recent-list'); if (!wrap) return;
+    const recent = STATE.posts.slice().sort((a,b) => new Date(b.updated_at||b.created_at) - new Date(a.updated_at||a.created_at)).slice(0, 6);
+    if (!recent.length) { wrap.innerHTML = emptyCallout('Nessun movimento.', 'Le modifiche appariranno qui.'); return; }
+    wrap.innerHTML = recent.map(p => {
+      const pill = p.published ? '<span class="badge bg-success rounded-pill">Online</span>' : '<span class="badge bg-warning rounded-pill">Bozza</span>';
       const href = p.published ? '/post?id=' + encodeURIComponent(p.id) : '/write?id=' + encodeURIComponent(p.id);
-      const actionLabel = p.published ? 'Apri articolo' : 'Apri bozza';
-      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap">${statePill}<span class="badge bg-secondary rounded-pill">${safeCategory}</span></div><span class="text-muted small">${relativeTime(p.updated_at || p.created_at)}</span></div><strong>${safeTitle}</strong><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><span class="text-muted small">${p.published ? 'Ultima pubblicazione' : 'Ultima modifica'}</span><a class="fw-semibold" href="${href}">${actionLabel}</a></div></article>`;
+      return `<article class="border rounded p-2 d-grid gap-1">
+        <div class="d-flex justify-content-between align-items-center gap-2">${pill}<span class="text-muted small">${relativeTime(p.updated_at||p.created_at)}</span></div>
+        <strong class="small">${escapeHtml(p.title||'(Senza titolo)')}</strong>
+        <div class="text-end"><a class="small fw-semibold" href="${href}">${p.published?'Apri':'Riprendi'}</a></div>
+      </article>`;
     }).join('');
-  }
-
-  function fillCreateModal(post) {
-    $('create-id').value = post?.id || '';
-    $('create-title').value = post?.title || '';
-    $('create-excerpt').value = post?.excerpt || '';
-    $('create-content').value = post?.content || '';
-    $('create-category').value = post?.category || CATEGORIES[0] || 'Territorio';
-    setCreateMsg('');
-  }
-  function openCreateModal(post) {
-    fillCreateModal(post || null);
-    if (window.bootstrap && bootstrap.Modal) {
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('create-modal')).show();
-    }
-  }
-  function closeCreateModal() {
-    const el = document.getElementById('create-modal');
-    const inst = (window.bootstrap && bootstrap.Modal) ? bootstrap.Modal.getInstance(el) : null;
-    if (inst) inst.hide();
-  }
-  function autoTitleFromContent(content) {
-    const clean = String(content || '').replace(/\s+/g, ' ').trim();
-    if (!clean) return 'Nuovo post';
-    if (clean.length <= 64) return clean;
-    return clean.slice(0, 61).trim() + '...';
-  }
-
-  async function savePost(publish) {
-    const draftBtn = $('save-draft');
-    const pubBtn = $('publish-post');
-    const id = $('create-id').value;
-    const titleInput = String($('create-title').value || '').trim();
-    const excerpt = String($('create-excerpt').value || '').trim();
-    const content = String($('create-content').value || '').trim();
-    const category = String($('create-category').value || '').trim();
-    if (!content) { setCreateMsg('Il contenuto è obbligatorio.'); return; }
-    if (!category) { setCreateMsg('Seleziona una categoria.'); return; }
-    draftBtn.disabled = true; pubBtn.disabled = true; setCreateMsg('');
-    const badgeColor = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.badgeColor(category) : 'default';
-    const payload = {
-      title: titleInput || autoTitleFromContent(content),
-      excerpt: excerpt || null, content: content, category: category,
-      badge: null, badge_color: badgeColor, image_type: null,
-      published: publish, published_at: publish ? new Date().toISOString() : null,
-    };
-    let error = null;
-    if (id) {
-      ({ error } = await sb.from('posts').update(payload).eq('id', id).eq('user_id', STATE.session.user.id));
-    } else {
-      ({ error } = await sb.from('posts').insert({ ...payload, user_id: STATE.session.user.id, author_username: STATE.profile.username || null }));
-    }
-    draftBtn.disabled = false; pubBtn.disabled = false;
-    if (error) { setCreateMsg('Salvataggio non riuscito: ' + error.message); return; }
-    closeCreateModal();
-    toast(publish ? 'Post pubblicato.' : 'Bozza salvata.', 'ok');
-    await refreshData();
   }
 
   function renderDrafts() {
-    const wrap = $('drafts-list');
-    if (!wrap) return;
-    const drafts = STATE.posts.filter((p) => !p.published).slice(0, 6);
-    if (!drafts.length) {
-      wrap.innerHTML = emptyCallout('Nessuna bozza aperta.', 'Quando salvi una bozza, la ritrovi subito qui.');
-      return;
-    }
-    wrap.innerHTML = drafts.map((p) => {
-      const safeTitle = escapeHtml(p.title || '(Senza titolo)');
-      const safeCategory = escapeHtml(p.category || 'Contenuto');
-      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap"><span class="badge bg-warning rounded-pill">Bozza</span><span class="badge bg-secondary rounded-pill">${safeCategory}</span></div><span class="text-muted small">${relativeTime(p.updated_at || p.created_at)}</span></div><strong>${safeTitle}</strong><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><span class="text-muted small">Pronta per essere completata o pubblicata</span><a class="fw-semibold" href="/write?id=${encodeURIComponent(p.id)}">Riprendi</a></div></article>`;
-    }).join('');
+    const wrap = $('drafts-list'); if (!wrap) return;
+    const drafts = STATE.posts.filter(p => !p.published).slice(0, 6);
+    if (!drafts.length) { wrap.innerHTML = emptyCallout('Nessuna bozza.', 'Le bozze salvate appaiono qui.'); return; }
+    wrap.innerHTML = drafts.map(p =>
+      `<article class="border rounded p-2 d-grid gap-1">
+        <div class="d-flex justify-content-between align-items-center gap-2">
+          <span class="badge bg-warning rounded-pill">Bozza</span>
+          <span class="text-muted small">${relativeTime(p.updated_at||p.created_at)}</span>
+        </div>
+        <strong class="small">${escapeHtml(p.title||'(Senza titolo)')}</strong>
+        <div class="text-end"><a class="small fw-semibold" href="/write?id=${encodeURIComponent(p.id)}">Riprendi</a></div>
+      </article>`
+    ).join('');
   }
 
   function renderNotifications() {
-    const wrap = $('notif-list');
-    if (!wrap) return;
-    if (STATE.missing.notifications) {
-      wrap.innerHTML = emptyCallout('Centro notifiche non attivo.', 'Per abilitarlo applica lo script Supabase completo o il layer sicurezza.');
-      return;
-    }
+    const wrap = $('notif-list'); if (!wrap) return;
+    if (STATE.missing.notifications) { wrap.innerHTML = emptyCallout('Notifiche non attive.', 'Applica lo script Supabase per abilitarle.'); return; }
     const notifs = STATE.notifications.slice(0, 6);
-    if (!notifs.length) {
-      wrap.innerHTML = emptyCallout('Nessun segnale da mostrare.', 'Quando arrivano like o commenti li vedrai comparire qui.');
-      return;
-    }
-    wrap.innerHTML = notifs.map((n) => {
-      const type = n.type === 'comment' ? 'Commento' : 'Mi piace';
-      const safeMsg = escapeHtml(n.message || 'Nuova notifica');
+    if (!notifs.length) { wrap.innerHTML = emptyCallout('Nessun segnale.', 'Like e commenti appariranno qui.'); return; }
+    wrap.innerHTML = notifs.map(n => {
       const state = n.is_read ? '<span class="badge bg-secondary rounded-pill">Letta</span>' : '<span class="badge bg-primary rounded-pill">Nuova</span>';
-      return `<article class="border rounded p-3 d-grid gap-2"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="d-flex gap-1 align-items-center flex-wrap"><span class="badge bg-secondary rounded-pill">${type}</span>${state}</div><span class="text-muted small">${relativeTime(n.created_at)}</span></div><strong>${safeMsg}</strong></article>`;
+      return `<article class="border rounded p-2 d-grid gap-1">
+        <div class="d-flex justify-content-between align-items-center gap-2">
+          <span class="badge bg-secondary rounded-pill">${n.type==='comment'?'Commento':'Like'}</span>${state}
+          <span class="text-muted small">${relativeTime(n.created_at)}</span>
+        </div>
+        <strong class="small">${escapeHtml(n.message||'Nuova notifica')}</strong>
+      </article>`;
     }).join('');
   }
 
   function renderEmptyState() {
-    const empty = $('empty-dashboard');
-    if (!empty) return;
-    empty.style.display = STATE.posts.length ? 'none' : '';
+    const el = $('empty-dashboard'); if (!el) return;
+    el.style.display = STATE.posts.length ? 'none' : '';
   }
 
   function renderAll() {
     renderKpis(); renderChart(); renderRecent(); renderDrafts(); renderNotifications(); renderEmptyState();
     const note = $('sync-note');
     if (note) {
-      const warnings = [];
-      if (STATE.missing.likes) warnings.push('like');
-      if (STATE.missing.comments) warnings.push('commenti');
-      if (STATE.missing.notifications) warnings.push('notifiche');
-      if (warnings.length) note.textContent = 'Vista parziale: mancano le tabelle ' + warnings.join(', ') + '.';
-      else note.textContent = 'Allineato alle ' + new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) + '.';
+      const w = [];
+      if (STATE.missing.likes) w.push('like');
+      if (STATE.missing.comments) w.push('commenti');
+      if (STATE.missing.notifications) w.push('notifiche');
+      note.textContent = w.length
+        ? 'Vista parziale: mancano ' + w.join(', ')
+        : 'Aggiornato alle ' + new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     }
   }
 
   async function fetchPosts() {
     const { data, error } = await sb.from('posts')
-      .select('id,title,excerpt,content,category,published,published_at,created_at,updated_at')
+      .select('id,title,excerpt,category,published,published_at,created_at,updated_at')
       .eq('user_id', STATE.session.user.id)
       .order('created_at', { ascending: false });
     if (error) throw error;
@@ -450,23 +402,23 @@
   async function fetchCommentsAndLikes() {
     STATE.comments = []; STATE.likes = []; STATE.totals.comments = 0; STATE.totals.likes = 0;
     STATE.missing.comments = false; STATE.missing.likes = false;
-    const ids = STATE.posts.map((p) => p.id).filter(Boolean);
+    const ids = STATE.posts.map(p => p.id).filter(Boolean);
     if (!ids.length) return;
-    const analyticsSince = new Date(Date.now() - (180 * 24 * 60 * 60 * 1000)).toISOString();
-    const [commentsCountRes, likesCountRes] = await Promise.all([
+    const since = new Date(Date.now() - 180 * 864e5).toISOString();
+    const [cRes, lRes] = await Promise.all([
       sb.from('comments').select('id', { count: 'exact', head: true }).in('post_id', ids).eq('is_hidden', false),
       sb.from('post_likes').select('id', { count: 'exact', head: true }).in('post_id', ids)
     ]);
-    if (commentsCountRes.error) { if (isMissingRelationError(commentsCountRes.error)) STATE.missing.comments = true; }
-    else STATE.totals.comments = commentsCountRes.count || 0;
-    if (likesCountRes.error) { if (isMissingRelationError(likesCountRes.error)) STATE.missing.likes = true; }
-    else STATE.totals.likes = likesCountRes.count || 0;
-    const commentsRes = await sb.from('comments').select('id,post_id,created_at,is_hidden').in('post_id', ids).eq('is_hidden', false).gte('created_at', analyticsSince).order('created_at', { ascending: false }).limit(5000);
-    if (commentsRes.error) { if (isMissingRelationError(commentsRes.error)) STATE.missing.comments = true; }
-    else STATE.comments = commentsRes.data || [];
-    const likesRes = await sb.from('post_likes').select('id,post_id,created_at').in('post_id', ids).gte('created_at', analyticsSince).order('created_at', { ascending: false }).limit(5000);
-    if (likesRes.error) { if (isMissingRelationError(likesRes.error)) STATE.missing.likes = true; }
-    else STATE.likes = likesRes.data || [];
+    if (cRes.error) { if (isMissingRelationError(cRes.error)) STATE.missing.comments = true; }
+    else STATE.totals.comments = cRes.count || 0;
+    if (lRes.error) { if (isMissingRelationError(lRes.error)) STATE.missing.likes = true; }
+    else STATE.totals.likes = lRes.count || 0;
+    const [cAll, lAll] = await Promise.all([
+      sb.from('comments').select('id,post_id,created_at').in('post_id', ids).eq('is_hidden', false).gte('created_at', since).order('created_at', { ascending: false }).limit(5000),
+      sb.from('post_likes').select('id,post_id,created_at').in('post_id', ids).gte('created_at', since).order('created_at', { ascending: false }).limit(5000)
+    ]);
+    if (cAll.error) { if (isMissingRelationError(cAll.error)) STATE.missing.comments = true; } else STATE.comments = cAll.data || [];
+    if (lAll.error) { if (isMissingRelationError(lAll.error)) STATE.missing.likes = true; } else STATE.likes = lAll.data || [];
   }
 
   async function fetchNotifications() {
@@ -483,36 +435,19 @@
     renderAll();
   }
 
-  function buildCategoryOptions() {
-    const select = $('create-category');
-    if (!select) return;
-    select.innerHTML = CATEGORIES.map((x) => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join('');
-  }
-
-  function bindHashRouting() {
-    const hash = (window.location.hash || '').replace('#', '');
-    if (hash === 'write') { window.location.href = '/write'; return; }
-    if (hash === 'posts') { $('contenuti')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    if (hash === 'profile') { window.location.href = '/modifica-profilo'; }
-  }
-
   function bindUi() {
     $('global-period')?.addEventListener('change', () => {
       STATE.period = $('global-period').value;
       renderKpis(); renderChart();
     });
-    document.querySelectorAll('[data-group]').forEach((btn) => {
+    document.querySelectorAll('[data-group]').forEach(btn => {
       btn.addEventListener('click', () => {
         STATE.group = btn.getAttribute('data-group');
-        document.querySelectorAll('[data-group]').forEach((x) => x.classList.remove('active'));
+        document.querySelectorAll('[data-group]').forEach(x => x.classList.remove('active'));
         btn.classList.add('active');
         renderChart();
       });
     });
-    $('open-create')?.addEventListener('click', () => openCreateModal(null));
-    $('empty-create')?.addEventListener('click', () => openCreateModal(null));
-    $('save-draft')?.addEventListener('click', () => savePost(false));
-    $('publish-post')?.addEventListener('click', () => savePost(true));
   }
 
   async function init() {
@@ -524,10 +459,12 @@
     STATE.profile = profile;
     const chip = $('chip-user');
     if (chip) chip.textContent = '@' + (profile.username || 'utente');
-    buildCategoryOptions();
     bindUi();
     await refreshData();
-    bindHashRouting();
+    const hash = (window.location.hash || '').replace('#', '');
+    if (hash === 'write') window.location.href = '/write';
+    if (hash === 'posts') $('contenuti')?.scrollIntoView({ behavior: 'smooth' });
+    if (hash === 'profile') window.location.href = '/modifica-profilo';
   }
 
   init();

@@ -47,6 +47,18 @@
       icon('it-user') + '<span>Accedi</span></a>';
   }
 
+  var _clockInterval = null;
+
+  function startClock() {
+    if (_clockInterval) clearInterval(_clockInterval);
+    function tick() {
+      var t = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.querySelectorAll('.nav-clock-time').forEach(function(el) { el.textContent = t; });
+    }
+    tick();
+    _clockInterval = setInterval(tick, 1000);
+  }
+
   function menuHtml(username, email) {
     var u = escapeHtml(username || 'utente');
     var e = escapeHtml(email || 'account attivo');
@@ -54,7 +66,12 @@
     function it(label, href, name) {
       return '<li><a class="dropdown-item list-item" href="' + href + '">' + icon(name) + '<span>' + label + '</span></a></li>';
     }
-    return '<div class="dropdown">' +
+    return '<div style="display:flex;align-items:center;gap:8px">' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;opacity:.85">' +
+        '<span class="nav-clock-time" style="font-size:.68rem;font-family:Consolas,ui-monospace,monospace;font-weight:700;color:#fff;letter-spacing:.03em">--:--:--</span>' +
+        '<span style="font-size:.6rem;color:#fff;opacity:.55;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis">' + e + '</span>' +
+      '</div>' +
+      '<div class="dropdown">' +
       '<button class="btn btn-primary btn-sm dropdown-toggle btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
         icon('it-user') + '<span>@' + u + '</span></button>' +
       '<div class="dropdown-menu dropdown-menu-end">' +
@@ -72,11 +89,13 @@
           '</ul>' +
         '</div>' +
       '</div>' +
+    '</div>' +
     '</div>';
   }
 
   function renderAuth(html, client) {
     authSlots().forEach(function (slot) { slot.innerHTML = html; });
+    startClock();
     if (client) {
       $all('[data-action="logout"]').forEach(function (btn) {
         btn.addEventListener('click', function (ev) {
