@@ -716,6 +716,7 @@
   const $ = id => document.getElementById(id);
   const editId = new URLSearchParams(location.search).get('edit');
   let editPostOriginal = null;
+  let currentUserId = null;
 
   const CATEGORIES = window.RSM_CATEGORIES ? window.RSM_CATEGORIES.all() : [
     'Ambiente','Assemblea','Ciclismo','Cultura','Enogastronomia','Eventi',
@@ -1110,6 +1111,7 @@
     const now=new Date().toISOString();
     const words=content.trim()?content.trim().split(/\s+/).length:0;
     return {
+      ...(currentUserId ? { user_id: currentUserId } : {}),
       title:$('f-title').value.trim(), subtitle:$('f-subtitle').value.trim()||null,
       excerpt:$('f-excerpt').value.trim()||null, content,
       category:$('f-category').value, tone:$('f-tone').value,
@@ -1134,8 +1136,8 @@
   async function save(published) {
     setErr(''); setOk('');
     const p=buildPayload(published);
-    if(!p.title||p.title.length<6) { setErr('Titolo troppo corto (min 6 caratteri).'); return; }
-    if(!p.content||p.content.length<80) { setErr('Testo troppo corto (min 80 caratteri).'); return; }
+    if(!p.title||p.title.length<2) { setErr('Inserisci un titolo.'); return; }
+    if(published && (!p.content||p.content.length<80)) { setErr('Testo troppo corto per pubblicare (min 80 caratteri).'); return; }
     const btnId=published?'btn-publish':'btn-draft';
     setBtnLoading(btnId,true);
     let error;
@@ -1307,6 +1309,7 @@
   async function init() {
     const {data:auth}=await sb.auth.getSession();
     if(!auth?.session){ location.href='/login'; return; }
+    currentUserId = auth.session.user.id;
 
     initUpload(auth.session);
     $('f-category').innerHTML=CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('');
