@@ -158,7 +158,7 @@
 (function () {
   if (typeof SUPABASE_URL === 'undefined') return;
 
-  const sb    = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb    = window.RSM_SUPABASE.createClient();
   const byId  = (id) => document.getElementById(id);
 
   /* ── View switching ───────────────────────────────────── */

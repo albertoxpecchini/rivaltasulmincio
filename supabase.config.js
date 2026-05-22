@@ -16,6 +16,7 @@ var SUPABASE_ANON_KEY;
 	};
 	var source = 'embedded';
 	var allowOverride = false;
+	var _sbClient = null; // singleton Supabase client
 
 	function safeTrim(value) {
 		return typeof value === 'string' ? value.trim() : '';
@@ -104,6 +105,7 @@ var SUPABASE_ANON_KEY;
 		SUPABASE_URL = config.url;
 		SUPABASE_ANON_KEY = config.anonKey;
 		source = nextSource;
+		_sbClient = null; // invalida il singleton se la config cambia
 		if (typeof window !== 'undefined') {
 			window.SUPABASE_URL = SUPABASE_URL;
 			window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
@@ -157,10 +159,13 @@ var SUPABASE_ANON_KEY;
 				return allowOverride;
 			},
 			createClient: function () {
-				if (typeof supabase === 'undefined' || typeof supabase.createClient !== 'function') {
-					throw new Error('SDK Supabase non caricato.');
+				if (!_sbClient) {
+					if (typeof supabase === 'undefined' || typeof supabase.createClient !== 'function') {
+						throw new Error('SDK Supabase non caricato.');
+					}
+					_sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 				}
-				return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+				return _sbClient;
 			}
 		};
 	}
