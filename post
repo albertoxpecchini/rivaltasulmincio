@@ -195,6 +195,34 @@
     .like-btn.active svg { fill: currentColor; }
     .like-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
     .like-hint { font-size: .78rem; color: #5a6882; }
+    /* ── Discussion message (inline, non Bootstrap alert) ── */
+    .disc-msg { display: none; font-size: .82rem; padding: 4px 0 6px; }
+    .disc-msg--err  { color: #b91c1c; }
+    .disc-msg--ok   { color: #166534; }
+    .disc-msg--info { color: #45526b; }
+    /* ── Aside rules box ─────────────────────────────────── */
+    .aside-rules {
+      margin-top: 14px;
+      border: 1px solid #e3e7ee;
+      border-radius: 12px;
+      padding: 13px 15px;
+      background: #f8f9fc;
+    }
+    .aside-rules-kicker {
+      font-size: .67rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #5a6882;
+      margin-bottom: 7px;
+    }
+    .aside-rules-list {
+      margin: 0;
+      padding-left: 15px;
+      font-size: .77rem;
+      color: #45526b;
+      line-height: 1.65;
+    }
     /* ── Discussion ──────────────────────────────────────── */
     .discussion-sec {
       margin-top: 2.5rem;
@@ -632,7 +660,7 @@
     +     '</div>'
     +     '<section class="discussion-sec" id="discussion">'
     +       '<h2>Commenti</h2>'
-    +       '<div id="discussion-msg" class="alert" role="alert" style="display:none"></div>'
+    +       '<div id="discussion-msg" class="disc-msg" style="display:none"></div>'
     +       '<div class="comment-composer">'
     +         '<form id="comment-form">'
     +           '<textarea id="comment-text" placeholder="Scrivi un commento rispettoso e costruttivo..."></textarea>'
@@ -641,13 +669,6 @@
     +             '<button class="btn btn-outline-secondary btn-sm" id="report-post-btn" type="button">Segnala post</button>'
     +           '</div>'
     +         '</form>'
-    +       '</div>'
-    +       '<div class="callout note">'
-    +         '<div class="callout-title">Regole di convivenza</div>'
-    +         '<ul>'
-    +           '<li>Rispetta persone e opinioni: niente insulti o attacchi personali.</li>'
-    +           '<li>Resta sul tema e usa un linguaggio costruttivo.</li>'
-    +         '</ul>'
     +       '</div>'
     +       '<div id="comments-list" class="comments-list"><p class="text-muted small">Caricamento commenti...</p></div>'
     +     '</section>'
@@ -662,6 +683,13 @@
     +   '</div>'
     +   '<aside class="post-aside">'
     +     (imgSafe ? '<figure class="post-aside-fig"><img src="' + imgSafe + '" alt="' + titleSafe + '" loading="lazy" /></figure>' : '')
+    +     '<div class="aside-rules">'
+    +       '<div class="aside-rules-kicker">Regole di convivenza</div>'
+    +       '<ul class="aside-rules-list">'
+    +         '<li>Rispetta le persone: niente insulti o attacchi personali.</li>'
+    +         '<li>Resta sul tema e usa un linguaggio costruttivo.</li>'
+    +       '</ul>'
+    +     '</div>'
     +   '</aside>'
     + '</div>';
 
@@ -818,11 +846,10 @@
   function showDiscussionMessage(message, type) {
     var box = document.getElementById('discussion-msg');
     if (!box) return;
-    if (!message) { box.style.display = 'none'; box.className = 'alert'; box.textContent = ''; return; }
-    var variant = type === 'err' ? 'alert-danger' : (type === 'ok' ? 'alert-success' : 'alert-info');
-    box.style.display = '';
-    box.className = 'alert ' + variant;
-    box.setAttribute('role', 'alert');
+    if (!message) { box.style.display = 'none'; box.className = 'disc-msg'; box.textContent = ''; return; }
+    var mod = type === 'err' ? 'disc-msg--err' : (type === 'ok' ? 'disc-msg--ok' : 'disc-msg--info');
+    box.style.display = 'block';
+    box.className = 'disc-msg ' + mod;
     box.textContent = message;
   }
 
