@@ -602,11 +602,11 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
         parts.push({ text: String(body.text || '').slice(0, 8000) });
       }
       const geminiAbort = new AbortController();
-      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 8000);
+      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 20000);
       let geminiRes;
       try {
         geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -616,8 +616,7 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
               contents: [{ parts }],
               generationConfig: {
                 temperature: 0.1,
-                maxOutputTokens: 2048,
-                thinkingConfig: { thinkingBudget: 0 }
+                maxOutputTokens: 2048
               }
             })
           }
