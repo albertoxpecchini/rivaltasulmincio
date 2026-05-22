@@ -928,6 +928,16 @@ function handler(req, res) {
     return;
   }
 
+  if (req.method === 'GET' && requestPathLower === '/api/env-check') {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify({
+      hasGemini: !!process.env.GEMINI_API_KEY,
+      hasAnthropic: !!process.env.ANTHROPIC_API_KEY,
+      nodeEnv: process.env.NODE_ENV || 'undefined'
+    }));
+    return;
+  }
+
   if (req.method === 'POST' && requestPathLower === '/api/ai-autofill') {
     handleAiAutofill(req, res);
     return;
