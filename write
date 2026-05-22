@@ -108,7 +108,7 @@
     /* ── testo completo separato ── */
     #f-content {
       width: 100%;
-      font-family: ui-monospace, monospace;
+      font-family: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
       font-size: .88rem;
       line-height: 1.65;
       border: none;
@@ -269,6 +269,13 @@
     }
     .img-upload-actions button:hover { background: #f0f5ff; border-color: #06c; color: #06c; }
     .img-upload-actions button.danger:hover { background: #fff5f5; border-color: #cc1f1f; color: #cc1f1f; }
+    /* ── AI status bar ── */
+    .ai-status-bar { margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-size: .78rem; font-weight: 600; display: none; align-items: center; gap: 8px; }
+    .ai-status-bar.reading { display: flex; background: #eef3ff; color: #0a4dae; border: 1px solid #c5d5f8; }
+    .ai-status-bar.done    { display: flex; background: #e6f9f0; color: #1a6e40; border: 1px solid #9dd9be; }
+    .ai-status-bar.error   { display: flex; background: #fff8e6; color: #7a5200; border: 1px solid #f5d97a; }
+    .ai-spin { display: inline-block; width: 12px; height: 12px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: ai-rotate .7s linear infinite; flex-shrink: 0; }
+    @keyframes ai-rotate { to { transform: rotate(360deg); } }
     .img-url-row { margin-top: 8px; }
     .img-url-row label {
       font-size: .65rem;
@@ -287,9 +294,57 @@
       padding: 5px 8px;
       color: #5a6882;
       background: #f8fafc;
-      font-family: ui-monospace, monospace;
+      font-family: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
     }
     .img-url-row input:focus { outline: 2px solid #06c; outline-offset: -1px; }
+
+    /* ── JSON editor ── */
+    .json-pane {
+      background: #0d1117;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #30363d;
+    }
+    .json-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: #7d8590;
+    }
+    .json-pane-header .json-badge {
+      font-size: .65rem;
+      background: #21262d;
+      color: #58a6ff;
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    #f-json-payload {
+      width: 100%;
+      min-height: 260px;
+      padding: 14px 16px;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: .82rem;
+      line-height: 1.7;
+      border: none;
+      outline: none;
+      resize: vertical;
+      display: block;
+      tab-size: 2;
+    }
+    #f-json-payload:focus { background: #0d1117; outline: 2px solid #1f6feb; outline-offset: -2px; }
+    .json-hint { padding: 6px 12px 8px; font-size: .66rem; color: #484f58; background: #0d1117; }
   </style>
 </head>
 <body>
@@ -474,6 +529,7 @@
             <label for="f-image-url">URL immagine</label>
             <input id="f-image-url" type="url" maxlength="500" placeholder="Oppure incolla direttamente un URL…" />
           </div>
+          <div class="ai-status-bar" id="ai-status-bar"></div>
 
           <!-- cta -->
           <div class="field-grid mt-2">
@@ -518,6 +574,25 @@
               <label for="f-notes">Note interne (non pubblicate)</label>
               <textarea id="f-notes" rows="2" maxlength="500" placeholder="Annotazioni redazionali, todo…"></textarea>
             </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 7. JSON PAYLOAD -->
+      <details class="w-section">
+        <summary>
+          <span>7 · JSON Payload · Supabase</span>
+          <span class="badge-num">live</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body" style="padding:0">
+          <div class="json-pane">
+            <div class="json-pane-header">
+              <span>payload.json</span>
+              <span class="json-badge" id="json-validity">valido</span>
+            </div>
+            <textarea id="f-json-payload" spellcheck="false" autocomplete="off"></textarea>
+            <div class="json-hint">Modifica direttamente il JSON — i campi si aggiornano in tempo reale. JSON non valido viene ignorato.</div>
           </div>
         </div>
       </details>
@@ -572,6 +647,68 @@
     if (!iso) return null;
     try { return new Date(iso).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
     catch { return iso; }
+  }
+
+  /* ── AI scan ── */
+  function setAiStatus(state, msg) {
+    const bar = $('ai-status-bar');
+    bar.className = 'ai-status-bar ' + state;
+    if (state === 'reading') {
+      bar.innerHTML = '<span class="ai-spin"></span> AI sta leggendo l\'immagine…';
+    } else if (state === 'done') {
+      bar.innerHTML = '✓ Campi compilati dall\'AI — rivedi e pubblica';
+    } else if (state === 'error') {
+      bar.innerHTML = '⚠ ' + (msg || 'AI non disponibile, compila manualmente');
+    } else {
+      bar.className = 'ai-status-bar';
+    }
+  }
+
+  function setSelectIfValid(id, value) {
+    const el = $(id);
+    if (!el || !value) return;
+    const opt = Array.from(el.options).find(o => o.value === value);
+    if (opt) el.value = value;
+  }
+
+  function setInputIfEmpty(id, value) {
+    const el = $(id);
+    if (!el || el.value.trim()) return;
+    el.value = value || '';
+  }
+
+  function isoToDatetimeLocal(iso) {
+    if (!iso) return '';
+    try { return new Date(iso).toISOString().slice(0, 16); } catch { return ''; }
+  }
+
+  function applyAiFields(f) {
+    setInputIfEmpty('f-title',    f.title    || '');
+    setInputIfEmpty('f-subtitle', f.subtitle || '');
+    setInputIfEmpty('f-excerpt',  f.excerpt  || '');
+    setInputIfEmpty('f-content',  f.content  || '');
+    setSelectIfValid('f-category',      f.category      || '');
+    setSelectIfValid('f-tone',          f.tone          || '');
+    setSelectIfValid('f-reading-level', f.reading_level || '');
+    setSelectIfValid('f-target',        f.target_audience || '');
+    setInputIfEmpty('f-location',    f.location_text || '');
+    setInputIfEmpty('f-address',     f.address_text  || '');
+    setInputIfEmpty('f-organizer',   f.organizer     || '');
+    setInputIfEmpty('f-contacts',    f.contacts      || '');
+    setInputIfEmpty('f-booking-url', f.booking_url   || '');
+    setInputIfEmpty('f-price',       f.price_text    || '');
+    setInputIfEmpty('f-cta',         f.cta_text      || '');
+    setInputIfEmpty('f-cta-url',     f.cta_url       || '');
+    setInputIfEmpty('f-event-time',  f.event_time_text || '');
+    const evStart = $('f-event-start');
+    if (evStart && !evStart.value && f.event_start_at) evStart.value = isoToDatetimeLocal(f.event_start_at);
+    const evEnd = $('f-event-end');
+    if (evEnd && !evEnd.value && f.event_end_at) evEnd.value = isoToDatetimeLocal(f.event_end_at);
+    const kwEl = $('f-keywords');
+    if (kwEl && !kwEl.value.trim() && Array.isArray(f.keywords) && f.keywords.length) kwEl.value = f.keywords.join(', ');
+    const tagsEl = $('f-tags');
+    if (tagsEl && !tagsEl.value.trim() && Array.isArray(f.tags) && f.tags.length) tagsEl.value = f.tags.join(', ');
+    updateCounts();
   }
 
   /* ── upload immagine ── */
@@ -640,6 +777,26 @@
       label.textContent = file.name;
       sub.textContent = (file.size / 1024).toFixed(0) + ' KB · caricato';
       setTimeout(() => { prog.classList.remove('visible'); bar.style.width = '0%'; }, 800);
+
+      // scansione AI
+      setAiStatus('reading');
+      try {
+        const aiRes = await fetch('/api/ai/scan-photo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ imageUrl: publicUrl })
+        });
+        if (aiRes.ok) {
+          const fields = await aiRes.json();
+          if (fields.error) { setAiStatus('error', fields.error); }
+          else { applyAiFields(fields); setAiStatus('done'); }
+        } else {
+          const err = await aiRes.json().catch(() => ({}));
+          setAiStatus('error', err.error || 'Errore ' + aiRes.status);
+        }
+      } catch (e) {
+        setAiStatus('error', e.message);
+      }
     }
 
     btn.addEventListener('click', () => fileIn.click());
@@ -740,6 +897,66 @@
     `;
   }
 
+  /* ── JSON pane ── */
+  function renderJsonPane() {
+    const ta = $('f-json-payload');
+    if (!ta || document.activeElement === ta) return;
+    ta.value = JSON.stringify(buildPayload(false), null, 2);
+  }
+
+  function applyJsonToForm(f) {
+    const setVal = (id, v) => { const el=$(id); if (el && v != null) el.value = v; };
+    const setSelect = (id, v) => {
+      const el=$(id); if (!el || !v) return;
+      if (Array.from(el.options).some(o => o.value === v)) el.value = v;
+    };
+    setVal('f-title',       f.title       || '');
+    setVal('f-subtitle',    f.subtitle    || '');
+    setVal('f-excerpt',     f.excerpt     || '');
+    setVal('f-content',     f.content     || '');
+    setSelect('f-category',      f.category      || '');
+    setSelect('f-tone',          f.tone          || '');
+    setSelect('f-reading-level', f.reading_level || '');
+    setSelect('f-target',        f.target_audience || '');
+    setVal('f-location',    f.location_text   || '');
+    setVal('f-address',     f.address_text    || '');
+    setVal('f-organizer',   f.organizer       || '');
+    setVal('f-contacts',    f.contacts        || '');
+    setVal('f-booking-url', f.booking_url     || '');
+    setVal('f-price',       f.price_text      || '');
+    setVal('f-cta',         f.cta_text        || '');
+    setVal('f-cta-url',     f.cta_url         || '');
+    setVal('f-source-url',  f.source_url      || '');
+    setVal('f-references',  f.references      || '');
+    setVal('f-notes',       f.notes           || '');
+    setVal('f-event-time',  f.event_time_text || '');
+    if (f.event_start_at) { const el=$('f-event-start'); if (el) el.value = f.event_start_at.slice(0,16); }
+    if (f.event_end_at)   { const el=$('f-event-end');   if (el) el.value = f.event_end_at.slice(0,16); }
+    if (Array.isArray(f.keywords)) { const el=$('f-keywords'); if (el) el.value = f.keywords.join(', '); }
+    if (Array.isArray(f.tags))     { const el=$('f-tags');     if (el) el.value = f.tags.join(', '); }
+    renderPreview();
+    const counts = $('content-count');
+    const words  = $('content-words');
+    const c = ($('f-content') || {}).value || '';
+    if (counts) counts.textContent = c.length;
+    if (words)  words.textContent  = c.trim() ? c.trim().split(/\s+/).length : 0;
+  }
+
+  function initJsonPane() {
+    const ta = $('f-json-payload');
+    const badge = $('json-validity');
+    if (!ta) return;
+    ta.addEventListener('input', () => {
+      try {
+        const parsed = JSON.parse(ta.value);
+        applyJsonToForm(parsed);
+        if (badge) { badge.textContent = 'valido'; badge.style.color = '#3fb950'; }
+      } catch {
+        if (badge) { badge.textContent = 'JSON non valido'; badge.style.color = '#f85149'; }
+      }
+    });
+  }
+
   /* ── contatori ── */
   function updateCounts() {
     const title = $('f-title').value;
@@ -750,6 +967,7 @@
     $('content-count').textContent = content.length;
     $('content-words').textContent = content.trim() ? content.trim().split(/\s+/).length : 0;
     renderPreview();
+    renderJsonPane();
   }
 
   /* ── salvataggio ── */
@@ -820,6 +1038,7 @@
     $('btn-draft').addEventListener('click',()=>save(false));
     $('btn-publish').addEventListener('click',()=>save(true));
 
+    initJsonPane();
     updateCounts();
   }
 
