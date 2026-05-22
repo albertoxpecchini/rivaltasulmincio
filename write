@@ -345,6 +345,33 @@
     }
     #f-json-payload:focus { background: #0d1117; outline: 2px solid #1f6feb; outline-offset: -2px; }
     .json-hint { padding: 6px 12px 8px; font-size: .66rem; color: #484f58; background: #0d1117; }
+    /* ── sezione AI ── */
+    .ai-tabs { display: flex; border-bottom: 1px solid #dde3ea; margin-bottom: 12px; }
+    .ai-tab-btn { flex: 1; padding: 7px 10px; font-size: .75rem; font-weight: 600; letter-spacing: .04em; border: none; background: transparent; cursor: pointer; color: #5a6882; border-bottom: 2px solid transparent; transition: color .12s, border-color .12s; }
+    .ai-tab-btn.active { color: #06c; border-bottom-color: #06c; }
+    .ai-tab-panel { display: none; }
+    .ai-tab-panel.active { display: block; }
+    .ai-result-ok { font-size: .72rem; padding: 6px 10px; border-radius: 5px; background: #e6f5ec; color: #1a6630; border: 1px solid #b8dfc6; margin-top: 8px; display: none; }
+    .ai-result-ok.visible { display: block; }
+
+    /* ── volantino upload area ── */
+    .vol-upload-area { border: 2px dashed #c8d2de; border-radius: 8px; padding: 14px 12px; display: flex; align-items: center; gap: 12px; background: #f8fafc; cursor: pointer; transition: border-color .15s, background .15s; }
+    .vol-upload-area:hover, .vol-upload-area.drag-over { border-color: #06c; background: #f0f5ff; }
+    .vol-upload-area.has-file { border-style: solid; border-color: #a8c4f0; background: #f0f5ff; }
+    .vol-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .vol-info { flex: 1; min-width: 0; }
+    .vol-info .vup-label { font-size: .78rem; font-weight: 600; color: #17324d; }
+    .vol-info .vup-sub { font-size: .67rem; color: #8a9bb0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── code panel JSON ── */
+    #code-panel { display: none; background: #111d2b; border-radius: 8px; padding: 12px 14px; margin-top: 8px; }
+    #code-panel.visible { display: block; }
+    #code-panel pre { margin: 0; overflow-x: auto; max-height: 320px; }
+    #code-panel code { font-family: 'Courier New', monospace; font-size: .7rem; color: #a8d4ff; white-space: pre; }
+    .code-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .code-panel-header span { font-size: .67rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #5a7a9a; }
+    .code-panel-header button { font-size: .67rem; padding: 3px 9px; border-radius: 4px; border: 1px solid #2a4a6a; background: transparent; color: #7ab4d4; cursor: pointer; }
+    .code-panel-header button:hover { background: #1a3a5a; }
   </style>
 </head>
 <body>
@@ -369,6 +396,48 @@
 
     <!-- ── FORM ── -->
     <div class="col-12 col-xl-7">
+
+      <!-- 0. ASSISTENTE AI -->
+      <details class="w-section" id="ai-section" open>
+        <summary>
+          <span>✦ Assistente AI</span>
+          <span class="badge-num">compila automaticamente</span>
+          <span class="arrow">▶</span>
+        </summary>
+        <div class="section-body">
+          <p style="font-size:.78rem;color:#5a6882;margin:0 0 10px">Incolla il testo di un volantino o carica una foto: l'AI compila i campi del post in automatico.</p>
+          <div class="ai-tabs">
+            <button class="ai-tab-btn active" data-tab="text" type="button">Incolla testo</button>
+            <button class="ai-tab-btn" data-tab="image" type="button">Carica immagine</button>
+          </div>
+
+          <div class="ai-tab-panel active" id="ai-panel-text">
+            <textarea id="ai-text-input" rows="5"
+              style="width:100%;border:1px solid #dde3ea;border-radius:6px;padding:8px 10px;font-size:.85rem;font-family:inherit;resize:vertical;outline:none;color:#17324d"
+              placeholder="Incolla qui il testo del volantino, dell'annuncio o del comunicato stampa…"></textarea>
+          </div>
+
+          <div class="ai-tab-panel" id="ai-panel-image">
+            <input type="file" id="ai-image-file" accept="image/*" style="display:none" />
+            <div class="vol-upload-area" id="vol-upload-area">
+              <div class="vol-icon" id="vol-icon">📷</div>
+              <div class="vol-info">
+                <div class="vup-label" id="vol-label">Carica la foto del volantino</div>
+                <div class="vup-sub" id="vol-sub">JPG · PNG · WebP · qualsiasi immagine con testo leggibile</div>
+              </div>
+              <button type="button" id="vol-btn"
+                style="font-size:.72rem;padding:4px 10px;border-radius:5px;border:1px solid #c8d2de;background:#fff;color:#17324d;cursor:pointer;flex-shrink:0">Scegli</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap">
+            <button id="btn-ai-fill" type="button" class="btn btn-primary btn-sm">Elabora e compila</button>
+            <span id="ai-spinner" style="display:none;font-size:.78rem;color:#5a6882">⏳ Elaborazione in corso…</span>
+          </div>
+          <div class="ai-result-ok" id="ai-result-ok"></div>
+          <div class="alert alert-danger mt-2 p-2" id="ai-err" style="display:none;font-size:.8rem" role="alert"></div>
+        </div>
+      </details>
 
       <!-- 1. IDENTITÀ -->
       <details class="w-section" open>
@@ -599,13 +668,21 @@
 
       <!-- AZIONI -->
       <div class="sticky-bar">
-        <div class="d-flex gap-2 justify-content-end">
+        <div class="d-flex gap-2 justify-content-end flex-wrap">
+          <button class="btn btn-outline-secondary btn-sm" id="btn-code-preview" type="button" title="Mostra il payload JSON che verrà inviato a Supabase">&lt;/&gt; JSON</button>
           <button class="btn btn-outline-primary btn-sm" id="btn-draft" type="button">
             <span data-btn-label>Salva bozza</span>
           </button>
           <button class="btn btn-primary btn-sm" id="btn-publish" type="button">
             <span data-btn-label>Pubblica</span>
           </button>
+        </div>
+        <div id="code-panel">
+          <div class="code-panel-header">
+            <span>payload JSON · Supabase</span>
+            <button type="button" id="btn-copy-code">Copia</button>
+          </div>
+          <pre><code id="code-output"></code></pre>
         </div>
       </div>
     </div>
@@ -968,6 +1045,7 @@
     $('content-words').textContent = content.trim() ? content.trim().split(/\s+/).length : 0;
     renderPreview();
     renderJsonPane();
+    refreshCodePanel();
   }
 
   /* ── salvataggio ── */
@@ -1020,6 +1098,175 @@
     setTimeout(()=>{ location.href='/dashboard'; },1200);
   }
 
+  /* ── code panel JSON ── */
+  let codePanelOpen = false;
+  function refreshCodePanel() {
+    if (!codePanelOpen) return;
+    try {
+      $('code-output').textContent = JSON.stringify(buildPayload(false), null, 2);
+    } catch(_) {}
+  }
+
+  /* ── AI autofill ── */
+  let aiMode = 'text';
+  let aiImageData = null;
+  let aiImageType = null;
+
+  function aiSetErr(msg) { const e=$('ai-err'); e.textContent=msg||''; e.style.display=msg?'block':'none'; }
+  function aiSetOk(msg) { const e=$('ai-result-ok'); e.textContent=msg||''; e.classList.toggle('visible',!!msg); }
+
+  function fillFields(d) {
+    const filled = [];
+    function set(id, val) {
+      if (!val && val !== 0) return;
+      const el=$(id); if(!el) return;
+      el.value = val;
+      filled.push(el.labels?.[0]?.textContent?.replace(/\s*\*/,'').trim() || id);
+    }
+    set('f-title',         d.title);
+    set('f-subtitle',      d.subtitle);
+    set('f-excerpt',       d.excerpt);
+    set('f-content',       d.content);
+    if (d.category) {
+      const sel=$('f-category');
+      const opt=[...sel.options].find(o=>o.value.toLowerCase()===String(d.category).toLowerCase());
+      if(opt){ sel.value=opt.value; filled.push('Categoria'); }
+    }
+    if (d.tone) {
+      const sel=$('f-tone');
+      const opt=[...sel.options].find(o=>o.value===String(d.tone).toLowerCase());
+      if(opt){ sel.value=opt.value; filled.push('Tono'); }
+    }
+    if (d.target_audience) {
+      const sel=$('f-target');
+      const opt=[...sel.options].find(o=>o.value===String(d.target_audience).toLowerCase());
+      if(opt){ sel.value=opt.value; filled.push('Pubblico'); }
+    }
+    if (d.event_start_at) {
+      try {
+        const dt = new Date(d.event_start_at);
+        if(!isNaN(dt)) { $('f-event-start').value=dt.toISOString().slice(0,16); filled.push('Data inizio'); }
+      } catch(_){}
+    }
+    if (d.event_end_at) {
+      try {
+        const dt = new Date(d.event_end_at);
+        if(!isNaN(dt)) { $('f-event-end').value=dt.toISOString().slice(0,16); filled.push('Data fine'); }
+      } catch(_){}
+    }
+    set('f-event-time',    d.event_time_text);
+    set('f-location',      d.location_text);
+    set('f-address',       d.address_text);
+    set('f-organizer',     d.organizer);
+    set('f-contacts',      d.contacts);
+    set('f-price',         d.price_text);
+    if (Array.isArray(d.keywords) && d.keywords.length) { set('f-keywords', d.keywords.join(', ')); }
+    if (Array.isArray(d.tags)     && d.tags.length)     { set('f-tags',     d.tags.join(', ')); }
+    updateCounts();
+    return filled;
+  }
+
+  async function runAiAutofill() {
+    aiSetErr(''); aiSetOk('');
+    const spinner = $('ai-spinner');
+    const btn = $('btn-ai-fill');
+    let body;
+    if (aiMode === 'text') {
+      const txt = $('ai-text-input').value.trim();
+      if (!txt) { aiSetErr('Incolla prima il testo del volantino.'); return; }
+      body = JSON.stringify({ mode: 'text', text: txt });
+    } else {
+      if (!aiImageData) { aiSetErr('Carica prima la foto del volantino.'); return; }
+      body = JSON.stringify({ mode: 'image', data: aiImageData, mediaType: aiImageType });
+    }
+    btn.disabled = true;
+    spinner.style.display = '';
+    try {
+      const res = await fetch('/api/ai-autofill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
+      const data = await res.json();
+      if (!res.ok) { aiSetErr(data.error || 'Errore del server (' + res.status + ').'); return; }
+      const filled = fillFields(data);
+      if (filled.length) {
+        aiSetOk('✓ Compilato: ' + filled.join(', ') + '.');
+      } else {
+        aiSetErr('Nessun campo estratto. Prova con un testo più dettagliato.');
+      }
+    } catch(e) {
+      aiSetErr('Errore di rete: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = 'none';
+    }
+  }
+
+  function initAiSection() {
+    // Tabs
+    document.querySelectorAll('.ai-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ai-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.ai-tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        aiMode = btn.dataset.tab;
+        $('ai-panel-' + aiMode).classList.add('active');
+        aiSetErr(''); aiSetOk('');
+      });
+    });
+
+    // Volantino image upload
+    const volArea = $('vol-upload-area');
+    const volFile = $('ai-image-file');
+    const volBtn  = $('vol-btn');
+
+    function loadVolFile(file) {
+      if (!file || !file.type.startsWith('image/')) { aiSetErr('Carica un file immagine valido.'); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        const full = e.target.result;
+        const comma = full.indexOf(',');
+        aiImageData = full.slice(comma + 1);
+        aiImageType = file.type;
+        $('vol-label').textContent = file.name;
+        $('vol-sub').textContent = (file.size / 1024).toFixed(0) + ' KB · ' + file.type;
+        $('vol-icon').textContent = '🖼';
+        volArea.classList.add('has-file');
+        aiSetErr(''); aiSetOk('');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    volBtn.addEventListener('click', (e) => { e.stopPropagation(); volFile.click(); });
+    volArea.addEventListener('click', () => volFile.click());
+    volFile.addEventListener('change', () => { if(volFile.files[0]) loadVolFile(volFile.files[0]); });
+    volArea.addEventListener('dragover', e => { e.preventDefault(); volArea.classList.add('drag-over'); });
+    volArea.addEventListener('dragleave', () => volArea.classList.remove('drag-over'));
+    volArea.addEventListener('drop', e => {
+      e.preventDefault(); volArea.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) loadVolFile(e.dataTransfer.files[0]);
+    });
+
+    $('btn-ai-fill').addEventListener('click', runAiAutofill);
+  }
+
+  function initCodePanel() {
+    $('btn-code-preview').addEventListener('click', () => {
+      codePanelOpen = !codePanelOpen;
+      $('code-panel').classList.toggle('visible', codePanelOpen);
+      $('btn-code-preview').textContent = codePanelOpen ? '✕ JSON' : '</> JSON';
+      if (codePanelOpen) refreshCodePanel();
+    });
+    $('btn-copy-code').addEventListener('click', () => {
+      const txt = $('code-output').textContent;
+      navigator.clipboard.writeText(txt).then(() => {
+        $('btn-copy-code').textContent = 'Copiato!';
+        setTimeout(() => { $('btn-copy-code').textContent = 'Copia'; }, 1500);
+      }).catch(() => {});
+    });
+  }
+
   /* ── init ── */
   async function init() {
     const {data:auth}=await sb.auth.getSession();
@@ -1039,6 +1286,8 @@
     $('btn-publish').addEventListener('click',()=>save(true));
 
     initJsonPane();
+    initAiSection();
+    initCodePanel();
     updateCounts();
   }
 

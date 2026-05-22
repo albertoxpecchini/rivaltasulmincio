@@ -524,6 +524,173 @@ async function handleKwContext(req, res) {
   res.end(JSON.stringify({ wiki: wikiExtract, claude: claudeSentence }));
 }
 
+async function handleAiAutofill(req, res) {
+  const GEMINI_KEY    = process.env.GEMINI_API_KEY;
+  const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+  const useGemini     = Boolean(GEMINI_KEY);
+
+  if (!GEMINI_KEY && !ANTHROPIC_KEY) {
+    res.writeHead(503, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Chiave API AI non configurata. Imposta GEMINI_API_KEY o ANTHROPIC_API_KEY nelle variabili ambiente Vercel.' }));
+    return;
+  }
+
+  const MAX_AI_BODY = 8 * 1024 * 1024;
+  let rawBody = '';
+  try {
+    await new Promise((resolve, reject) => {
+      req.on('data', chunk => {
+        rawBody += chunk;
+        if (rawBody.length > MAX_AI_BODY) { req.destroy(); reject(new Error('payload-too-large')); }
+      });
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+  } catch (e) {
+    res.writeHead(413, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Payload troppo grande.' }));
+    return;
+  }
+
+  let body;
+  try { body = JSON.parse(rawBody); } catch (_) { body = {}; }
+
+  const mode = body.mode === 'image' ? 'image' : 'text';
+
+  const SYSTEM_PROMPT = `Sei un assistente editoriale per Pro Loco di Rivalta sul Mincio, associazione culturale e turistica del territorio.
+Analizza il testo o l'immagine forniti e restituisci SOLO un oggetto JSON valido (nessun testo extra, nessun markdown) con questi campi:
+{
+  "title": stringa max 120 caratteri (obbligatorio se presente),
+  "subtitle": stringa max 160 caratteri o null,
+  "excerpt": stringa max 280 caratteri riassunto per social o null,
+  "content": testo completo dell'evento/notizia o null,
+  "category": una di [Ambiente, Anniversari, Assemblea, Canoa, Ciclismo, Festa del Pesce, Iniziative, Love-luccio, Mincio-art, Natale, Rassegna Stampa, Tesseramento, Video] o null,
+  "tone": una di [narrativo, istituzionale, giornalistico, conviviale] o null,
+  "target_audience": una di [famiglie, bambini, giovani, turisti, escursionisti, appassionati_natura] o null,
+  "event_start_at": stringa ISO 8601 o null,
+  "event_end_at": stringa ISO 8601 o null,
+  "event_time_text": orario leggibile come "10:00 – 23:00" o null,
+  "location_text": nome luogo o null,
+  "address_text": indirizzo completo o null,
+  "organizer": ente organizzatore o null,
+  "contacts": telefono o email o null,
+  "price_text": prezzo come "Gratuito" o "€5" o null,
+  "keywords": array di stringhe o [],
+  "tags": array di stringhe o []
+}
+Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni non presenti. Rispondi SOLO con il JSON.`;
+
+  if (mode === 'image' && !String(body.data || '')) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Immagine mancante.' }));
+    return;
+  }
+  if (mode === 'text' && !String(body.text || '').trim()) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Testo mancante.' }));
+    return;
+  }
+
+  let raw = '';
+  try {
+    if (useGemini) {
+      const parts = [];
+      if (mode === 'image') {
+        parts.push({ inline_data: { mime_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } });
+        parts.push({ text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' });
+      } else {
+        parts.push({ text: String(body.text || '').slice(0, 8000) });
+      }
+      const geminiAbort = new AbortController();
+      const geminiTimeout = setTimeout(() => geminiAbort.abort(), 8000);
+      let geminiRes;
+      try {
+        geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: geminiAbort.signal,
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+              contents: [{ parts }],
+              generationConfig: {
+                temperature: 0.1,
+                maxOutputTokens: 2048,
+                thinkingConfig: { thinkingBudget: 0 }
+              }
+            })
+          }
+        );
+      } finally {
+        clearTimeout(geminiTimeout);
+      }
+      if (!geminiRes.ok) {
+        const errText = await geminiRes.text().catch(() => '');
+        console.error('[ai-autofill] Gemini error', geminiRes.status, errText);
+        res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Errore Gemini (' + geminiRes.status + ').' }));
+        return;
+      }
+      const geminiData = await geminiRes.json();
+      const gParts = geminiData.candidates?.[0]?.content?.parts || [];
+      const gTextPart = gParts.find(p => !p.thought && typeof p.text === 'string') || gParts[0] || {};
+      raw = (gTextPart.text || '').trim();
+      console.error('[ai-autofill] Gemini raw len=' + raw.length + ' parts=' + gParts.length);
+    } else {
+      let messages;
+      if (mode === 'image') {
+        messages = [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: String(body.mediaType || 'image/jpeg'), data: String(body.data || '').slice(0, MAX_AI_BODY) } },
+            { type: 'text', text: 'Analizza questo volantino ed estrai le informazioni per compilare il post.' }
+          ]
+        }];
+      } else {
+        messages = [{ role: 'user', content: String(body.text || '').slice(0, 8000) }];
+      }
+      const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: SYSTEM_PROMPT, messages })
+      });
+      if (!claudeRes.ok) {
+        const errText = await claudeRes.text().catch(() => '');
+        console.error('[ai-autofill] Claude error', claudeRes.status, errText);
+        res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Errore AI (' + claudeRes.status + ').' }));
+        return;
+      }
+      const claudeData = await claudeRes.json();
+      raw = (claudeData.content?.[0]?.text || '').trim();
+    }
+  } catch (e) {
+    console.error('[ai-autofill]', e.name, e.message);
+    if (e.name === 'AbortError') {
+      res.writeHead(504, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Timeout: la richiesta AI ha impiegato troppo. Riprova.' }));
+    } else {
+      res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Errore interno del server.' }));
+    }
+    return;
+  }
+
+  const jsonMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/) || raw.match(/(\{[\s\S]*\})/);
+  const jsonStr = jsonMatch ? jsonMatch[1].trim() : raw;
+  let parsed;
+  try { parsed = JSON.parse(jsonStr); } catch (parseErr) {
+    console.error('[ai-autofill] parse fail:', parseErr.message, '| raw[0..300]:', raw.slice(0, 300));
+    res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Risposta AI non analizzabile. Prova con un testo più strutturato.' }));
+    return;
+  }
+
+  res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+  res.end(JSON.stringify(parsed));
+}
+
 const MAX_REQUEST_BODY_SIZE = 4096; // bytes
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -921,6 +1088,21 @@ function handler(req, res) {
 
   if (req.method === 'GET' && requestPathLower === '/api/kw-context') {
     handleKwContext(req, res);
+    return;
+  }
+
+  if (req.method === 'GET' && requestPathLower === '/api/env-check') {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify({
+      hasGemini: !!process.env.GEMINI_API_KEY,
+      hasAnthropic: !!process.env.ANTHROPIC_API_KEY,
+      nodeEnv: process.env.NODE_ENV || 'undefined'
+    }));
+    return;
+  }
+
+  if (req.method === 'POST' && requestPathLower === '/api/ai-autofill') {
+    handleAiAutofill(req, res);
     return;
   }
 
