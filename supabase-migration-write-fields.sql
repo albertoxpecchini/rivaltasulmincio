@@ -23,4 +23,6 @@ ALTER TABLE public.posts
   ADD COLUMN IF NOT EXISTS "references"      TEXT,
   ADD COLUMN IF NOT EXISTS notes             TEXT,
   ADD COLUMN IF NOT EXISTS quality           JSONB,
-  ADD COLUMN IF NOT EXISTS meta              JSONB;
+  ADD COLUMN IF NOT EXISTS meta              JSONB,
+  ADD COLUMN IF NOT EXISTS instagram_url     TEXT,
+  ADD COLUMN IF NOT EXISTS source_url        TEXT;
