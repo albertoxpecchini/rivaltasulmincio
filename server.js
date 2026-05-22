@@ -616,7 +616,8 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
               contents: [{ parts }],
               generationConfig: {
                 temperature: 0.1,
-                maxOutputTokens: 2048
+                maxOutputTokens: 2048,
+                thinkingConfig: { thinkingBudget: 0 }
               }
             })
           }
@@ -665,9 +666,14 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
       raw = (claudeData.content?.[0]?.text || '').trim();
     }
   } catch (e) {
-    console.error('[ai-autofill]', e.message);
-    res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Errore interno del server.' }));
+    console.error('[ai-autofill]', e.name, e.message);
+    if (e.name === 'AbortError') {
+      res.writeHead(504, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Timeout: la richiesta AI ha impiegato troppo. Riprova.' }));
+    } else {
+      res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Errore interno del server.' }));
+    }
     return;
   }
 
