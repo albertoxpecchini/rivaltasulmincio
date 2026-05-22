@@ -854,6 +854,7 @@
       label.textContent = file.name;
       sub.textContent = (file.size / 1024).toFixed(0) + ' KB · caricato';
       setTimeout(() => { prog.classList.remove('visible'); bar.style.width = '0%'; }, 800);
+      updateCounts(); // aggiorna subito la preview con la copertina
 
       // scansione AI
       setAiStatus('reading');
@@ -866,7 +867,12 @@
         if (aiRes.ok) {
           const fields = await aiRes.json();
           if (fields.error) { setAiStatus('error', fields.error); }
-          else { applyAiFields(fields); setAiStatus('done'); }
+          else {
+            applyAiFields(fields);
+            urlIn.value = publicUrl; // ripristina copertina dopo fill AI
+            updateCounts();
+            setAiStatus('done');
+          }
         } else {
           const err = await aiRes.json().catch(() => ({}));
           setAiStatus('error', err.error || 'Errore ' + aiRes.status);
