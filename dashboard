@@ -96,7 +96,7 @@
 (function () {
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
 
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = window.RSM_SUPABASE.createClient();
   const $ = (id) => document.getElementById(id);
 
   const STATE = {

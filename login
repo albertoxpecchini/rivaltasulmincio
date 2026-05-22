@@ -159,7 +159,7 @@
 <script src="/supabase.config.js"></script>
 <script src="/security.client.js"></script>
 <script>
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const sb = window.RSM_SUPABASE.createClient();
     const byId = (id) => document.getElementById(id);
 
     const COMMUNITY_RULES_VERSION = '2026-04';

@@ -374,7 +374,7 @@
 (async function () {
   'use strict';
 
-  const sb      = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb      = window.RSM_SUPABASE.createClient();
   const params  = new URLSearchParams(location.search);
   const id      = params.get('id');
   const wrap    = document.getElementById('post-content');

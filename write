@@ -712,7 +712,7 @@
 <script src="/supabase.config.js"></script>
 <script>
 (() => {
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = window.RSM_SUPABASE.createClient();
   const $ = id => document.getElementById(id);
   const editId = new URLSearchParams(location.search).get('edit');
   let editPostOriginal = null;
@@ -1159,6 +1159,16 @@
       setErr('Salvataggio fallito: ' + error.message + detail);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
+    }
+    // Verifica immediata: il record è visibile con questo client?
+    if (!editId && !published) {
+      const { data: vrRows, error: vrErr } = await sb.from('posts')
+        .select('id, published, user_id')
+        .eq('user_id', currentUserId)
+        .eq('published', false)
+        .order('created_at', { ascending: false })
+        .limit(3);
+      console.log('[write] verify bozze dopo save:', { rows: vrRows, error: vrErr?.message });
     }
     $('pv-status').textContent=published?'pubblicato':'bozza salvata';
     setOk(editId ? 'Articolo aggiornato.' : (published ? 'Post pubblicato con successo.' : 'Bozza salvata.'));

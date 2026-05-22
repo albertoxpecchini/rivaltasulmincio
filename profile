@@ -166,7 +166,7 @@
 (async function () {
   'use strict';
 
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = window.RSM_SUPABASE.createClient();
 
   function escapeHtml(v) {
     return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
