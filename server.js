@@ -609,7 +609,12 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
           body: JSON.stringify({
             systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
             contents: [{ parts }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 1024 }
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 2048,
+              responseMimeType: 'application/json'
+            },
+            thinkingConfig: { thinkingBudget: 0 }
           })
         }
       );
@@ -621,7 +626,10 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
         return;
       }
       const geminiData = await geminiRes.json();
-      raw = (geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+      const gParts = geminiData.candidates?.[0]?.content?.parts || [];
+      const gTextPart = gParts.find(p => !p.thought && typeof p.text === 'string') || gParts[0] || {};
+      raw = (gTextPart.text || '').trim();
+      console.error('[ai-autofill] Gemini raw len=' + raw.length + ' parts=' + gParts.length);
     } else {
       let messages;
       if (mode === 'image') {
@@ -660,7 +668,8 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
   const jsonMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/) || raw.match(/(\{[\s\S]*\})/);
   const jsonStr = jsonMatch ? jsonMatch[1].trim() : raw;
   let parsed;
-  try { parsed = JSON.parse(jsonStr); } catch (_) {
+  try { parsed = JSON.parse(jsonStr); } catch (parseErr) {
+    console.error('[ai-autofill] parse fail:', parseErr.message, '| raw[0..300]:', raw.slice(0, 300));
     res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Risposta AI non analizzabile. Prova con un testo più strutturato.' }));
     return;
