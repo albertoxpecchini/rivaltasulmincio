@@ -1639,337 +1639,151 @@
         transform: none !important;
       }
     }
+
+    .c1 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--bs-primary, #06c); }
+    .c2 { color: #555; font-size: .9rem; }
+    .ipzs-validator { color: #d9364f; font-size: .8rem; min-height: 1.2em; }
+    .view { display: none; }
+    .view.is-active { display: block; }
   </style>
 </head>
 <body data-page="login">
 
 <!--PARTIAL:nav-->
 
-  <main id="main" class="rsm-login-page">
-    <section class="rsm-section rsm-hero rsm-login-hero" aria-labelledby="login-title">
-      <span class="rsm-hero__accent" aria-hidden="true"></span>
-      <div class="rsm-container">
-        <div class="rsm-hero__layout rsm-login-hero__layout">
-          <div class="rsm-login-story">
-            <div class="rsm-login-copy rsm-card rsm-card--glass rsm-hero__main" data-reveal>
-              <p class="rsm-kicker rsm-login-kicker rsm-edit-line">
-                <span class="rsm-login-pulse" aria-hidden="true"></span>
-                <span>Accesso locale</span>
-                <span aria-hidden="true">&middot;</span>
-                <span>Rivalta sul Mincio</span>
-              </p>
-              <h1 class="rsm-display-1 rsm-login-title" id="login-title">
-                <span class="rsm-edit-line">Entra nel <em>borgo</em></span>
-                <span class="rsm-edit-line">digitale del <em>Mincio</em></span>
-              </h1>
-              <p class="rsm-lead rsm-edit-line">Accesso con password o link magico, registrazione guidata in due passaggi e recupero account dentro una pagina che usa lo stesso linguaggio editoriale della home.</p>
-              <div class="rsm-button-row rsm-edit-line">
-                <button class="rsm-btn rsm-btn--brand magnetic" type="button" data-view-link="login" aria-pressed="true">
-                  <span data-btn-label>Accedi ora</span>
-                  <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                </button>
-                <button class="rsm-btn rsm-btn--ghost magnetic" type="button" data-view-link="register1" aria-pressed="false">
-                  <span data-btn-label>Crea account</span>
-                  <span class="rsm-btn-icon" aria-hidden="true">+</span>
-                </button>
-              </div>
-              <div class="rsm-hero__metrics rsm-login-metrics">
-                <div class="rsm-metric"><strong>3</strong><span>Accessi possibili</span></div>
-                <div class="rsm-metric"><strong>2</strong><span>Step registrazione</span></div>
-                <div class="rsm-metric"><strong>1</strong><span>Profilo locale</span></div>
-              </div>
-            </div>
+    <main id="main" class="container rsm-page">
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col">
+      <div class="row">
+        <div id="title" class="mb-4 col">
+          <p class="c1">
+            <strong>ACCESSO · RIVALTA SUL MINCIO</strong>
+          </p>
+          <h1>Accedi al sito</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
 
-            <div class="rsm-login-support">
-              <section class="rsm-login-compass rsm-card rsm-card--glass" aria-labelledby="login-paths-title" data-reveal>
-                <div class="rsm-section-head rsm-login-compass__head">
-                  <p class="rsm-kicker"><span>Percorsi</span></p>
-                  <h2 class="rsm-h2" id="login-paths-title">Scegli il <em>passaggio</em> giusto</h2>
-                </div>
-                <div class="rsm-login-paths">
-                  <button class="rsm-login-path rsm-login-path--brand" type="button" data-view-link="login" aria-pressed="true">
-                    <strong>Login password</strong>
-                    <span>Email e password per chi ha gia un account verificato.</span>
-                  </button>
-                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="register1" aria-pressed="false">
-                    <strong>Registrazione guidata</strong>
-                    <span>Due passaggi per creare un profilo con identita locale e regole accettate.</span>
-                  </button>
-                  <button class="rsm-login-path rsm-login-path--ghost" type="button" data-view-link="forgot" aria-pressed="false">
-                    <strong>Reset e recupero</strong>
-                    <span>Invio rapido del link di ripristino se hai perso l'accesso.</span>
-                  </button>
-                </div>
-              </section>
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col mx-0 mx-sm-n4">
+      <div class="card-wrapper card-space">
+        <div class="card card-bg card-bg-small-none card-big py-0 mx-0 mx-md-1">
+          <div class="card-body p-0 p-sm-4">
+            <div class="row">
+              <div class="col-12">
 
-              <div class="rsm-login-showcase" data-reveal>
-                <div class="rsm-hero__media rsm-login-media">
-                  <img src="/img/mantova-laghi-aerea.jpg" alt="Veduta aerea del Mincio e del territorio di Rivalta" loading="eager" decoding="async" />
-                  <div class="rsm-login-media__veil" aria-hidden="true"></div>
-                  <div class="rsm-login-media__content">
-                    <p class="rsm-kicker rsm-kicker--center">Profilo locale</p>
-                    <strong>Un solo accesso per storie, eventi e comunita.</strong>
-                    <span>Forme, superfici e gerarchie arrivano dallo stesso impianto visivo della home.</span>
+                <!-- LOGIN -->
+                <section class="view is-active" id="view-login">
+                  <h2>Entra con le tue credenziali</h2>
+
+                  <div id="msg-login" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"><br><br></div>
                   </div>
-                </div>
 
-                <div class="rsm-login-facts">
-                  <article class="rsm-login-fact rsm-card rsm-card--glass">
-                    <p class="rsm-kicker">Community</p>
-                    <strong>Regole chiare</strong>
-                    <p>Accettazione obbligatoria delle regole della comunita durante la registrazione.</p>
-                  </article>
-                  <article class="rsm-login-fact rsm-card rsm-card--glass">
-                    <p class="rsm-kicker">Verifica</p>
-                    <strong>Email prima di tutto</strong>
-                    <p>Senza conferma dell'email l'account non puo diventare operativo.</p>
-                  </article>
-                </div>
+                  <div class="mt-3">
+                    <form method="POST" action="#" id="loginUP" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="login-email" class="sr-only active" style="transition: none;">Email</label>
+                            <input type="email" class="form-control" id="login-email" name="username" placeholder="Email" value="" autocomplete="email" tabindex="1">
+                          </div>
+                          <div class="ipzs-validator" id="usernameError">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col mb-2">
+                          <div class="input-group">
+                            <label for="login-password" class="sr-only active" style="transition: none;">Password</label>
+                            <input type="password" class="form-control input-password" id="login-password" name="password" placeholder="Password" value="" autocomplete="current-password" tabindex="2">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="ipzs-validator" id="passwordError">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="mt-1 pb-1">
+                        <p class="c2">Hai dimenticato la password? <strong><a href="#" id="login-to-forgot" class="text-nowrap">Richiedine una nuova.</a></strong></p>
+                      </div>
+                      <div class="row buttons mt-4 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <a href="/" class="btn btn-outline-primary w-100 text-nowrap">Annulla</a>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-login" data-default-label="Procedi" data-loading-label="Accesso in corso..."><span data-btn-label>Procedi</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- FORGOT -->
+                <section class="view" id="view-forgot">
+                  <h2>Reimposta la password</h2>
+                  <p class="c2">Ti inviamo una email con il link di reset.</p>
+
+                  <div id="msg-forgot" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <form id="form-forgot" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="forgot-email" class="sr-only active" style="transition: none;">Email</label>
+                            <input type="email" class="form-control" id="forgot-email" placeholder="Email" autocomplete="email" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row buttons mt-4 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <button type="button" id="forgot-back-login" class="btn btn-outline-primary w-100 text-nowrap">Annulla</button>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-forgot" data-default-label="Invia email reset" data-loading-label="Invio in corso..."><span data-btn-label>Invia email reset</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- VERIFY -->
+                <section class="view" id="view-verify">
+                  <h2>Controlla la tua email</h2>
+
+                  <div id="msg-verify" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="callout note">
+                    <div class="callout-title">Link di conferma inviato</div>
+                    <p>Abbiamo inviato un link di conferma a: <strong id="verify-email-target">la tua email</strong></p>
+                    <p class="mb-0">Finché l'email non è verificata non puoi usare l'account in modo operativo né pubblicare contenuti.</p>
+                  </div>
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <button type="button" id="verify-to-login" class="btn btn-primary w-100 text-nowrap"><span data-btn-label>Ho verificato, torno al login</span></button>
+                    </div>
+                  </div>
+                </section>
+
               </div>
             </div>
           </div>
-
-          <aside class="rsm-login-panel" data-reveal>
-            <div class="rsm-card rsm-card--glass rsm-login-panel__card" id="login-panel-card">
-              <div class="rsm-login-panel__top">
-                <p class="rsm-kicker rsm-login-panel__eyebrow"><span>Accesso account</span></p>
-                <div class="rsm-login-panel__chips" aria-hidden="true">
-                  <span class="rsm-tag rsm-tag--emerald">password</span>
-                  <span class="rsm-tag rsm-tag--azure">magic link</span>
-                  <span class="rsm-tag rsm-tag--violet">verifica</span>
-                </div>
-              </div>
-
-              <section class="view rsm-login-view is-active" id="view-login" aria-label="Login">
-                <div class="rsm-login-view__head">
-                  <p class="rsm-kicker rsm-login-kicker">
-                    <span class="rsm-login-pulse" aria-hidden="true"></span>
-                    <span>Bentornato</span>
-                  </p>
-                  <h2 class="rsm-h1">Accedi al tuo <em>account</em></h2>
-                  <p class="rsm-body">Non hai ancora un account? <button class="rsm-login-link rsm-login-link--text" type="button" id="login-to-register">Registrati ora</button></p>
-                </div>
-
-                <div class="msg-slot" id="msg-login" role="status" aria-live="polite"></div>
-
-                <form id="form-login" class="rsm-login-form" novalidate>
-                  <div class="rsm-field">
-                    <label for="login-email">Email</label>
-                    <input class="rsm-input" type="email" id="login-email" autocomplete="email" placeholder="tu@email.it" required />
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="login-password">Password</label>
-                    <div class="input-with-action">
-                      <input class="rsm-input" type="password" id="login-password" autocomplete="current-password" placeholder="Inserisci la password" required />
-                      <button class="input-action" type="button" data-toggle="login-password">Mostra</button>
-                    </div>
-                  </div>
-
-                  <div class="rsm-button-row rsm-login-button-row">
-                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-login" type="submit" data-default-label="Accedi" data-loading-label="Accesso in corso...">
-                      <span data-btn-label>Accedi</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                    </button>
-                    <button class="rsm-btn rsm-btn--ghost magnetic" id="btn-magic" type="button" data-default-label="Invia link magico" data-loading-label="Invio in corso...">
-                      <span data-btn-label>Invia link magico</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">+</span>
-                    </button>
-                  </div>
-                </form>
-
-                <div class="rsm-login-inline">
-                  <button class="rsm-login-link rsm-login-link--text" type="button" id="login-to-forgot">Password dimenticata?</button>
-                  <a class="rsm-login-link rsm-login-link--text" href="/">Torna alla home</a>
-                </div>
-              </section>
-
-              <section class="view rsm-login-view" id="view-register1" aria-label="Registrazione passo 1">
-                <div class="rsm-login-steps" aria-hidden="true">
-                  <span class="active"></span>
-                  <span></span>
-                </div>
-
-                <div class="rsm-login-view__head">
-                  <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 1 di 2</span></p>
-                  <h2 class="rsm-h1">Crea il tuo <em>account</em></h2>
-                  <p class="rsm-body">Hai gia un profilo? <button class="rsm-login-link rsm-login-link--text" type="button" id="reg1-to-login">Vai al login</button></p>
-                </div>
-
-                <div class="msg-slot" id="msg-reg1" role="status" aria-live="polite"></div>
-
-                <form id="form-reg1" class="rsm-login-form" novalidate>
-                  <div class="rsm-field">
-                    <label for="reg1-email">Email</label>
-                    <input class="rsm-input" type="email" id="reg1-email" autocomplete="email" placeholder="nome@email.it" required />
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="reg1-password">Password</label>
-                    <div class="input-with-action">
-                      <input class="rsm-input" type="password" id="reg1-password" autocomplete="new-password" placeholder="Almeno 6 caratteri" minlength="6" required />
-                      <button class="input-action" type="button" data-toggle="reg1-password">Mostra</button>
-                    </div>
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="reg1-password2">Conferma password</label>
-                    <div class="input-with-action">
-                      <input class="rsm-input" type="password" id="reg1-password2" autocomplete="new-password" placeholder="Ripeti la password" minlength="6" required />
-                      <button class="input-action" type="button" data-toggle="reg1-password2">Mostra</button>
-                    </div>
-                  </div>
-
-                  <div class="rsm-button-row rsm-login-button-row rsm-login-button-row--hero-match">
-                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-reg1-next" type="submit" data-default-label="Continua" data-loading-label="Controllo in corso...">
-                      <span data-btn-label>Continua</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                    </button>
-                    <button class="rsm-btn rsm-btn--ghost magnetic" type="button" id="reg1-back-home">
-                      <span data-btn-label>Annulla</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                </form>
-              </section>
-
-              <section class="view rsm-login-view" id="view-register2" aria-label="Registrazione passo 2">
-                <div class="rsm-login-steps" aria-hidden="true">
-                  <span></span>
-                  <span class="active"></span>
-                </div>
-
-                <div class="rsm-login-view__head">
-                  <p class="rsm-kicker rsm-login-kicker"><span>Registrazione 2 di 2</span></p>
-                  <h2 class="rsm-h1">Completa il <em>profilo</em></h2>
-                  <p class="rsm-body">Username, bio, comune e consenso.</p>
-                </div>
-
-                <p class="email-pill" id="reg2-email-pill">Email: -</p>
-                <div class="msg-slot" id="msg-reg2" role="status" aria-live="polite"></div>
-
-                <div class="identity-preview">
-                  <div class="preview-avatar" id="preview-avatar" aria-hidden="true">&#127807;</div>
-                  <div>
-                    <div class="preview-name" id="preview-name">@username</div>
-                    <div class="preview-meta" id="preview-comune">Comune non impostato</div>
-                  </div>
-                </div>
-
-                <form id="form-reg2" class="rsm-login-form rsm-reg2-layout" novalidate>
-
-                  <div class="rsm-field">
-                    <label for="reg2-username">Nome utente</label>
-                    <input class="rsm-input" type="text" id="reg2-username" maxlength="30" autocomplete="username" placeholder="esempio_utente" required />
-                    <small>Min 3 caratteri: lettere, numeri, underscore.</small>
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="reg2-display">Il tuo nome</label>
-                    <input class="rsm-input" type="text" id="reg2-display" maxlength="60" placeholder="Nome pubblico" required />
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="reg2-comune">Dove vivi?</label>
-                    <select class="rsm-select" id="reg2-comune" required>
-                      <option value="">Seleziona...</option>
-                      <option value="Rivalta sul Mincio">Rivalta sul Mincio</option>
-                      <option value="Rodigo">Rodigo</option>
-                      <option value="Fossato">Fossato</option>
-                      <option value="Fuori comune">Fuori comune</option>
-                    </select>
-                  </div>
-
-                  <div class="rsm-reg2-avatar-row">
-                    <div>
-                      <div class="group-label">Scegli il tuo simbolo</div>
-                      <div class="emoji-grid" id="avatar-emoji-grid"></div>
-                    </div>
-                    <div>
-                      <div class="group-label">Colore</div>
-                      <div class="color-grid" id="avatar-color-grid"></div>
-                    </div>
-                  </div>
-
-                  <div class="rsm-field">
-                    <label for="reg2-bio">Raccontaci di te</label>
-                    <textarea class="rsm-textarea" id="reg2-bio" maxlength="240" placeholder="Breve descrizione" required></textarea>
-                    <small>Max 240 caratteri.</small>
-                  </div>
-
-                  <label class="check-wrap" for="reg2-rules">
-                    <input type="checkbox" id="reg2-rules" />
-                    <span>Dichiaro di accettare i <a class="rsm-reg2-terms-link" href="/note-legali">termini e condizioni</a>.</span>
-                  </label>
-
-                  <div class="rsm-button-row rsm-login-button-row">
-                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-signup" type="submit" data-default-label="Conferma e chiudi" data-loading-label="Conferma...">
-                      <span data-btn-label>Conferma e chiudi</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                    </button>
-                    <button class="rsm-btn rsm-btn--ghost magnetic" id="reg2-back" type="button">
-                      <span data-btn-label>Indietro</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&larr;</span>
-                    </button>
-                  </div>
-                </form>
-              </section>
-
-              <section class="view rsm-login-view" id="view-forgot" aria-label="Password dimenticata">
-                <div class="rsm-login-view__head">
-                  <p class="rsm-kicker rsm-login-kicker"><span>Recupero account</span></p>
-                  <h2 class="rsm-h1">Reimposta la <em>password</em></h2>
-                  <p class="rsm-body">Ti inviamo una email con il link di reset.</p>
-                </div>
-
-                <div class="msg-slot" id="msg-forgot" role="status" aria-live="polite"></div>
-
-                <form id="form-forgot" class="rsm-login-form" novalidate>
-                  <div class="rsm-field">
-                    <label for="forgot-email">Email</label>
-                    <input class="rsm-input" type="email" id="forgot-email" autocomplete="email" placeholder="tu@email.it" required />
-                  </div>
-
-                  <div class="rsm-button-row rsm-login-button-row">
-                    <button class="rsm-btn rsm-btn--brand magnetic" id="btn-forgot" type="submit" data-default-label="Invia email reset" data-loading-label="Invio in corso...">
-                      <span data-btn-label>Invia email reset</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                    </button>
-                    <button class="rsm-btn rsm-btn--ghost magnetic" id="forgot-back-login" type="button">
-                      <span data-btn-label>Torna al login</span>
-                      <span class="rsm-btn-icon" aria-hidden="true">&larr;</span>
-                    </button>
-                  </div>
-                </form>
-              </section>
-
-              <section class="view rsm-login-view" id="view-verify" aria-label="Verifica email">
-                <div class="verify-box">
-                  <div class="verify-icon" aria-hidden="true">&#9993;&#65039;</div>
-                  <h3>Controlla la tua email</h3>
-                  <p>Abbiamo inviato un link di conferma a: <span class="verify-email" id="verify-email-target">la tua email</span></p>
-                  <p>Finche l'email non e verificata non puoi usare l'account in modo operativo ne pubblicare contenuti.</p>
-                </div>
-
-                <div class="msg-slot" id="msg-verify" role="status" aria-live="polite"></div>
-
-                <div class="rsm-button-row rsm-login-button-row">
-                  <button class="rsm-btn rsm-btn--brand magnetic" id="verify-to-login" type="button">
-                    <span data-btn-label>Ho verificato, torno al login</span>
-                    <span class="rsm-btn-icon" aria-hidden="true">&rarr;</span>
-                  </button>
-                  <button class="rsm-btn rsm-btn--ghost magnetic" id="verify-to-register" type="button">
-                    <span data-btn-label>Usa un'altra email</span>
-                    <span class="rsm-btn-icon" aria-hidden="true">@</span>
-                  </button>
-                </div>
-              </section>
-            </div>
-          </aside>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
+
+</main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase.config.js"></script>
@@ -1979,14 +1793,7 @@
     const byId = (id) => document.getElementById(id);
 
     const COMMUNITY_RULES_VERSION = '2026-04';
-    const EMOJIS = ['\u{1F33F}', '\u{1F9A2}', '\u{1F30A}', '\u{1F3A3}', '\u{1F338}', '\u{1F98B}', '\u{1F33E}', '\u{1F33B}', '\u{1F9DC}', '\u{1F420}', '\u{1F343}', '\u{1F33C}', '\u{1F986}', '\u{1F4A7}', '⭐', '\u{1F319}'];
-    const COLORS = ['#1F6F8B', '#2E7D32', '#3A8C8A', '#4A6FA5', '#C62828', '#F57F17', '#0F2A30', '#6D4C41'];
-
-    const state = {
-      view: 'login',
-      regAccount: { email: '', password: '' },
-      verifyEmail: ''
-    };
+    const state = { view: 'login', verifyEmail: '' };
 
     const RATE_LIMITS = {
       login: { maxAttempts: 5, windowMs: 10 * 60 * 1000, lockMs: 15 * 60 * 1000 },
@@ -1994,32 +1801,14 @@
       forgot: { maxAttempts: 4, windowMs: 30 * 60 * 1000, lockMs: 30 * 60 * 1000 }
     };
 
-    function sanitizeUsername(value) {
-      return String(value || '').toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
-    }
-
-    function isEmailConfirmed(user) {
-      return Boolean(user && (user.email_confirmed_at || user.confirmed_at));
-    }
-
-    function normalizeBio(value) {
-      return String(value || '').trim().replace(/\s+/g, ' ');
-    }
-
-    function syncViewTriggers(viewName) {
-      document.querySelectorAll('[data-view-link]').forEach((control) => {
-        control.setAttribute('aria-pressed', control.getAttribute('data-view-link') === viewName ? 'true' : 'false');
-      });
-    }
+    function isEmailConfirmed(user) { return Boolean(user && (user.email_confirmed_at || user.confirmed_at)); }
 
     function setView(viewName) {
-      const views = document.querySelectorAll('.view');
-      views.forEach((view) => view.classList.remove('is-active'));
+      document.querySelectorAll('.view').forEach((view) => view.classList.remove('is-active'));
       const target = byId('view-' + viewName);
       if (target) {
         target.classList.add('is-active');
         state.view = viewName;
-        syncViewTriggers(viewName);
       }
     }
 
@@ -2089,18 +1878,20 @@
       const slot = byId(targetId);
       if (!slot) return;
       slot.innerHTML = '';
-      if (!text) return;
-
+      if (!text) { slot.innerHTML = '<div class="col"></div>'; return; }
+      const variant = type === 'error' ? 'alert-danger' : (type === 'success' ? 'alert-success' : 'alert-info');
+      const col = document.createElement('div');
+      col.className = 'col';
       const box = document.createElement('div');
-      box.className = 'notice ' + type;
+      box.className = 'alert ' + variant;
+      box.setAttribute('role', 'alert');
       box.textContent = text;
-      slot.appendChild(box);
+      col.appendChild(box);
+      slot.appendChild(col);
     }
 
     function clearMessages() {
       showMessage('msg-login', 'info', '');
-      showMessage('msg-reg1', 'info', '');
-      showMessage('msg-reg2', 'info', '');
       showMessage('msg-forgot', 'info', '');
       showMessage('msg-verify', 'info', '');
     }
@@ -2157,135 +1948,14 @@
       return base + ' Riprova tra ' + window.RSM_SECURITY.formatRetry(retryAfterMs) + '.';
     }
 
-    function togglePasswordVisibility(inputId, trigger) {
-      const input = byId(inputId);
-      if (!input || !trigger) return;
-      const show = input.type === 'password';
-      input.type = show ? 'text' : 'password';
-      trigger.textContent = show ? 'Nascondi' : 'Mostra';
-    }
-
-    function buildAvatarPickers() {
-      const emojiGrid = byId('avatar-emoji-grid');
-      const colorGrid = byId('avatar-color-grid');
-      if (!emojiGrid || !colorGrid) return;
-
-      emojiGrid.innerHTML = '';
-      colorGrid.innerHTML = '';
-
-      EMOJIS.forEach((emoji, idx) => {
-        const id = 'reg-emoji-' + idx;
-        const checked = idx === 0 ? 'checked' : '';
-        emojiGrid.insertAdjacentHTML(
-          'beforeend',
-          '<input type="radio" name="reg-emoji" id="' + id + '" value="' + emoji + '" ' + checked + '>' +
-          '<label for="' + id + '">' + emoji + '</label>'
-        );
-      });
-
-      COLORS.forEach((color, idx) => {
-        const id = 'reg-color-' + idx;
-        const checked = idx === 0 ? 'checked' : '';
-        colorGrid.insertAdjacentHTML(
-          'beforeend',
-          '<input type="radio" name="reg-color" id="' + id + '" value="' + color + '" ' + checked + '>' +
-          '<label for="' + id + '" style="background:' + color + '"></label>'
-        );
-      });
-
-      document.querySelectorAll('input[name="reg-emoji"], input[name="reg-color"]').forEach((el) => {
-        el.addEventListener('change', updateIdentityPreview);
-      });
-    }
-
-    function getSelectedAvatar() {
-      const selectedEmoji = document.querySelector('input[name="reg-emoji"]:checked');
-      const selectedColor = document.querySelector('input[name="reg-color"]:checked');
-      return {
-        emoji: selectedEmoji ? selectedEmoji.value : '\u{1F33F}',
-        color: selectedColor ? selectedColor.value : '#1F6F8B'
-      };
-    }
-
-    function updateIdentityPreview() {
-      const usernameInput = byId('reg2-username');
-      const displayInput = byId('reg2-display');
-      const comuneInput = byId('reg2-comune');
-      const previewAvatar = byId('preview-avatar');
-      const previewName = byId('preview-name');
-      const previewComune = byId('preview-comune');
-
-      if (!usernameInput || !displayInput || !comuneInput || !previewAvatar || !previewName || !previewComune) return;
-
-      const sanitized = sanitizeUsername(usernameInput.value);
-      if (usernameInput.value !== sanitized) {
-        usernameInput.value = sanitized;
-      }
-
-      const displayName = displayInput.value.trim();
-      const comune = comuneInput.value || 'Comune non impostato';
-      const avatar = getSelectedAvatar();
-
-      previewAvatar.textContent = avatar.emoji;
-      previewAvatar.style.background = avatar.color;
-      previewName.textContent = displayName || (sanitized ? '@' + sanitized : '@username');
-      previewComune.textContent = comune;
-    }
-
     async function ensureProfileForUser(user) {
-      const { data: existing, error: existingError } = await sb
-        .from('profiles')
-        .select('id, username')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (existingError) {
-        return { ok: false, message: 'Accesso riuscito, ma il controllo profilo ha dato errore.' };
-      }
-
-      if (existing) {
-        return { ok: true, created: false };
-      }
-
-      const metadata = user.user_metadata || {};
-      const username = sanitizeUsername(metadata.username || '');
-      const displayName = String(metadata.display_name || '').trim();
-      const comune = String(metadata.comune || '').trim();
-      const bio = normalizeBio(metadata.bio || '');
-      const avatarEmoji = String(metadata.avatar_emoji || '').trim();
-      const avatarColor = String(metadata.avatar_color || '').trim();
-
-      const metadataComplete = username.length >= 3 && displayName && comune && avatarEmoji && avatarColor;
-      if (!metadataComplete) {
-        return { ok: true, created: false, incompleteMetadata: true };
-      }
-
-      const payload = {
-        id: user.id,
-        username: username,
-        display_name: displayName,
-        bio: bio || null,
-        comune: comune,
-        avatar_emoji: avatarEmoji,
-        avatar_color: avatarColor,
-        role: comune === 'Fuori comune' ? 'reader' : 'user'
-      };
-
-      const { error: insertError } = await sb.from('profiles').insert(payload);
-
-      if (insertError) {
-        if (insertError.code === '23505') {
-          return { ok: true, created: false, incompleteMetadata: true };
-        }
-        return { ok: false, message: 'Accesso riuscito, ma non siamo riusciti a creare il profilo.' };
-      }
-
-      return { ok: true, created: true };
+      const { data: existing, error: existingError } = await sb.from('profiles').select('id, username').eq('id', user.id).maybeSingle();
+      if (existingError) return { ok: false, message: 'Accesso riuscito, ma il controllo profilo ha dato errore.' };
+      if (existing) return { ok: true, created: false };
+      return { ok: true, created: false };
     }
 
-    function validEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+    function validEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
     async function submitMagicLink() {
       showMessage('msg-login', 'info', '');
@@ -2339,11 +2009,11 @@
         return;
       }
 
-      setButtonLoading('btn-login', true, 'Accedi', 'Accesso in corso...');
+      setButtonLoading('btn-login', true, 'Procedi', 'Accesso in corso...');
 
       const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
 
-      setButtonLoading('btn-login', false, 'Accedi', 'Accesso in corso...');
+      setButtonLoading('btn-login', false, 'Procedi', 'Accesso in corso...');
 
       if (error) {
         rememberRateFailure('login_password', email, RATE_LIMITS.login);
@@ -2376,146 +2046,6 @@
 
       const { data: loginProf } = await sb.from('profiles').select('username').eq('id', user.id).single();
       window.location.href = loginProf && loginProf.username ? 'profile?u=' + loginProf.username : 'profile';
-    }
-
-    function submitRegisterStep1(event) {
-      event.preventDefault();
-      showMessage('msg-reg1', 'info', '');
-
-      const email = byId('reg1-email').value.trim();
-      const password = byId('reg1-password').value;
-      const confirmPassword = byId('reg1-password2').value;
-
-      if (!email || !password || !confirmPassword) {
-        showMessage('msg-reg1', 'error', 'Compila tutti i campi richiesti.');
-        return;
-      }
-
-      if (!validEmail(email)) {
-        showMessage('msg-reg1', 'error', 'Inserisci una email valida.');
-        return;
-      }
-
-      if (password.length < 6) {
-        showMessage('msg-reg1', 'error', 'La password deve avere almeno 6 caratteri.');
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        showMessage('msg-reg1', 'error', 'Le password non coincidono.');
-        return;
-      }
-
-      state.regAccount.email = email;
-      state.regAccount.password = password;
-
-      byId('reg2-email-pill').textContent = 'Email: ' + email;
-      byId('forgot-email').value = email;
-      setView('register2');
-    }
-
-    async function submitRegisterStep2(event) {
-      event.preventDefault();
-      showMessage('msg-reg2', 'info', '');
-
-      const usernameRaw = byId('reg2-username').value;
-      const username = sanitizeUsername(usernameRaw);
-      byId('reg2-username').value = username;
-
-      const displayName = byId('reg2-display').value.trim();
-      const comune = byId('reg2-comune').value;
-      const bio = normalizeBio(byId('reg2-bio').value);
-      const rulesAccepted = byId('reg2-rules').checked;
-      const avatar = getSelectedAvatar();
-
-      if (!state.regAccount.email || !state.regAccount.password) {
-        showMessage('msg-reg2', 'error', 'Dati account mancanti. Riparti dal passo 1.');
-        setView('register1');
-        return;
-      }
-
-      if (username.length < 3) {
-        showMessage('msg-reg2', 'error', 'Username non valido: minimo 3 caratteri con lettere, numeri o underscore.');
-        return;
-      }
-
-      if (!displayName) {
-        showMessage('msg-reg2', 'error', 'Inserisci il nome.');
-        return;
-      }
-
-      if (!comune) {
-        showMessage('msg-reg2', 'error', 'Seleziona il comune di riferimento.');
-        return;
-      }
-
-      if (!bio || bio.length < 8) {
-        showMessage('msg-reg2', 'error', 'Inserisci una bio di almeno 8 caratteri.');
-        return;
-      }
-
-      if (!rulesAccepted) {
-        showMessage('msg-reg2', 'error', 'Devi accettare i termini e condizioni.');
-        return;
-      }
-
-      setButtonLoading('btn-signup', true, 'Crea account', 'Creo account...');
-
-      const { data: usernameRows, error: usernameCheckError } = await sb
-        .from('profiles')
-        .select('id')
-        .eq('username', username)
-        .limit(1);
-
-      if (usernameCheckError) {
-        setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
-        showMessage('msg-reg2', 'error', "Impossibile verificare ora l'username. Riprova tra poco.");
-        return;
-      }
-
-      if (Array.isArray(usernameRows) && usernameRows.length > 0) {
-        setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
-        showMessage('msg-reg2', 'error', 'Username gia in uso. Scegline uno diverso.');
-        return;
-      }
-
-      const acceptedAt = new Date().toISOString();
-      const redirectUrl = new URL('login?verified=1', window.location.href).toString();
-
-      const metadata = {
-        username: username,
-        display_name: displayName,
-        comune: comune,
-        bio: bio,
-        avatar_emoji: avatar.emoji,
-        avatar_color: avatar.color,
-        community_rules_accepted: true,
-        community_rules_accepted_at: acceptedAt,
-        community_rules_version: COMMUNITY_RULES_VERSION
-      };
-
-      const { error: signUpError } = await sb.auth.signUp({
-        email: state.regAccount.email,
-        password: state.regAccount.password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: metadata
-        }
-      });
-
-      setButtonLoading('btn-signup', false, 'Crea account', 'Creo account...');
-
-      if (signUpError) {
-        showMessage('msg-reg2', 'error', humanizeAuthError(signUpError, 'Registrazione non riuscita.'));
-        return;
-      }
-
-      await sb.auth.signOut();
-
-      state.verifyEmail = state.regAccount.email;
-      byId('verify-email-target').textContent = state.verifyEmail || 'la tua email';
-      showMessage('msg-verify', 'success', "Registrazione completata. Apri la tua email e conferma l'account prima del login.");
-      setView('verify');
     }
 
     async function submitForgot(event) {
@@ -2552,7 +2082,6 @@
       clearRateFailures('forgot_password', email);
       showMessage('msg-forgot', 'success', 'Email inviata. Controlla la posta e anche la cartella spam.');
     }
-
     function applyVerifiedQueryMessage() {
       const params = new URLSearchParams(window.location.search);
       if (params.get('verified') === '1') {
@@ -2632,10 +2161,7 @@
     }
 
     function bindEvents() {
-      byId('form-login').addEventListener('submit', submitLogin);
-      byId('btn-magic').addEventListener('click', submitMagicLink);
-      byId('form-reg1').addEventListener('submit', submitRegisterStep1);
-      byId('form-reg2').addEventListener('submit', submitRegisterStep2);
+      byId('loginUP').addEventListener('submit', submitLogin);
       byId('form-forgot').addEventListener('submit', submitForgot);
 
       document.querySelectorAll('[data-view-link]').forEach((control) => {
@@ -2650,16 +2176,6 @@
           }
           setView(targetView);
         });
-      });
-
-      byId('login-to-register').addEventListener('click', () => {
-        clearMessages();
-        setView('register1');
-      });
-
-      byId('reg1-to-login').addEventListener('click', () => {
-        clearMessages();
-        setView('login');
       });
 
       byId('login-to-forgot').addEventListener('click', () => {
@@ -2680,38 +2196,10 @@
           byId('login-email').value = state.verifyEmail;
         }
       });
-
-      byId('verify-to-register').addEventListener('click', () => {
-        clearMessages();
-        setView('register1');
-      });
-
-      byId('reg2-back').addEventListener('click', () => {
-        clearMessages();
-        setView('register1');
-      });
-
-      byId('reg1-back-home').addEventListener('click', () => {
-        window.location.href = '/';
-      });
-
-      byId('reg2-username').addEventListener('input', updateIdentityPreview);
-      byId('reg2-display').addEventListener('input', updateIdentityPreview);
-      byId('reg2-comune').addEventListener('change', updateIdentityPreview);
-
-      document.querySelectorAll('[data-toggle]').forEach((trigger) => {
-        trigger.addEventListener('click', () => {
-          const inputId = trigger.getAttribute('data-toggle');
-          togglePasswordVisibility(inputId, trigger);
-        });
-      });
     }
 
     function init() {
-      syncViewTriggers(state.view);
       bindEvents();
-      buildAvatarPickers();
-      updateIdentityPreview();
       initReveal();
       document.querySelectorAll('.rsm-login-copy, .rsm-login-support, .rsm-login-panel').forEach((node) => {
         node.classList.add('is-visible');
