@@ -613,8 +613,7 @@ Usa null per i campi non trovati nel testo/immagine. Non inventare informazioni 
               temperature: 0.1,
               maxOutputTokens: 2048,
               responseMimeType: 'application/json'
-            },
-            thinkingConfig: { thinkingBudget: 0 }
+            }
           })
         }
       );
