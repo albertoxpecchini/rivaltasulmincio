@@ -321,7 +321,7 @@ Social:   Facebook · Instagram @prolocrivalta</code></pre>
          per cambiare versione si aggiorna package.json
          → la CI propaga il valore ovunque su questa pagina.
       ────────────────────────────────────────────── */
-      var SITE_VERSION_FALLBACK = 'v2.0';
+      var SITE_VERSION_FALLBACK = 'v2.1.0';
 
       function formatVersion(raw) {
         var v = String(raw == null ? '' : raw).trim();
