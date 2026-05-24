@@ -114,8 +114,7 @@ L'editor è il cuore della piattaforma: un form strutturato con anteprima live e
 |---|---|---|
 | Homepage | `/` | Hero video, carousel, esperienze, news |
 | Origini | `/origini` | Fotogallery storica del borgo |
-| Categoria | `/category` | Articoli filtrati per categoria |
-| Articolo | `/post` | Visualizzazione articolo con commenti e like |
+| Articoli | `/post` | Elenco filtrabile per categoria (`?name=`) e singolo articolo con commenti e like |
 | Privacy | `/privacy` | Informativa privacy GDPR |
 | Cookie | `/cookie` | Gestione cookie e consensi |
 | Note Legali | `/note-legali` | Termini e condizioni |
@@ -125,8 +124,8 @@ L'editor è il cuore della piattaforma: un form strutturato con anteprima live e
 | **Dashboard** | `/dashboard` | Area personale, bozze e articoli |
 | **Scrivi** | `/write` | Editor articoli con AI |
 | **Profilo** | `/profile` | Profilo pubblico utente |
-| **Modifica profilo** | `/modifica-profilo` | Modifica dati e avatar |
 | `/me` | → `/dashboard` | Redirect permanente (308) |
+| `/category` | → `/post` | Redirect permanente (301) |
 
 ---
 
@@ -214,13 +213,11 @@ Il sito è deployato su **Vercel** in modalità serverless. Ogni push su `main` 
 rivaltasulmincio/
 ├── index                  # Homepage
 ├── origini                # Fotogallery storica
-├── category               # Pagina categoria
-├── post                   # Singolo articolo
+├── post                   # Elenco articoli + singolo articolo
 ├── login / reset          # Autenticazione
 ├── dashboard              # Area utente
 ├── write                  # Editor articoli
 ├── profile                # Profilo pubblico
-├── modifica-profilo       # Modifica dati utente
 ├── privacy / cookie / note-legali / storia
 ├── server.js              # HTTP server Node.js
 ├── security.client.js     # Rate limiting e filtri frontend
