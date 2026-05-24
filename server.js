@@ -36,6 +36,16 @@ const PARTIAL_CACHE = new Map();
 const RESPONSE_CACHE = new Map();
 let responseCacheBytes = 0;
 
+// ── Versioni documenti legali ─────────────────────────────────────────────────
+// Fetched from Supabase at startup, cached in-memory, refreshed stale-while-revalidate.
+const DOC_VERSIONS_CACHE = { data: null, ts: 0, _fetching: false };
+const DOC_VERSIONS_TTL_MS = IS_PRODUCTION ? LONG_CACHE_TTL_MS : 30_000;
+const DOC_VERSIONS_DEFAULTS = {
+  'privacy':      { version: '2.0', effective_date: '24 maggio 2026' },
+  'cookie':       { version: '2.1', effective_date: '24 maggio 2026' },
+  'note-legali':  { version: '2.0', effective_date: '24 maggio 2026' }
+};
+
 function cacheIsFresh(entry, ttlMs) {
   return Boolean(entry) && (Date.now() - entry.ts) < ttlMs;
 }
@@ -260,8 +270,56 @@ function injectPartials(html) {
   const withPartials = versionHtmlAssetUrls(
     html.replace(/<!--PARTIAL:([a-zA-Z0-9_-]+)-->/g, (_, name) => loadPartial(name))
   );
-  return injectNewsletterModal(injectTopbarAssets(withPartials));
+  return injectDocVersions(injectNewsletterModal(injectTopbarAssets(withPartials)));
 }
+// ── Doc-version helpers ───────────────────────────────────────────────────────
+
+function formatItalianDate(isoDate) {
+  const MONTHS = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
+                  'luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  const parts = String(isoDate || '').split('-');
+  if (parts.length !== 3) return String(isoDate);
+  const d = parseInt(parts[2], 10);
+  const m = MONTHS[parseInt(parts[1], 10) - 1] || '';
+  return `${d} ${m} ${parts[0]}`;
+}
+
+async function refreshDocVersions() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_PROJECT_URL}/rest/v1/doc_versions?select=slug,version,effective_date`,
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+    );
+    if (!res.ok) return;
+    const rows = await res.json();
+    const data = {};
+    for (const r of rows) {
+      data[r.slug] = { version: r.version, effective_date: formatItalianDate(r.effective_date) };
+    }
+    DOC_VERSIONS_CACHE.data = data;
+    DOC_VERSIONS_CACHE.ts   = Date.now();
+  } catch (_) { /* mantieni dati in cache in caso di errore di rete */ }
+  finally { DOC_VERSIONS_CACHE._fetching = false; }
+}
+
+function getDocEntry(slug) {
+  const stale = DOC_VERSIONS_CACHE.data === null
+    || (Date.now() - DOC_VERSIONS_CACHE.ts) > DOC_VERSIONS_TTL_MS;
+  if (stale && !DOC_VERSIONS_CACHE._fetching) {
+    DOC_VERSIONS_CACHE._fetching = true;
+    refreshDocVersions(); // fire-and-forget: stale-while-revalidate
+  }
+  return (DOC_VERSIONS_CACHE.data && DOC_VERSIONS_CACHE.data[slug])
+    || DOC_VERSIONS_DEFAULTS[slug]
+    || { version: '—', effective_date: '—' };
+}
+
+function injectDocVersions(html) {
+  return html
+    .replace(/<!--DOCVERSION:([a-zA-Z0-9_-]+)-->/g, (_, s) => getDocEntry(s).version)
+    .replace(/<!--DOCDATE:([a-zA-Z0-9_-]+)-->/g,    (_, s) => getDocEntry(s).effective_date);
+}
+
 const LEGACY_PAGE_SUFFIX = `.${'ht'}${'ml'}`;
 const HTML_PAGES = new Set([
   'write',
@@ -1059,6 +1117,103 @@ function getHtmlRedirect(rawUrl) {
   return requestUrl.pathname + requestUrl.search;
 }
 
+async function handleUpdateDocVersion(req, res, slug) {
+  const VALID_SLUGS = new Set(['privacy', 'cookie', 'note-legali']);
+  if (!VALID_SLUGS.has(slug)) {
+    res.writeHead(404, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: `Documento non riconosciuto: "${slug}".` }));
+    return;
+  }
+
+  // Verifica token Bearer
+  const token = (req.headers['authorization'] || '').replace(/^Bearer\s+/i, '').trim();
+  if (!token) {
+    res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Non autorizzato.' }));
+    return;
+  }
+
+  // Verifica sessione Supabase
+  try {
+    const userRes = await fetch(`${SUPABASE_PROJECT_URL}/auth/v1/user`, {
+      headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_ANON_KEY }
+    });
+    if (!userRes.ok) throw new Error('token-invalid');
+    const user = await userRes.json();
+
+    // Verifica ruolo admin
+    const roleRes = await fetch(
+      `${SUPABASE_PROJECT_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=role`,
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } }
+    );
+    const roles = await roleRes.json();
+    if (!roles?.[0] || roles[0].role !== 'admin') {
+      res.writeHead(403, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Permesso negato: richiesto ruolo admin.' }));
+      return;
+    }
+  } catch (_) {
+    res.writeHead(401, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Sessione non valida o scaduta.' }));
+    return;
+  }
+
+  // Parsing body
+  let body;
+  try { body = await readJsonBody(req); } catch (_) { body = {}; }
+  const version       = String(body.version || '').trim();
+  const effective_date = String(body.effective_date || '').trim(); // 'YYYY-MM-DD'
+  const notes         = String(body.notes || '').trim();
+
+  if (!version || !/^\d+\.\d+$/.test(version)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Versione non valida. Formato atteso: "X.Y" (es. "2.1").' }));
+    return;
+  }
+  if (!effective_date || !/^\d{4}-\d{2}-\d{2}$/.test(effective_date)) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Data non valida. Formato atteso: "YYYY-MM-DD" (es. "2026-05-24").' }));
+    return;
+  }
+
+  // Upsert su Supabase (merge-duplicates = INSERT ... ON CONFLICT DO UPDATE)
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
+  try {
+    const sbRes = await fetch(`${SUPABASE_PROJECT_URL}/rest/v1/doc_versions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey:         serviceKey,
+        Authorization:  `Bearer ${serviceKey}`,
+        Prefer:         'resolution=merge-duplicates,return=representation'
+      },
+      body: JSON.stringify({ slug, version, effective_date, notes })
+    });
+    if (!sbRes.ok) {
+      const errText = await sbRes.text();
+      throw new Error(errText);
+    }
+  } catch (e) {
+    res.writeHead(502, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Errore salvataggio: ' + e.message }));
+    return;
+  }
+
+  // Invalida cache (sia doc-versions sia response cache per le pagine coinvolte)
+  DOC_VERSIONS_CACHE.data = null;
+  DOC_VERSIONS_CACHE.ts   = 0;
+  RESPONSE_CACHE.clear();
+  responseCacheBytes = 0;
+  await refreshDocVersions(); // ricarica subito i nuovi valori
+
+  res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({
+    ok: true, slug, version,
+    effective_date,
+    effective_date_it: formatItalianDate(effective_date)
+  }));
+}
+
 function handler(req, res) {
   const cleanUrl = getHtmlRedirect(req.url);
   if (cleanUrl) {
@@ -1135,6 +1290,22 @@ function handler(req, res) {
 
   if (req.method === 'POST' && requestPathLower === '/api/newsletter/send') {
     handleNewsletterSend(req, res);
+    return;
+  }
+
+  // GET /api/doc-versions — versioni correnti (pubbliche)
+  if (req.method === 'GET' && requestPathLower === '/api/doc-versions') {
+    const data = DOC_VERSIONS_CACHE.data || DOC_VERSIONS_DEFAULTS;
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(data));
+    return;
+  }
+
+  // PATCH /api/doc-versions/:slug — aggiorna versione (solo admin)
+  const docVersionMatch = req.method === 'PATCH' &&
+    requestPathLower.match(/^\/api\/doc-versions\/([a-z0-9_-]+)$/);
+  if (docVersionMatch) {
+    handleUpdateDocVersion(req, res, docVersionMatch[1]);
     return;
   }
 
@@ -1237,6 +1408,9 @@ function handler(req, res) {
     }
   });
 }
+
+// Warm-up cache versioni documenti (anche su Vercel serverless)
+refreshDocVersions();
 
 module.exports = handler;
 
