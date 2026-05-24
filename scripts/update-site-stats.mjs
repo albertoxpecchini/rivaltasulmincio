@@ -10,14 +10,13 @@ const DRY_RUN = String(process.env.DRY_RUN || '') === '1';
 
 const PAGE_FILES = [
   'index',
+  'origini',
   'login',
   'dashboard',
   'write',
   'post',
   'profile',
-  'modifica-profilo',
   'preferenze',
-  'category',
   'reset',
   'privacy',
   'cookie',
@@ -91,7 +90,9 @@ function buildStats() {
 
   const imageCount = trackedFiles.filter((p) => p.startsWith('img/')).length;
   const videoCount = trackedFiles.filter((p) => p.startsWith('video/')).length;
-  const blockedWords = parseBlockedWordsCount(readUtf8(path.join(ROOT, 'security.client.js')));
+  const securityClientSrc = readUtf8(path.join(ROOT, 'security.client.js'));
+  const blockedWords = parseBlockedWordsCount(securityClientSrc);
+  const secClientLines = countLines(securityClientSrc);
 
   const stats = {
     files: trackedFiles.length,
@@ -104,18 +105,18 @@ function buildStats() {
     swiper_version: sanitizeVersion(pkg.dependencies?.swiper),
     version: String(pkg.version || ''),
     filtered_words: blockedWords,
+    sec_client_lines: secClientLines,
     rate_limit_attempts: 5,
     rate_limit_window: 10,
     rate_limit_lock: 15,
     lines_index: perPageLines.index || 0,
+    lines_origini: perPageLines.origini || 0,
     lines_login: perPageLines.login || 0,
     lines_dashboard: perPageLines.dashboard || 0,
     lines_write: perPageLines.write || 0,
     lines_post: perPageLines.post || 0,
     lines_profile: perPageLines.profile || 0,
-    lines_modifica_profilo: perPageLines['modifica-profilo'] || 0,
     lines_preferenze: perPageLines.preferenze || 0,
-    lines_category: perPageLines.category || 0,
     lines_reset: perPageLines.reset || 0,
     lines_privacy: perPageLines.privacy || 0,
     lines_cookie: perPageLines.cookie || 0,
