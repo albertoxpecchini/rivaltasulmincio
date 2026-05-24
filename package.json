@@ -7,5 +7,7 @@
     "start": "node server.js",
     "update:site-stats": "node scripts/update-site-stats.mjs"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
 }

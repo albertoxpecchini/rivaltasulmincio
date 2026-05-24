@@ -367,5 +367,11 @@
     init();
 </script>
 
+<!-- Vercel Speed Insights -->
+<script type="module">
+  import { injectSpeedInsights } from '/_vercel/speed-insights/package/@vercel/speed-insights/dist/index.mjs';
+  injectSpeedInsights();
+</script>
+
 </body>
 </html>
