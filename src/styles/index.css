@@ -1,8 +1,0 @@
-/*
- * Stili globali dell'app.
- * Il look del sito è fornito da Bootstrap Italia + /rsm-bi.css (caricati in index.html).
- * Questo file resta per eventuali override specifici della SPA.
- */
-
-/* I contenitori dei partial/pagina iniettati non devono alterare il flow. */
-[data-rsm-shell] { display: contents; }
