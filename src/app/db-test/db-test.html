@@ -1,0 +1,34 @@
+<main class="container rsm-page">
+
+  <h1>Database Test</h1>
+  <p class="text-muted">Diagnostica della connessione Supabase e delle tabelle del progetto.</p>
+
+  <div class="card-wrapper my-3" id="config-card" hidden>
+    <div class="card card-bg">
+      <div class="card-body">
+        <h2 class="h5">Configura Supabase</h2>
+        <p class="text-muted small">Incolla URL progetto e anon key, salva e ricarica. La configurazione viene memorizzata localmente nel browser e riusata da tutte le pagine del sito.</p>
+        <div class="form-group">
+          <label for="sb-url">Project URL</label>
+          <input id="sb-url" type="url" class="form-control" placeholder="https://xxxx.supabase.co" />
+        </div>
+        <div class="form-group">
+          <label for="sb-key">Anon Key</label>
+          <textarea id="sb-key" class="form-control" rows="4" placeholder="Incolla qui la anon key del progetto"></textarea>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <button class="btn btn-primary btn-sm" type="button" id="save-config">Salva e ricarica</button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" id="reset-config">Ripristina default</button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" id="copy-config-link">Copia link setup</button>
+        </div>
+        <div class="small mt-2" id="config-note"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout note" id="summary"><span>Esecuzione in corso…</span></div>
+
+  <button class="btn btn-primary mb-3" onclick="runAll()">Riesegui tutti i test</button>
+
+  <div class="row g-3" id="grid"></div>
+</main>

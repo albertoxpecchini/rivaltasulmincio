@@ -1,0 +1,298 @@
+const sb = window.RSM_SUPABASE && typeof window.RSM_SUPABASE.createClient === 'function'
+  ? window.RSM_SUPABASE.createClient()
+  : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const TESTS = [
+  {
+    id: 'connection',
+    label: 'Connessione Supabase',
+    desc: 'Raggiunge il progetto Supabase',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id').limit(1);
+      if (error) throw error;
+      return `OK — risposta ricevuta (${data?.length ?? 0} righe)`;
+    }
+  },
+  {
+    id: 'profiles_columns',
+    label: 'Tabella profiles — colonne chiave',
+    desc: 'Verifica che id, username, display_name, bio, comune, avatar_emoji, avatar_color, role, created_at esistano',
+    run: async () => {
+      const cols = ['id','username','display_name','bio','comune','avatar_emoji','avatar_color','role','created_at'];
+      const { data, error } = await sb.from('profiles').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      return `OK — tutte le colonne trovate: ${cols.join(', ')}`;
+    }
+  },
+  {
+    id: 'posts_table',
+    label: 'Tabella posts',
+    desc: 'Verifica id, title, excerpt, content, category, published, user_id, created_at, published_at',
+    run: async () => {
+      const cols = ['id','title','excerpt','content','category','published','user_id','created_at','published_at'];
+      const { data, error } = await sb.from('posts').select(cols.join(',')).limit(1);
+      if (error) throw error;
+      return `OK — ${data?.length ?? 0} righe leggibili (published=true via RLS non richiesta qui)`;
+    }
+  },
+  {
+    id: 'posts_published',
+    label: 'Post pubblicati pubblici',
+    desc: 'Conta i post con published=true leggibili da anonimo',
+    run: async () => {
+      const { count, error } = await sb.from('posts').select('id', { count: 'exact', head: true }).eq('published', true);
+      if (error) throw error;
+      return `OK — ${count} post pubblicati visibili pubblicamente`;
+    }
+  },
+  {
+    id: 'categories',
+    label: 'Tabella categories (opzionale)',
+    desc: 'Verifica se esiste una tabella categories separata',
+    run: async () => {
+      const { data, error } = await sb.from('categories').select('*').limit(5);
+      if (error) {
+        if (error.code === '42P01' || error.message?.includes('does not exist')) {
+          return 'Non esiste (le categorie sono gestite lato client — OK)';
+        }
+        throw error;
+      }
+      return `OK — ${data?.length ?? 0} categorie trovate`;
+    }
+  },
+  {
+    id: 'comments_table',
+    label: 'Tabella comments (opzionale)',
+    desc: 'Verifica se la tabella comments esiste',
+    run: async () => {
+      const { data, error } = await sb.from('comments').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return 'Non esiste ancora — funzionalità commenti non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'likes_table',
+    label: 'Tabella likes (opzionale)',
+    desc: 'Verifica se la tabella likes esiste',
+    run: async () => {
+      const { data, error } = await sb.from('likes').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return 'Non esiste ancora — funzionalità like non attiva';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'notifications_table',
+    label: 'Tabella notifications (opzionale)',
+    desc: 'Verifica se la tabella notifications esiste',
+    run: async () => {
+      const { data, error } = await sb.from('notifications').select('id').limit(1);
+      if (error) {
+        if (error.code === '42P01' || error.code === 'PGRST205' || error.message?.includes('does not exist')) {
+          return 'Non esiste ancora';
+        }
+        throw error;
+      }
+      return `OK — tabella presente (${data?.length ?? 0} righe leggibili)`;
+    }
+  },
+  {
+    id: 'auth_session',
+    label: 'Sessione auth corrente',
+    desc: 'Controlla se esiste una sessione utente attiva',
+    run: async () => {
+      const { data: { session }, error } = await sb.auth.getSession();
+      if (error) throw error;
+      if (!session) return '— Nessun utente loggato (anonimo)';
+      return `OK — loggato come ${session.user.email} (id: ${session.user.id.slice(0,8)}…)`;
+    }
+  },
+  {
+    id: 'rls_profiles_anon',
+    label: 'RLS profiles — lettura anonima',
+    desc: 'Un utente anonimo può leggere i profili pubblici?',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,username').limit(3);
+      if (error) throw error;
+      if (!data || data.length === 0) return 'Nessun profilo o RLS blocca la lettura pubblica';
+      return `OK — ${data.length} profili leggibili pubblicamente`;
+    }
+  },
+  {
+    id: 'profiles_comune_column',
+    label: 'Colonna comune in profiles',
+    desc: 'Test diretto: tenta di leggere il campo "comune"',
+    run: async () => {
+      const { data, error } = await sb.from('profiles').select('id,comune').limit(1);
+      if (error) {
+        if (error.message?.includes('comune') || error.message?.includes('schema cache')) {
+          throw new Error('Colonna "comune" NON trovata — esegui: ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS comune TEXT;');
+        }
+        throw error;
+      }
+      return `OK — colonna "comune" presente`;
+    }
+  },
+];
+
+const results = {};
+
+function currentConfig() {
+  if (window.RSM_SUPABASE && typeof window.RSM_SUPABASE.getConfig === 'function') {
+    return window.RSM_SUPABASE.getConfig();
+  }
+  return { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY, source: 'embedded', canManage: false };
+}
+
+function canManageConfig() {
+  return !!(window.RSM_SUPABASE && typeof window.RSM_SUPABASE.canManageConfig === 'function' && window.RSM_SUPABASE.canManageConfig());
+}
+
+function updateConfigNote(message, type) {
+  const note = document.getElementById('config-note');
+  if (!note) return;
+  note.className = 'small mt-2' + (type === 'ok' ? ' text-success' : type === 'err' ? ' text-danger' : '');
+  note.innerHTML = message;
+}
+
+function refreshConfigUi() {
+  const cfg = currentConfig();
+  const card = document.getElementById('config-card');
+  const urlField = document.getElementById('sb-url');
+  const keyField = document.getElementById('sb-key');
+  if (card) card.hidden = !canManageConfig();
+  if (!canManageConfig()) return;
+  if (urlField) urlField.value = cfg.url || '';
+  if (keyField) keyField.value = cfg.anonKey || '';
+  updateConfigNote('Origine configurazione: <strong>' + escapeHtml(cfg.source || 'embedded') + '</strong>.');
+}
+
+function bindConfigUi() {
+  if (!canManageConfig()) return;
+  const saveBtn = document.getElementById('save-config');
+  const resetBtn = document.getElementById('reset-config');
+  const copyBtn = document.getElementById('copy-config-link');
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      try {
+        window.RSM_SUPABASE.saveConfig({
+          url: document.getElementById('sb-url').value,
+          anonKey: document.getElementById('sb-key').value,
+        });
+        updateConfigNote('Configurazione salvata. Ricarico la pagina…', 'ok');
+        window.location.reload();
+      } catch (error) {
+        updateConfigNote(escapeHtml(error.message || 'Configurazione non valida.'), 'err');
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      if (window.RSM_SUPABASE && typeof window.RSM_SUPABASE.clearConfig === 'function') {
+        window.RSM_SUPABASE.clearConfig();
+      }
+      updateConfigNote('Configurazione ripristinata ai valori incorporati. Ricarico la pagina…', 'ok');
+      window.location.reload();
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async function () {
+      const url = document.getElementById('sb-url').value.trim();
+      const key = document.getElementById('sb-key').value.trim();
+      if (!url || !key) {
+        updateConfigNote('Inserisci URL e anon key prima di copiare il link setup.', 'err');
+        return;
+      }
+      const setupUrl = window.location.origin + window.location.pathname + '?sbUrl=' + encodeURIComponent(url) + '&sbKey=' + encodeURIComponent(key);
+      try {
+        await navigator.clipboard.writeText(setupUrl);
+        updateConfigNote('Link setup copiato negli appunti.', 'ok');
+      } catch (_) {
+        updateConfigNote('Copia automatica non disponibile. Usa il link dalla barra indirizzi dopo aver salvato.', 'err');
+      }
+    });
+  }
+}
+
+function renderCard(test, status, message) {
+  const badge = status === 'ok'
+    ? '<span class="badge bg-success">PASS</span>'
+    : status === 'err'
+    ? '<span class="badge bg-danger">FAIL</span>'
+    : '<span class="badge bg-secondary">…</span>';
+  const textClass = status === 'ok' ? 'text-success' : status === 'err' ? 'text-danger' : 'text-muted';
+
+  return `
+    <div class="col-12 col-md-6" id="card-${test.id}">
+      <div class="card-wrapper h-100">
+        <div class="card card-bg h-100">
+          <div class="card-body">
+            <h2 class="h6">${badge} ${escapeHtml(test.label)}</h2>
+            <p class="mb-1 ${textClass}">${escapeHtml(message)}</p>
+            <small class="text-muted">${escapeHtml(test.desc)}</small>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function updateSummary() {
+  const total = TESTS.length;
+  const done  = Object.keys(results).length;
+  const passed = Object.values(results).filter(r => r === 'ok').length;
+  const failed = Object.values(results).filter(r => r === 'err').length;
+  const pct = done > 0 ? Math.round((passed / done) * 100) : 0;
+
+  document.getElementById('summary').innerHTML = `
+    <strong>${done}/${total}</strong> eseguiti &nbsp;|&nbsp;
+    <span class="text-success fw-bold">${passed} PASS</span> &nbsp;|&nbsp;
+    <span class="text-danger fw-bold">${failed} FAIL</span> &nbsp;|&nbsp;
+    <span class="text-muted">${total - done} in attesa</span>
+    ${done === total ? `&nbsp;— <strong>${pct === 100 ? 'Tutti i test superati' : `${failed} test falliti`}</strong>` : ''}
+  `;
+}
+
+async function runAll() {
+  const grid = document.getElementById('grid');
+  Object.keys(results).forEach(k => delete results[k]);
+
+  grid.innerHTML = TESTS.map(t => renderCard(t, 'pending', 'In esecuzione…')).join('');
+  updateSummary();
+
+  for (const test of TESTS) {
+    try {
+      const msg = await test.run();
+      results[test.id] = 'ok';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'ok', msg);
+    } catch (e) {
+      results[test.id] = 'err';
+      document.getElementById('card-' + test.id).outerHTML = renderCard(test, 'err', e.message || String(e));
+    }
+    updateSummary();
+  }
+}
+
+runAll();
+refreshConfigUi();
+bindConfigUi();

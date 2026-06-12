@@ -1,0 +1,150 @@
+(function () {
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('your-project')) return;
+
+  const sb = window.RSM_SUPABASE.createClient();
+  const $ = (id) => document.getElementById(id);
+
+  const STATE = {
+    session: null, profile: null,
+    posts: [], totalLikes: 0,
+    missingLikes: false,
+  };
+
+  function escapeHtml(v) {
+    return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function isMissingRelationError(e) {
+    const msg = String(e?.message || '').toLowerCase();
+    return !!e && (e.code === '42P01' || e.code === 'PGRST205' || msg.includes('does not exist') || msg.includes('could not find the table'));
+  }
+  function fmtDate(iso) {
+    if (!iso) return '–';
+    return new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+  function relativeTime(iso) {
+    if (!iso) return '';
+    const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (mins < 1)  return 'adesso';
+    if (mins < 60) return mins + ' min fa';
+    const h = Math.floor(mins / 60);
+    if (h < 24)   return h + ' h fa';
+    const d = Math.floor(h / 24);
+    if (d < 7)    return d + ' g fa';
+    return fmtDate(iso);
+  }
+  function emptyNote(title, hint) {
+    return `<p class="text-muted small mb-1">${escapeHtml(title)}</p><p class="text-muted small mb-0">${escapeHtml(hint)}</p>`;
+  }
+
+  function renderKpis() {
+    const pub   = STATE.posts.filter(p => p.published);
+    const drafts = STATE.posts.filter(p => !p.published);
+    const hp = $('hero-published'); if (hp) hp.textContent = pub.length;
+    const hd = $('hero-drafts');    if (hd) hd.textContent = drafts.length;
+    const hl = $('hero-likes');     if (hl) hl.textContent = STATE.missingLikes ? '–' : STATE.totalLikes;
+  }
+
+  function renderDrafts() {
+    const wrap = $('drafts-list'); if (!wrap) return;
+    const drafts = STATE.posts.filter(p => !p.published)
+      .slice().sort((a,b) => new Date(b.updated_at||b.created_at) - new Date(a.updated_at||a.created_at))
+      .slice(0, 8);
+    if (!drafts.length) {
+      wrap.innerHTML = emptyNote('Nessuna bozza.', 'Le bozze salvate appariranno qui.');
+      return;
+    }
+    wrap.innerHTML = drafts.map(p => `
+      <div class="post-row d-flex justify-content-between align-items-start gap-2">
+        <div>
+          <strong class="small d-block">${escapeHtml(p.title || '(Senza titolo)')}</strong>
+          <span class="text-muted small">${relativeTime(p.updated_at || p.created_at)}</span>
+        </div>
+        <a class="btn btn-sm btn-outline-primary flex-shrink-0" href="/write?edit=${encodeURIComponent(p.id)}">Riprendi</a>
+      </div>`).join('');
+  }
+
+  function renderPublished() {
+    const wrap = $('published-list'); if (!wrap) return;
+    const pubs = STATE.posts.filter(p => p.published)
+      .slice().sort((a,b) => new Date(b.published_at||b.created_at) - new Date(a.published_at||a.created_at))
+      .slice(0, 10);
+    if (!pubs.length) {
+      wrap.innerHTML = emptyNote('Nessun articolo pubblicato.', 'Crea il tuo primo articolo e pubblicalo.');
+      return;
+    }
+    wrap.innerHTML = pubs.map(p => `
+      <div class="post-row d-flex justify-content-between align-items-start gap-2">
+        <div>
+          <strong class="small d-block">${escapeHtml(p.title || '(Senza titolo)')}</strong>
+          <span class="text-muted small">${fmtDate(p.published_at || p.created_at)}</span>
+        </div>
+        <div class="d-flex gap-2 flex-shrink-0">
+          <a class="btn btn-sm btn-outline-primary" href="/post?id=${encodeURIComponent(p.id)}">Apri</a>
+          <a class="btn btn-sm btn-outline-secondary" href="/write?edit=${encodeURIComponent(p.id)}">Modifica</a>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderEmptyState() {
+    const el = $('empty-dashboard'); if (!el) return;
+    el.style.display = STATE.posts.length ? 'none' : '';
+  }
+
+  function renderAll() {
+    renderKpis();
+    renderDrafts();
+    renderPublished();
+    renderEmptyState();
+  }
+
+  async function fetchPosts() {
+    const { data, error } = await sb.from('posts')
+      .select('id,title,excerpt,category,published,published_at,created_at,updated_at')
+      .eq('user_id', STATE.session.user.id)
+      .order('created_at', { ascending: false });
+    console.log('[dashboard] fetchPosts:', {
+      userId: STATE.session.user.id,
+      total: data?.length,
+      drafts: data?.filter(p => !p.published).length,
+      published: data?.filter(p => p.published).length,
+      error: error?.message,
+      rows: data?.map(p => ({ id: p.id, title: p.title, published: p.published }))
+    });
+    if (error) throw error;
+    STATE.posts = data || [];
+  }
+
+  async function fetchLikesTotal() {
+    STATE.totalLikes = 0; STATE.missingLikes = false;
+    const ids = STATE.posts.map(p => p.id).filter(Boolean);
+    if (!ids.length) return;
+    const res = await sb.from('post_likes').select('id', { count: 'exact', head: true }).in('post_id', ids);
+    if (res.error) {
+      if (isMissingRelationError(res.error)) { STATE.missingLikes = true; return; }
+    } else {
+      STATE.totalLikes = res.count || 0;
+    }
+  }
+
+  async function init() {
+    const { data: sessionData } = await sb.auth.getSession();
+    STATE.session = sessionData?.session || null;
+    if (!STATE.session) { window.location.href = '/login'; return; }
+
+    const { data: profile, error } = await sb.from('profiles')
+      .select('id,username,display_name,avatar_emoji,avatar_color')
+      .eq('id', STATE.session.user.id)
+      .single();
+    if (error || !profile) { window.location.href = '/login'; return; }
+    STATE.profile = profile;
+
+    const chip = $('chip-user');
+    if (chip) chip.textContent = '@' + (profile.username || 'utente');
+
+    await fetchPosts();
+    await fetchLikesTotal();
+    renderAll();
+  }
+
+  init();
+})();
