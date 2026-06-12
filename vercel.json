@@ -1,37 +1,6 @@
 {
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "index",
-          "login",
-          "write",
-          "reset",
-          "profile",
-          "post",
-          "dashboard",
-          "db-test",
-          "privacy",
-          "cookie",
-          "note-legali",
-          "storia",
-          "origini",
-          "sitemap.xml",
-          "robots.txt",
-          "security.client.js",
-          "supabase.config.js",
-          "rsm-bi.css",
-          "vendor/**",
-          "img/**",
-          "video/**",
-          "partials/**"
-        ]
-      }
-    }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/server.js" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

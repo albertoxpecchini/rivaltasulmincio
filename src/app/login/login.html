@@ -1,0 +1,134 @@
+<main id="main" class="container rsm-page">
+
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col">
+      <div class="row">
+        <div id="title" class="mb-4 col">
+          <p class="c1">
+            <strong>ACCESSO · RIVALTA SUL MINCIO</strong>
+          </p>
+          <h1>Accedi al sito</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col mx-0 mx-sm-n4">
+      <div class="card-wrapper card-space">
+        <div class="card card-bg card-bg-small-none card-big py-0 mx-0 mx-md-1">
+          <div class="card-body p-0 p-sm-4">
+            <div class="row">
+              <div class="col-12">
+
+                <!-- LOGIN -->
+                <section class="view is-active" id="view-login">
+                  <h2>Entra con le tue credenziali</h2>
+
+                  <div id="msg-login" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"><br><br></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <form method="POST" action="#" id="loginUP" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="login-email" class="sr-only active" style="transition: none;">Email</label>
+                            <input type="email" class="form-control" id="login-email" name="username" placeholder="Email" value="" autocomplete="email" tabindex="1">
+                          </div>
+                          <div class="ipzs-validator" id="usernameError">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col mb-2">
+                          <div class="input-group">
+                            <label for="login-password" class="sr-only active" style="transition: none;">Password</label>
+                            <input type="password" class="form-control input-password" id="login-password" name="password" placeholder="Password" value="" autocomplete="current-password" tabindex="2">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="ipzs-validator" id="passwordError">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="mt-1 pb-1">
+                        <p class="c2">Hai dimenticato la password? <strong><a href="#" id="login-to-forgot" class="text-nowrap">Richiedine una nuova.</a></strong></p>
+                      </div>
+                      <div class="row buttons mt-4 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <a href="/" class="btn btn-outline-primary w-100 text-nowrap">Annulla</a>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-login" data-default-label="Procedi" data-loading-label="Accesso in corso..."><span data-btn-label>Procedi</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- FORGOT -->
+                <section class="view" id="view-forgot">
+                  <h2>Reimposta la password</h2>
+                  <p class="c2">Ti inviamo una email con il link di reset.</p>
+
+                  <div id="msg-forgot" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <form id="form-forgot" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="forgot-email" class="sr-only active" style="transition: none;">Email</label>
+                            <input type="email" class="form-control" id="forgot-email" placeholder="Email" autocomplete="email" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row buttons mt-4 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <button type="button" id="forgot-back-login" class="btn btn-outline-primary w-100 text-nowrap">Annulla</button>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-forgot" data-default-label="Invia email reset" data-loading-label="Invio in corso..."><span data-btn-label>Invia email reset</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- VERIFY -->
+                <section class="view" id="view-verify">
+                  <h2>Controlla la tua email</h2>
+
+                  <div id="msg-verify" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="callout note">
+                    <div class="callout-title">Link di conferma inviato</div>
+                    <p>Abbiamo inviato un link di conferma a: <strong id="verify-email-target">la tua email</strong></p>
+                    <p class="mb-0">Finché l'email non è verificata non puoi usare l'account in modo operativo né pubblicare contenuti.</p>
+                  </div>
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <button type="button" id="verify-to-login" class="btn btn-primary w-100 text-nowrap"><span data-btn-label>Ho verificato, torno al login</span></button>
+                    </div>
+                  </div>
+                </section>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
+
+</main>

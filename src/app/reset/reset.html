@@ -1,0 +1,131 @@
+<main id="main" class="container rsm-page">
+
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col">
+      <div class="row">
+        <div id="title" class="mb-4 col">
+          <p class="c1">
+            <strong>AREA RISERVATA · RIVALTA SUL MINCIO</strong>
+          </p>
+          <h1>Nuova password</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+    <div class="col mx-0 mx-sm-n4">
+      <div class="card-wrapper card-space">
+        <div class="card card-bg card-bg-small-none card-big py-0 mx-0 mx-md-1">
+          <div class="card-body p-0 p-sm-4">
+            <div class="row">
+              <div class="col-12">
+
+                <!-- CARICAMENTO -->
+                <section class="view is-active" id="view-loading">
+                  <div class="text-center py-5">
+                    <div class="progress-spinner progress-spinner-active" role="status">
+                      <span class="visually-hidden">Caricamento…</span>
+                    </div>
+                    <p class="c2 mt-3 mb-0">Verifica del link in corso…</p>
+                  </div>
+                </section>
+
+                <!-- LINK NON VALIDO -->
+                <section class="view" id="view-invalid">
+                  <h2>Link non valido</h2>
+                  <p class="c2">Il link di recupero è scaduto o non è valido.</p>
+
+                  <div class="callout danger">
+                    <div class="callout-title">Link scaduto</div>
+                    <p class="mb-0">Torna al login e richiedi un nuovo link di reset dalla sezione "Hai dimenticato la password?".</p>
+                  </div>
+
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <a href="/login" class="btn btn-primary w-100 text-nowrap">← Torna al login</a>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- FORM NUOVA PASSWORD -->
+                <section class="view" id="view-form">
+                  <h2>Scegli una nuova password</h2>
+                  <p class="c2">Inserisci e conferma la nuova password per il tuo account.</p>
+
+                  <div id="msg-reset" class="row mb-4 mx-n2" role="status" aria-live="polite">
+                    <div class="col"></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <form id="form-reset" novalidate>
+                      <div class="form-row">
+                        <div class="form-group col mb-2">
+                          <div class="input-group">
+                            <label for="pwd1" class="sr-only active" style="transition: none;">Nuova password</label>
+                            <input type="password" class="form-control input-password" id="pwd1" placeholder="Almeno 8 caratteri" autocomplete="new-password" tabindex="1">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="progress mt-2" style="height: 6px">
+                            <div class="progress-bar" role="progressbar" id="str-bar" style="width: 0%"></div>
+                          </div>
+                          <small class="form-text" id="str-label"></small>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col mb-5">
+                          <div class="input-group">
+                            <label for="pwd2" class="sr-only active" style="transition: none;">Conferma password</label>
+                            <input type="password" class="form-control input-password" id="pwd2" placeholder="Ripeti la password" autocomplete="new-password" tabindex="2">
+                            <span class="password-icon" aria-hidden="true">
+                              <svg class="password-icon-visible icon icon-primary icon-sm d-none"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-visible"></use></svg>
+                              <svg class="password-icon-invisible icon icon-primary icon-sm"><use xlink:href="/vendor/bootstrap-italia/svg/sprites.svg#it-password-invisible"></use></svg>
+                            </span>
+                          </div>
+                          <div class="ipzs-validator" id="pwd2-error">&nbsp;</div>
+                        </div>
+                      </div>
+                      <div class="row buttons mt-2 pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 pr-md-3">
+                          <a href="/login" class="btn btn-outline-primary w-100 text-nowrap">Annulla</a>
+                        </div>
+                        <div class="col-12 col-md-7 text-center">
+                          <button type="submit" class="btn btn-primary w-100" id="btn-reset" data-default-label="Imposta password" data-loading-label="Aggiornamento…"><span data-btn-label>Imposta password</span></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+
+                <!-- SUCCESSO -->
+                <section class="view" id="view-success">
+                  <h2>Password aggiornata</h2>
+
+                  <div class="callout success">
+                    <div class="callout-title">Fatto!</div>
+                    <p class="mb-0">La tua password è stata aggiornata con successo. Verrai reindirizzato al login tra pochi secondi.</p>
+                  </div>
+
+                  <div class="row buttons mt-4 pb-3">
+                    <div class="col-12 col-md-7 text-center">
+                      <a href="/login" class="btn btn-primary w-100 text-nowrap">Vai al login →</a>
+                    </div>
+                  </div>
+                </section>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-1 d-none d-sm-flex"></div>
+  </div>
+
+</main>
