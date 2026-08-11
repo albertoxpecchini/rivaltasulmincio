@@ -175,11 +175,19 @@ html.dark .sb-home::after {
   transform: translateZ(0);
 }
 /* Griglia tecnica: si dissolve verso il basso, così non finisce mai con una
-   riga netta. */
+   riga netta.
+
+   --sb-par è la parallasse, e la scrive il JS a ogni scroll: la griglia sale
+   di una frazione di quanto sale il contenuto. Il fondale è position:fixed,
+   quindi senza questo resterebbe assolutamente immobile mentre tutto il resto
+   scorre — ed è proprio quell'immobilità perfetta che lo fa leggere come una
+   texture incollata allo schermo invece che come uno spazio dietro il vetro.
+   Vale 0px senza JS: la griglia sta ferma, com'è sempre stata. */
 .sb-bg-grid {
   position: absolute;
   inset: 0;
   opacity: 0.7;
+  transform: translate3d(0, var(--sb-par, 0px), 0);
   background:
     linear-gradient(var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px,
     linear-gradient(90deg, var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px;
@@ -194,11 +202,45 @@ html.dark .sb-home::after {
 }
 
 /* Scorrere una pagina non è un evento da annunciare, e chi ha chiesto meno
-   movimento non deve vedere derive di fondale. */
+   movimento non deve vedere derive di fondale.
+
+   La regola * qui sotto azzera durate di transizione e animazione, ma NON
+   basta: una trasformazione guidata da custom property (l'inclinazione delle
+   card, la parallasse della griglia) non è un'animazione — è un valore che
+   cambia, e senza transizione cambia solo più bruscamente. Quelle vanno
+   spente una per una, e il JS non le attiva nemmeno: qui sotto c'è la rete di
+   sicurezza per il caso in cui l'impostazione cambi a pagina aperta.
+
+   Ogni regola è appesa a html:not(.rsm-motion) perché il tasto nella nav deve
+   poter dire l'ultima parola: chi ha l'impostazione di sistema attiva ma
+   preme "muovi" su questo sito ha espresso una scelta più recente e più
+   specifica di quella del sistema operativo, e va rispettata. Senza scelta
+   manuale la classe non c'è e comanda l'impostazione di sistema, com'è
+   giusto. */
 @media (prefers-reduced-motion: reduce) {
-  .sb-home::before, .sb-home::after { animation: none; }
-  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  html:not(.rsm-motion) .sb-home::before,
+  html:not(.rsm-motion) .sb-home::after { animation: none; }
+  html:not(.rsm-motion) .sb-bg-grid { transform: none !important; }
+  html:not(.rsm-motion) :is(a.sb-card, a.sb-page-card) .sb-panel,
+  html:not(.rsm-motion) .sb-panel--hover { transform: none !important; }
+  html:not(.rsm-motion) .sb-panel-inner::after { content: none !important; }
+  html:not(.rsm-motion) * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ── Movimento fermato a mano ──────────────────────────────────────────────
+   L'altra metà del tasto. Qui NON si azzerano tutte le transizioni del sito:
+   chi ferma il movimento vuole che la pagina stia ferma, non che i colori
+   scattino. Restano fuori le dissolvenze di 150 ms sui link e sui bottoni —
+   quelle nessuno le legge come movimento.
+
+   Tilt, parallasse e pillola non hanno bisogno di una riga qui: li scrive il
+   JS come proprietà inline, e quando si spegne il movimento se le riprende. */
+html.rsm-still .sb-home::before,
+html.rsm-still .sb-home::after { animation: none; }
+html.rsm-still .sb-chip-dot { animation: none; }
+html.rsm-still .sb-panel-inner::after,
+html.rsm-still .sb-btn--primary::after,
+html.rsm-still .sb-btn--secondary::after { content: none; }
 
 /* ── Nav ─────────────────────────────────────────────────────────────────── */
 .sb-nav {
@@ -264,6 +306,41 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
 }
 .sb-nav-link:hover::after,
 .sb-nav-link[aria-current="page"]::after { transform: scaleX(1); }
+
+/* ── La pillola ──────────────────────────────────────────────────────────
+   Un solo fondo che scivola da una voce all'altra invece di otto fondi che si
+   accendono e si spengono. Il movimento continuo racconta che le voci sono
+   una fila sola; otto accensioni indipendenti no.
+
+   Riposa sotto la voce della pagina aperta, segue il puntatore e il focus da
+   tastiera, torna a riposo quando si esce dalla fila. Posizione e larghezza
+   arrivano dal JS come custom property, perché dipendono da quanto è lunga
+   ogni etichetta — cose che il CSS da solo non può sapere.
+
+   .sb-nav-links--pill la mette il JS: senza script la classe non c'è, la
+   pillola resta larga zero e invisibile, e l'hover quadrato qui sotto continua
+   a funzionare come prima. */
+.sb-nav-pill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 30px;
+  width: var(--sb-pill-w, 0px);
+  border-radius: 999px;
+  background: var(--sb-overlay);
+  transform: translate3d(var(--sb-pill-x, 0px), -50%, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+.sb-nav-pill.sb-on { opacity: 1; }
+/* Con la pillola in funzione il rettangolo dell'hover se ne va: sono due modi
+   di dire la stessa cosa, e insieme si vedrebbero uno dentro l'altro. */
+.sb-nav-links--pill .sb-nav-link:hover { background: transparent; }
+
 .sb-nav-right { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; }
 .sb-burger {
   display: inline-flex;
@@ -279,7 +356,16 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   transition: color 0.15s, background 0.15s;
 }
 .sb-burger:hover { color: var(--sb-fg); background: var(--sb-overlay); }
-@media (min-width: 1080px) { .sb-burger { display: none; } }
+/* Sparisce l'hamburger, non tutti i tasti icona: sopra i 1080px le voci sono
+   già in fila e il menu non serve più, ma il tema e il movimento sono scelte
+   che si fanno da qualsiasi larghezza — e il movimento, anzi, esiste solo qui. */
+@media (min-width: 1080px) { .sb-burger[data-menu-toggle] { display: none; } }
+
+/* Il tasto del movimento sta nella barra di controllo (controlbar.css), ma
+   esiste solo se glass.js è arrivato: è lui che aggiunge .sb-ready. Un tasto
+   morto accanto a due che funzionano è peggio di un tasto che non c'è. */
+.sb-motion-toggle { display: none; }
+.sb-motion-toggle.sb-ready { display: inline-flex; }
 
 /* Menu mobile: un foglio che scende sotto la nav, stessa lastra di vetro. */
 .sb-menu-sheet {
@@ -427,10 +513,20 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   );
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-a.sb-card:hover .sb-panel,
+/* Le card cliccabili del sito sono due parentele con due nomi — .sb-card
+   (rassegna stampa) e .sb-page-card (griglia della home) — più chi chiede il
+   trattamento a mano. Stanno insieme in ogni regola che le riguarda: se una
+   delle tre restasse fuori si vedrebbe subito, perché sarebbe l'unica card
+   della pagina che al passaggio del mouse non fa niente. */
+:is(a.sb-card, a.sb-page-card):hover .sb-panel,
 .sb-panel--hover:hover {
   background: var(--sb-border-stronger);
   box-shadow: var(--sb-shadow-card), var(--sb-glass-shadow);
+  /* Due pixel di stacco, non di più: insieme all'ombra bastano a dire che la
+     lastra si è staccata dal fondo. Entra nella stessa transform
+     dell'inclinazione (vedi più sotto), altrimenti l'ultima delle due
+     dichiarazioni vince e l'altra sparisce. */
+  --sb-tilt-lift: -2px;
 }
 .sb-panel-inner {
   position: relative;
@@ -461,6 +557,55 @@ a.sb-card:hover .sb-panel,
    sfocati in viewport è lavoro vero per il compositore di un telefono. */
 @media (max-width: 639.98px) {
   .sb-home { --sb-glass-blur: 12px; --sb-glass-sat: 130%; }
+}
+
+/* ── Il vetro che si inclina e riflette ───────────────────────────────────
+   Tutto quello che segue vale SOLO per le card cliccabili (a.sb-card) e per
+   chi chiede il trattamento a mano (.sb-panel--hover). Le lastre che fanno da
+   contenitore — tabelle, riquadri di sintesi — restano ferme: inclinare un
+   pannello che nessuno può premere è movimento senza risposta.
+
+   La condizione (hover: hover) and (pointer: fine) esclude il touch: lì
+   "hover" è il primo dito appoggiato prima del tap, e una card che si inclina
+   mentre si scorre la pagina è solo un difetto.
+
+   I due angoli arrivano dal JS come custom property. Se il JS non c'è valgono
+   0deg e la trasformazione è l'identità: senza script non manca niente. */
+@media (hover: hover) and (pointer: fine) {
+  :is(a.sb-card, a.sb-page-card) .sb-panel,
+  .sb-panel--hover {
+    transform: perspective(760px)
+      rotateX(var(--sb-tilt-x, 0deg))
+      rotateY(var(--sb-tilt-y, 0deg))
+      translate3d(0, var(--sb-tilt-lift, 0px), 0);
+  }
+  /* Mentre il puntatore è sopra, la lastra deve stare SOTTO il dito: 0.3s di
+     easing sono giusti per il ritorno a riposo, ma inseguendo il mouse
+     diventano un ritardo che si vede. Il JS mette questa classe all'ingresso
+     e la toglie all'uscita — così l'inclinazione è immediata e il rientro no. */
+  .sb-panel--tilting {
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.08s linear;
+  }
+
+  /* Riflesso: la stessa banda di luce dei bottoni, con lo stesso ritardo di
+     innesco di 120 ms. Attraversando una griglia di nove card per arrivare
+     all'ultima, le otto di passaggio non fanno in tempo ad accendersi e la
+     griglia non lampeggia. Escluse le lastre --solid: non sono vetro. */
+  :is(a.sb-card, a.sb-page-card) .sb-panel-inner:not(.sb-panel--solid)::after,
+  .sb-panel--hover > .sb-panel-inner:not(.sb-panel--solid)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-130%);
+    background: linear-gradient(105deg, transparent 38%, var(--sb-glass-sheen) 50%, transparent 62%);
+  }
+  :is(a.sb-card, a.sb-page-card):hover .sb-panel-inner::after,
+  .sb-panel--hover:hover > .sb-panel-inner::after {
+    animation: sb-sheen 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s 1;
+  }
 }
 
 /* ── Card ────────────────────────────────────────────────────────────────── */

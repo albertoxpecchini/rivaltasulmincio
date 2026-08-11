@@ -84,9 +84,15 @@ for (const file of bodies) {
 
   const title = meta(src, "title");
   const desc = meta(src, "desc");
-  // La home è la radice del sito, non "/index.html": un indirizzo solo per una
-  // pagina sola, altrimenti i motori ne indicizzano due identiche.
-  const canonical = page === "index" ? `${SITE}/` : `${SITE}/${page}.html`;
+  /* Gli indirizzi pubblici non hanno estensione: /paese, non /paese.html. Il
+     file su disco continua a chiamarsi paese.html — è "cleanUrls": true in
+     vercel.json che lo serve senza, e che manda un redirect permanente dal
+     vecchio indirizzo al nuovo, così quello che è già stato indicizzato o
+     mandato a qualcuno non si rompe.
+
+     La home è la radice del sito: un indirizzo solo per una pagina sola,
+     altrimenti i motori ne indicizzano due identiche. */
+  const canonical = page === "index" ? `${SITE}/` : `${SITE}/${page}`;
 
   const out =
     head

@@ -1,6 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Comportamenti del sito. Tre cose e basta, tutte reversibili senza JS:
-   il tema, il bordo della nav allo scroll, il menu su schermo stretto.
+   la voce attiva, il bordo della nav allo scroll, il menu su schermo stretto.
+
+   Il tema NON è più qui: sta in controlbar.js insieme al sensore orario e alla
+   barra che li ospita. Averlo lasciato qui avrebbe voluto dire due padroni per
+   la stessa classe su <html>.
 
    Quello che NON c'è, deliberatamente: reveal allo scroll, fade-in a cascata,
    contatori che partono quando la sezione entra in viewport. Scorrere una
@@ -9,60 +13,28 @@
 (function () {
   "use strict";
 
-  var de = document.documentElement;
-
-  /* ── Tema ────────────────────────────────────────────────────────────────
-     Stessa regola di albertopecchini.it: se non c'è una scelta manuale, il
-     tema lo decide l'ora (08:00–19:59 chiaro, il resto scuro). La scelta
-     manuale vince e resta. Il calcolo iniziale sta inline nell'<head> di ogni
-     pagina, PRIMA del primo paint: qui c'è solo l'interruttore. */
-  var KEY_MODE = "rsm-theme-mode";
-  var KEY_MANUAL = "rsm-theme-manual";
-  var BG = { light: "#fcfcfc", dark: "#141414" };
-
-  function currentTheme() {
-    return de.classList.contains("dark") ? "dark" : "light";
-  }
-
-  function applyTheme(theme) {
-    de.classList.toggle("dark", theme === "dark");
-    de.setAttribute("data-rsm-theme", theme);
-    de.style.setProperty("--ap-boot-bg", BG[theme]);
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", BG[theme]);
-    document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
-      btn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
-      btn.setAttribute(
-        "aria-label",
-        theme === "dark" ? "Passa al tema chiaro" : "Passa al tema scuro"
-      );
-      var sun = btn.querySelector("[data-icon-sun]");
-      var moon = btn.querySelector("[data-icon-moon]");
-      if (sun) sun.style.display = theme === "dark" ? "" : "none";
-      if (moon) moon.style.display = theme === "dark" ? "none" : "";
-    });
-  }
-
-  document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var next = currentTheme() === "dark" ? "light" : "dark";
-      try {
-        localStorage.setItem(KEY_MODE, "manual");
-        localStorage.setItem(KEY_MANUAL, next);
-      } catch (e) {}
-      applyTheme(next);
-    });
-  });
-  applyTheme(currentTheme());
-
   /* ── "Sei qui" ───────────────────────────────────────────────────────────
      L'evidenza della voce attiva la mette il JS confrontando gli href con la
      pagina aperta, invece di scriverla a mano in nove file: una voce
      rinominata in un posto solo non può più restare fuori sincrono. Senza JS
-     si perde il filo verde sotto la voce, non la navigazione. */
-  var here = location.pathname.split("/").pop() || "index.html";
+     si perde il filo verde sotto la voce, non la navigazione.
+
+     Confrontare le due stringhe così come sono non funziona: gli indirizzi
+     pubblici non hanno estensione (/paese) ma il file su disco sì, e chi
+     arriva da un vecchio link vede /paese.html finché il redirect non è
+     scattato. Si riducono entrambi al nome della pagina — la home al posto
+     vuoto — e poi si confrontano. */
+  var pagina = function (u) {
+    return (u || "")
+      .split("#")[0]
+      .split("?")[0]
+      .replace(/^\.?\//, "")
+      .replace(/\.html$/, "")
+      .replace(/^index$/, "");
+  };
+  var here = pagina(location.pathname);
   document.querySelectorAll(".sb-nav-link, .sb-menu-nav a").forEach(function (a) {
-    if ((a.getAttribute("href") || "").split("#")[0] === here) {
+    if (pagina(a.getAttribute("href")) === here) {
       a.setAttribute("aria-current", "page");
     }
   });

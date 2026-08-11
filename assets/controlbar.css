@@ -1,0 +1,186 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BARRA DI CONTROLLO — tema · sensore orario · movimento.
+
+   Portata da albertopecchini.it (theme/controlbar.css + ControlBar.tsx), che
+   lì è React e qui è HTML statico. Misure, curve e comportamento sono gli
+   stessi; è caduto solo il segmento della lingua, perché questo sito è in
+   italiano e basta. Al suo posto, dopo il filo divisore, c'è il tasto del
+   movimento del vetro — che prima stava nella nav e qui sta meglio, insieme
+   alle altre due preferenze.
+
+   La barra sta rincantucciata FUORI dal bordo sinistro e lascia sporgere solo
+   la linguetta; scivola fuori quando il puntatore si avvicina, quando il fuoco
+   da tastiera entra, o quando si preme la linguetta (unico modo sul touch).
+
+   I token arrivano da .sb-home, che la barra porta con sé: il tema chiaro e
+   scuro è nativo, senza un secondo foglio di stile.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Zona fissa in basso a sinistra ───────────────────────────────────────────
+   Il contenitore NON si sposta mai — è il riferimento stabile per il calcolo
+   della prossimità — e non intercetta i clic: si muove solo .sb-ctl-slide. */
+.sb-home.sb-ctl {
+  --sb-ctl-pad: max(16px, env(safe-area-inset-left));
+  --sb-ctl-peek: 16px;
+
+  position: fixed;
+  left: 0;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 2147483500;
+  min-height: 0;
+  background: none;
+  padding-left: var(--sb-ctl-pad);
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  pointer-events: none;
+}
+/* Stessa ragione del footer: .sb-home porta i token, ma anche il fondale a
+   tutto schermo, e tre aloni sovrapposti sono tre volte l'opacità di uno. */
+.sb-home.sb-ctl::before,
+.sb-home.sb-ctl::after { content: none; }
+
+.sb-ctl-slide {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  pointer-events: auto;
+  transform: translateX(calc(-100% - var(--sb-ctl-pad) + var(--sb-ctl-peek)));
+  transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-ctl.is-out .sb-ctl-slide { transform: translateX(0); }
+
+/* ── Pannello (bordo-gradiente 1px, come le card) ─────────────────────────── */
+.sb-ctl-panel { border-radius: 10px; }
+.sb-ctl-panel .sb-panel-inner {
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  border-radius: 9px;
+  /* Pieno, non a vetro: la barra galleggia sui contenuti e il testo sotto non
+     deve mai trasparire. */
+  background: var(--sb-bg-alt);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: var(--sb-shadow-card);
+  overflow: visible;
+}
+
+/* Filo divisore fra il gruppo tema e il tasto del movimento */
+.sb-ctl-div {
+  width: 1px;
+  align-self: stretch;
+  margin: 2px 3px;
+  background: var(--sb-border-strong);
+}
+
+/* ── Segmenti (h 34, radius 6) ───────────────────────────────────────────── */
+.sb-ctl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 34px;
+  min-width: 34px;
+  padding: 0 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--sb-fg-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.sb-ctl-btn:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+.sb-ctl-btn:active { background: var(--sb-surface-200); }
+
+/* Icona del tema: piccola rotazione a ogni cambio. La classe la rimette il JS
+   a ogni commutazione, perché un'animazione riparte solo se l'elemento entra
+   nel documento o se la regola viene riapplicata. */
+.sb-ctl-ico { display: inline-flex; }
+.sb-ctl-ico.sb-pop { animation: sb-ctl-pop 0.35s ease; }
+@keyframes sb-ctl-pop {
+  from { transform: rotate(-90deg) scale(0.5); opacity: 0; }
+  to { transform: rotate(0) scale(1); opacity: 1; }
+}
+
+/* Sensore orario: spento = fantasma, acceso = verde brand (come .sb-btn--primary) */
+.sb-ctl-auto {
+  padding: 0 0.6rem;
+  font-size: 0.78rem;
+  color: var(--sb-fg-muted);
+}
+.sb-ctl-auto svg { color: var(--sb-fg-muted); transition: color 0.15s ease; }
+.sb-ctl-auto:hover svg { color: var(--sb-fg-light); }
+.sb-ctl-auto.is-on,
+.sb-ctl-auto.is-on:hover {
+  background: var(--sb-btn-bg);
+  border-color: var(--sb-btn-bd);
+  color: var(--sb-btn-fg);
+}
+.sb-ctl-auto.is-on svg { color: var(--sb-btn-fg); }
+
+/* ── Linguetta: l'unica cosa a vista quando la barra è rincantucciata ─────── */
+.sb-ctl-grip {
+  flex-shrink: 0;
+  width: var(--sb-ctl-peek);
+  align-self: center;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 6px;
+  background: var(--sb-surface-100);
+  color: var(--sb-fg-muted);
+  cursor: pointer;
+  box-shadow: var(--sb-shadow-card);
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.sb-ctl-grip:hover {
+  color: var(--sb-fg);
+  background: var(--sb-surface-200);
+  border-color: var(--sb-border-stronger);
+}
+.sb-ctl-grip svg { transition: transform 0.2s ease; }
+.sb-ctl-grip:hover svg { transform: translateX(1px); }
+.sb-ctl.is-out .sb-ctl-grip:hover svg { transform: translateX(-1px); }
+
+/* ── Onda del tema, a tutto schermo ───────────────────────────────────────────
+   Sta fuori dalla barra, figlia diretta di <body>: dentro un contenitore con
+   un backdrop-filter verrebbe ritagliata. Il colore lo mette il JS — è il
+   fondo del tema in ARRIVO, così il cerchio che si apre è già la pagina nuova. */
+.sb-theme-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: circle(0px at 50% 50%);
+  will-change: clip-path, opacity;
+}
+
+/* ── Schermi stretti: barra un filo più compatta ──────────────────────────── */
+@media (max-width: 380px) {
+  .sb-home.sb-ctl { --sb-ctl-pad: max(10px, env(safe-area-inset-left)); }
+  .sb-ctl-panel .sb-panel-inner { padding: 4px; gap: 0; }
+  .sb-ctl-btn { height: 32px; min-width: 32px; }
+  .sb-ctl-grip { height: 42px; }
+}
+
+/* ── Riduzione del movimento ───────────────────────────────────────────────
+   La barra continua a entrare e uscire — è il suo modo di esistere, non un
+   effetto — ma ci arriva di scatto invece che scivolando. L'onda del tema la
+   salta del tutto: quella la spegne il JS, che in quel caso cambia il tema e
+   basta. */
+@media (prefers-reduced-motion: reduce) {
+  .sb-ctl-slide,
+  .sb-ctl-btn,
+  .sb-ctl-grip,
+  .sb-ctl-grip svg { transition: none; }
+  .sb-ctl-ico.sb-pop { animation: none; }
+}
