@@ -1,0 +1,691 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM .sb- — estratto fedele da albertopecchini.it
+   (src/app/home.css, blocco .sb-home e html.dark .sb-home).
+
+   Qui non si inventa niente: token, misure e primitive sono copiati dalla
+   fonte di verità del sito. Cambia solo il contorno — lì è una SPA React con
+   CSS colocato per pagina, qui è un sito statico e il foglio è uno solo.
+
+   Regole che valgono ovunque nel file:
+   · palette neutra (soli grigi) + UN'UNICA tinta, il verde brand;
+   · ogni colore/ombra/bordo si scrive con var(--sb-*), mai hex hard-coded
+     (le uniche eccezioni sono i due blocchi di token qui sotto);
+   · nessuna sezione ha un fondo o un bordo proprio: c'è UN solo fondale
+     position:fixed per tutta la pagina e il contenuto ci scorre sopra.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ap-boot-bg, #fcfcfc); }
+img { max-width: 100%; height: auto; }
+
+.sb-home {
+  /* ── Palette CHIARA (default) ── */
+  --sb-bg: #fcfcfc;
+  --sb-bg-alt: #f8f8f8;
+  --sb-surface-75: #fbfbfb;
+  --sb-surface-100: #f6f6f6;
+  --sb-surface-200: #f0f0f0;
+  --sb-overlay: rgba(0, 0, 0, 0.05);
+  --sb-border: #e8e8e8;
+  --sb-border-strong: #dbdbdb;
+  --sb-border-stronger: #c7c7c7;
+  --sb-fg: #171717;
+  --sb-fg-light: #525252;
+  --sb-fg-lighter: #6f6f6f;
+  --sb-fg-muted: #8f8f8f;
+  --sb-brand: hsl(153, 60%, 53%);
+  --sb-brand-text: hsl(153, 86%, 28%);
+  --sb-btn-bg: hsl(151, 67%, 67%);
+  --sb-btn-bd: hsla(155, 78%, 40%, 0.75);
+  --sb-btn-bg-hover: hsl(151, 63%, 60%);
+  --sb-btn-fg: #101010;
+  --sb-code-kw: #0550ae;
+  --sb-code-num: #953800;
+  --sb-code-fn: #8250df;
+  --sb-shadow-card: 0 4px 20px -6px rgba(0, 0, 0, 0.1);
+
+  /* ── Vetro ──────────────────────────────────────────────────────────────
+     Le superfici delle card non sono tinte piatte: sono lastre che lasciano
+     passare il fondale. Servono tre cose insieme — la trasparenza (--bg), la
+     sfocatura di ciò che sta dietro (--blur, con un pizzico di saturazione in
+     più perché il blur slava i colori) e il filo di luce sul bordo alto
+     (--spec), che è quello che il cervello legge come "spessore". */
+  --sb-glass-bg: color-mix(in srgb, var(--sb-surface-75) 58%, transparent);
+  --sb-glass-blur: 20px;
+  --sb-glass-sat: 150%;
+  --sb-glass-spec: rgba(255, 255, 255, 0.72);
+  --sb-glass-rim: rgba(255, 255, 255, 0.55);
+  --sb-glass-shadow: 0 10px 34px -14px rgba(0, 0, 0, 0.2);
+  --sb-glass-sheen: rgba(255, 255, 255, 0.42);
+
+  min-height: 100vh;
+  background: var(--sb-bg);
+  color: var(--sb-fg);
+  font-family: "Titillium Web", Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.dark .sb-home {
+  /* ── Palette SCURA ── */
+  --sb-bg: #141414;
+  --sb-bg-alt: #181818;
+  --sb-surface-75: #1c1c1c;
+  --sb-surface-100: #222222;
+  --sb-surface-200: #282828;
+  --sb-overlay: rgba(255, 255, 255, 0.07);
+  --sb-border: #2a2a2a;
+  --sb-border-strong: #343434;
+  --sb-border-stronger: #414141;
+  --sb-fg: #ededed;
+  --sb-fg-light: #b4b4b4;
+  --sb-fg-lighter: #969696;
+  --sb-fg-muted: #707070;
+  --sb-brand: hsl(153, 60%, 53%);
+  --sb-brand-text: hsl(155, 100%, 42%);
+  --sb-btn-bg: hsl(155, 100%, 19%);
+  --sb-btn-bd: hsla(153, 60%, 53%, 0.3);
+  --sb-btn-bg-hover: hsl(155, 74%, 25%);
+  --sb-btn-fg: #ffffff;
+  --sb-code-kw: #79c0ff;
+  --sb-code-num: #ffcda1;
+  --sb-code-fn: #bda4ff;
+  --sb-shadow-card: 0 4px 24px -6px rgba(0, 0, 0, 0.55);
+
+  /* Al buio il vetro è più scuro di ciò che ha dietro, non più chiaro: la
+     lastra assorbe. Il filo specular scende a un decimo — un bordo bianco
+     acceso come nel chiaro, qui, sembrerebbe un errore di rendering. */
+  --sb-glass-bg: color-mix(in srgb, var(--sb-surface-75) 52%, transparent);
+  --sb-glass-spec: rgba(255, 255, 255, 0.1);
+  --sb-glass-rim: rgba(255, 255, 255, 0.08);
+  --sb-glass-shadow: 0 10px 38px -14px rgba(0, 0, 0, 0.65);
+  --sb-glass-sheen: rgba(255, 255, 255, 0.1);
+}
+
+.sb-home ::selection { background: hsla(153, 60%, 53%, 0.35); }
+.sb-home :focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; border-radius: 4px; }
+.sb-home a { color: inherit; }
+
+/* Contenitore di sezione */
+.sb-container {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-left: clamp(1.25rem, 4vw, 5rem);
+  padding-right: clamp(1.25rem, 4vw, 5rem);
+}
+.sb-section { padding-top: clamp(4rem, 8vw, 6rem); padding-bottom: clamp(4rem, 8vw, 6rem); }
+
+/* ── Fondale continuo ──────────────────────────────────────────────────────
+   UN SOLO fondale per tutta la pagina, non uno per sezione: è position:fixed,
+   quindi resta incollato alla finestra e nessun bordo di sezione può tagliarlo
+   a metà scorrendo. Fra una sezione e l'altra non c'è nessun confine — sopra
+   scorre solo il contenuto, che è trasparente.
+
+   z-index: -1 e non 0: nell'ordine di pittura i figli con z-index negativo
+   vanno subito dopo lo sfondo dell'elemento e PRIMA di tutto il contenuto. */
+.sb-home::before,
+.sb-home::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(153, 60%, 53%, 0.14), transparent 62%);
+  animation: sb-drift-a 74s ease-in-out infinite alternate;
+}
+/* Il secondo alone si sposta un po' di meno e dalla parte opposta: due strati
+   che seguono la stessa mano ma non alla stessa velocità hanno una profondità
+   che due strati solidali non hanno. 74 e 91 secondi non tornano mai in fase,
+   così il fondo non ha un "battito" riconoscibile. */
+.sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(192, 72%, 55%, 0.1), transparent 60%);
+  animation: sb-drift-b 91s ease-in-out infinite alternate;
+}
+@keyframes sb-drift-a {
+  from { transform: translate3d(-3vw, -2vh, 0) scale(1); }
+  to   { transform: translate3d(4vw, 3vh, 0) scale(1.09); }
+}
+@keyframes sb-drift-b {
+  from { transform: translate3d(3vw, 2vh, 0) scale(1.06); }
+  to   { transform: translate3d(-4vw, -3vh, 0) scale(1); }
+}
+html.dark .sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(153, 60%, 53%, 0.16), transparent 62%);
+}
+html.dark .sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(192, 72%, 55%, 0.12), transparent 60%);
+}
+/* .sb-home non vuol dire "pagina": è la classe che porta i token, e se la
+   mette addosso anche il footer si porterebbe dietro la sua coppia di aloni a
+   tutto schermo, con l'opacità che si somma. Il fondale lo tiene solo il
+   contenitore di pagina. */
+.sb-home.sb-foot::before,
+.sb-home.sb-foot::after { content: none; }
+
+.sb-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+/* Griglia tecnica: si dissolve verso il basso, così non finisce mai con una
+   riga netta. */
+.sb-bg-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  background:
+    linear-gradient(var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px,
+    linear-gradient(90deg, var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px;
+  -webkit-mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
+  mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
+}
+.sb-main { position: relative; z-index: 1; }
+
+@media print {
+  .sb-bg { display: none; }
+  .sb-home::before, .sb-home::after { content: none; }
+}
+
+/* Scorrere una pagina non è un evento da annunciare, e chi ha chiesto meno
+   movimento non deve vedere derive di fondale. */
+@media (prefers-reduced-motion: reduce) {
+  .sb-home::before, .sb-home::after { animation: none; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+.sb-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--sb-bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+/* In cima alla pagina la nav non ha bordo: nessuna riga a tagliare la hero.
+   Compare solo quando c'è del contenuto che le scorre sotto. */
+.sb-nav--scrolled { border-bottom-color: var(--sb-border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
+.sb-nav-inner { display: flex; align-items: center; gap: 1rem; height: 64px; }
+.sb-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--sb-fg);
+  flex-shrink: 0;
+}
+.sb-nav-brand-name { font-size: 0.98rem; font-weight: 500; white-space: nowrap; letter-spacing: -0.01em; }
+.sb-local {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--sb-btn-bg);
+  border: 1px solid var(--sb-btn-bd);
+  color: var(--sb-btn-fg);
+}
+.sb-nav-links { position: relative; display: none; align-items: center; gap: 0.15rem; }
+@media (min-width: 1080px) { .sb-nav-links { display: flex; } }
+.sb-nav-link {
+  position: relative;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--sb-fg-light);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.sb-nav-link:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+.sb-nav-link[aria-current="page"] { color: var(--sb-fg); }
+/* Il filo verde che si apre da sinistra sotto la voce: dice "sei qui" senza
+   aggiungere un secondo colore. */
+.sb-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.1rem;
+  height: 1px;
+  background: var(--sb-brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-nav-link:hover::after,
+.sb-nav-link[aria-current="page"]::after { transform: scaleX(1); }
+.sb-nav-right { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; }
+.sb-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--sb-fg-light);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.sb-burger:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+@media (min-width: 1080px) { .sb-burger { display: none; } }
+
+/* Menu mobile: un foglio che scende sotto la nav, stessa lastra di vetro. */
+.sb-menu-sheet {
+  display: none;
+  border-bottom: 1px solid var(--sb-border);
+  background: color-mix(in srgb, var(--sb-bg) 96%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+.sb-menu-sheet.sb-open { display: block; }
+@media (min-width: 1080px) { .sb-menu-sheet.sb-open { display: none; } }
+.sb-menu-nav { display: grid; gap: 0.1rem; padding: 0.7rem 0 1.1rem; }
+.sb-menu-nav a {
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--sb-fg-light);
+  text-decoration: none;
+}
+.sb-menu-nav a:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+.sb-menu-nav a[aria-current="page"] { color: var(--sb-fg); background: var(--sb-overlay); }
+
+/* ── Bottoni (h 38px, radius 6, bordo 1px sempre) ────────────────────────── */
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 38px;
+  padding: 0 1rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.sb-btn--sm { height: 32px; padding: 0 0.8rem; font-size: 0.8rem; }
+.sb-btn--primary {
+  position: relative;
+  background: var(--sb-btn-bg);
+  border-color: var(--sb-btn-bd);
+  color: var(--sb-btn-fg);
+}
+.sb-btn--primary:hover { background: var(--sb-btn-bg-hover); border-color: var(--sb-brand); }
+.sb-btn--secondary {
+  position: relative;
+  background: var(--sb-bg-alt);
+  border-color: var(--sb-border-strong);
+  color: var(--sb-fg);
+}
+.sb-btn--secondary:hover { background: var(--sb-surface-200); border-color: var(--sb-border-stronger); }
+.sb-btn--ghost { background: transparent; border-color: transparent; color: var(--sb-fg-light); }
+.sb-btn--ghost:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+
+/* Riflesso sui bottoni — stessa banda di luce delle card, stesso ritardo di
+   120 ms: passandoci sopra di corsa per arrivare altrove l'animazione non fa
+   in tempo a partire, e la fila di bottoni non lampeggia. */
+@media (hover: hover) and (pointer: fine) {
+  .sb-btn--primary,
+  .sb-btn--secondary { overflow: hidden; }
+  .sb-btn--primary::after,
+  .sb-btn--secondary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-130%);
+    background: linear-gradient(105deg, transparent 38%, var(--sb-glass-sheen) 50%, transparent 62%);
+  }
+  .sb-btn--primary:hover::after,
+  .sb-btn--secondary:hover::after {
+    animation: sb-sheen 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s 1;
+  }
+  .sb-btn--primary > *,
+  .sb-btn--secondary > * { position: relative; z-index: 1; }
+}
+@keyframes sb-sheen {
+  from { opacity: 1; transform: translateX(-130%); }
+  to   { opacity: 1; transform: translateX(130%); }
+}
+
+/* Link verdi "testo + freccia" */
+.sb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--sb-brand-text);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+}
+.sb-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sb-link svg { transition: transform 0.15s ease; }
+.sb-link:hover svg { transform: translateX(2px); }
+
+/* ── Hero ────────────────────────────────────────────────────────────────
+   Niente fondale proprio e niente overflow:hidden: il fondo della hero è il
+   fondale continuo della pagina. Così scendendo non si vede nessuna riga dove
+   "finisce la hero e comincia il resto". */
+.sb-hero {
+  position: relative;
+  padding-top: clamp(3rem, 9vw, 8.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.sb-hero-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 5.2vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+.sb-hero-title span { display: block; }
+.sb-hero-title .sb-brandline { color: var(--sb-brand-text); }
+.sb-hero-copy { max-width: 40rem; margin-top: 1.4rem; }
+.sb-hero-copy p { margin: 0 0 0.7rem; font-size: 1rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-hero-copy p:last-child { margin-bottom: 0; }
+.sb-hero-copy strong { font-weight: 400; color: var(--sb-fg); }
+.sb-hero-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+
+/* ── Pannello di vetro con rim da 1px (marchio di fabbrica delle card) ─────
+   Il bordo non è una riga grigia uniforme: è un rim illuminato che si spegne
+   allontanandosi dalla luce, come succede a una lastra vera. È metà
+   dell'effetto — l'altra metà è il filo specular dentro .sb-panel-inner. Da
+   soli sembrano entrambi uno sbaglio; insieme danno lo spessore. */
+.sb-panel {
+  position: relative;
+  height: 100%;
+  padding: 1px;
+  border-radius: 12px;
+  background: linear-gradient(
+    var(--rim-angle, 160deg),
+    var(--sb-glass-rim),
+    var(--sb-border-strong) 38%,
+    color-mix(in srgb, var(--sb-border) 45%, transparent)
+  );
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+a.sb-card:hover .sb-panel,
+.sb-panel--hover:hover {
+  background: var(--sb-border-stronger);
+  box-shadow: var(--sb-shadow-card), var(--sb-glass-shadow);
+}
+.sb-panel-inner {
+  position: relative;
+  height: 100%;
+  border-radius: 11px;
+  background: var(--sb-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  box-shadow: inset 0 1px 0 var(--sb-glass-spec);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+/* Dove il vetro non deve andare: backdrop-filter fa da containing block a
+   tutti i position:fixed che ha dentro, e su un contenitore che scorre in
+   orizzontale costa una sfocatura per frame. */
+.sb-panel--solid > .sb-panel-inner,
+.sb-panel-inner.sb-panel--solid {
+  background: var(--sb-surface-75);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* Ripiego per chi non ha backdrop-filter: meglio opache che a metà. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sb-panel-inner { background: var(--sb-surface-75); }
+}
+/* Su schermo piccolo la lastra si assottiglia: una dozzina di pannelli
+   sfocati in viewport è lavoro vero per il compositore di un telefono. */
+@media (max-width: 639.98px) {
+  .sb-home { --sb-glass-blur: 12px; --sb-glass-sat: 130%; }
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.sb-card { display: block; text-decoration: none; color: inherit; }
+.sb-card-head { padding: 1.4rem 1.4rem 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.sb-card-title { display: flex; align-items: center; gap: 0.55rem; color: var(--sb-fg-light); }
+.sb-card-title h3 { margin: 0; font-size: 0.98rem; font-weight: 500; letter-spacing: -0.01em; }
+.sb-card-desc { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--sb-fg-lighter); }
+.sb-card-desc strong { font-weight: 400; color: var(--sb-fg); }
+
+/* Griglia delle pagine (dalla home di albertopecchini.it) */
+.sb-pages { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 640px) { .sb-pages { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .sb-pages { grid-template-columns: repeat(3, 1fr); } }
+.sb-page-card { display: block; text-decoration: none; color: inherit; }
+.sb-page-inner { padding: 1.3rem; gap: 0.7rem; }
+.sb-page-top { display: flex; align-items: center; justify-content: space-between; color: var(--sb-fg-light); }
+.sb-page-top .go { color: var(--sb-fg-muted); opacity: 0; transform: translate(-3px, 3px); transition: opacity 0.15s, transform 0.15s, color 0.15s; }
+.sb-page-card:hover .go { opacity: 1; transform: none; color: var(--sb-fg); }
+.sb-page-card .sb-page-top > svg { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease; }
+.sb-page-card:hover .sb-page-top > svg { transform: scale(1.15) rotate(-8deg); color: var(--sb-brand-text); }
+.sb-page-inner h4 { margin: 0; font-size: 0.95rem; font-weight: 500; color: var(--sb-fg); }
+.sb-page-inner p { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--sb-fg-lighter); }
+
+/* ── Pillole / badge (radius 999px sempre) ───────────────────────────────── */
+.sb-chiprow { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.sb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-bg);
+  font-size: 0.8rem;
+  color: var(--sb-fg-light);
+  white-space: nowrap;
+}
+.sb-chip svg { color: var(--sb-fg-muted); }
+.sb-chip-dot {
+  display: inline-block;
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sb-brand);
+  animation: sb-ping 4.2s ease-out infinite;
+}
+@keyframes sb-ping {
+  0% { box-shadow: 0 0 0 0 hsla(153, 60%, 53%, 0.55); }
+  70% { box-shadow: 0 0 0 7px hsla(153, 60%, 53%, 0); }
+  100% { box-shadow: 0 0 0 0 hsla(153, 60%, 53%, 0); }
+}
+
+/* ── Testata di sezione ──────────────────────────────────────────────────── */
+.sb-sechead { max-width: 40rem; margin: 0 auto; text-align: center; }
+.sb-sechead h2, .sb-sechead h3 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.sb-sechead p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+/* Su una pagina di consultazione le testate stanno a sinistra: l'occhio
+   torna sempre allo stesso margine mentre scorre una tabella dopo l'altra. */
+.sb-sechead--start { margin-left: 0; text-align: left; max-width: 46rem; }
+
+/* ── CTA ─────────────────────────────────────────────────────────────────── */
+.sb-cta { text-align: center; }
+.sb-cta h2 {
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+.sb-cta h2 .sb-brandline { display: block; color: var(--sb-brand-text); }
+.sb-cta p { margin: 0 auto 1.8rem; max-width: 34rem; font-size: 1rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-cta-actions { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ── Footer condiviso (.sb-foot) ──────────────────────────────────────────
+   Lo stesso footer di albertopecchini.it: porta con sé la classe .sb-home per
+   ereditare i token (e quindi il tema nativo chiaro/scuro), ma annulla il
+   min-height da pagina.
+
+   Non è un blocco a sé: niente bordo in cima. Il colore entra in dissolvenza
+   dall'alto, così scendendo non si vede il punto in cui la pagina "finisce". */
+.sb-home.sb-foot {
+  min-height: 0;
+  background: linear-gradient(to bottom, transparent, var(--sb-bg-alt) 14rem);
+  position: relative;
+  z-index: 1;
+}
+.sb-foot-wrap {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 3rem);
+}
+/* Griglia alla Supabase: identità a sinistra (≈ colonna del logo), colonne di
+   link a destra. Le due colonne sono card .sb-panel come quelle della home. */
+.sb-foot-grid { display: grid; grid-template-columns: 1fr; gap: 1.1rem; align-items: stretch; }
+@media (min-width: 1024px) { .sb-foot-grid { grid-template-columns: 2fr 5fr; gap: 1.25rem; } }
+.sb-foot-card { min-width: 0; }
+.sb-foot-card .sb-panel-inner { background: color-mix(in srgb, var(--sb-bg) 82%, transparent); overflow: visible; }
+.sb-foot-card:hover .sb-panel {
+  background: var(--sb-border-stronger);
+  box-shadow: var(--sb-shadow-card);
+}
+.sb-foot-pad {
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+}
+.sb-foot-name {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+  text-decoration: none;
+}
+.sb-foot-name:hover { color: var(--sb-brand-text); }
+.sb-foot-role { margin: 0.3rem 0 0; font-size: 0.875rem; line-height: 1.5; color: var(--sb-fg-lighter); }
+.sb-foot-social { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.3rem; max-width: 21rem; }
+.sb-foot-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: var(--sb-fg-muted);
+  border: 1px solid transparent;
+  transition: color 0.18s, background 0.18s, border-color 0.18s;
+}
+.sb-foot-social a:hover {
+  color: var(--sb-brand-text);
+  background: var(--sb-overlay);
+  border-color: color-mix(in srgb, var(--sb-brand) 35%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-brand) 12%, transparent);
+}
+/* Rimbalzo, non scivolata: la curva sfonda l'1 e torna indietro. */
+.sb-foot-social a svg { transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.sb-foot-social a:hover svg { transform: scale(1.24) rotate(-8deg); }
+/* Colonne di link del footer */
+.sb-foot-links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem 1rem;
+}
+@media (min-width: 720px) { .sb-foot-links-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sb-foot-col h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.sb-foot-col a {
+  font-size: 0.84rem;
+  color: var(--sb-fg-lighter);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.sb-foot-col a:hover { color: var(--sb-brand-text); }
+/* Filo sfumato (trasparente → bordo → trasparente), firma di Supabase. */
+.sb-foot-hairline {
+  height: 2px;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-radius: 999px;
+  background: linear-gradient(to right, transparent, var(--sb-border-stronger), transparent);
+}
+.sb-foot-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1.2rem;
+  font-size: 0.8rem;
+  color: var(--sb-fg-muted);
+}
+.sb-foot-bottom-links { display: inline-flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.sb-foot-sep { color: var(--sb-border-stronger); }
+/* Il credito prende la sottolineatura che si apre da sinistra della nav. */
+.sb-foot-by {
+  position: relative;
+  padding-bottom: 2px;
+  color: var(--sb-fg-light);
+  text-decoration: none;
+}
+.sb-foot-by::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--sb-brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-foot-by:hover::after { transform: scaleX(1); }
+
+/* Salto al contenuto: invisibile finché non lo si raggiunge da tastiera. */
+.sb-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.sb-skip:focus {
+  left: 0.75rem;
+  top: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  background: var(--sb-bg);
+  border: 1px solid var(--sb-border-strong);
+  color: var(--sb-fg);
+  text-decoration: none;
+}

@@ -1,0 +1,128 @@
+<!--title: Dati e fonti — come è costruito questo sito-->
+<!--desc: Fonti usate, metodo di misura, dataset JSON scaricabile e come rigenerare l'estratto OpenStreetMap di Rivalta sul Mincio via Overpass API.-->
+
+<section class="sb-container sb-riv-pagehead">
+  <span class="sb-riv-eyebrow">Sezione 22</span>
+  <h1>Dati e fonti</h1>
+  <p class="sb-riv-lede">Da dove viene ogni numero di questo sito, con quale metodo è stato misurato e come rifare l'estratto da capo. Tutti i geodati sono pubblici e riverificabili.</p>
+  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+    <a href="#fonti">Fonti utilizzate</a>
+    <a href="#dataset">Il dataset</a>
+    <a href="#rigenerare">Rigenerare i geodati</a>
+    <a href="#licenza">Licenza</a>
+  </nav>
+</section>
+
+<!-- ── 22. FONTI ─────────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="fonti">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">22 — Provenienza</span>
+    <h2>Fonti utilizzate</h2>
+  </div>
+
+  <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
+    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+      <table class="sb-riv-table sb-riv-table--wide">
+        <thead><tr><th scope="col">Fonte</th><th scope="col">Uso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OpenStreetMap</strong> — estratto API 0.6, licenza ODbL</td><td>tutti i geodati: POI, strade, incroci, dossi, verde, acque, edificato</td></tr>
+          <tr><td><strong>Wikipedia</strong> — voci <em>Rivalta sul Mincio</em> e <em>Rodigo</em></td><td>storia, demografia, economia, trasporti</td></tr>
+          <tr><td><strong>Comune di Rodigo</strong> — <a href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener">comune.rodigo.mn.it</a></td><td>amministrazione, eventi, calendario rifiuti 2026</td></tr>
+          <tr><td><strong>Mantova Ambiente / Gruppo Tea</strong></td><td>servizio rifiuti, centri di raccolta</td></tr>
+          <tr><td><strong>Pro Loco Rivalta sul Mincio APS</strong> — <a href="https://www.rivaltasulmincio.com" target="_blank" rel="noreferrer noopener">rivaltasulmincio.com</a></td><td>eventi 2026</td></tr>
+          <tr><td><strong>Parco del Mincio</strong> — <a href="https://www.parcodelmincio.it" target="_blank" rel="noreferrer noopener">parcodelmincio.it</a></td><td>navigazione, itinerari, natura</td></tr>
+          <tr><td><strong>Istituto Comprensivo di Castellucchio</strong></td><td>scuole</td></tr>
+          <tr><td>Stampa locale — Gazzetta di Mantova, Mantovauno, Voce di Mantova</td><td>elezioni, raccolta differenziata</td></tr>
+        </tbody>
+      </table>
+    </div></div></div>
+  </div>
+
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Come sono misurate le distanze</span>
+    <p class="sb-riv-p">Tutte le distanze di questo sito sono <strong>in linea d'aria dal centro paese</strong>: l'incrocio Via Turati / Via Francesca / Via Garibaldi / Via Sette Frati, a <strong>45.18019 N, 10.67714 E</strong>. Non sono distanze stradali e non vanno usate come tali.</p>
+  </div>
+</section>
+
+<!-- ── DATASET ──────────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="dataset">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">22 — Dati grezzi</span>
+    <h2>Il dataset</h2>
+    <p>Tutto ciò che sta nelle tabelle di questo sito viene da un solo file JSON strutturato, allegato qui sotto.</p>
+  </div>
+
+  <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
+    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+      <table class="sb-riv-table">
+        <thead><tr><th scope="col">Chiave</th><th scope="col">Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>meta</code></td><td>località, comune, provincia, CAP, coordinate del centro, fonte, data di estrazione</td></tr>
+          <tr><td><code>poi</code></td><td>punti d'interesse con id OSM, nome, categoria, tipo, coordinate, distanza dal centro, indirizzo, telefono, web, orari e tag completi</td></tr>
+          <tr><td><code>strade</code></td><td>assi viari denominati con tipo, lunghezza, superficie, limite, senso unico, illuminazione, <code>ref</code> e numero di segmenti</td></tr>
+          <tr><td><code>civici_mappati</code></td><td>numeri civici presenti in OSM, raggruppati per via</td></tr>
+          <tr><td><code>elementi_stradali</code></td><td>dossi, attraversamenti, dare-precedenza, stop, autovelox, barriere</td></tr>
+          <tr><td><code>incroci</code></td><td>106 nodi fra vie denominate, con coordinate e distanza</td></tr>
+          <tr><td><code>corsi_acqua</code></td><td>fiumi, canali, scoli e fossi con tipo, nome e lunghezza mappata</td></tr>
+        </tbody>
+      </table>
+    </div></div></div>
+  </div>
+
+  <div class="sb-cta" style="margin-top:2rem;text-align:left">
+    <div class="sb-cta-actions" style="justify-content:flex-start">
+      <a class="sb-btn sb-btn--primary" href="data/rivalta_dataset.json" download><span>Scarica rivalta_dataset.json</span></a>
+      <a class="sb-btn sb-btn--secondary" href="data/rivalta_dataset.json" target="_blank" rel="noreferrer noopener"><span>Aprilo nel browser</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── RIGENERARE ───────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="rigenerare">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">22 — Riproducibilità</span>
+    <h2>Rigenerare i geodati</h2>
+  </div>
+
+  <h3 class="sb-riv-subhead">Estratto completo dell'area</h3>
+  <div class="sb-riv-code"><code>curl <span class="num">"https://api.openstreetmap.org/api/0.6/map?bbox=10.6560,45.1660,10.6980,45.1940"</span> -o rivalta.osm</code></div>
+
+  <h3 class="sb-riv-subhead">Interrogazioni mirate via Overpass API</h3>
+  <p class="sb-riv-p">Conviene usare il mirror <code>https://overpass.private.coffee/api/interpreter</code>: quello ufficiale è spesso saturo.</p>
+  <div class="sb-riv-code"><code>[<span class="kw">out</span>:json][<span class="kw">timeout</span>:<span class="num">240</span>];
+(
+  <span class="fn">nwr</span>[<span class="num">"amenity"</span>](45.164,10.645,45.198,10.702);
+  <span class="fn">nwr</span>[<span class="num">"shop"</span>](45.164,10.645,45.198,10.702);
+  <span class="fn">nwr</span>[<span class="num">"leisure"</span>](45.164,10.645,45.198,10.702);
+  <span class="fn">nwr</span>[<span class="num">"tourism"</span>](45.164,10.645,45.198,10.702);
+  <span class="fn">nwr</span>[<span class="num">"office"</span>](45.164,10.645,45.198,10.702);
+  <span class="fn">nwr</span>[<span class="num">"craft"</span>](45.164,10.645,45.198,10.702);
+);
+<span class="kw">out</span> tags center;</code></div>
+</section>
+
+<!-- ── LICENZA ──────────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="licenza">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">22 — Diritti</span>
+    <h2>Licenza e attribuzione</h2>
+  </div>
+
+  <div class="sb-riv-grid">
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Geodati</h4>
+      <p>© <strong>OpenStreetMap contributors</strong>, distribuiti con licenza <strong>ODbL</strong>. Riutilizzandoli sei tenuto alla stessa attribuzione e alle stesse condizioni di condivisione.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Il resto</h4>
+      <p>Orari, recapiti e calendari provengono dalle fonti pubbliche citate in questa pagina. Per gli usi ufficiali fa sempre fede la comunicazione diretta dell'ente o dell'esercizio.</p>
+    </div></div>
+  </div>
+
+  <p class="sb-riv-p" style="margin-top:1.4rem">Dossier generato l'<strong>11 agosto 2026</strong>. Sito realizzato nel design system di <a href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener">albertopecchini.it</a>.</p>
+
+  <div class="sb-riv-pager">
+    <a class="sb-link" href="eventi.html">← Eventi</a>
+    <a class="sb-link" href="index.html">Torna alla home <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>

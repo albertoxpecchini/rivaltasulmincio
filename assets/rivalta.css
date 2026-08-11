@@ -1,0 +1,411 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RIVALTA SUL MINCIO — classi di pagina, prefisso .sb-riv-
+
+   Estende il design system .sb- (assets/sb.css) con le sole strutture che nel
+   sistema non esistevano già: un dossier è fatto di tabelle lunghe, schede
+   chiave/valore e note di attendibilità del dato, e nessuna delle tre aveva
+   un equivalente fra le primitive.
+
+   Tutto il resto (bottoni, pannelli, pillole, testate, footer) si riusa così
+   com'è. Qui dentro non compare un solo colore hard-coded: solo var(--sb-*).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Sezioni ancorate ─────────────────────────────────────────────────────
+   scroll-margin-top perché la nav è sticky a 64px: senza, arrivando da un
+   link d'indice il titolo finisce sotto la barra. */
+.sb-riv-sec {
+  scroll-margin-top: 84px;
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+.sb-riv-sec:first-of-type { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* Numero di sezione: sta accanto al titolo come riferimento al dossier
+   originale, in tono muto — è una coordinata, non un'informazione. */
+.sb-riv-secnum {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Sottotitolo interno alla sezione */
+.sb-riv-subhead {
+  margin: clamp(2rem, 4vw, 2.6rem) 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+}
+.sb-riv-subhead:first-child { margin-top: 0; }
+
+.sb-riv-p {
+  margin: 0 0 0.9rem;
+  max-width: 46rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-p:last-child { margin-bottom: 0; }
+.sb-riv-p strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-p a, .sb-riv-li a, .sb-riv-table a { color: var(--sb-brand-text); text-decoration: none; }
+.sb-riv-p a:hover, .sb-riv-li a:hover, .sb-riv-table a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.sb-riv-ul { margin: 0 0 1rem; padding-left: 1.1rem; max-width: 46rem; }
+.sb-riv-li { margin: 0 0 0.45rem; font-size: 0.92rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-riv-li strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-li::marker { color: var(--sb-fg-muted); }
+
+/* ── Indice della pagina ──────────────────────────────────────────────────
+   Una fila di pillole, non un menu laterale: la pagina è una sola colonna e
+   un indice che galleggia a lato ruberebbe larghezza alle tabelle. */
+.sb-riv-toc { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.4rem 0 0; }
+.sb-riv-toc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.36rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-bg);
+  font-size: 0.8rem;
+  color: var(--sb-fg-light);
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.sb-riv-toc a:hover {
+  color: var(--sb-fg);
+  border-color: var(--sb-border-stronger);
+  background: var(--sb-surface-100);
+}
+
+/* ── Riquadri di sintesi ──────────────────────────────────────────────────
+   Il numero è grande e la sua etichetta piccola: in una pagina fatta di
+   tabelle serve un punto in cui l'occhio si ferma prima di entrare nel
+   dettaglio. */
+.sb-riv-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1.6rem 0 0;
+}
+@media (min-width: 720px) { .sb-riv-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sb-riv-stat { min-width: 0; }
+.sb-riv-stat .sb-panel-inner { padding: 1rem 1.1rem; gap: 0.15rem; }
+.sb-riv-stat-v {
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--sb-fg);
+}
+.sb-riv-stat-v small { font-size: 0.55em; color: var(--sb-fg-lighter); margin-left: 0.15em; }
+.sb-riv-stat-l {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--sb-fg-muted);
+}
+
+/* ── Tabelle ──────────────────────────────────────────────────────────────
+   Vivono dentro un .sb-panel, ma la lastra di vetro qui è --solid: sotto una
+   tabella che scorre in orizzontale il backdrop-filter si ridipinge a ogni
+   frame di scroll, e dietro non c'è comunque niente da sfocare.
+
+   Lo scorrimento orizzontale sta nel contenitore, mai nella pagina: su
+   telefono una tabella a sei colonne non deve poter spingere il body. */
+.sb-riv-tablewrap { margin: 0 0 1rem; }
+.sb-riv-tablewrap .sb-panel-inner { overflow: hidden; }
+.sb-riv-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.sb-riv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 32rem;
+}
+.sb-riv-table--wide { min-width: 46rem; }
+.sb-riv-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+  background: var(--sb-surface-100);
+  padding: 0.7rem 0.9rem;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--sb-border-strong);
+}
+.sb-riv-table tbody td {
+  padding: 0.65rem 0.9rem;
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--sb-fg-lighter);
+  border-bottom: 1px solid var(--sb-border);
+}
+.sb-riv-table tbody tr:last-child td { border-bottom: 0; }
+.sb-riv-table tbody tr:hover td { background: var(--sb-overlay); }
+/* La prima colonna è la chiave della riga: sta al colore pieno, il resto no.
+   È il modo di distinguere senza aggiungere un secondo hue. */
+.sb-riv-table tbody th,
+.sb-riv-table td:first-child {
+  color: var(--sb-fg);
+  font-weight: 400;
+}
+.sb-riv-table tbody th {
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  vertical-align: top;
+  font-weight: 500;
+  border-bottom: 1px solid var(--sb-border);
+}
+.sb-riv-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sb-riv-table .nowrap { white-space: nowrap; }
+/* Valore mancante: un trattino muto vale più di una cella vuota, perché dice
+   "guardato e non c'è" invece di "forse ce lo siamo dimenticati". */
+.sb-riv-na { color: var(--sb-fg-muted); }
+
+/* Didascalia sotto la tabella */
+.sb-riv-cap {
+  margin: 0.55rem 0 1.6rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--sb-fg-muted);
+}
+
+/* ── Note e avvertenze ────────────────────────────────────────────────────
+   Un filo verde a sinistra e basta. Le note di questo dossier dicono quasi
+   sempre la stessa cosa — "questo dato è incerto, verificalo" — e non serve
+   un colore d'allarme per dirlo: serve che si vedano tutte uguali. */
+.sb-riv-note {
+  margin: 1.2rem 0;
+  padding: 0.9rem 1.1rem;
+  max-width: 46rem;
+  border-left: 2px solid var(--sb-brand);
+  border-radius: 0 8px 8px 0;
+  background: var(--sb-surface-100);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-note > :first-child { margin-top: 0; }
+.sb-riv-note > :last-child { margin-bottom: 0; }
+.sb-riv-note strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-note-t {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+}
+
+/* ── Schede chiave/valore ─────────────────────────────────────────────── */
+.sb-riv-kv { margin: 0; }
+.sb-riv-kv-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.1rem 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--sb-border);
+}
+@media (min-width: 560px) { .sb-riv-kv-row { grid-template-columns: 13rem 1fr; gap: 0.25rem 1.4rem; } }
+.sb-riv-kv-row:last-child { border-bottom: 0; }
+.sb-riv-kv dt { font-size: 0.82rem; color: var(--sb-fg-muted); }
+.sb-riv-kv dd { margin: 0; font-size: 0.92rem; color: var(--sb-fg); }
+
+/* ── Griglia di schede ────────────────────────────────────────────────── */
+.sb-riv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin: 1.2rem 0;
+}
+@media (min-width: 640px) { .sb-riv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .sb-riv-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sb-riv-cardpad { padding: 1.2rem 1.3rem; gap: 0.5rem; }
+.sb-riv-cardpad h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+}
+.sb-riv-cardpad p { margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-riv-cardpad dl { margin: 0.2rem 0 0; display: grid; gap: 0.25rem; }
+.sb-riv-cardpad .row { display: flex; gap: 0.6rem; font-size: 0.84rem; line-height: 1.5; }
+.sb-riv-cardpad .row span:first-child { flex: none; width: 5.5rem; color: var(--sb-fg-muted); }
+.sb-riv-cardpad .row span:last-child { color: var(--sb-fg-lighter); }
+
+/* ── Blocco di codice / comando ───────────────────────────────────────── */
+.sb-riv-code {
+  margin: 0.9rem 0 1.4rem;
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-surface-100);
+  overflow-x: auto;
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--sb-fg-light);
+}
+.sb-riv-code code { font: inherit; white-space: pre; }
+.sb-riv-code .kw { color: var(--sb-code-kw); }
+.sb-riv-code .num { color: var(--sb-code-num); }
+.sb-riv-code .fn { color: var(--sb-code-fn); }
+
+/* ── Rassegna stampa ──────────────────────────────────────────────────────
+   Ogni scheda è un rimando, non un articolo: testata, data, titolo e il link
+   all'originale. Non c'è il corpo della notizia e non c'è la sua fotografia —
+   quelli restano a chi la notizia l'ha scritta e pagata.
+
+   Di conseguenza la scheda deve reggersi sulla sola tipografia: la testata in
+   maiuscoletto muto fa da "logo", il titolo porta tutto il peso. È anche il
+   motivo per cui non c'è un riquadro immagine vuoto a fare da segnaposto. */
+.sb-riv-news {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+@media (min-width: 640px) { .sb-riv-news { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .sb-riv-news { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sb-riv-news-card { height: 100%; }
+.sb-riv-news-pad {
+  padding: 1.2rem 1.3rem;
+  gap: 0.5rem;
+  height: 100%;
+}
+.sb-riv-news-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.sb-riv-news-src {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sb-fg-light);
+}
+.sb-riv-news-date { font-size: 0.75rem; color: var(--sb-fg-muted); white-space: nowrap; }
+.sb-riv-news-title {
+  margin: 0.1rem 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+}
+/* La firma di chi ha scritto il pezzo. Piccola, ma c'è: se il titolo lo
+   prendiamo in prestito, il nome di chi l'ha scritto viene con lui. */
+.sb-riv-news-by {
+  margin: -0.2rem 0 0;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-news-note {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--sb-fg-lighter);
+}
+/* La freccia spinge il link in fondo alla scheda: schede di altezza diversa
+   allineano comunque il piede, e la fila non sembra sfrangiata. */
+.sb-riv-news-go { margin-top: auto; padding-top: 0.7rem; }
+.sb-riv-news-card:hover .sb-riv-news-go { text-decoration: underline; text-underline-offset: 3px; }
+.sb-riv-news-card:hover .sb-riv-news-go svg { transform: translateX(2px); }
+
+/* ── Aggiornamento in evidenza ────────────────────────────────────────────
+   Una sola scheda larga per il cambio che vale la pena raccontare. Il filo
+   verde a sinistra è lo stesso delle note: dice "questa è nuova" senza
+   introdurre un secondo colore. */
+.sb-riv-flash { margin-top: 1.4rem; }
+.sb-riv-flash .sb-panel-inner {
+  border-left: 2px solid var(--sb-brand);
+  border-radius: 11px;
+  padding: clamp(1.2rem, 2.6vw, 1.7rem);
+  gap: 0.6rem;
+}
+.sb-riv-flash-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  align-self: flex-start;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--sb-btn-bd);
+  background: var(--sb-btn-bg);
+  color: var(--sb-btn-fg);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sb-riv-flash h3 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--sb-fg);
+}
+.sb-riv-flash p { margin: 0; max-width: 46rem; font-size: 0.92rem; line-height: 1.65; color: var(--sb-fg-lighter); }
+.sb-riv-flash p strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  margin-top: 0.3rem;
+}
+.sb-riv-flash-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+
+/* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */
+.sb-riv-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--sb-border);
+}
+
+/* ── Intestazione di pagina ───────────────────────────────────────────── */
+.sb-riv-pagehead { padding-top: clamp(2.5rem, 6vw, 4.5rem); padding-bottom: clamp(1rem, 2vw, 1.5rem); }
+.sb-riv-pagehead h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.sb-riv-eyebrow {
+  display: block;
+  margin-bottom: 0.7rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+}
+.sb-riv-lede {
+  margin: 1rem 0 0;
+  max-width: 44rem;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--sb-fg-lighter);
+}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell(npx tsc --noEmit -p tsconfig.json 2>&1)",
+      "PowerShell(npm i ogl)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(npm run build)",
+      "Bash(echo \"--- exit: $? \\(nessun risultato = escluso correttamente\\) ---\")",
+      "PowerShell(npm run dev)",
+      "PowerShell(Remove-Item \"c:\\\\Users\\\\pzkko\\\\Documents\\\\AP\\\\src\\\\components\\\\reactbits\\\\Aurora.tsx\" -Confirm:$false)",
+      "Bash(node shot.mjs light spec.png)"
+    ]
+  }
+}
