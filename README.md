@@ -103,6 +103,28 @@ Scelte editoriali da mantenere nelle prossime modifiche:
 - orari e recapiti restano da riverificare alla fonte prima di usi ufficiali — è detto una volta
   sola, in `dati.html`, senza ripeterlo pagina per pagina.
 
+## Deploy (Vercel)
+
+Il sito si serve così com'è: **su Vercel non gira nessuna build**. Le pagine si generano in locale con
+`node build.mjs` e si committano già pronte.
+
+`vercel.json` è quello che tiene in riga la piattaforma:
+
+- `"framework": null` → preset **Other**. Il progetto era nato come SPA Vite e nelle impostazioni era
+  rimasto il preset Vite: senza questa riga Vercel lancia `vite build` e fallisce con
+  `vite: command not found` (exit 127), perché in questo repo Vite non esiste più;
+- `"buildCommand"` e `"installCommand"` sono `echo` innocui. Devono essere **presenti**, non assenti:
+  `vercel.json` ha la precedenza sulla dashboard, ma solo per i campi che dichiara — omettendoli
+  tornerebbe a vincere il `vite build` salvato nelle impostazioni del progetto;
+- `"outputDirectory": "."` → la radice del repo è già il sito.
+
+`.vercelignore` tiene fuori dal deploy l'officina (`_build/`, `build.mjs`, `README.md`): online
+vanno solo le pagine, `assets/` e `data/`.
+
+**Non aggiungere `cleanUrls`.** Toglierebbe il `.html` dagli indirizzi, ma l'evidenza della voce
+attiva nella nav confronta l'ultimo segmento del path con l'`href` dei link (`paese.html`): con gli
+URL accorciati il confronto non torna più e il filo verde sparisce dalla voce corrente.
+
 ## Sviluppo locale
 
 Serve una qualsiasi cartella statica, per esempio:

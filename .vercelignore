@@ -1,0 +1,7 @@
+# Il sito che va in produzione è l'HTML generato in radice: l'officina resta a
+# casa. Il build gira in locale (`node build.mjs`) e le pagine si committano
+# già pronte, quindi su Vercel non serve niente di tutto questo.
+_build/
+build.mjs
+README.md
+.claude/
