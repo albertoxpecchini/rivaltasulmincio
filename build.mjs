@@ -10,7 +10,12 @@
    Il risultato è HTML statico puro: niente build step in produzione, niente
    runtime, si serve così com'è. Lo script serve solo a chi modifica il sito.
    ═══════════════════════════════════════════════════════════════════════════ */
-import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
+
+/* Dominio di produzione. Serve per due cose che DEVONO dire la stessa identica
+   riga, o Search Console le tratta come pagine diverse: l'URL canonico nella
+   testata di ogni pagina e il <loc> nella sitemap. Sta scritto una volta qui. */
+const SITE = "https://www.rivaltasulmincio.it";
 
 const head = readFileSync("_build/head.html", "utf8");
 const foot = readFileSync("_build/foot.html", "utf8");
@@ -58,8 +63,16 @@ const renderNews = () => {
     .join("\n");
 };
 
+/* Metadato facoltativo: se il frammento non lo dichiara, vale il default. */
+const optMeta = (src, key, fallback) => {
+  const m = src.match(new RegExp(`^<!--\\s*${key}:\\s*([\\s\\S]*?)-->`, "m"));
+  return m ? m[1].trim() : fallback;
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
+
+const sitemap = [];
 
 for (const file of bodies) {
   const page = file.replace(".body.html", "");
@@ -69,13 +82,55 @@ for (const file of bodies) {
     .trim()
     .replace("{{NEWS}}", renderNews);
 
+  const title = meta(src, "title");
+  const desc = meta(src, "desc");
+  // La home è la radice del sito, non "/index.html": un indirizzo solo per una
+  // pagina sola, altrimenti i motori ne indicizzano due identiche.
+  const canonical = page === "index" ? `${SITE}/` : `${SITE}/${page}.html`;
+
   const out =
     head
-      .replace("{{TITLE}}", meta(src, "title"))
-      .replace("{{DESC}}", meta(src, "desc")) +
+      .replace("{{TITLE}}", title)
+      .replace("{{DESC}}", desc)
+      .replace(/\{\{CANONICAL\}\}/g, canonical)
+      .replace(/\{\{OG_TITLE\}\}/g, escape(title))
+      .replace(/\{\{OG_DESC\}\}/g, escape(desc)) +
     `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
     foot;
 
   writeFileSync(`${page}.html`, out);
+
+  sitemap.push({
+    loc: canonical,
+    // Data dell'ultima modifica VERA del contenuto: il timestamp del frammento
+    // sorgente, non "oggi". Rigenerare il sito senza aver cambiato niente non
+    // deve dire ai motori che tutte e nove le pagine sono state riscritte.
+    lastmod: statSync(`_build/${file}`).mtime.toISOString().slice(0, 10),
+    freq: optMeta(src, "freq", "monthly"),
+    prio: optMeta(src, "prio", "0.7"),
+  });
+
   console.log(`✓ ${page}.html  (${(out.length / 1024).toFixed(1)} kB)`);
 }
+
+/* ── Sitemap ──────────────────────────────────────────────────────────────
+   Generata dalla stessa lista che genera le pagine: una pagina nuova entra in
+   sitemap da sé. Una sitemap scritta a mano è una sitemap che, prima o poi,
+   elenca un indirizzo che non esiste più — ed è peggio di non averla. */
+const urls = sitemap
+  .sort((a, b) => Number(b.prio) - Number(a.prio) || a.loc.localeCompare(b.loc))
+  .map(
+    (u) => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${u.lastmod}</lastmod>
+    <changefreq>${u.freq}</changefreq>
+    <priority>${u.prio}</priority>
+  </url>`
+  )
+  .join("\n");
+
+writeFileSync(
+  "sitemap.xml",
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+);
+console.log(`✓ sitemap.xml  (${sitemap.length} URL)`);

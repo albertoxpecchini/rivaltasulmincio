@@ -103,6 +103,29 @@ Scelte editoriali da mantenere nelle prossime modifiche:
 - orari e recapiti restano da riverificare alla fonte prima di usi ufficiali — è detto una volta
   sola, in `dati.html`, senza ripeterlo pagina per pagina.
 
+## Sitemap e indicizzazione
+
+`sitemap.xml` **è generato** da `build.mjs` insieme alle pagine, dalla stessa lista di frammenti: una
+pagina nuova entra in sitemap da sé. Non modificarlo a mano — una sitemap scritta a mano è una
+sitemap che prima o poi elenca un indirizzo che non esiste più, ed è peggio di non averla.
+
+Il dominio di produzione sta in **una riga sola**, la costante `SITE` in cima a `build.mjs`. Da lì
+escono sia il `<loc>` della sitemap sia il `<link rel="canonical">` e l'`og:url` di ogni pagina: se
+non coincidessero al carattere, Search Console tratterebbe la stessa pagina come due.
+
+Priorità e frequenza si dichiarano nel frammento, con due commenti facoltativi (default `0.7` e
+`monthly`):
+
+```html
+<!--prio: 0.9-->
+<!--freq: weekly-->
+```
+
+`lastmod` è la data di ultima modifica **del frammento sorgente**, non di oggi: rigenerare il sito
+senza aver cambiato niente non deve dire ai motori che tutte e nove le pagine sono state riscritte.
+
+`robots.txt` è statico e non ha esclusioni: nove pagine pubbliche, nessuna area riservata.
+
 ## Deploy (Vercel)
 
 Il sito si serve così com'è: **su Vercel non gira nessuna build**. Le pagine si generano in locale con

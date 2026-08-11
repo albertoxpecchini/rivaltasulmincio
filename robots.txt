@@ -1,0 +1,10 @@
+# Rivalta sul Mincio — https://www.rivaltasulmincio.it
+#
+# Sito statico, nove pagine, nessuna area riservata: non c'è niente da
+# nascondere ai motori. Le esclusioni del vecchio sito (/login, /dashboard,
+# /write, /profile, /api/) non servono più — quelle rotte non esistono.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.rivaltasulmincio.it/sitemap.xml
