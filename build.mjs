@@ -10,7 +10,7 @@
    Il risultato è HTML statico puro: niente build step in produzione, niente
    runtime, si serve così com'è. Lo script serve solo a chi modifica il sito.
    ═══════════════════════════════════════════════════════════════════════════ */
-import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
 
 /* Dominio di produzione. Serve per due cose che DEVONO dire la stessa identica
    riga, o Search Console le tratta come pagine diverse: l'URL canonico nella
@@ -69,6 +69,187 @@ const optMeta = (src, key, fallback) => {
   return m ? m[1].trim() : fallback;
 };
 
+/* ── Il registro dei luoghi ───────────────────────────────────────────────
+   _build/luoghi.json è l'anagrafe dei posti di cui il sito parla: nome,
+   indirizzo, coordinate, la pagina che li racconta e il nome del file della
+   loro fotografia. Da qui escono tre cose che altrimenti si scriverebbero
+   tre volte a mano e divergerebbero al primo cambiamento: i collegamenti
+   alla mappa, le fotografie e le schede della pagina /mappa. */
+const luoghi = JSON.parse(readFileSync("_build/luoghi.json", "utf8"));
+const perSlug = new Map(luoghi.map((l) => [l.slug, l]));
+
+/* Un indirizzo si apre su OpenStreetMap, la stessa fonte da cui vengono i
+   geodati di tutto il sito. Con le coordinate si punta il segnaposto esatto;
+   senza, si ripiega su una ricerca per nome — meglio una mappa vicina che un
+   collegamento morto. */
+const osmUrl = (l) =>
+  l.lat != null && l.lon != null
+    ? `https://www.openstreetmap.org/?mlat=${l.lat}&mlon=${l.lon}#map=18/${l.lat}/${l.lon}`
+    : `https://www.openstreetmap.org/search?query=${encodeURIComponent(`${l.nome}, Rivalta sul Mincio`)}`;
+
+const PIN = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`;
+
+const geoLink = (href, testo, titolo) =>
+  `<a class="sb-riv-geo" href="${escape(href)}" target="_blank" rel="noreferrer noopener"` +
+  ` title="${escape(titolo)} — apri su OpenStreetMap">${escape(testo)}${PIN}</a>`;
+
+/* ── Fotografie ───────────────────────────────────────────────────────────
+   {{foto:slug}} produce la figura SOLO se il file esiste davvero su disco.
+   È la regola che rende possibile scrivere oggi il markup di 110 fotografie
+   che non sono ancora state scattate: finché il jpg non c'è, il segnaposto
+   non lascia né un buco né un'immagine rotta; il giorno che il file entra
+   nella cartella, la figura compare da sé al primo build. */
+const mancanti = [];
+const renderFoto = (slug) => {
+  const l = perSlug.get(slug);
+  if (!l) throw new Error(`{{foto:${slug}}} — slug assente da _build/luoghi.json`);
+  const rel = `assets/foto/${l.foto}`;
+  if (!existsSync(rel)) {
+    mancanti.push(slug);
+    return "";
+  }
+  const credito = l.credito ? ` <span class="sb-riv-foto-by">Foto: ${escape(l.credito)}</span>` : "";
+  return `<figure class="sb-riv-foto">
+      <div class="sb-panel"><div class="sb-panel-inner">
+        <img src="${rel}" alt="${escape(l.alt)}" loading="lazy" decoding="async" width="1600" height="1067">
+      </div></div>
+      <figcaption>${escape(l.nome)}${credito}</figcaption>
+    </figure>`;
+};
+
+/* ── Gli shortcode ────────────────────────────────────────────────────────
+   Tre segnaposto, tutti risolti qui e nessuno scritto a mano nelle pagine:
+
+     {{luogo:corte-mincio-porto}}        nome del luogo, premibile
+     {{luogo:corte-mincio-porto|Via Porto}}  etichetta diversa dal nome
+     {{geo:45.1799,10.6807|Piazza Chiesa}}   coordinate sciolte
+     {{foto:chiesa-santi-vigilio-donato}}    la fotografia, se esiste
+
+   Uno slug che non esiste fa fallire il build, come già succede a un
+   frammento senza titolo: un collegamento rotto scoperto in produzione costa
+   più di un build che si ferma. */
+const shortcodes = (html) =>
+  html
+    .replace(/\{\{luogo:([a-z0-9-]+)(?:\|([^}]*))?\}\}/g, (_, slug, etichetta) => {
+      const l = perSlug.get(slug);
+      if (!l) throw new Error(`{{luogo:${slug}}} — slug assente da _build/luoghi.json`);
+      return geoLink(osmUrl(l), etichetta || l.nome, l.nome);
+    })
+    .replace(/\{\{geo:(-?\d+\.\d+),\s*(-?\d+\.\d+)(?:\|([^}]*))?\}\}/g, (_, lat, lon, etichetta) =>
+      geoLink(
+        `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`,
+        etichetta || `${lat}, ${lon}`,
+        `${lat}, ${lon}`
+      )
+    )
+    .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug));
+
+/* ── La mappa ─────────────────────────────────────────────────────────────
+   I punti non si caricano a runtime: il dataset è già qui al momento del
+   build, e un fetch in più per dati che non cambiano fra un deploy e l'altro
+   sarebbe solo un modo per far vedere una mappa vuota a chi ha la linea
+   lenta. {{MAPPA}} diventa i filtri più un blocco JSON che assets/mappa.js
+   legge dal DOM.
+
+   Del dataset completo si porta solo ciò che serve a disegnare un segnaposto
+   e la sua scheda: dai 10.190 righe del file scaricabile si scende a poche
+   decine di kB. */
+const renderMappa = () => {
+  const { gruppi, tipi } = JSON.parse(readFileSync("_build/tipi.json", "utf8"));
+  const ds = JSON.parse(readFileSync("data/rivalta_dataset.json", "utf8"));
+
+  const ignoti = new Set();
+  const punti = [];
+  for (const p of ds.poi) {
+    const chiave = `${p.categoria}/${p.tipo}`;
+    const t = tipi[chiave];
+    if (!t) {
+      ignoti.add(chiave);
+      continue;
+    }
+    if (t.escluso) continue;
+    punti.push({
+      n: p.nome || null,
+      t: t.l,
+      g: t.g,
+      c: [Number(p.lat.toFixed(6)), Number(p.lon.toFixed(6))],
+      d: p.dist_m,
+      i: p.indirizzo || null,
+      tel: p.telefono || null,
+      w: p.web || null,
+      o: p.orari || null,
+    });
+  }
+  // Prima i punti con un nome: nella lista sotto la mappa contano di più.
+  punti.sort((a, b) => (a.n ? 0 : 1) - (b.n ? 0 : 1) || a.d - b.d);
+
+  if (ignoti.size) {
+    console.log(`\n⚠ tipi OSM non ancora tradotti (esclusi dalla mappa): ${[...ignoti].join(", ")}`);
+    console.log(`  Aggiungerli a _build/tipi.json con etichetta e gruppo.`);
+  }
+
+  const conta = (g) => punti.filter((p) => p.g === g).length;
+  const filtri = Object.entries(gruppi)
+    .map(
+      ([id, nome]) => `          <label class="sb-riv-filtro">
+            <input type="checkbox" value="${id}" checked>
+            <span class="sb-riv-filtro-pin" data-g="${id}" aria-hidden="true"></span>
+            <span>${escape(nome)}</span>
+            <span class="sb-riv-filtro-n">${conta(id)}</span>
+          </label>`
+    )
+    .join("\n");
+
+  return `<div class="sb-riv-mappa">
+        <div class="sb-riv-filtri" role="group" aria-label="Categorie da mostrare sulla mappa">
+${filtri}
+        </div>
+        <div class="sb-panel"><div class="sb-panel-inner">
+          <div class="sb-riv-map" id="mappa" role="application" aria-label="Mappa dei punti d'interesse di Rivalta sul Mincio"></div>
+        </div></div>
+        <p class="sb-riv-cap" id="mappa-conteggio">${punti.length} punti sulla mappa. Senza JavaScript la mappa non compare: l'elenco completo dei luoghi resta qui sotto, e ogni voce apre OpenStreetMap.</p>
+        <script type="application/json" id="mappa-poi">${JSON.stringify(punti).replace(/</g, "\\u003c")}</script>
+      </div>`;
+};
+
+/* Le schede dei luoghi in coda alla mappa: il registro, non il dataset. Sono
+   i posti di cui il sito parla davvero, con la loro fotografia e il rimando
+   alla pagina che li racconta. */
+const renderLuoghi = () => {
+  const gruppi = [...new Set(luoghi.map((l) => l.gruppo))];
+  return gruppi
+    .map((g) => {
+      const voci = luoghi
+        .filter((l) => l.gruppo === g)
+        .map((l) => {
+          const scattata = existsSync(`assets/foto/${l.foto}`);
+          if (!scattata) mancanti.push(l.slug);
+          const foto = scattata
+            ? `<img class="sb-riv-luogo-img" src="assets/foto/${l.foto}" alt="${escape(l.alt)}" loading="lazy" decoding="async" width="1600" height="1067">`
+            : "";
+          const dove = l.indirizzo ? `<span class="sb-riv-luogo-dove">${escape(l.indirizzo)}</span>` : "";
+          const dist = l.dist_m != null ? `<span class="sb-riv-luogo-dist">${l.dist_m} m dal centro</span>` : "";
+          return `          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            ${foto}
+            <div class="sb-riv-luogo-testo">
+              <h3>${escape(l.nome)}</h3>
+              <p class="sb-riv-luogo-meta">${dove}${dist}</p>
+              <p class="sb-riv-luogo-links">
+                ${geoLink(osmUrl(l), "Apri nella mappa", l.nome)}
+                <a class="sb-link" href="${escape(l.pagina)}">Scheda</a>
+              </p>
+            </div>
+          </div></div>`;
+        })
+        .join("\n");
+      return `      <h2 class="sb-riv-subhead">${escape(g)}</h2>
+      <div class="sb-riv-luoghi">
+${voci}
+      </div>`;
+    })
+    .join("\n");
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
@@ -77,13 +258,34 @@ const sitemap = [];
 for (const file of bodies) {
   const page = file.replace(".body.html", "");
   const src = readFileSync(`_build/${file}`, "utf8");
-  const body = src
-    .replace(/^<!--[\s\S]*?-->\s*/gm, "")
-    .trim()
-    .replace("{{NEWS}}", renderNews);
+  const body = shortcodes(
+    src
+      .replace(/^<!--[\s\S]*?-->\s*/gm, "")
+      .trim()
+      .replace("{{NEWS}}", renderNews)
+      .replace("{{MAPPA}}", renderMappa)
+      .replace("{{LUOGHI}}", renderLuoghi)
+  );
 
   const title = meta(src, "title");
   const desc = meta(src, "desc");
+
+  /* Leaflet pesa 160 kB fra script e foglio: caricarlo sulle nove pagine che
+     una mappa non ce l'hanno sarebbe farlo scaricare per niente otto volte su
+     nove. Non c'è un elenco da tenere aggiornato — se il frammento contiene
+     il segnaposto della mappa, allora la mappa gli serve. */
+  const conMappa = src.includes("{{MAPPA}}");
+  const headExtra = conMappa ? `<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">\n` : "";
+  const scriptExtra = conMappa
+    ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n`
+    : "";
+
+  /* L'anteprima social esiste solo quando esiste il file. Un og:image che
+     punta a un'immagine assente fa sì che l'anteprima non compaia affatto:
+     meglio dichiarare la scheda breve finché la fotografia non c'è. */
+  const ogImg = existsSync("assets/foto/og.jpg")
+    ? `<meta name="twitter:card" content="summary_large_image">\n<meta property="og:image" content="${SITE}/assets/foto/og.jpg">\n<meta property="og:image:alt" content="Rivalta sul Mincio">\n`
+    : `<meta name="twitter:card" content="summary">\n`;
   /* Gli indirizzi pubblici non hanno estensione: /paese, non /paese.html. Il
      file su disco continua a chiamarsi paese.html — è "cleanUrls": true in
      vercel.json che lo serve senza, e che manda un redirect permanente dal
@@ -100,9 +302,11 @@ for (const file of bodies) {
       .replace("{{DESC}}", desc)
       .replace(/\{\{CANONICAL\}\}/g, canonical)
       .replace(/\{\{OG_TITLE\}\}/g, escape(title))
-      .replace(/\{\{OG_DESC\}\}/g, escape(desc)) +
+      .replace(/\{\{OG_DESC\}\}/g, escape(desc))
+      .replace("{{OG_IMAGE}}", ogImg)
+      .replace("{{HEAD}}", headExtra) +
     `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
-    foot;
+    foot.replace("{{SCRIPTS}}", scriptExtra);
 
   writeFileSync(`${page}.html`, out);
 
@@ -140,3 +344,16 @@ writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
 );
 console.log(`✓ sitemap.xml  (${sitemap.length} URL)`);
+
+/* ── La lista della spesa ─────────────────────────────────────────────────
+   Le fotografie si aggiungono una alla volta, nel tempo. Perché "quali
+   mancano" non diventi una domanda a cui si risponde aprendo la cartella e
+   confrontandola a occhio con le pagine, il build lo dice ogni volta. */
+if (mancanti.length) {
+  const unici = [...new Set(mancanti)];
+  const fatte = luoghi.length - unici.length;
+  console.log(`\n⚠ fotografie: ${fatte} su ${luoghi.length}. Ne mancano ${unici.length}.`);
+  console.log(`  ${unici.slice(0, 6).map((s) => perSlug.get(s).foto).join("  ")}`);
+  if (unici.length > 6) console.log(`  …e altre ${unici.length - 6}. L'elenco completo dei nomi file è in _build/luoghi.json`);
+  console.log(`  Vanno in assets/foto/ con quel nome esatto: al prossimo build compaiono da sé.`);
+}

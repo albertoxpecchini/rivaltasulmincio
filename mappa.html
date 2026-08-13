@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mappa — dove sono le cose a Rivalta sul Mincio</title>
+<meta name="description" content="Mappa interattiva di Rivalta sul Mincio (Rodigo, MN): monumenti, chiese, parchi, negozi, servizi, porto e fermate. Elenco dei luoghi con coordinate e collegamento a OpenStreetMap.">
+<meta name="theme-color" content="#fcfcfc">
+<link rel="canonical" href="https://www.rivaltasulmincio.it/mappa">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rivalta sul Mincio">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Mappa — dove sono le cose a Rivalta sul Mincio">
+<meta property="og:description" content="Mappa interattiva di Rivalta sul Mincio (Rodigo, MN): monumenti, chiese, parchi, negozi, servizi, porto e fermate. Elenco dei luoghi con coordinate e collegamento a OpenStreetMap.">
+<meta property="og:url" content="https://www.rivaltasulmincio.it/mappa">
+<meta name="twitter:title" content="Mappa — dove sono le cose a Rivalta sul Mincio">
+<meta name="twitter:description" content="Mappa interattiva di Rivalta sul Mincio (Rodigo, MN): monumenti, chiese, parchi, negozi, servizi, porto e fermate. Elenco dei luoghi con coordinate e collegamento a OpenStreetMap.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/sb.css">
+<link rel="stylesheet" href="assets/rivalta.css">
+<link rel="stylesheet" href="assets/controlbar.css">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+
+<!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
+     entrando su una pagina che finirà scura. Scelta manuale se c'è,
+     altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
+
+     Stessa cosa per il movimento: la scelta fatta con il tasto vale da subito,
+     prima che il foglio di stile decida. Senza scelta manuale non si scrive
+     nessuna classe e comanda @media (prefers-reduced-motion). -->
+<script>
+(function(){try{var g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};
+var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((new Date().getHours()>=8&&new Date().getHours()<20)?"light":"dark");
+var d=document.documentElement;d.classList.toggle("dark",t==="dark");d.setAttribute("data-rsm-theme",t);
+d.style.setProperty("--ap-boot-bg",t==="dark"?"#141414":"#fcfcfc");
+var m=g("rsm-motion-mode")==="manual"?g("rsm-motion-manual"):null;
+if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm-still")}catch(e){}})();
+</script>
+</head>
+<body>
+<div class="sb-home">
+  <div class="sb-bg" aria-hidden="true"><div class="sb-bg-grid"></div></div>
+  <a class="sb-skip" href="#main">Salta al contenuto</a>
+
+  <header>
+    <nav class="sb-nav" aria-label="Navigazione principale">
+      <div class="sb-container sb-nav-inner">
+        <a class="sb-nav-brand" href="/">
+          <span class="sb-nav-brand-name">Rivalta sul Mincio</span>
+          <span class="sb-local">MN</span>
+        </a>
+        <div class="sb-nav-links">
+          <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
+               perché nell'ordine di pittura deve finirci sotto, ed è
+               aria-hidden perché non dice niente che l'attributo
+               aria-current sulla voce non dica già meglio. -->
+          <span class="sb-nav-pill" aria-hidden="true"></span>
+          <a class="sb-nav-link" href="/paese">Il paese</a>
+          <a class="sb-nav-link" href="/servizi">Servizi</a>
+          <a class="sb-nav-link" href="/attivita">Attività</a>
+          <a class="sb-nav-link" href="/comunita">Comunità</a>
+          <a class="sb-nav-link" href="/muoversi">Muoversi</a>
+          <a class="sb-nav-link" href="/natura">Natura</a>
+          <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
+          <a class="sb-nav-link" href="/dati">Dati</a>
+        </div>
+        <div class="sb-nav-right">
+          <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
+               preferenze stanno insieme nella barra di controllo in basso a
+               sinistra (foot.html). Nella nav resta solo ciò che serve a
+               navigare. -->
+          <button class="sb-burger" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-sheet" aria-label="Apri il menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="sb-menu-sheet" id="menu-sheet">
+      <div class="sb-container">
+        <nav class="sb-menu-nav" aria-label="Navigazione del sito">
+          <a href="/paese">Il paese</a>
+          <a href="/servizi">Servizi</a>
+          <a href="/attivita">Attività</a>
+          <a href="/comunita">Comunità</a>
+          <a href="/muoversi">Muoversi</a>
+          <a href="/natura">Natura</a>
+          <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
+          <a href="/dati">Dati e fonti</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="sb-main" id="main">
+<section class="sb-container sb-riv-pagehead">
+  <span class="sb-riv-eyebrow">Sul territorio</span>
+  <h1>Mappa</h1>
+  <p class="sb-riv-lede">Tutto quello che è censito nel riquadro attorno al paese, su una mappa sola. I filtri accendono e spengono le categorie; premendo un segnaposto compaiono indirizzo, orari e recapiti. Sotto, i luoghi di cui questo sito parla, uno per uno.</p>
+  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+    <a href="#mappa-sec">La mappa</a>
+    <a href="#elenco">Elenco dei luoghi</a>
+    <a href="#nota">Come leggerla</a>
+  </nav>
+</section>
+
+<section class="sb-container sb-riv-sec" id="mappa-sec">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Geodati — OpenStreetMap</span>
+    <h2>Dove sono le cose</h2>
+  </div>
+
+  <div class="sb-riv-mappa">
+        <div class="sb-riv-filtri" role="group" aria-label="Categorie da mostrare sulla mappa">
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="cultura" checked>
+            <span class="sb-riv-filtro-pin" data-g="cultura" aria-hidden="true"></span>
+            <span>Monumenti e cultura</span>
+            <span class="sb-riv-filtro-n">14</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="culto" checked>
+            <span class="sb-riv-filtro-pin" data-g="culto" aria-hidden="true"></span>
+            <span>Chiese e culto</span>
+            <span class="sb-riv-filtro-n">7</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="verde" checked>
+            <span class="sb-riv-filtro-pin" data-g="verde" aria-hidden="true"></span>
+            <span>Verde e sport</span>
+            <span class="sb-riv-filtro-n">60</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="negozi" checked>
+            <span class="sb-riv-filtro-pin" data-g="negozi" aria-hidden="true"></span>
+            <span>Negozi</span>
+            <span class="sb-riv-filtro-n">22</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="tavola" checked>
+            <span class="sb-riv-filtro-pin" data-g="tavola" aria-hidden="true"></span>
+            <span>Mangiare e dormire</span>
+            <span class="sb-riv-filtro-n">18</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="servizi" checked>
+            <span class="sb-riv-filtro-pin" data-g="servizi" aria-hidden="true"></span>
+            <span>Servizi</span>
+            <span class="sb-riv-filtro-n">26</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="fiume" checked>
+            <span class="sb-riv-filtro-pin" data-g="fiume" aria-hidden="true"></span>
+            <span>Sul fiume</span>
+            <span class="sb-riv-filtro-n">5</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="muoversi" checked>
+            <span class="sb-riv-filtro-pin" data-g="muoversi" aria-hidden="true"></span>
+            <span>Muoversi</span>
+            <span class="sb-riv-filtro-n">65</span>
+          </label>
+          <label class="sb-riv-filtro">
+            <input type="checkbox" value="arredo" checked>
+            <span class="sb-riv-filtro-pin" data-g="arredo" aria-hidden="true"></span>
+            <span>Arredo urbano</span>
+            <span class="sb-riv-filtro-n">51</span>
+          </label>
+        </div>
+        <div class="sb-panel"><div class="sb-panel-inner">
+          <div class="sb-riv-map" id="mappa" role="application" aria-label="Mappa dei punti d'interesse di Rivalta sul Mincio"></div>
+        </div></div>
+        <p class="sb-riv-cap" id="mappa-conteggio">268 punti sulla mappa. Senza JavaScript la mappa non compare: l'elenco completo dei luoghi resta qui sotto, e ogni voce apre OpenStreetMap.</p>
+        <script type="application/json" id="mappa-poi">[{"n":"Monte dei Paschi di Siena","t":"Banca","g":"servizi","c":[45.180256,10.677281],"d":13,"i":"Via Sette Frati 2","tel":null,"w":null,"o":null},{"n":"Coyote's Bar","t":"Bar","g":"tavola","c":[45.180369,10.677272],"d":22,"i":"Via Sette Frati 6","tel":null,"w":null,"o":null},{"n":"Pizzeria - Osteria \"La Stella\"","t":"Ristorante","g":"tavola","c":[45.180064,10.677442],"d":28,"i":"Via Filippo Turati 6","tel":"+3903761410132","w":null,"o":"Tu-Su 19:00-22:30"},{"n":"Monumento ai Caduti delle Guerre","t":"Monumento","g":"cultura","c":[45.179918,10.676922],"d":35,"i":null,"tel":null,"w":null,"o":null},{"n":"Bobby Minimarket","t":"Supermercato","g":"negozi","c":[45.180113,10.677669],"d":43,"i":null,"tel":null,"w":null,"o":null},{"n":"Gioielleria Chizzolini","t":"Gioielleria","g":"negozi","c":[45.180182,10.677796],"d":52,"i":"Via Filippo Turati 7","tel":null,"w":null,"o":null},{"n":"Studio Dentistico dr. Sproccati","t":"Studio dentistico","g":"servizi","c":[45.180139,10.678042],"d":71,"i":"Via Filippo Turati 18","tel":null,"w":null,"o":null},{"n":"Giannace","t":"Da verificare","g":"servizi","c":[45.180072,10.678187],"d":83,"i":"Via Filippo Turati 36","tel":null,"w":null,"o":null},{"n":"Panificio Rota","t":"Panificio","g":"negozi","c":[45.180074,10.67825],"d":88,"i":"Via Filippo Turati 38","tel":null,"w":null,"o":null},{"n":"Piazza Milite Ignoto","t":"Parcheggio","g":"muoversi","c":[45.181211,10.677192],"d":113,"i":null,"tel":null,"w":null,"o":null},{"n":"Marco Munari, consulente informatico indipendente","t":"Studio di consulenza","g":"servizi","c":[45.180108,10.678744],"d":126,"i":"Via Filippo Turati 50","tel":"+39 338 961 9010","w":"https://marcomunari.it","o":null},{"n":"Tabaccheria Edicola Morselli","t":"Edicola","g":"negozi","c":[45.180183,10.678806],"d":131,"i":"Via Filippo Turati 37","tel":null,"w":null,"o":null},{"n":"Andrea Equipe","t":"Parrucchiere","g":"negozi","c":[45.180294,10.678878],"d":137,"i":"Via Zibramonda","tel":null,"w":null,"o":null},{"n":"Macelleria Azzi","t":"Macelleria","g":"negozi","c":[45.180156,10.678978],"d":144,"i":"Via Filippo Turati 41","tel":null,"w":null,"o":null},{"n":"Non Solo Lady","t":"Parrucchiere","g":"negozi","c":[45.180121,10.679358],"d":174,"i":"Piazza Chiesa 1b","tel":null,"w":null,"o":null},{"n":"Bottega Atipica","t":"Bar","g":"tavola","c":[45.179958,10.679393],"d":179,"i":"Via Antonio Gramsci 1","tel":null,"w":null,"o":null},{"n":"Alimentari e merceria Ferrari","t":"Alimentari","g":"negozi","c":[45.178533,10.677679],"d":189,"i":"Via Tezzone 43","tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 42","t":"Fermata autobus","g":"muoversi","c":[45.178413,10.676984],"d":198,"i":null,"tel":null,"w":null,"o":null},{"n":"Il Bouquet","t":"Fioraio","g":"negozi","c":[45.179544,10.679504],"d":199,"i":"Via Antonio Gramsci 56","tel":null,"w":null,"o":null},{"n":"Opificio Alimentare","t":"Ristorante","g":"tavola","c":[45.17833,10.676854],"d":208,"i":"Via Francesca 42","tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 42","t":"Fermata autobus","g":"muoversi","c":[45.178241,10.677149],"d":217,"i":null,"tel":null,"w":null,"o":null},{"n":"Fontana della Madonna","t":"Fontana","g":"arredo","c":[45.179918,10.679948],"d":222,"i":null,"tel":null,"w":null,"o":null},{"n":"Rivaroli Cristian","t":"Parrucchiere","g":"negozi","c":[45.179259,10.679845],"d":236,"i":"Via Antonio Gramsci","tel":null,"w":null,"o":null},{"n":"Panificio Marchini","t":"Panificio","g":"negozi","c":[45.179282,10.680029],"d":248,"i":"Via Antonio Gramsci 35","tel":null,"w":null,"o":null},{"n":"Centro Estetico Athenas","t":"Centro estetico","g":"negozi","c":[45.179072,10.680186],"d":269,"i":"Via Antonio Gramsci 80","tel":null,"w":null,"o":null},{"n":"Ortofrutticola","t":"Supermercato","g":"negozi","c":[45.179431,10.673778],"d":277,"i":"Via Giuseppe Garibaldi 21","tel":null,"w":null,"o":null},{"n":"Ottica Morganti","t":"Ottica","g":"negozi","c":[45.17904,10.68028],"d":278,"i":"Via Antonio Gramsci 84","tel":null,"w":null,"o":null},{"n":"Chiesa Santi Vigilio e Donato","t":"Luogo di culto","g":"culto","c":[45.179933,10.680703],"d":281,"i":"Piazza Chiesa","tel":null,"w":null,"o":null},{"n":"Campino Oratorio","t":"Area gioco","g":"verde","c":[45.179656,10.680701],"d":286,"i":null,"tel":null,"w":null,"o":null},{"n":"Farmacia Tona","t":"Farmacia","g":"servizi","c":[45.177696,10.676227],"d":287,"i":"Via Panicella 2","tel":"+390376653143","w":null,"o":null},{"n":"Parco Pubblico Campino","t":"Parco","g":"verde","c":[45.177677,10.678112],"d":290,"i":null,"tel":null,"w":null,"o":null},{"n":"Allianz Mantova 90","t":"Assicurazioni","g":"servizi","c":[45.178984,10.680439],"d":292,"i":"Via Antonio Gramsci 88","tel":null,"w":null,"o":null},{"n":"Profumeria \"Fior di Loto\"","t":"Tabaccheria","g":"negozi","c":[45.177557,10.676649],"d":295,"i":"Via Francesca 60","tel":"+390376653493","w":null,"o":null},{"n":"Salvo D'Acquisto","t":"Monumento","g":"cultura","c":[45.177522,10.67728],"d":297,"i":null,"tel":null,"w":null,"o":null},{"n":"Sede Pro Loco Rivalta sul Mncio APS / Canoa Point","t":"Centro sportivo","g":"verde","c":[45.180382,10.681271],"d":325,"i":"Via Porto 31","tel":null,"w":"https://www.prolocorivalta.mn.it/","o":null},{"n":"Ostello del Mincio","t":"Bar","g":"tavola","c":[45.179724,10.681308],"d":331,"i":null,"tel":null,"w":null,"o":null},{"n":"Ostello del Mincio","t":"Ostello","g":"tavola","c":[45.17945,10.681318],"d":338,"i":null,"tel":null,"w":null,"o":null},{"n":"Pizzangolo","t":"Ristorante","g":"tavola","c":[45.178681,10.680926],"d":341,"i":"Via Giovanni Arrivabene 1","tel":"+39 0376 681165","w":null,"o":null},{"n":"Biblioteca Comunale \"Dr. Pietro Morelli\"","t":"Biblioteca","g":"servizi","c":[45.179942,10.681602],"d":351,"i":"Via Porto 31","tel":"+390376653924","w":null,"o":null},{"n":"Museo Etnografico dei Mestieri del Fiume","t":"Museo","g":"cultura","c":[45.17999,10.681711],"d":359,"i":"Via Porto 31","tel":"+393405813656","w":"https://museorivaltasulmincio.it/","o":null},{"n":"Centro Visita del Parco Regionale del Mincio","t":"Punto informazioni","g":"cultura","c":[45.179937,10.681729],"d":361,"i":"Via Porto 31","tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 44","t":"Fermata autobus","g":"muoversi","c":[45.179718,10.672291],"d":383,"i":null,"tel":null,"w":null,"o":null},{"n":"Enel X","t":"Ricarica elettrica","g":"servizi","c":[45.176735,10.676481],"d":388,"i":null,"tel":null,"w":null,"o":null},{"n":"Enel X","t":"Ricarica elettrica","g":"servizi","c":[45.176723,10.676556],"d":389,"i":null,"tel":null,"w":null,"o":null},{"n":"Monumento al Marinaio","t":"Monumento","g":"cultura","c":[45.180429,10.682105],"d":390,"i":null,"tel":null,"w":null,"o":null},{"n":"Chiesetta di Santa Maria di Lourdes","t":"Luogo di culto","g":"culto","c":[45.182316,10.673042],"d":398,"i":null,"tel":null,"w":null,"o":null},{"n":"Piazza Emanuele Basile","t":"Parcheggio","g":"muoversi","c":[45.176603,10.677064],"d":399,"i":null,"tel":null,"w":null,"o":null},{"n":"Parco Fabrizio Quattrocchi","t":"Parco","g":"verde","c":[45.182327,10.67303],"d":400,"i":"Via Renzo Regattieri","tel":null,"w":null,"o":"24/7"},{"n":"Corte Mincio","t":"Imbarco","g":"fiume","c":[45.179604,10.682349],"d":414,"i":null,"tel":null,"w":null,"o":null},{"n":"Bicimania","t":"Biciclette","g":"negozi","c":[45.180492,10.67171],"d":427,"i":null,"tel":null,"w":null,"o":null},{"n":"Palazzetto dello Sport \"Renzo Regattieri\"","t":"Centro sportivo","g":"verde","c":[45.176289,10.676795],"d":435,"i":"Piazza Basile 1","tel":"+390376653684","w":null,"o":null},{"n":"Lavatoio","t":"Pensilina","g":"arredo","c":[45.178913,10.682512],"d":445,"i":null,"tel":null,"w":null,"o":null},{"n":"Campo da calcetto (ex tennis)","t":"Campo sportivo","g":"verde","c":[45.176186,10.677285],"d":446,"i":null,"tel":null,"w":null,"o":null},{"n":"PM Microwave","t":"Azienda","g":"servizi","c":[45.178428,10.671314],"d":497,"i":null,"tel":null,"w":"https://www.pmmicrowave.com/","o":null},{"n":"Campo di calcio \"Danilo Gobbi\"","t":"Campo sportivo","g":"verde","c":[45.175654,10.678078],"d":510,"i":null,"tel":null,"w":null,"o":null},{"n":"Centro Alimenti Senza Glutine","t":"Supermercato","g":"negozi","c":[45.176668,10.672464],"d":536,"i":null,"tel":null,"w":null,"o":null},{"n":"Cappella di Sant'Antonio","t":"Luogo di culto","g":"culto","c":[45.180135,10.670186],"d":545,"i":null,"tel":null,"w":null,"o":null},{"n":"Le Antiche Colonie","t":"Pub","g":"tavola","c":[45.175344,10.675767],"d":550,"i":null,"tel":null,"w":null,"o":null},{"n":"Arcieri Gonzaga - Campo di Tiro con l'Arco","t":"Campo sportivo","g":"verde","c":[45.177032,10.682748],"d":563,"i":"Via Pilota","tel":null,"w":null,"o":null},{"n":"Parco Villa Arrivabene","t":"Parco","g":"verde","c":[45.175627,10.681032],"d":592,"i":null,"tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 81","t":"Fermata autobus","g":"muoversi","c":[45.174622,10.675611],"d":631,"i":null,"tel":null,"w":null,"o":null},{"n":"Parco Villa Arrivabene","t":"Parco","g":"verde","c":[45.176103,10.682772],"d":634,"i":null,"tel":null,"w":null,"o":null},{"n":"Mausoleo Arrivabene","t":"Monumento","g":"cultura","c":[45.175225,10.681206],"d":638,"i":null,"tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 81","t":"Fermata autobus","g":"muoversi","c":[45.174527,10.675728],"d":640,"i":null,"tel":null,"w":null,"o":null},{"n":"La Coccia Volante","t":"Ristorante","g":"tavola","c":[45.174893,10.670167],"d":804,"i":null,"tel":null,"w":null,"o":null},{"n":"Panchina dei Terroni","t":"Opera d'arte","g":"cultura","c":[45.172145,10.677003],"d":895,"i":null,"tel":null,"w":null,"o":null},{"n":"Parco \"La Platana\"","t":"Parco","g":"verde","c":[45.171891,10.677306],"d":923,"i":null,"tel":null,"w":null,"o":"24/7"},{"n":"Rivalta - Via Francesca, 140","t":"Fermata autobus","g":"muoversi","c":[45.171817,10.676253],"d":934,"i":null,"tel":null,"w":null,"o":null},{"n":"Rivalta - Via Francesca, 143","t":"Fermata autobus","g":"muoversi","c":[45.171784,10.676343],"d":937,"i":null,"tel":null,"w":null,"o":null},{"n":"Tesoro Living Resort","t":"Ristorante","g":"tavola","c":[45.188857,10.675505],"d":972,"i":null,"tel":null,"w":null,"o":null},{"n":"Tesoro Living Resort","t":"Albergo","g":"tavola","c":[45.188899,10.675522],"d":976,"i":null,"tel":null,"w":null,"o":null},{"n":"Tesoro Living Resort","t":"Ristorante","g":"tavola","c":[45.189126,10.675716],"d":1000,"i":null,"tel":null,"w":null,"o":null},{"n":"Tesoro Living Resort","t":"Ristorante","g":"tavola","c":[45.189348,10.675945],"d":1022,"i":null,"tel":null,"w":null,"o":null},{"n":"Punto trigonometrico I.G.M.","t":"Punto trigonometrico","g":"arredo","c":[45.190381,10.673584],"d":1167,"i":null,"tel":null,"w":null,"o":null},{"n":"Gelateria 2.0","t":"Gelateria","g":"tavola","c":[45.169366,10.677386],"d":1204,"i":null,"tel":null,"w":null,"o":null},{"n":"Eni","t":"Distributore","g":"servizi","c":[45.169358,10.676481],"d":1206,"i":"Strada Francesca Est 166","tel":null,"w":null,"o":"24/7"},{"n":"Lavanderia America - Via Francesca Est","t":"Fermata autobus","g":"muoversi","c":[45.18538,10.66342],"d":1220,"i":null,"tel":null,"w":null,"o":null},{"n":"Eni","t":"Distributore","g":"servizi","c":[45.169103,10.676676],"d":1234,"i":"Strada Francesca Est 166","tel":null,"w":null,"o":"24/7"},{"n":"Bar Platano","t":"Bar","g":"tavola","c":[45.169046,10.676359],"d":1241,"i":null,"tel":null,"w":null,"o":null},{"n":"Mantovabanca 1896","t":"Banca","g":"servizi","c":[45.168986,10.677501],"d":1246,"i":null,"tel":null,"w":null,"o":null},{"n":"Autolavaggio Ranzato","t":"Autolavaggio","g":"servizi","c":[45.168846,10.676794],"d":1262,"i":null,"tel":null,"w":null,"o":null},{"n":"In's Mercato","t":"Supermercato","g":"negozi","c":[45.168716,10.677761],"d":1277,"i":null,"tel":null,"w":null,"o":null},{"n":"Ponte della Ferradina","t":"Rudere storico","g":"cultura","c":[45.188395,10.689179],"d":1312,"i":null,"tel":null,"w":null,"o":null},{"n":"Il Pero","t":"Giardino","g":"verde","c":[45.17569,10.660887],"d":1369,"i":null,"tel":null,"w":null,"o":null},{"n":"Garden Settefrati","t":"Fioraio","g":"negozi","c":[45.192383,10.67377],"d":1381,"i":"Strada Settefrati 2","tel":"+393421688397","w":null,"o":null},{"n":"Il Pero","t":"Palestra","g":"verde","c":[45.17571,10.66009],"d":1426,"i":"Strada Vedusino 5","tel":"+39376681315","w":null,"o":null},{"n":"Il Pero","t":"Campo sportivo","g":"verde","c":[45.175337,10.660004],"d":1447,"i":null,"tel":null,"w":null,"o":null},{"n":"Canova","t":"Luogo di culto","g":"culto","c":[45.195101,10.677429],"d":1658,"i":null,"tel":null,"w":null,"o":null},{"n":"Canova","t":"Luogo di culto","g":"culto","c":[45.195113,10.677413],"d":1659,"i":null,"tel":null,"w":null,"o":null},{"n":"Ristorante Pizzeria \"Corte Catenaccio\"","t":"Ristorante","g":"tavola","c":[45.189188,10.656124],"d":1927,"i":"Strada Francesca Est 109b","tel":"+390376681003","w":"http://www.cortecatenaccio.it/","o":"We 12:00-15:00,19:00-24:00; Th 12:00-15:00,19:00-24:00; Fr 12:00-15:00,19:00-24:00; Sa 19:00-24:00; Su 12:00-15:00,19:00-24:00; Mo 12:00-15:00; Tu 12:00-15:00,19:00-24:00"},{"n":"Corte Catenaccio","t":"Fermata autobus","g":"muoversi","c":[45.18913,10.654863],"d":2009,"i":null,"tel":null,"w":null,"o":null},{"n":"Parco del Mincio","t":"Riserva naturale","g":"verde","c":[45.245924,10.824732],"d":13678,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.18026,10.677207],"d":9,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180076,10.677005],"d":17,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180057,10.676963],"d":20,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180042,10.676999],"d":20,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Torre","g":"arredo","c":[45.18056,10.676881],"d":46,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.179854,10.676745],"d":49,"i":null,"tel":null,"w":null,"o":"24/7"},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.1809,10.676841],"d":82,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.180192,10.678194],"d":83,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Ufficio postale","g":"servizi","c":[45.180945,10.676709],"d":90,"i":"Via Sette Frati 9","tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180973,10.676778],"d":91,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180998,10.676773],"d":94,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.180214,10.678345],"d":95,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Defibrillatore (DAE)","g":"servizi","c":[45.181039,10.67678],"d":98,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.181084,10.676807],"d":102,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Scuola","g":"servizi","c":[45.179308,10.677702],"d":108,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.180222,10.678532],"d":109,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.181198,10.676855],"d":114,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.181238,10.676853],"d":118,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Meridiana","g":"arredo","c":[45.180044,10.678669],"d":121,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.179331,10.678215],"d":128,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Scuola","g":"servizi","c":[45.179249,10.678533],"d":152,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.181552,10.676983],"d":152,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Armadio stradale","g":"arredo","c":[45.179675,10.675145],"d":166,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parrucchiere","g":"negozi","c":[45.18012,10.679372],"d":175,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Scuola","g":"servizi","c":[45.17897,10.678571],"d":176,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.178763,10.678264],"d":182,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.181825,10.676928],"d":182,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178627,10.676329],"d":185,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.178841,10.678571],"d":188,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontanella","g":"arredo","c":[45.178874,10.678819],"d":197,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178669,10.678415],"d":197,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.181616,10.675571],"d":200,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Armadio stradale","g":"arredo","c":[45.181993,10.676761],"d":202,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Meridiana","g":"arredo","c":[45.182019,10.677756],"d":209,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178676,10.678734],"d":210,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.179895,10.679794],"d":211,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178402,10.676148],"d":214,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.181582,10.675175],"d":218,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Monumento","g":"cultura","c":[45.179898,10.679932],"d":221,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178202,10.676938],"d":222,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.180042,10.679971],"d":223,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.179903,10.679991],"d":226,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178423,10.675657],"d":228,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178193,10.676321],"d":231,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178167,10.676195],"d":237,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.18004,10.680284],"d":247,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178024,10.676413],"d":248,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Area gioco","g":"verde","c":[45.177972,10.67786],"d":253,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Punto informazioni","g":"cultura","c":[45.179716,10.680299],"d":253,"i":null,"tel":null,"w":"https://www.rivaltasiracconta.it/museo-diffuso/","o":"24/7"},{"n":null,"t":"Punto informazioni","g":"cultura","c":[45.179704,10.680301],"d":254,"i":null,"tel":null,"w":"https://www.rivaltasiracconta.it/museo-diffuso/","o":"24/7"},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.17976,10.680334],"d":255,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.179926,10.680385],"d":256,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.17834,10.675177],"d":257,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Meridiana","g":"arredo","c":[45.17994,10.680408],"d":258,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177847,10.677084],"d":261,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177875,10.676459],"d":263,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Raccolta rifiuti","g":"servizi","c":[45.177835,10.676806],"d":263,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Raccolta rifiuti","g":"servizi","c":[45.177831,10.676822],"d":264,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178517,10.67475],"d":264,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177824,10.677873],"d":270,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177821,10.677911],"d":271,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177799,10.676456],"d":271,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177852,10.67612],"d":272,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Distributore automatico","g":"servizi","c":[45.177773,10.676538],"d":273,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177776,10.676438],"d":274,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Area gioco","g":"verde","c":[45.177713,10.677751],"d":280,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177806,10.678352],"d":282,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177797,10.678389],"d":284,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontana","g":"arredo","c":[45.177729,10.678127],"d":285,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontanella","g":"arredo","c":[45.179517,10.680699],"d":289,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177588,10.676858],"d":290,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177596,10.677521],"d":290,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177594,10.676706],"d":291,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177621,10.67628],"d":294,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177615,10.678005],"d":295,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontana","g":"arredo","c":[45.177661,10.678462],"d":300,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.17763,10.678341],"d":300,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.182449,10.67502],"d":301,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Distributore automatico","g":"servizi","c":[45.177493,10.676694],"d":302,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.181891,10.674113],"d":303,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177576,10.676079],"d":303,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177468,10.676806],"d":304,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.17746,10.677176],"d":304,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177498,10.676485],"d":304,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.177336,10.677481],"d":319,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178502,10.673821],"d":321,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parrucchiere","g":"negozi","c":[45.178959,10.680855],"d":322,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177266,10.678071],"d":334,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Porticciolo","g":"fiume","c":[45.180805,10.681306],"d":334,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178318,10.673815],"d":334,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio bici","g":"muoversi","c":[45.177267,10.678149],"d":335,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.177278,10.678338],"d":337,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontanella","g":"arredo","c":[45.18011,10.681451],"d":338,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.17872,10.680937],"d":340,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177203,10.676144],"d":341,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.178345,10.673667],"d":341,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Area picnic","g":"verde","c":[45.180312,10.681525],"d":344,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.178117,10.673833],"d":347,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.180312,10.681568],"d":348,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Luogo di culto","g":"culto","c":[45.177048,10.676626],"d":352,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Ristorante","g":"tavola","c":[45.179592,10.681576],"d":354,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.179289,10.681621],"d":365,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Servizi igienici","g":"servizi","c":[45.180021,10.681865],"d":371,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.182957,10.674483],"d":371,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Mercato","g":"servizi","c":[45.176859,10.676812],"d":372,"i":"Piazza Emanuele Basile","tel":null,"w":null,"o":"Fr 08:00-13:00"},{"n":null,"t":"Giardino","g":"verde","c":[45.177844,10.673534],"d":385,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Scivolo di alaggio","g":"fiume","c":[45.180519,10.682079],"d":389,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Campo sportivo","g":"verde","c":[45.176874,10.678924],"d":395,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Pontile","g":"fiume","c":[45.17995,10.682217],"d":399,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Santella votiva","g":"culto","c":[45.178877,10.682006],"d":409,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.179684,10.67194],"d":411,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Punto panoramico","g":"cultura","c":[45.180725,10.682375],"d":415,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Capanno birdwatching","g":"verde","c":[45.180734,10.682381],"d":415,"i":null,"tel":null,"w":null,"o":"24/7"},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.177461,10.673348],"d":425,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.177452,10.673329],"d":427,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Cestino","g":"arredo","c":[45.178806,10.682233],"d":428,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontanella","g":"arredo","c":[45.178777,10.682231],"d":429,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.183878,10.675458],"d":430,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Cestino","g":"arredo","c":[45.178857,10.682453],"d":442,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.178888,10.682498],"d":444,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Scivolo di alaggio","g":"fiume","c":[45.17893,10.682514],"d":444,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.178906,10.682527],"d":446,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Tavolo da picnic","g":"verde","c":[45.178738,10.682437],"d":446,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Punto informazioni","g":"cultura","c":[45.178713,10.682438],"d":447,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Punto informazioni","g":"cultura","c":[45.178714,10.682462],"d":449,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.177456,10.672847],"d":453,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.183063,10.672994],"d":455,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Pensilina","g":"arredo","c":[45.17862,10.682494],"d":455,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.182242,10.671945],"d":466,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Campo sportivo","g":"verde","c":[45.176008,10.678892],"d":485,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.176734,10.681108],"d":495,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.177713,10.671406],"d":527,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.177483,10.682711],"d":531,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.176625,10.672393],"d":544,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.175372,10.675822],"d":546,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Sala giochi","g":"verde","c":[45.177831,10.670881],"d":556,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.176779,10.671948],"d":556,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Bar","g":"tavola","c":[45.177717,10.670933],"d":559,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.175269,10.67561],"d":560,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Armadio stradale","g":"arredo","c":[45.175185,10.675938],"d":565,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.174028,10.673699],"d":737,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.173288,10.675838],"d":774,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.172515,10.677305],"d":854,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Posteggio moto","g":"muoversi","c":[45.172207,10.677004],"d":888,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.172151,10.677001],"d":894,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Tavolo da picnic","g":"verde","c":[45.172145,10.676997],"d":895,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.172133,10.676998],"d":896,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Autoveicoli","g":"negozi","c":[45.171652,10.675497],"d":958,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.170863,10.676919],"d":1038,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.171075,10.673727],"d":1048,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Impianto di depurazione","g":"arredo","c":[45.171514,10.682488],"d":1052,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Impianto di depurazione","g":"arredo","c":[45.171508,10.682635],"d":1057,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.170851,10.67438],"d":1061,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.170524,10.676863],"d":1075,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.189826,10.675485],"d":1079,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.170456,10.676854],"d":1083,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Panchina","g":"arredo","c":[45.170415,10.676849],"d":1087,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.170264,10.673995],"d":1131,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.190525,10.679984],"d":1170,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.169469,10.677225],"d":1192,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fontanella","g":"arredo","c":[45.169449,10.677293],"d":1195,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.190879,10.679184],"d":1199,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.169345,10.674677],"d":1221,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Raccolta rifiuti","g":"servizi","c":[45.178483,10.661307],"d":1255,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.190453,10.670159],"d":1265,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.168751,10.677483],"d":1273,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Impianto di depurazione","g":"arredo","c":[45.178573,10.66098],"d":1279,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.176489,10.660564],"d":1363,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Centro sportivo","g":"verde","c":[45.175512,10.660185],"d":1427,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.174909,10.659974],"d":1468,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Campo sportivo","g":"verde","c":[45.175353,10.659236],"d":1503,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parco","g":"verde","c":[45.195397,10.679832],"d":1704,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Giardino","g":"verde","c":[45.164121,10.678507],"d":1790,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.188899,10.656021],"d":1917,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Parcheggio","g":"muoversi","c":[45.189506,10.656337],"d":1931,"i":null,"tel":null,"w":null,"o":null},{"n":null,"t":"Fermata autobus","g":"muoversi","c":[45.190712,10.649474],"d":2463,"i":null,"tel":null,"w":null,"o":null}]</script>
+      </div>
+</section>
+
+<section class="sb-container sb-riv-sec" id="elenco">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Il registro</span>
+    <h2>I luoghi, uno per uno</h2>
+    <p>Le voci di cui il sito racconta qualcosa, con il collegamento alla mappa e alla scheda che le riguarda.</p>
+  </div>
+
+        <h2 class="sb-riv-subhead">Monumenti e memorie</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Monumento ai Caduti delle Guerre</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Giuseppe Garibaldi</span><span class="sb-riv-luogo-dist">35 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179918&amp;mlon=10.676922#map=18/45.179918/10.676922" target="_blank" rel="noreferrer noopener" title="Monumento ai Caduti delle Guerre — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Monumento a Salvo D'Acquisto</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Madonnina</span><span class="sb-riv-luogo-dist">297 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177522&amp;mlon=10.67728#map=18/45.177522/10.67728" target="_blank" rel="noreferrer noopener" title="Monumento a Salvo D'Acquisto — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Monumento al Marinaio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">390 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180429&amp;mlon=10.682105#map=18/45.180429/10.682105" target="_blank" rel="noreferrer noopener" title="Monumento al Marinaio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Mausoleo Arrivabene</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Giovanni Arrivabene</span><span class="sb-riv-luogo-dist">638 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175225&amp;mlon=10.681206#map=18/45.175225/10.681206" target="_blank" rel="noreferrer noopener" title="Mausoleo Arrivabene — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Monumento di Piazza Chiesa</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Chiesa</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Monumento%20di%20Piazza%20Chiesa%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Monumento di Piazza Chiesa — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ponte della Ferradina</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">~1,3 km dal centro</span><span class="sb-riv-luogo-dist">1312 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.188395&amp;mlon=10.689179#map=18/45.188395/10.689179" target="_blank" rel="noreferrer noopener" title="Ponte della Ferradina — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Lavatoio storico</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">445 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178913&amp;mlon=10.682512#map=18/45.178913/10.682512" target="_blank" rel="noreferrer noopener" title="Lavatoio storico — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>«Panchina dei Terroni»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">~895 m dal centro</span><span class="sb-riv-luogo-dist">895 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.172145&amp;mlon=10.677003#map=18/45.172145/10.677003" target="_blank" rel="noreferrer noopener" title="«Panchina dei Terroni» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#monumenti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Luoghi di culto</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Chiesa dei Santi Vigilio e Donato</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Chiesa</span><span class="sb-riv-luogo-dist">281 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179933&amp;mlon=10.680703#map=18/45.179933/10.680703" target="_blank" rel="noreferrer noopener" title="Chiesa dei Santi Vigilio e Donato — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Chiesetta di Santa Maria di Lourdes</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Renzo Ascari</span><span class="sb-riv-luogo-dist">398 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.182316&amp;mlon=10.673042#map=18/45.182316/10.673042" target="_blank" rel="noreferrer noopener" title="Chiesetta di Santa Maria di Lourdes — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Cappella di Sant'Antonio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Giuseppe Garibaldi</span><span class="sb-riv-luogo-dist">545 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180135&amp;mlon=10.670186#map=18/45.180135/10.670186" target="_blank" rel="noreferrer noopener" title="Cappella di Sant'Antonio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Oratorio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Francesca</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Oratorio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Oratorio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Santella votiva</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Corte Mincio</span><span class="sb-riv-luogo-dist">409 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178877&amp;mlon=10.682006#map=18/45.178877/10.682006" target="_blank" rel="noreferrer noopener" title="Santella votiva — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Chiesa di Canova</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">località Canova — ~1,66 km</span><span class="sb-riv-luogo-dist">1658 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.195101&amp;mlon=10.677429#map=18/45.195101/10.677429" target="_blank" rel="noreferrer noopener" title="Chiesa di Canova — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Cimitero di Rivalta sul Mincio</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Cimitero%20di%20Rivalta%20sul%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Cimitero di Rivalta sul Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#chiese">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Corti e centro storico</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Corte Arrivabene</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Giovanni Arrivabene</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Corte%20Arrivabene%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Corte Arrivabene — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#edificato">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Via Porto e il centro storico</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Via%20Porto%20e%20il%20centro%20storico%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Via Porto e il centro storico — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/paese#edificato">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Parchi e verde</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parco Pubblico Campino</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Madonnina</span><span class="sb-riv-luogo-dist">290 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177677&amp;mlon=10.678112#map=18/45.177677/10.678112" target="_blank" rel="noreferrer noopener" title="Parco Pubblico Campino — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parco Fabrizio Quattrocchi</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Renzo Regattieri</span><span class="sb-riv-luogo-dist">400 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.182327&amp;mlon=10.67303#map=18/45.182327/10.67303" target="_blank" rel="noreferrer noopener" title="Parco Fabrizio Quattrocchi — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parco Villa Arrivabene</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Giovanni Arrivabene / Via Mazzini</span><span class="sb-riv-luogo-dist">592 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175627&amp;mlon=10.681032#map=18/45.175627/10.681032" target="_blank" rel="noreferrer noopener" title="Parco Villa Arrivabene — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parco «La Platana»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Platana</span><span class="sb-riv-luogo-dist">923 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.171891&amp;mlon=10.677306#map=18/45.171891/10.677306" target="_blank" rel="noreferrer noopener" title="Parco «La Platana» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Area verde di Via Garibaldi</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Giuseppe Garibaldi — 49 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Area%20verde%20di%20Via%20Garibaldi%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Area verde di Via Garibaldi — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Campino Oratorio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Vicolo Gilberto Pagliari</span><span class="sb-riv-luogo-dist">286 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179656&amp;mlon=10.680701#map=18/45.179656/10.680701" target="_blank" rel="noreferrer noopener" title="Campino Oratorio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Aree gioco di Via Madonnina</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Madonnina</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Aree%20gioco%20di%20Via%20Madonnina%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Aree gioco di Via Madonnina — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#parchi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Fiume e navigazione</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Corte Mincio — porto e terminal</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">414 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179604&amp;mlon=10.682349#map=18/45.179604/10.682349" target="_blank" rel="noreferrer noopener" title="Corte Mincio — porto e terminal — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#navigazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Marina / porticciolo</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">334 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180805&amp;mlon=10.681306#map=18/45.180805/10.681306" target="_blank" rel="noreferrer noopener" title="Marina / porticciolo — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#navigazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Pontile galleggiante</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">399 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17995&amp;mlon=10.682217#map=18/45.17995/10.682217" target="_blank" rel="noreferrer noopener" title="Pontile galleggiante — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#navigazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Scivoli di alaggio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">389 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180519&amp;mlon=10.682079#map=18/45.180519/10.682079" target="_blank" rel="noreferrer noopener" title="Scivoli di alaggio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#navigazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Il fiume Mincio</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Il%20fiume%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Il fiume Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#acque">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Riserva Naturale Valli del Mincio</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Riserva%20Naturale%20Valli%20del%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Riserva Naturale Valli del Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#ambiente">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Fioritura del fior di loto</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Lago Superiore</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Fioritura%20del%20fior%20di%20loto%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Fioritura del fior di loto — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#ambiente">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Cultura</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Museo Etnografico dei Mestieri del Fiume</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto 31</span><span class="sb-riv-luogo-dist">359 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17999&amp;mlon=10.681711#map=18/45.17999/10.681711" target="_blank" rel="noreferrer noopener" title="Museo Etnografico dei Mestieri del Fiume — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#cultura">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Centro Visita del Parco Regionale del Mincio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto 31</span><span class="sb-riv-luogo-dist">361 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179937&amp;mlon=10.681729#map=18/45.179937/10.681729" target="_blank" rel="noreferrer noopener" title="Centro Visita del Parco Regionale del Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#cultura">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Biblioteca Comunale «Dr. Pietro Morelli»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto 31</span><span class="sb-riv-luogo-dist">351 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179942&amp;mlon=10.681602#map=18/45.179942/10.681602" target="_blank" rel="noreferrer noopener" title="Biblioteca Comunale «Dr. Pietro Morelli» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#cultura">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Museo Diffuso di Rivalta sul Mincio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">percorso in paese</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Museo%20Diffuso%20di%20Rivalta%20sul%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Museo Diffuso di Rivalta sul Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#cultura">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Scuole</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Scuola dell'Infanzia «Rosa Minelli»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Tezzone 34</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Scuola%20dell'Infanzia%20%C2%ABRosa%20Minelli%C2%BB%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Scuola dell'Infanzia «Rosa Minelli» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#scuole">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Scuola Primaria «A. M. Guastalla»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Vittorina Gementi 1</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Scuola%20Primaria%20%C2%ABA.%20M.%20Guastalla%C2%BB%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Scuola Primaria «A. M. Guastalla» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#scuole">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Sport</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Palazzetto dello Sport «Renzo Regattieri»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Basile 1</span><span class="sb-riv-luogo-dist">435 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176289&amp;mlon=10.676795#map=18/45.176289/10.676795" target="_blank" rel="noreferrer noopener" title="Palazzetto dello Sport «Renzo Regattieri» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Campo di calcio «Danilo Gobbi»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Innocente Venturi</span><span class="sb-riv-luogo-dist">510 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175654&amp;mlon=10.678078#map=18/45.175654/10.678078" target="_blank" rel="noreferrer noopener" title="Campo di calcio «Danilo Gobbi» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Campo da calcetto</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Giacomo Brodolini</span><span class="sb-riv-luogo-dist">446 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176186&amp;mlon=10.677285#map=18/45.176186/10.677285" target="_blank" rel="noreferrer noopener" title="Campo da calcetto — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Campo da tamburello</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">zona Via Madonnina</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Campo%20da%20tamburello%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Campo da tamburello — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Arcieri Gonzaga — campo di tiro con l'arco</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Pilota</span><span class="sb-riv-luogo-dist">563 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177032&amp;mlon=10.682748#map=18/45.177032/10.682748" target="_blank" rel="noreferrer noopener" title="Arcieri Gonzaga — campo di tiro con l'arco — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Rivalta Green Village</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Vedusino 5</span><span class="sb-riv-luogo-dist">1369 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17569&amp;mlon=10.660887#map=18/45.17569/10.660887" target="_blank" rel="noreferrer noopener" title="Rivalta Green Village — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#sport">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Piazze e vie</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Piazza Chiesa</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Piazza%20Chiesa%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Piazza Chiesa — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Piazza Silvio Arrivabene</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Piazza%20Silvio%20Arrivabene%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Piazza Silvio Arrivabene — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Piazza Emanuele Basile</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">399 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176603&amp;mlon=10.677064#map=18/45.176603/10.677064" target="_blank" rel="noreferrer noopener" title="Piazza Emanuele Basile — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Piazza Milite Ignoto</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">già Piazza della Lira</span><span class="sb-riv-luogo-dist">113 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.181211&amp;mlon=10.677192#map=18/45.181211/10.677192" target="_blank" rel="noreferrer noopener" title="Piazza Milite Ignoto — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Piazza Platana</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Piazza%20Platana%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Piazza Platana — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Strada Settefrati (SP23)</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">SP23</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Strada%20Settefrati%20(SP23)%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Strada Settefrati (SP23) — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#strade">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Ciclabili e sentieri</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ciclabile Rivalta – Grazie</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Ciclabile%20Rivalta%20%E2%80%93%20Grazie%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Ciclabile Rivalta – Grazie — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#ciclabili">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ciclopedonale Rivalta – Rodigo</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Ciclopedonale%20Rivalta%20%E2%80%93%20Rodigo%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Ciclopedonale Rivalta – Rodigo — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#ciclabili">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Capezzagne e strade bianche</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">~17 km</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Capezzagne%20e%20strade%20bianche%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Capezzagne e strade bianche — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#ciclabili">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Arredo e dettagli</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Fontana della Madonna</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Chiesa</span><span class="sb-riv-luogo-dist">222 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179918&amp;mlon=10.679948#map=18/45.179918/10.679948" target="_blank" rel="noreferrer noopener" title="Fontana della Madonna — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#fontanelle">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Le meridiane a muro</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Turati, Via Francesca, centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Le%20meridiane%20a%20muro%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Le meridiane a muro — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#fontanelle">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Capanno per birdwatching</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto</span><span class="sb-riv-luogo-dist">415 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180734&amp;mlon=10.682381#map=18/45.180734/10.682381" target="_blank" rel="noreferrer noopener" title="Capanno per birdwatching — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/natura#fontanelle">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Alimentari</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Bobby Minimarket</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">43 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180113&amp;mlon=10.677669#map=18/45.180113/10.677669" target="_blank" rel="noreferrer noopener" title="Bobby Minimarket — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ortofrutticola</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Giuseppe Garibaldi 21</span><span class="sb-riv-luogo-dist">277 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179431&amp;mlon=10.673778#map=18/45.179431/10.673778" target="_blank" rel="noreferrer noopener" title="Ortofrutticola — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Alimentari e merceria Ferrari</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Tezzone 43</span><span class="sb-riv-luogo-dist">189 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178533&amp;mlon=10.677679#map=18/45.178533/10.677679" target="_blank" rel="noreferrer noopener" title="Alimentari e merceria Ferrari — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Macelleria Azzi</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 41</span><span class="sb-riv-luogo-dist">144 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180156&amp;mlon=10.678978#map=18/45.180156/10.678978" target="_blank" rel="noreferrer noopener" title="Macelleria Azzi — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Panificio Rota</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 38</span><span class="sb-riv-luogo-dist">88 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180074&amp;mlon=10.67825#map=18/45.180074/10.67825" target="_blank" rel="noreferrer noopener" title="Panificio Rota — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Panificio Marchini</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 35</span><span class="sb-riv-luogo-dist">248 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179282&amp;mlon=10.680029#map=18/45.179282/10.680029" target="_blank" rel="noreferrer noopener" title="Panificio Marchini — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Centro Alimenti Senza Glutine</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">536 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176668&amp;mlon=10.672464#map=18/45.176668/10.672464" target="_blank" rel="noreferrer noopener" title="Centro Alimenti Senza Glutine — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>In's Mercato</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">1277 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.168716&amp;mlon=10.677761#map=18/45.168716/10.677761" target="_blank" rel="noreferrer noopener" title="In's Mercato — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Negozi</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Tabaccheria Edicola Morselli</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 37</span><span class="sb-riv-luogo-dist">131 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180183&amp;mlon=10.678806#map=18/45.180183/10.678806" target="_blank" rel="noreferrer noopener" title="Tabaccheria Edicola Morselli — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Profumeria «Fior di Loto»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Francesca 60</span><span class="sb-riv-luogo-dist">295 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177557&amp;mlon=10.676649#map=18/45.177557/10.676649" target="_blank" rel="noreferrer noopener" title="Profumeria «Fior di Loto» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#negozi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Gioielleria Chizzolini</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 7</span><span class="sb-riv-luogo-dist">52 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180182&amp;mlon=10.677796#map=18/45.180182/10.677796" target="_blank" rel="noreferrer noopener" title="Gioielleria Chizzolini — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ottica Morganti</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 84</span><span class="sb-riv-luogo-dist">278 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17904&amp;mlon=10.68028#map=18/45.17904/10.68028" target="_blank" rel="noreferrer noopener" title="Ottica Morganti — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Il Bouquet</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 56</span><span class="sb-riv-luogo-dist">199 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179544&amp;mlon=10.679504#map=18/45.179544/10.679504" target="_blank" rel="noreferrer noopener" title="Il Bouquet — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Garden Settefrati</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Strada Settefrati 2</span><span class="sb-riv-luogo-dist">1381 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.192383&amp;mlon=10.67377#map=18/45.192383/10.67377" target="_blank" rel="noreferrer noopener" title="Garden Settefrati — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Bicimania</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">427 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180492&amp;mlon=10.67171#map=18/45.180492/10.67171" target="_blank" rel="noreferrer noopener" title="Bicimania — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Giannace</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 36</span><span class="sb-riv-luogo-dist">83 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180072&amp;mlon=10.678187#map=18/45.180072/10.678187" target="_blank" rel="noreferrer noopener" title="Giannace — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Autolavaggio Ranzato</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">1262 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.168846&amp;mlon=10.676794#map=18/45.168846/10.676794" target="_blank" rel="noreferrer noopener" title="Autolavaggio Ranzato — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Cura della persona</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Andrea Equipe</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Zibramonda</span><span class="sb-riv-luogo-dist">137 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180294&amp;mlon=10.678878#map=18/45.180294/10.678878" target="_blank" rel="noreferrer noopener" title="Andrea Equipe — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#persona">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Non Solo Lady</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Chiesa 1b</span><span class="sb-riv-luogo-dist">174 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180121&amp;mlon=10.679358#map=18/45.180121/10.679358" target="_blank" rel="noreferrer noopener" title="Non Solo Lady — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#persona">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Rivaroli Cristian</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci</span><span class="sb-riv-luogo-dist">236 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179259&amp;mlon=10.679845#map=18/45.179259/10.679845" target="_blank" rel="noreferrer noopener" title="Rivaroli Cristian — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#persona">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Centro Estetico Athenas</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 80</span><span class="sb-riv-luogo-dist">269 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179072&amp;mlon=10.680186#map=18/45.179072/10.680186" target="_blank" rel="noreferrer noopener" title="Centro Estetico Athenas — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#persona">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Uffici e studi</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Allianz Mantova 90</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 88</span><span class="sb-riv-luogo-dist">292 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178984&amp;mlon=10.680439#map=18/45.178984/10.680439" target="_blank" rel="noreferrer noopener" title="Allianz Mantova 90 — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Marco Munari, consulente informatico</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 50</span><span class="sb-riv-luogo-dist">126 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180108&amp;mlon=10.678744#map=18/45.180108/10.678744" target="_blank" rel="noreferrer noopener" title="Marco Munari, consulente informatico — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>PM Microwave</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">497 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178428&amp;mlon=10.671314#map=18/45.178428/10.671314" target="_blank" rel="noreferrer noopener" title="PM Microwave — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Studio Dentistico dr. Sproccati</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 18</span><span class="sb-riv-luogo-dist">71 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180139&amp;mlon=10.678042#map=18/45.180139/10.678042" target="_blank" rel="noreferrer noopener" title="Studio Dentistico dr. Sproccati — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Locali e ristoranti</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Coyote's Bar</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Sette Frati 6</span><span class="sb-riv-luogo-dist">22 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180369&amp;mlon=10.677272#map=18/45.180369/10.677272" target="_blank" rel="noreferrer noopener" title="Coyote's Bar — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Bottega Atipica</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Antonio Gramsci 1</span><span class="sb-riv-luogo-dist">179 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179958&amp;mlon=10.679393#map=18/45.179958/10.679393" target="_blank" rel="noreferrer noopener" title="Bottega Atipica — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ostello del Mincio</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">331 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179724&amp;mlon=10.681308#map=18/45.179724/10.681308" target="_blank" rel="noreferrer noopener" title="Ostello del Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Bar Platano</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">1241 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.169046&amp;mlon=10.676359#map=18/45.169046/10.676359" target="_blank" rel="noreferrer noopener" title="Bar Platano — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Pizzeria - Osteria «La Stella»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Filippo Turati 6</span><span class="sb-riv-luogo-dist">28 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180064&amp;mlon=10.677442#map=18/45.180064/10.677442" target="_blank" rel="noreferrer noopener" title="Pizzeria - Osteria «La Stella» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Opificio Alimentare</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Francesca 42</span><span class="sb-riv-luogo-dist">208 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17833&amp;mlon=10.676854#map=18/45.17833/10.676854" target="_blank" rel="noreferrer noopener" title="Opificio Alimentare — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Pizzangolo</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Giovanni Arrivabene 1</span><span class="sb-riv-luogo-dist">341 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178681&amp;mlon=10.680926#map=18/45.178681/10.680926" target="_blank" rel="noreferrer noopener" title="Pizzangolo — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>La Coccia Volante</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">804 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.174893&amp;mlon=10.670167#map=18/45.174893/10.670167" target="_blank" rel="noreferrer noopener" title="La Coccia Volante — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Le Antiche Colonie</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">550 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175344&amp;mlon=10.675767#map=18/45.175344/10.675767" target="_blank" rel="noreferrer noopener" title="Le Antiche Colonie — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Gelateria 2.0</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">1204 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.169366&amp;mlon=10.677386#map=18/45.169366/10.677386" target="_blank" rel="noreferrer noopener" title="Gelateria 2.0 — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Tesoro Living Resort</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">972 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.188857&amp;mlon=10.675505#map=18/45.188857/10.675505" target="_blank" rel="noreferrer noopener" title="Tesoro Living Resort — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#ricettivita">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ristorante Pizzeria «Corte Catenaccio»</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Strada Francesca Est 109b</span><span class="sb-riv-luogo-dist">1927 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.189188&amp;mlon=10.656124#map=18/45.189188/10.656124" target="_blank" rel="noreferrer noopener" title="Ristorante Pizzeria «Corte Catenaccio» — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#locali">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Servizi</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Municipio di Rodigo</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Ippolito Nievo 3, Rodigo</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Municipio%20di%20Rodigo%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Municipio di Rodigo — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#amministrazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Servizi Demografici di Rivalta</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">105 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.181037&amp;mlon=10.67676#map=18/45.181037/10.67676" target="_blank" rel="noreferrer noopener" title="Servizi Demografici di Rivalta — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#amministrazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Ufficio Postale</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Sette Frati 9</span><span class="sb-riv-luogo-dist">90 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180945&amp;mlon=10.676709#map=18/45.180945/10.676709" target="_blank" rel="noreferrer noopener" title="Ufficio Postale — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#amministrazione">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Farmacia Tona</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Panicella 2</span><span class="sb-riv-luogo-dist">287 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177696&amp;mlon=10.676227#map=18/45.177696/10.676227" target="_blank" rel="noreferrer noopener" title="Farmacia Tona — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#salute">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Monte dei Paschi di Siena</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Sette Frati 2</span><span class="sb-riv-luogo-dist">13 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180256&amp;mlon=10.677281#map=18/45.180256/10.677281" target="_blank" rel="noreferrer noopener" title="Monte dei Paschi di Siena — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#banche">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Mantovabanca 1896</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">1246 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.168986&amp;mlon=10.677501#map=18/45.168986/10.677501" target="_blank" rel="noreferrer noopener" title="Mantovabanca 1896 — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#banche">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Centro di raccolta di Piazza Basile</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Emanuele Basile</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Centro%20di%20raccolta%20di%20Piazza%20Basile%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Centro di raccolta di Piazza Basile — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#rifiuti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Centro di raccolta di Fossato</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Strada Fossato, Rodigo</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Centro%20di%20raccolta%20di%20Fossato%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Centro di raccolta di Fossato — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#rifiuti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Distributore Eni</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Strada Francesca Est 166</span><span class="sb-riv-luogo-dist">1206 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.169358&amp;mlon=10.676481#map=18/45.169358/10.676481" target="_blank" rel="noreferrer noopener" title="Distributore Eni — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#uffici">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Colonnine di ricarica Enel X</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">388 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176735&amp;mlon=10.676481#map=18/45.176735/10.676481" target="_blank" rel="noreferrer noopener" title="Colonnine di ricarica Enel X — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#parcheggi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Mercato e mobilità</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Mercato del venerdì</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Piazza Emanuele Basile</span><span class="sb-riv-luogo-dist">372 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176859&amp;mlon=10.676812#map=18/45.176859/10.676812" target="_blank" rel="noreferrer noopener" title="Mercato del venerdì — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#mercato">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Fermata APAM di Via Francesca</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Francesca</span><span class="sb-riv-luogo-dist">198 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178413&amp;mlon=10.676984#map=18/45.178413/10.676984" target="_blank" rel="noreferrer noopener" title="Fermata APAM di Via Francesca — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#trasporti">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parcheggio di Piazza Milite Ignoto</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">113 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.181211&amp;mlon=10.677192#map=18/45.181211/10.677192" target="_blank" rel="noreferrer noopener" title="Parcheggio di Piazza Milite Ignoto — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#parcheggi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Parcheggio di Piazza Emanuele Basile</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">399 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176603&amp;mlon=10.677064#map=18/45.176603/10.677064" target="_blank" rel="noreferrer noopener" title="Parcheggio di Piazza Emanuele Basile — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/muoversi#parcheggi">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Torre di telecomunicazioni</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dist">46 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18056&amp;mlon=10.676881#map=18/45.18056/10.676881" target="_blank" rel="noreferrer noopener" title="Torre di telecomunicazioni — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/servizi#connettivita">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+      <h2 class="sb-riv-subhead">Ricettività e associazioni</h2>
+      <div class="sb-riv-luoghi">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>B&amp;B del Rivalta Green Village</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Vedusino 5</span><span class="sb-riv-luogo-dist">1426 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17571&amp;mlon=10.66009#map=18/45.17571/10.66009" target="_blank" rel="noreferrer noopener" title="B&amp;B del Rivalta Green Village — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/attivita#ricettivita">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Pro Loco Rivalta APS / Canoa Point</h3>
+              <p class="sb-riv-luogo-meta"><span class="sb-riv-luogo-dove">Via Porto 31</span><span class="sb-riv-luogo-dist">325 m dal centro</span></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180382&amp;mlon=10.681271#map=18/45.180382/10.681271" target="_blank" rel="noreferrer noopener" title="Pro Loco Rivalta APS / Canoa Point — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#associazioni">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-luogo">
+            
+            <div class="sb-riv-luogo-testo">
+              <h3>Waterways Mincio</h3>
+              <p class="sb-riv-luogo-meta"></p>
+              <p class="sb-riv-luogo-links">
+                <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Waterways%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Waterways Mincio — apri su OpenStreetMap">Apri nella mappa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
+                <a class="sb-link" href="/comunita#associazioni">Scheda</a>
+              </p>
+            </div>
+          </div></div>
+      </div>
+</section>
+
+<section class="sb-container sb-riv-sec" id="nota">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Avvertenze</span>
+    <h2>Come leggerla</h2>
+  </div>
+
+  <div class="sb-riv-note" style="margin-top:1.2rem">
+    <span class="sb-riv-note-t">Cosa c'è e cosa non c'è</span>
+    <p class="sb-riv-p">I segnaposto vengono dall'estratto <strong>OpenStreetMap</strong> dell'area, lo stesso che si può <a href="/dati">scaricare per intero</a>. È una mappa collaborativa: quello che c'è è stato mappato da qualcuno, e quello che manca manca perché nessuno l'ha ancora aggiunto — non perché non esista.</p>
+    <p class="sb-riv-p">Dalla mappa pubblica sono tenute fuori di proposito le <strong>piscine e i recinti per animali</strong> censiti: sono quasi tutti dentro giardini di abitazioni private, e una mappa puntuale di casa d'altri non è un servizio. Restano nel dataset scaricabile, che è OpenStreetMap così com'è.</p>
+    <p class="sb-riv-p">Le distanze sono <strong>in linea d'aria dal centro paese</strong> — l'incrocio Via Turati / Via Francesca / Via Garibaldi / Via Sette Frati, a <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180192&amp;mlon=10.677137#map=18/45.180192/10.677137" target="_blank" rel="noreferrer noopener" title="45.180192, 10.677137 — apri su OpenStreetMap">45.180192 N, 10.677137 E<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>. Non sono distanze stradali.</p>
+  </div>
+
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Manca un posto, o è sbagliato</span>
+    <p class="sb-riv-p">Si corregge alla fonte, e la correzione vale per tutti: OpenStreetMap si modifica da <a href="https://www.openstreetmap.org/edit#map=16/45.1802/10.6771" target="_blank" rel="noreferrer noopener">openstreetmap.org</a> con un account gratuito. Al prossimo aggiornamento dell'estratto la modifica arriva anche qui — e nel frattempo è già su tutte le altre mappe che usano OSM.</p>
+  </div>
+
+  <div class="sb-riv-pager">
+    <a class="sb-link" href="/">← Torna alla home</a>
+    <a class="sb-link" href="/dati">Dati e fonti <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+  </main>
+</div>
+
+<footer class="sb-home sb-foot">
+  <div class="sb-container sb-foot-wrap">
+    <div class="sb-foot-grid">
+      <div class="sb-foot-card">
+        <div class="sb-panel"><div class="sb-panel-inner sb-foot-pad">
+          <div>
+            <a class="sb-foot-name" href="/">Rivalta sul Mincio</a>
+            <p class="sb-foot-role">Frazione del Comune di Rodigo — Provincia di Mantova · Dossier informativo del paese</p>
+            <div class="sb-foot-social">
+              <a href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" aria-label="Comune di Rodigo" title="Comune di Rodigo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 21V10l8-6 8 6v11"/><path d="M9 21v-5h6v5"/></svg></a>
+              <a href="https://www.prolocorivalta.mn.it/" target="_blank" rel="noreferrer noopener" aria-label="Pro Loco Rivalta sul Mincio" title="Pro Loco Rivalta"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></a>
+              <a href="https://www.parcodelmincio.it" target="_blank" rel="noreferrer noopener" aria-label="Parco Regionale del Mincio" title="Parco del Mincio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></a>
+              <a href="https://museorivaltasulmincio.it/" target="_blank" rel="noreferrer noopener" aria-label="Museo Etnografico dei Mestieri del Fiume" title="Museo Etnografico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 10h16M12 3 3 8h18ZM6 10v11M10 10v11M14 10v11M18 10v11"/></svg></a>
+              <a href="https://www.openstreetmap.org/#map=15/45.1802/10.6771" target="_blank" rel="noreferrer noopener" aria-label="Rivalta su OpenStreetMap" title="OpenStreetMap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2Z"/><path d="M9 4v14M15 6v14"/></svg></a>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="sb-foot-card">
+        <div class="sb-panel"><div class="sb-panel-inner sb-foot-pad">
+          <div class="sb-foot-links-grid">
+            <div class="sb-foot-col">
+              <h3>Il paese</h3>
+              <ul>
+                <li><a href="/paese#anagrafica">Anagrafica</a></li>
+                <li><a href="/paese#demografia">Demografia</a></li>
+                <li><a href="/paese#edificato">Edificato</a></li>
+                <li><a href="/paese#monumenti">Monumenti</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Servizi</h3>
+              <ul>
+                <li><a href="/servizi#amministrazione">Amministrazione</a></li>
+                <li><a href="/servizi#salute">Farmacia e salute</a></li>
+                <li><a href="/servizi#rifiuti">Rifiuti 2026</a></li>
+                <li><a href="/servizi#connettivita">Fibra e 5G</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Vivere</h3>
+              <ul>
+                <li><a href="/attivita">Negozi e locali</a></li>
+                <li><a href="/comunita#scuole">Scuole</a></li>
+                <li><a href="/comunita#sport">Sport</a></li>
+                <li><a href="/eventi">Eventi</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Territorio</h3>
+              <ul>
+                <li><a href="/muoversi#strade">Strade e vie</a></li>
+                <li><a href="/muoversi#trasporti">Autobus</a></li>
+                <li><a href="/natura#acque">Corsi d'acqua</a></li>
+                <li><a href="/dati">Dati e fonti</a></li>
+              </ul>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="sb-foot-hairline" aria-hidden="true"></div>
+
+    <div class="sb-foot-bottom">
+      <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
+      <div class="sb-foot-bottom-links">
+        <span>Sito creato da <a class="sb-foot-by" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener">albertopecchini.it</a></span>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/dati">Fonti</a>
+      </div>
+      <span>Updated 11 agosto 2026</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Barra di controllo ───────────────────────────────────────────────────
+     Tema · sensore orario · movimento. Sta fuori dal bordo sinistro e lascia
+     sporgere la linguetta; esce quando ci si avvicina.
+
+     Porta con sé .sb-home perché è da lì che arrivano i token del tema, come
+     fa il footer. Sta FUORI da .sb-home di pagina, alla radice del body:
+     dentro, il fondale fisso della pagina la ritaglierebbe. -->
+<div class="sb-home sb-ctl">
+  <div class="sb-ctl-slide" id="rsm-controlbar">
+    <div class="sb-panel sb-ctl-panel"><div class="sb-panel-inner">
+      <button class="sb-ctl-btn" type="button" data-theme-toggle aria-label="Passa al tema scuro" title="Tema scuro">
+        <span class="sb-ctl-ico" aria-hidden="true">
+          <svg data-icon-moon width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <svg data-icon-sun style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </span>
+      </button>
+      <button class="sb-ctl-btn sb-ctl-auto" type="button" data-auto-toggle aria-pressed="true" title="Sensore orario attivo (08–20 chiaro, resto scuro)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span>Auto</span>
+      </button>
+      <span class="sb-ctl-div" aria-hidden="true"></span>
+      <!-- Il tasto del movimento nasce nascosto e lo mostra glass.js: è l'unico
+           file del sito che può legittimamente non arrivare, e un tasto che non
+           fa niente è peggio di un tasto che non c'è. -->
+      <button class="sb-ctl-btn sb-motion-toggle" type="button" data-motion-toggle aria-pressed="true" aria-label="Ferma il movimento">
+        <svg data-icon-motion width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 12.6 8l4.5 1.6L12.6 11 11 15.5 9.4 11 5 9.6 9.4 8Z"/><path d="M18 15.2l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7Z"/></svg>
+        <svg data-icon-still style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 12.6 8l4.5 1.6L12.6 11 11 15.5 9.4 11 5 9.6 9.4 8Z"/><path d="M4 4l16 16"/></svg>
+      </button>
+    </div></div>
+    <button class="sb-ctl-grip" type="button" aria-controls="rsm-controlbar" aria-expanded="false" aria-label="Mostra le preferenze" title="Mostra le preferenze">
+      <svg data-icon-left style="display:none" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+<!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
+     un pannello con ombra e fondo proprio) verrebbe ritagliata. -->
+<div class="sb-theme-wipe" aria-hidden="true"></div>
+
+<script src="assets/rivalta.js"></script>
+<script src="assets/controlbar.js"></script>
+<!-- Il movimento del vetro è un file a parte e viene dopo: qui dentro non c'è
+     niente che serva a leggere o a navigare il sito, e la pillola della nav ha
+     bisogno che rivalta.js abbia già segnato la voce della pagina aperta. -->
+<script src="assets/glass.js"></script>
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/mappa.js"></script>
+</body>
+</html>

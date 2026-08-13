@@ -1,0 +1,60 @@
+<!--title: Mappa — dove sono le cose a Rivalta sul Mincio-->
+<!--desc: Mappa interattiva di Rivalta sul Mincio (Rodigo, MN): monumenti, chiese, parchi, negozi, servizi, porto e fermate. Elenco dei luoghi con coordinate e collegamento a OpenStreetMap.-->
+<!--prio: 0.9-->
+
+<section class="sb-container sb-riv-pagehead">
+  <span class="sb-riv-eyebrow">Sul territorio</span>
+  <h1>Mappa</h1>
+  <p class="sb-riv-lede">Tutto quello che è censito nel riquadro attorno al paese, su una mappa sola. I filtri accendono e spengono le categorie; premendo un segnaposto compaiono indirizzo, orari e recapiti. Sotto, i luoghi di cui questo sito parla, uno per uno.</p>
+  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+    <a href="#mappa-sec">La mappa</a>
+    <a href="#elenco">Elenco dei luoghi</a>
+    <a href="#nota">Come leggerla</a>
+  </nav>
+</section>
+
+<!-- ── LA MAPPA ──────────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="mappa-sec">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Geodati — OpenStreetMap</span>
+    <h2>Dove sono le cose</h2>
+  </div>
+
+  {{MAPPA}}
+</section>
+
+<!-- ── ELENCO DEI LUOGHI ─────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="elenco">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Il registro</span>
+    <h2>I luoghi, uno per uno</h2>
+    <p>Le voci di cui il sito racconta qualcosa, con il collegamento alla mappa e alla scheda che le riguarda.</p>
+  </div>
+
+  {{LUOGHI}}
+</section>
+
+<!-- ── NOTA ──────────────────────────────────────────────────────────────── -->
+<section class="sb-container sb-riv-sec" id="nota">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Avvertenze</span>
+    <h2>Come leggerla</h2>
+  </div>
+
+  <div class="sb-riv-note" style="margin-top:1.2rem">
+    <span class="sb-riv-note-t">Cosa c'è e cosa non c'è</span>
+    <p class="sb-riv-p">I segnaposto vengono dall'estratto <strong>OpenStreetMap</strong> dell'area, lo stesso che si può <a href="/dati">scaricare per intero</a>. È una mappa collaborativa: quello che c'è è stato mappato da qualcuno, e quello che manca manca perché nessuno l'ha ancora aggiunto — non perché non esista.</p>
+    <p class="sb-riv-p">Dalla mappa pubblica sono tenute fuori di proposito le <strong>piscine e i recinti per animali</strong> censiti: sono quasi tutti dentro giardini di abitazioni private, e una mappa puntuale di casa d'altri non è un servizio. Restano nel dataset scaricabile, che è OpenStreetMap così com'è.</p>
+    <p class="sb-riv-p">Le distanze sono <strong>in linea d'aria dal centro paese</strong> — l'incrocio Via Turati / Via Francesca / Via Garibaldi / Via Sette Frati, a {{geo:45.180192,10.677137|45.180192 N, 10.677137 E}}. Non sono distanze stradali.</p>
+  </div>
+
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Manca un posto, o è sbagliato</span>
+    <p class="sb-riv-p">Si corregge alla fonte, e la correzione vale per tutti: OpenStreetMap si modifica da <a href="https://www.openstreetmap.org/edit#map=16/45.1802/10.6771" target="_blank" rel="noreferrer noopener">openstreetmap.org</a> con un account gratuito. Al prossimo aggiornamento dell'estratto la modifica arriva anche qui — e nel frattempo è già su tutte le altre mappe che usano OSM.</p>
+  </div>
+
+  <div class="sb-riv-pager">
+    <a class="sb-link" href="/">← Torna alla home</a>
+    <a class="sb-link" href="/dati">Dati e fonti <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>

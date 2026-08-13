@@ -14,15 +14,17 @@
 <meta property="og:title" content="Comunità — scuole, cultura, associazioni e sport">
 <meta property="og:description" content="Scuole dell'infanzia e primaria, Museo Etnografico dei Mestieri del Fiume, biblioteca, Pro Loco e associazioni, palazzetto e impianti sportivi di Rivalta sul Mincio.">
 <meta property="og:url" content="https://www.rivaltasulmincio.it/comunita">
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Comunità — scuole, cultura, associazioni e sport">
 <meta name="twitter:description" content="Scuole dell'infanzia e primaria, Museo Etnografico dei Mestieri del Fiume, biblioteca, Pro Loco e associazioni, palazzetto e impianti sportivi di Rivalta sul Mincio.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
@@ -64,6 +66,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a class="sb-nav-link" href="/muoversi">Muoversi</a>
           <a class="sb-nav-link" href="/natura">Natura</a>
           <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
           <a class="sb-nav-link" href="/dati">Dati</a>
         </div>
         <div class="sb-nav-right">
@@ -87,6 +90,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
           <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
         </nav>
       </div>
@@ -115,12 +119,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Plesso</th><th scope="col">Indirizzo</th><th scope="col">Telefono</th></tr></thead>
         <tbody>
-          <tr><td><strong>Scuola dell'Infanzia «Rosa Minelli»</strong></td><td>Via Tezzone 34</td><td class="nowrap"><a href="tel:+390376653133">0376 653133</a></td></tr>
-          <tr><td><strong>Scuola Primaria «A. M. Guastalla»</strong></td><td>Via Vittorina Gementi 1</td><td class="nowrap"><a href="tel:+390376752053">0376 752053</a></td></tr>
+          <tr><td><strong>Scuola dell'Infanzia «Rosa Minelli»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Scuola%20dell'Infanzia%20%C2%ABRosa%20Minelli%C2%BB%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Scuola dell'Infanzia «Rosa Minelli» — apri su OpenStreetMap">Via Tezzone 34<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="nowrap"><a href="tel:+390376653133">0376 653133</a></td></tr>
+          <tr><td><strong>Scuola Primaria «A. M. Guastalla»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Scuola%20Primaria%20%C2%ABA.%20M.%20Guastalla%C2%BB%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Scuola Primaria «A. M. Guastalla» — apri su OpenStreetMap">Via Vittorina Gementi 1<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="nowrap"><a href="tel:+390376752053">0376 752053</a></td></tr>
         </tbody>
       </table>
     </div></div></div>
@@ -137,18 +141,24 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p>Museo, centro visita del Parco e biblioteca stanno tutti e tre in <strong>Via Porto 31</strong>, insieme alla Pro Loco: è il polo culturale del paese.</p>
   </div>
 
+  <div class="sb-riv-foto-grid">
+    
+    
+    
+  </div>
+
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Luogo</th><th scope="col">Indirizzo</th><th scope="col">Dettagli</th></tr></thead>
         <tbody>
           <tr>
             <td><strong>Museo Etnografico dei Mestieri del Fiume</strong></td>
-            <td>Via Porto 31</td>
+            <td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17999&amp;mlon=10.681711#map=18/45.17999/10.681711" target="_blank" rel="noreferrer noopener" title="Museo Etnografico dei Mestieri del Fiume — apri su OpenStreetMap">Via Porto 31<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td>
             <td><a href="https://museorivaltasulmincio.it/" target="_blank" rel="noreferrer noopener">museorivaltasulmincio.it</a> — museorivalta@gmail.com — <a href="tel:+393405813656">340 581 3656</a> — ingresso a pagamento, servizi igienici — Wikidata Q27992884</td>
           </tr>
-          <tr><td><strong>Centro Visita del Parco Regionale del Mincio</strong></td><td>Via Porto 31</td><td>ufficio informazioni turistiche</td></tr>
-          <tr><td><strong>Biblioteca Comunale «Dr. Pietro Morelli»</strong></td><td>Via Porto 31</td><td><a href="tel:+390376653924">0376 653924</a></td></tr>
+          <tr><td><strong>Centro Visita del Parco Regionale del Mincio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179937&amp;mlon=10.681729#map=18/45.179937/10.681729" target="_blank" rel="noreferrer noopener" title="Centro Visita del Parco Regionale del Mincio — apri su OpenStreetMap">Via Porto 31<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>ufficio informazioni turistiche</td></tr>
+          <tr><td><strong>Biblioteca Comunale «Dr. Pietro Morelli»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179942&amp;mlon=10.681602#map=18/45.179942/10.681602" target="_blank" rel="noreferrer noopener" title="Biblioteca Comunale «Dr. Pietro Morelli» — apri su OpenStreetMap">Via Porto 31<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td><a href="tel:+390376653924">0376 653924</a></td></tr>
           <tr><td><strong>Museo Diffuso di Rivalta sul Mincio</strong></td><td>percorso in paese</td><td>pannelli informativi accessibili <strong>h24</strong> — <a href="https://www.rivaltasiracconta.it/museo-diffuso/" target="_blank" rel="noreferrer noopener">rivaltasiracconta.it/museo-diffuso</a></td></tr>
         </tbody>
       </table>
@@ -196,22 +206,22 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Impianto</th><th scope="col">Indirizzo</th><th scope="col">Discipline e note</th></tr></thead>
         <tbody>
-          <tr><td><strong>Palazzetto dello Sport «Renzo Regattieri»</strong></td><td>Piazza Basile 1 — <a href="tel:+390376653684">0376 653684</a></td><td>pallavolo, basket, tennis, tiro con l'arco — pubblico, accessibile</td></tr>
-          <tr><td><strong>Campo di calcio «Danilo Gobbi»</strong></td><td>zona Via Innocente Venturi</td><td>erba, illuminato</td></tr>
-          <tr><td><strong>Campo da calcetto</strong> (ex tennis)</td><td>zona Via Giacomo Brodolini</td><td>cemento, non illuminato</td></tr>
+          <tr><td><strong>Palazzetto dello Sport «Renzo Regattieri»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176289&amp;mlon=10.676795#map=18/45.176289/10.676795" target="_blank" rel="noreferrer noopener" title="Palazzetto dello Sport «Renzo Regattieri» — apri su OpenStreetMap">Piazza Basile 1<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+390376653684">0376 653684</a></td><td>pallavolo, basket, tennis, tiro con l'arco — pubblico, accessibile</td></tr>
+          <tr><td><strong>Campo di calcio «Danilo Gobbi»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175654&amp;mlon=10.678078#map=18/45.175654/10.678078" target="_blank" rel="noreferrer noopener" title="Campo di calcio «Danilo Gobbi» — apri su OpenStreetMap">zona Via Innocente Venturi<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>erba, illuminato</td></tr>
+          <tr><td><strong>Campo da calcetto</strong> (ex tennis)</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176186&amp;mlon=10.677285#map=18/45.176186/10.677285" target="_blank" rel="noreferrer noopener" title="Campo da calcetto — apri su OpenStreetMap">zona Via Giacomo Brodolini<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>cemento, non illuminato</td></tr>
           <tr><td>Campo da calcio in erba</td><td>zona Via Sandro Pertini</td><td class="sb-riv-na">—</td></tr>
-          <tr><td>Campo da tamburello</td><td>zona Via Madonnina</td><td class="sb-riv-na">—</td></tr>
-          <tr><td><strong>Arcieri Gonzaga</strong> — campo di tiro con l'arco</td><td>Via Pilota</td><td>erba, non illuminato</td></tr>
-          <tr><td><strong>Campino Oratorio</strong></td><td>zona Vicolo Gilberto Pagliari</td><td>area gioco ad accesso libero</td></tr>
-          <tr><td><strong>Pro Loco / Canoa Point</strong></td><td>Via Porto 31</td><td>canoa, kayak, bici</td></tr>
-          <tr><td><strong>Rivalta Green Village</strong> — <span class="sb-riv-na">ex «Il Pero»</span></td><td>Via Vedusino 5 — <a href="tel:+393510220302">351 022 0302</a> — <a href="http://rivaltagreenvillage.it" target="_blank" rel="noreferrer noopener">rivaltagreenvillage.it</a></td><td>piscine, tennis, padel, palestra e Pilates, ristorante con pizzeria, B&amp;B, area benessere</td></tr>
-          <tr><td><strong>Marina / porticciolo</strong></td><td>Via Porto</td><td>35 posti, gestore Comune di Rodigo, a pagamento, noleggio disponibile</td></tr>
-          <tr><td><strong>2 scivoli di alaggio</strong></td><td>Via Porto</td><td>uno in legno, uno in cemento — entrambi gratuiti</td></tr>
-          <tr><td><strong>Pontile galleggiante</strong></td><td>Via Porto</td><td>in legno, gratuito</td></tr>
+          <tr><td>Campo da tamburello</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Campo%20da%20tamburello%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Campo da tamburello — apri su OpenStreetMap">zona Via Madonnina<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="sb-riv-na">—</td></tr>
+          <tr><td><strong>Arcieri Gonzaga</strong> — campo di tiro con l'arco</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177032&amp;mlon=10.682748#map=18/45.177032/10.682748" target="_blank" rel="noreferrer noopener" title="Arcieri Gonzaga — campo di tiro con l'arco — apri su OpenStreetMap">Via Pilota<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>erba, non illuminato</td></tr>
+          <tr><td><strong>Campino Oratorio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179656&amp;mlon=10.680701#map=18/45.179656/10.680701" target="_blank" rel="noreferrer noopener" title="Campino Oratorio — apri su OpenStreetMap">zona Vicolo Gilberto Pagliari<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>area gioco ad accesso libero</td></tr>
+          <tr><td><strong>Pro Loco / Canoa Point</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180382&amp;mlon=10.681271#map=18/45.180382/10.681271" target="_blank" rel="noreferrer noopener" title="Pro Loco Rivalta APS / Canoa Point — apri su OpenStreetMap">Via Porto 31<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>canoa, kayak, bici</td></tr>
+          <tr><td><strong>Rivalta Green Village</strong> — <span class="sb-riv-na">ex «Il Pero»</span></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17569&amp;mlon=10.660887#map=18/45.17569/10.660887" target="_blank" rel="noreferrer noopener" title="Rivalta Green Village — apri su OpenStreetMap">Via Vedusino 5<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+393510220302">351 022 0302</a> — <a href="http://rivaltagreenvillage.it" target="_blank" rel="noreferrer noopener">rivaltagreenvillage.it</a></td><td>piscine, tennis, padel, palestra e Pilates, ristorante con pizzeria, B&amp;B, area benessere</td></tr>
+          <tr><td><strong>Marina / porticciolo</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180805&amp;mlon=10.681306#map=18/45.180805/10.681306" target="_blank" rel="noreferrer noopener" title="Marina / porticciolo — apri su OpenStreetMap">Via Porto<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>35 posti, gestore Comune di Rodigo, a pagamento, noleggio disponibile</td></tr>
+          <tr><td><strong>2 scivoli di alaggio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180519&amp;mlon=10.682079#map=18/45.180519/10.682079" target="_blank" rel="noreferrer noopener" title="Scivoli di alaggio — apri su OpenStreetMap">Via Porto<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>uno in legno, uno in cemento — entrambi gratuiti</td></tr>
+          <tr><td><strong>Pontile galleggiante</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17995&amp;mlon=10.682217#map=18/45.17995/10.682217" target="_blank" rel="noreferrer noopener" title="Pontile galleggiante — apri su OpenStreetMap">Via Porto<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>in legno, gratuito</td></tr>
         </tbody>
       </table>
     </div></div></div>

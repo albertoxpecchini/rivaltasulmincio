@@ -14,15 +14,17 @@
 <meta property="og:title" content="Muoversi — strade, parcheggi e trasporti">
 <meta property="og:description" content="Le 74 vie di Rivalta sul Mincio con fondo e limiti, dossi e autovelox, 106 incroci, 37 parcheggi gratuiti, fermate APAM della linea 13.">
 <meta property="og:url" content="https://www.rivaltasulmincio.it/muoversi">
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Muoversi — strade, parcheggi e trasporti">
 <meta name="twitter:description" content="Le 74 vie di Rivalta sul Mincio con fondo e limiti, dossi e autovelox, 106 incroci, 37 parcheggi gratuiti, fermate APAM della linea 13.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
@@ -64,6 +66,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a class="sb-nav-link" href="/muoversi">Muoversi</a>
           <a class="sb-nav-link" href="/natura">Natura</a>
           <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
           <a class="sb-nav-link" href="/dati">Dati</a>
         </div>
         <div class="sb-nav-right">
@@ -87,6 +90,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
           <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
         </nav>
       </div>
@@ -123,7 +127,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Viabilità principale</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Strada</th><th scope="col">Ruolo</th></tr></thead>
         <tbody>
@@ -139,7 +143,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <h3 class="sb-riv-subhead">Elenco completo delle vie mappate</h3>
   <p class="sb-riv-p">Ordinate per distanza dal centro. <strong>SU</strong> = senso unico.</p>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Via</th><th scope="col">Tipo</th><th scope="col">Fondo</th><th scope="col">Limite</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -243,7 +247,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Via</th><th scope="col" class="num">N° civici</th><th scope="col">Numeri</th></tr></thead>
         <tbody>
@@ -283,13 +287,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Dossi e rallentatori — 14 in totale</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Tipo</th><th scope="col" class="num">N°</th><th scope="col">Dove</th></tr></thead>
         <tbody>
-          <tr><td><strong>Attraversamenti rialzati</strong> (<code>table</code>)</td><td class="num">9</td><td>45.18101,10.67699 · 45.17973,10.67559 · 45.18278,10.67658 · 45.17752,10.67676 (zebrato) · 45.17972,10.67261 · 45.18447,10.67610 · 45.17582,10.68080 · 45.17348,10.67949 · 45.17089,10.67718</td></tr>
-          <tr><td><strong>Rialzato + dosso</strong> (<code>table;bump</code>)</td><td class="num">2</td><td>45.17486,10.67578 · 45.17108,10.67654</td></tr>
-          <tr><td><strong>Dossi semplici</strong> (<code>bump</code>)</td><td class="num">3</td><td>45.17900,10.67378 · 45.17752,10.67677 · 45.17487,10.67578</td></tr>
+          <tr><td><strong>Attraversamenti rialzati</strong> (<code>table</code>)</td><td class="num">9</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18101&amp;mlon=10.67699#map=18/45.18101/10.67699" target="_blank" rel="noreferrer noopener" title="45.18101, 10.67699 — apri su OpenStreetMap">45.18101,10.67699<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17973&amp;mlon=10.67559#map=18/45.17973/10.67559" target="_blank" rel="noreferrer noopener" title="45.17973, 10.67559 — apri su OpenStreetMap">45.17973,10.67559<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18278&amp;mlon=10.67658#map=18/45.18278/10.67658" target="_blank" rel="noreferrer noopener" title="45.18278, 10.67658 — apri su OpenStreetMap">45.18278,10.67658<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17752&amp;mlon=10.67676#map=18/45.17752/10.67676" target="_blank" rel="noreferrer noopener" title="45.17752, 10.67676 — apri su OpenStreetMap">45.17752,10.67676<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> (zebrato) · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17972&amp;mlon=10.67261#map=18/45.17972/10.67261" target="_blank" rel="noreferrer noopener" title="45.17972, 10.67261 — apri su OpenStreetMap">45.17972,10.67261<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18447&amp;mlon=10.67610#map=18/45.18447/10.67610" target="_blank" rel="noreferrer noopener" title="45.18447, 10.67610 — apri su OpenStreetMap">45.18447,10.67610<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17582&amp;mlon=10.68080#map=18/45.17582/10.68080" target="_blank" rel="noreferrer noopener" title="45.17582, 10.68080 — apri su OpenStreetMap">45.17582,10.68080<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17348&amp;mlon=10.67949#map=18/45.17348/10.67949" target="_blank" rel="noreferrer noopener" title="45.17348, 10.67949 — apri su OpenStreetMap">45.17348,10.67949<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17089&amp;mlon=10.67718#map=18/45.17089/10.67718" target="_blank" rel="noreferrer noopener" title="45.17089, 10.67718 — apri su OpenStreetMap">45.17089,10.67718<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Rialzato + dosso</strong> (<code>table;bump</code>)</td><td class="num">2</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17486&amp;mlon=10.67578#map=18/45.17486/10.67578" target="_blank" rel="noreferrer noopener" title="45.17486, 10.67578 — apri su OpenStreetMap">45.17486,10.67578<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17108&amp;mlon=10.67654#map=18/45.17108/10.67654" target="_blank" rel="noreferrer noopener" title="45.17108, 10.67654 — apri su OpenStreetMap">45.17108,10.67654<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Dossi semplici</strong> (<code>bump</code>)</td><td class="num">3</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17900&amp;mlon=10.67378#map=18/45.17900/10.67378" target="_blank" rel="noreferrer noopener" title="45.17900, 10.67378 — apri su OpenStreetMap">45.17900,10.67378<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17752&amp;mlon=10.67677#map=18/45.17752/10.67677" target="_blank" rel="noreferrer noopener" title="45.17752, 10.67677 — apri su OpenStreetMap">45.17752,10.67677<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17487&amp;mlon=10.67578#map=18/45.17487/10.67578" target="_blank" rel="noreferrer noopener" title="45.17487, 10.67578 — apri su OpenStreetMap">45.17487,10.67578<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
         </tbody>
       </table>
     </div></div></div>
@@ -298,13 +302,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Autovelox e controlli di velocità</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Posizione</th><th scope="col">Limite associato</th></tr></thead>
         <tbody>
-          <tr><td class="nowrap">45.18142, 10.67697 — a ~137 m dal centro</td><td>30 km/h</td></tr>
-          <tr><td class="nowrap">45.17892, 10.67068 — ~526 m</td><td class="sb-riv-na">non specificato</td></tr>
-          <tr><td class="nowrap">45.18626, 10.67588 — ~682 m</td><td>30 km/h</td></tr>
+          <tr><td class="nowrap"><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18142&amp;mlon=10.67697#map=18/45.18142/10.67697" target="_blank" rel="noreferrer noopener" title="45.18142, 10.67697 — apri su OpenStreetMap">45.18142, 10.67697<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — a ~137 m dal centro</td><td>30 km/h</td></tr>
+          <tr><td class="nowrap"><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17892&amp;mlon=10.67068#map=18/45.17892/10.67068" target="_blank" rel="noreferrer noopener" title="45.17892, 10.67068 — apri su OpenStreetMap">45.17892, 10.67068<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — ~526 m</td><td class="sb-riv-na">non specificato</td></tr>
+          <tr><td class="nowrap"><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18626&amp;mlon=10.67588#map=18/45.18626/10.67588" target="_blank" rel="noreferrer noopener" title="45.18626, 10.67588 — apri su OpenStreetMap">45.18626, 10.67588<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — ~682 m</td><td>30 km/h</td></tr>
         </tbody>
       </table>
     </div></div></div>
@@ -317,7 +321,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p class="sb-riv-p"><strong>14 attraversamenti</strong>, di cui 11 rialzati. Uno, in Via Francesca, ha marcatura a zebre esplicita. <strong>Nessuno è dotato di pavimentazione tattile</strong>: è il dato da tenere presente per chi si muove con disabilità visiva.</p>
   </div>
   <ul class="sb-riv-ul">
-    <li class="sb-riv-li"><strong>11 nodi con dare precedenza o stop</strong>: 8 «dare precedenza», 3 con segnale <strong>STOP</strong> (45.18234,10.67681 · 45.18236,10.67670 · 45.18516,10.67597).</li>
+    <li class="sb-riv-li"><strong>11 nodi con dare precedenza o stop</strong>: 8 «dare precedenza», 3 con segnale <strong>STOP</strong> (<a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18234&amp;mlon=10.67681#map=18/45.18234/10.67681" target="_blank" rel="noreferrer noopener" title="45.18234, 10.67681 — apri su OpenStreetMap">45.18234,10.67681<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18236&amp;mlon=10.67670#map=18/45.18236/10.67670" target="_blank" rel="noreferrer noopener" title="45.18236, 10.67670 — apri su OpenStreetMap">45.18236,10.67670<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> · <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.18516&amp;mlon=10.67597#map=18/45.18516/10.67597" target="_blank" rel="noreferrer noopener" title="45.18516, 10.67597 — apri su OpenStreetMap">45.18516,10.67597<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>).</li>
     <li class="sb-riv-li"><strong>Nessun impianto semaforico</strong> e <strong>nessuna rotatoria</strong> mappata all'interno del paese.</li>
   </ul>
 
@@ -333,7 +337,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col" class="num">Dist.</th><th scope="col">Incrocio</th></tr></thead>
         <tbody>
@@ -377,7 +381,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Nome / posizione</th><th scope="col" class="num">Posti</th><th scope="col" class="num">Disabili</th><th scope="col">Fondo</th></tr></thead>
         <tbody>
@@ -415,7 +419,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Fermata</th><th scope="col">Rif.</th><th scope="col">Dotazioni</th></tr></thead>
         <tbody>

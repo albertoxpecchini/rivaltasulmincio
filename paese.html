@@ -14,15 +14,17 @@
 <meta property="og:title" content="Il paese — Rivalta sul Mincio">
 <meta property="og:description" content="Anagrafica, etimologia, dati ISTAT e demografia, tessuto edificato, monumenti e luoghi di culto di Rivalta sul Mincio (Rodigo, MN).">
 <meta property="og:url" content="https://www.rivaltasulmincio.it/paese">
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Il paese — Rivalta sul Mincio">
 <meta name="twitter:description" content="Anagrafica, etimologia, dati ISTAT e demografia, tessuto edificato, monumenti e luoghi di culto di Rivalta sul Mincio (Rodigo, MN).">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
@@ -64,6 +66,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a class="sb-nav-link" href="/muoversi">Muoversi</a>
           <a class="sb-nav-link" href="/natura">Natura</a>
           <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
           <a class="sb-nav-link" href="/dati">Dati</a>
         </div>
         <div class="sb-nav-right">
@@ -87,6 +90,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
           <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
         </nav>
       </div>
@@ -114,7 +118,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <caption class="sb-riv-na" style="padding:0.7rem 0.9rem;text-align:left;font-size:0.78rem">Dati identificativi della località e del comune di appartenenza</caption>
         <tbody>
@@ -126,7 +130,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <tr><th scope="row">Codice ISTAT comune</th><td>020051</td></tr>
           <tr><th scope="row">Codice catastale</th><td>H481</td></tr>
           <tr><th scope="row">Codice fiscale ente</th><td>80005810207</td></tr>
-          <tr><th scope="row">Coordinate centro</th><td class="nowrap">45.180192 N, 10.677137 E</td></tr>
+          <tr><th scope="row">Coordinate centro</th><td class="nowrap"><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180192&amp;mlon=10.677137#map=18/45.180192/10.677137" target="_blank" rel="noreferrer noopener" title="45.180192, 10.677137 — apri su OpenStreetMap">45.180192 N, 10.677137 E<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
           <tr><th scope="row">Altitudine casa comunale (Rodigo)</th><td>31 m s.l.m.</td></tr>
           <tr><th scope="row">Superficie comunale</th><td>41,6 km²</td></tr>
           <tr><th scope="row">Nome abitanti</th><td>Rodighesi (comune) / Rivaltesi</td></tr>
@@ -166,7 +170,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Comune di Rodigo</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Indicatore</th><th scope="col">Valore</th><th scope="col">Nota</th></tr></thead>
         <tbody>
@@ -181,7 +185,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Rivalta sul Mincio (frazione)</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Centro abitato</th><th scope="col" class="num">Abitanti</th><th scope="col">Rilevazione</th></tr></thead>
         <tbody>
@@ -196,7 +200,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Dove trovare i dati ISTAT ufficiali</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Cosa</th><th scope="col">Dove</th></tr></thead>
         <tbody>
@@ -228,7 +232,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Tipologie edilizie</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Tipologia</th><th scope="col" class="num">N°</th></tr></thead>
         <tbody>
@@ -254,8 +258,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Lettura urbanistica</h3>
   <p class="sb-riv-p">Rivalta si è sviluppata molto negli ultimi decenni, in particolare dopo la costruzione della <strong>circonvallazione negli anni '70</strong>. A parte il centro storico — a ridosso della chiesa e del fiume — il paese è formato per lo più da costruzioni recenti: villette, bifamiliari e case a schiera, di aspetto ordinato.</p>
-  <p class="sb-riv-p">Non ci sono vestigia monumentali di rilievo: l'edificio più interessante è la <strong>Corte Arrivabene</strong>, residenza dei conti omonimi, tipica casa padronale del Settecento immersa in un ampio giardino.</p>
+  <p class="sb-riv-p">Non ci sono vestigia monumentali di rilievo: l'edificio più interessante è la <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Corte%20Arrivabene%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Corte Arrivabene — apri su OpenStreetMap">Corte Arrivabene<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong>, residenza dei conti omonimi, tipica casa padronale del Settecento immersa in un ampio giardino.</p>
+  
   <p class="sb-riv-p">Il fascino di Rivalta sta nel suo essere, da secoli, un paese indissolubilmente legato al Mincio: le case più vecchie, le prime viuzze e la chiesa sono tutte lì, vicino al fiume.</p>
+  
 </section>
 
 <section class="sb-container sb-riv-sec" id="monumenti">
@@ -264,19 +270,28 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Monumenti e memorie</h2>
   </div>
 
+  <div class="sb-riv-foto-grid">
+    
+    
+    
+    
+    
+    
+  </div>
+
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Monumento</th><th scope="col">Ubicazione</th></tr></thead>
         <tbody>
-          <tr><td><strong>Monumento ai Caduti delle Guerre</strong></td><td>Via Giuseppe Garibaldi — 35 m dal centro</td></tr>
-          <tr><td><strong>Monumento a Salvo D'Acquisto</strong></td><td>zona Via Madonnina</td></tr>
-          <tr><td><strong>Monumento al Marinaio</strong></td><td>Via Porto</td></tr>
-          <tr><td><strong>Mausoleo Arrivabene</strong></td><td>zona Via Giovanni Arrivabene</td></tr>
-          <tr><td><strong>Monumento di Piazza Chiesa</strong></td><td>Piazza Chiesa, ad accesso libero</td></tr>
-          <tr><td><strong>Ponte della Ferradina</strong> (rudere storico)</td><td>~1,3 km dal centro</td></tr>
-          <tr><td><strong>Lavatoio</strong> storico</td><td>Via Porto</td></tr>
-          <tr><td><strong>«Panchina dei Terroni»</strong></td><td>murale del Gruppo dei Terroni, 6 posti, inaugurata il 14 luglio 2024 — ~895 m dal centro</td></tr>
+          <tr><td><strong>Monumento ai Caduti delle Guerre</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179918&amp;mlon=10.676922#map=18/45.179918/10.676922" target="_blank" rel="noreferrer noopener" title="Monumento ai Caduti delle Guerre — apri su OpenStreetMap">Via Giuseppe Garibaldi<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — 35 m dal centro</td></tr>
+          <tr><td><strong>Monumento a Salvo D'Acquisto</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177522&amp;mlon=10.67728#map=18/45.177522/10.67728" target="_blank" rel="noreferrer noopener" title="Monumento a Salvo D'Acquisto — apri su OpenStreetMap">zona Via Madonnina<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Monumento al Marinaio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180429&amp;mlon=10.682105#map=18/45.180429/10.682105" target="_blank" rel="noreferrer noopener" title="Monumento al Marinaio — apri su OpenStreetMap">Via Porto<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Mausoleo Arrivabene</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175225&amp;mlon=10.681206#map=18/45.175225/10.681206" target="_blank" rel="noreferrer noopener" title="Mausoleo Arrivabene — apri su OpenStreetMap">zona Via Giovanni Arrivabene<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Monumento di Piazza Chiesa</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Monumento%20di%20Piazza%20Chiesa%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Monumento di Piazza Chiesa — apri su OpenStreetMap">Piazza Chiesa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>, ad accesso libero</td></tr>
+          <tr><td><strong>Ponte della Ferradina</strong> (rudere storico)</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.188395&amp;mlon=10.689179#map=18/45.188395/10.689179" target="_blank" rel="noreferrer noopener" title="Ponte della Ferradina — apri su OpenStreetMap">~1,3 km dal centro<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>Lavatoio</strong> storico</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178913&amp;mlon=10.682512#map=18/45.178913/10.682512" target="_blank" rel="noreferrer noopener" title="Lavatoio storico — apri su OpenStreetMap">Via Porto<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
+          <tr><td><strong>«Panchina dei Terroni»</strong></td><td>murale del Gruppo dei Terroni, 6 posti, inaugurata il 14 luglio 2024 — <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.172145&amp;mlon=10.677003#map=18/45.172145/10.677003" target="_blank" rel="noreferrer noopener" title="«Panchina dei Terroni» — apri su OpenStreetMap">~895 m dal centro<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td></tr>
         </tbody>
       </table>
     </div></div></div>
@@ -289,21 +304,23 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Chiese e luoghi di culto</h2>
   </div>
 
+  
+
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Luogo</th><th scope="col">Ubicazione</th><th scope="col">Note</th></tr></thead>
         <tbody>
           <tr>
             <td><strong>Chiesa dei Santi Vigilio e Donato</strong><br><span class="sb-riv-na">parrocchiale</span></td>
-            <td>Piazza Chiesa</td>
+            <td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179933&amp;mlon=10.680703#map=18/45.179933/10.680703" target="_blank" rel="noreferrer noopener" title="Chiesa dei Santi Vigilio e Donato — apri su OpenStreetMap">Piazza Chiesa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td>
             <td>Chiesa settecentesca, cattolica. Sorge dove <strong>Matilde di Canossa</strong> aveva eretto un castello che, con quello di Volta Mantovana, difendeva Mantova verso nord. Del castello non resta traccia — fu distrutto dai mantovani dopo la morte di Matilde — ma restano tracce del fossato.</td>
           </tr>
-          <tr><td><strong>Chiesetta di Santa Maria di Lourdes</strong></td><td>zona Via Renzo Ascari</td><td>cattolica</td></tr>
-          <tr><td><strong>Cappella di Sant'Antonio</strong></td><td>zona Via Giuseppe Garibaldi</td><td>cattolica, non accessibile in carrozzina</td></tr>
-          <tr><td><strong>Oratorio</strong></td><td>zona Via Francesca</td><td>cattolico</td></tr>
-          <tr><td><strong>Santella votiva</strong></td><td>zona Corte Mincio</td><td>edicola religiosa cristiana</td></tr>
-          <tr><td><strong>Chiesa di Canova</strong></td><td>località Canova — ~1,66 km</td><td>cristiana</td></tr>
+          <tr><td><strong>Chiesetta di Santa Maria di Lourdes</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.182316&amp;mlon=10.673042#map=18/45.182316/10.673042" target="_blank" rel="noreferrer noopener" title="Chiesetta di Santa Maria di Lourdes — apri su OpenStreetMap">zona Via Renzo Ascari<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>cattolica</td></tr>
+          <tr><td><strong>Cappella di Sant'Antonio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180135&amp;mlon=10.670186#map=18/45.180135/10.670186" target="_blank" rel="noreferrer noopener" title="Cappella di Sant'Antonio — apri su OpenStreetMap">zona Via Giuseppe Garibaldi<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>cattolica, non accessibile in carrozzina</td></tr>
+          <tr><td><strong>Oratorio</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Oratorio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Oratorio — apri su OpenStreetMap">zona Via Francesca<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>cattolico</td></tr>
+          <tr><td><strong>Santella votiva</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178877&amp;mlon=10.682006#map=18/45.178877/10.682006" target="_blank" rel="noreferrer noopener" title="Santella votiva — apri su OpenStreetMap">zona Corte Mincio<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>edicola religiosa cristiana</td></tr>
+          <tr><td><strong>Chiesa di Canova</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.195101&amp;mlon=10.677429#map=18/45.195101/10.677429" target="_blank" rel="noreferrer noopener" title="Chiesa di Canova — apri su OpenStreetMap">località Canova<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — ~1,66 km</td><td>cristiana</td></tr>
           <tr><td><strong>Cimitero di Rivalta sul Mincio</strong></td><td class="sb-riv-na">—</td><td>area di ~0,7 ha</td></tr>
         </tbody>
       </table>

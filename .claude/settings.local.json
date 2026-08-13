@@ -9,7 +9,14 @@
       "Bash(echo \"--- exit: $? \\(nessun risultato = escluso correttamente\\) ---\")",
       "PowerShell(npm run dev)",
       "PowerShell(Remove-Item \"c:\\\\Users\\\\pzkko\\\\Documents\\\\AP\\\\src\\\\components\\\\reactbits\\\\Aurora.tsx\" -Confirm:$false)",
-      "Bash(node shot.mjs light spec.png)"
+      "Bash(node shot.mjs light spec.png)",
+      "Bash(sed -i 's/<div class=\"sb-panel-inner sb-panel--solid\">/<div class=\"sb-panel-inner\">/g' _build/*.body.html && echo \"rimasti:\" && grep -o 'sb-panel--solid' _build/*.body.html | wc -l)",
+      "Bash(node build.mjs)",
+      "Bash(node \"C:/Users/pzkko/AppData/Local/Temp/claude/c--Users-pzkko-Documents-rivaltasulmincio/be6e72cf-375c-4bbb-a0c9-00761c4437de/scratchpad/genluoghi.mjs\")",
+      "Bash(node -e ' *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\pzkko\\Documents\\rivaltasulmincio\\_build"
     ]
   }
 }

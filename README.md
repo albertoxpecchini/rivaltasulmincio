@@ -4,9 +4,9 @@
 
 **Sito statico, zero dipendenze** — il dossier completo di **Rivalta sul Mincio**
 (frazione del Comune di Rodigo, provincia di Mantova): anagrafica, servizi, attività,
-comunità, viabilità, natura, eventi. Nove pagine di HTML puro, generate da un
-assemblatore di 142 righe, vestite con il design system **`.sb-`** di
-[albertopecchini.it](https://albertopecchini.it) — palette neutra, un solo verde,
+comunità, viabilità, natura, eventi e una mappa interattiva. Dieci pagine di HTML
+puro, generate da un assemblatore di 260 righe, vestite con il design system **`.sb-`** di
+[albertopecchini.it](https://albertopecchini.it) — palette neutra, un solo azzurro,
 tema chiaro/scuro nativo.
 
 <!-- ─────────────  METRICHE LIVE (shields.io → GitHub API, auto-aggiornanti)  ───────────── -->
@@ -42,12 +42,13 @@ tema chiaro/scuro nativo.
 
 | Dominio | Valore | Dettaglio |
 | :--- | :--- | :--- |
-| **Pagine pubblicate** | **9** | 3.954 righe di HTML **generato**, indirizzi senza estensione |
-| **Sorgenti in `_build/`** | **2.181 righe** | 9 frammenti di contenuto + guscio (`head.html` · `foot.html`) |
-| **Design system** | **1.433 righe CSS** | `sb.css` (836) · `rivalta.css` (411) · `controlbar.css` (186) |
-| **JavaScript** | **783 righe**, 3 file | `rivalta.js` (91) · `controlbar.js` (364) · `glass.js` (328) |
-| **Build** | **142 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
-| **Dipendenze** | **0** runtime, **0** dev | niente `package.json`, niente `node_modules` |
+| **Pagine pubblicate** | **10** | 3.954 righe di HTML **generato**, indirizzi senza estensione |
+| **Sorgenti in `_build/`** | **2.181 righe** | 10 frammenti di contenuto + guscio (`head.html` · `foot.html`) |
+| **Design system** | **1.910 righe CSS** | `sb.css` (1.007) · `rivalta.css` (717) · `controlbar.css` (186) |
+| **JavaScript** | **983 righe**, 4 file | `rivalta.js` (91) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) |
+| **Build** | **359 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
+| **Luoghi censiti** | **110** | 55 luoghi + 55 attività in `_build/luoghi.json`, 84 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
 | **Numeri civici** | **177** su **21 vie** | mappati in OpenStreetMap, non un archivio anagrafico |
 | **Dossier sorgente** | **1.044 righe** Markdown | `data/rivalta-sul-mincio-dossier.md` |
@@ -67,14 +68,14 @@ indicizzato non si rompono. I link interni si scrivono root-assoluti (`/paese`, 
 
 ### Modificare il sito
 
-Le nove pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
+Le dieci pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
 
 ```bash
 node build.mjs
 ```
 
-Nove pagine condividono la stessa nav e lo stesso footer. Tenerne nove copie a mano significa che
-prima o poi otto sono aggiornate e una no, ed è sempre quella che qualcuno apre.
+Dieci pagine condividono la stessa nav e lo stesso footer. Tenerne dieci copie a mano significa che
+prima o poi nove sono aggiornate e una no, ed è sempre quella che qualcuno apre.
 
 Titolo e descrizione di ogni pagina stanno in testa al rispettivo frammento, come due commenti —
 così il contenuto e i suoi metadati non possono separarsi:
@@ -89,7 +90,7 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 
 ---
 
-## 🧭 Le nove pagine
+## 🧭 Le dieci pagine
 
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
@@ -104,6 +105,7 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | `/muoversi` | `muoversi.body.html` | 0.7 | Le 74 vie con fondo e limiti, dossi, 106 incroci, parcheggi, linea APAM 13 |
 | `/natura` | `natura.body.html` | 0.7 | Parchi, Riserva Naturale Valli del Mincio, uso del suolo, ciclabili, navigazione |
 | `/eventi` | `eventi.body.html` | 0.9 | Festa del Pesce, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca |
+| `/mappa` | `mappa.body.html` | 0.9 | Mappa interattiva dei 268 punti d'interesse, filtri per categoria, registro dei luoghi |
 | `/dati` | `dati.body.html` | 0.4 | Fonti, metodo di misura, dataset JSON scaricabile, come rigenerarlo via Overpass |
 
 ---
@@ -117,7 +119,7 @@ colocato per pagina, qui è un sito statico e il foglio è uno solo.
 
 Le regole sono quelle del design system, non opinioni di questo repo:
 
-- palette **neutra** (soli grigi) più **un'unica tinta**, il verde brand `hsl(153 60% 53%)`. Non si
+- palette **neutra** (soli grigi) più **un'unica tinta**, l'azzurro brand `hsl(197 100% 49%)`. Non si
   introduce un secondo colore vivo per distinguere qualcosa: si distingue con peso, spaziatura o bordo;
 - ogni colore, ombra e bordo si scrive con `var(--sb-*)`. Gli unici valori letterali stanno nei due
   blocchi di token in cima a `assets/sb.css`;
@@ -135,6 +137,56 @@ legge come «spessore».
 
 Il tema è calcolato **prima del primo paint**, con uno script inline in `<head>`: senza, entrando su
 una pagina che finirà scura si vedrebbe un lampo di bianco.
+
+### Lo smusso — la forma di questo sito
+
+È l'unico punto in cui Rivalta si stacca dal design system originale. Pillole, badge, indici,
+filtri, lastre e tabelle **non sono stondati**: hanno l'angolo in alto a sinistra e quello in basso
+a destra **tagliati a 45°**. Due diagonali opposte danno una direzione alla sagoma; tagliarne quattro
+la rimetterebbe in simmetria e tornerebbe a essere un ottagono, cioè di nuovo un tondo.
+
+Due misure sole, `--sb-cut: 10px` per gli elementi piccoli e `--sb-cut-lg: 18px` per le lastre, e
+tre sagome pronte in `assets/sb.css`: `--sb-shape-sm`, `--sb-shape-lg`, `--sb-shape-lg-in`.
+
+Tre cose da sapere prima di metterci mano:
+
+- **Non accorparle in una sagoma sola con una misura variabile.** Le custom property vengono
+  sostituite subito, sull'elemento dove sono scritte, e quello che eredita è il valore già risolto.
+  Una `--sb-shape` che contenesse `var(--c)` cercherebbe `--c` su `.sb-home`, non lo troverebbe, e
+  diventerebbe invalida — cioè vuota — prima ancora di arrivare a chi la usa.
+- **`0.586px` non è un numero magico.** È di quanto va stretto il taglio interno perché fra le due
+  diagonali della lastra resti esattamente 1px, come sui lati dritti: su una retta a 45° un pixel in
+  perpendicolare vale √2 di scostamento, e 2 − √2 = 0.586. Arrotondarlo a 1px ingrossa la diagonale
+  rispetto ai lati, e si vede.
+- **`clip-path` taglia via anche il `box-shadow`.** Sulle lastre l'ombra esterna non può più essere
+  un'ombra: `filter: drop-shadow()` la seguirebbe, ma un `filter` crea un *backdrop root* e
+  spegnerebbe il `backdrop-filter` di tutto ciò che ha dentro — il vetro si smaterializzerebbe
+  proprio al passaggio del mouse. Per le card cliccabili l'ombra è quindi **una seconda lastra**
+  sfocata, appesa al contenitore `<a>` che non è ritagliato; in cambio segue lo smusso invece di
+  arrotondarlo.
+
+Sui lati dritti il contorno resta il `border`. Sulle due diagonali il clip lo porterebbe via, e si
+ridisegna con due gradienti confinati nei quadrati d'angolo (`--sb-shape-edge`). Il `50%` degli stop
+non è a occhio: su un quadrato di lato S la linea di taglio dista S/√2 dall'angolo, e l'asse di un
+gradiente a 135° è lungo S·√2 — la metà esatta.
+
+Restano stondati i bottoni (6px), la pillola scorrevole della nav e i pallini: la forma nuova
+riguarda ciò che contiene, non ciò che si preme.
+
+### Il testo è giustificato
+
+Tutta la prosa del sito è `text-align: justify` con `hyphens: auto`. La sillabazione non è un vezzo:
+le colonne sono strette (`max-width: 46rem`) e l'italiano ha parole lunghe — senza, la
+giustificazione apre fiumi bianchi verticali che si vedono da lontano. Funziona perché `head.html`
+dichiara `<html lang="it">` e il browser sillaba nella lingua del documento.
+
+**Sotto i 480px torna a bandiera:** su una colonna da telefono fra una parola e l'altra si aprirebbero
+voragini, e lì vince la leggibilità. Restano allineati a sinistra i dati (celle, intestazioni,
+numeri) e tutto ciò che è centrato per scelta.
+
+Non esiste una classe unica per il testo corrente — le pagine sono nate una alla volta e ogni
+contesto si è portato dietro la sua — quindi il gruppo di selettori è elencato per esteso in cima a
+`assets/rivalta.css`. **Se nasce una classe nuova che contiene un paragrafo, va aggiunta lì.**
 
 ---
 
@@ -200,24 +252,31 @@ cambiando tema. Con `prefers-reduced-motion` l'onda non parte: il tema cambia e 
 
 ```
 rivaltasulmincio/
-├── index.html … dati.html      # le 9 pagine, GENERATE — non modificarle a mano
+├── index.html … mappa.html     # le 10 pagine, GENERATE — non modificarle a mano
 ├── assets/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
-│   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici)
+│   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, mappa)
 │   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
-│   └── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
+│   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
+│   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
+│   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro
+│   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
+│   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
 ├── data/
 │   ├── rivalta_dataset.json    #   l'estratto OpenStreetMap completo (ODbL) — 330 POI
 │   └── …-dossier.md            #   il dossier sorgente in Markdown
 ├── _build/                     # l'officina: NON va online (.vercelignore)
 │   ├── head.html               #   guscio: <head> + nav, con {{TITLE}} e {{DESC}}
 │   ├── foot.html               #   guscio: footer + script
-│   ├── <pagina>.body.html      #   il contenuto di ogni pagina (9 frammenti)
-│   └── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
+│   ├── <pagina>.body.html      #   il contenuto di ogni pagina (10 frammenti)
+│   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
+│   ├── luoghi.json             #   il registro dei 110 luoghi: coordinate, foto, schede
+│   └── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
 ├── build.mjs                   # incolla guscio + contenuto, e genera sitemap.xml
+├── serve.mjs                   # anteprima locale con cleanUrls (non va online)
 ├── sitemap.xml                 # GENERATO da build.mjs — non modificarlo a mano
 ├── robots.txt                  # statico, nessuna esclusione
 └── vercel.json                 # framework null, cleanUrls, cache di assets/ e data/
@@ -248,10 +307,12 @@ sequenceDiagram
     Note over Dev,BLD: 2 · Assemblaggio, in locale
     Dev->>BLD: node build.mjs
     activate BLD
-    Note over BLD: head + body + foot → 9 pagine .html
+    Note over BLD: head + body + foot → 10 pagine .html
     Note over BLD: notizie.json → {{NEWS}} nella home
+    Note over BLD: luoghi.json → {{luogo:}} {{foto:}} {{LUOGHI}}
+    Note over BLD: dataset + tipi.json → {{MAPPA}}, 268 punti in pagina
     Note over BLD: SITE → canonical + og:url + sitemap.xml
-    BLD-->>Dev: ✓ 9 pagine + sitemap (9 URL)
+    BLD-->>Dev: ✓ 10 pagine + sitemap (10 URL) + foto mancanti
     deactivate BLD
 
     Note over GH,VC: 3 · Pubblicazione
@@ -275,10 +336,13 @@ sequenceDiagram
 | :--- | :--- | :--- |
 | **OpenStreetMap / Overpass API** | l'estratto geodati del paese (ODbL) | a mano, in locale — non a runtime |
 | **Google Fonts** | Titillium Web + Roboto Mono | client, con `preconnect` |
+| **Piastrelle OpenStreetMap** | il fondo della mappa (ODbL, con attribuzione) | client, **solo su `/mappa`** |
 | **Vercel** | hosting statico, `cleanUrls`, header di cache | produzione |
 
 Il sito **non chiama nessuna API a runtime**: quello che il browser scarica sono pagine, fogli di
-stile, tre script e — solo su `/dati`, e solo se lo si chiede — il dataset.
+stile, gli script e — solo se lo si chiede — il dataset da `/dati`. L'unica eccezione è `/mappa`,
+che scarica le piastrelle da `tile.openstreetmap.org` mentre la si esplora; i 268 segnaposto, invece,
+sono già dentro la pagina.
 
 ---
 
@@ -327,6 +391,109 @@ tutelano davvero. Il campo `nota` va scritto da noi e contiene solo fatti verifi
 non una parafrasi del pezzo.
 
 Le voci vanno verificate prima di pubblicarle: titolo e data si controllano aprendo l'articolo.
+
+---
+
+## 📍 Il registro dei luoghi
+
+**[`_build/luoghi.json`](_build/luoghi.json)** è l'anagrafe dei posti di cui il sito parla: **110
+voci**, 55 luoghi e 55 attività. Un file solo, perché le stesse informazioni servono a tre cose che
+altrimenti si scriverebbero tre volte e divergerebbero al primo cambiamento — i collegamenti alla
+mappa, le fotografie e le schede della pagina `/mappa`.
+
+```json
+{
+  "slug": "chiesa-santi-vigilio-donato",
+  "nome": "Chiesa dei Santi Vigilio e Donato",
+  "gruppo": "Luoghi di culto",
+  "indirizzo": "Piazza Chiesa",
+  "lat": 45.179933, "lon": 10.680703, "dist_m": 281,
+  "pagina": "/paese#chiese",
+  "foto": "chiesa-santi-vigilio-donato.jpg",
+  "alt": "La facciata settecentesca della parrocchiale su Piazza Chiesa",
+  "credito": null,
+  "consenso": null
+}
+```
+
+Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **84 voci su 110** hanno un
+punto. Le altre sono aree, percorsi o cose diffuse — il fiume, le capezzagne, le meridiane — che un
+punto non ce l'hanno, e il cui collegamento ricade sulla ricerca per nome di OpenStreetMap.
+
+### I tre segnaposto
+
+Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
+
+| Si scrive | Diventa |
+| :--- | :--- |
+| `{{luogo:corte-mincio-porto}}` | il nome del luogo, premibile, che apre OSM sul punto |
+| `{{luogo:corte-mincio-porto\|Via Porto}}` | lo stesso, con un'etichetta diversa dal nome |
+| `{{geo:45.18234,10.67681}}` | coordinate sciolte (dossi, autovelox, nodi STOP) |
+| `{{foto:chiesa-santi-vigilio-donato}}` | la fotografia, **se il file esiste** |
+
+Uno slug che non esiste **fa fallire il build**, come già succede a un frammento senza titolo: un
+collegamento rotto scoperto in produzione costa più di un build che si ferma.
+
+---
+
+## 📷 Aggiungere una fotografia
+
+Le fotografie si mettono in **`assets/foto/`** (le attività in `assets/foto/attivita/`) con
+**esattamente** il nome file scritto nel campo `foto` del registro, poi `node build.mjs`.
+
+Non serve toccare l'HTML: i segnaposto `{{foto:…}}` sono **già scritti** nelle pagine per tutte e 110
+le voci. Finché il jpg non c'è, il segnaposto non produce niente — nessun buco, nessuna immagine
+rotta. Il giorno che il file entra nella cartella, la figura compare da sé.
+
+Il build dice a ogni giro a che punto siamo:
+
+```
+⚠ fotografie: 12 su 110. Ne mancano 98.
+  parco-campino.jpg  parco-la-platana.jpg  fontana-della-madonna.jpg  …
+```
+
+**Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB. Le misure sono scritte
+nell'attributo `width`/`height` dell'immagine, così la pagina non sobbalza mentre carica.
+
+> **Le vetrine delle attività vogliono un permesso.** Fotografare dalla strada pubblica è una cosa,
+> pubblicare la foto su un sito che presenta quell'attività è un'altra: serve l'ok del titolare, e
+> l'insegna è un marchio. Chiederlo mentre si scatta è anche il modo più semplice per ottenere una
+> foto migliore di quella fatta di sfuggita dal marciapiede. Il registro ha i campi `credito` e
+> `consenso` per tenerne traccia.
+
+---
+
+## 🗺️ La mappa
+
+`/mappa` monta **Leaflet 1.9.4**, ospitato in `assets/vendor/leaflet/` — nessuna CDN. È l'unica
+dipendenza del progetto, pesa ~160 kB fra script e foglio, e **si carica solo su quella pagina**:
+`build.mjs` inietta i tag se e solo se il frammento contiene `{{MAPPA}}`, così non c'è un elenco da
+tenere aggiornato.
+
+I 268 segnaposto **non si scaricano a runtime**: il build proietta il dataset in un blocco JSON
+dentro la pagina (~33 kB invece di 10.191 righe). Il dataset cambia solo quando qualcuno rigenera
+l'estratto OSM, cioè fra un deploy e l'altro: andarlo a chiedere a ogni caricamento vorrebbe dire
+mostrare una mappa vuota a chi ha la linea lenta.
+
+- **Un solo colore.** I segnaposto sono tutti azzurro brand, come vuole il design system; a
+  distinguere le nove categorie sono il segno dentro la goccia e i filtri. I punti con un nome sono
+  più grandi e pieni: nel riquadro ci sono 28 panchine e un museo, e non devono pesare uguale.
+- **Tema scuro senza una seconda fonte.** Non esiste una piastrella scura ufficiale di OSM, quindi
+  quella chiara si inverte in CSS (`invert` + `hue-rotate`), e il cambio tema dalla barra di
+  controllo agisce sulla mappa senza che `mappa.js` ne sappia nulla.
+- **Movimento fermo rispettato:** con `html.rsm-still` o `prefers-reduced-motion` Leaflet nasce
+  senza animazioni di zoom e dissolvenza.
+- **Senza JavaScript la pagina regge:** sotto la mappa c'è l'elenco completo dei 110 luoghi, ognuno
+  con il suo collegamento a OpenStreetMap.
+
+Le etichette italiane dei tipi OSM stanno in **[`_build/tipi.json`](_build/tipi.json)**, insieme al
+gruppo di filtro. Se una rigenerazione del dataset porta tipi nuovi, il build li elenca e li lascia
+fuori dalla mappa finché non vengono tradotti lì.
+
+> **Cosa non finisce sulla mappa.** `tipi.json` marca `escluso: true` le **38 piscine** e i **23
+> recinti per animali** censiti: sono quasi tutti dentro giardini di abitazioni private. Sono dati
+> veri e restano nel dataset scaricabile — che è OpenStreetMap così com'è — ma una mappa puntuale di
+> casa d'altri non è una funzione, è un problema. Fuori anche i tombini, per motivi meno gravi.
 
 ---
 
@@ -380,7 +547,7 @@ Il sito si serve così com'è: **su Vercel non gira nessuna build**. Le pagine s
 Il `cleanUrls` ha una conseguenza che era già costata una nota qui: l'evidenza della voce attiva
 nella nav confronta il path con l'`href` dei link, e con gli indirizzi accorciati il confronto
 letterale non torna più. Ora la funzione `pagina()` in [`assets/rivalta.js`](assets/rivalta.js) riduce entrambi al nome
-della pagina — via lo slash iniziale, via l'estensione, `index` → vuoto — quindi il filo verde regge
+della pagina — via lo slash iniziale, via l'estensione, `index` → vuoto — quindi il filo azzurro regge
 sia su `/paese` sia su `/paese.html`, che è quello che vede chi arriva da un vecchio link prima che
 il redirect scatti. **Se un giorno si toglie `cleanUrls`, quella funzione continua a funzionare:
 non va disfatta.**
@@ -389,20 +556,25 @@ non va disfatta.**
 
 ## 💻 Sviluppo locale
 
-**Requisiti:** solo Node (per `build.mjs`, che usa la sola libreria standard). Niente `npm install`:
-non c'è niente da installare.
+**Requisiti:** solo Node (per `build.mjs` e `serve.mjs`, che usano la sola libreria standard).
+Niente `npm install`: non c'è niente da installare.
 
 ```bash
 git clone https://github.com/albertoxpecchini/rivaltasulmincio.git
 cd rivaltasulmincio
 node build.mjs    # rigenera le 9 pagine + sitemap.xml
-npx serve .       # http://localhost:3000
+node serve.mjs    # http://localhost:8080 — Ctrl+C per fermare
 ```
 
-Serve una qualsiasi cartella statica **che risolva gli indirizzi senza estensione** (`/paese` →
-`paese.html`); `serve` lo fa da sé. Aprire i file con `file://` invece **non** funziona più: da
-quando i link interni sono root-assoluti (`/paese`), con `file://` puntano alla radice del disco.
-Serve un server, anche il più stupido.
+[`serve.mjs`](serve.mjs) è l'anteprima locale: come `build.mjs`, sola libreria standard di Node e
+niente da installare. La porta si cambia con `node serve.mjs 3000` (o `PORT=3000`).
+
+Un server ci vuole per forza: aprire i file con `file://` **non** funziona più, perché da quando i
+link interni sono root-assoluti (`/paese`) con `file://` puntano alla radice del disco. E deve
+**risolvere gli indirizzi senza estensione** (`/paese` → `paese.html`), altrimenti in locale ogni
+link interno dà 404 mentre in produzione funziona: `serve.mjs` riproduce apposta `"cleanUrls": true`
+di `vercel.json`. Va bene anche `npx serve .` (porta 3000), che lo fa da sé, ma si tira dietro un
+albero di dipendenze per una cosa che qui sono cinquanta righe.
 
 ---
 
@@ -419,10 +591,10 @@ parte.
 
 ## 🎨 Palette
 
-Verde brand identico nei due temi, grigi puri intorno. Tutti i valori letterali vivono nei due
+Azzurro brand identico nei due temi, grigi puri intorno. Tutti i valori letterali vivono nei due
 blocchi di token in cima a [`assets/sb.css`](assets/sb.css); tutto il resto del foglio usa `var(--sb-*)`.
 
-![#3ECF8E](https://img.shields.io/badge/Brand-hsl(153_60%25_53%25)-3ECF8E?style=flat-square)
+![#00B3FA](https://img.shields.io/badge/Brand-hsl(197_100%25_49%25)-00B3FA?style=flat-square)
 ![#fcfcfc](https://img.shields.io/badge/Fondo_chiaro-%23FCFCFC-FCFCFC?style=flat-square&labelColor=555)
 ![#141414](https://img.shields.io/badge/Fondo_scuro-%23141414-141414?style=flat-square)
 ![#171717](https://img.shields.io/badge/Inchiostro-%23171717-171717?style=flat-square)

@@ -14,15 +14,17 @@
 <meta property="og:title" content="Natura — parchi, Valli del Mincio, ciclabili e navigazione">
 <meta property="og:description" content="Parchi e fontanelle, Riserva Naturale Valli del Mincio, uso del suolo, corsi d'acqua, ciclabili e capezzagne, navigazione sul Mincio da Corte Mincio.">
 <meta property="og:url" content="https://www.rivaltasulmincio.it/natura">
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Natura — parchi, Valli del Mincio, ciclabili e navigazione">
 <meta name="twitter:description" content="Parchi e fontanelle, Riserva Naturale Valli del Mincio, uso del suolo, corsi d'acqua, ciclabili e capezzagne, navigazione sul Mincio da Corte Mincio.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
@@ -64,6 +66,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a class="sb-nav-link" href="/muoversi">Muoversi</a>
           <a class="sb-nav-link" href="/natura">Natura</a>
           <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
           <a class="sb-nav-link" href="/dati">Dati</a>
         </div>
         <div class="sb-nav-right">
@@ -87,6 +90,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
           <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
         </nav>
       </div>
@@ -116,25 +120,31 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Parco</th><th scope="col">Ubicazione</th><th scope="col">Orario</th></tr></thead>
         <tbody>
-          <tr><td><strong>Parco Pubblico Campino</strong></td><td>zona Via Madonnina</td><td class="sb-riv-na">—</td></tr>
-          <tr><td><strong>Parco Fabrizio Quattrocchi</strong></td><td>Via Renzo Regattieri</td><td><strong>24/7</strong></td></tr>
-          <tr><td><strong>Parco Villa Arrivabene</strong></td><td>Via Giovanni Arrivabene / Via Mazzini</td><td>giardino storico di Corte Arrivabene</td></tr>
-          <tr><td><strong>Parco «La Platana»</strong></td><td>Piazza Platana</td><td><strong>24/7</strong> — è l'<strong>Area Feste Platana</strong>, sede delle manifestazioni</td></tr>
-          <tr><td><strong>Area verde di Via Garibaldi</strong></td><td>Via Giuseppe Garibaldi — 49 m dal centro</td><td><strong>24/7</strong></td></tr>
+          <tr><td><strong>Parco Pubblico Campino</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.177677&amp;mlon=10.678112#map=18/45.177677/10.678112" target="_blank" rel="noreferrer noopener" title="Parco Pubblico Campino — apri su OpenStreetMap">zona Via Madonnina<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="sb-riv-na">—</td></tr>
+          <tr><td><strong>Parco Fabrizio Quattrocchi</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.182327&amp;mlon=10.67303#map=18/45.182327/10.67303" target="_blank" rel="noreferrer noopener" title="Parco Fabrizio Quattrocchi — apri su OpenStreetMap">Via Renzo Regattieri<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td><strong>24/7</strong></td></tr>
+          <tr><td><strong>Parco Villa Arrivabene</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.175627&amp;mlon=10.681032#map=18/45.175627/10.681032" target="_blank" rel="noreferrer noopener" title="Parco Villa Arrivabene — apri su OpenStreetMap">Via Giovanni Arrivabene / Via Mazzini<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>giardino storico di Corte Arrivabene</td></tr>
+          <tr><td><strong>Parco «La Platana»</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.171891&amp;mlon=10.677306#map=18/45.171891/10.677306" target="_blank" rel="noreferrer noopener" title="Parco «La Platana» — apri su OpenStreetMap">Piazza Platana<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td><strong>24/7</strong> — è l'<strong>Area Feste Platana</strong>, sede delle manifestazioni</td></tr>
+          <tr><td><strong>Area verde di Via Garibaldi</strong></td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Area%20verde%20di%20Via%20Garibaldi%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Area verde di Via Garibaldi — apri su OpenStreetMap">Via Giuseppe Garibaldi<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — 49 m dal centro</td><td><strong>24/7</strong></td></tr>
           <tr><td>Altre 11 aree verdi di quartiere</td><td>Via Tezzone, Piazza Chiesa (2), Via SS. Patroni, Via Regattieri, Via Arrivabene, Via Enzo Ferrari, Strada Camignana (2)…</td><td>accesso libero</td></tr>
         </tbody>
       </table>
     </div></div></div>
   </div>
 
+  <div class="sb-riv-foto-grid">
+    
+    
+    
+  </div>
+
   <h3 class="sb-riv-subhead">Aree gioco per bambini</h3>
   <ul class="sb-riv-ul">
-    <li class="sb-riv-li">Zona <strong>Via Madonnina</strong> — 2 playground, accesso libero.</li>
-    <li class="sb-riv-li"><strong>Campino Oratorio</strong> — Vicolo Gilberto Pagliari, accesso libero.</li>
+    <li class="sb-riv-li">Zona <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Aree%20gioco%20di%20Via%20Madonnina%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Aree gioco di Via Madonnina — apri su OpenStreetMap">Via Madonnina<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> — 2 playground, accesso libero.</li>
+    <li class="sb-riv-li"><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179656&amp;mlon=10.680701#map=18/45.179656/10.680701" target="_blank" rel="noreferrer noopener" title="Campino Oratorio — apri su OpenStreetMap">Campino Oratorio<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> — Vicolo Gilberto Pagliari, accesso libero.</li>
   </ul>
 </section>
 
@@ -146,7 +156,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead">Fontanelle d'acqua potabile — 5</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Posizione</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -161,7 +171,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <h3 class="sb-riv-subhead">Fontane ornamentali — 3</h3>
-  <p class="sb-riv-p"><strong>Fontana della Madonna</strong> in Piazza Chiesa, illuminata; altre due in zona Via Madonnina.</p>
+  <p class="sb-riv-p"><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179918&amp;mlon=10.679948#map=18/45.179918/10.679948" target="_blank" rel="noreferrer noopener" title="Fontana della Madonna — apri su OpenStreetMap">Fontana della Madonna<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> in Piazza Chiesa, illuminata; altre due in zona Via Madonnina.</p>
+  
 
   <h3 class="sb-riv-subhead">Altro arredo urbano</h3>
   <div class="sb-riv-stats" style="margin-top:0.4rem">
@@ -170,7 +181,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">55</span><span class="sb-riv-stat-l">alberi censiti singolarmente</span></div></div></div>
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">2</span><span class="sb-riv-stat-l">tavoli picnic — Via dei Pescatori e Piazza Platana</span></div></div></div>
   </div>
-  <p class="sb-riv-cap">Le tre meridiane sono in Via Turati, Via Francesca e zona centro. Completano l'arredo: 1 area picnic (Corte Mincio), 2 pensiline fra cui il <strong>Lavatoio</strong> storico in Via Porto, 1 capanno per birdwatching (Via Porto, 24/7), 1 punto panoramico (Via Porto) e 2 bidoni rifiuti pubblici.</p>
+  <p class="sb-riv-cap">Le tre meridiane sono in Via Turati, Via Francesca e zona centro. Completano l'arredo: 1 area picnic (Corte Mincio), 2 pensiline fra cui il <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178913&amp;mlon=10.682512#map=18/45.178913/10.682512" target="_blank" rel="noreferrer noopener" title="Lavatoio storico — apri su OpenStreetMap">Lavatoio<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> storico in Via Porto, 1 <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180734&amp;mlon=10.682381#map=18/45.180734/10.682381" target="_blank" rel="noreferrer noopener" title="Capanno per birdwatching — apri su OpenStreetMap">capanno per birdwatching<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> (Via Porto, 24/7), 1 punto panoramico (Via Porto) e 2 bidoni rifiuti pubblici.</p>
+
+  <div class="sb-riv-foto-grid">
+    
+    
+  </div>
 </section>
 
 <section class="sb-container sb-riv-sec" id="ambiente">
@@ -180,8 +196,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p>La palude, parzialmente bonificata con la costruzione di canali, costituisce un'eccezionale riserva faunistica.</p>
   </div>
 
+  <div class="sb-riv-foto-grid">
+    
+    
+    
+  </div>
+
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Uso del suolo</th><th scope="col" class="num">Ettari</th></tr></thead>
         <tbody>
@@ -225,7 +247,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Corso d'acqua</th><th scope="col">Tipo</th><th scope="col" class="num">Lunghezza mappata</th></tr></thead>
         <tbody>
@@ -256,12 +278,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-panel--solid"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Percorso</th><th scope="col">Tipo</th><th scope="col">Lunghezza mappata</th></tr></thead>
         <tbody>
-          <tr><td><strong>Ciclabile Rivalta sul Mincio – Grazie</strong></td><td>asfalto, illuminata</td><td>1.009 m nel riquadro — rete <code>lcn</code> n.1</td></tr>
-          <tr><td><strong>Ciclopedonale Rivalta sul Mincio – Rodigo</strong></td><td>ghiaino fine, non illuminata</td><td>tratto oltre 2 km dal centro</td></tr>
+          <tr><td><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Ciclabile%20Rivalta%20%E2%80%93%20Grazie%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Ciclabile Rivalta – Grazie — apri su OpenStreetMap">Ciclabile Rivalta sul Mincio – Grazie<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong></td><td>asfalto, illuminata</td><td>1.009 m nel riquadro — rete <code>lcn</code> n.1</td></tr>
+          <tr><td><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Ciclopedonale%20Rivalta%20%E2%80%93%20Rodigo%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Ciclopedonale Rivalta – Rodigo — apri su OpenStreetMap">Ciclopedonale Rivalta sul Mincio – Rodigo<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong></td><td>ghiaino fine, non illuminata</td><td>tratto oltre 2 km dal centro</td></tr>
           <tr><td><strong>Ciclovia Destra Mincio</strong></td><td>itinerario di lunga percorrenza — rete <code>lcn MN1d</code></td><td>attraversa il territorio</td></tr>
           <tr><td><strong>Il Parco Oglio Sud</strong></td><td>itinerario cicloturistico — rete <code>lcn OP06</code></td><td>attraversa il territorio</td></tr>
           <tr><td><strong>Sottopasso ciclabile</strong></td><td>cemento, illuminato</td><td>73 m</td></tr>
@@ -278,14 +300,22 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <span class="sb-riv-note-t">Le capezzagne</span>
     <p class="sb-riv-p">I <strong>17 km di <code>track</code> sono la vera rete escursionistica di Rivalta</strong>: sterrati agricoli e arginali che collegano il paese alle Valli. Non sono segnalati come sentieri escursionistici ufficiali, ma sono percorribili a piedi e in mountain bike.</p>
   </div>
+
+  <div class="sb-riv-foto-grid">
+    
+    
+    
+  </div>
 </section>
 
 <section class="sb-container sb-riv-sec" id="navigazione">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">15 — Sul fiume</span>
     <h2>Navigazione sul Mincio</h2>
-    <p>Il porto d'imbarco abituale è <strong>Corte Mincio</strong>, in Via Porto.</p>
+    <p>Il porto d'imbarco abituale è <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179604&amp;mlon=10.682349#map=18/45.179604/10.682349" target="_blank" rel="noreferrer noopener" title="Corte Mincio — porto e terminal — apri su OpenStreetMap">Corte Mincio<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong>, in Via Porto.</p>
   </div>
+
+  
 
   <div class="sb-riv-grid sb-riv-grid--3">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
