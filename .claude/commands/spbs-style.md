@@ -31,18 +31,18 @@ qualsiasi colore/misura:
 `--sb-bg:#fcfcfc` `--sb-bg-alt:#f8f8f8` `--sb-surface-75:#fbfbfb` `--sb-surface-100:#f6f6f6`
 `--sb-surface-200:#f0f0f0` `--sb-overlay:rgba(0,0,0,.05)` `--sb-border:#e8e8e8`
 `--sb-border-strong:#dbdbdb` `--sb-border-stronger:#c7c7c7` `--sb-fg:#171717` `--sb-fg-light:#525252`
-`--sb-fg-lighter:#6f6f6f` `--sb-fg-muted:#8f8f8f` `--sb-brand:hsl(153,60%,53%)`
-`--sb-brand-text:hsl(153,86%,28%)` `--sb-btn-bg:hsl(151,67%,67%)` `--sb-btn-bd:hsla(155,78%,40%,.75)`
-`--sb-btn-bg-hover:hsl(151,63%,60%)` `--sb-btn-fg:#101010`
+`--sb-fg-lighter:#6f6f6f` `--sb-fg-muted:#8f8f8f` `--sb-brand:hsl(197,100%,49%)`
+`--sb-brand-text:hsl(197,86%,28%)` `--sb-btn-bg:hsl(195,67%,67%)` `--sb-btn-bd:hsla(199,78%,40%,.75)`
+`--sb-btn-bg-hover:hsl(195,63%,60%)` `--sb-btn-fg:#101010`
 `--sb-shadow-card:0 4px 20px -6px rgba(0,0,0,.1)`
 
 **Scuro (`html.dark .sb-home`, stessi nomi ridichiarati — MAI un foglio a parte):**
 `--sb-bg:#141414` `--sb-bg-alt:#181818` `--sb-fg:#ededed` `--sb-fg-light:#b4b4b4`
-`--sb-brand:hsl(153,60%,53%)` (identico ai due temi) `--sb-brand-text:hsl(155,100%,42%)`
-`--sb-btn-bg:hsl(155,100%,19%)` `--sb-btn-fg:#ffffff`
+`--sb-brand:hsl(197,100%,49%)` (identico ai due temi) `--sb-brand-text:hsl(197,100%,55%)`
+`--sb-btn-bg:hsl(199,100%,19%)` `--sb-btn-fg:#ffffff`
 `--sb-shadow-card:0 4px 24px -6px rgba(0,0,0,.55)`
 
-**Regola d'oro sul colore:** palette **neutra** (solo grigi) ovunque + **un'unica tinta**, il verde
+**Regola d'oro sul colore:** palette **neutra** (solo grigi) ovunque + **un'unica tinta**, l'azzurro
 brand. L'arancio Ubuntu (`#e95420`) è identità storica documentata, non un secondo accento attivo.
 Non introdurre mai un secondo colore vivo per "distinguere" qualcosa — si distingue con peso,
 spaziatura o bordo, non con un altro hue.
@@ -58,14 +58,13 @@ pesante sui titoli.
   un secondo file.
 - **Contenitore/sezione:** `.sb-container` (`max-width: 80rem`, padding orizzontale
   `clamp(1.25rem, 4vw, 5rem)`); `.sb-section` (padding verticale `clamp(4rem, 8vw, 6rem)`).
-- **UN SOLO fondale, `position: fixed`, per tutta la pagina** (`.sb-bg` con due veli radiali verde
-  + ciano, `.sb-bg-grid` con griglia tecnica che si dissolve verso il basso via `mask-image`).
+- **UN SOLO fondale, `position: fixed`, per tutta la pagina** (`.sb-bg` con due veli radiali azzurri, `.sb-bg-grid` con griglia tecnica che si dissolve verso il basso via `mask-image`).
   **Nessuna sezione ha un bordo o un bg proprio**: da una sezione all'altra non deve esserci mai una
   riga di confine, il contenuto scorre trasparente sopra il fondale. Se il target ha sezioni con
   sfondi alternati o divisori netti, questo va rimosso: è il primo errore da evitare.
 - **Nav:** `sticky top:0`, sfondo semitrasparente sfocato (`color-mix` + `backdrop-filter: blur(10px)
   saturate(140%)`), alta `64px`, **senza bordo in cima** — il bordo/ombra compaiono solo dopo lo
-  scroll (`.sb-nav--scrolled`). Voci di menu con un filo verde che si apre da sinistra sotto la voce
+  scroll (`.sb-nav--scrolled`). Voci di menu con un filo azzurro che si apre da sinistra sotto la voce
   al hover (`::after` scaleX).
 - **Bottoni** (`.sb-btn`, h `38px`, `32px` la variante `--sm`, radius `6px`, bordo 1px sempre):
   `--primary` (bg/bordo brand-tinted), `--secondary` (bg neutro + bordo), `--ghost` (trasparente).
@@ -102,7 +101,7 @@ magnetico), usa la stessa disciplina del sito:
 
 ## 4. Accessibilità minima da portare sempre
 
-`:focus-visible` con outline verde brand (`outline: 2px solid var(--sb-brand)`), landmark semantici
+`:focus-visible` con outline azzurro brand (`outline: 2px solid var(--sb-brand)`), landmark semantici
 (`main`/`nav[aria-label]`/`header`/`footer`), `aria-labelledby` sui modali, contrasto verificabile
 con la finestra Palette del sito.
 
