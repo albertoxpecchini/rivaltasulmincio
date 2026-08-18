@@ -6,6 +6,9 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/meteo.mjs": { "maxDuration": 10 }
+  },
   "headers": [
     {
       "source": "/assets/(.*)",

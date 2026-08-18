@@ -233,11 +233,37 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <h4>Avifauna</h4>
       <p>Aironi rossi e cinerini, svassi, il raro <strong>tarabuso</strong>, il falco di palude.</p>
     </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Stazione meteo</h4>
-      <p>A Rivalta è attiva una stazione gestita in collaborazione con il <strong>Centro Meteorologico Lombardo</strong> — dati su <a href="https://www.meteomincio.it" target="_blank" rel="noreferrer noopener">meteomincio.it</a>.</p>
-    </div></div>
   </div>
+
+  <h3 class="sb-riv-subhead" id="stazione-meteo">La stazione meteo, adesso</h3>
+  <p class="sb-riv-p">A Rivalta è attiva una stazione gestita in collaborazione con il <strong>Centro Meteorologico Lombardo</strong>. Non è una previsione: sono le misure di un sensore che sta in paese, a 45,173 N — 10,677 E. La stazione le pubblica ogni venticinque secondi circa su <a href="https://www.meteomincio.it" target="_blank" rel="noreferrer noopener">meteomincio.it</a>, e questa pagina le rilegge da sola una volta al minuto finché resta aperta.</p>
+
+  <div class="sb-riv-meteo" id="meteo-live" data-meteo-blocco hidden>
+      <div class="sb-riv-stats">
+        <div class="sb-riv-stat" data-meteo-riga><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v" data-meteo="temperatura">—<small>°C</small></span><span class="sb-riv-stat-l">temperatura all'aperto</span></div></div></div>
+        <div class="sb-riv-stat" data-meteo-riga><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v" data-meteo="umidita" data-meteo-dec="0">—<small>%</small></span><span class="sb-riv-stat-l">umidità relativa</span></div></div></div>
+        <div class="sb-riv-stat" data-meteo-riga><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v" data-meteo="vento">—<small>km/h</small></span><span class="sb-riv-stat-l">vento medio</span></div></div></div>
+        <div class="sb-riv-stat" data-meteo-riga><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v" data-meteo="pioggiaOggi">—<small>mm</small></span><span class="sb-riv-stat-l">pioggia caduta oggi</span></div></div></div>
+      </div>
+      <div class="sb-panel sb-riv-meteo-dett"><div class="sb-panel-inner sb-riv-cardpad">
+        <div class="sb-riv-meteo-rows">
+          <div class="row" data-meteo-riga><span>Percepita</span><span data-meteo="percepita">—<small>°C</small></span></div>
+          <div class="row" data-meteo-riga><span>Punto di rugiada</span><span data-meteo="rugiada">—<small>°C</small></span></div>
+          <div class="row" data-meteo-riga><span>Minima di oggi</span><span data-meteo="temperaturaMin">—<small>°C</small></span></div>
+          <div class="row" data-meteo-riga><span>Massima di oggi</span><span data-meteo="temperaturaMax">—<small>°C</small></span></div>
+          <div class="row" data-meteo-riga><span>Raffica</span><span data-meteo="raffica">—<small>km/h</small></span></div>
+          <div class="row" data-meteo-riga><span>Direzione</span><span data-meteo="ventoDirezione">—</span></div>
+          <div class="row" data-meteo-riga><span>Pressione</span><span data-meteo="pressione">—<small>hPa</small></span></div>
+          <div class="row" data-meteo-riga><span>Indice UV</span><span data-meteo="uv">—</span></div>
+          <div class="row" data-meteo-riga><span>Radiazione solare</span><span data-meteo="radiazione" data-meteo-dec="0">—<small>W/m²</small></span></div>
+          <div class="row" data-meteo-riga><span>Pioggia nell'anno</span><span data-meteo="pioggiaAnno">—<small>mm</small></span></div>
+        </div>
+      </div></div>
+      <p class="sb-riv-meteo-pie">
+        <span data-meteo-stato>Lettura in corso.</span>
+        <span>Dati della stazione di Rivalta, per gentile concessione di <a href="https://www.meteomincio.it" target="_blank" rel="noreferrer noopener">meteomincio.it</a>.</span>
+      </p>
+    </div>
 </section>
 
 <section class="sb-container sb-riv-sec" id="acque">
@@ -476,5 +502,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      niente che serva a leggere o a navigare il sito, e la pillola della nav ha
      bisogno che rivalta.js abbia già segnato la voce della pagina aperta. -->
 <script src="assets/glass.js"></script>
+<script src="assets/meteo.js"></script>
 </body>
 </html>

@@ -1,10 +1,16 @@
 # Rivalta sul Mincio — https://www.rivaltasulmincio.it
 #
-# Sito statico, nove pagine, nessuna area riservata: non c'è niente da
+# Sito statico, dieci pagine, nessuna area riservata: non c'è niente da
 # nascondere ai motori. Le esclusioni del vecchio sito (/login, /dashboard,
-# /write, /profile, /api/) non servono più — quelle rotte non esistono.
+# /write, /profile) non servono più — quelle rotte non esistono.
+#
+# /api/meteo esiste, ma è la lettura della stazione meteo in JSON: serve alla
+# pagina /natura, non a chi legge. Indicizzarla significherebbe mettere in
+# archivio la temperatura di un martedì di agosto — e farla ricontrollare per
+# sempre a un robot, a spese del server di meteomincio.
 
 User-agent: *
 Allow: /
+Disallow: /api/
 
 Sitemap: https://www.rivaltasulmincio.it/sitemap.xml

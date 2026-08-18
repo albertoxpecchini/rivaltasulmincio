@@ -44,9 +44,10 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **10** | 3.954 righe di HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | **2.181 righe** | 10 frammenti di contenuto + guscio (`head.html` · `foot.html`) |
-| **Design system** | **1.910 righe CSS** | `sb.css` (1.007) · `rivalta.css` (717) · `controlbar.css` (186) |
-| **JavaScript** | **983 righe**, 4 file | `rivalta.js` (91) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) |
-| **Build** | **359 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Design system** | **2.034 righe CSS** | `sb.css` (1.007) · `rivalta.css` (841) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **1.197 righe**, 5 file | `rivalta.js` (91) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) · `meteo.js` (214) |
+| **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
+| **Build** | **496 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
 | **Luoghi censiti** | **110** | 55 luoghi + 55 attività in `_build/luoghi.json`, 84 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
@@ -58,8 +59,12 @@ tema chiaro/scuro nativo.
 
 ## 🏗️ Com'è fatto
 
-HTML statico puro. Nessuna dipendenza, nessun framework, nessun build step in produzione: si serve
-la cartella così com'è.
+HTML statico. Nessuna dipendenza, nessun framework, nessun build step in produzione: si serve la
+cartella così com'è.
+
+L'unica cosa che gira su un server è [`api/meteo.mjs`](api/meteo.mjs), che legge la stazione meteo
+del paese per la pagina `/natura` — sta lì perché il browser, da solo, quel file non può leggerlo. Si sveglia quando qualcuno apre la pagina e per il resto del tempo non esiste;
+[più sotto](#la-stazione-meteo--lunica-cosa-che-gira-su-un-server) c'è il perché per esteso.
 
 Gli indirizzi pubblici **non hanno estensione**: `/paese`, non `/paese.html`. I file su disco si
 chiamano ancora `paese.html` — è `"cleanUrls": true` in [`vercel.json`](vercel.json) che li serve senza, e che manda
@@ -298,6 +303,7 @@ sequenceDiagram
     participant GH as GitHub · main
     participant VC as Vercel · hosting
     participant BR as Browser
+    participant WX as meteomincio.it · stazione
 
     Note over Dev,OSM: 1 · I dati
     Dev->>OSM: query Overpass sull'area di Rivalta
@@ -330,6 +336,17 @@ sequenceDiagram
     Note over BR: tema e movimento decisi prima del primo paint
     BR->>VC: GET /data/rivalta_dataset.json (dalla pagina /dati)
     VC-->>BR: il dataset grezzo, riverificabile (cache 24 h)
+
+    Note over BR,WX: 5 · La stazione meteo, dalla pagina /natura
+    loop ogni minuto, finché la scheda resta in primo piano
+        BR->>VC: GET /api/meteo
+        alt cache CDN scaduta (al più una volta al minuto)
+            VC->>WX: GET clientraw.txt
+            WX-->>VC: 170 campi separati da spazio
+            Note over VC: parsing → JSON · s-maxage 60 s
+        end
+        VC-->>BR: la lettura della stazione, in JSON
+    end
 ```
 
 | Dipendenza esterna | Uso | Dove |
@@ -337,12 +354,66 @@ sequenceDiagram
 | **OpenStreetMap / Overpass API** | l'estratto geodati del paese (ODbL) | a mano, in locale — non a runtime |
 | **Google Fonts** | Titillium Web + Roboto Mono | client, con `preconnect` |
 | **Piastrelle OpenStreetMap** | il fondo della mappa (ODbL, con attribuzione) | client, **solo su `/mappa`** |
-| **Vercel** | hosting statico, `cleanUrls`, header di cache | produzione |
+| **meteomincio.it** | la lettura della stazione di Rivalta | server, via `/api/meteo`, per la home e `/natura` |
+| **Vercel** | hosting statico + una funzione, `cleanUrls`, header di cache | produzione |
 
-Il sito **non chiama nessuna API a runtime**: quello che il browser scarica sono pagine, fogli di
-stile, gli script e — solo se lo si chiede — il dataset da `/dati`. L'unica eccezione è `/mappa`,
-che scarica le piastrelle da `tile.openstreetmap.org` mentre la si esplora; i 268 segnaposto, invece,
-sono già dentro la pagina.
+Quello che il browser scarica sono pagine, fogli di stile, gli script e — solo se lo si chiede — il
+dataset da `/dati`. Le chiamate a runtime sono **due**: `/mappa` scarica le piastrelle da
+`tile.openstreetmap.org` mentre la si esplora (i 268 segnaposto, invece, sono già dentro la
+pagina), e la stazione meteo viene chiesta a `/api/meteo` dalle due pagine che la mostrano — la
+home e `/natura`. Le altre otto non parlano con nessuno.
+
+### La stazione meteo — l'unica cosa che gira su un server
+
+A Rivalta c'è una stazione vera, gestita col Centro Meteorologico Lombardo, che pubblica le proprie
+letture su [meteomincio.it](https://www.meteomincio.it) in `clientraw.txt` — il formato standard di
+Weather Display: una riga, 170 campi separati da spazio, posizione fissa. Il file viene riscritto
+**ogni venticinque secondi circa**, e quello che si legge è vecchio di una cinquantina: «aggiornato
+al minuto» è esattamente quanto questa fonte può dare, e la pagina non promette di più.
+
+Il loro server però non manda `Access-Control-Allow-Origin`, quindi il browser di chi legge questo
+sito non può aprire quel file da sé. Da qui [`api/meteo.mjs`](api/meteo.mjs), **la sola riga di
+codice del progetto che non giri nel browser di chi legge**: sta in mezzo, traduce i 170 campi in
+JSON con i nomi delle cose, e risponde con `s-maxage=60`. È la CDN di Vercel a servire quella
+risposta a tutti, quindi meteomincio viene interrogato **al massimo una volta al minuto** — mille
+lettori o uno solo, per il loro server non cambia niente.
+
+Non c'è nessun cron e nessuna macchina accesa: la funzione si sveglia quando qualcuno apre una
+delle due pagine, e se non le apre nessuno non succede niente. Se la stazione tace, la funzione
+risponde `503` e la pagina tiene a schermo l'ultima lettura buona dicendo di quando è — un dato
+vecchio ma dichiarato è utile, un dato inventato no.
+
+Gli indici dei campi in `CAMPI` sono verificati contro `ajaxWDwx3.js`, lo script con cui
+meteomincio legge il proprio cruscotto: sono gli stessi numeri che leggono loro. **È l'unico punto
+del sito che dipende dal formato di qualcun altro**, e se un giorno smettesse di funzionare è lì che
+si guarda.
+
+#### Le due forme
+
+Le pagine che la mostrano sono due, e mostrano cose diverse perché servono momenti diversi.
+
+In fondo a **`/natura`** c'è la griglia estesa: quattro numeri grandi e dieci misure di contorno,
+per chi la stazione la stava cercando. Nella **hero della home**, a destra del titolo, c'è la
+scheda `Ora a Rivalta`: gradi, che tempo fa, minima e massima, e le tre misure che cambiano la
+giornata — umidità, vento, pioggia. Quanto basta a decidere se prendere la giacca; il resto sta a
+un click.
+
+Il campo 48 del formato è un numero da 0 a 37 con cui la stazione dichiara la condizione in corso.
+[`api/meteo.mjs`](api/meteo.mjs) lo traduce in un nome italiano e in una chiave, e
+[`assets/meteo.js`](assets/meteo.js) disegna la figura corrispondente: **undici SVG scritti in
+linea**, con lo stesso tratto delle altre icone del sito. Sono in linea e non in un file di
+immagini perché così prendono il colore dal testo — passano da sole al tema scuro, e una notte
+serena non resta azzurra su fondo nero perché il `.svg` era stato salvato azzurro.
+
+Nessuna delle figure ne copre un'altra. Il primo tentativo faceva passare la nuvola davanti al
+sole riempiendola del colore del fondo: funzionava sul foglio di prova e sarebbe stato sbagliato in
+pagina, perché la scheda sta su una lastra di vetro traslucida e non sul fondo — la toppa si
+sarebbe vista come una macchia chiara dentro la nuvola. Ora l'astro sta in alto a destra e la
+nuvola in basso a sinistra, senza toccarsi.
+
+Un solo script serve tutte e due le forme, e non le conosce: cerca gli elementi che dichiarano
+`data-meteo` e ci scrive il campo che chiedono. Una terza forma, un domani, non richiede una riga
+in più lì dentro.
 
 ---
 
