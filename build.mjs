@@ -250,6 +250,163 @@ ${voci}
     .join("\n");
 };
 
+/* ── La stazione in diretta ───────────────────────────────────────────────
+   {{METEO}} diventa i riquadri che assets/meteo.js riempie ogni minuto con la
+   lettura vera della stazione di Rivalta. Qui c'è solo la forma: quali misure
+   si mostrano, in che ordine, con che etichetta e che unità. Il numero non
+   c'è e non ci deve essere — nel momento in cui questo file gira, il valore
+   giusto non esiste ancora.
+
+   Il blocco esce `hidden`: lo scopre lo script quando la prima lettura arriva
+   davvero. Chi ha JavaScript spento, o chi apre la pagina mentre la stazione
+   tace, resta con il paragrafo qui sopra — che dice il vero — invece di una
+   griglia di trattini che promette dati e non li dà.
+
+   `data-meteo` è il nome del campo nel JSON di /api/meteo, `data-meteo-dec` i
+   decimali, `data-meteo-riga` la porzione da nascondere se quella misura non
+   arriva (un sensore rotto toglie la sua riga, non falsifica un numero).
+   Aggiungere una misura si fa qui, e basta: lo script non va toccato. */
+const METEO_GRANDI = [
+  { campo: "temperatura", unita: "°C", etichetta: "temperatura all'aperto" },
+  { campo: "umidita", unita: "%", dec: 0, etichetta: "umidità relativa" },
+  { campo: "vento", unita: "km/h", etichetta: "vento medio" },
+  { campo: "pioggiaOggi", unita: "mm", etichetta: "pioggia caduta oggi" },
+];
+
+/* L'ordine è quello di lettura, non quello delle colonne: la griglia si riempie
+   per righe e le colonne sono una, due o tre secondo la larghezza dello
+   schermo, quindi qualsiasi accoppiamento pensato per due colonne si
+   sfascerebbe alle altre due misure. */
+const METEO_DETTAGLI = [
+  { campo: "percepita", unita: "°C", etichetta: "Percepita" },
+  { campo: "rugiada", unita: "°C", etichetta: "Punto di rugiada" },
+  { campo: "temperaturaMin", unita: "°C", etichetta: "Minima di oggi" },
+  { campo: "temperaturaMax", unita: "°C", etichetta: "Massima di oggi" },
+  { campo: "raffica", unita: "km/h", etichetta: "Raffica" },
+  { campo: "ventoDirezione", etichetta: "Direzione" },
+  { campo: "pressione", unita: "hPa", etichetta: "Pressione" },
+  { campo: "uv", etichetta: "Indice UV" },
+  { campo: "radiazione", unita: "W/m²", dec: 0, etichetta: "Radiazione solare" },
+  { campo: "pioggiaAnno", unita: "mm", etichetta: "Pioggia nell'anno" },
+];
+
+/* ── «Prossimamente» ──────────────────────────────────────────────────────
+   La stazione è di meteomincio.it e il permesso di rilanciarne le letture
+   gliel'abbiamo chiesto, ma la risposta non è ancora arrivata. Finché non
+   arriva, la sezione dice di sé che è in prova.
+
+   La barra sta **dentro** il blocco dei dati, non sopra: il blocco nasce
+   nascosto e lo scopre lo script solo quando una lettura vera è arrivata, e
+   una barra fuori resterebbe lì da sola ad annunciare una cosa che non si
+   vede. Compaiono insieme o non compare niente.
+
+   Quando la risposta arriva si toglie la chiamata a questa funzione dai due
+   render qui sotto, e non resta traccia di niente. */
+const renderProssimamente = (nota) =>
+  `<div class="sb-riv-prossima">
+          <span class="sb-riv-flash-badge">Prossimamente</span>${
+            nota ? `\n          <span class="sb-riv-prossima-d">${nota}</span>` : ""
+          }
+        </div>`;
+
+const NOTA_PROVA =
+  "Sezione in prova: i dati sono veri e in diretta dalla stazione del paese, ma stiamo aspettando il via libera di chi la gestisce.";
+
+/* Il trattino è il segnaposto di un valore che sta per arrivare, non un
+   valore. Vive meno di un secondo — il blocco è nascosto finché lo script non
+   ha scritto i numeri veri — ma serve perché la casella abbia un'altezza. */
+const casella = ({ campo, unita, dec }) =>
+  `<span class="sb-riv-stat-v" data-meteo="${campo}"${dec !== undefined ? ` data-meteo-dec="${dec}"` : ""}>—${
+    unita ? `<small>${unita}</small>` : ""
+  }</span>`;
+
+const renderMeteo = () => {
+  const grandi = METEO_GRANDI.map(
+    (m) => `        <div class="sb-riv-stat" data-meteo-riga><div class="sb-panel"><div class="sb-panel-inner">${casella(
+      m
+    )}<span class="sb-riv-stat-l">${m.etichetta}</span></div></div></div>`
+  ).join("\n");
+
+  const dettagli = METEO_DETTAGLI.map(
+    (m) =>
+      `          <div class="row" data-meteo-riga><span>${m.etichetta}</span><span data-meteo="${m.campo}"${
+        m.dec !== undefined ? ` data-meteo-dec="${m.dec}"` : ""
+      }>—${m.unita ? `<small>${m.unita}</small>` : ""}</span></div>`
+  ).join("\n");
+
+  return `<div class="sb-riv-meteo" id="meteo-live" data-meteo-blocco hidden>
+      ${renderProssimamente(NOTA_PROVA)}
+      <div class="sb-riv-stats">
+${grandi}
+      </div>
+      <div class="sb-panel sb-riv-meteo-dett"><div class="sb-panel-inner sb-riv-cardpad">
+        <div class="sb-riv-meteo-rows">
+${dettagli}
+        </div>
+      </div></div>
+      <p class="sb-riv-meteo-pie">
+        <span data-meteo-stato>Lettura in corso.</span>
+        <span>Dati della stazione di Rivalta, per gentile concessione di <a href="https://www.meteomincio.it" target="_blank" rel="noreferrer noopener">meteomincio.it</a>.</span>
+      </p>
+    </div>`;
+};
+
+/* ── La stessa stazione, in piccolo ───────────────────────────────────────
+   {{METEO_ORA}} è la scheda che sta a destra del titolo, nella home. Legge lo
+   stesso /api/meteo della griglia di /natura, con lo stesso script: cambiano
+   solo quali misure entrano e quanto spazio hanno.
+
+   Qui la selezione è severa, ed è il punto della scheda. Chi arriva sulla home
+   non vuole dieci misure: vuole sapere se fuori fa caldo, se piove e se tira
+   vento — cioè se prendere la giacca. Il resto sta a un click di distanza, e
+   il collegamento in fondo esiste per quello.
+
+   La temperatura porta il grado attaccato e non l'unità intera: «31°» accanto
+   a un disegno di sole si legge da solo, e «31,0 °C» in caratteri grandi
+   occuperebbe metà scheda per dire la stessa cosa. I decimali restano, invece,
+   nelle tre misure piccole, dove servono a distinguere 0,2 mm di pioggia da
+   nessuna pioggia. */
+const METEO_ORA_MINI = [
+  { campo: "umidita", unita: "%", dec: 0, etichetta: "umidità" },
+  { campo: "vento", unita: "km/h", etichetta: "vento" },
+  { campo: "pioggiaOggi", unita: "mm", etichetta: "pioggia" },
+];
+
+const renderMeteoOra = () => {
+  const mini = METEO_ORA_MINI.map(
+    (m) =>
+      `          <div class="sb-riv-ora-mini" data-meteo-riga><span class="sb-riv-ora-mini-v" data-meteo="${m.campo}"${
+        m.dec !== undefined ? ` data-meteo-dec="${m.dec}"` : ""
+      }>—<small>${m.unita}</small></span><span class="sb-riv-ora-mini-l">${m.etichetta}</span></div>`
+  ).join("\n");
+
+  /* Nella scheda della home la barra non porta la spiegazione: ventun rem non
+     bastano a una frase di venticinque parole senza che diventi il pezzo più
+     grosso del riquadro. Qui basta la parola, e la spiegazione sta su
+     /natura, dove c'è lo spazio per darla — a un click dal collegamento che
+     la scheda ha già in fondo. */
+  return `<aside class="sb-riv-ora" data-meteo-blocco hidden aria-label="Il tempo a Rivalta in questo momento">
+        ${renderProssimamente(null)}
+        <div class="sb-panel"><div class="sb-panel-inner sb-riv-ora-inner">
+          <span class="sb-riv-ora-occhiello">Ora a Rivalta</span>
+          <div class="sb-riv-ora-testa">
+            <span class="sb-riv-ora-icona" data-meteo-icona></span>
+            <span class="sb-riv-ora-t"><span data-meteo="temperatura" data-meteo-dec="0">—</span><span class="sb-riv-ora-grado" aria-hidden="true">°</span></span>
+          </div>
+          <span class="sb-riv-ora-cond" data-meteo="condizione" data-meteo-riga>—</span>
+          <div class="sb-riv-ora-estremi" data-meteo-riga>
+            <span>min <span data-meteo="temperaturaMin" data-meteo-dec="0">—</span>°</span>
+            <span>max <span data-meteo="temperaturaMax" data-meteo-dec="0">—</span>°</span>
+          </div>
+          <div class="sb-riv-ora-minis">
+${mini}
+          </div>
+          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <span class="sb-riv-ora-stato" data-meteo-stato="breve">Lettura in corso</span>
+        </div></div>
+      </aside>`;
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
@@ -265,6 +422,8 @@ for (const file of bodies) {
       .replace("{{NEWS}}", renderNews)
       .replace("{{MAPPA}}", renderMappa)
       .replace("{{LUOGHI}}", renderLuoghi)
+      .replace("{{METEO_ORA}}", renderMeteoOra)
+      .replace("{{METEO}}", renderMeteo)
   );
 
   const title = meta(src, "title");
@@ -276,9 +435,16 @@ for (const file of bodies) {
      il segnaposto della mappa, allora la mappa gli serve. */
   const conMappa = src.includes("{{MAPPA}}");
   const headExtra = conMappa ? `<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">\n` : "";
-  const scriptExtra = conMappa
-    ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n`
-    : "";
+
+  /* Stessa regola per la stazione meteo: lo script che la interroga ogni
+     minuto lo scarica solo la pagina che i riquadri ce li ha davvero — la
+     griglia estesa di /natura o la scheda piccola della home, indifferente:
+     è lo stesso file e sa riempirle tutte e due. */
+  const conMeteo = src.includes("{{METEO}}") || src.includes("{{METEO_ORA}}");
+
+  const scriptExtra =
+    (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
+    (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:

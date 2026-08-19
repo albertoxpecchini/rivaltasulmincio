@@ -99,7 +99,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <main class="sb-main" id="main">
 <section class="sb-hero">
-      <div class="sb-container">
+      <div class="sb-container sb-riv-heroduo">
+        <div class="sb-riv-heroduo-testo">
         <h1 class="sb-hero-title">
           <span>Rivalta sul Mincio</span>
           <span class="sb-brandline">il paese, in ogni suo dato</span>
@@ -118,6 +119,32 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <span class="sb-chip">Prefisso 0376</span>
           <span class="sb-chip"><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180192&amp;mlon=10.677137#map=18/45.180192/10.677137" target="_blank" rel="noreferrer noopener" title="45.180192, 10.677137 — apri su OpenStreetMap">45.180192 N, 10.677137 E<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></span>
         </div>
+        </div>
+
+      <aside class="sb-riv-ora" data-meteo-blocco hidden aria-label="Il tempo a Rivalta in questo momento">
+        <div class="sb-riv-prossima">
+          <span class="sb-riv-flash-badge">Prossimamente</span>
+        </div>
+        <div class="sb-panel"><div class="sb-panel-inner sb-riv-ora-inner">
+          <span class="sb-riv-ora-occhiello">Ora a Rivalta</span>
+          <div class="sb-riv-ora-testa">
+            <span class="sb-riv-ora-icona" data-meteo-icona></span>
+            <span class="sb-riv-ora-t"><span data-meteo="temperatura" data-meteo-dec="0">—</span><span class="sb-riv-ora-grado" aria-hidden="true">°</span></span>
+          </div>
+          <span class="sb-riv-ora-cond" data-meteo="condizione" data-meteo-riga>—</span>
+          <div class="sb-riv-ora-estremi" data-meteo-riga>
+            <span>min <span data-meteo="temperaturaMin" data-meteo-dec="0">—</span>°</span>
+            <span>max <span data-meteo="temperaturaMax" data-meteo-dec="0">—</span>°</span>
+          </div>
+          <div class="sb-riv-ora-minis">
+          <div class="sb-riv-ora-mini" data-meteo-riga><span class="sb-riv-ora-mini-v" data-meteo="umidita" data-meteo-dec="0">—<small>%</small></span><span class="sb-riv-ora-mini-l">umidità</span></div>
+          <div class="sb-riv-ora-mini" data-meteo-riga><span class="sb-riv-ora-mini-v" data-meteo="vento">—<small>km/h</small></span><span class="sb-riv-ora-mini-l">vento</span></div>
+          <div class="sb-riv-ora-mini" data-meteo-riga><span class="sb-riv-ora-mini-v" data-meteo="pioggiaOggi">—<small>mm</small></span><span class="sb-riv-ora-mini-l">pioggia</span></div>
+          </div>
+          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <span class="sb-riv-ora-stato" data-meteo-stato="breve">Lettura in corso</span>
+        </div></div>
+      </aside>
       </div>
     </section>
 
@@ -495,5 +522,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      niente che serva a leggere o a navigare il sito, e la pillola della nav ha
      bisogno che rivalta.js abbia già segnato la voce della pagina aperta. -->
 <script src="assets/glass.js"></script>
+<script src="assets/meteo.js"></script>
 </body>
 </html>

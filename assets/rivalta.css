@@ -164,6 +164,158 @@
   color: var(--sb-fg-muted);
 }
 
+/* ── «Prossimamente» ──────────────────────────────────────────────────────
+   La riga che dice, sopra i dati, che la sezione è in prova finché non arriva
+   il via libera di chi la stazione la gestisce.
+
+   La pillola non è nuova: è la stessa .sb-riv-flash-badge dell'aggiornamento
+   in evidenza. Un secondo badge pieno, disegnato apposta, avrebbe voluto dire
+   due pillole piene quasi uguali nella stessa pagina — e «quasi uguali» è
+   peggio di «uguali» o «diverse». Qui si aggiunge solo come si dispone.
+
+   L'allineamento è in alto e non al centro: quando la spiegazione va a capo —
+   e a schermo stretto ci va — con l'allineamento centrato la pillola
+   scivolerebbe a metà di un blocco di due righe, staccandosi dalla prima
+   parola a cui si riferisce. */
+.sb-riv-prossima {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.45rem 0.75rem;
+  margin: 0 0 0.9rem;
+}
+.sb-riv-prossima-d {
+  max-width: 46rem;
+  padding-top: 0.12rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--sb-fg-muted);
+}
+
+/* ── La hero della home, a due colonne ────────────────────────────────────
+   Il titolo tiene la sua colonna e la scheda del tempo sta al suo fianco.
+   Sotto i 1040px la seconda colonna non ci sta senza stringere il titolo, e
+   allora la scheda scende sotto: è la prima cosa che si legge dopo l'invito a
+   entrare nel sito, il che va benissimo. */
+.sb-riv-heroduo { display: grid; gap: 2.2rem; align-items: center; }
+@media (min-width: 1040px) {
+  .sb-riv-heroduo { grid-template-columns: minmax(0, 1fr) 17.5rem; gap: 3.5rem; }
+}
+
+/* ── «Ora a Rivalta» ──────────────────────────────────────────────────────
+   La stessa stazione della griglia in fondo a /natura, ridotta a quello che
+   serve prima di uscire di casa: quanti gradi fa, che tempo è, e le tre
+   misure che cambiano la giornata. Sotto, il collegamento per chi ne vuole
+   dieci invece di tre.
+
+   Nessun pallino che pulsa e nessun numero che scorre quando il valore cambia.
+   La scheda dice l'ora della misura in fondo, a parole: chi vuole sapere se è
+   fresca lo legge, chi non se lo chiede non viene interrotto per dirglielo. */
+.sb-riv-ora[hidden] { display: none; }
+.sb-riv-ora { max-width: 21rem; }
+.sb-riv-ora-inner { padding: 1.1rem 1.25rem 1.05rem; }
+
+.sb-riv-ora-occhiello {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--sb-fg-muted);
+}
+
+.sb-riv-ora-testa { display: flex; align-items: center; gap: 0.85rem; margin-top: 0.55rem; }
+/* L'unica tinta della scheda, e del sito: l'azzurro del marchio. Il disegno
+   prende il colore dal testo, quindi al tema scuro cambia da sé. */
+.sb-riv-ora-icona { flex: none; width: 2.7rem; height: 2.7rem; color: var(--sb-brand-text); }
+.sb-riv-ora-icona[hidden] { display: none; }
+.sb-riv-ora-icona svg { display: block; width: 100%; height: 100%; }
+.sb-riv-ora-t {
+  font-size: 2.7rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--sb-fg);
+}
+/* Il grado è del numero, non un'unità a parte: più chiaro, e attaccato. */
+.sb-riv-ora-grado { color: var(--sb-fg-muted); }
+
+.sb-riv-ora-cond { margin-top: 0.5rem; font-size: 0.92rem; line-height: 1.35; color: var(--sb-fg-light); }
+.sb-riv-ora-cond[hidden] { display: none; }
+.sb-riv-ora-estremi { display: flex; gap: 0.85rem; margin-top: 0.2rem; font-size: 0.78rem; color: var(--sb-fg-muted); }
+.sb-riv-ora-estremi[hidden] { display: none; }
+
+/* Le tre misure piccole, sotto un filo di separazione: è l'unica riga di
+   confine di tutta la scheda, e separa «che tempo fa» da «quanto». */
+.sb-riv-ora-minis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.95rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--sb-border);
+}
+.sb-riv-ora-mini { min-width: 0; }
+.sb-riv-ora-mini[hidden] { display: none; }
+.sb-riv-ora-mini-v { display: block; font-size: 0.95rem; line-height: 1.25; color: var(--sb-fg); }
+.sb-riv-ora-mini-v small { font-size: 0.62em; color: var(--sb-fg-muted); margin-left: 0.12em; }
+.sb-riv-ora-mini-l { display: block; font-size: 0.7rem; line-height: 1.3; color: var(--sb-fg-muted); }
+
+/* align-self: la lastra è una colonna flex, e senza questo il collegamento si
+   stirerebbe da bordo a bordo prendendosi il click di mezza scheda. */
+.sb-riv-ora-go { align-self: flex-start; margin-top: 0.95rem; font-size: 0.82rem; }
+.sb-riv-ora-stato { margin-top: 0.5rem; font-size: 0.7rem; line-height: 1.4; color: var(--sb-fg-muted); }
+
+/* ── Stazione meteo in diretta ─────────────────────────────────────────────
+   Gli stessi riquadri di sintesi qui sopra, con dentro numeri che cambiano da
+   soli. Nessun segnale che lo annunci: niente pallino che pulsa, niente cifra
+   che scorre. Il sito ha già deciso una volta che scorrere una pagina non è
+   un evento, e nemmeno la temperatura che passa da 31,0 a 31,1 lo è — chi
+   guarda vede il numero giusto, e tanto basta.
+
+   Il blocco nasce `hidden` e lo scopre assets/meteo.js quando la prima
+   lettura arriva davvero. */
+.sb-riv-meteo[hidden] { display: none; }
+.sb-riv-meteo { margin: 1.4rem 0 0; }
+
+/* Le misure di contorno: percepita, rugiada, pressione, sole. Stanno in una
+   lastra sola sotto i quattro numeri grandi, e le colonne sono una, due o tre
+   secondo quanto spazio c'è — su una lastra larga quanto la pagina, due sole
+   colonne lascerebbero mezzo pannello vuoto. */
+.sb-riv-meteo-dett { margin-top: 0.7rem; }
+.sb-riv-meteo-rows {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem 1.6rem;
+  margin: 0;
+}
+@media (min-width: 640px) {
+  .sb-riv-meteo-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .sb-riv-meteo-rows { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+/* Le etichette qui sono più lunghe di quelle delle schede chiave/valore
+   ordinarie — «radiazione solare» in 5,5rem va a capo — e la colonna si
+   allarga di conseguenza. Il selettore ripete .sb-riv-cardpad non per vezzo:
+   la regola da scavalcare ha la stessa specificità di questa e viene dopo nel
+   foglio, quindi senza quel pezzo in più vincerebbe lei. */
+.sb-riv-cardpad .sb-riv-meteo-rows .row span:first-child { width: 9.5rem; }
+.sb-riv-meteo-rows .row[hidden] { display: none; }
+
+/* La riga in fondo dice due cose che il numero da solo non dice: di quando è
+   la misura, e di chi è la stazione. La seconda non è una cortesia
+   facoltativa — il dato è loro. */
+.sb-riv-meteo-pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 0.5rem;
+  margin: 0.7rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-meteo-pie a { color: var(--sb-brand-text); text-decoration: none; }
+.sb-riv-meteo-pie a:hover { text-decoration: underline; }
+
 /* ── Tabelle ──────────────────────────────────────────────────────────────
    Le tabelle sono il grosso di questo sito, e ora sono vetro come tutto il
    resto — prima erano l'unico posto in cui la lastra era spenta (--solid).
@@ -409,8 +561,11 @@
   gap: 0.6rem;
 }
 .sb-riv-flash-badge {
-  /* L'unica pillola piena del sito: resta di tinta brand, ma prende la stessa
-     sagoma delle altre, con la variante brand del filo sulle diagonali. */
+  /* L'unica pillola PIENA del sito — di tinta brand, con la stessa sagoma
+     delle altre e la variante brand del filo sulle diagonali. Una sola nel
+     foglio, due usi in pagina: l'aggiornamento in evidenza e il segnale
+     «Prossimamente» sopra la stazione meteo. Se ne serve un terzo, si riusa
+     questa: due pillole piene quasi uguali sono peggio di una sola. */
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;

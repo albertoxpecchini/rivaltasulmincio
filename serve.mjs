@@ -16,6 +16,7 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
 const PORT = Number(process.env.PORT || process.argv[2] || 8080);
@@ -44,8 +45,45 @@ const isFile = async (p) => {
   }
 };
 
+/* In produzione `api/meteo.mjs` lo esegue Vercel, che alla risposta HTTP
+   attacca due comodità che Node da solo non ha: `status()` e `json()`. In
+   anteprima le mettiamo qui, così la stessa identica funzione gira anche in
+   locale e la pagina si può guardare viva prima di pubblicarla — che senza
+   sarebbe l'unico pezzo del sito impossibile da provare a casa.
+
+   `?` e `#` sono già stati tolti a monte: qui arriva solo il nome. */
+const apiPreview = async (nome, req, res) => {
+  const file = join(ROOT, "api", `${nome}.mjs`);
+  if (!/^[a-z0-9-]+$/.test(nome) || !(await isFile(file))) return false;
+
+  res.status = (c) => ((res.statusCode = c), res);
+  res.json = (b) => {
+    if (!res.hasHeader("content-type")) res.setHeader("content-type", "application/json; charset=utf-8");
+    res.end(JSON.stringify(b));
+  };
+
+  // `?${Date.now()}` sull'import: altrimenti Node tiene in memoria la prima
+  // versione del modulo e le modifiche non si vedono senza riavviare.
+  const { default: handler } = await import(`${pathToFileURL(file).href}?${Date.now()}`);
+  await handler(req, res);
+  return true;
+};
+
 createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split("?")[0]);
+
+  /* Tutto ciò che sta sotto /api/ finisce qui e non prosegue: se il nome non
+     corrisponde a una funzione è un 404, mai il sorgente servito come file. */
+  if (url.startsWith("/api/")) {
+    const nome = url.slice(5);
+    if (!(await apiPreview(nome, req, res))) {
+      res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      res.end(`404 ${url}`);
+    }
+    console.log(`${res.statusCode} ${url}`);
+    return;
+  }
+
   // Via lo slash iniziale e ogni `..`: senza, un indirizzo costruito a mano
   // leggerebbe file fuori dalla cartella del sito.
   let rel = normalize(url).replace(/^(\.\.[/\\])+/, "").replace(/^[/\\]+/, "");
