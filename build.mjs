@@ -290,6 +290,28 @@ const METEO_DETTAGLI = [
   { campo: "pioggiaAnno", unita: "mm", etichetta: "Pioggia nell'anno" },
 ];
 
+/* ── «Prossimamente» ──────────────────────────────────────────────────────
+   La stazione è di meteomincio.it e il permesso di rilanciarne le letture
+   gliel'abbiamo chiesto, ma la risposta non è ancora arrivata. Finché non
+   arriva, la sezione dice di sé che è in prova.
+
+   La barra sta **dentro** il blocco dei dati, non sopra: il blocco nasce
+   nascosto e lo scopre lo script solo quando una lettura vera è arrivata, e
+   una barra fuori resterebbe lì da sola ad annunciare una cosa che non si
+   vede. Compaiono insieme o non compare niente.
+
+   Quando la risposta arriva si toglie la chiamata a questa funzione dai due
+   render qui sotto, e non resta traccia di niente. */
+const renderProssimamente = (nota) =>
+  `<div class="sb-riv-prossima">
+          <span class="sb-riv-flash-badge">Prossimamente</span>${
+            nota ? `\n          <span class="sb-riv-prossima-d">${nota}</span>` : ""
+          }
+        </div>`;
+
+const NOTA_PROVA =
+  "Sezione in prova: i dati sono veri e in diretta dalla stazione del paese, ma stiamo aspettando il via libera di chi la gestisce.";
+
 /* Il trattino è il segnaposto di un valore che sta per arrivare, non un
    valore. Vive meno di un secondo — il blocco è nascosto finché lo script non
    ha scritto i numeri veri — ma serve perché la casella abbia un'altezza. */
@@ -313,6 +335,7 @@ const renderMeteo = () => {
   ).join("\n");
 
   return `<div class="sb-riv-meteo" id="meteo-live" data-meteo-blocco hidden>
+      ${renderProssimamente(NOTA_PROVA)}
       <div class="sb-riv-stats">
 ${grandi}
       </div>
@@ -357,7 +380,13 @@ const renderMeteoOra = () => {
       }>—<small>${m.unita}</small></span><span class="sb-riv-ora-mini-l">${m.etichetta}</span></div>`
   ).join("\n");
 
+  /* Nella scheda della home la barra non porta la spiegazione: ventun rem non
+     bastano a una frase di venticinque parole senza che diventi il pezzo più
+     grosso del riquadro. Qui basta la parola, e la spiegazione sta su
+     /natura, dove c'è lo spazio per darla — a un click dal collegamento che
+     la scheda ha già in fondo. */
   return `<aside class="sb-riv-ora" data-meteo-blocco hidden aria-label="Il tempo a Rivalta in questo momento">
+        ${renderProssimamente(null)}
         <div class="sb-panel"><div class="sb-panel-inner sb-riv-ora-inner">
           <span class="sb-riv-ora-occhiello">Ora a Rivalta</span>
           <div class="sb-riv-ora-testa">

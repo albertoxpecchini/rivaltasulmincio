@@ -388,6 +388,23 @@ meteomincio legge il proprio cruscotto: sono gli stessi numeri che leggono loro.
 del sito che dipende dal formato di qualcun altro**, e se un giorno smettesse di funzionare è lì che
 si guarda.
 
+#### «Prossimamente» — come si toglie
+
+La sezione è **in prova**, e lo dice: sopra i dati, in tutte e due le pagine, c'è una pillola
+`Prossimamente` e — dove c'è spazio — la riga che spiega perché. Non è un segnaposto: i numeri
+sotto sono veri e in diretta. È in attesa del via libera di chi la stazione la gestisce, a cui la
+richiesta è stata mandata dal loro modulo di contatto.
+
+La barra sta **dentro** il blocco dei dati, non sopra: il blocco nasce `hidden` e lo scopre lo
+script solo a lettura arrivata, e una barra messa fuori resterebbe lì da sola ad annunciare una
+cosa che non si vede.
+
+Quando la risposta arriva, si tolgono le due chiamate a `renderProssimamente()` in
+[`build.mjs`](build.mjs), si rigenera, e non resta traccia di niente. Se la risposta fosse no, si
+tolgono invece i segnaposto `{{METEO}}` da `_build/natura.body.html` e `{{METEO_ORA}}` da
+`_build/index.body.html`: il sito torna esattamente com'era e la funzione resta in cartella senza
+fare niente.
+
 #### Le due forme
 
 Le pagine che la mostrano sono due, e mostrano cose diverse perché servono momenti diversi.
