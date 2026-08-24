@@ -432,6 +432,54 @@ Un solo script serve tutte e due le forme, e non le conosce: cerca gli elementi 
 `data-meteo` e ci scrive il campo che chiedono. Una terza forma, un domani, non richiede una riga
 in più lì dentro.
 
+### La Color Runner — l'iscrizione che incassa davvero
+
+La seconda cosa che non gira nel browser di chi legge. `/color-runner` raccoglie i dati di chi si
+iscrive alla camminata a colori del 20 settembre e ne incassa la quota — **10 €**, un pagamento
+vero — in un passaggio solo. La pagina **non è nel menu e non è in sitemap**: dichiara
+`noindex: true` in [`_build/color-runner.body.html`](_build/color-runner.body.html) e si raggiunge
+col link diretto, che è come il gruppo del Palio la distribuisce. Per renderla pubblica si toglie
+quella riga e si rifà il build; non c'è altro da cambiare.
+
+[`api/iscrizione-color-runner.mjs`](api/iscrizione-color-runner.mjs) parla con l'API REST di Stripe
+via `fetch`, **senza il pacchetto npm `stripe`**: stesso zero-dipendenze del resto del sito, stesso
+stile di `api/meteo.mjs`. Fa due mestieri secondo il metodo con cui lo si chiama:
+
+| | |
+|---|---|
+| `POST` | il modulo manda nome, cognome, email, telefono, note e il consenso spuntato; nasce una sessione Stripe Checkout e la risposta è l'indirizzo a cui mandare il browser a pagare |
+| `GET ?sessione=cs_…` | al ritorno dal pagamento la pagina chiede a Stripe se quella sessione è stata **davvero** pagata |
+
+Il secondo esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo basterebbe
+aprire `/color-runner?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato una lira.
+Chi ha pagato ha in mano anche l'identificativo di sessione — che non si indovina — ed è quello, non
+la parola `ok`, a decidere cosa la pagina scrive.
+
+**L'elenco degli iscritti è il dashboard Stripe.** I campi del modulo viaggiano come `metadata`
+della sessione e compaiono lì accanto a ogni pagamento, insieme all'ora in cui il consenso è stato
+dato: niente database, niente foglio a parte, niente seconda copia dei dati di persone vere da
+tenere al sicuro. Il sito non vede mai i dati della carta.
+
+#### La chiave — l'unica cosa da mettere a mano
+
+La chiave segreta **non è nel repository e non deve entrarci**. Vive in una variabile d'ambiente su
+Vercel, e finché non c'è l'endpoint risponde `500 pagamento non ancora configurato` senza provarci:
+
+1. Stripe → **Developers → API keys** → copiare la *Secret key* (`sk_live_…` per incassare davvero,
+   `sk_test_…` per provare col numero di carta finto `4242 4242 4242 4242`).
+2. Vercel → progetto → **Settings → Environment Variables** → nome `STRIPE_SECRET_KEY`, valore la
+   chiave, ambiente *Production* (e *Preview*, con la chiave di test, se si vuole provare sui
+   deploy di anteprima).
+3. **Rideployare**: le variabili le legge la funzione all'avvio, un deploy già fatto non le vede.
+
+Per far arrivare la ricevuta a chi paga va spuntato, in Stripe, **Settings → Payments → Customer
+emails → Successful payments**: Checkout riceve già l'indirizzo, ma senza quella spunta Stripe in
+modalità live non scrive a nessuno.
+
+La quota è scritta in **due punti soli**, ed è bene che restino d'accordo: `QUOTA_CENT` in
+`api/iscrizione-color-runner.mjs` (in centesimi) e il testo del bottone in
+`_build/color-runner.body.html`.
+
 ---
 
 ## 🗺️ Dati e fonti

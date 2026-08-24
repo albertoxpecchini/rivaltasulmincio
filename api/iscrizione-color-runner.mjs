@@ -1,86 +1,146 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   /api/iscrizione-color-runner — crea una sessione di pagamento Stripe per
-   l'iscrizione alla Color Runner del 20 settembre.
+   /api/iscrizione-color-runner — l'iscrizione alla Color Runner del
+   20 settembre: raccolta dati e incasso della quota, in un passaggio solo.
 
-   Bozza di lavoro: quota, valuta e descrizione sono placeholder finché il
-   gruppo del Palio non conferma i dettagli — sono le tre costanti qui sotto,
-   l'unico punto da toccare quando arrivano i numeri definitivi.
+   Fa due mestieri, secondo il metodo con cui lo si chiama:
+
+     POST  il modulo manda nome, cognome, email e il consenso spuntato;
+           qui si apre una sessione Stripe Checkout e si risponde con
+           l'indirizzo a cui mandare il browser a pagare.
+
+     GET   ?sessione=cs_...  al ritorno dal pagamento la pagina chiede
+           «questa sessione è stata davvero pagata?». Serve perché
+           l'indirizzo di ritorno lo può digitare chiunque: senza questo
+           controllo basterebbe aprire /color-runner?stato=ok per vedersi
+           dire «iscrizione ricevuta» senza aver pagato una lira.
 
    Chiama direttamente l'API REST di Stripe via fetch, senza il pacchetto
    npm `stripe`: stesso principio di zero-dipendenze del resto del sito,
-   stesso stile di /api/meteo.mjs. I dati del modulo (nome, cognome,
-   telefono, note) viaggiano come metadata della sessione: compaiono così
-   nel dashboard Stripe accanto al pagamento, senza bisogno di un database
-   o un foglio a parte.
+   stesso stile di /api/meteo.mjs. I dati dell'iscritto viaggiano come
+   metadata della sessione: compaiono così nel dashboard Stripe accanto al
+   pagamento — è quello l'elenco degli iscritti, e non serve né un database
+   né un foglio a parte.
 
    La chiave segreta vive solo in una variabile d'ambiente su Vercel
    (STRIPE_SECRET_KEY) — non è mai scritta qui né altrove nel repo.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-const QUOTA_CENT = 1000; // 10,00 € — placeholder, da confermare col gruppo del Palio
+const QUOTA_CENT = 1000; // 10,00 €
 const VALUTA = "eur";
 const DESCRIZIONE_PRODOTTO = "Iscrizione Color Runner — 20 settembre";
 
 const SITE = "https://www.rivaltasulmincio.it";
 
+/* Meno del limite di 10 secondi dichiarato in vercel.json: se Stripe tarda,
+   vogliamo rispondere noi con un errore leggibile, non farci spegnere a metà
+   frase lasciando il browser davanti a una pagina bianca. */
+const ATTESA_MS = 8000;
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ errore: "metodo non consentito" });
-  }
+/* Una sola porta verso Stripe, così l'autorizzazione e il timeout stanno
+   scritti in un posto solo. `corpo` assente = richiesta in lettura (GET). */
+async function stripe(chiave, percorso, corpo) {
+  const risposta = await fetch(`https://api.stripe.com/v1/${percorso}`, {
+    method: corpo ? "POST" : "GET",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${chiave}:`).toString("base64")}`,
+      ...(corpo ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
+    },
+    body: corpo ? corpo.toString() : undefined,
+    signal: AbortSignal.timeout(ATTESA_MS),
+  });
 
+  const dati = await risposta.json();
+  if (!risposta.ok) throw new Error(dati?.error?.message || `Stripe ha risposto ${risposta.status}`);
+  return dati;
+}
+
+export default async function handler(req, res) {
   const chiave = process.env.STRIPE_SECRET_KEY;
   if (!chiave) {
     return res.status(500).json({ errore: "pagamento non ancora configurato" });
   }
 
+  if (req.method === "GET") return verifica(req, res, chiave);
+  if (req.method === "POST") return iscrivi(req, res, chiave);
+
+  res.setHeader("Allow", "GET, POST");
+  return res.status(405).json({ errore: "metodo non consentito" });
+}
+
+/* ── Il ritorno dal pagamento ─────────────────────────────────────────────
+   L'identificativo di sessione non è indovinabile, quindi chi ce l'ha è chi
+   ha appena pagato: gli si può dire il suo nome. Fuori di lì non esce niente
+   — né l'email né l'importo né gli altri campi. */
+async function verifica(req, res, chiave) {
+  const id = pulisci(req.query?.sessione, 100);
+  if (!/^cs_[A-Za-z0-9_]+$/.test(id)) {
+    return res.status(400).json({ errore: "sessione non valida" });
+  }
+
+  try {
+    const sessione = await stripe(chiave, `checkout/sessions/${encodeURIComponent(id)}`);
+    return res.status(200).json({
+      pagato: sessione.payment_status === "paid",
+      nome: sessione.metadata?.nome || "",
+    });
+  } catch (errore) {
+    return res.status(502).json({ errore: String(errore.message || errore) });
+  }
+}
+
+/* ── L'iscrizione ─────────────────────────────────────────────────────────
+   Stripe Checkout vuole i parametri in x-www-form-urlencoded, con la
+   notazione a parentesi quadre per gli oggetti annidati (line_items,
+   price_data, metadata): è la stessa forma richiesta a chi lo chiama da
+   curl o da un backend senza SDK. */
+async function iscrivi(req, res, chiave) {
   const nome = pulisci(req.body?.nome, 80);
   const cognome = pulisci(req.body?.cognome, 80);
   const email = pulisci(req.body?.email, 200);
   const telefono = pulisci(req.body?.telefono, 40) || "—";
   const note = pulisci(req.body?.note, 300) || "—";
+  const consenso = req.body?.consenso === true;
 
   if (!nome || !cognome || !EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "nome, cognome o email mancanti o non validi" });
   }
+  /* La spunta è obbligatoria anche qui e non solo nel modulo: il `required`
+     dell'HTML è una cortesia verso chi compila, non una garanzia per chi
+     riceve. Ed è il consenso a trattare dati di persone vere. */
+  if (!consenso) {
+    return res.status(400).json({ errore: "manca il consenso al trattamento dei dati" });
+  }
 
-  /* Stripe Checkout vuole i parametri in x-www-form-urlencoded, con la
-     notazione a parentesi quadre per gli oggetti annidati (line_items,
-     price_data, metadata): è la stessa forma richiesta a chi lo chiama da
-     curl o da un backend senza SDK. */
   const parametri = new URLSearchParams();
   parametri.set("mode", "payment");
+  parametri.set("locale", "it");
   parametri.set("customer_email", email);
-  parametri.set("success_url", `${SITE}/color-runner?stato=ok`);
+  /* {CHECKOUT_SESSION_ID} lo sostituisce Stripe con l'identificativo vero al
+     momento del rimando: è quello che poi la pagina ci riporta indietro da
+     verificare. Le graffe le codifica URLSearchParams, e Stripe le rilegge
+     tali e quali — è la stessa cosa che succede chiamandolo da curl. */
+  parametri.set("success_url", `${SITE}/color-runner?stato=ok&sessione={CHECKOUT_SESSION_ID}`);
   parametri.set("cancel_url", `${SITE}/color-runner?stato=annullato`);
   parametri.set("line_items[0][quantity]", "1");
   parametri.set("line_items[0][price_data][currency]", VALUTA);
   parametri.set("line_items[0][price_data][unit_amount]", String(QUOTA_CENT));
   parametri.set("line_items[0][price_data][product_data][name]", DESCRIZIONE_PRODOTTO);
+  parametri.set("payment_intent_data[description]", `${DESCRIZIONE_PRODOTTO} — ${nome} ${cognome}`);
   parametri.set("metadata[nome]", nome);
   parametri.set("metadata[cognome]", cognome);
   parametri.set("metadata[telefono]", telefono);
   parametri.set("metadata[note]", note);
+  /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
+     che serve se un domani qualcuno chiede conto di quei dati. */
+  parametri.set("metadata[consenso]", new Date().toISOString());
 
   try {
-    const risposta = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${chiave}:`).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: parametri.toString(),
-      signal: AbortSignal.timeout(10000),
-    });
-
-    const dati = await risposta.json();
-    if (!risposta.ok) throw new Error(dati?.error?.message || `Stripe ha risposto ${risposta.status}`);
-
-    return res.status(200).json({ url: dati.url });
+    const sessione = await stripe(chiave, "checkout/sessions", parametri);
+    return res.status(200).json({ url: sessione.url });
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
   }

@@ -3,17 +3,22 @@
 <!--noindex: true-->
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     Pagina bozza, non collegata dal menu: si raggiunge solo con il link
-     diretto (vedi noindex qui sopra — fuori da sitemap e motori di ricerca).
-     Quota, campi e scadenza sono placeholder: vanno confermati col gruppo
-     del Palio e poi sostituiti qui, in cima al file, prima di linkarla e
-     toglierle il noindex.
+     Pagina non collegata dal menu: si raggiunge solo con il link diretto
+     (vedi noindex qui sopra — fuori da sitemap e motori di ricerca). Il
+     pagamento però è vero, non una prova: la quota è di 10 €, la incassa
+     Stripe Checkout, e l'elenco degli iscritti è la lista dei pagamenti nel
+     dashboard Stripe — i dati del modulo viaggiano come metadata.
+
+     La quota è scritta in due punti soli: QUOTA_CENT in
+     api/iscrizione-color-runner.mjs e il testo del bottone qui sotto.
+
+     Quando il gruppo del Palio vorrà la pagina pubblica basta togliere la
+     riga `noindex: true` qui sopra e rifare il build.
      ═══════════════════════════════════════════════════════════════════════ -->
 <style>
-  .sb-cr-bozza {
-    display: flex; align-items: center; gap: .5rem;
+  .sb-cr-nota {
     margin: 0 0 1.4rem; padding: .6rem .9rem;
-    border: 1px dashed var(--sb-border-stronger);
+    border: 1px solid var(--sb-border-strong);
     border-radius: 6px;
     color: var(--sb-fg-light); font-size: .85rem;
   }
@@ -31,22 +36,27 @@
   .sb-cr-field input:focus-visible, .sb-cr-field textarea:focus-visible {
     outline: 2px solid var(--sb-brand); outline-offset: 1px;
   }
+  /* La spunta del consenso: casella e testo affiancati, con il testo che va a
+     capo sotto sé stesso e non sotto la casella. */
+  .sb-cr-consenso { display: grid; grid-template-columns: auto 1fr; gap: .6rem; align-items: start; }
+  .sb-cr-consenso input { margin-top: .15rem; accent-color: var(--sb-brand); }
+  .sb-cr-consenso label { font-size: .82rem; font-weight: 400; color: var(--sb-fg-light); line-height: 1.5; }
   .sb-cr-esito { display: none; padding: .9rem 1rem; border-radius: 6px; font-size: .9rem; margin-bottom: 1.2rem; }
   .sb-cr-esito--ok { display: block; background: color-mix(in srgb, var(--sb-brand) 12%, transparent); color: var(--sb-brand-text); }
-  .sb-cr-esito--annullato { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
+  .sb-cr-esito--neutro { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
   .sb-cr-esito--errore { display: block; background: color-mix(in srgb, #d33 14%, transparent); color: #b02a2a; }
   html.dark .sb-cr-esito--errore { color: #ff9a9a; }
 </style>
 
 <section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Bozza — link diretto</span>
+  <span class="sb-riv-eyebrow">Iscrizioni aperte</span>
   <h1>Color Runner — 20 settembre</h1>
   <p class="sb-riv-lede">Camminata/corsa a colori non competitiva, in sostituzione dei tornei del Palio delle Contrade di quest'anno. Iscrizione con raccolta dati e pagamento della quota in un unico passaggio.</p>
 </section>
 
 <section class="sb-container sb-riv-sec" id="iscrizione">
-  <div class="sb-cr-bozza">
-    Pagina di prova: quota (10 €), campi del modulo e scadenza iscrizioni sono provvisori, da confermare col gruppo del Palio.
+  <div class="sb-cr-nota">
+    La quota è di 10 € a persona. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. Un'iscrizione per persona — per iscriverne un'altra, ricompila il modulo con i suoi dati.
   </div>
 
   <div id="cr-esito" class="sb-cr-esito" role="status"></div>
@@ -74,6 +84,10 @@
       <label for="cr-note">Note (facoltativo)</label>
       <textarea id="cr-note" name="note" rows="2" maxlength="300"></textarea>
     </div>
+    <div class="sb-cr-consenso">
+      <input type="checkbox" id="cr-consenso" name="consenso" required>
+      <label for="cr-consenso">Acconsento al trattamento dei miei dati per l'organizzazione della Color Runner. Nome, cognome, email e telefono restano agli organizzatori e a Stripe, che gestisce il pagamento: non vengono ceduti ad altri e non servono a mandare pubblicità.</label>
+    </div>
     <button class="sb-btn sb-btn--primary" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
   </form>
 </section>
@@ -82,20 +96,44 @@
 (function () {
   var esito = document.getElementById("cr-esito");
   var form = document.getElementById("cr-form");
-  var stato = new URLSearchParams(location.search).get("stato");
+  var bottone = document.getElementById("cr-submit");
+  var ETICHETTA = bottone.querySelector("span").textContent;
 
-  if (stato === "ok") {
-    esito.className = "sb-cr-esito sb-cr-esito--ok";
-    esito.textContent = "Iscrizione e pagamento ricevuti, grazie! Ci vediamo il 20 settembre.";
+  var query = new URLSearchParams(location.search);
+  var stato = query.get("stato");
+  var sessione = query.get("sessione");
+
+  function mostra(tipo, testo) {
+    esito.className = "sb-cr-esito sb-cr-esito--" + tipo;
+    esito.textContent = testo;
+  }
+
+  /* Al ritorno dal pagamento non ci si fida dell'indirizzo: `?stato=ok` lo
+     scrive chiunque nella barra del browser. Chi ha pagato davvero ha in mano
+     anche l'identificativo della sessione, ed è quello che l'API fa
+     ricontrollare a Stripe prima che qui si dica «ricevuto». */
+  if (stato === "ok" && !sessione) {
+    mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
+  } else if (stato === "ok") {
     form.style.display = "none";
+    mostra("neutro", "Un momento, controllo il pagamento…");
+
+    fetch("/api/iscrizione-color-runner?sessione=" + encodeURIComponent(sessione))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.pagato) throw new Error("non risulta pagata");
+        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie! Ci vediamo il 20 settembre.");
+      })
+      .catch(function () {
+        mostra("errore", "Non riusciamo a confermare il pagamento in questo momento. Se l'addebito è arrivato l'iscrizione è registrata lo stesso; altrimenti riprova col modulo qui sotto.");
+        form.style.display = "";
+      });
   } else if (stato === "annullato") {
-    esito.className = "sb-cr-esito sb-cr-esito--annullato";
-    esito.textContent = "Pagamento annullato: i dati non sono stati salvati. Puoi riprovare quando vuoi con il modulo qui sotto.";
+    mostra("neutro", "Pagamento annullato: i dati non sono stati salvati. Puoi riprovare quando vuoi con il modulo qui sotto.");
   }
 
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var bottone = document.getElementById("cr-submit");
     bottone.disabled = true;
     bottone.querySelector("span").textContent = "Un momento…";
 
@@ -108,6 +146,7 @@
         email: form.email.value,
         telefono: form.telefono.value,
         note: form.note.value,
+        consenso: form.consenso.checked,
       }),
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
@@ -116,10 +155,9 @@
         location.href = res.d.url;
       })
       .catch(function (err) {
-        esito.className = "sb-cr-esito sb-cr-esito--errore";
-        esito.textContent = "Non è stato possibile avviare il pagamento (" + err.message + "). Riprova tra poco.";
+        mostra("errore", "Non è stato possibile avviare il pagamento (" + err.message + "). Riprova tra poco.");
         bottone.disabled = false;
-        bottone.querySelector("span").textContent = "Vai al pagamento — quota 10 €";
+        bottone.querySelector("span").textContent = ETICHETTA;
       });
   });
 })();
