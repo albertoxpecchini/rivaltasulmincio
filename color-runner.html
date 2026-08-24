@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Color Runner 20 settembre — iscrizioni | Rivalta sul Mincio</title>
-<meta name="description" content="Iscrizione online alla Color Runner del 20 settembre a Rivalta sul Mincio: modulo dati partecipante e pagamento della quota.">
+<title>Color Runner 20 settembre — riunione e iscrizioni | Rivalta sul Mincio</title>
+<meta name="description" content="Riunione organizzativa martedì 1 settembre alle 21 davanti alla chiesa, e iscrizione online con pagamento della quota alla Color Runner del 20 settembre a Rivalta sul Mincio.">
 <meta name="theme-color" content="#fcfcfc">
 <link rel="canonical" href="https://www.rivaltasulmincio.it/color-runner">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rivalta sul Mincio">
 <meta property="og:locale" content="it_IT">
-<meta property="og:title" content="Color Runner 20 settembre — iscrizioni | Rivalta sul Mincio">
-<meta property="og:description" content="Iscrizione online alla Color Runner del 20 settembre a Rivalta sul Mincio: modulo dati partecipante e pagamento della quota.">
+<meta property="og:title" content="Color Runner 20 settembre — riunione e iscrizioni | Rivalta sul Mincio">
+<meta property="og:description" content="Riunione organizzativa martedì 1 settembre alle 21 davanti alla chiesa, e iscrizione online con pagamento della quota alla Color Runner del 20 settembre a Rivalta sul Mincio.">
 <meta property="og:url" content="https://www.rivaltasulmincio.it/color-runner">
-<meta name="twitter:title" content="Color Runner 20 settembre — iscrizioni | Rivalta sul Mincio">
-<meta name="twitter:description" content="Iscrizione online alla Color Runner del 20 settembre a Rivalta sul Mincio: modulo dati partecipante e pagamento della quota.">
+<meta name="twitter:title" content="Color Runner 20 settembre — riunione e iscrizioni | Rivalta sul Mincio">
+<meta name="twitter:description" content="Riunione organizzativa martedì 1 settembre alle 21 davanti alla chiesa, e iscrizione online con pagamento della quota alla Color Runner del 20 settembre a Rivalta sul Mincio.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,16 +129,80 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   .sb-cr-esito--neutro { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
   .sb-cr-esito--errore { display: block; background: color-mix(in srgb, #d33 14%, transparent); color: #b02a2a; }
   html.dark .sb-cr-esito--errore { color: #ff9a9a; }
+
+  /* La riunione è la cosa più urgente della pagina: giorno e ora si leggono
+     per primi, in grande, senza doverli cercare dentro una frase. */
+  .sb-cr-riunione { margin: 1.4rem 0 0; }
+  .sb-cr-riunione-in { padding: 1.3rem 1.4rem; }
+  .sb-cr-quando {
+    margin: 0 0 1rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem;
+    font-size: clamp(1.2rem, 3.2vw, 1.6rem);
+    letter-spacing: -.02em; color: var(--sb-fg);
+  }
+  .sb-cr-quando strong { font-weight: 500; }
+  .sb-cr-quando span {
+    padding: .18rem .6rem; border-radius: 999px;
+    border: 1px solid var(--sb-border-strong);
+    font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--sb-brand-text);
+  }
 </style>
 
 <section class="sb-container sb-riv-pagehead">
   <span class="sb-riv-eyebrow">Iscrizioni aperte</span>
   <h1>Color Runner — 20 settembre</h1>
-  <p class="sb-riv-lede">Camminata/corsa a colori non competitiva, in sostituzione dei tornei del Palio delle Contrade di quest'anno. Iscrizione con raccolta dati e pagamento della quota in un unico passaggio.</p>
+  <p class="sb-riv-lede">Camminata/corsa a colori non competitiva — nel gruppo del paese gira anche come <strong>Color Walk</strong> — in sostituzione dei tornei del Palio delle Contrade di quest'anno. Iscrizione con raccolta dati e pagamento della quota in un unico passaggio.</p>
+  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+    <a href="#riunione">Riunione del 1 settembre</a>
+    <a href="#iscrizione">Iscriviti</a>
+    <a href="#scheda">Dati in breve</a>
+    <a href="#dadecidere">Cosa manca</a>
+  </nav>
+</section>
+
+<section class="sb-container sb-riv-sec" id="riunione">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Prima dell'evento</span>
+    <h2>La riunione per organizzarla</h2>
+    <p>Serve gente. Non c'è da iscriversi e non c'è da portare niente: chi può dare una mano si presenta, e si decide insieme.</p>
+  </div>
+
+  <div class="sb-panel sb-cr-riunione"><div class="sb-panel-inner sb-cr-riunione-in">
+    <p class="sb-cr-quando"><strong>Martedì 1 settembre</strong> <span>ore 21:00</span></p>
+    <dl class="sb-riv-kv">
+      <div class="sb-riv-kv-row">
+        <dt>Dove</dt>
+        <dd>Davanti alla chiesa — <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179933&amp;mlon=10.680703#map=18/45.179933/10.680703" target="_blank" rel="noreferrer noopener" title="Chiesa dei Santi Vigilio e Donato — apri su OpenStreetMap">Piazza Chiesa<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>, all'aperto.</dd>
+      </div>
+      <div class="sb-riv-kv-row">
+        <dt>Chi può venire</dt>
+        <dd>Chiunque voglia aiutare a organizzarla. Nessuna iscrizione, nessun impegno preso in anticipo.</dd>
+      </div>
+      <div class="sb-riv-kv-row">
+        <dt>Di cosa si parla</dt>
+        <dd>Come mettere in piedi la camminata del 20 settembre: percorso, volontari, colori, permessi. I punti ancora aperti sono <a href="#dadecidere">elencati più sotto</a>.</dd>
+      </div>
+      <div class="sb-riv-kv-row">
+        <dt>Se martedì non ci sei</dt>
+        <dd>Fallo sapere lo stesso a chi organizza: i turni si coprono anche dopo. Per partecipare alla camminata, invece, basta <a href="#iscrizione">l'iscrizione qui sotto</a>.</dd>
+      </div>
+    </dl>
+  </div></div>
+
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Da dove arriva questa data</span>
+    <p class="sb-riv-p">L'invito è di <strong>Rebecca</strong>, nel gruppo del paese: «la riunione sarà 1 settembre alle 21 davanti alla chiesa». Se qualcosa cambia vale quello che dicono gli organizzatori, non questa pagina.</p>
+  </div>
 </section>
 
 <section class="sb-container sb-riv-sec" id="iscrizione">
-  <div class="sb-cr-nota">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Il 20 settembre</span>
+    <h2>Iscriviti alla camminata</h2>
+  </div>
+
+  <div class="sb-cr-nota" style="margin-top:1.4rem">
     La quota è di 10 € a persona. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. Un'iscrizione per persona — per iscriverne un'altra, ricompila il modulo con i suoi dati.
   </div>
 
@@ -173,6 +237,62 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div>
     <button class="sb-btn sb-btn--primary" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
   </form>
+</section>
+
+<section class="sb-container sb-riv-sec" id="scheda">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">L'evento</span>
+    <h2>Dati in breve</h2>
+    <p>Quello che è già fissato. Il resto — orari, percorso — si decide in riunione.</p>
+  </div>
+
+  <div class="sb-riv-grid">
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Quando</h4>
+      <p><strong>Domenica 20 settembre 2026</strong>. L'orario di ritrovo e di partenza non è ancora deciso.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Cos'è</h4>
+      <p>Una camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Dove</h4>
+      <p>Per le vie del paese. Il tracciato, la partenza e l'arrivo sono fra le cose da definire.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Perché quest'anno</h4>
+      <p>Prende il posto dei <strong>tornei del Palio delle Contrade</strong>, che nel calendario del paese accompagnano la Sagra dei Patroni di settembre — vedi <a href="/eventi#calendario">Eventi</a>.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Quota</h4>
+      <p><strong>10 € a persona</strong>, un'iscrizione per persona. Si paga con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Iscrizioni</h4>
+      <p>Online, dal <a href="#iscrizione">modulo di questa pagina</a>. L'elenco degli iscritti è la lista dei pagamenti: chi ha pagato riceve la ricevuta via email.</p>
+    </div></div>
+  </div>
+</section>
+
+<section class="sb-container sb-riv-sec" id="dadecidere">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">Punti aperti</span>
+    <h2>Cosa c'è ancora da decidere</h2>
+    <p>Non è un ordine del giorno ufficiale: è la lista delle cose che una camminata a colori si porta dietro e che qui non risultano ancora fissate. Serve a chi viene martedì per sapere di cosa si parlerà.</p>
+  </div>
+
+  <ul class="sb-riv-ul">
+    <li class="sb-riv-li"><strong>Percorso</strong> — quali vie, quanti chilometri, dove si parte e dove si arriva, quali strade vanno chiuse o presidiate.</li>
+    <li class="sb-riv-li"><strong>Orari</strong> — ritrovo, partenza, chiusura del percorso.</li>
+    <li class="sb-riv-li"><strong>Punti colore</strong> — quanti, in che punti, quante persone a presidiarne uno.</li>
+    <li class="sb-riv-li"><strong>Polveri colorate</strong> — quantità, dove comprarle, che siano atossiche e lavabili; pulizia delle strade dopo il passaggio.</li>
+    <li class="sb-riv-li"><strong>Permessi e sicurezza</strong> — autorizzazione al <strong>Comune di Rodigo</strong>, viabilità, assistenza sanitaria, assicurazione dei partecipanti.</li>
+    <li class="sb-riv-li"><strong>Volontari</strong> — quanti servono e per cosa: percorso, banchetto, colori, ristoro, pulizia finale.</li>
+    <li class="sb-riv-li"><strong>Iscrizioni sul posto</strong> — se tenere solo quelle online o aprire anche un banchetto il giorno stesso; se nella quota entra una maglietta bianca o un pettorale.</li>
+    <li class="sb-riv-li"><strong>Ristoro e musica</strong> — punto acqua lungo il percorso, cosa si fa all'arrivo.</li>
+    <li class="sb-riv-li"><strong>Comunicazione</strong> — volantino, gruppo del paese, e quando rendere pubblica questa pagina (oggi è nascosta ai motori di ricerca e si raggiunge solo col link diretto).</li>
+    <li class="sb-riv-li"><strong>In caso di pioggia</strong> — se si rinvia o si annulla, e cosa succede alle quote già pagate.</li>
+  </ul>
 </section>
 
 <script>
