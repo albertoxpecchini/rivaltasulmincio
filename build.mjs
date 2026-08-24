@@ -462,6 +462,13 @@ for (const file of bodies) {
      altrimenti i motori ne indicizzano due identiche. */
   const canonical = page === "index" ? `${SITE}/` : `${SITE}/${page}`;
 
+  /* Una pagina bozza (link condiviso a mano, non ancora in nav) dichiara
+     `noindex: true` nel frammento: esce dal sito con
+     "noindex, nofollow" e non entra in sitemap.xml, così Google non la
+     scopre e non la indicizza finché non è pronta a essere pubblica. */
+  const noindex = optMeta(src, "noindex", "false") === "true";
+  const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
+
   const out =
     head
       .replace("{{TITLE}}", title)
@@ -470,21 +477,24 @@ for (const file of bodies) {
       .replace(/\{\{OG_TITLE\}\}/g, escape(title))
       .replace(/\{\{OG_DESC\}\}/g, escape(desc))
       .replace("{{OG_IMAGE}}", ogImg)
+      .replace("{{ROBOTS}}", robots)
       .replace("{{HEAD}}", headExtra) +
     `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
     foot.replace("{{SCRIPTS}}", scriptExtra);
 
   writeFileSync(`${page}.html`, out);
 
-  sitemap.push({
-    loc: canonical,
-    // Data dell'ultima modifica VERA del contenuto: il timestamp del frammento
-    // sorgente, non "oggi". Rigenerare il sito senza aver cambiato niente non
-    // deve dire ai motori che tutte e nove le pagine sono state riscritte.
-    lastmod: statSync(`_build/${file}`).mtime.toISOString().slice(0, 10),
-    freq: optMeta(src, "freq", "monthly"),
-    prio: optMeta(src, "prio", "0.7"),
-  });
+  if (!noindex) {
+    sitemap.push({
+      loc: canonical,
+      // Data dell'ultima modifica VERA del contenuto: il timestamp del frammento
+      // sorgente, non "oggi". Rigenerare il sito senza aver cambiato niente non
+      // deve dire ai motori che tutte e nove le pagine sono state riscritte.
+      lastmod: statSync(`_build/${file}`).mtime.toISOString().slice(0, 10),
+      freq: optMeta(src, "freq", "monthly"),
+      prio: optMeta(src, "prio", "0.7"),
+    });
+  }
 
   console.log(`✓ ${page}.html  (${(out.length / 1024).toFixed(1)} kB)`);
 }

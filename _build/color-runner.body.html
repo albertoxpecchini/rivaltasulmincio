@@ -1,0 +1,126 @@
+<!--title: Color Runner 20 settembre — iscrizioni | Rivalta sul Mincio-->
+<!--desc: Iscrizione online alla Color Runner del 20 settembre a Rivalta sul Mincio: modulo dati partecipante e pagamento della quota.-->
+<!--noindex: true-->
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     Pagina bozza, non collegata dal menu: si raggiunge solo con il link
+     diretto (vedi noindex qui sopra — fuori da sitemap e motori di ricerca).
+     Quota, campi e scadenza sono placeholder: vanno confermati col gruppo
+     del Palio e poi sostituiti qui, in cima al file, prima di linkarla e
+     toglierle il noindex.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  .sb-cr-bozza {
+    display: flex; align-items: center; gap: .5rem;
+    margin: 0 0 1.4rem; padding: .6rem .9rem;
+    border: 1px dashed var(--sb-border-stronger);
+    border-radius: 6px;
+    color: var(--sb-fg-light); font-size: .85rem;
+  }
+  .sb-cr-form { display: grid; gap: 1.1rem; max-width: 30rem; }
+  .sb-cr-row { display: grid; gap: 1.1rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .sb-cr-row { grid-template-columns: 1fr; } }
+  .sb-cr-field { display: grid; gap: .4rem; }
+  .sb-cr-field label { font-size: .85rem; font-weight: 600; color: var(--sb-fg-light); }
+  .sb-cr-field input, .sb-cr-field textarea {
+    font-family: inherit; font-size: .95rem; color: var(--sb-fg);
+    background: var(--sb-surface-75);
+    border: 1px solid var(--sb-border-strong);
+    border-radius: 6px; padding: .6rem .75rem;
+  }
+  .sb-cr-field input:focus-visible, .sb-cr-field textarea:focus-visible {
+    outline: 2px solid var(--sb-brand); outline-offset: 1px;
+  }
+  .sb-cr-esito { display: none; padding: .9rem 1rem; border-radius: 6px; font-size: .9rem; margin-bottom: 1.2rem; }
+  .sb-cr-esito--ok { display: block; background: color-mix(in srgb, var(--sb-brand) 12%, transparent); color: var(--sb-brand-text); }
+  .sb-cr-esito--annullato { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
+  .sb-cr-esito--errore { display: block; background: color-mix(in srgb, #d33 14%, transparent); color: #b02a2a; }
+  html.dark .sb-cr-esito--errore { color: #ff9a9a; }
+</style>
+
+<section class="sb-container sb-riv-pagehead">
+  <span class="sb-riv-eyebrow">Bozza — link diretto</span>
+  <h1>Color Runner — 20 settembre</h1>
+  <p class="sb-riv-lede">Camminata/corsa a colori non competitiva, in sostituzione dei tornei del Palio delle Contrade di quest'anno. Iscrizione con raccolta dati e pagamento della quota in un unico passaggio.</p>
+</section>
+
+<section class="sb-container sb-riv-sec" id="iscrizione">
+  <div class="sb-cr-bozza">
+    Pagina di prova: quota (10 €), campi del modulo e scadenza iscrizioni sono provvisori, da confermare col gruppo del Palio.
+  </div>
+
+  <div id="cr-esito" class="sb-cr-esito" role="status"></div>
+
+  <form class="sb-cr-form" id="cr-form">
+    <div class="sb-cr-row">
+      <div class="sb-cr-field">
+        <label for="cr-nome">Nome</label>
+        <input type="text" id="cr-nome" name="nome" autocomplete="given-name" required maxlength="80">
+      </div>
+      <div class="sb-cr-field">
+        <label for="cr-cognome">Cognome</label>
+        <input type="text" id="cr-cognome" name="cognome" autocomplete="family-name" required maxlength="80">
+      </div>
+    </div>
+    <div class="sb-cr-field">
+      <label for="cr-email">Email</label>
+      <input type="email" id="cr-email" name="email" autocomplete="email" required maxlength="200">
+    </div>
+    <div class="sb-cr-field">
+      <label for="cr-telefono">Telefono (facoltativo)</label>
+      <input type="tel" id="cr-telefono" name="telefono" autocomplete="tel" maxlength="40">
+    </div>
+    <div class="sb-cr-field">
+      <label for="cr-note">Note (facoltativo)</label>
+      <textarea id="cr-note" name="note" rows="2" maxlength="300"></textarea>
+    </div>
+    <button class="sb-btn sb-btn--primary" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
+  </form>
+</section>
+
+<script>
+(function () {
+  var esito = document.getElementById("cr-esito");
+  var form = document.getElementById("cr-form");
+  var stato = new URLSearchParams(location.search).get("stato");
+
+  if (stato === "ok") {
+    esito.className = "sb-cr-esito sb-cr-esito--ok";
+    esito.textContent = "Iscrizione e pagamento ricevuti, grazie! Ci vediamo il 20 settembre.";
+    form.style.display = "none";
+  } else if (stato === "annullato") {
+    esito.className = "sb-cr-esito sb-cr-esito--annullato";
+    esito.textContent = "Pagamento annullato: i dati non sono stati salvati. Puoi riprovare quando vuoi con il modulo qui sotto.";
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var bottone = document.getElementById("cr-submit");
+    bottone.disabled = true;
+    bottone.querySelector("span").textContent = "Un momento…";
+
+    fetch("/api/iscrizione-color-runner", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: form.nome.value,
+        cognome: form.cognome.value,
+        email: form.email.value,
+        telefono: form.telefono.value,
+        note: form.note.value,
+      }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
+        location.href = res.d.url;
+      })
+      .catch(function (err) {
+        esito.className = "sb-cr-esito sb-cr-esito--errore";
+        esito.textContent = "Non è stato possibile avviare il pagamento (" + err.message + "). Riprova tra poco.";
+        bottone.disabled = false;
+        bottone.querySelector("span").textContent = "Vai al pagamento — quota 10 €";
+      });
+  });
+})();
+</script>
