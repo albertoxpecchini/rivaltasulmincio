@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>Iscrizione confermata — Color Runner, 20 settembre</title>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MAIL DI CONFERMA/RICEVUTA — Color Runner, 20 settembre.
+
+     Questo file è il SORGENTE della mail, non la mail. `node build.mjs` lo
+     compila — insieme a fallita-color-runner.html e a evento.json — dentro
+     api/conferma-color-runner.mjs, che è la funzione che la spedisce davvero.
+     Si modifica qui e si rifà il build; modificarla là dentro non serve, il
+     build successivo la riscrive.
+
+     Sta in _build/, che è in .vercelignore: sta nel repo ma NON viene
+     pubblicata. Importante, perché vercel.json ha outputDirectory "." e
+     qualunque file lasciato in radice finirebbe servito su internet.
+
+     ── Perché non è scritta come una pagina del sito ────────────────────
+     La posta non è il web. Outlook su Windows disegna col motore di Word e
+     Gmail riscrive il codice che riceve: var(--sb-*), color-mix(),
+     backdrop-filter, flex/grid e il fondale position:fixed lì non esistono.
+     Un port 1:1 di assets/sb.css darebbe una mail giusta in Chrome e rotta
+     dove la gente la legge davvero.
+
+     Quindi: stessa grammatica visiva, tecnica diversa.
+       · i token di assets/sb.css risolti a mano in hex (sotto la tabella)
+       · impaginazione a tabelle, stili in linea
+       · niente secondo colore vivo: grigi + l'azzurro brand, come il sito
+       · nessuna animazione d'annuncio, come il sito ha deciso di non avere
+
+     ── Lo smusso ────────────────────────────────────────────────────────
+     La forma del sito (--sb-shape-sm/lg) è clip-path, che nessun client di
+     posta supporta. È messo lo stesso, in coda alle regole in linea: chi lo
+     sa fare (Apple Mail, Mail di iOS) vede lo smusso vero, Gmail vede gli
+     angoli arrotondati del border-radius, Outlook li vede dritti. Nessuno
+     vede qualcosa di rotto — degrada, non si spezza.
+
+     ── I token, risolti ─────────────────────────────────────────────────
+     brand hsl(197,100%,49%) = #00b3fa   brand-text chiaro = #0a6285
+     brand-text scuro        = #1abeff   btn chiaro #72c7e3 su filo #2d94c1
+     btn scuro               = #004261
+     Sono conversioni degli hsl() di assets/sb.css: se là cambiano, qui non
+     cambiano da sé. È il prezzo di non poter usare le variabili.
+
+     ── I due tipi di segnaposto ─────────────────────────────────────────
+     {{NOME}} {{DATA}} {{IMPORTO}} — li riempie la funzione al momento di
+     spedire, con quello che la persona ha scritto nel modulo e con quello
+     che Stripe conferma del pagamento. Non si toccano.
+
+     {{RITROVO_ORA}} e compagni — li riempie il build leggendo
+     _build/email/evento.json. Sono le cose che sa il gruppo del Palio e non
+     il codice: ritrovo (ora e luogo), partenza, distanza, cosa portare,
+     cosa viene fornito, regola dei rimborsi con la data limite, indirizzo
+     degli organizzatori.
+
+     ── Le sezioni che spariscono ────────────────────────────────────────
+     Un campo di evento.json ancora vuoto NON stampa {{RITROVO_ORA}} nella
+     mail di qualcuno: i blocchi delimitati qui sotto dai marcatori di
+     sezione il build li toglie via interi quando i dati mancano. (I
+     marcatori non si nominano in un commento: il build li cerca con una
+     ricerca testuale e non distingue una sezione vera da una citata.)
+     Al posto di ritrovo e cosa portare, finché sono vuoti, compare la
+     sezione "dettagli in arrivo" — che dice la verità invece di una
+     parentesi quadra. La mail resta una ricevuta valida in ogni caso: nome,
+     importo, data e conferma del pagamento non dipendono da quei campi.
+
+     Nella mail spedita questi commenti non ci sono: il build li toglie.
+     Servono a chi la mail la mantiene, non a chi la riceve.
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<style>
+  /* Il tema scuro nativo del sito, per i client che lo sanno leggere (Apple
+     Mail, iOS). Gli stili in linea vincono sempre, quindi qui serve
+     !important. Gmail ignora questo blocco e inverte i colori per conto suo:
+     è un limite del client, non una cosa che si aggiusta scrivendo meglio. */
+  @media (prefers-color-scheme: dark) {
+    .e-ground  { background: #141414 !important; }
+    .e-card    { background: #1c1c1c !important; border-color: #343434 !important; }
+    .e-sub     { background: #222222 !important; border-color: #343434 !important; }
+    .e-fg      { color: #ededed !important; }
+    .e-fg-l    { color: #b4b4b4 !important; }
+    .e-fg-lr   { color: #969696 !important; }
+    .e-fg-m    { color: #707070 !important; }
+    .e-brand   { color: #1abeff !important; }
+    .e-rule    { border-color: #2a2a2a !important; background: #2a2a2a !important; }
+    .e-btn     { background: #004261 !important; border-color: #1abeff !important; }
+    .e-btn a   { color: #ffffff !important; }
+  }
+  /* Su schermo stretto la lastra respira meno ai lati e la riga
+     voce/importo del riepilogo va a capo invece di stringersi. */
+  @media only screen and (max-width: 620px) {
+    .e-pad     { padding-left: 22px !important; padding-right: 22px !important; }
+    .e-stack   { display: block !important; width: 100% !important; text-align: left !important; }
+    .e-stack-r { padding-top: 4px !important; }
+  }
+  a { text-decoration: none; }
+</style>
+</head>
+
+<body class="e-ground" style="margin:0; padding:0; background:#f0f0f0; -webkit-font-smoothing:antialiased;">
+
+<!-- Anteprima nella lista dei messaggi: si legge prima di aprire, e non si
+     vede una volta aperta. Senza, il client pesca la prima riga a caso. -->
+<div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
+  La tua iscrizione alla Color Runner del 20 settembre è registrata e la quota è pagata.
+</div>
+
+<table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
+<tr>
+<td align="center" style="padding:32px 12px;">
+
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px;">
+
+    <!-- ── La lastra ─────────────────────────────────────────────────── -->
+    <tr>
+    <td class="e-card" style="background:#fcfcfc; border:1px solid #dbdbdb; border-radius:12px; box-shadow:0 4px 20px -6px rgba(0,0,0,.1); clip-path:polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+        <!-- Occhiello + titolo: stessa forma di .sb-riv-eyebrow + h1 -->
+        <tr>
+        <td class="e-pad" style="padding:40px 40px 0;">
+          <div class="e-brand" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#0a6285;">
+            Iscrizione confermata
+          </div>
+          <h1 class="e-fg" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:28px; line-height:1.25; font-weight:600; color:#171717;">
+            Color&nbsp;Runner — 20 settembre
+          </h1>
+        </td>
+        </tr>
+
+        <tr>
+        <td class="e-pad" style="padding:20px 40px 0;">
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:16px; line-height:1.6; color:#525252;">
+            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e la quota è stata pagata. Questa mail è la tua conferma: tienila, non serve stamparla.
+          </p>
+        </td>
+        </tr>
+
+        <!-- ── Il riepilogo del pagamento ──────────────────────────────
+             La parte "ricevuta". Sotto-lastra con lo smusso piccolo
+             (--sb-cut, 10px) e i numeri in mono, come i dati sul sito. -->
+        <tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="e-sub" style="background:#f6f6f6; border:1px solid #e8e8e8; border-radius:10px; clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+            <tr>
+            <td style="padding:20px 22px;">
+
+              <div class="e-fg-m" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8f8f8f;">
+                Riepilogo del pagamento
+              </div>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
+                <tr>
+                <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
+                  Iscrizione Color Runner — 20 settembre
+                </td>
+                <td class="e-stack e-stack-r e-fg" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:17px; font-weight:700; color:#171717; white-space:nowrap;">
+                  {{IMPORTO}}
+                </td>
+                </tr>
+              </table>
+
+              <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:16px 0;">&nbsp;</div>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
+                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span><br>
+                  Pagamento gestito da Stripe — il sito non vede né conserva i dati della carta.
+                </td>
+                </tr>
+              </table>
+
+            </td>
+            </tr>
+          </table>
+        </td>
+        </tr>
+
+        <!--sezione:quando-->
+        <!-- ── Dove e quando ─────────────────────────────────────────────
+             Salta tutta se in evento.json manca anche uno solo dei quattro
+             campi: mezza indicazione di ritrovo è peggio di nessuna. -->
+        <tr>
+        <td class="e-pad" style="padding:32px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Dove e quando
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_ORA}}</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_LUOGO}}</strong>.<br>
+            Partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{PARTENZA}}</strong>.<br>
+            Percorso di <strong class="e-fg" style="color:#171717; font-weight:600;">{{DISTANZA}}</strong>, non competitivo: si cammina o si corre come si preferisce.
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!--sezione:portare-->
+        <!-- ── Cosa portare ────────────────────────────────────────────── -->
+        <tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Cosa portare
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            {{PORTARE}}<br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Al ritrovo trovi: {{FORNITO}}</span>
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!--sezione:dettagli-in-arrivo-->
+        <!-- ── Il ripiego ──────────────────────────────────────────────
+             Compare SOLO se sono sparite tutte e due le sezioni qui sopra.
+             Una ricevuta che non dice niente su dove e quando lascerebbe la
+             persona a chiedersi se manca un pezzo: meglio dirle che il pezzo
+             arriva, e che non deve fare niente per averlo. -->
+        <tr>
+        <td class="e-pad" style="padding:32px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Dove e quando
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Domenica 20 settembre, a Rivalta sul Mincio.<br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Orario di ritrovo, punto di partenza e cosa portare te li scriviamo a questo stesso indirizzo appena sono decisi. Non devi fare nulla: il tuo posto è già registrato.</span>
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!--sezione:rimborsi-->
+        <!-- ── Se non puoi venire ──────────────────────────────────────── -->
+        <tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Se non puoi più venire
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">{{DATA_LIMITE}}</strong>. {{RIMBORSI}}
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!-- ── Il bottone ──────────────────────────────────────────────
+             .sb-btn--primary risolto: h 38px, radius 6px, filo sempre.
+             In posta l'altezza si fa col padding, non con height. -->
+        <!--sezione:contatto-->
+        <tr>
+        <td class="e-pad" style="padding:30px 40px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+            <td class="e-btn" style="background:#72c7e3; border:1px solid #2d94c1; border-radius:6px;">
+              <a href="mailto:{{ORGANIZZATORI}}" style="display:inline-block; padding:10px 20px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:14px; font-weight:600; color:#101010;">
+                Scrivi agli organizzatori
+              </a>
+            </td>
+            </tr>
+          </table>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!-- ── Chiusura ────────────────────────────────────────────────── -->
+        <tr>
+        <td class="e-pad" style="padding:30px 40px 40px;">
+          <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:0 0 22px;">&nbsp;</div>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Ci vediamo il 20!<br>
+            <strong class="e-fg" style="color:#171717; font-weight:600;">Il gruppo del Palio delle Contrade</strong><br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Rivalta sul Mincio</span>
+          </p>
+        </td>
+        </tr>
+
+      </table>
+    </td>
+    </tr>
+
+    <!-- ── Fuori dalla lastra: il piede ──────────────────────────────── -->
+    <tr>
+    <td style="padding:22px 12px 0;" align="center">
+      <p class="e-fg-m" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; line-height:1.7; color:#8f8f8f;">
+        Hai ricevuto questa mail perché ti sei iscritto alla Color Runner su
+        <a class="e-brand" href="https://www.rivaltasulmincio.it" style="color:#0a6285;">rivaltasulmincio.it</a>.<br>
+        Non è una lista di invio: non ti arriverà altro. Per qualsiasi cosa, rispondi pure a questo messaggio.
+      </p>
+      <p class="e-fg-m" style="margin:14px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; line-height:1.6; color:#8f8f8f;">
+        Questa è una conferma d'iscrizione, non una ricevuta fiscale.
+      </p>
+    </td>
+    </tr>
+
+  </table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

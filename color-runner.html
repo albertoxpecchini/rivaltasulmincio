@@ -128,6 +128,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   .sb-cr-esito--ok { display: block; background: color-mix(in srgb, var(--sb-brand) 12%, transparent); color: var(--sb-brand-text); }
   .sb-cr-esito--neutro { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
   .sb-cr-esito--errore { display: block; background: color-mix(in srgb, #d33 14%, transparent); color: #b02a2a; }
+  .sb-cr-nota-campo { font-weight: 400; color: var(--sb-fg-lighter); }
   html.dark .sb-cr-esito--errore { color: #ff9a9a; }
 
   /* La riunione è la cosa più urgente della pagina: giorno e ora si leggono
@@ -203,7 +204,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-cr-nota" style="margin-top:1.4rem">
-    La quota è di 10 € a persona. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. Un'iscrizione per persona — per iscriverne un'altra, ricompila il modulo con i suoi dati.
+    La quota è di 10 € a persona. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati.
   </div>
 
   <div id="cr-esito" class="sb-cr-esito" role="status"></div>
@@ -220,7 +221,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </div>
     </div>
     <div class="sb-cr-field">
-      <label for="cr-email">Email</label>
+      <label for="cr-email">Email <span class="sb-cr-nota-campo">— qui arriva la conferma</span></label>
       <input type="email" id="cr-email" name="email" autocomplete="email" required maxlength="200">
     </div>
     <div class="sb-cr-field">
@@ -290,7 +291,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <li class="sb-riv-li"><strong>Volontari</strong> — quanti servono e per cosa: percorso, banchetto, colori, ristoro, pulizia finale.</li>
     <li class="sb-riv-li"><strong>Iscrizioni sul posto</strong> — se tenere solo quelle online o aprire anche un banchetto il giorno stesso; se nella quota entra una maglietta bianca o un pettorale.</li>
     <li class="sb-riv-li"><strong>Ristoro e musica</strong> — punto acqua lungo il percorso, cosa si fa all'arrivo.</li>
-    <li class="sb-riv-li"><strong>Comunicazione</strong> — volantino, gruppo del paese, e quando rendere pubblica questa pagina (oggi è nascosta ai motori di ricerca e si raggiunge solo col link diretto).</li>
+    <li class="sb-riv-li"><strong>Comunicazione</strong> — volantino, gruppo del paese, e come far girare il link di questa pagina, che è pubblica e raggiungibile dai motori di ricerca.</li>
     <li class="sb-riv-li"><strong>In caso di pioggia</strong> — se si rinvia o si annulla, e cosa succede alle quote già pagate.</li>
   </ul>
 </section>
@@ -325,14 +326,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.pagato) throw new Error("non risulta pagata");
-        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie! Ci vediamo il 20 settembre.");
+        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie! La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
       })
       .catch(function () {
-        mostra("errore", "Non riusciamo a confermare il pagamento in questo momento. Se l'addebito è arrivato l'iscrizione è registrata lo stesso; altrimenti riprova col modulo qui sotto.");
+        mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
         form.style.display = "";
       });
   } else if (stato === "annullato") {
-    mostra("neutro", "Pagamento annullato: i dati non sono stati salvati. Puoi riprovare quando vuoi con il modulo qui sotto.");
+    mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto.");
   }
 
   form.addEventListener("submit", function (ev) {

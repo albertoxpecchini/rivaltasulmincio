@@ -521,6 +521,147 @@ writeFileSync(
 );
 console.log(`✓ sitemap.xml  (${sitemap.length} URL)`);
 
+/* ── Le mail della Color Runner ───────────────────────────────────────────
+   Due mail — la ricevuta di chi ha pagato e l'avviso a chi non è arrivato in
+   fondo — vivono come HTML in _build/email/, perché è lì che si guardano e si
+   correggono: aprendole nel browser. Ma a spedirle è una funzione su Vercel, e
+   _build/ è in .vercelignore: su Vercel quei file non ci arrivano.
+
+   Quindi il build le porta di là. Risolve i dati dell'evento, toglie via le
+   sezioni che non hanno ancora i loro dati, e scrive il risultato dentro
+   api/conferma-color-runner.mjs, fra due marcatori. Da lì in poi sono due
+   stringhe dentro la funzione: nessun file da leggere a runtime, nessuna
+   configurazione di bundling da indovinare, niente che possa mancare
+   all'appello proprio mentre qualcuno sta pagando.
+
+   Il blocco fra i marcatori è generato: si modifica l'HTML in _build/email/ e
+   si rifà il build, non il contrario. Il build successivo lo riscrive.       */
+const evento = JSON.parse(readFileSync("_build/email/evento.json", "utf8"));
+
+/* Una sezione entra nella mail solo se TUTTI i campi che le servono sono
+   compilati. È la regola che impedisce a «ritrovo alle {{RITROVO_ORA}}» di
+   arrivare nella posta di una persona vera: mezza indicazione di ritrovo è
+   peggio di nessuna, e una parentesi graffa è peggio di tutte e due. */
+const pieno = (k) => String(evento[k] ?? "").trim() !== "";
+const sezioni = {
+  quando: ["ritrovoOra", "ritrovoLuogo", "partenza", "distanza"].every(pieno),
+  portare: ["portare", "fornito"].every(pieno),
+  rimborsi: ["dataLimite", "rimborsi"].every(pieno),
+  contatto: pieno("organizzatori"),
+};
+/* Se non si sa né dove né cosa portare, la ricevuta non può tacere del tutto
+   sul 20 settembre: al posto delle due sezioni ne compare una che dice che i
+   dettagli arrivano. Quando anche una sola delle due c'è, non serve più. */
+sezioni["dettagli-in-arrivo"] = !sezioni.quando && !sezioni.portare;
+
+const campiMail = {
+  RITROVO_ORA: evento.ritrovoOra,
+  RITROVO_LUOGO: evento.ritrovoLuogo,
+  PARTENZA: evento.partenza,
+  DISTANZA: evento.distanza,
+  PORTARE: evento.portare,
+  FORNITO: evento.fornito,
+  DATA_LIMITE: evento.dataLimite,
+  RIMBORSI: evento.rimborsi,
+  ORGANIZZATORI: evento.organizzatori,
+};
+
+const compilaMail = (nome) => {
+  let src = readFileSync(`_build/email/${nome}`, "utf8");
+
+  // Prima le sezioni: quello che sparisce non ha bisogno di essere riempito.
+  // Se la sezione resta, se ne vanno solo le due righe dei marcatori.
+  /* I file di _build/ hanno fine riga alla Windows: il `\r?` non è pignoleria,
+     senza si lascerebbe indietro una riga vuota per ogni pezzo tolto. */
+  for (const [chiave, tienila] of Object.entries(sezioni)) {
+    const blocco = new RegExp(
+      "[ \\t]*<!--sezione:" + chiave + "-->[\\s\\S]*?<!--/sezione-->\\r?\\n?",
+      "g"
+    );
+    src = src.replace(blocco, (m) =>
+      tienila ? m.replace(/[ \t]*<!--\/?sezione[^>]*-->\r?\n?/g, "") : ""
+    );
+  }
+
+  /* Poi via i commenti. Quelli di questi due file sono lunghi — spiegano
+     perché una mail si scrive a tabelle — e nella posta di chi si è iscritto
+     non fanno niente: sono quattro kB per messaggio di conversazione fra chi
+     mantiene il sito. Restano nel sorgente, che è dove si leggono.
+     Le condizionali di Outlook (<!--[if mso]> … <![endif]-->) sopravvivono:
+     qui non ce ne sono, ma il giorno che servissero non vanno tolte. */
+  src = src.replace(/[ \t]*<!--(?!\[if)[\s\S]*?-->\r?\n?/g, "");
+
+  // Poi i dati dell'evento. Vengono da un JSON scritto a mano e finiscono in
+  // HTML: passano dall'escape come qualunque altro testo di provenienza umana.
+  for (const [chiave, valore] of Object.entries(campiMail)) {
+    src = src.split(`{{${chiave}}}`).join(escape(String(valore ?? "")));
+  }
+
+  const restati = src.match(/\{\{[A-Z_]+\}\}/g) || [];
+  const attesi = ["{{NOME}}", "{{DATA}}", "{{IMPORTO}}", "{{MOTIVO}}"];
+  const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
+  if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
+
+  return src;
+};
+
+/* Dentro un template literal solo tre cose vanno protette. Il resto dell'HTML
+   — apici, virgolette, accenti — ci sta dentro tale e quale. */
+const stringa = (t) =>
+  "`" + t.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${") + "`";
+
+const FUNZIONE = "api/conferma-color-runner.mjs";
+const sorgente = readFileSync(FUNZIONE, "utf8");
+const marcatori = /(\/\* build:modelli:inizio \*\/\n)[\s\S]*?(\/\* build:modelli:fine \*\/)/;
+if (!marcatori.test(sorgente)) {
+  throw new Error(`${FUNZIONE}: mancano i marcatori build:modelli:inizio … build:modelli:fine`);
+}
+
+const ricevuta = compilaMail("ricevuta-color-runner.html");
+const fallita = compilaMail("fallita-color-runner.html");
+
+/* `export` e non `const` semplice: prova-invio.mjs importa questi due modelli
+   per spedirsi una mail vera prima che lo faccia un iscritto vero. Vercel
+   guarda solo l'export di default, gli altri non gli danno fastidio. */
+const generato = `/* Generato da build.mjs — NON modificare a mano.
+   I sorgenti sono _build/email/ricevuta-color-runner.html,
+   _build/email/fallita-color-runner.html e _build/email/evento.json. */
+
+export const ORGANIZZATORI = ${JSON.stringify(String(evento.organizzatori || "").trim())};
+
+export const MODELLO_RICEVUTA = ${stringa(ricevuta)};
+
+export const MODELLO_FALLITA = ${stringa(fallita)};
+
+`;
+
+/* La sostituzione passa da una funzione e non da una stringa: dentro
+   `generato` c'è HTML, e String.replace legge $& $1 $` come istruzioni
+   proprie anche quando sono capitate lì per caso. */
+writeFileSync(
+  FUNZIONE,
+  sorgente.replace(marcatori, (_, apri, chiudi) => apri + generato + chiudi)
+);
+console.log(
+  `✓ ${FUNZIONE}  (2 mail, ${((ricevuta.length + fallita.length) / 1024).toFixed(1)} kB)`
+);
+
+/* Le sezioni saltate non sono un errore — la mail funziona lo stesso — ma non
+   devono passare inosservate: sono le cose che il gruppo del Palio non ha
+   ancora deciso, e finché non le decide chi si iscrive non le legge. */
+const saltate = Object.entries(sezioni).filter(([k, v]) => !v && k !== "dettagli-in-arrivo");
+if (saltate.length) {
+  const vuoti = Object.keys(campiMail).filter(
+    (k) => String(campiMail[k] ?? "").trim() === ""
+  );
+  console.log(`\n⚠ mail Color Runner: ${saltate.length} sezioni non entrano — ${saltate.map(([k]) => k).join(", ")}.`);
+  console.log(`  Campi vuoti in _build/email/evento.json: ${vuoti.join(", ")}`);
+  if (!sezioni.contatto) {
+    console.log(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
+  }
+  console.log(`  Si compilano lì e si rifà il build: le sezioni tornano da sé.`);
+}
+
 /* ── La lista della spesa ─────────────────────────────────────────────────
    Le fotografie si aggiungono una alla volta, nel tempo. Perché "quali
    mancano" non diventi una domanda a cui si risponde aprendo la cartella e

@@ -1,0 +1,28 @@
+{
+  "_nota": [
+    "I dati dell'evento che finiscono dentro le mail della Color Runner.",
+    "Li compila chi organizza, non il codice: qui sono in un JSON e non dentro",
+    "l'HTML perché cambiarli non deve voler dire rimettere le mani in una mail.",
+    "",
+    "Un campo lasciato vuoto NON stampa una parentesi quadra nella mail di",
+    "qualcuno: `node build.mjs` toglie via il paragrafo intero. Finché ritrovo e",
+    "cosa portare sono vuoti, al loro posto la mail dice che i dettagli arrivano",
+    "più avanti — che è la verità, ed è meglio di [ORA DEL RITROVO].",
+    "",
+    "Dopo ogni modifica: `node build.mjs`, e le mail si ricompilano dentro",
+    "api/conferma-color-runner.mjs. Senza build, qui non cambia niente."
+  ],
+
+  "organizzatori": "",
+
+  "ritrovoOra": "",
+  "ritrovoLuogo": "",
+  "partenza": "",
+  "distanza": "",
+
+  "portare": "",
+  "fornito": "",
+
+  "dataLimite": "",
+  "rimborsi": ""
+}

@@ -29,6 +29,11 @@ const QUOTA_CENT = 1000; // 10,00 €
 const VALUTA = "eur";
 const DESCRIZIONE_PRODOTTO = "Iscrizione Color Runner — 20 settembre";
 
+/* Deve dire la stessa identica riga di EVENTO in api/conferma-color-runner.mjs:
+   è il marchio con cui quella funzione riconosce le sessioni che la
+   riguardano. Se le due righe divergono, le mail smettono di partire. */
+const EVENTO = "color-runner-2026-09-20";
+
 const SITE = "https://www.rivaltasulmincio.it";
 
 /* Meno del limite di 10 secondi dichiarato in vercel.json: se Stripe tarda,
@@ -130,6 +135,10 @@ async function iscrivi(req, res, chiave) {
   parametri.set("line_items[0][price_data][unit_amount]", String(QUOTA_CENT));
   parametri.set("line_items[0][price_data][product_data][name]", DESCRIZIONE_PRODOTTO);
   parametri.set("payment_intent_data[description]", `${DESCRIZIONE_PRODOTTO} — ${nome} ${cognome}`);
+  /* Il marchio dell'evento. Oggi la Color Runner è l'unica cosa che si paga
+     su questo sito, ma /api/conferma-color-runner risponde a ogni avviso di
+     pagamento che Stripe manda: è questo a dirgli quali sono i suoi. */
+  parametri.set("metadata[evento]", EVENTO);
   parametri.set("metadata[nome]", nome);
   parametri.set("metadata[cognome]", cognome);
   parametri.set("metadata[telefono]", telefono);

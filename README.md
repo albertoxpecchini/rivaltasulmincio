@@ -268,6 +268,11 @@ rivaltasulmincio/
 │   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
 │   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
+├── api/                        # le tre cose che NON girano nel browser di chi legge
+│   ├── meteo.mjs               #   la stazione di meteomincio, tradotta in JSON
+│   ├── iscrizione-color-runner.mjs   #   apre il pagamento, e verifica il ritorno
+│   └── conferma-color-runner.mjs     #   il webhook Stripe: manda la ricevuta o l'avviso
+│                               #   (in coda ha un blocco GENERATO da build.mjs: le due mail)
 ├── data/
 │   ├── rivalta_dataset.json    #   l'estratto OpenStreetMap completo (ODbL) — 330 POI
 │   └── …-dossier.md            #   il dossier sorgente in Markdown
@@ -277,11 +282,17 @@ rivaltasulmincio/
 │   ├── <pagina>.body.html      #   il contenuto di ogni pagina (10 frammenti)
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
 │   ├── luoghi.json             #   il registro dei 110 luoghi: coordinate, foto, schede
-│   └── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
+│   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
+│   └── email/                  #   le due mail della Color Runner, sorgente
+│       ├── ricevuta-color-runner.html   #     a chi ha pagato
+│       ├── fallita-color-runner.html    #     a chi si è fermato a metà
+│       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
-├── build.mjs                   # incolla guscio + contenuto, e genera sitemap.xml
+├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml e le due mail
 ├── serve.mjs                   # anteprima locale con cleanUrls (non va online)
+├── prova-conferma.mjs          # `npm test`: 15 casi sulle mail, con Stripe finto (non va online)
+├── prova-invio.mjs             # manda una mail vera a sé stessi, per guardarla (non va online)
 ├── sitemap.xml                 # GENERATO da build.mjs — non modificarlo a mano
 ├── robots.txt                  # statico, nessuna esclusione
 └── vercel.json                 # framework null, cleanUrls, cache di assets/ e data/
@@ -355,7 +366,9 @@ sequenceDiagram
 | **Google Fonts** | Titillium Web + Roboto Mono | client, con `preconnect` |
 | **Piastrelle OpenStreetMap** | il fondo della mappa (ODbL, con attribuzione) | client, **solo su `/mappa`** |
 | **meteomincio.it** | la lettura della stazione di Rivalta | server, via `/api/meteo`, per la home e `/natura` |
-| **Vercel** | hosting statico + una funzione, `cleanUrls`, header di cache | produzione |
+| **Vercel** | hosting statico + tre funzioni, `cleanUrls`, header di cache | produzione |
+| **Stripe** | l'incasso della quota Color Runner e l'avviso di com'è andata | server, via `/api/iscrizione-color-runner` e `/api/conferma-color-runner` |
+| **Resend** | la spedizione delle due mail della Color Runner | server, via `/api/conferma-color-runner` |
 
 Quello che il browser scarica sono pagine, fogli di stile, gli script e — solo se lo si chiede — il
 dataset da `/dati`. Le chiamate a runtime sono **due**: `/mappa` scarica le piastrelle da
@@ -436,10 +449,10 @@ in più lì dentro.
 
 La seconda cosa che non gira nel browser di chi legge. `/color-runner` raccoglie i dati di chi si
 iscrive alla camminata a colori del 20 settembre e ne incassa la quota — **10 €**, un pagamento
-vero — in un passaggio solo. La pagina **non è nel menu e non è in sitemap**: dichiara
-`noindex: true` in [`_build/color-runner.body.html`](_build/color-runner.body.html) e si raggiunge
-col link diretto, che è come il gruppo del Palio la distribuisce. Per renderla pubblica si toglie
-quella riga e si rifà il build; non c'è altro da cambiare.
+vero — in un passaggio solo. La pagina **non sta nel menu** — le nove porte d'ingresso sono quelle
+e restano nove — ma è pubblica: la richiamano la home, `/comunita` e `/eventi`, ed entra in
+sitemap. Per rimetterla in disparte basta rimettere `noindex: true` in testa a
+[`_build/color-runner.body.html`](_build/color-runner.body.html) e rifare il build.
 
 [`api/iscrizione-color-runner.mjs`](api/iscrizione-color-runner.mjs) parla con l'API REST di Stripe
 via `fetch`, **senza il pacchetto npm `stripe`**: stesso zero-dipendenze del resto del sito, stesso
@@ -449,6 +462,9 @@ stile di `api/meteo.mjs`. Fa due mestieri secondo il metodo con cui lo si chiama
 |---|---|
 | `POST` | il modulo manda nome, cognome, email, telefono, note e il consenso spuntato; nasce una sessione Stripe Checkout e la risposta è l'indirizzo a cui mandare il browser a pagare |
 | `GET ?sessione=cs_…` | al ritorno dal pagamento la pagina chiede a Stripe se quella sessione è stata **davvero** pagata |
+
+E accanto c'è [`api/conferma-color-runner.mjs`](api/conferma-color-runner.mjs), che non lo chiama
+il sito: lo chiama Stripe. È il webhook che manda la mail.
 
 Il secondo esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo basterebbe
 aprire `/color-runner?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato una lira.
@@ -460,7 +476,61 @@ della sessione e compaiono lì accanto a ogni pagamento, insieme all'ora in cui 
 dato: niente database, niente foglio a parte, niente seconda copia dei dati di persone vere da
 tenere al sicuro. Il sito non vede mai i dati della carta.
 
-#### La chiave — l'unica cosa da mettere a mano
+#### Le due mail — e perché non partono dalla pagina
+
+Chi paga riceve una **ricevuta**; chi comincia e non arriva in fondo riceve un avviso che dice che
+**il pagamento non è andato a buon fine e che non gli è stato addebitato niente**. Nessuno resta a
+chiedersi se è iscritto o no — che è l'unica cosa, dopo aver dato dieci euro, che si vuole sapere.
+
+La mail **non parte dalla pagina di ritorno dal pagamento**, e questa è la scelta che tiene in piedi
+tutto il resto. Al ritorno dal pagamento non ci si torna sempre: si chiude la scheda, finisce la
+batteria, il telefono perde campo mentre Stripe sta rimandando indietro il browser. Il pagamento è
+fatto e la pagina non lo sa. Se la conferma dipendesse da lì, chi ha pagato resterebbe senza.
+
+Parte invece da **Stripe che avvisa il server**, a pagamento concluso, indipendentemente da dove sia
+finito il browser. Quattro proprietà, ognuna col suo perché:
+
+| | |
+|---|---|
+| **la mail giusta** | la ricevuta parte **solo** se `payment_status` vale `paid` — riletto in quel momento da Stripe con la chiave segreta, non preso dall'avviso ricevuto. Un avviso falso, anche perfettamente firmato, al massimo nomina una sessione: se quella sessione non risulta pagata, non esce niente |
+| **la firma** | ogni avviso di Stripe è firmato in HMAC-SHA256 con `STRIPE_WEBHOOK_SECRET`; la firma si ricalcola sul corpo **grezzo** (per questo `bodyParser` è spento: riscrivere anche solo gli spazi la invaliderebbe) e si confronta a tempo costante. Fuori dai cinque minuti di tolleranza, un avviso vero rigiocato più tardi non vale più |
+| **una sola volta** | spedita la ricevuta, resta un segno nei `metadata` del PaymentIntent, che al giro dopo si rilegge. Serve perché lo stesso pagamento può generare più avvisi, e perché i rinvii di Stripe sono fatti apposta per ripetersi |
+| **prima o poi arriva** | se la spedizione fallisce la funzione risponde **500**, non 200: è il modo di dire a Stripe «rimandamelo». Stripe riprova per tre giorni. Una chiave sbagliata o un servizio di posta giù diventano così una mail in ritardo invece di una mail persa |
+
+L'avviso di mancato pagamento parte su **sessione scaduta** (`checkout.session.expired` — chi apre
+il pagamento e chiude la pagina; Stripe lo dice alla scadenza, cioè fino a 24 ore dopo) e su
+**pagamento differito rifiutato**. Una carta rifiutata mentre si è ancora sulla pagina di Stripe non
+fa partire niente: lì si ritenta subito, e una mail a ogni tentativo sarebbe molestia. E chi ha poi
+pagato con una seconda sessione non se lo vede arrivare: prima di spedirlo, la funzione chiede a
+Stripe se a quell'indirizzo risulta un pagamento riuscito. Se la domanda non riesce a farla, la mail
+**non parte**: dire per sbaglio «non sei iscritto» a chi ha pagato è un danno, tacere è un'occasione
+persa.
+
+##### Dove si scrivono
+
+I due modelli stanno in [`_build/email/`](_build/email/) — HTML vero, che si apre nel browser per
+guardarlo. Non sono scritti come una pagina del sito: la posta non è il web, e `var(--sb-*)`,
+`color-mix()`, flex e grid in Outlook e Gmail non esistono. Stessa grammatica visiva del sito,
+tecnica diversa: tabelle, stili in linea, i token di `assets/sb.css` risolti a mano in hex.
+
+`node build.mjs` li compila **dentro** `api/conferma-color-runner.mjs`, fra due marcatori.
+Sembra un giro largo, ed è il punto: `_build/` è in `.vercelignore`, quindi su Vercel quei file non
+arrivano — compilati diventano due stringhe dentro la funzione, e non c'è niente che possa mancare
+all'appello proprio mentre qualcuno sta pagando. Il blocco fra i marcatori è **generato**: si
+modifica l'HTML in `_build/email/` e si rifà il build, mai il contrario.
+
+I dati dell'evento — ritrovo, partenza, distanza, cosa portare, rimborsi, indirizzo degli
+organizzatori — stanno in [`_build/email/evento.json`](_build/email/evento.json), perché cambiarli
+non deve voler dire rimettere le mani dentro una mail. **Un campo lasciato vuoto non stampa una
+parentesi quadra nella posta di qualcuno:** il build toglie via la sezione intera, e finché ritrovo e
+cosa portare mancano al loro posto la ricevuta dice che i dettagli arrivano più avanti — che è la
+verità. Ogni build stampa l'elenco di cosa manca ancora.
+
+> La ricevuta di Stripe (**Settings → Payments → Customer emails**) è un'altra cosa e resta
+> separata: quella è la prova del pagamento, questa è la conferma dell'iscrizione. Averle entrambe
+> non fa male.
+
+#### Le chiavi — le cose da mettere a mano
 
 La chiave segreta **non è nel repository e non deve entrarci**. Vive in una variabile d'ambiente su
 Vercel, e finché non c'è l'endpoint risponde `500 pagamento non ancora configurato` senza provarci:
@@ -472,9 +542,81 @@ Vercel, e finché non c'è l'endpoint risponde `500 pagamento non ancora configu
    deploy di anteprima).
 3. **Rideployare**: le variabili le legge la funzione all'avvio, un deploy già fatto non le vede.
 
-Per far arrivare la ricevuta a chi paga va spuntato, in Stripe, **Settings → Payments → Customer
-emails → Successful payments**: Checkout riceve già l'indirizzo, ma senza quella spunta Stripe in
-modalità live non scrive a nessuno.
+Per far arrivare **anche** la ricevuta di pagamento di Stripe va spuntato, in Stripe, **Settings →
+Payments → Customer emails → Successful payments**: Checkout riceve già l'indirizzo, ma senza quella
+spunta Stripe in modalità live non scrive a nessuno. La conferma d'iscrizione del sito è un'altra
+cosa e non dipende da quella spunta.
+
+##### E perché le mail partano
+
+Tre variabili in più, sempre in **Settings → Environment Variables**, e sempre seguite da un
+rideploy:
+
+| Variabile | Dove si prende | Se manca |
+| :--- | :--- | :--- |
+| `STRIPE_WEBHOOK_SECRET` | Stripe → **Developers → Webhooks → Add endpoint**, indirizzo `https://www.rivaltasulmincio.it/api/conferma-color-runner`, eventi `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`. Il `whsec_…` compare a endpoint creato | gli avvisi vengono accettati **senza verificarne la firma** (quello che conta si rilegge comunque da Stripe, ma è un buco: nei log si vede) |
+| `RESEND_API_KEY` | [resend.com](https://resend.com) → **API Keys**, dopo aver verificato il dominio `rivaltasulmincio.it` in **Domains** (record SPF e DKIM dal pannello DNS) | la funzione risponde 500 e Stripe **continua a riprovare per tre giorni**: appena la chiave c'è, le mail arretrate partono |
+| `POSTA_MITTENTE` | facoltativa. Il mittente, forma `Nome <indirizzo@dominio>`. Il dominio dev'essere quello verificato in Resend | vale `Color Runner — Rivalta sul Mincio <color-runner@rivaltasulmincio.it>` |
+
+Il webhook si prova senza aspettare un vero iscritto: in Stripe, dalla scheda dell'endpoint,
+**Send test webhook**. E in locale [`prova-conferma.mjs`](prova-conferma.mjs) — `npm test`, zero
+dipendenze — finge Stripe e il servizio di posta e ripercorre quindici casi senza spedire niente a
+nessuno:
+
+```
+── Il pagamento è andato a buon fine ──────────────────────────
+  ok   pagata → parte la ricevuta
+  ok   pagata in differita → parte la ricevuta
+  ok   ricevuta già spedita → non si ripete
+  ok   posta giù → 500, così Stripe ritenta
+
+── Il pagamento NON è andato a buon fine ──────────────────────
+  ok   sessione scaduta → parte l'avviso
+  ok   pagamento differito rifiutato → parte l'avviso
+  ok   scaduta, ma ha pagato con un'altra sessione → niente
+  ok   completata ma non pagata → si aspetta, niente mail
+
+── Chi bussa senza essere Stripe ──────────────────────────────
+  ok   filtro per indirizzo rifiutato da Stripe: ripiega e trova il pagato
+  ok   Stripe muto sul controllo: nel dubbio non accusa chi ha pagato
+  ok   firma sbagliata → 400, nessuna mail
+  ok   firma vecchia di un'ora → 400, nessuna mail
+  ok   avviso firmato che MENTE sul pagamento → nessuna ricevuta
+  ok   sessione di un altro evento → ignorata
+  ok   avviso che non riguarda le sessioni → ignorato
+```
+
+Il penultimo è quello che vale la pena rileggere: un avviso con firma **valida** che dichiara un
+pagamento riuscito non fa uscire nessuna ricevuta, perché quel che decide è la risposta di Stripe
+all'interrogazione fatta con la chiave segreta, non quello che l'avviso racconta di sé.
+
+##### La prova che nessuna finzione può dare
+
+`npm test` dice che la funzione **decide** giusto. Non dice che la mail **esce** e che in Gmail su
+un telefono si vede come deve — quello lo dice solo una mail vera.
+[`prova-invio.mjs`](prova-invio.mjs) ne manda una, a sé stessi, con dati inventati, senza toccare
+Stripe né pagamenti né iscritti. Usa gli stessi due modelli e la stessa funzione di spedizione del
+webhook, importati e non ricopiati, quindi quello che si vede arrivare è esattamente quello che
+arriverà a chi paga:
+
+```powershell
+$env:RESEND_API_KEY = "re_…"
+node prova-invio.mjs io@example.it            # la ricevuta
+node prova-invio.mjs io@example.it fallita    # l'avviso di mancato pagamento
+```
+
+**Va fatto girare prima che si iscriva qualcuno davvero.** Il modo tipico di sbagliare è il
+mittente: in Resend si verifica spesso un sottodominio (`send.rivaltasulmincio.it`) mentre
+`POSTA_MITTENTE` è rimasto sul dominio nudo, o viceversa — e allora Resend rifiuta con un 403 che
+da solo non spiega niente. Qui e nei log di Vercel quel caso si dice per esteso, col mittente
+stampato accanto. Ma è meglio scoprirlo con la propria casella che col primo che tira fuori dieci
+euro: fino a quel momento il pagamento riuscirebbe comunque — l'incasso è di Stripe e non dipende
+dalla mail — e la ricevuta arriverebbe in ritardo, quando la variabile è corretta e Stripe rimanda
+l'avviso.
+
+Va infine compilato **`_build/email/evento.json`** con quello che il gruppo del Palio decide, a
+partire da `organizzatori`: senza quell'indirizzo le mail partono senza un posto a cui rispondere,
+e il piede che dice «rispondi pure a questo messaggio» promette una cosa che non c'è.
 
 La quota è scritta in **due punti soli**, ed è bene che restino d'accordo: `QUOTA_CENT` in
 `api/iscrizione-color-runner.mjs` (in centesimi) e il testo del bottone in

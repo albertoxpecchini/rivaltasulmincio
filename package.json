@@ -1,0 +1,13 @@
+{
+  "name": "rivaltasulmincio",
+  "private": true,
+  "description": "Il sito di Rivalta sul Mincio. Resta HTML statico: Vite serve solo all'anteprima locale, in produzione non gira nulla.",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.mjs",
+    "test": "node prova-conferma.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.1.14"
+  }
+}
