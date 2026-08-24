@@ -156,13 +156,16 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <input type="email" id="cr-email" name="email" autocomplete="email" required maxlength="200">
     </div>
     <div class="sb-cr-field">
+      <label for="cr-cf">Codice fiscale</label>
+      <input type="text" id="cr-cf" name="cf" required minlength="16" maxlength="16"
+             pattern="[A-Za-z0-9]{16}" autocapitalize="characters" spellcheck="false"
+             inputmode="text" title="16 caratteri, es. RSSMRA80A01H501U">
+    </div>
+    <div class="sb-cr-field">
       <label for="cr-telefono">Telefono (facoltativo)</label>
       <input type="tel" id="cr-telefono" name="telefono" autocomplete="tel" maxlength="40">
     </div>
-    <div class="sb-cr-field">
-      <label for="cr-note">Note (facoltativo)</label>
-      <textarea id="cr-note" name="note" rows="2" maxlength="300"></textarea>
-    </div>
+    <p class="sb-riv-cap">I dati raccolti (nome, cognome, codice fiscale) sono condivisi con ANSPI, che organizza l'evento insieme al Palio, per attivare la copertura assicurativa dei partecipanti.</p>
     <button class="sb-btn sb-btn--primary" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
   </form>
 </section>
@@ -196,7 +199,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         cognome: form.cognome.value,
         email: form.email.value,
         telefono: form.telefono.value,
-        note: form.note.value,
+        cf: form.cf.value,
       }),
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })

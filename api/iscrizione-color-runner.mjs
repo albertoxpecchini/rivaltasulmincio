@@ -8,10 +8,11 @@
 
    Chiama direttamente l'API REST di Stripe via fetch, senza il pacchetto
    npm `stripe`: stesso principio di zero-dipendenze del resto del sito,
-   stesso stile di /api/meteo.mjs. I dati del modulo (nome, cognome,
-   telefono, note) viaggiano come metadata della sessione: compaiono così
+   stesso stile di /api/meteo.mjs. I dati del modulo (nome, cognome, codice
+   fiscale, telefono) viaggiano come metadata della sessione: compaiono così
    nel dashboard Stripe accanto al pagamento, senza bisogno di un database
-   o un foglio a parte.
+   o un foglio a parte. Il codice fiscale serve al Palio/ANSPI per attivare
+   l'assicurazione dei partecipanti.
 
    La chiave segreta vive solo in una variabile d'ambiente su Vercel
    (STRIPE_SECRET_KEY) — non è mai scritta qui né altrove nel repo.
@@ -24,6 +25,7 @@ const DESCRIZIONE_PRODOTTO = "Iscrizione Color Runner — 20 settembre";
 const SITE = "https://www.rivaltasulmincio.it";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CF_RE = /^[A-Z0-9]{16}$/;
 
 const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
 
@@ -42,10 +44,10 @@ export default async function handler(req, res) {
   const cognome = pulisci(req.body?.cognome, 80);
   const email = pulisci(req.body?.email, 200);
   const telefono = pulisci(req.body?.telefono, 40) || "—";
-  const note = pulisci(req.body?.note, 300) || "—";
+  const cf = pulisci(req.body?.cf, 16).toUpperCase();
 
-  if (!nome || !cognome || !EMAIL_RE.test(email)) {
-    return res.status(400).json({ errore: "nome, cognome o email mancanti o non validi" });
+  if (!nome || !cognome || !EMAIL_RE.test(email) || !CF_RE.test(cf)) {
+    return res.status(400).json({ errore: "nome, cognome, email o codice fiscale mancanti o non validi" });
   }
 
   /* Stripe Checkout vuole i parametri in x-www-form-urlencoded, con la
@@ -64,7 +66,7 @@ export default async function handler(req, res) {
   parametri.set("metadata[nome]", nome);
   parametri.set("metadata[cognome]", cognome);
   parametri.set("metadata[telefono]", telefono);
-  parametri.set("metadata[note]", note);
+  parametri.set("metadata[codice_fiscale]", cf);
 
   try {
     const risposta = await fetch("https://api.stripe.com/v1/checkout/sessions", {
