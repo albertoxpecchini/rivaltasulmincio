@@ -264,6 +264,73 @@
 .sb-riv-ora-go { align-self: flex-start; margin-top: 0.95rem; font-size: 0.82rem; }
 .sb-riv-ora-stato { margin-top: 0.5rem; font-size: 0.7rem; line-height: 1.4; color: var(--sb-fg-muted); }
 
+/* Sul telefono la seconda colonna non c'è: la scheda scende sotto il titolo e
+   a tutta larghezza diventa il blocco più alto della hero — un riquadro pieno
+   di numeri infilato fra l'invito a entrare nel sito e i dati del paese, che
+   rompe la colonna a sinistra su cui è allineato tutto il resto.
+
+   Allora si riduce a quello che si guarda davvero prima di uscire di casa: il
+   disegno del cielo e i gradi. Piccola e in alto a destra, sopra il titolo, è
+   un segnale e non una sezione, e la hero torna a essere una colonna sola.
+
+   Il resto — condizione, estremi, le tre misure, l'ora della lettura — non si
+   perde: sta a un tocco, perché qui la pastiglia intera è il collegamento a
+   /natura. Lì è scritto per esteso, insieme alla nota «in prova» che sopra una
+   pastiglia larga otto centimetri sarebbe più grande di ciò che accompagna. */
+@media (max-width: 639.98px) {
+  .sb-riv-heroduo { gap: 1.1rem; }
+  /* order: ultima nel markup, prima in pagina. Con la tastiera e con lo screen
+     reader resta comunque in fondo, ed è l'ordine giusto: prima il paese, poi
+     che tempo fa. */
+  .sb-riv-ora { order: -1; justify-self: end; }
+  .sb-riv-ora .sb-riv-prossima { display: none; }
+  .sb-riv-ora-occhiello,
+  .sb-riv-ora-cond,
+  .sb-riv-ora-estremi,
+  .sb-riv-ora-minis,
+  .sb-riv-ora-stato { display: none; }
+
+  /* Alla misura di una pastiglia lo smusso delle lastre si mangia mezzo lato:
+     si scende a quello delle pillole. Il taglio interno va scritto per esteso
+     perché --sb-shape-sm-in non esiste, e non basterebbe ridichiarare
+     --sb-cut-lg qui: --sb-shape-lg è già risolto su .sb-home (la nota sulle
+     sagome, in sb.css, spiega perché). Il -0.586px è lo stesso di sempre. */
+  .sb-riv-ora .sb-panel { clip-path: var(--sb-shape-sm); }
+  .sb-riv-ora .sb-panel-inner {
+    clip-path: polygon(
+      calc(var(--sb-cut) - 0.586px) 0,
+      100% 0,
+      100% calc(100% - var(--sb-cut) + 0.586px),
+      calc(100% - var(--sb-cut) + 0.586px) 100%,
+      0 100%,
+      0 calc(var(--sb-cut) - 0.586px)
+    );
+  }
+  .sb-riv-ora-inner { padding: 0.45rem 0.75rem; }
+  .sb-riv-ora-testa { gap: 0.45rem; margin-top: 0; }
+  .sb-riv-ora-icona { width: 1.55rem; height: 1.55rem; }
+  .sb-riv-ora-t { font-size: 1.4rem; }
+
+  /* Il collegamento non è più una riga sotto la scheda: è la scheda. Steso
+     sulla lastra si prende tutto il tocco, e il testo resta scritto per chi
+     legge con lo screen reader — a corpo zero non si vede ma c'è. Via solo la
+     freccia, che ha una misura sua e resterebbe grande com'era.
+
+     Il fuoco si sposta dentro come per le pillole della guida: un outline a
+     filo del bordo lo taglierebbe via il clip-path della lastra. */
+  .sb-riv-ora-go {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    font-size: 0;
+  }
+  .sb-riv-ora-go svg { display: none; }
+  .sb-home .sb-riv-ora-go:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--sb-brand);
+  }
+}
+
 /* ── Stazione meteo in diretta ─────────────────────────────────────────────
    Gli stessi riquadri di sintesi qui sopra, con dentro numeri che cambiano da
    soli. Nessun segnale che lo annunci: niente pallino che pulsa, niente cifra
