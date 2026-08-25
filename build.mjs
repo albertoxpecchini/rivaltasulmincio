@@ -407,6 +407,110 @@ ${mini}
       </aside>`;
 };
 
+/* ── Le vie del paese, per il modulo della Color Runner ───────────────────
+   {{VIE}} diventa un blocco JSON che il modulo di /color-runner legge dal DOM
+   per suggerire l'indirizzo mentre lo si scrive. Sono le vie vere di Rivalta
+   con i civici mappati in OpenStreetMap: chi abita qui trova il suo indirizzo
+   in due lettere e lo sceglie, invece di scriverlo ognuno a modo suo — «V.
+   Sette Frati 12», «via settefrati, 12», «Via Sette Frati n. 12» sono tre
+   grafie della stessa casa, e a chi poi legge l'elenco degli iscritti tocca
+   riconoscerle a mano.
+
+   Non è un archivio anagrafico e non pretende di esserlo: i civici sono
+   quelli che risultano mappati (177 su 21 vie), e le vie senza nemmeno un
+   civico in OSM restano nell'elenco lo stesso — la via si sceglie dalla lista
+   e il numero si scrive a mano. Il campo accetta comunque testo libero: chi
+   abita fuori Rivalta scrive il suo indirizzo e nessuno glielo impedisce. */
+const VIE_ESCLUSE = new Set([
+  // Non sono indirizzi di casa: nessuno ci abita.
+  "Ciclabile Rivalta sul Mincio - Grazie",
+  "Sottopasso",
+]);
+
+/* Due nomi arrivano da OSM in una forma che in un elenco di indirizzi si
+   leggerebbe come uno sbaglio nostro. Si correggono qui, non nel dataset:
+   quel file è la copia fedele di quanto scaricato, e va lasciato tale.
+   La correzione giusta sta a monte, in OpenStreetMap. */
+const VIE_CORREZIONI = {
+  "Via Gacomo Puccini": "Via Giacomo Puccini", // refuso in OSM
+  "Via T. Battisti": "Via Tertulliano Battisti", // stessa via, scritta corta
+};
+
+const renderVie = () => {
+  const ds = JSON.parse(readFileSync("data/rivalta_dataset.json", "utf8"));
+  const nome = (n) => VIE_CORREZIONI[n] || n;
+  const vie = new Map();
+
+  for (const s of ds.strade) {
+    if (!s.nome || s.nome === "(senza nome)" || VIE_ESCLUSE.has(s.nome)) continue;
+    vie.set(nome(s.nome), []);
+  }
+  for (const [via, civici] of Object.entries(ds.civici_mappati)) {
+    const chiave = nome(via);
+    if (VIE_ESCLUSE.has(via)) continue;
+    const elenco = vie.get(chiave) || [];
+    // Ordine di casa: 2, 6, 9, 10 — non 10, 2, 6 come ordinerebbe il testo.
+    vie.set(
+      chiave,
+      [...new Set([...elenco, ...civici])].sort(
+        (a, b) => parseInt(a, 10) - parseInt(b, 10) || a.localeCompare(b)
+      )
+    );
+  }
+
+  const ordinate = Object.fromEntries([...vie.entries()].sort((a, b) => a[0].localeCompare(b[0], "it")));
+  return `<script type="application/json" id="cr-vie">${JSON.stringify(ordinate).replace(/</g, "\\u003c")}</script>`;
+};
+
+/* ── I loghi di chi c'è dietro ────────────────────────────────────────────
+   Stessa regola delle fotografie: il logo compare solo se il file esiste
+   davvero. Finché non c'è, al suo posto sta il nome scritto — che in una
+   striscia di loghi si legge come una scelta e non come un'immagine rotta.
+   Il giorno che il file entra in assets/loghi/ prende il suo posto da sé.
+
+   L'estensione non è fissata: vince il primo formato trovato, in quest'ordine.
+   Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo. */
+const LOGHI = [
+  { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cr-logo--anspi" },
+  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Stemma del Comune di Rodigo", url: "https://comune.rodigo.mn.it", classe: "sb-cr-logo--rodigo" },
+  { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cr-logo--ap" },
+];
+
+const loghiMancanti = [];
+const renderLoghi = () =>
+  `<div class="sb-cr-loghi">
+${LOGHI.map((l) => {
+  const trovato = ["svg", "png", "webp", "jpg"]
+    .map((est) => `assets/loghi/${l.file}.${est}`)
+    .find((p) => existsSync(p));
+  if (!trovato) loghiMancanti.push(`${l.file}.svg`);
+  const dentro = trovato
+    ? `<img src="${trovato}" alt="${escape(l.desc)}" loading="lazy" decoding="async">`
+    : `<span class="sb-cr-logo-t">${escape(l.nome)}</span>`;
+  return `      <a class="sb-cr-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
+}).join("\n")}
+    </div>`;
+
+/* ── Il banner della Color Runner ─────────────────────────────────────────
+   Il manifesto dell'evento non è ancora stato disegnato. {{BANNER}} lo aspetta:
+   finché il file non c'è la pagina non lascia né un buco né una cornice vuota
+   — l'intestazione a colori sta in piedi da sola. Quando il banner arriva,
+   basta metterlo lì con questo nome e ricompare al primo build. */
+const BANNER = "color-runner-banner";
+let bannerTrovato = null;
+
+const renderBanner = () => {
+  bannerTrovato = ["webp", "jpg", "png", "svg"]
+    .map((est) => `assets/foto/${BANNER}.${est}`)
+    .find((p) => existsSync(p));
+  if (!bannerTrovato) return "";
+  return `<figure class="sb-cr-banner">
+      <div class="sb-panel"><div class="sb-panel-inner">
+        <img src="${bannerTrovato}" alt="Il manifesto della Color Runner del 20 settembre a Rivalta sul Mincio" decoding="async">
+      </div></div>
+    </figure>`;
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
@@ -424,6 +528,9 @@ for (const file of bodies) {
       .replace("{{LUOGHI}}", renderLuoghi)
       .replace("{{METEO_ORA}}", renderMeteoOra)
       .replace("{{METEO}}", renderMeteo)
+      .replace("{{VIE}}", renderVie)
+      .replace("{{LOGHI}}", renderLoghi)
+      .replace("{{BANNER}}", renderBanner)
   );
 
   const title = meta(src, "title");
@@ -660,6 +767,19 @@ if (saltate.length) {
     console.log(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
   }
   console.log(`  Si compilano lì e si rifà il build: le sezioni tornano da sé.`);
+}
+
+if (loghiMancanti.length) {
+  console.log(`
+⚠ loghi: ne mancano ${loghiMancanti.length} — ${loghiMancanti.join("  ")}`);
+  console.log(`  Vanno in assets/loghi/ con quel nome esatto (svg, png, webp o jpg).`);
+  console.log(`  Finché non ci sono, su /color-runner al loro posto si legge il nome.`);
+}
+
+if (!bannerTrovato) {
+  console.log(`
+⚠ banner Color Runner: non ancora disegnato.`);
+  console.log(`  Va in assets/foto/${BANNER}.jpg (o .webp/.png/.svg): la pagina lo mostra da sé.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

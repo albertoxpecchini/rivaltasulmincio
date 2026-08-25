@@ -4,7 +4,8 @@
 
    Fa due mestieri, secondo il metodo con cui lo si chiama:
 
-     POST  il modulo manda nome, cognome, email e il consenso spuntato;
+     POST  il modulo manda nome, cognome, codice fiscale, email, indirizzo
+           di residenza e il consenso spuntato;
            qui si apre una sessione Stripe Checkout e si risponde con
            l'indirizzo a cui mandare il browser a pagare.
 
@@ -42,6 +43,14 @@ const SITE = "https://www.rivaltasulmincio.it";
 const ATTESA_MS = 8000;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* Sedici caratteri fra lettere e cifre, e basta. Il controllo severo — quello
+   del carattere di controllo — lo fa la pagina, che può spiegare a chi scrive
+   cosa non torna e farglielo correggere. Qui si guarda solo la forma, di
+   proposito: un codice legittimo ma fuori dall'ordinario respinto da questa
+   funzione diventerebbe una persona che non riesce a iscriversi e non sa
+   perché, con la pagina che le diceva che andava bene. */
+const CF_RE = /^[A-Z0-9]{16}$/;
 
 const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
 
@@ -106,12 +115,20 @@ async function iscrivi(req, res, chiave) {
   const nome = pulisci(req.body?.nome, 80);
   const cognome = pulisci(req.body?.cognome, 80);
   const email = pulisci(req.body?.email, 200);
+  const codiceFiscale = pulisci(req.body?.codiceFiscale, 16).toUpperCase();
+  const indirizzo = pulisci(req.body?.indirizzo, 120);
   const telefono = pulisci(req.body?.telefono, 40) || "—";
   const note = pulisci(req.body?.note, 300) || "—";
   const consenso = req.body?.consenso === true;
 
   if (!nome || !cognome || !EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "nome, cognome o email mancanti o non validi" });
+  }
+  if (!CF_RE.test(codiceFiscale)) {
+    return res.status(400).json({ errore: "codice fiscale mancante o non valido" });
+  }
+  if (indirizzo.length < 5) {
+    return res.status(400).json({ errore: "indirizzo di residenza mancante" });
   }
   /* La spunta è obbligatoria anche qui e non solo nel modulo: il `required`
      dell'HTML è una cortesia verso chi compila, non una garanzia per chi
@@ -141,6 +158,13 @@ async function iscrivi(req, res, chiave) {
   parametri.set("metadata[evento]", EVENTO);
   parametri.set("metadata[nome]", nome);
   parametri.set("metadata[cognome]", cognome);
+  /* Codice fiscale e residenza servono all'assicurazione dei partecipanti, ed
+     è l'unico motivo per cui il modulo li chiede. Viaggiano dove vanno tutti
+     gli altri campi — nei metadata della sessione — e finiscono nella stessa
+     riga del dashboard Stripe: non c'è un secondo posto in cui dati di persone
+     vere vadano a finire. */
+  parametri.set("metadata[codice_fiscale]", codiceFiscale);
+  parametri.set("metadata[indirizzo]", indirizzo);
   parametri.set("metadata[telefono]", telefono);
   parametri.set("metadata[note]", note);
   /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
