@@ -146,6 +146,35 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
     #ff2d87
   );
+
+  /* La stessa livrea per i tasti, ma trasparente: le ultime due cifre di ogni
+     colore sono l'opacità, b8 = 72%. Attraverso ci si vede il vetro della
+     lastra e le macchie di vernice del fondale.
+
+     Il 72% non è un numero scelto a occhio, è il punto in cui due cose
+     stanno insieme: sotto si vede ancora quello che c'è dietro, e sopra la
+     scritta si legge su tutte e sei le fasce — anche sull'ambra, che è
+     sempre quella che rovina i conti. Più trasparente di così e il testo
+     sulla fascia gialla sparisce. */
+  --cr-livrea-vetro: linear-gradient(
+    90deg,
+    #ff2d87b8, #ff6a3db8, #f0a017b8, #1fbe76b8, #10a6e6b8, #6f5cf6b8,
+    #ff2d87b8, #ff6a3db8, #f0a017b8, #1fbe76b8, #10a6e6b8, #6f5cf6b8,
+    #ff2d87b8
+  );
+
+  /* Il rim: il filo di luce attorno al vetro, acceso dove la luce batte —
+     in alto a sinistra — e quasi spento dov'è in ombra. È metà dello spessore
+     di una lastra; l'altra metà è il filo specular dentro il bordo alto. Da
+     soli sembrano due sbagli, insieme fanno un oggetto. */
+  --cr-rim: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.4) 24%,
+    rgba(255, 255, 255, 0.12) 48%,
+    rgba(255, 255, 255, 0.45) 76%,
+    rgba(255, 255, 255, 0.85)
+  );
   position: relative;
 }
 html.dark .sb-cr {
@@ -362,52 +391,112 @@ html.dark .sb-cr {
 .sb-cr-quando strong { font-weight: 600; }
 .sb-cr-hero .sb-riv-lede { margin: 0.7rem 0 0; font-size: 0.95rem; }
 
-/* ══ I tasti ════════════════════════════════════════════════════════════════
-   Il tasto è quello del design system — .sb-btn .sb-btn--primary — e da qui
-   cambia solo la vernice. Forma, altezza, fuoco, comportamento al passaggio
-   del mouse: tutto quello che il sito fa già, lo fa anche qui, e continuerà a
-   farlo se un giorno il tasto del sito cambia.
+/* ══ I tasti: vetro trasparente ═════════════════════════════════════════════
+   La struttura è quella del sito — .sb-btn, con la sua altezza, il suo fuoco,
+   la sua tipografia — e sopra ci sta una lastra di vetro colorato. Non
+   .sb-btn--primary: quello porta una `background` scritta con la scorciatoia,
+   anche nel suo :hover, e una scorciatoia azzera tutte le sette proprietà di
+   sfondo che servono qui sotto. Con la classe base non c'è niente da
+   riscrivere e niente da tenere allineato.
 
-   La livrea è l'arcobaleno che scorre piano, lo stesso del titolo. Il testo
-   resta SCURO, come sul tasto primario del sito — bianco su un arcobaleno si
-   legge finché non arriva la fascia gialla, e lì sparisce. Nero su tinte
-   accese si legge su tutte e sei, e vale anche al buio, perché la livrea è
-   accesa in tutti e due i temi.
+   Il vetro sta in cinque strati, e sono cinque perché una lastra vera fa
+   cinque cose alla luce:
 
-   Il riflesso periodico è l'unica aggiunta: il design system ne ha uno, ma
-   solo al passaggio del mouse — e sul telefono un mouse non c'è. */
+     1. LASCIA PASSARE — la livrea è al 72%, non piena: sotto si vede il vetro
+        della lastra e le macchie del fondale.
+     2. RIFRANGE — backdrop-filter sfoca e satura quello che sta dietro. È
+        l'unico strato in cui «vetro» non è una metafora: lo fa il browser.
+     3. HA UN BORDO ACCESO — il rim, un filo di un pixel che è bianco dove la
+        luce batte e quasi spento dove non batte. Si ottiene con due sfondi in
+        due aree diverse: la livrea si ferma al bordo interno (padding-box), il
+        rim occupa il bordo (border-box). Nessun elemento in più.
+     4. HA UNO SPESSORE — il filo specular sul bordo alto e l'ombra interna in
+        basso. Sono i due che, da soli, sembrano errori.
+     5. È VIVA — la livrea scorre piano, una pozza di luce deriva dentro il
+        tasto su un altro tempo, e ogni nove secondi passa un riflesso.
+
+   Il colore della scritta cambia col tema, e non è pignoleria: la stessa
+   livrea al 72% su fondo chiaro dà tinte pastello (e allora il testo va scuro,
+   come sul tasto primario del sito), su fondo scuro dà tinte cupe (e allora va
+   bianco). Con un colore solo per tutti e due, una delle sei fasce mangerebbe
+   sempre la scritta. */
 .sb-btn.sb-cr-livrea {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   height: auto;
-  border-color: rgba(0, 0, 0, 0.18);
+  border: 1px solid transparent;
   color: #101010;
-  background-color: var(--cr-magenta);
-  background-image: var(--cr-livrea);
-  background-size: 200% 100%;
-  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.55);
+  background-image: var(--cr-livrea-vetro), var(--cr-rim);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  background-size: 200% 100%, auto;
+  background-repeat: no-repeat, no-repeat;
+  -webkit-backdrop-filter: blur(16px) saturate(185%);
+  backdrop-filter: blur(16px) saturate(185%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -14px 22px -18px rgba(0, 0, 0, 0.5),
+    0 10px 26px -16px rgba(0, 0, 0, 0.4);
   animation: cr-livrea 20s linear infinite;
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
 }
-/* Il :hover del design system riscrive `background` con la scorciatoia, che
-   azzera anche l'immagine: la livrea va rimessa: */
-.sb-btn.sb-cr-livrea:hover {
-  background-color: var(--cr-magenta);
-  background-image: var(--cr-livrea);
-  border-color: rgba(0, 0, 0, 0.32);
+html.dark .sb-btn.sb-cr-livrea {
+  color: #fff;
+  /* Sull'ambra il bianco è al limite: un'ombra da un pixel lo stacca senza
+     che si veda che c'è. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
-@keyframes cr-livrea { to { background-position: 100% 0; } }
+@keyframes cr-livrea { to { background-position: 100% 0, 0 0; } }
 
-/* Il contenuto sopra il riflesso non ci va: la banda di luce deve passare
-   davanti alle lettere, o non è un riflesso. Ma sopra il fondo sì. */
+.sb-btn.sb-cr-livrea:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -14px 22px -18px rgba(0, 0, 0, 0.45),
+    0 16px 32px -16px rgba(0, 0, 0, 0.45);
+}
+/* Premuto, il vetro si schiaccia: scende di un pixel e il filo di luce in cima
+   si abbassa, come succede a una cosa spinta contro un piano. */
+.sb-btn.sb-cr-livrea:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 6px 14px -8px rgba(0, 0, 0, 0.4),
+    0 6px 16px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* La pozza di luce che deriva dentro il vetro. Sta sotto la scritta (z-index 0
+   contro l'1 del contenuto) ed è più larga del tasto, così spostandosi non
+   lascia mai scoperto un angolo: a tagliarla ci pensa l'overflow del tasto,
+   che non tocca il rim — l'overflow ritaglia i figli, non lo sfondo di chi lo
+   dichiara. */
+.sb-btn.sb-cr-livrea::before {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(36% 42% at 26% 32%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 70%),
+    radial-gradient(30% 38% at 74% 68%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 72%);
+  animation: cr-liquido 15s ease-in-out infinite alternate;
+}
+@keyframes cr-liquido {
+  from { transform: translate3d(-7%, -3%, 0) scale(1); }
+  to   { transform: translate3d(7%, 4%, 0) scale(1.14); }
+}
+
+/* Il contenuto sopra la pozza, ma sotto il riflesso: una banda di luce che
+   passa dietro le lettere non è un riflesso. */
 .sb-btn.sb-cr-livrea > * { position: relative; z-index: 1; }
 .sb-btn.sb-cr-livrea::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 2;
-  opacity: 1;
   pointer-events: none;
-  background: linear-gradient(102deg, transparent 38%, rgba(255, 255, 255, 0.55) 50%, transparent 62%);
+  background: linear-gradient(102deg, transparent 38%, rgba(255, 255, 255, 0.6) 50%, transparent 62%);
   transform: translateX(-130%);
   animation: cr-lampo 9s ease-in-out infinite;
 }
@@ -424,9 +513,10 @@ html.dark .sb-cr {
   font-size: 1rem;
   font-weight: 700;
 }
-/* Sfasato di tre secondi da quello di pagamento: due tasti che luccicano
-   all'unisono sembrano un difetto di rendering. */
+/* Sfasati di tre secondi: due tasti che luccicano all'unisono sembrano un
+   difetto di rendering, non due riflessi. */
 .sb-cr-vai-giu::after { animation-delay: 3s; }
+.sb-cr-vai-giu::before { animation-delay: -5s; }
 
 /* Il banner, quando ci sarà. Finché non c'è, questa regola non trova niente
    a cui applicarsi e la pagina non se ne accorge. */
@@ -831,7 +921,16 @@ html.dark .sb-cr-box::after {
      .sb-btn del sito la tiene su una riga sola, e qui non deve. */
   white-space: normal;
 }
-.sb-cr-vai[disabled] { cursor: progress; filter: saturate(0.4) opacity(0.75); }
+/* Mentre apre il pagamento il vetro si smorza e smette di muoversi: un tasto
+   che continua a luccicare mentre è disabilitato dice che è ancora premibile. */
+.sb-cr-vai[disabled] {
+  cursor: progress;
+  filter: saturate(0.35) opacity(0.72);
+  transform: none;
+}
+.sb-cr-vai[disabled],
+.sb-cr-vai[disabled]::before,
+.sb-cr-vai[disabled]::after { animation-play-state: paused; }
 
 .sb-cr-nota {
   margin: 0 0 1.4rem;
@@ -929,6 +1028,7 @@ html.dark .sb-cr-box::after {
   html:not(.rsm-motion) .sb-cr-logo::after,
   html:not(.rsm-motion) .sb-cr-lastra .sb-panel-inner::before,
   html:not(.rsm-motion) .sb-cr-livrea,
+  html:not(.rsm-motion) .sb-cr-livrea::before,
   html:not(.rsm-motion) .sb-cr-livrea::after { animation: none !important; }
   html:not(.rsm-motion) .sb-cr-punto { opacity: 0.5; }
   html:not(.rsm-motion) .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
@@ -944,6 +1044,7 @@ html.rsm-still .sb-cr-box::after,
 html.rsm-still .sb-cr-logo::after,
 html.rsm-still .sb-cr-lastra .sb-panel-inner::before,
 html.rsm-still .sb-cr-livrea,
+html.rsm-still .sb-cr-livrea::before,
 html.rsm-still .sb-cr-livrea::after { animation: none; }
 html.rsm-still .sb-cr-punto { opacity: 0.5; }
 /* Il respiro fermato lascerebbe la macchia all'opacità di partenza, che è più
@@ -1005,7 +1106,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
     <h1><span class="sb-cr-titolo">Color Runner</span></h1>
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong><br>per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-    <a class="sb-btn sb-btn--primary sb-cr-livrea sb-cr-vai-giu" href="#iscrizione">
+    <a class="sb-btn sb-cr-livrea sb-cr-vai-giu" href="#iscrizione">
       <span>Iscriviti — 10 €</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>
@@ -1108,7 +1209,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <label for="cr-consenso">Acconsento al trattamento dei miei dati per l'organizzazione della Color Runner. Nome, cognome, codice fiscale, indirizzo, email e telefono restano agli organizzatori e a Stripe, che gestisce il pagamento: non vengono ceduti ad altri e non servono a mandare pubblicità.</label>
         </div>
 
-        <button class="sb-btn sb-btn--primary sb-cr-livrea sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
+        <button class="sb-btn sb-cr-livrea sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
       </form>
 
       <noscript>
