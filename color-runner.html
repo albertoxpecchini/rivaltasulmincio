@@ -99,490 +99,155 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <main class="sb-main" id="main">
 <style>
-/* ══ La tavolozza ═══════════════════════════════════════════════════════════
-   Sei tinte piene, quelle delle polveri colorate. Non entrano mai sotto un
-   testo lungo: stanno nelle macchie, nei bordi, nei fuochi e nei bottoni. Il
-   testo resta sui grigi del design system, che sono leggibili in tutti e due
-   i temi — una pagina coloratissima non è una pagina che si legge male. */
+/* ═══ La tavolozza ═══════════════════════════════════════════════════════════
+   Le sei tinte delle polveri colorate. Stanno in un posto solo, il fondale, e
+   da nessun'altra parte: il design system del sito vuole i grigi più un'unica
+   tinta viva, e sui comandi quella tinta resta l'azzurro brand, qui come in
+   tutte le altre pagine.
+
+   Il rosso è l'unica eccezione, e non è un accento: è il colore di un errore.
+   Un errore che non è rosso non si legge come un errore. */
 .sb-cr {
   --cr-magenta: #ff2d87;
-  --cr-arancio: #ff8a1e;
   --cr-giallo: #ffc61a;
-  --cr-verde: #24c97b;
   --cr-ciano: #0fb2ef;
   --cr-viola: #8a5cf6;
   --cr-rosso: #e02b5a;
-
-  /* Il vetro di questa pagina è più lucido del vetro del sito: più
-     saturazione dietro (le macchie devono restare accese anche sfocate) e un
-     filo specular quasi bianco sul bordo alto. */
-  --sb-glass-sat: 200%;
-  --sb-glass-spec: rgba(255, 255, 255, 0.95);
-  --sb-glass-sheen: rgba(255, 255, 255, 0.55);
-
-  /* Quanto tenere accese le macchie. Al buio si abbassa da qui e non sulla
-     macchia, perché lì l'opacità è animata e una regola che la riscrive la
-     spegnerebbe insieme al respiro. */
-  --dim: 1;
-
-  /* ── La livrea ────────────────────────────────────────────────────────
-     L'arcobaleno scritto una volta sola, perché lo usano il titolo e i tasti
-     e devono essere lo stesso arcobaleno.
-
-     Le sei tinte compaiono DUE VOLTE più la prima che si richiude: tredici
-     fermate in tutto. Non è ridondanza, è quello che rende il giro continuo.
-     Con background-size al 200% la finestra che si vede è larga mezza
-     immagine — cioè esattamente un arcobaleno intero, dal magenta al viola —
-     e portare background-position al 100% sposta l'immagine di mezza immagine,
-     cioè di un arcobaleno esatto: il disegno torna identico a sé stesso e il
-     giro si chiude senza salto.
-
-     È il motivo per cui prima non era sfumato bene: un gradiente che si
-     ripeteva ogni 720 pixel su un titolo largo 330 mostrava mezza tavolozza
-     schiacciata, non un arcobaleno. */
-  --cr-livrea: linear-gradient(
-    90deg,
-    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
-    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
-    #ff2d87
-  );
   position: relative;
 }
-html.dark .sb-cr {
-  --sb-glass-spec: rgba(255, 255, 255, 0.18);
-  --sb-glass-sheen: rgba(255, 255, 255, 0.14);
-  --dim: 0.62;
-  /* Al buio il fondo non slava più niente: tornano le tinte piene delle
-     polveri colorate. */
-  --cr-livrea: linear-gradient(
-    90deg,
-    var(--cr-magenta), var(--cr-arancio), var(--cr-giallo), var(--cr-verde), var(--cr-ciano), var(--cr-viola),
-    var(--cr-magenta), var(--cr-arancio), var(--cr-giallo), var(--cr-verde), var(--cr-ciano), var(--cr-viola),
-    var(--cr-magenta)
-  );
-}
 
-/* ══ I margini ══════════════════════════════════════════════════════════════
-   La colonna del telefono, anche sul computer: 33rem e non una di più. È la
-   regola che tiene insieme tutta la pagina — una colonna sola è la stessa cosa
-   su ogni schermo, non c'è una versione grande da riadattare a una piccola, e
-   quindi non c'è niente che si possa sfalsare per strada.
+/* ═══ Il fondale ═════════════════════════════════════════════════════════════
+   Uno solo, fisso, per tutta la pagina: è la regola del sito e vale anche qui.
+   Il meccanismo è quello di .sb-home — veli radiali che derivano piano su due
+   tempi che non tornano mai in fase — e sopra ci resta la griglia tecnica del
+   sito, che non si tocca. Anche i keyframes sono i suoi, sb-drift-a e
+   sb-drift-b: non ne servono di nuovi.
 
-   Il margine laterale non è un numero fisso: si calcola sulla larghezza vera
-   dello schermo, con clamp(minimo, quota-di-schermo, massimo). Il 6.5vw è la
-   parte che «guarda il dispositivo»: su un telefono piccolo da 320px dà 21px e
-   si ferma al minimo di 1.4rem, su un 390 ne dà 25, su un 430 ne dà 28, su un
-   tablet arriva al tetto di 2.2rem e lì si ferma — oltre non serve, perché da
-   quel punto in poi è il max-width della colonna a tenere il testo lontano dai
-   bordi. Niente JavaScript e nessuna misura letta a mano: è il browser che sa
-   quanto è largo, e questa riga glielo chiede.
+   Cambia il colore e nient'altro: al posto dei due azzurri, quattro polveri.
+   I veli del sito si spengono su questa pagina, o sarebbero sei. */
+.sb-home:has(.sb-cr)::before,
+.sb-home:has(.sb-cr)::after { content: none; }
 
-   La stessa formula, con numeri più piccoli, sta sull'imbottitura della lastra
-   qui sotto: i due margini si sommano, ed è la somma che conta per l'occhio di
-   chi legge. */
-.sb-cr .sb-container {
-  max-width: 33rem;
-  padding-inline: clamp(1.4rem, 6.5vw, 2.2rem);
-}
-
-/* ══ Il testo ═══════════════════════════════════════════════════════════════
-   I blocchi di prosa vanno giustificati, ma solo quelli che fanno almeno tre
-   righe: giustificare un'etichetta di quattro parole allarga gli spazi e basta.
-   E mai senza sillabazione — in italiano, senza, una colonna stretta si riempie
-   di fiumi bianchi. `lang="it"` sta sull'<html> del sito, quindi il browser
-   sillaba nella lingua giusta. */
-.sb-cr-hero .sb-riv-lede,
-.sb-cr-nota,
-.sb-cr-consenso label {
-  text-align: justify;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-/* ══ Le macchie di vernice ══════════════════════════════════════════════════
-   Il fondale della pagina. Sta position:fixed dietro al contenuto (z-index -1
-   dentro il contesto di .sb-main, che ha già il suo z-index 1): le macchie
-   non scorrono con il testo, restano lo spazio in cui il testo scorre.
-
-   Ogni macchia è un div colorato a tinta piena a cui una maschera SVG toglie
-   tutto tranne la forma dello schizzo. Le forme sono tre, i colori sei, le
-   combinazioni tutte diverse: si riconoscono come schizzi di vernice ma non
-   si riconosce che sono lo stesso disegno. */
 .sb-cr-vernice {
   position: fixed;
   inset: 0;
   z-index: -1;
-  overflow: hidden;
   pointer-events: none;
-  /* layout e paint, non `strict`: il contenimento della dimensione qui non
-     serve — la misura viene dalle quattro ancore, non dal contenuto — e su un
-     fixed con inset:0 è la sola parte che qualche browser potrebbe leggere
-     storta. */
+  /* layout e paint, non «strict»: la misura viene dalle quattro ancore, non
+     dal contenuto, e su un fixed con inset:0 il contenimento della dimensione
+     è la sola parte che qualche browser potrebbe leggere storta. */
   contain: layout paint;
-  --m1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23000'%3E%3Cellipse cx='48' cy='46' rx='29' ry='25'/%3E%3Cellipse cx='63' cy='35' rx='17' ry='19' transform='rotate(22 63 35)'/%3E%3Cellipse cx='35' cy='60' rx='19' ry='15' transform='rotate(-28 35 60)'/%3E%3Cellipse cx='67' cy='62' rx='12' ry='14'/%3E%3Ccircle cx='85' cy='23' r='5'/%3E%3Ccircle cx='91' cy='39' r='2.6'/%3E%3Ccircle cx='17' cy='29' r='4.2'/%3E%3Ccircle cx='10' cy='51' r='2.4'/%3E%3Ccircle cx='29' cy='85' r='4.6'/%3E%3Ccircle cx='57' cy='91' r='3'/%3E%3Ccircle cx='79' cy='81' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
-  --m2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23000'%3E%3Cellipse cx='52' cy='52' rx='33' ry='21' transform='rotate(-18 52 52)'/%3E%3Cellipse cx='34' cy='40' rx='16' ry='17'/%3E%3Cellipse cx='72' cy='63' rx='15' ry='13' transform='rotate(30 72 63)'/%3E%3Cellipse cx='60' cy='30' rx='9' ry='11' transform='rotate(-12 60 30)'/%3E%3Ccircle cx='16' cy='20' r='3.4'/%3E%3Ccircle cx='88' cy='34' r='4.4'/%3E%3Ccircle cx='93' cy='52' r='2.2'/%3E%3Ccircle cx='22' cy='76' r='3.6'/%3E%3Ccircle cx='45' cy='88' r='5'/%3E%3Ccircle cx='68' cy='86' r='2.6'/%3E%3Ccircle cx='8' cy='44' r='2'/%3E%3C/g%3E%3C/svg%3E");
-  --m3: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23000'%3E%3Ccircle cx='45' cy='45' r='27'/%3E%3Cellipse cx='64' cy='54' rx='19' ry='22' transform='rotate(-35 64 54)'/%3E%3Cellipse cx='33' cy='28' rx='13' ry='11' transform='rotate(18 33 28)'/%3E%3Cellipse cx='50' cy='78' rx='8' ry='13'/%3E%3Ccircle cx='52' cy='93' r='4'/%3E%3Ccircle cx='19' cy='62' r='5.2'/%3E%3Ccircle cx='9' cy='72' r='2.4'/%3E%3Ccircle cx='82' cy='22' r='3.8'/%3E%3Ccircle cx='90' cy='68' r='3'/%3E%3Ccircle cx='72' cy='12' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
 }
-/* La misura arriva come numero puro (--w) e diventa vmax qui, così il telefono
-   può rimpicciolirle tutte con una riga sola. Non è vezzo: uno strato composto
-   costa memoria video quanto la sua area per il rapporto di pixel dello
-   schermo, e sui telefoni il rapporto è tre. */
-.sb-cr-macchia {
-  position: absolute;
-  width: calc(var(--w, 30) * 0.72vmax);
-  height: calc(var(--w, 30) * 0.72vmax);
-  background: var(--c);
-  opacity: calc(var(--o, 0.4) * var(--dim, 1));
-  -webkit-mask: var(--m) center / contain no-repeat;
-  mask: var(--m) center / contain no-repeat;
-  /* Due animazioni sulla stessa macchia, con periodi diversi: una la sposta,
-     l'altra la fa respirare. Sono le due sole proprietà gratis — trasformazione
-     e opacità — e insieme il fondale smette di sembrare un disegno fermo che
-     scivola e comincia a sembrare luce. */
-  animation:
-    var(--k, cr-deriva-a) var(--d, 62s) ease-in-out var(--r, 0s) infinite alternate,
-    cr-respiro var(--d2, 37s) ease-in-out var(--r, 0s) infinite alternate;
+.sb-cr-vernice::before,
+.sb-cr-vernice::after { content: ""; position: absolute; inset: 0; }
+.sb-cr-vernice::before {
+  background:
+    radial-gradient(58rem 32rem at 16% -8%, color-mix(in srgb, var(--cr-magenta) 20%, transparent), transparent 62%),
+    radial-gradient(42rem 26rem at 6% 68%, color-mix(in srgb, var(--cr-giallo) 15%, transparent), transparent 64%);
+  animation: sb-drift-a 74s ease-in-out infinite alternate;
 }
-@keyframes cr-respiro {
-  from { opacity: calc(var(--o, 0.4) * var(--dim, 1) * 0.6); }
-  to   { opacity: calc(var(--o, 0.4) * var(--dim, 1) * 1.18); }
+.sb-cr-vernice::after {
+  background:
+    radial-gradient(52rem 30rem at 86% 2%, color-mix(in srgb, var(--cr-ciano) 18%, transparent), transparent 60%),
+    radial-gradient(46rem 28rem at 94% 82%, color-mix(in srgb, var(--cr-viola) 15%, transparent), transparent 62%);
+  animation: sb-drift-b 91s ease-in-out infinite alternate;
 }
+/* Al buio le stesse tinte diventano lampade: si abbassano, come fa il sito
+   con i suoi azzurri. */
+html.dark .sb-cr-vernice::before,
+html.dark .sb-cr-vernice::after { opacity: 0.5; }
 
-/* Le percentuali di translate sono relative alla macchia, non allo schermo:
-   una macchia grande si sposta molto, una piccola poco, e il fondale ha una
-   profondità che tre strati alla stessa velocità non avrebbero. Le durate non
-   sono multiple fra loro — 47, 58, 71, 83 secondi non tornano mai in fase e
-   il fondo non prende un battito riconoscibile. */
-@keyframes cr-deriva-a {
-  from { transform: translate3d(-3%, 2%, 0) rotate(-6deg) scale(1); }
-  to   { transform: translate3d(7%, -5%, 0) rotate(9deg) scale(1.14); }
-}
-@keyframes cr-deriva-b {
-  from { transform: translate3d(5%, -4%, 0) rotate(12deg) scale(1.1); }
-  to   { transform: translate3d(-6%, 6%, 0) rotate(-5deg) scale(0.94); }
-}
-@keyframes cr-deriva-c {
-  from { transform: translate3d(0, 5%, 0) rotate(2deg) scale(0.96); }
-  to   { transform: translate3d(-7%, -7%, 0) rotate(-14deg) scale(1.12); }
-}
-
-/* I coriandoli: pallini che salgono piano e svaniscono in cima. Sono la sola
-   animazione che attraversa tutto lo schermo, e per questo sono la più
-   piccola cosa in pagina — dieci pixel di diametro, uno strato composto da
-   niente. */
-.sb-cr-punto {
-  position: absolute;
-  bottom: -6vh;
-  width: var(--s, 10px);
-  height: var(--s, 10px);
-  border-radius: 50%;
-  background: var(--c);
-  animation: cr-sale var(--d, 26s) linear var(--r, 0s) infinite;
-}
-@keyframes cr-sale {
-  0%   { transform: translate3d(0, 0, 0) scale(0.5); opacity: 0; }
-  12%  { opacity: 0.75; }
-  85%  { opacity: 0.5; }
-  100% { transform: translate3d(var(--x, 4vw), -112vh, 0) scale(1.15); opacity: 0; }
-}
-
-/* ══ L'intestazione ═════════════════════════════════════════════════════════
-   Corta di proposito: su uno schermo di telefono ogni riga qui è una riga in
-   meno del modulo, e la cosa da fare su questa pagina è iscriversi. */
-.sb-cr-hero { padding: 1.5rem 0 0.4rem; text-align: center; }
-.sb-cr-occhiello {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.32rem 0.85rem 0.32rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--cr-verde) 45%, transparent);
-  background: color-mix(in srgb, var(--cr-verde) 12%, transparent);
-  color: var(--sb-fg);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.sb-cr-occhiello i {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--cr-verde);
-  animation: cr-battito 2.4s ease-in-out infinite;
-}
-@keyframes cr-battito {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%      { transform: scale(1.45); opacity: 0.55; }
-}
-
-.sb-cr-hero h1 {
-  margin: 0.8rem 0 0;
-  font-size: clamp(2.4rem, 13vw, 3.6rem);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.035em;
-}
-/* ══ Il titolo ══════════════════════════════════════════════════════════════
-   La livrea ritagliata sulle lettere, e nient'altro sopra: uno strato solo.
-   Sulla larghezza del titolo si vede un arcobaleno intero — magenta, corallo,
-   ambra, verde, ciano, viola — e scorre di un arcobaleno esatto ogni giro,
-   senza salto. La spiegazione della misura sta su --cr-livrea qui sopra.
-
-   Senza background-clip:text — browser vecchi — resta scritto in magenta, che
-   è meglio di trasparente. */
-.sb-cr-titolo { color: var(--cr-magenta); }
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .sb-cr-titolo {
-    /* inline-block e non inline: su uno schermo stretto «Color Runner» va a
-       capo, e un elemento in linea spezzato su due righe si porta dietro due
-       frammenti di sfondo invece di uno. Con un blocco solo l'arcobaleno
-       attraversa tutte e due le righe come un disegno unico. */
-    display: inline-block;
-    background-image: var(--cr-livrea);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.13));
-    animation: cr-scorre 20s linear infinite;
-  }
-  html.dark .sb-cr-titolo { filter: drop-shadow(0 2px 16px rgba(0, 0, 0, 0.55)); }
-}
-@keyframes cr-scorre { to { background-position: 100% 0; } }
-
+/* ═══ L'intestazione ═════════════════════════════════════════════════════════
+   È quella del sito, .sb-riv-pagehead: occhiello azzurro, titolo in tondo,
+   lede. Si aggiunge una riga sola, la data, che nelle altre pagine non c'è
+   perché le altre pagine non sono un invito. */
 .sb-cr-quando {
-  margin: 0.7rem 0 0;
-  font-size: 1.05rem;
-  line-height: 1.4;
-  color: var(--sb-fg);
-  letter-spacing: -0.01em;
+  margin: 0.8rem 0 0;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--sb-fg-light);
 }
-.sb-cr-quando strong { font-weight: 600; }
-.sb-cr-hero .sb-riv-lede { margin: 0.7rem 0 0; font-size: 0.95rem; }
+.sb-cr-quando strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cr-vai-giu { margin-top: 1.4rem; }
 
-/* Il tasto della hero è il tasto del sito e basta: .sb-btn--primary, con la
-   sua altezza, il suo raggio, la sua tinta e il suo riflesso al passaggio.
-   Qui sopra aggiunge solo l'aria che lo stacca dal testo. */
-.sb-cr-vai-giu { margin-top: 1.3rem; }
-
-/* Il banner, quando ci sarà. Finché non c'è, questa regola non trova niente
-   a cui applicarsi e la pagina non se ne accorge. */
+/* Il manifesto, quando ci sarà. Finché non c'è, questa regola non trova
+   niente a cui applicarsi e la pagina non se ne accorge. */
 .sb-cr-banner { margin: 2rem 0 0; }
+/* Niente raggio sull'immagine: il manifesto sta dentro una .sb-panel, e la
+   forma gliela dà il taglio della lastra come a ogni altra card del sito. */
 .sb-cr-banner img { display: block; width: 100%; height: auto; }
 
-/* ══ La lastra del modulo ═══════════════════════════════════════════════════
-   Qui l'arcobaleno non ci va. Sei colori attorno al riquadro dove si scrivono
-   nome, codice fiscale e indirizzo fanno di un modulo una decorazione, e chi
-   deve compilarlo non sa più dove guardare. I sei colori stanno in cima alla
-   pagina, dove servono a dire che festa è; qui attorno c'è luce.
+/* ═══ La lastra del modulo ═══════════════════════════════════════════════════
+   È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
+   stesso rim, stesso smusso, stessa ombra. Larga 46rem come i testi delle
+   altre pagine — quanto una riga che si legge, non quanto lo schermo. */
+.sb-cr-lastra { max-width: 46rem; }
+.sb-cr-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
 
-   Il filo di 1.5px è un rim di vetro: bianco dove batte la luce, il grigio del
-   design system nel corpo, e appena due punti tinti — un ciano e un viola —
-   che si accorgono di essere in una pagina a colori senza gridarlo. Il taglio
-   a 45° resta quello di sempre. */
-.sb-cr-sec { padding: 1.8rem 0 0; scroll-margin-top: 4.5rem; }
-.sb-cr-lastra > .sb-panel {
-  padding: 1.5px;
-  background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    var(--sb-border-strong) 20%,
-    color-mix(in srgb, var(--cr-ciano) 42%, var(--sb-border-strong)) 42%,
-    rgba(255, 255, 255, 0.92) 56%,
-    color-mix(in srgb, var(--cr-viola) 38%, var(--sb-border-strong)) 76%,
-    var(--sb-border-strong) 100%
-  );
-}
-html.dark .sb-cr-lastra > .sb-panel {
-  background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.42) 0%,
-    var(--sb-border-strong) 20%,
-    color-mix(in srgb, var(--cr-ciano) 55%, var(--sb-border-strong)) 42%,
-    rgba(255, 255, 255, 0.3) 56%,
-    color-mix(in srgb, var(--cr-viola) 50%, var(--sb-border-strong)) 76%,
-    var(--sb-border-strong) 100%
-  );
-}
-/* L'imbottitura della lastra si misura sullo schermo come i margini di pagina,
-   e si somma a quelli: su un telefono da 390px fanno 25px di margine più 20 di
-   imbottitura, e il testo comincia a 45px dal bordo del vetro dello schermo.
-   Sotto quella misura le parole sembrano appoggiate al bordo. */
-.sb-cr-lastra .sb-panel-inner {
-  padding: clamp(1.25rem, 5vw, 1.8rem) clamp(1.1rem, 5vw, 1.7rem) clamp(1.45rem, 5.5vw, 2rem);
-}
-
-/* ── I riflessi sulla lastra ───────────────────────────────────────────────
-   Quattro, tutti SOTTO il contenuto (z-index 0 contro l'1 del modulo): una
-   banda bianca che passa sopra i campi li sbiancherebbe per mezzo secondo a
-   ogni giro. Sotto, invece, si vedono solo dove il vetro è vuoto — che è
-   esattamente come si comporta un riflesso vero.
-
-   Due bande diagonali che si incrociano — angoli diversi, versi opposti,
-   undici secondi contro diciassette, così non si sovrappongono mai due volte
-   allo stesso modo — più un alone morbido che deriva dentro la lastra e il
-   filo di luce che corre sul bordo alto. Ognuno è uno strato composto che si
-   sposta: nessuno ridisegna niente. */
-.sb-cr-lastra .sb-panel-inner::before {
-  content: "";
-  position: absolute;
-  inset: -50% -70%;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(105deg, transparent 43%, var(--sb-glass-sheen) 50%, transparent 57%);
-  transform: translateX(-80%);
-  animation: cr-lucido 11s ease-in-out infinite;
-}
-@keyframes cr-lucido {
-  0%        { transform: translateX(-80%); }
-  55%, 100% { transform: translateX(80%); }
-}
-.sb-cr-lastra .sb-panel-inner::after {
-  content: "";
-  position: absolute;
-  inset: -60% -85%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.6;
-  background: linear-gradient(72deg, transparent 41%, var(--sb-glass-sheen) 50%, transparent 59%);
-  transform: translateX(95%);
-  animation: cr-lucido-2 17s ease-in-out infinite;
-}
-@keyframes cr-lucido-2 {
-  0%        { transform: translateX(95%); }
-  62%, 100% { transform: translateX(-95%); }
-}
-
-/* L'alone: una pozza di luce che gira dentro la lastra senza uscire. È il
-   riflesso che si vede su un vetro appoggiato a una finestra, quando fuori
-   passa una nuvola. */
-.sb-cr-alone {
-  position: absolute;
-  z-index: 0;
-  top: -28%;
-  left: -12%;
-  width: 58%;
-  height: 92%;
-  pointer-events: none;
-  background: radial-gradient(closest-side, var(--sb-glass-sheen), transparent 72%);
-  animation: cr-alone 19s ease-in-out infinite alternate;
-}
-@keyframes cr-alone {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate3d(95%, 40%, 0) scale(1.4); }
-}
-
-/* Il filo che corre sul bordo alto: due pixel di altezza e una macchia di
-   luce che va e torna. È il dettaglio che dice «vetro» più della trasparenza. */
-.sb-cr-filo {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  overflow: hidden;
-  pointer-events: none;
-}
-.sb-cr-filo::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 34%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
-  transform: translateX(-110%);
-  animation: cr-filo 7.5s ease-in-out infinite alternate;
-}
-@keyframes cr-filo {
-  from { transform: translateX(-110%); }
-  to   { transform: translateX(300%); }
-}
-.sb-cr-form, .sb-cr-testa, .sb-cr-nota, .sb-cr-esito, .sb-cr-avanz { position: relative; z-index: 1; }
-
-.sb-cr-testa { margin: 0 0 1.1rem; }
-.sb-cr-testa h2 { margin: 0; font-size: 1.45rem; letter-spacing: -0.02em; }
-.sb-cr-testa p { margin: 0.4rem 0 0; color: var(--sb-fg-light); font-size: 0.92rem; }
-
-/* ══ L'avanzamento ══════════════════════════════════════════════════════════
+/* ═══ L'avanzamento ══════════════════════════════════════════════════════════
    Compilare un modulo è una scala, e una scala si sale meglio se si vede
-   quanti gradini restano. La barra si riempie per scaleX — trasformazione,
-   non larghezza: nessun ricalcolo di layout a ogni tasto premuto. */
-.sb-cr-avanz { margin: 0 0 1.5rem; }
+   quanti gradini restano. Si riempie per scaleX — trasformazione, non
+   larghezza: nessun ricalcolo di layout a ogni tasto premuto. */
+.sb-cr-avanz { margin: 0 0 1.4rem; }
 .sb-cr-avanz-riga {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  margin-bottom: 0.45rem;
-  font-size: 0.76rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
 }
 .sb-cr-avanz-n { color: var(--sb-fg-light); font-variant-numeric: tabular-nums; }
 .sb-cr-avanz-barra {
-  height: 8px;
+  height: 6px;
   border-radius: 999px;
   background: var(--sb-surface-200);
   overflow: hidden;
 }
-/* Tre colori e non sei: la barra sta a un centimetro dal primo campo, e un
-   arcobaleno lì accanto ruba l'occhio al modulo. Sopra ci scorrono le righe di
-   luce — è l'unica animazione della pagina che ridipinge invece di comporre,
-   e se lo può permettere perché ridipinge otto pixel di altezza. */
 .sb-cr-avanz-fill {
   height: 100%;
   transform: scaleX(var(--p, 0));
   transform-origin: left center;
-  background-image:
-    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.32) 0 9px, rgba(255, 255, 255, 0) 9px 26px),
-    linear-gradient(90deg, var(--cr-ciano), var(--cr-viola) 55%, var(--cr-magenta));
+  background: var(--sb-brand);
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  animation: cr-barra 1.9s linear infinite;
 }
-/* 28.7px e non 26: la riga si ripete ogni 26px lungo il suo asse, che è
-   inclinato di 115°, e lo spostamento orizzontale che vale un periodo intero
-   è 26 diviso il coseno di quell'angolo. Con 26 il giro si chiuderebbe con
-   uno scatto. */
-@keyframes cr-barra { to { background-position: 28.7px 0, 0 0; } }
 
-/* ══ I campi ════════════════════════════════════════════════════════════════
+/* ═══ I campi ════════════════════════════════════════════════════════════════
    Una colonna, sempre, anche sul computer: due campi affiancati costringono
    l'occhio a tornare indietro a metà modulo, e la stessa griglia sul telefono
    si spezza in un ordine che nessuno ha disegnato.
 
-   Ogni campo ha il suo colore (--cr-a) e lo accende solo quando è quello in
-   cui si sta scrivendo: l'occhio sa sempre dove si trova senza cercarlo. Il
-   verde della conferma vale per tutti, perché «va bene» deve avere un colore
-   solo in tutta la pagina. */
+   Bordo, raggio e fuoco sono quelli del design system, gli stessi del tasto:
+   un campo e un bottone che stanno a due centimetri l'uno dall'altro devono
+   essere fatti della stessa cosa. Niente colore per campo: dove si sta
+   scrivendo lo dice il bordo azzurro, che è l'unico acceso in pagina. */
 .sb-cr-form { display: grid; gap: 1.05rem; }
 
-.sb-cr-campo { display: grid; gap: 0.38rem; }
+.sb-cr-campo { display: grid; gap: 0.35rem; }
 .sb-cr-campo > label {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0.4rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  color: var(--sb-fg-light);
-  transition: color 0.18s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--sb-fg);
 }
-.sb-cr-campo:focus-within > label { color: var(--cr-a, var(--cr-magenta)); }
-.sb-cr-facolt { font-weight: 400; font-size: 0.82rem; color: var(--sb-fg-muted); }
+.sb-cr-facolt { font-weight: 400; font-size: 0.8rem; color: var(--sb-fg-muted); }
 
 .sb-cr-box { position: relative; display: flex; }
 .sb-cr-box input,
 .sb-cr-box textarea {
   width: 100%;
-  min-height: 3.15rem;
+  /* 44px non viene dal design system ma dal dito: è la misura sotto la quale
+     un bersaglio sul telefono si sbaglia. */
+  min-height: 44px;
   /* Le tre parti del font si scrivono separate, e MAI con la scorciatoia
-     `font:` mettendoci dentro «inherit»: una parola chiave come inherit non è
+     «font:» mettendoci dentro «inherit»: una parola chiave come inherit non è
      ammessa come pezzo di una scorciatoia, il browser butta via la
      dichiarazione intera, e i campi finiscono col font di sistema alla misura
      di sistema — tredici pixel. Sono due guai in una riga sola: il carattere
@@ -590,105 +255,67 @@ html.dark .sb-cr-lastra > .sb-panel {
      pagina al primo tocco su un campo, lasciando chi compila con il modulo
      fuori schermo da rimpicciolire a mano. */
   font-family: inherit;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--sb-fg);
-  background-color: color-mix(in srgb, var(--sb-surface-75) 82%, transparent);
-  /* Il campo non è una casella piatta: ha il suo velo di luce in alto, come
-     ce l'ha la lastra che lo contiene. */
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 58%);
-  border: 1.5px solid var(--sb-border-strong);
-  border-radius: 12px;
-  padding: 0.8rem 2.7rem 0.8rem 0.95rem;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  background: var(--sb-bg-alt);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 6px;
+  padding: 0.6rem 2.4rem 0.6rem 0.8rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-html.dark .sb-cr-box input,
-html.dark .sb-cr-box textarea {
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 58%);
-}
-.sb-cr-box textarea { padding-right: 0.95rem; resize: vertical; }
+.sb-cr-box textarea { padding-right: 0.8rem; resize: vertical; }
 /* Il codice fiscale spaziato: sedici caratteri tutti attaccati non si
    rileggono, ed è il campo che più di tutti si ricontrolla. Il maiuscolo lo
    mette anche il CSS oltre al JS, così si vede già mentre il dito digita. */
-#cr-cf { text-transform: uppercase; letter-spacing: 0.07em; }
+#cr-cf { text-transform: uppercase; letter-spacing: 0.06em; }
 .sb-cr-box input::placeholder,
 .sb-cr-box textarea::placeholder { color: var(--sb-fg-muted); }
 .sb-cr-box input:focus,
-.sb-cr-box textarea:focus {
-  outline: none;
-  border-color: var(--cr-a, var(--cr-magenta));
-  /* background-color e non background: la scorciatoia azzererebbe il velo. */
-  background-color: var(--sb-surface-75);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cr-a, var(--cr-magenta)) 18%, transparent);
-}
+.sb-cr-box textarea:focus { border-color: var(--sb-brand); background: var(--sb-surface-75); }
+/* L'anello del fuoco lo disegna sb.css per tutto il sito, e si porta dietro un
+   border-radius di 4px per la sua forma. Su un campo da 6px si vedrebbe
+   l'angolo stringersi nel momento in cui ci si entra: qui glielo si rimette. */
+.sb-cr-box input:focus-visible,
+.sb-cr-box textarea:focus-visible { border-radius: 6px; }
 
-/* Il riflesso che attraversa il campo quando ci entri dentro. Non è in loop:
-   un campo che luccica mentre ci scrivi è un campo che disturba. Parte al
-   fuoco, passa una volta e si toglie di mezzo.
-
-   Il ritaglio se lo fa da sé con clip-path invece di farsi tagliare dal
-   contenitore: un overflow:hidden sul riquadro porterebbe via anche l'alone
-   del fuoco, che è disegnato fuori dal bordo del campo. */
-.sb-cr-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  border-radius: 12px;
-  clip-path: inset(0 round 12px);
-  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.7) 50%, transparent 62%);
-  transform: translateX(-130%);
-}
-html.dark .sb-cr-box::after {
-  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.16) 50%, transparent 62%);
-}
-.sb-cr-box:focus-within::after {
-  opacity: 1;
-  animation: cr-campo 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1;
-}
-@keyframes cr-campo {
-  from { transform: translateX(-130%); }
-  to   { transform: translateX(130%); }
-}
-.sb-cr-campo[data-stato="ok"] .sb-cr-box input { border-color: color-mix(in srgb, var(--cr-verde) 70%, transparent); }
+.sb-cr-campo[data-stato="ok"] .sb-cr-box input { border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent); }
 .sb-cr-campo[data-stato="ko"] .sb-cr-box input { border-color: var(--cr-rosso); }
-.sb-cr-campo[data-stato="ko"] .sb-cr-box input:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--cr-rosso) 18%, transparent); }
 
 /* Il segno di spunta: appare in scala, non in dissolvenza. È l'unico premio
    che questo modulo può dare a chi ha scritto bene il codice fiscale. */
 .sb-cr-segno {
   position: absolute;
   top: 50%;
-  right: 0.85rem;
-  width: 1.35rem;
-  height: 1.35rem;
-  margin-top: -0.675rem;
+  right: 0.7rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: -0.625rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
   opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 0.16s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: scale(0.5);
+  transition: opacity 0.16s ease, transform 0.18s ease;
   pointer-events: none;
 }
 .sb-cr-campo[data-stato="ok"] .sb-cr-segno,
 .sb-cr-campo[data-stato="ko"] .sb-cr-segno { opacity: 1; transform: scale(1); }
-.sb-cr-campo[data-stato="ok"] .sb-cr-segno { background: var(--cr-verde); }
+/* Sulla spunta il nero, come sul tasto primario: l'azzurro brand è chiaro in
+   tutti e due i temi, e il bianco sopra ci sparirebbe. */
+.sb-cr-campo[data-stato="ok"] .sb-cr-segno { background: var(--sb-brand); color: var(--sb-btn-fg); }
 .sb-cr-campo[data-stato="ok"] .sb-cr-segno::before { content: "\2713"; }
-.sb-cr-campo[data-stato="ko"] .sb-cr-segno { background: var(--cr-rosso); }
+.sb-cr-campo[data-stato="ko"] .sb-cr-segno { background: var(--cr-rosso); color: #fff; }
 .sb-cr-campo[data-stato="ko"] .sb-cr-segno::before { content: "!"; }
 
-.sb-cr-aiuto { margin: 0; font-size: 0.78rem; line-height: 1.45; color: var(--sb-fg-muted); }
+.sb-cr-aiuto { margin: 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
 .sb-cr-aiuto:empty { display: none; }
 .sb-cr-campo[data-stato="ko"] .sb-cr-aiuto { color: var(--cr-rosso); }
 
-/* ══ L'indirizzo che si compone da sé ═══════════════════════════════════════
+/* ═══ L'indirizzo che si compone da sé ═══════════════════════════════════════
    La tendina è opaca e non di vetro, di proposito: è un contenitore che
    scorre, e una sfocatura di sfondo su un contenitore che scorre costa una
    passata di blur per fotogramma — sul telefono si sente. */
@@ -696,7 +323,7 @@ html.dark .sb-cr-box::after {
 .sb-cr-lista {
   position: absolute;
   z-index: 30;
-  top: calc(100% + 0.35rem);
+  top: calc(100% + 0.3rem);
   left: 0;
   right: 0;
   /* Sul telefono la tendina non deve finire sotto la tastiera: si ferma a poco
@@ -706,12 +333,12 @@ html.dark .sb-cr-box::after {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   margin: 0;
-  padding: 0.3rem;
+  padding: 0.25rem;
   list-style: none;
   border: 1px solid var(--sb-border-strong);
-  border-radius: 14px;
-  background: var(--sb-surface-75);
-  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+  background: var(--sb-bg);
+  box-shadow: var(--sb-shadow-card);
 }
 .sb-cr-lista[hidden] { display: none; }
 /* Alte 2.9rem: è la misura sotto la quale un dito ne prende due insieme. */
@@ -720,16 +347,14 @@ html.dark .sb-cr-box::after {
   align-items: center;
   gap: 0.6rem;
   min-height: 2.9rem;
-  padding: 0.5rem 0.65rem;
-  border-radius: 10px;
-  font-size: 1rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   cursor: pointer;
 }
-.sb-cr-voce:hover,
-.sb-cr-voce[aria-selected="true"] {
-  background: color-mix(in srgb, var(--cr-ciano) 15%, transparent);
-}
-.sb-cr-voce b { font-weight: 700; color: var(--cr-ciano); }
+.sb-cr-voce:hover { background: var(--sb-overlay); }
+.sb-cr-voce[aria-selected="true"] { background: color-mix(in srgb, var(--sb-brand) 14%, transparent); }
+.sb-cr-voce b { font-weight: 600; color: var(--sb-fg); }
 .sb-cr-voce-n {
   margin-left: auto;
   padding-left: 0.6rem;
@@ -737,25 +362,63 @@ html.dark .sb-cr-box::after {
   color: var(--sb-fg-muted);
   white-space: nowrap;
 }
-.sb-cr-voce-pin { flex: none; color: var(--cr-ciano); opacity: 0.75; }
+.sb-cr-voce-pin { flex: none; color: var(--sb-brand-text); }
 
-/* ══ Consenso e bottone ═════════════════════════════════════════════════════ */
+/* ═══ La nota, l'esito, il consenso ══════════════════════════════════════════
+   Tre riquadri di servizio sulla stessa grammatica: bordo del sito, raggio da
+   8px, fondo neutro. Solo l'esito cambia tinta, ed è l'unico che deve — dice
+   come è andata. */
+.sb-cr-nota {
+  margin: 0 0 1.3rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+  color: var(--sb-fg-light);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.sb-cr-nota strong { font-weight: 600; color: var(--sb-fg); }
+
+.sb-cr-esito {
+  display: none;
+  margin: 0 0 1.2rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.sb-cr-esito--ok {
+  display: block;
+  background: color-mix(in srgb, var(--sb-brand) 12%, transparent);
+  border-color: color-mix(in srgb, var(--sb-brand) 45%, transparent);
+  color: var(--sb-fg);
+}
+.sb-cr-esito--neutro { display: block; background: var(--sb-surface-100); color: var(--sb-fg-light); }
+.sb-cr-esito--errore {
+  display: block;
+  background: color-mix(in srgb, var(--cr-rosso) 12%, transparent);
+  border-color: color-mix(in srgb, var(--cr-rosso) 45%, transparent);
+  color: var(--sb-fg);
+}
+
 .sb-cr-consenso {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.7rem;
   align-items: start;
-  padding: 0.9rem 1rem;
-  border-radius: 14px;
-  border: 1.5px solid var(--sb-border);
-  background: color-mix(in srgb, var(--sb-surface-100) 70%, transparent);
-  transition: border-color 0.18s ease, background-color 0.18s ease;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+  transition: border-color 0.2s ease;
 }
-.sb-cr-consenso:focus-within { border-color: var(--cr-viola); }
-/* La casella è 1.35rem e non 1.05: è una spunta obbligatoria, e va colpita
+.sb-cr-consenso:focus-within { border-color: var(--sb-brand); }
+/* La casella è 1.25rem e non 1rem: è una spunta obbligatoria, e va colpita
    col pollice al primo colpo. */
-.sb-cr-consenso input { margin-top: 0.1rem; width: 1.35rem; height: 1.35rem; flex: none; accent-color: var(--cr-viola); }
-.sb-cr-consenso label { font-size: 0.85rem; line-height: 1.55; color: var(--sb-fg-light); }
+.sb-cr-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
+.sb-cr-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
 
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
@@ -765,7 +428,7 @@ html.dark .sb-cr-box::after {
 .sb-cr-vai {
   width: 100%;
   height: auto;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0.65rem 1.1rem;
   line-height: 1.35;
   white-space: normal;
@@ -774,141 +437,64 @@ html.dark .sb-cr-box::after {
    il tasto smorzato che non è più premibile. */
 .sb-cr-vai[disabled] { cursor: progress; opacity: 0.6; }
 
-.sb-cr-nota {
-  margin: 0 0 1.4rem;
-  padding: 0.7rem 0.95rem;
-  border-left: 3px solid var(--cr-giallo);
-  border-radius: 0 8px 8px 0;
-  background: color-mix(in srgb, var(--cr-giallo) 10%, transparent);
-  color: var(--sb-fg-light);
-  font-size: 0.84rem;
-  line-height: 1.6;
-}
-.sb-cr-esito { display: none; padding: 0.95rem 1.05rem; border-radius: 12px; font-size: 0.92rem; margin-bottom: 1.2rem; }
-.sb-cr-esito--ok { display: block; background: color-mix(in srgb, var(--cr-verde) 16%, transparent); color: var(--sb-fg); border: 1px solid color-mix(in srgb, var(--cr-verde) 45%, transparent); }
-.sb-cr-esito--neutro { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
-.sb-cr-esito--errore { display: block; background: color-mix(in srgb, var(--cr-rosso) 14%, transparent); color: var(--sb-fg); border: 1px solid color-mix(in srgb, var(--cr-rosso) 45%, transparent); }
-
-/* ══ I loghi ════════════════════════════════════════════════════════════════
+/* ═══ I loghi ════════════════════════════════════════════════════════════════
    Su piastrella bianca anche al buio: un logo a colori su fondo nero perde i
-   suoi, e questi tre non sono nostri da ritoccare. */
+   suoi, e questi tre non sono nostri da ritoccare. La piastrella è una card
+   del sito — bordo, raggio da 10px, ombra e due pixel di sollevamento al
+   passaggio, gli stessi delle card di tutte le altre pagine. */
 .sb-cr-loghi {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 0.5rem 0 0;
 }
 .sb-cr-logo {
-  position: relative;
   display: grid;
   place-items: center;
   min-width: 5.5rem;
   height: 4rem;
   padding: 0.5rem 1rem;
-  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 10px;
   background: #fff;
-  box-shadow: 0 8px 22px -12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: var(--sb-shadow-card);
   text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
-.sb-cr-logo:hover { transform: translateY(-3px); box-shadow: 0 14px 28px -12px rgba(0, 0, 0, 0.45); }
+.sb-cr-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
 .sb-cr-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
-
-/* Le tre piastrelle sono smaltate: la luce ci passa sopra una alla volta, a
-   un secondo e mezzo di distanza l'una dall'altra. Tutte insieme sarebbero un
-   lampeggio; in fila sono una carrellata. */
-.sb-cr-logo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.8) 50%, transparent 58%);
-  transform: translateX(-130%);
-  animation: cr-lampo 9s ease-in-out infinite;
-}
-.sb-cr-logo--rodigo::after { animation-delay: 1.5s; }
-.sb-cr-logo--ap::after { animation-delay: 3s; }
-@keyframes cr-lampo {
-  0%        { transform: translateX(-130%); }
-  12%, 100% { transform: translateX(130%); }
-}
 
 /* Tre marchi di tre forme diverse — uno largo, uno verticale, uno quadrato —
    e una sola altezza per tutti li farebbe leggere sbagliati: il largo
    sembrerebbe il doppio degli altri e lo stemma una miniatura. Si pareggiano
    a occhio, non a righello, ognuno con la sua misura. */
 .sb-cr-logo--anspi img { max-height: 2.1rem; }
-
-/* Lo stemma è alto quanto la piastrella meno un filo: è verticale, e in
-   orizzontale occupa già poco. */
 .sb-cr-logo--rodigo { padding: 0.3rem 0.9rem; }
 .sb-cr-logo--rodigo img { max-height: 3.4rem; }
-
 /* L'icona .ap è quadrata e il bianco intorno al marchio ce l'ha già dentro:
    la piastrella non ne aggiunge altro, o il «.ap» resterebbe grande la metà
-   degli altri due. Il taglio tondo glielo dà l'overflow della piastrella. */
+   degli altri due. */
 .sb-cr-logo--ap { padding: 0; }
 .sb-cr-logo--ap img { max-height: 4rem; }
 
-.sb-cr-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 700; color: #1a5fa8; letter-spacing: -0.01em; }
-.sb-cr-logo--ap .sb-cr-logo-t { font-size: 1.6rem; color: #0080c8; letter-spacing: -0.045em; }
-.sb-cr-loghi-nota { margin: 0.9rem 0 0; text-align: center; font-size: 0.76rem; color: var(--sb-fg-muted); }
+.sb-cr-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
+.sb-cr-logo--ap .sb-cr-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
+.sb-cr-loghi-nota { margin: 0.9rem 0 0; text-align: center; font-size: 0.78rem; color: var(--sb-fg-muted); }
 
-/* ══ Meno movimento ═════════════════════════════════════════════════════════
-   Le due strade per fermare tutto, come nel resto del sito: l'impostazione di
-   sistema (a cui il tasto «muovi» può dire l'ultima parola) e il tasto
-   «ferma» della barra in basso. Il fondale non sparisce — le macchie restano
-   dove sono, ferme. Una pagina immobile è ancora una pagina a colori. */
+/* ═══ Meno movimento ═════════════════════════════════════════════════════════
+   In pagina si muove una cosa sola: la deriva dei due veli del fondale, la
+   stessa del resto del sito. Si ferma nei due modi di sempre — l'impostazione
+   di sistema, a cui il tasto «muovi» può dire l'ultima parola, e il tasto
+   «ferma» della barra in basso. Il fondale non sparisce: resta a colori,
+   immobile. Tutto il resto che si muoveva qui dentro non c'è più. */
 @media (prefers-reduced-motion: reduce) {
-  html:not(.rsm-motion) .sb-cr-macchia,
-  html:not(.rsm-motion) .sb-cr-punto,
-  html:not(.rsm-motion) .sb-cr-titolo,
-  html:not(.rsm-motion) .sb-cr-occhiello i,
-  html:not(.rsm-motion) .sb-cr-alone,
-  html:not(.rsm-motion) .sb-cr-filo::before,
-  html:not(.rsm-motion) .sb-cr-avanz-fill,
-  html:not(.rsm-motion) .sb-cr-box::after,
-  html:not(.rsm-motion) .sb-cr-logo::after,
-  html:not(.rsm-motion) .sb-cr-lastra .sb-panel-inner::before { animation: none !important; }
-  html:not(.rsm-motion) .sb-cr-punto { opacity: 0.5; }
-  html:not(.rsm-motion) .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
+  html:not(.rsm-motion) .sb-cr-vernice::before,
+  html:not(.rsm-motion) .sb-cr-vernice::after { animation: none !important; }
 }
-html.rsm-still .sb-cr-macchia,
-html.rsm-still .sb-cr-punto,
-html.rsm-still .sb-cr-titolo,
-html.rsm-still .sb-cr-occhiello i,
-html.rsm-still .sb-cr-alone,
-html.rsm-still .sb-cr-filo::before,
-html.rsm-still .sb-cr-avanz-fill,
-html.rsm-still .sb-cr-box::after,
-html.rsm-still .sb-cr-logo::after,
-html.rsm-still .sb-cr-lastra .sb-panel-inner::before { animation: none; }
-html.rsm-still .sb-cr-punto { opacity: 0.5; }
-/* Il respiro fermato lascerebbe la macchia all'opacità di partenza, che è più
-   bassa di quella vera: si rimette com'è scritta. */
-html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
-/* Né la seconda banda diagonale né il tasto del pagamento hanno bisogno di
-   una riga qui: sono .sb-panel-inner::after e .sb-btn--primary, e a spegnerli
-   in tutte e due le condizioni ci pensa già sb.css. */
-
-/* Sul telefono restano quattro macchie su sette e quattro coriandoli su otto:
-   ogni strato animato è una texture in memoria video, e lì la memoria video è
-   quella che è. Il fondale resta pieno lo stesso — le quattro che restano
-   sono le più grandi. */
-@media (max-width: 639.98px) {
-  .sb-cr-macchia[data-piccolo], .sb-cr-punto[data-piccolo] { display: none; }
-}
-/* Sul computer le macchie tornano grandi come sono disegnate: lì la memoria
-   video non è un problema e lo schermo è largo. */
-@media (min-width: 640px) {
-  .sb-cr-macchia {
-    width: calc(var(--w, 30) * 1vmax);
-    height: calc(var(--w, 30) * 1vmax);
-  }
-}
+html.rsm-still .sb-cr-vernice::before,
+html.rsm-still .sb-cr-vernice::after { animation: none; }
 
 @media print {
   .sb-cr-vernice { display: none; }
@@ -917,51 +503,27 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
 
 <div class="sb-cr">
 
-<div class="sb-cr-vernice" aria-hidden="true">
-    <div class="sb-cr-macchia" style="--m:var(--m1);--c:var(--cr-magenta);--k:cr-deriva-a;--d:71s;--d2:31s;--o:.34;top:-6vh;left:-8vw;--w:52"></div>
-    <div class="sb-cr-macchia" style="--m:var(--m2);--c:var(--cr-ciano);--k:cr-deriva-b;--d:83s;--d2:43s;--o:.3;top:22vh;right:-14vw;--w:46"></div>
-    <div class="sb-cr-macchia" style="--m:var(--m3);--c:var(--cr-giallo);--k:cr-deriva-c;--d:58s;--d2:37s;--o:.36;bottom:-12vh;left:6vw;--w:40"></div>
-    <div class="sb-cr-macchia" style="--m:var(--m1);--c:var(--cr-viola);--k:cr-deriva-b;--d:64s;--d2:53s;--r:-12s;--o:.26;bottom:4vh;right:2vw;--w:34"></div>
-    <div class="sb-cr-macchia" data-piccolo style="--m:var(--m2);--c:var(--cr-verde);--k:cr-deriva-c;--d:47s;--d2:29s;--r:-20s;--o:.3;top:48vh;left:-6vw;--w:26"></div>
-    <div class="sb-cr-macchia" data-piccolo style="--m:var(--m3);--c:var(--cr-arancio);--k:cr-deriva-a;--d:53s;--d2:41s;--r:-8s;--o:.32;top:4vh;left:38vw;--w:22"></div>
-    <div class="sb-cr-macchia" data-piccolo style="--m:var(--m1);--c:var(--cr-verde);--k:cr-deriva-b;--d:77s;--d2:47s;--r:-30s;--o:.24;top:70vh;right:24vw;--w:18"></div>
+<div class="sb-cr-vernice" aria-hidden="true"></div>
 
-    <div class="sb-cr-punto" style="--c:var(--cr-magenta);--s:11px;--d:29s;--x:5vw;left:8%"></div>
-    <div class="sb-cr-punto" style="--c:var(--cr-ciano);--s:8px;--d:37s;--r:-6s;--x:-4vw;left:26%"></div>
-    <div class="sb-cr-punto" style="--c:var(--cr-giallo);--s:13px;--d:33s;--r:-14s;--x:3vw;left:54%"></div>
-    <div class="sb-cr-punto" style="--c:var(--cr-viola);--s:9px;--d:41s;--r:-22s;--x:-6vw;left:78%"></div>
-    <div class="sb-cr-punto" style="--c:var(--cr-verde);--s:7px;--d:26s;--r:-9s;--x:6vw;left:40%"></div>
-    <div class="sb-cr-punto" style="--c:var(--cr-arancio);--s:10px;--d:35s;--r:-17s;--x:-3vw;left:64%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-magenta);--s:6px;--d:44s;--r:-28s;--x:4vw;left:90%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-ciano);--s:12px;--d:31s;--r:-3s;--x:-5vw;left:16%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-viola);--s:8px;--d:39s;--r:-11s;--x:5vw;left:33%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-giallo);--s:6px;--d:28s;--r:-24s;--x:-4vw;left:71%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-verde);--s:9px;--d:46s;--r:-33s;--x:3vw;left:48%"></div>
-    <div class="sb-cr-punto" data-piccolo style="--c:var(--cr-arancio);--s:7px;--d:34s;--r:-19s;--x:-6vw;left:84%"></div>
-  </div>
-
-  <section class="sb-container sb-cr-hero">
-    <span class="sb-cr-occhiello"><i aria-hidden="true"></i>Iscrizioni aperte</span>
-    <h1><span class="sb-cr-titolo">Color Runner</span></h1>
-    <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong><br>per le vie di Rivalta sul Mincio</p>
+  <section class="sb-container sb-riv-pagehead">
+    <span class="sb-riv-eyebrow">Iscrizioni aperte</span>
+    <h1>Color Runner</h1>
+    <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong> — per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
     <a class="sb-btn sb-btn--primary sb-cr-vai-giu" href="#iscrizione">
       <span>Iscriviti — 10 €</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>
     
   </section>
 
-  <section class="sb-container sb-cr-sec" id="iscrizione">
-    <div class="sb-cr-lastra"><div class="sb-panel"><div class="sb-panel-inner">
+  <section class="sb-container sb-riv-sec" id="iscrizione">
+    <div class="sb-sechead sb-sechead--start">
+      <h2>Iscriviti alla camminata</h2>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto.</p>
+    </div>
 
-      <span class="sb-cr-filo" aria-hidden="true"></span>
-      <span class="sb-cr-alone" aria-hidden="true"></span>
-
-      <div class="sb-cr-testa">
-        <h2>Iscriviti alla camminata</h2>
-        <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto.</p>
-      </div>
+    <div class="sb-cr-lastra" style="margin-top:1.4rem"><div class="sb-panel"><div class="sb-panel-inner">
 
       <div class="sb-cr-nota">
         La quota è di <strong>10 € a persona</strong>. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati.
@@ -978,7 +540,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
       </div>
 
       <form class="sb-cr-form" id="cr-form" novalidate>
-        <div class="sb-cr-campo" data-campo="nome" style="--cr-a:var(--cr-magenta)">
+        <div class="sb-cr-campo" data-campo="nome">
           <label for="cr-nome">Nome</label>
           <div class="sb-cr-box">
             <input type="text" id="cr-nome" name="nome" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-describedby="cr-nome-aiuto">
@@ -987,7 +549,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-nome-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="cognome" style="--cr-a:var(--cr-arancio)">
+        <div class="sb-cr-campo" data-campo="cognome">
           <label for="cr-cognome">Cognome</label>
           <div class="sb-cr-box">
             <input type="text" id="cr-cognome" name="cognome" autocomplete="family-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-describedby="cr-cognome-aiuto">
@@ -996,7 +558,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-cognome-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="cf" style="--cr-a:var(--cr-viola)">
+        <div class="sb-cr-campo" data-campo="cf">
           <label for="cr-cf">Codice fiscale</label>
           <div class="sb-cr-box">
             <input type="text" id="cr-cf" name="cf" maxlength="16" required spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" placeholder="RSSMRA85M01F205Z" aria-describedby="cr-cf-aiuto">
@@ -1005,7 +567,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-cf-aiuto">Serve per l'assicurazione. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="email" style="--cr-a:var(--cr-verde)">
+        <div class="sb-cr-campo" data-campo="email">
           <label for="cr-email">Email <span class="sb-cr-facolt">qui arriva la conferma</span></label>
           <div class="sb-cr-box">
             <input type="email" id="cr-email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" enterkeyhint="next" maxlength="200" required spellcheck="false" aria-describedby="cr-email-aiuto">
@@ -1014,7 +576,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-email-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo sb-cr-auto" data-campo="indirizzo" style="--cr-a:var(--cr-ciano)">
+        <div class="sb-cr-campo sb-cr-auto" data-campo="indirizzo">
           <label for="cr-indirizzo">Indirizzo di residenza</label>
           <div class="sb-cr-box">
             <input type="text" id="cr-indirizzo" name="indirizzo" maxlength="120" required autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next"
@@ -1026,7 +588,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-indirizzo-aiuto">Le vie di Rivalta escono da sé: tocca la tua, poi il numero civico. Se abiti fuori, scrivi l'indirizzo per esteso.</p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="telefono" style="--cr-a:var(--cr-giallo)">
+        <div class="sb-cr-campo" data-campo="telefono">
           <label for="cr-telefono">Telefono <span class="sb-cr-facolt">facoltativo</span></label>
           <div class="sb-cr-box">
             <input type="tel" id="cr-telefono" name="telefono" autocomplete="tel" inputmode="tel" enterkeyhint="next" maxlength="40" aria-describedby="cr-telefono-aiuto">
@@ -1035,7 +597,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <p class="sb-cr-aiuto" id="cr-telefono-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="note" style="--cr-a:var(--cr-magenta)">
+        <div class="sb-cr-campo" data-campo="note">
           <label for="cr-note">Note <span class="sb-cr-facolt">facoltativo</span></label>
           <div class="sb-cr-box">
             <textarea id="cr-note" name="note" rows="2" maxlength="300" enterkeyhint="done"></textarea>
@@ -1058,7 +620,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
     </div></div></div>
   </section>
 
-  <section class="sb-container sb-cr-sec">
+  <section class="sb-container sb-riv-sec">
     <div class="sb-cr-loghi">
       <a class="sb-cr-logo sb-cr-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
       <a class="sb-cr-logo sb-cr-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Stemma del Comune di Rodigo"><img src="assets/loghi/comune-rodigo.webp" alt="Stemma del Comune di Rodigo" loading="lazy" decoding="async"></a>
