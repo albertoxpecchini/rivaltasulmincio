@@ -124,12 +124,42 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      macchia, perché lì l'opacità è animata e una regola che la riscrive la
      spegnerebbe insieme al respiro. */
   --dim: 1;
+
+  /* ── La livrea ────────────────────────────────────────────────────────
+     L'arcobaleno scritto una volta sola, perché lo usano il titolo e i tasti
+     e devono essere lo stesso arcobaleno.
+
+     Le sei tinte compaiono DUE VOLTE più la prima che si richiude: tredici
+     fermate in tutto. Non è ridondanza, è quello che rende il giro continuo.
+     Con background-size al 200% la finestra che si vede è larga mezza
+     immagine — cioè esattamente un arcobaleno intero, dal magenta al viola —
+     e portare background-position al 100% sposta l'immagine di mezza immagine,
+     cioè di un arcobaleno esatto: il disegno torna identico a sé stesso e il
+     giro si chiude senza salto.
+
+     È il motivo per cui prima non era sfumato bene: un gradiente che si
+     ripeteva ogni 720 pixel su un titolo largo 330 mostrava mezza tavolozza
+     schiacciata, non un arcobaleno. */
+  --cr-livrea: linear-gradient(
+    90deg,
+    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
+    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
+    #ff2d87
+  );
   position: relative;
 }
 html.dark .sb-cr {
   --sb-glass-spec: rgba(255, 255, 255, 0.18);
   --sb-glass-sheen: rgba(255, 255, 255, 0.14);
   --dim: 0.62;
+  /* Al buio il fondo non slava più niente: tornano le tinte piene delle
+     polveri colorate. */
+  --cr-livrea: linear-gradient(
+    90deg,
+    var(--cr-magenta), var(--cr-arancio), var(--cr-giallo), var(--cr-verde), var(--cr-ciano), var(--cr-viola),
+    var(--cr-magenta), var(--cr-arancio), var(--cr-giallo), var(--cr-verde), var(--cr-ciano), var(--cr-viola),
+    var(--cr-magenta)
+  );
 }
 
 /* ══ I margini ══════════════════════════════════════════════════════════════
@@ -293,60 +323,34 @@ html.dark .sb-cr {
   line-height: 0.98;
   letter-spacing: -0.035em;
 }
-/* ══ Il titolo: arcobaleno di vetro ═════════════════════════════════════════
-   Due strati, tutti e due ritagliati sulle lettere.
-
-   Sotto, l'arcobaleno. Il periodo è lungo — 720 pixel con una tinta ogni 120 —
-   ed è la ragione per cui adesso è sfumato bene: con un periodo corto, sulla
-   larghezza di un titolo ci stanno due giri interi e i colori si stringono
-   l'uno sull'altro a fasce; con 720 se ne vede circa mezzo, e i passaggi hanno
-   lo spazio per essere passaggi. Le tinte del titolo non sono le stesse delle
-   macchie: sono un po' più profonde, perché un giallo da polvere colorata su
-   fondo bianco non si legge.
-
-   Sopra, il vetro: un velo bianco che tiene la metà alta delle lettere e
-   sfuma via a metà altezza. È il colpo di luce che si vede sul vetro colorato
-   spesso, ed è quello che fa sembrare la scritta un oggetto invece che un
-   riempimento.
-
-   Scorre solo lo strato di sotto — lo strato di luce sta fermo, come sta ferma
-   una finestra mentre l'acqua colorata scorre dietro. Il giro si chiude senza
-   salto perché lo spostamento è esattamente un periodo.
+/* ══ Il titolo ══════════════════════════════════════════════════════════════
+   La livrea ritagliata sulle lettere, e nient'altro sopra: uno strato solo.
+   Sulla larghezza del titolo si vede un arcobaleno intero — magenta, corallo,
+   ambra, verde, ciano, viola — e scorre di un arcobaleno esatto ogni giro,
+   senza salto. La spiegazione della misura sta su --cr-livrea qui sopra.
 
    Senza background-clip:text — browser vecchi — resta scritto in magenta, che
    è meglio di trasparente. */
 .sb-cr-titolo { color: var(--cr-magenta); }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .sb-cr-titolo {
-    background-image:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.62) 2%, rgba(255, 255, 255, 0.1) 42%, rgba(255, 255, 255, 0) 58%),
-      repeating-linear-gradient(
-        90deg,
-        #ff2d87 0px, #ff6a3d 120px, #f0a017 240px,
-        #1fbe76 360px, #10a6e6 480px, #6f5cf6 600px, #ff2d87 720px
-      );
+    /* inline-block e non inline: su uno schermo stretto «Color Runner» va a
+       capo, e un elemento in linea spezzato su due righe si porta dietro due
+       frammenti di sfondo invece di uno. Con un blocco solo l'arcobaleno
+       attraversa tutte e due le righe come un disegno unico. */
+    display: inline-block;
+    background-image: var(--cr-livrea);
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.13));
-    animation: cr-scorre 22s linear infinite;
+    animation: cr-scorre 20s linear infinite;
   }
-  /* Al buio il fondo non slava più niente: le tinte tornano quelle piene delle
-     polveri, e il velo si abbassa — un bianco al 62% su fondo scuro non è un
-     riflesso, è una macchia. */
-  html.dark .sb-cr-titolo {
-    background-image:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.4) 2%, rgba(255, 255, 255, 0.06) 42%, rgba(255, 255, 255, 0) 58%),
-      repeating-linear-gradient(
-        90deg,
-        var(--cr-magenta) 0px, var(--cr-arancio) 120px, var(--cr-giallo) 240px,
-        var(--cr-verde) 360px, var(--cr-ciano) 480px, var(--cr-viola) 600px, var(--cr-magenta) 720px
-      );
-    filter: drop-shadow(0 2px 16px rgba(0, 0, 0, 0.55));
-  }
+  html.dark .sb-cr-titolo { filter: drop-shadow(0 2px 16px rgba(0, 0, 0, 0.55)); }
 }
-@keyframes cr-scorre { to { background-position: 0 0, 720px 0; } }
+@keyframes cr-scorre { to { background-position: 100% 0; } }
 
 .sb-cr-quando {
   margin: 0.7rem 0 0;
@@ -358,95 +362,52 @@ html.dark .sb-cr {
 .sb-cr-quando strong { font-weight: 600; }
 .sb-cr-hero .sb-riv-lede { margin: 0.7rem 0 0; font-size: 0.95rem; }
 
-/* ══ I tasti: vetro liquido ═════════════════════════════════════════════════
-   Non una tinta piatta con sopra una scritta. Una lastra di vetro colorato,
-   con quattro cose addosso che insieme fanno il materiale:
+/* ══ I tasti ════════════════════════════════════════════════════════════════
+   Il tasto è quello del design system — .sb-btn .sb-btn--primary — e da qui
+   cambia solo la vernice. Forma, altezza, fuoco, comportamento al passaggio
+   del mouse: tutto quello che il sito fa già, lo fa anche qui, e continuerà a
+   farlo se un giorno il tasto del sito cambia.
 
-     1. la TINTA non è piena ma all'88%, e sotto c'è backdrop-filter: quello
-        che sta dietro — le macchie di vernice del fondale — si vede passare
-        attraverso, sfocato e più saturo. È l'unica parte per cui «vetro» non è
-        una metafora: il browser sta davvero filtrando lo sfondo.
-     2. il FILO DI LUCE sul bordo alto (l'ombra interna bianca) e l'ombra
-        interna scura in basso: sono lo spessore. Da soli sembrano un errore,
-        insieme sono un oggetto che ha un sopra e un sotto.
-     3. il LIQUIDO: due pozze di colore che girano dentro il tasto su tempi
-        diversi e lunghi, tredici e diciassette secondi. Non si vede muoversi
-        se lo si fissa — si vede che il tasto non è mai due volte uguale.
-     4. il RIFLESSO, che passa ogni nove secondi e ci mette un secondo. Ogni
-        tanto, non di continuo: un tasto che luccica sempre non luccica più,
-        lampeggia.
+   La livrea è l'arcobaleno che scorre piano, lo stesso del titolo. Il testo
+   resta SCURO, come sul tasto primario del sito — bianco su un arcobaleno si
+   legge finché non arriva la fascia gialla, e lì sparisce. Nero su tinte
+   accese si legge su tutte e sei, e vale anche al buio, perché la livrea è
+   accesa in tutti e due i temi.
 
-   La scritta resta bianca e leggibile perché sotto il vetro le tinte sono
-   sature all'88%, non trasparenti, e ha la sua ombra da un pixel. */
-.sb-cr-vetro {
+   Il riflesso periodico è l'unica aggiunta: il design system ne ha uno, ma
+   solo al passaggio del mouse — e sul telefono un mouse non c'è. */
+.sb-btn.sb-cr-livrea {
   position: relative;
-  isolation: isolate;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(100deg,
-      color-mix(in srgb, var(--cr-magenta) 88%, transparent),
-      color-mix(in srgb, var(--cr-viola) 86%, transparent) 55%,
-      color-mix(in srgb, var(--cr-ciano) 88%, transparent));
-  -webkit-backdrop-filter: blur(14px) saturate(190%);
-  backdrop-filter: blur(14px) saturate(190%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -10px 20px -12px rgba(0, 0, 0, 0.45),
-    0 14px 30px -14px color-mix(in srgb, var(--cr-magenta) 75%, transparent);
-  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+  height: auto;
+  border-color: rgba(0, 0, 0, 0.18);
+  color: #101010;
+  background-color: var(--cr-magenta);
+  background-image: var(--cr-livrea);
+  background-size: 200% 100%;
+  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.55);
+  animation: cr-livrea 20s linear infinite;
 }
-.sb-cr-vetro:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    inset 0 -10px 20px -12px rgba(0, 0, 0, 0.4),
-    0 18px 36px -14px color-mix(in srgb, var(--cr-magenta) 85%, transparent);
+/* Il :hover del design system riscrive `background` con la scorciatoia, che
+   azzera anche l'immagine: la livrea va rimessa: */
+.sb-btn.sb-cr-livrea:hover {
+  background-color: var(--cr-magenta);
+  background-image: var(--cr-livrea);
+  border-color: rgba(0, 0, 0, 0.32);
 }
-.sb-cr-vetro:active { transform: translateY(0); }
-/* Sotto la scritta, non sopra: un pseudo-elemento con position:absolute
-   finisce nello strato di quelli posizionati, che sta SOPRA il testo. Senza
-   questo z-index il velo di luce slaverebbe le lettere. */
-.sb-cr-vetro > .sb-cr-liquido { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.sb-cr-liquido::before,
-.sb-cr-liquido::after { content: ""; position: absolute; border-radius: 50%; }
-.sb-cr-liquido::before {
-  width: 75%;
-  height: 240%;
-  left: -12%;
-  top: -70%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.5), transparent 70%);
-  animation: cr-liquido-a 13s ease-in-out infinite alternate;
-}
-.sb-cr-liquido::after {
-  width: 62%;
-  height: 210%;
-  right: -8%;
-  top: -55%;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--cr-giallo) 55%, transparent), transparent 70%);
-  animation: cr-liquido-b 17s ease-in-out infinite alternate;
-}
-@keyframes cr-liquido-a {
-  from { transform: translate3d(-14%, 0, 0) scale(1); }
-  to   { transform: translate3d(62%, 9%, 0) scale(1.28); }
-}
-@keyframes cr-liquido-b {
-  from { transform: translate3d(12%, 5%, 0) scale(1.12); }
-  to   { transform: translate3d(-54%, -7%, 0) scale(0.88); }
-}
-/* Il riflesso che passa. Sopra tutto, testo compreso: un riflesso che passa
-   dietro le lettere non è un riflesso. */
-.sb-cr-vetro::after {
+@keyframes cr-livrea { to { background-position: 100% 0; } }
+
+/* Il contenuto sopra il riflesso non ci va: la banda di luce deve passare
+   davanti alle lettere, o non è un riflesso. Ma sopra il fondo sì. */
+.sb-btn.sb-cr-livrea > * { position: relative; z-index: 1; }
+.sb-btn.sb-cr-livrea::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 2;
+  opacity: 1;
   pointer-events: none;
-  background: linear-gradient(102deg, transparent 38%, rgba(255, 255, 255, 0.62) 50%, transparent 62%);
+  background: linear-gradient(102deg, transparent 38%, rgba(255, 255, 255, 0.55) 50%, transparent 62%);
   transform: translateX(-130%);
   animation: cr-lampo 9s ease-in-out infinite;
 }
@@ -456,17 +417,12 @@ html.dark .sb-cr {
 }
 
 .sb-cr-vai-giu {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
   min-height: 3.2rem;
   margin-top: 1.3rem;
-  padding: 0.7rem 1.6rem;
+  padding: 0 1.5rem;
   border-radius: 999px;
+  font-size: 1rem;
   font-weight: 700;
-  font-size: 1.02rem;
-  text-decoration: none;
 }
 /* Sfasato di tre secondi da quello di pagamento: due tasti che luccicano
    all'unisono sembrano un difetto di rendering. */
@@ -865,34 +821,17 @@ html.dark .sb-cr-box::after {
 .sb-cr-vai {
   width: 100%;
   min-height: 3.5rem;
-  border-radius: 16px;
-  padding: 1rem 1.2rem;
-  /* Stessa storia dei campi: la scorciatoia `font:` con «inherit» non è
-     valida e lascerebbe il tasto col carattere di sistema. */
-  font-family: inherit;
-  font-size: 1.08rem;
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  cursor: pointer;
+  /* La scritta del tasto è lunga e sul telefono stretto va a capo: il
+     .sb-btn del sito la tiene su una riga sola, e qui non deve. */
+  white-space: normal;
 }
-.sb-cr-vai[disabled] { cursor: progress; filter: saturate(0.55); transform: none; }
-/* La cupola di luce ferma che respira, sotto la scritta. Insieme alle due
-   pozze che girano è quello che rende il tasto «vivo» anche quando nessuno lo
-   sta guardando. */
-.sb-cr-vetro::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(125% 190% at 22% -45%, rgba(255, 255, 255, 0.55), transparent 62%);
-  animation: cr-respiro-btn 5.5s ease-in-out infinite alternate;
-}
-@keyframes cr-respiro-btn {
-  from { opacity: 0.45; }
-  to   { opacity: 1; }
-}
+.sb-cr-vai[disabled] { cursor: progress; filter: saturate(0.4) opacity(0.75); }
 
 .sb-cr-nota {
   margin: 0 0 1.4rem;
@@ -989,10 +928,8 @@ html.dark .sb-cr-box::after {
   html:not(.rsm-motion) .sb-cr-box::after,
   html:not(.rsm-motion) .sb-cr-logo::after,
   html:not(.rsm-motion) .sb-cr-lastra .sb-panel-inner::before,
-  html:not(.rsm-motion) .sb-cr-liquido::before,
-  html:not(.rsm-motion) .sb-cr-liquido::after,
-  html:not(.rsm-motion) .sb-cr-vetro::before,
-  html:not(.rsm-motion) .sb-cr-vetro::after { animation: none !important; }
+  html:not(.rsm-motion) .sb-cr-livrea,
+  html:not(.rsm-motion) .sb-cr-livrea::after { animation: none !important; }
   html:not(.rsm-motion) .sb-cr-punto { opacity: 0.5; }
   html:not(.rsm-motion) .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
 }
@@ -1006,10 +943,8 @@ html.rsm-still .sb-cr-avanz-fill,
 html.rsm-still .sb-cr-box::after,
 html.rsm-still .sb-cr-logo::after,
 html.rsm-still .sb-cr-lastra .sb-panel-inner::before,
-html.rsm-still .sb-cr-liquido::before,
-html.rsm-still .sb-cr-liquido::after,
-html.rsm-still .sb-cr-vetro::before,
-html.rsm-still .sb-cr-vetro::after { animation: none; }
+html.rsm-still .sb-cr-livrea,
+html.rsm-still .sb-cr-livrea::after { animation: none; }
 html.rsm-still .sb-cr-punto { opacity: 0.5; }
 /* Il respiro fermato lascerebbe la macchia all'opacità di partenza, che è più
    bassa di quella vera: si rimette com'è scritta. */
@@ -1070,9 +1005,8 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
     <h1><span class="sb-cr-titolo">Color Runner</span></h1>
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong><br>per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-    <a class="sb-cr-vetro sb-cr-vai-giu" href="#iscrizione">
-      <i class="sb-cr-liquido" aria-hidden="true"></i>
-      Iscriviti — 10 €
+    <a class="sb-btn sb-btn--primary sb-cr-livrea sb-cr-vai-giu" href="#iscrizione">
+      <span>Iscriviti — 10 €</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>
     
@@ -1174,7 +1108,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
           <label for="cr-consenso">Acconsento al trattamento dei miei dati per l'organizzazione della Color Runner. Nome, cognome, codice fiscale, indirizzo, email e telefono restano agli organizzatori e a Stripe, che gestisce il pagamento: non vengono ceduti ad altri e non servono a mandare pubblicità.</label>
         </div>
 
-        <button class="sb-cr-vetro sb-cr-vai" type="submit" id="cr-submit"><i class="sb-cr-liquido" aria-hidden="true"></i><span>Vai al pagamento — quota 10 €</span></button>
+        <button class="sb-btn sb-btn--primary sb-cr-livrea sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
       </form>
 
       <noscript>

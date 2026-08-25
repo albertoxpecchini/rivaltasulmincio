@@ -85,28 +85,29 @@
 .sb-is-btn:hover { border-color: var(--sb-border-stronger); transform: translateY(-1px); }
 .sb-is-btn[disabled] { opacity: 0.5; cursor: default; transform: none; }
 
-/* Lo stesso vetro dei tasti di /color-runner, in versione corta: tinta all'88%
-   invece che piena, sfocatura di quel che sta dietro, filo di luce sul bordo
-   alto e ombra interna in basso a fare lo spessore. Qui senza le pozze di
-   colore che girano — è una pagina di lavoro, non l'invito alla festa — ma il
-   riflesso passa lo stesso ogni nove secondi. */
+/* La stessa livrea arcobaleno dei tasti di /color-runner: le sei tinte due
+   volte più la prima che si richiude, larghe il doppio del tasto, così quel
+   che si vede è un arcobaleno intero e lo spostamento di un giro lo riporta
+   identico a sé stesso. Testo scuro come sul tasto primario del sito: bianco
+   sparirebbe sulla fascia gialla. */
 .sb-is-btn--forte {
   position: relative;
-  isolation: isolate;
   overflow: hidden;
-  border-color: rgba(255, 255, 255, 0.42);
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(100deg, rgba(15, 178, 239, 0.9), rgba(138, 92, 246, 0.88));
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  backdrop-filter: blur(12px) saturate(180%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    inset 0 -9px 18px -12px rgba(0, 0, 0, 0.45),
-    0 12px 26px -14px rgba(15, 178, 239, 0.85);
+  border-color: rgba(0, 0, 0, 0.18);
+  color: #101010;
+  background-color: #ff2d87;
+  background-image: linear-gradient(
+    90deg,
+    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
+    #ff2d87, #ff6a3d, #f0a017, #1fbe76, #10a6e6, #6f5cf6,
+    #ff2d87
+  );
+  background-size: 200% 100%;
+  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.55);
+  animation: is-livrea 20s linear infinite;
 }
+.sb-is-btn--forte:hover { border-color: rgba(0, 0, 0, 0.32); }
+@keyframes is-livrea { to { background-position: 100% 0; } }
 .sb-is-btn--forte::after {
   content: "";
   position: absolute;
@@ -123,8 +124,10 @@
   12%, 100% { transform: translateX(130%); }
 }
 @media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-is-btn--forte,
   html:not(.rsm-motion) .sb-is-btn--forte::after { animation: none !important; }
 }
+html.rsm-still .sb-is-btn--forte,
 html.rsm-still .sb-is-btn--forte::after { animation: none; }
 
 /* I tre numeri in cima: quanti, quanto, quanti si sono fermati a metà. */
