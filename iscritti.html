@@ -478,7 +478,11 @@ html.rsm-still .sb-is-btn--forte::after { animation: none; }
     return fetch("/api/iscritti-color-runner", { headers: { "x-chiave": chiave } })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, stato: r.status, d: d }; }); })
       .then(function (res) {
-        if (!res.ok) throw new Error((res.d && res.d.errore) || "errore " + res.stato);
+        if (!res.ok) {
+          var guaio = new Error((res.d && res.d.errore) || "errore " + res.stato);
+          guaio.stato = res.stato;
+          throw guaio;
+        }
         dati = res.d;
         document.getElementById("is-n").textContent = String(dati.iscritti.length);
         document.getElementById("is-tot").textContent = euro(dati.totaleCent);
@@ -490,8 +494,12 @@ html.rsm-still .sb-is-btn--forte::after { animation: none; }
       })
       .catch(function (err) {
         mostra("errore", String(err.message || err));
-        // Chiave rifiutata: si torna alla porta, e quella sbagliata si scorda.
-        if (/chiave/i.test(String(err.message))) {
+        /* Solo il 401 è una chiave rifiutata: si torna alla porta, e quella
+           sbagliata si scorda. Non basta cercare la parola «chiave» nel
+           messaggio: la dice anche il 503 di quando ISCRITTI_CHIAVE non è
+           impostata su Vercel, e rimandare alla porta chi ha scritto la chiave
+           giusta lo manda a cercare il guasto dove non è. */
+        if (err.stato === 401) {
           scorda();
           chiave = "";
           porta.hidden = false;
