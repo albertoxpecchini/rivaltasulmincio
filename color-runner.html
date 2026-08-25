@@ -391,7 +391,12 @@ html.dark .sb-cr {
 .sb-cr-quando strong { font-weight: 600; }
 .sb-cr-hero .sb-riv-lede { margin: 0.7rem 0 0; font-size: 0.95rem; }
 
-/* ══ I tasti: vetro trasparente ═════════════════════════════════════════════
+/* ══ Il tasto del modulo: vetro trasparente ═════════════════════════════════
+   Ne porta uno solo, in tutto il sito: il tasto che apre il pagamento, in
+   fondo al modulo. Gli altri — quello della hero qui sopra, tutti quelli
+   delle altre pagine — sono i tasti del design system e restano tali. Il
+   vetro è il materiale di una cosa sola, ed è per questo che si vede.
+
    La struttura è quella del sito — .sb-btn, con la sua altezza, il suo fuoco,
    la sua tipografia — e sopra ci sta una lastra di vetro colorato. Non
    .sb-btn--primary: quello porta una `background` scritta con la scorciatoia,
@@ -505,18 +510,10 @@ html.dark .sb-btn.sb-cr-livrea {
   12%, 100% { transform: translateX(130%); }
 }
 
-.sb-cr-vai-giu {
-  min-height: 3.2rem;
-  margin-top: 1.3rem;
-  padding: 0 1.5rem;
-  border-radius: 999px;
-  font-size: 1rem;
-  font-weight: 700;
-}
-/* Sfasati di tre secondi: due tasti che luccicano all'unisono sembrano un
-   difetto di rendering, non due riflessi. */
-.sb-cr-vai-giu::after { animation-delay: 3s; }
-.sb-cr-vai-giu::before { animation-delay: -5s; }
+/* Il tasto della hero è il tasto del sito e basta: .sb-btn--primary, con la
+   sua altezza, il suo raggio, la sua tinta e il suo riflesso al passaggio.
+   Qui sopra aggiunge solo l'aria che lo stacca dal testo. */
+.sb-cr-vai-giu { margin-top: 1.3rem; }
 
 /* Il banner, quando ci sarà. Finché non c'è, questa regola non trova niente
    a cui applicarsi e la pagina non se ne accorge. */
@@ -1106,7 +1103,7 @@ html.rsm-still .sb-cr-macchia { opacity: calc(var(--o, 0.4) * var(--dim, 1)); }
     <h1><span class="sb-cr-titolo">Color Runner</span></h1>
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong><br>per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-    <a class="sb-btn sb-cr-livrea sb-cr-vai-giu" href="#iscrizione">
+    <a class="sb-btn sb-btn--primary sb-cr-vai-giu" href="#iscrizione">
       <span>Iscriviti — 10 €</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>

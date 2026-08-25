@@ -140,116 +140,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 }
 .sb-is-chiave input:focus { outline: none; border-color: var(--sb-brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sb-brand) 18%, transparent); }
 
-.sb-is-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 3rem;
-  padding: 0.7rem 1.1rem;
-  border: 1.5px solid var(--sb-border-strong);
-  border-radius: 12px;
-  background: var(--sb-surface-75);
-  color: var(--sb-fg);
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
-}
-.sb-is-btn:hover { border-color: var(--sb-border-stronger); transform: translateY(-1px); }
-.sb-is-btn[disabled] { opacity: 0.5; cursor: default; transform: none; }
-
-/* Lo stesso vetro trasparente dei tasti di /color-runner: la livrea al 72%
-   (le due cifre finali di ogni colore), il rim di un pixel acceso in alto a
-   sinistra, il filo specular, la pozza di luce che deriva e il riflesso ogni
-   nove secondi. Le sei tinte compaiono due volte più la prima che si
-   richiude: è quello che rende il giro continuo, la spiegazione per esteso sta
-   su --cr-livrea in /color-runner. */
-.sb-is-btn--forte {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border: 1px solid transparent;
-  color: #101010;
-  background-image:
-    linear-gradient(
-      90deg,
-      #ff2d87b8, #ff6a3db8, #f0a017b8, #1fbe76b8, #10a6e6b8, #6f5cf6b8,
-      #ff2d87b8, #ff6a3db8, #f0a017b8, #1fbe76b8, #10a6e6b8, #6f5cf6b8,
-      #ff2d87b8
-    ),
-    linear-gradient(150deg,
-      rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4) 24%,
-      rgba(255, 255, 255, 0.12) 48%, rgba(255, 255, 255, 0.45) 76%,
-      rgba(255, 255, 255, 0.85));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  background-size: 200% 100%, auto;
-  background-repeat: no-repeat, no-repeat;
-  -webkit-backdrop-filter: blur(16px) saturate(185%);
-  backdrop-filter: blur(16px) saturate(185%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -14px 22px -18px rgba(0, 0, 0, 0.5),
-    0 10px 26px -16px rgba(0, 0, 0, 0.4);
-  animation: is-livrea 20s linear infinite;
-}
-html.dark .sb-is-btn--forte { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45); }
-@keyframes is-livrea { to { background-position: 100% 0, 0 0; } }
-
-.sb-is-btn--forte:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -14px 22px -18px rgba(0, 0, 0, 0.45),
-    0 16px 32px -16px rgba(0, 0, 0, 0.45);
-}
-.sb-is-btn--forte:active { transform: translateY(1px) scale(0.995); }
-.sb-is-btn--forte::before {
-  content: "";
-  position: absolute;
-  inset: -45%;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(36% 42% at 26% 32%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 70%),
-    radial-gradient(30% 38% at 74% 68%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 72%);
-  animation: is-liquido 15s ease-in-out infinite alternate;
-}
-@keyframes is-liquido {
-  from { transform: translate3d(-7%, -3%, 0) scale(1); }
-  to   { transform: translate3d(7%, 4%, 0) scale(1.14); }
-}
-.sb-is-btn--forte > *,
-.sb-is-btn--forte { position: relative; }
-/* Il riflesso sopra la scritta: uno che passa dietro le lettere non è un
-   riflesso. */
-.sb-is-btn--forte::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(102deg, transparent 38%, rgba(255, 255, 255, 0.6) 50%, transparent 62%);
-  transform: translateX(-130%);
-  animation: is-lampo 9s ease-in-out infinite;
-}
-#is-csv::after { animation-delay: 2.5s; }
-#is-csv::before { animation-delay: -6s; }
-@keyframes is-lampo {
-  0%        { transform: translateX(-130%); }
-  12%, 100% { transform: translateX(130%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  html:not(.rsm-motion) .sb-is-btn--forte,
-  html:not(.rsm-motion) .sb-is-btn--forte::before,
-  html:not(.rsm-motion) .sb-is-btn--forte::after { animation: none !important; }
-}
-html.rsm-still .sb-is-btn--forte,
-html.rsm-still .sb-is-btn--forte::before,
-html.rsm-still .sb-is-btn--forte::after { animation: none; }
+/* I tasti sono quelli del design system: .sb-btn, con --primary sull'azione
+   della schermata e --secondary sulle altre. Qui si dice soltanto come stanno
+   nello spazio — su una pagina che si usa col pollice sono un filo più alti
+   dei 38px del sito — non di che materiale sono fatti. */
+.sb-is-chiave .sb-btn { min-height: 2.9rem; }
 
 /* I tre numeri in cima: quanti, quanto, quanti si sono fermati a metà. */
 .sb-is-conti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 0 0 1.1rem; }
@@ -265,7 +160,7 @@ html.rsm-still .sb-is-btn--forte::after { animation: none; }
 .sb-is-conto span { display: block; margin-top: 0.15rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--sb-fg-muted); }
 
 .sb-is-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; }
-.sb-is-barra .sb-is-btn { flex: 1 1 auto; }
+.sb-is-barra .sb-btn { flex: 1 1 auto; min-height: 2.9rem; }
 
 .sb-is-cerca {
   width: 100%;
@@ -318,7 +213,7 @@ html.rsm-still .sb-is-btn--forte::after { animation: none; }
 <form class="sb-is-chiave" id="is-porta">
       <label for="is-chiave" class="sb-riv-eyebrow" style="margin:0">Chiave di accesso</label>
       <input type="password" id="is-chiave" name="chiave" autocomplete="current-password" enterkeyhint="go" spellcheck="false" placeholder="La chiave degli organizzatori">
-      <button class="sb-is-btn sb-is-btn--forte" type="submit" id="is-entra">Entra</button>
+      <button class="sb-btn sb-btn--primary" type="submit" id="is-entra">Entra</button>
     </form>
 
     <div id="is-zona" hidden>
@@ -329,9 +224,9 @@ html.rsm-still .sb-is-btn--forte::after { animation: none; }
       </div>
 
       <div class="sb-is-barra">
-        <button class="sb-is-btn sb-is-btn--forte" type="button" id="is-csv">Scarica CSV</button>
-        <button class="sb-is-btn" type="button" id="is-aggiorna">Aggiorna</button>
-        <button class="sb-is-btn" type="button" id="is-esci">Esci</button>
+        <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
+        <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
+        <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
       </div>
 
       <input class="sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, via, codice fiscale…" autocomplete="off" enterkeyhint="search">
