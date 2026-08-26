@@ -73,10 +73,16 @@ const mail =
       }
     : {
         oggetto: "[PROVA] Iscrizione confermata — Color Runner, 20 settembre",
-        html: riempi(MODELLO_RICEVUTA, { NOME: "Rebecca", DATA: data, IMPORTO: "10,00 €" }),
+        html: riempi(MODELLO_RICEVUTA, {
+          NOME: "Rebecca",
+          DATA: data,
+          IMPORTO_QUOTA: "10,00 €",
+          IMPORTO_COMMISSIONI: "1,00 €",
+          IMPORTO: "11,00 €",
+        }),
         testo:
           "PROVA. Ciao Rebecca, la tua iscrizione alla Color Runner del 20 settembre " +
-          `è registrata e la quota è pagata. 10,00 € il ${data}.`,
+          `è registrata e la quota è pagata. 10,00 € di quota + 1,00 € di commissioni di servizio = 11,00 € il ${data}.`,
       };
 
 console.log(`

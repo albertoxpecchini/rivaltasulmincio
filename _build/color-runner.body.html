@@ -41,14 +41,15 @@
      finito il campo dopo.
 
      ── Il modulo ──────────────────────────────────────────────────────────
-     Il pagamento è vero: la quota è di 10 €, la incassa Stripe Checkout, e
-     l'elenco degli iscritti è la lista dei pagamenti nel dashboard Stripe —
-     i dati del modulo viaggiano come metadata.
+     Il pagamento è vero: la carta viene addebitata di 11 € — quota 10 € più
+     1 € di commissioni di servizio, due voci distinte nel Checkout — e li
+     incassa Stripe. L'elenco degli iscritti è la lista dei pagamenti nel
+     dashboard Stripe; i dati del modulo viaggiano come metadata.
 
-     La quota è scritta in due punti soli: QUOTA_CENT in
-     api/iscrizione-color-runner.mjs e il testo del bottone qui sotto. Nelle
-     mail non è scritta: l'importo della ricevuta è quello che Stripe dice di
-     aver incassato davvero, non un numero ricopiato a mano.
+     I due importi sono scritti in un punto solo per il codice: QUOTA_CENT e
+     COMMISSIONI_CENT in api/iscrizione-color-runner.mjs. Il testo qui sotto
+     li ripete a parole per chi legge. Nelle mail non sono ricopiati: la
+     ricevuta mostra le voci che Stripe dice di aver incassato davvero.
 
      L'esito dell'iscrizione non lo dice solo questa pagina. A pagamento
      concluso Stripe avvisa /api/conferma-color-runner, che manda la ricevuta
@@ -480,7 +481,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong> — per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
     <a class="sb-btn sb-btn--primary sb-cr-vai-giu" href="#iscrizione">
-      <span>Iscriviti — 10 €</span>
+      <span>Iscriviti — 11 €</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>
     {{BANNER}}
@@ -495,7 +496,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     <div class="sb-cr-lastra" style="margin-top:1.4rem"><div class="sb-panel"><div class="sb-panel-inner">
 
       <div class="sb-cr-nota">
-        La quota è di <strong>10 € a persona</strong>. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati.
+        La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché alla camminata arrivino i 10 € pieni. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati.
       </div>
 
       <div id="cr-esito" class="sb-cr-esito" role="status"></div>
@@ -579,7 +580,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
           <label for="cr-consenso">Acconsento al trattamento dei miei dati per l'organizzazione della Color Runner. Nome, cognome, codice fiscale, indirizzo, email e telefono restano agli organizzatori e a Stripe, che gestisce il pagamento: non vengono ceduti ad altri e non servono a mandare pubblicità.</label>
         </div>
 
-        <button class="sb-btn sb-btn--primary sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — quota 10 €</span></button>
+        <button class="sb-btn sb-btn--primary sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
       </form>
 
       <noscript>

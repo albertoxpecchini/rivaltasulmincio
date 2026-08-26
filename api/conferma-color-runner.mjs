@@ -2,7 +2,8 @@
    /api/conferma-color-runner — la mail che chiude l'iscrizione alla Color
    Runner. Una sola, e quella giusta:
 
-     · quota incassata      → la ricevuta, con nome, importo e data
+     · quota incassata      → la ricevuta, con nome, la quota, le commissioni
+                              di servizio, il totale e la data
      · iscrizione a metà    → l'avviso che il pagamento non è andato a buon
                               fine e che non è stato addebitato niente
 
@@ -312,7 +313,7 @@ export default async function handler(req, res) {
   try {
     const sessione = await stripe(
       chiave,
-      `checkout/sessions/${encodeURIComponent(id)}?expand[]=payment_intent`
+      `checkout/sessions/${encodeURIComponent(id)}?expand[]=payment_intent&expand[]=line_items`
     );
 
     const marchio = sessione.metadata?.evento;
@@ -341,18 +342,40 @@ export default async function handler(req, res) {
         return res.status(200).json({ ignorato: "ricevuta già spedita" });
       }
 
+      /* Le due voci arrivano da Stripe, non ricopiate a mano: la quota e —
+         separata — la commissione di servizio. Se una sessione tornasse senza
+         il dettaglio (una vecchia sessione a voce unica rimasta in coda), la
+         ricevuta ripiega su «tutto quota, zero commissioni»: resta valida. */
+      const voci = Array.isArray(sessione.line_items?.data) ? sessione.line_items.data : [];
+      const voceCommissioni = voci.find((v) => /commission/i.test(v.description || ""));
+      const commissioniCent = voceCommissioni?.amount_total ?? 0;
+      const quotaCent =
+        voci.find((v) => v !== voceCommissioni)?.amount_total ??
+        (sessione.amount_total || 0) - commissioniCent;
+
+      const importoQuota = importoItaliano(quotaCent, sessione.currency);
+      const importoCommissioni = importoItaliano(commissioniCent, sessione.currency);
       const importo = importoItaliano(sessione.amount_total, sessione.currency);
       const data = dataItaliana(pi?.created || avviso.created);
 
       await spedisci({
         a: email,
         oggetto: OGGETTO_RICEVUTA,
-        html: riempi(MODELLO_RICEVUTA, { NOME: nome, DATA: data, IMPORTO: importo }),
+        html: riempi(MODELLO_RICEVUTA, {
+          NOME: nome,
+          DATA: data,
+          IMPORTO_QUOTA: importoQuota,
+          IMPORTO_COMMISSIONI: importoCommissioni,
+          IMPORTO: importo,
+        }),
         testo:
           `Ciao ${nome || ""}, la tua iscrizione alla Color Runner del 20 settembre è ` +
           `registrata e la quota è pagata.\n\n` +
-          `Iscrizione Color Runner — 20 settembre: ${importo}\n` +
-          `Pagato con carta il ${data}.\n\n` +
+          `Iscrizione Color Runner — 20 settembre: ${importoQuota}\n` +
+          `Commissioni di servizio: ${importoCommissioni}\n` +
+          `Totale, pagato con carta il ${data}: ${importo}\n\n` +
+          `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
+          `pagamento: all'organizzazione arriva la quota intera.\n\n` +
           `Questa mail è la tua conferma: tienila, non serve stamparla.\n` +
           `Ci vediamo il 20!\n\n` +
           `Il gruppo del Palio delle Contrade — Rivalta sul Mincio\n${SITE}`,
@@ -505,6 +528,8 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </td>
         </tr>
 
+
+
         <tr>
         <td class="e-pad" style="padding:28px 40px 0;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="e-sub" style="background:#f6f6f6; border:1px solid #e8e8e8; border-radius:10px; clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
@@ -520,6 +545,30 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
                   Iscrizione Color Runner — 20 settembre
                 </td>
+                <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
+                  {{IMPORTO_QUOTA}}
+                </td>
+                </tr>
+              </table>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+                <tr>
+                <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
+                  Commissioni di servizio
+                </td>
+                <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
+                  {{IMPORTO_COMMISSIONI}}
+                </td>
+                </tr>
+              </table>
+
+              <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:16px 0;">&nbsp;</div>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                <td class="e-stack e-fg" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; font-weight:600; line-height:1.5; color:#171717;">
+                  Totale
+                </td>
                 <td class="e-stack e-stack-r e-fg" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:17px; font-weight:700; color:#171717; white-space:nowrap;">
                   {{IMPORTO}}
                 </td>
@@ -531,8 +580,8 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span><br>
-                  Pagamento gestito da Stripe — il sito non vede né conserva i dati della carta.
+                  Le <span class="e-fg-l" style="color:#525252;">commissioni di servizio</span> coprono quanto trattiene il circuito di pagamento: all'organizzazione arriva la quota intera.<br>
+                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta.
                 </td>
                 </tr>
               </table>
@@ -679,7 +728,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
                 Non ti abbiamo preso niente: sul conto non arriva nessun addebito.
               </p>
               <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                Se nell'estratto conto vedi comparire e sparire i 10&nbsp;€, è la
+                Se nell'estratto conto vedi comparire e sparire gli 11&nbsp;€, è la
                 trattenuta che la banca fa al primo tentativo e scioglie da sé in
                 qualche giorno: non è un pagamento e non va chiesta indietro.
               </p>

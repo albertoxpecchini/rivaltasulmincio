@@ -2,8 +2,8 @@
    Banco di prova per api/conferma-color-runner.mjs — `node prova-conferma.mjs`.
 
    La domanda a cui questo file risponde è una sola, ed è quella che conta:
-   quando qualcuno paga dieci euro, parte davvero la mail? E quando non paga,
-   parte quella giusta invece di quella sbagliata?
+   quando qualcuno paga (quota più commissioni di servizio), parte davvero la
+   mail? E quando non paga, parte quella giusta invece di quella sbagliata?
 
    Stripe e il servizio di posta qui sono finti — `global.fetch` è sostituito —
    quindi si può provare tutto, compresi i casi che nella realtà si vedono una
@@ -81,8 +81,16 @@ const finestraRisposta = () => {
 const SESSIONE_PAGATA = {
   id: "cs_test_1",
   payment_status: "paid",
-  amount_total: 1000,
+  amount_total: 1100,
   currency: "eur",
+  /* Le due voci come le espande Stripe: la funzione ci legge quota e
+     commissioni per la ricevuta, invece di ricopiare un numero. */
+  line_items: {
+    data: [
+      { description: "Iscrizione Color Runner — 20 settembre", amount_total: 1000 },
+      { description: "Commissioni di servizio", amount_total: 100 },
+    ],
+  },
   customer_details: { email: "rebecca@example.com", name: "Rebecca Rossi" },
   metadata: { evento: "color-runner-2026-09-20", nome: "Rebecca", cognome: "Rossi" },
   payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },

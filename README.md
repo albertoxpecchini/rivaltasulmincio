@@ -448,8 +448,10 @@ in più lì dentro.
 ### La Color Runner — l'iscrizione che incassa davvero
 
 La seconda cosa che non gira nel browser di chi legge. `/color-runner` raccoglie i dati di chi si
-iscrive alla camminata a colori del 20 settembre e ne incassa la quota — **10 €**, un pagamento
-vero — in un passaggio solo. La pagina **non sta nel menu** — le nove porte d'ingresso sono quelle
+iscrive alla camminata a colori del 20 settembre e incassa **11 €** — quota **10 €** più **1 € di
+commissioni di servizio**, due voci distinte nel Checkout — un pagamento vero, in un passaggio solo.
+L'euro in più copre quanto il circuito di pagamento trattiene su ogni incasso, così alla camminata
+arriva la quota intera. La pagina **non sta nel menu** — le nove porte d'ingresso sono quelle
 e restano nove — ma è pubblica: la richiamano la home, `/comunita` e `/eventi`, ed entra in
 sitemap. Per rimetterla in disparte basta rimettere `noindex: true` in testa a
 [`_build/color-runner.body.html`](_build/color-runner.body.html) e rifare il build.
@@ -609,8 +611,8 @@ node prova-invio.mjs io@example.it fallita    # l'avviso di mancato pagamento
 mittente: in Resend si verifica spesso un sottodominio (`send.rivaltasulmincio.it`) mentre
 `POSTA_MITTENTE` è rimasto sul dominio nudo, o viceversa — e allora Resend rifiuta con un 403 che
 da solo non spiega niente. Qui e nei log di Vercel quel caso si dice per esteso, col mittente
-stampato accanto. Ma è meglio scoprirlo con la propria casella che col primo che tira fuori dieci
-euro: fino a quel momento il pagamento riuscirebbe comunque — l'incasso è di Stripe e non dipende
+stampato accanto. Ma è meglio scoprirlo con la propria casella che col primo che tira fuori la
+carta: fino a quel momento il pagamento riuscirebbe comunque — l'incasso è di Stripe e non dipende
 dalla mail — e la ricevuta arriverebbe in ritardo, quando la variabile è corretta e Stripe rimanda
 l'avviso.
 
@@ -618,9 +620,11 @@ Va infine compilato **`_build/email/evento.json`** con quello che il gruppo del 
 partire da `organizzatori`: senza quell'indirizzo le mail partono senza un posto a cui rispondere,
 e il piede che dice «rispondi pure a questo messaggio» promette una cosa che non c'è.
 
-La quota è scritta in **due punti soli**, ed è bene che restino d'accordo: `QUOTA_CENT` in
-`api/iscrizione-color-runner.mjs` (in centesimi) e il testo del bottone in
-`_build/color-runner.body.html`.
+Gli importi che il codice usa stanno in **un punto solo**: `QUOTA_CENT` e `COMMISSIONI_CENT` in
+`api/iscrizione-color-runner.mjs` (in centesimi). Il testo di `_build/color-runner.body.html` li
+ripete a parole per chi legge — se si cambiano i centesimi, va riallineato anche quello. Nelle mail
+non sono ricopiati: la ricevuta mostra le voci lette da Stripe (`expand[]=line_items`), quello che
+è stato incassato davvero.
 
 ---
 

@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    /api/iscrizione-color-runner — l'iscrizione alla Color Runner del
-   20 settembre: raccolta dati e incasso della quota, in un passaggio solo.
+   20 settembre: raccolta dati e incasso di quota e commissioni, in un
+   passaggio solo.
 
    Fa due mestieri, secondo il metodo con cui lo si chiama:
 
@@ -26,9 +27,20 @@
    (STRIPE_SECRET_KEY) — non è mai scritta qui né altrove nel repo.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* La carta viene addebitata di QUOTA_CENT + COMMISSIONI_CENT, in due voci
+   distinte nel Checkout. La quota è quella che deve arrivare intera
+   all'organizzazione; l'euro di commissioni di servizio copre quanto il
+   circuito di pagamento trattiene su ogni incasso, così i 10 € non si
+   assottigliano. Le due voci compaiono separate sulla pagina di Stripe e
+   nella ricevuta. */
 const QUOTA_CENT = 1000; // 10,00 €
+const COMMISSIONI_CENT = 100; // 1,00 €
 const VALUTA = "eur";
 const DESCRIZIONE_PRODOTTO = "Iscrizione Color Runner — 20 settembre";
+const DESCRIZIONE_COMMISSIONI = "Commissioni di servizio";
+const NOTA_COMMISSIONI =
+  "Il circuito di pagamento trattiene una piccola commissione su ogni incasso: " +
+  "questo euro la copre, così alla camminata arrivano 10 € pieni.";
 
 /* Deve dire la stessa identica riga di EVENTO in api/conferma-color-runner.mjs:
    è il marchio con cui quella funzione riconosce le sessioni che la
@@ -151,6 +163,14 @@ async function iscrivi(req, res, chiave) {
   parametri.set("line_items[0][price_data][currency]", VALUTA);
   parametri.set("line_items[0][price_data][unit_amount]", String(QUOTA_CENT));
   parametri.set("line_items[0][price_data][product_data][name]", DESCRIZIONE_PRODOTTO);
+  /* Seconda voce, separata di proposito: chi paga vede scritto nero su bianco
+     che l'euro in più sono commissioni di servizio, non un rincaro della
+     quota. Stessa distinzione si ritrova nella ricevuta. */
+  parametri.set("line_items[1][quantity]", "1");
+  parametri.set("line_items[1][price_data][currency]", VALUTA);
+  parametri.set("line_items[1][price_data][unit_amount]", String(COMMISSIONI_CENT));
+  parametri.set("line_items[1][price_data][product_data][name]", DESCRIZIONE_COMMISSIONI);
+  parametri.set("line_items[1][price_data][product_data][description]", NOTA_COMMISSIONI);
   parametri.set("payment_intent_data[description]", `${DESCRIZIONE_PRODOTTO} — ${nome} ${cognome}`);
   /* Il marchio dell'evento. Oggi la Color Runner è l'unica cosa che si paga
      su questo sito, ma /api/conferma-color-runner risponde a ogni avviso di

@@ -705,7 +705,14 @@ const compilaMail = (nome) => {
   }
 
   const restati = src.match(/\{\{[A-Z_]+\}\}/g) || [];
-  const attesi = ["{{NOME}}", "{{DATA}}", "{{IMPORTO}}", "{{MOTIVO}}"];
+  const attesi = [
+    "{{NOME}}",
+    "{{DATA}}",
+    "{{IMPORTO_QUOTA}}",
+    "{{IMPORTO_COMMISSIONI}}",
+    "{{IMPORTO}}",
+    "{{MOTIVO}}",
+  ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
   if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
 
