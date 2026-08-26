@@ -172,12 +172,71 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    tasto più toccato di tutti, l'invito a iscriversi, e .sb-btn da solo dà 38px. */
 .sb-cr-vai-giu { margin-top: 1.4rem; min-height: 44px; }
 
-/* Il manifesto, quando ci sarà. Finché non c'è, questa regola non trova
+/* Sotto l'intestazione — occhiello, titolo, data, lede, tasto — passa una
+   lastra bassa e larga: le quattro polveri della camminata in diagonale e
+   sopra una lama di lucido, appena percettibili. È tagliata come ogni altra
+   lastra del sito e vive dietro il testo, in un contesto d'impilamento suo
+   (isolation + z-index negativo), così occhiello e titolo restano nitidi.
+   Stesso velo della scheda in home (.sb-riv-flash--cr) e del manifesto qui
+   sotto: tre lastre, una sola idea. */
+.sb-cr .sb-riv-pagehead { position: relative; isolation: isolate; }
+.sb-cr .sb-riv-pagehead::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: clamp(1rem, 3vw, 2rem) clamp(0.4rem, 3vw, 3.25rem);
+  clip-path: var(--sb-shape-lg);
+  box-shadow: inset 0 1px 0 var(--sb-glass-spec);
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0) 46%),
+    linear-gradient(
+      122deg,
+      color-mix(in srgb, var(--cr-magenta) 13%, transparent),
+      color-mix(in srgb, var(--cr-giallo) 10%, transparent) 34%,
+      color-mix(in srgb, var(--cr-ciano) 10%, transparent) 66%,
+      color-mix(in srgb, var(--cr-viola) 13%, transparent)
+    ),
+    var(--sb-glass-bg);
+}
+html.dark .sb-cr .sb-riv-pagehead::before {
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 46%),
+    linear-gradient(
+      122deg,
+      color-mix(in srgb, var(--cr-magenta) 20%, transparent),
+      color-mix(in srgb, var(--cr-giallo) 15%, transparent) 34%,
+      color-mix(in srgb, var(--cr-ciano) 15%, transparent) 66%,
+      color-mix(in srgb, var(--cr-viola) 20%, transparent)
+    ),
+    var(--sb-glass-bg);
+}
+
+/* Il manifesto, quando ci sarà. Finché non c'è, queste regole non trovano
    niente a cui applicarsi e la pagina non se ne accorge. */
 .sb-cr-banner { margin: 2rem 0 0; }
 /* Niente raggio sull'immagine: il manifesto sta dentro una .sb-panel, e la
    forma gliela dà il taglio della lastra come a ogni altra card del sito. */
 .sb-cr-banner img { display: block; width: 100%; height: auto; }
+/* Stesso velo della testata: le polveri lungo il rim, e sopra l'immagine —
+   che copre lo sfondo della lastra — un lucido in diagonale su uno strato
+   proprio, così si vede anche quando il manifesto è pieno. */
+.sb-cr-banner .sb-panel {
+  background: linear-gradient(
+    115deg,
+    color-mix(in srgb, var(--cr-magenta) 72%, transparent),
+    color-mix(in srgb, var(--cr-giallo) 66%, transparent) 34%,
+    color-mix(in srgb, var(--cr-ciano) 66%, transparent) 66%,
+    color-mix(in srgb, var(--cr-viola) 72%, transparent)
+  );
+}
+.sb-cr-banner .sb-panel-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(122deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0) 40%);
+}
 
 /* ═══ La lastra del modulo ═══════════════════════════════════════════════════
    È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
@@ -499,7 +558,9 @@ html.rsm-still .sb-cr-vernice::before,
 html.rsm-still .sb-cr-vernice::after { animation: none; }
 
 @media print {
-  .sb-cr-vernice { display: none; }
+  .sb-cr-vernice,
+  .sb-cr .sb-riv-pagehead::before,
+  .sb-cr-banner .sb-panel-inner::after { display: none; }
 }
 </style>
 
