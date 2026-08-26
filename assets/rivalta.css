@@ -1137,27 +1137,40 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 /* ── La firma .ap ────────────────────────────────────────────────────────
    Il marchio di chi ha fatto il sito, non il nome del suo sito scritto per
    esteso. In testata sta da 768px in su (sotto, lo spazio va ai tasti che
-   servono a navigare); in fondo alla pagina c'è sempre. Il logo è azzurro su
-   trasparente e si legge su tutti e due i temi — resta smorzato, e si accende
-   al passaggio. */
+   servono a navigare); in fondo alla pagina c'è sempre; e in coda a /dati,
+   nel filo di testo.
+
+   Il file ap.png ha il bianco cotto dentro (come dice assets/loghi/README):
+   quindi la piastrella è bianca in tutti e due i temi — stessa eccezione,
+   stesso motivo di .sb-cr-logo su /color-runner. Resta smorzata, così sul
+   fondo scuro non è un lampo, e si accende al passaggio. */
 .sb-riv-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
+  padding: 2px;
   border-radius: 6px;
-  border: 1px solid transparent;
-  opacity: 0.55;
-  transition: opacity 0.18s, background 0.18s;
+  border: 1px solid var(--sb-border-strong);
+  background: #fff; /* eccezione nota: i marchi altrui stanno su bianco */
+  overflow: hidden;
+  opacity: 0.62;
+  transition: opacity 0.18s, border-color 0.18s;
 }
-.sb-riv-mark img { display: block; width: 20px; height: 20px; object-fit: contain; }
-.sb-riv-mark:hover { opacity: 1; background: var(--sb-overlay); }
+.sb-riv-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.sb-riv-mark:hover { opacity: 1; border-color: var(--sb-border-stronger); }
 .sb-riv-mark:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; opacity: 1; }
 .sb-nav-right .sb-riv-mark { display: none; }
 @media (min-width: 768px) { .sb-nav-right .sb-riv-mark { display: inline-flex; } }
-.sb-riv-mark--foot { width: 28px; height: 28px; }
-.sb-riv-mark--foot img { width: 17px; height: 17px; }
+.sb-riv-mark--foot { width: 26px; height: 26px; }
+/* In coda a /dati: una piastrellina nel filo di testo, appoggiata alla riga. */
+.sb-riv-mark--inline {
+  width: 22px;
+  height: 22px;
+  margin-left: 0.5rem;
+  vertical-align: -0.42em;
+}
 
 /* ── Coda del foglio del menu (schermo stretto) ──────────────────────────
    Sotto le voci: il tasto di ricerca (qui a tutta riga, con l'etichetta) e
@@ -1195,12 +1208,16 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 /* ── La tendina di ricerca ───────────────────────────────────────────────
    Un pannello sopra la pagina, allineato in alto come una palette di comandi.
    Il fondo è un velo leggero + una sfocatura appena percettibile: quel tanto
-   che stacca la tendina dal testo sotto senza spegnere la pagina. z-index 70:
-   sopra la nav (50), sotto il salto-al-contenuto (100). */
+   che stacca la tendina dal testo sotto senza spegnere la pagina.
+
+   z-index appena sotto quello della barra di controllo (2147483500 in
+   controlbar.css): finché la ricerca è aperta è un modale, e la linguetta
+   delle preferenze non deve spuntare dal velo. Resta sotto l'onda del tema
+   (2147483600), che è solo un'animazione di passaggio e non si tocca. */
 .sb-riv-cerca {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 2147483550;
   display: flex;
   align-items: flex-start;
   justify-content: center;

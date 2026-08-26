@@ -22,105 +22,244 @@
      cronologia, né nei registri del server, né in un link inoltrato per
      sbaglio.
      ═══════════════════════════════════════════════════════════════════════ -->
+
 <style>
-/* Pagina da telefono come /color-runner: una colonna sola, larga quanto uno
-   schermo di telefono, anche sul computer. Chi guarda l'elenco è la stessa
-   persona che, il giorno della camminata, lo aprirà stando in mezzo alla
-   strada con il banchetto delle iscrizioni davanti. */
+/* ── Zona organizzatori ────────────────────────────────────────────────────
+   Una pagina che si usa in piedi, col telefono in mano e il banchetto delle
+   iscrizioni davanti: una colonna sola, larga quanto uno schermo di telefono
+   anche sul computer.
+
+   La regola che regge l'impaginazione è una sola: in questa pagina c'è UNA
+   misura. Il campo della chiave, la striscia dei conti, la fila dei tasti, la
+   ricerca e le schede cominciano e finiscono sulla stessa riga verticale.
+   Prima no — il modulo si fermava a 22rem, i conti a 36, i tasti dove
+   capitava per via della lunghezza delle scritte — e il bordo destro della
+   pagina veniva giù a scaletta. */
+.sb-is {
+  --is-col: 36rem;   /* la misura, una sola, per tutto */
+  --is-h: 2.85rem;   /* altezza dei comandi: i 38px del sito crescono un filo,
+                        perché qui si preme col pollice, in piedi */
+  --is-r: 6px;       /* raggio dei comandi: lo stesso di .sb-btn, così campi e
+                        tasti in colonna sono la stessa famiglia. Le lastre
+                        restano smussate dal clip-path del design system. */
+
+  /* Il rosso dell'errore è l'unico colore che il design system non ha, e
+     nasce qui come token nei due temi — non come esadecimale sparso nelle
+     regole. Resta l'unica tinta oltre all'azzurro, e la usa solo un messaggio
+     che compare quando qualcosa non è andato. */
+  --is-guaio: hsl(345, 72%, 42%);
+}
+html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
+
 .sb-is .sb-container {
-  max-width: 36rem;
+  max-width: var(--is-col);
   /* Stessa formula di /color-runner: il margine si calcola sulla larghezza
      vera dello schermo — minimo 1.4rem, poi il 6.5% dello schermo, con un
      tetto a 2.2rem oltre il quale ci pensa il max-width della colonna. */
   padding-inline: clamp(1.4rem, 6.5vw, 2.2rem);
 }
-.sb-is-sec { padding: 1.4rem 0 0; }
+.sb-is-sec { padding: 0.4rem 0 0; }
 
-/* Giustificati solo i blocchi che fanno almeno tre righe, e sempre con la
+/* Giustificato solo il blocco che fa almeno tre righe, e sempre con la
    sillabazione: in italiano, in colonna stretta e senza, si aprono i fiumi
    bianchi fra le parole. */
-.sb-is .sb-riv-lede,
-.sb-is-nota {
+.sb-is .sb-riv-lede {
   text-align: justify;
   -webkit-hyphens: auto;
   hyphens: auto;
 }
 
-.sb-is-chiave { display: grid; gap: 0.7rem; max-width: 22rem; }
-.sb-is-chiave input {
+/* I due stati della pagina si escludono: o la porta, o l'elenco. Il guardiano
+   qui sotto non è un vezzo. Una classe che dichiara `display` batte il
+   `display:none` che il browser dà da sé a [hidden], e il modulo della chiave
+   restava in pagina sotto all'elenco già aperto — che è esattamente quello
+   che succedeva prima. Ogni classe di questa pagina che dichiara un display
+   si porta dietro la sua riga [hidden], come fa rivalta.css dappertutto. */
+.sb-is-porta[hidden],
+.sb-is-zona[hidden],
+.sb-is-barra[hidden],
+.sb-is-conteggio[hidden] { display: none; }
+
+/* ── La porta ──────────────────────────────────────────────────────────────
+   Quando è chiusa, il modulo è tutto quello che c'è in pagina: allora è una
+   lastra vera, larga quanto la colonna, non un campo che galleggia a metà
+   riga con mezza pagina bianca a destra. */
+.sb-is-porta { margin: 0 0 1.2rem; }
+.sb-is-porta-in { display: grid; gap: 0.65rem; padding: 1.15rem 1.2rem; }
+
+.sb-is-eti {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+}
+
+/* Un solo campo di testo per tutta la pagina: la chiave e la ricerca sono lo
+   stesso oggetto con due compiti. */
+.sb-is-campo {
   width: 100%;
-  min-height: 3.15rem;
+  min-height: var(--is-h);
   /* Le tre parti separate e mai la scorciatoia `font:` con «inherit» dentro:
      non è valida, la riga viene buttata via e il campo finisce col carattere
      di sistema a tredici pixel — che su iOS vuol dire pagina ingrandita al
      primo tocco. */
   font-family: inherit;
-  font-size: 1.05rem;
-  color: var(--sb-fg);
-  background: var(--sb-surface-75);
-  border: 1.5px solid var(--sb-border-strong);
-  border-radius: 12px;
-  padding: 0.8rem 0.95rem;
-}
-.sb-is-chiave input:focus { outline: none; border-color: var(--sb-brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sb-brand) 18%, transparent); }
-
-/* I tasti sono quelli del design system: .sb-btn, con --primary sull'azione
-   della schermata e --secondary sulle altre. Qui si dice soltanto come stanno
-   nello spazio — su una pagina che si usa col pollice sono un filo più alti
-   dei 38px del sito — non di che materiale sono fatti. */
-.sb-is-chiave .sb-btn { min-height: 2.9rem; }
-
-/* I tre numeri in cima: quanti, quanto, quanti si sono fermati a metà. */
-.sb-is-conti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 0 0 1.1rem; }
-.sb-is-conto { text-align: center; padding: 0.85rem 0.4rem; }
-.sb-is-conto b {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  color: var(--sb-fg);
-}
-.sb-is-conto span { display: block; margin-top: 0.15rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--sb-fg-muted); }
-
-.sb-is-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; }
-.sb-is-barra .sb-btn { flex: 1 1 auto; min-height: 2.9rem; }
-
-.sb-is-cerca {
-  width: 100%;
-  min-height: 2.9rem;
-  margin: 0 0 1rem;
-  font-family: inherit;
   font-size: 1rem;
   color: var(--sb-fg);
   background: var(--sb-surface-75);
-  border: 1.5px solid var(--sb-border);
-  border-radius: 12px;
-  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: var(--is-r);
+  padding: 0.62rem 0.85rem;
 }
-.sb-is-cerca:focus { outline: none; border-color: var(--sb-brand); }
+.sb-is-campo::placeholder { color: var(--sb-fg-muted); }
+.sb-is-campo:focus {
+  outline: none;
+  border-color: var(--sb-brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-brand) 20%, transparent);
+}
+.sb-is .sb-btn { min-height: var(--is-h); }
+.sb-is .sb-btn:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 
-/* Una scheda per iscritto, non una tabella: una tabella con nove colonne su
-   uno schermo di telefono si legge scorrendo in orizzontale, ed è il modo più
-   sicuro per non far leggere niente a nessuno. */
-.sb-is-elenco { display: grid; gap: 0.7rem; }
-.sb-is-riga { padding: 0.9rem 1rem; }
-.sb-is-testa { display: flex; align-items: baseline; justify-content: space-between; gap: 0.7rem; }
-.sb-is-nome { margin: 0; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
-.sb-is-quota { font-size: 0.85rem; font-weight: 700; color: #1f9d63; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.sb-is-dati { margin: 0.5rem 0 0; display: grid; gap: 0.28rem; font-size: 0.88rem; color: var(--sb-fg-light); }
-.sb-is-dato { display: flex; gap: 0.5rem; }
-.sb-is-dato dt { flex: none; width: 5.2rem; color: var(--sb-fg-muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.1rem; }
-.sb-is-dato dd { margin: 0; word-break: break-word; }
-.sb-is-mono { font-family: "Roboto Mono", ui-monospace, monospace; font-size: 0.84rem; letter-spacing: 0.02em; }
+/* ── I tre conti ───────────────────────────────────────────────────────────
+   Una lastra sola divisa in tre, non tre lastre. Lo smusso del design system
+   è 18px fissi: su un riquadro largo 150px si mangia un quinto del lato, e
+   tre di fila sembrano tre pezzi rotti invece di una striscia. Dentro una
+   lastra sola lo smusso torna a essere quello che è — l'angolo di una lastra
+   — e i tre numeri li separano due capelli grigi. */
+.sb-is-conti { margin: 0 0 0.7rem; }
+.sb-is-conti-in { display: grid; grid-template-columns: repeat(3, 1fr); }
+.sb-is-conto { text-align: center; padding: 0.9rem 0.5rem; }
+.sb-is-conto + .sb-is-conto { border-left: 1px solid var(--sb-border); }
+.sb-is-conto b {
+  display: block;
+  font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--sb-fg);
+}
+.sb-is-conto span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sb-fg-muted);
+}
+
+/* ── La fila dei tasti ─────────────────────────────────────────────────────
+   A griglia e non a flex con `flex:1 1 auto`: così la larghezza dei tasti la
+   decide l'impaginazione e non la lunghezza delle scritte, e la fila finisce
+   esattamente dove finiscono i conti sopra e la ricerca sotto. Il primo tasto
+   prende lo spazio che avanza, gli altri due quello che gli serve. */
+.sb-is-barra { display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem; margin: 0 0 0.7rem; }
+.sb-is-cerca { margin: 0 0 0.7rem; }
+
+.sb-is-conteggio {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  /* Un gradino più chiaro del muted delle didascalie: questa riga non è una
+     didascalia, è un dato — quanti se ne stanno vedendo — e sul fondo scuro
+     il muted la lasciava sotto il rapporto di contrasto del testo piccolo. */
+  color: var(--sb-fg-lighter);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Una scheda per iscritto ───────────────────────────────────────────────
+   Non una tabella: una tabella con nove colonne su uno schermo di telefono si
+   legge scorrendo in orizzontale, ed è il modo più sicuro per non far leggere
+   niente a nessuno. */
+.sb-is-elenco { display: grid; gap: 0.6rem; }
+.sb-is-riga { padding: 0.85rem 1rem; }
+.sb-is-testa { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; }
+.sb-is-nome { margin: 0; font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
+/* La cifra non ha un colore suo. Il verde di prima era un secondo accento
+   acceso per dire una cosa che dicono già la posizione e il peso: è l'unico
+   numero in fondo alla riga del nome, in cifre a larghezza fissa, e scendendo
+   lungo l'elenco si leggono incolonnate senza bisogno di tingerle. */
+.sb-is-quota {
+  flex: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--sb-fg);
+}
+
+/* Etichetta e valore su due colonne fisse, non a flex: così i valori di tutte
+   le righe di tutte le schede stanno su una sola verticale, e l'occhio che
+   cerca un codice fiscale scende dritto invece di andarlo a ripescare riga
+   per riga. */
+.sb-is-dati { margin: 0.6rem 0 0; display: grid; gap: 0.3rem; font-size: 0.88rem; color: var(--sb-fg-light); }
+.sb-is-dato { display: grid; grid-template-columns: 5.4rem 1fr; gap: 0.6rem; align-items: baseline; }
+.sb-is-dato dt {
+  color: var(--sb-fg-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sb-is-dato dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.sb-is-mono { font-family: "Roboto Mono", ui-monospace, monospace; font-size: 0.82rem; letter-spacing: 0.02em; }
 .sb-is-dato a { color: var(--sb-brand-text); }
+/* Sotto i 26rem la colonna dell'etichetta si mangerebbe metà del valore:
+   l'etichetta va sopra e il valore prende tutta la riga. */
+@media (max-width: 26rem) {
+  .sb-is-dato { grid-template-columns: 1fr; gap: 0.05rem; }
+}
 
-.sb-is-vuoto { padding: 1.6rem 1rem; text-align: center; color: var(--sb-fg-muted); font-size: 0.95rem; }
-.sb-is-esito { display: none; margin: 0 0 1rem; padding: 0.9rem 1rem; border-radius: 12px; font-size: 0.92rem; line-height: 1.55; }
-.sb-is-esito--errore { display: block; background: color-mix(in srgb, #e02b5a 12%, transparent); border: 1px solid color-mix(in srgb, #e02b5a 42%, transparent); color: var(--sb-fg); }
-.sb-is-esito--attesa { display: block; background: var(--sb-surface-200); color: var(--sb-fg-light); }
+/* Il vuoto è un posto, non un'assenza: un riquadro tratteggiato largo quanto
+   le schede che ci andranno. Prima era una frase in mezzo al niente, e
+   sembrava che la pagina si fosse interrotta a metà. */
+.sb-is-vuoto {
+  margin: 0;
+  padding: 1.7rem 1rem;
+  text-align: center;
+  color: var(--sb-fg-muted);
+  font-size: 0.92rem;
+  border: 1px dashed var(--sb-border-strong);
+  border-radius: var(--is-r);
+}
 
-.sb-is-nota { margin: 1.4rem 0 0; font-size: 0.8rem; line-height: 1.6; color: var(--sb-fg-muted); }
+.sb-is-esito {
+  display: none;
+  margin: 0 0 0.9rem;
+  padding: 0.8rem 0.95rem;
+  border-radius: var(--is-r);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.sb-is-esito--errore {
+  display: block;
+  background: color-mix(in srgb, var(--is-guaio) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--is-guaio) 38%, transparent);
+  color: var(--sb-fg);
+}
+.sb-is-esito--attesa {
+  display: block;
+  background: var(--sb-surface-100);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-fg-light);
+}
+
+/* La nota chiude la pagina con un capello grigio, come le chiudono le altre
+   del sito. */
+.sb-is-nota {
+  margin: 1.6rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--sb-border);
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--sb-fg-muted);
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.sb-is-nota + .sb-is-nota { margin-top: 0.8rem; padding-top: 0; border-top: 0; }
 </style>
 
 <div class="sb-is">
@@ -134,19 +273,23 @@
   <section class="sb-container sb-is-sec">
     <div id="is-esito" class="sb-is-esito" role="status"></div>
 
-<!-- La porta. Sparisce quando la chiave è buona e tutto il resto compare al
-     suo posto. -->
-    <form class="sb-is-chiave" id="is-porta">
-      <label for="is-chiave" class="sb-riv-eyebrow" style="margin:0">Chiave di accesso</label>
-      <input type="password" id="is-chiave" name="chiave" autocomplete="current-password" enterkeyhint="go" spellcheck="false" placeholder="La chiave degli organizzatori">
-      <button class="sb-btn sb-btn--primary" type="submit" id="is-entra">Entra</button>
+    <!-- Stato A: la porta chiusa. -->
+    <form class="sb-panel sb-is-porta" id="is-porta">
+      <div class="sb-panel-inner sb-is-porta-in">
+        <label class="sb-is-eti" for="is-chiave">Chiave di accesso</label>
+        <input class="sb-is-campo" type="password" id="is-chiave" name="chiave" autocomplete="current-password" enterkeyhint="go" spellcheck="false" placeholder="La chiave degli organizzatori">
+        <button class="sb-btn sb-btn--primary" type="submit" id="is-entra">Entra</button>
+      </div>
     </form>
 
-    <div id="is-zona" hidden>
-      <div class="sb-is-conti">
-        <div class="sb-panel"><div class="sb-panel-inner sb-is-conto"><b id="is-n">0</b><span>iscritti</span></div></div>
-        <div class="sb-panel"><div class="sb-panel-inner sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div></div>
-        <div class="sb-panel"><div class="sb-panel-inner sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div></div>
+    <!-- Stato B: la porta aperta. Mai tutti e due insieme. -->
+    <div class="sb-is-zona" id="is-zona" hidden>
+      <div class="sb-panel sb-is-conti">
+        <div class="sb-panel-inner sb-is-conti-in">
+          <div class="sb-is-conto"><b id="is-n">0</b><span>iscritti</span></div>
+          <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div>
+          <div class="sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div>
+        </div>
       </div>
 
       <div class="sb-is-barra">
@@ -155,7 +298,9 @@
         <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
       </div>
 
-      <input class="sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, via, codice fiscale…" autocomplete="off" enterkeyhint="search">
+      <input class="sb-is-campo sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, via, codice fiscale…" autocomplete="off" enterkeyhint="search">
+
+      <p class="sb-is-conteggio" id="is-conteggio" hidden></p>
 
       <div class="sb-is-elenco" id="is-elenco"></div>
     </div>
@@ -181,6 +326,7 @@
   var elenco = document.getElementById("is-elenco");
   var esito = document.getElementById("is-esito");
   var cerca = document.getElementById("is-cerca");
+  var conteggio = document.getElementById("is-conteggio");
   var CHIAVE_MEM = "rsm-iscritti-chiave";
 
   var dati = null;
@@ -281,6 +427,18 @@
       return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono].join(" ")).indexOf(q) > -1;
     });
 
+    /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
+       mentre si cerca: senza, chi filtra vede accorciarsi l'elenco e non sa
+       se sta guardando tre persone su dodici o tre in tutto. */
+    if (!dati.iscritti.length) {
+      conteggio.hidden = true;
+    } else {
+      conteggio.hidden = false;
+      conteggio.textContent = q
+        ? visti.length + " di " + dati.iscritti.length
+        : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscritto" : " iscritti");
+    }
+
     elenco.innerHTML = "";
     if (!visti.length) {
       var vuoto = document.createElement("p");
@@ -347,6 +505,8 @@
     chiave = "";
     dati = null;
     elenco.innerHTML = "";
+    cerca.value = "";
+    conteggio.hidden = true;
     zona.hidden = true;
     porta.hidden = false;
     campoChiave.value = "";
