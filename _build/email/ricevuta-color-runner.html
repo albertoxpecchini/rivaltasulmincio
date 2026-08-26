@@ -65,9 +65,10 @@
      sezione il build li toglie via interi quando i dati mancano. (I
      marcatori non si nominano in un commento: il build li cerca con una
      ricerca testuale e non distingue una sezione vera da una citata.)
-     Al posto di ritrovo e cosa portare, finché sono vuoti, compare la
-     sezione "dettagli in arrivo" — che dice la verità invece di una
-     parentesi quadra. La mail resta una ricevuta valida in ogni caso: nome,
+     Al posto di ritrovo e cosa portare, finché sono vuoti tutti e due,
+     compare la sezione "dettagli in arrivo"; se invece il ritrovo si sa e
+     manca il resto, compare la riga "ancora da dire". Tutte e due dicono la
+     verità invece di una parentesi quadra. La mail resta una ricevuta valida in ogni caso: nome,
      importo, data e conferma del pagamento non dipendono da quei campi.
 
      Nella mail spedita questi commenti non ci sono: il build li toglie.
@@ -215,17 +216,33 @@
 
         <!--sezione:quando-->
         <!-- ── Dove e quando ─────────────────────────────────────────────
-             Salta tutta se in evento.json manca anche uno solo dei quattro
-             campi: mezza indicazione di ritrovo è peggio di nessuna. -->
+             Salta tutta se in evento.json manca l'ora o il luogo del
+             ritrovo: mezza indicazione di ritrovo è peggio di nessuna.
+             L'ora della partenza e la lunghezza del percorso stanno nel
+             blocco dopo, perché si sono sapute più tardi: il ritrovo, che
+             è deciso, non deve restare fuori ad aspettarle. -->
         <tr>
         <td class="e-pad" style="padding:32px 40px 0;">
           <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
             Dove e quando
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
-            Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_ORA}}</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_LUOGO}}</strong>.<br>
-            Partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{PARTENZA}}</strong>.<br>
-            Percorso di <strong class="e-fg" style="color:#171717; font-weight:600;">{{DISTANZA}}</strong>, non competitivo: si cammina o si corre come si preferisce.
+            Domenica 20 settembre — ritrovo dalle <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_ORA}}</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_LUOGO}}</strong>, da dove parte il giro per il paese.<br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina o si corre come si preferisce.</span>
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!--sezione:percorso-->
+        <!-- ── Partenza e percorso ──────────────────────────────────────
+             Continua il blocco qui sopra e non ha titolo suo: è la stessa
+             cosa detta più precisa. Compare solo quando l'ora della partenza
+             e la lunghezza sono decise tutte e due. -->
+        <tr>
+        <td class="e-pad" style="padding:10px 40px 0;">
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{PARTENZA}}</strong>, percorso di <strong class="e-fg" style="color:#171717; font-weight:600;">{{DISTANZA}}</strong> per le vie del paese.
           </p>
         </td>
         </tr>
@@ -260,6 +277,22 @@
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
             Domenica 20 settembre, a Rivalta sul Mincio.<br>
             <span class="e-fg-lr" style="color:#6f6f6f;">Orario di ritrovo, punto di partenza e cosa portare te li scriviamo a questo stesso indirizzo appena sono decisi. Non devi fare nulla: il tuo posto è già registrato.</span>
+          </p>
+        </td>
+        </tr>
+        <!--/sezione-->
+
+        <!--sezione:ancora-da-dire-->
+        <!-- ── Quel che ancora non si sa ────────────────────────────────
+             Il ritrovo c'è, ma non tutto il resto. Una riga sotto le sezioni
+             che ci sono: dice che quel che manca arriva e che non c'è niente
+             da fare per averlo. Il ripiego qui sopra e questa riga non si
+             incontrano mai — uno vale quando il ritrovo manca, l'altra
+             quando c'è. -->
+        <tr>
+        <td class="e-pad" style="padding:14px 40px 0;">
+          <p class="e-fg-lr" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#6f6f6f;">
+            Il resto — percorso e cosa portare — te lo scriviamo a questo stesso indirizzo appena è deciso. Non devi fare nulla: il tuo posto è già registrato.
           </p>
         </td>
         </tr>

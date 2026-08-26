@@ -781,7 +781,8 @@ const evento = JSON.parse(readFileSync("_build/email/evento.json", "utf8"));
    peggio di nessuna, e una parentesi graffa è peggio di tutte e due. */
 const pieno = (k) => String(evento[k] ?? "").trim() !== "";
 const sezioni = {
-  quando: ["ritrovoOra", "ritrovoLuogo", "partenza", "distanza"].every(pieno),
+  quando: ["ritrovoOra", "ritrovoLuogo"].every(pieno),
+  percorso: ["partenza", "distanza"].every(pieno),
   portare: ["portare", "fornito"].every(pieno),
   rimborsi: ["dataLimite", "rimborsi"].every(pieno),
   contatto: pieno("organizzatori"),
@@ -790,6 +791,10 @@ const sezioni = {
    sul 20 settembre: al posto delle due sezioni ne compare una che dice che i
    dettagli arrivano. Quando anche una sola delle due c'è, non serve più. */
 sezioni["dettagli-in-arrivo"] = !sezioni.quando && !sezioni.portare;
+/* E quando invece il ritrovo si sa ma qualcos'altro no, la ricevuta non torna
+   muta sul resto: una riga sola, sotto le sezioni che ci sono, dice che quel
+   che manca arriva. Sparisce da sé il giorno che evento.json è completo. */
+sezioni["ancora-da-dire"] = sezioni.quando && !(sezioni.percorso && sezioni.portare);
 
 const campiMail = {
   RITROVO_ORA: evento.ritrovoOra,
@@ -893,7 +898,10 @@ console.log(
 /* Le sezioni saltate non sono un errore — la mail funziona lo stesso — ma non
    devono passare inosservate: sono le cose che il gruppo del Palio non ha
    ancora deciso, e finché non le decide chi si iscrive non le legge. */
-const saltate = Object.entries(sezioni).filter(([k, v]) => !v && k !== "dettagli-in-arrivo");
+/* Le due qui sotto non si compilano: le decide il build guardando le altre,
+   e una delle due c'è sempre. Non sono cose che manchino. */
+const dedotte = ["dettagli-in-arrivo", "ancora-da-dire"];
+const saltate = Object.entries(sezioni).filter(([k, v]) => !v && !dedotte.includes(k));
 if (saltate.length) {
   const vuoti = Object.keys(campiMail).filter(
     (k) => String(campiMail[k] ?? "").trim() === ""

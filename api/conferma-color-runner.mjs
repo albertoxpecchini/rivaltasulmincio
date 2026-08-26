@@ -592,16 +592,25 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </td>
         </tr>
 
-
-
         <tr>
         <td class="e-pad" style="padding:32px 40px 0;">
           <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
             Dove e quando
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
-            Domenica 20 settembre, a Rivalta sul Mincio.<br>
-            <span class="e-fg-lr" style="color:#6f6f6f;">Orario di ritrovo, punto di partenza e cosa portare te li scriviamo a questo stesso indirizzo appena sono decisi. Non devi fare nulla: il tuo posto è già registrato.</span>
+            Domenica 20 settembre — ritrovo dalle <strong class="e-fg" style="color:#171717; font-weight:600;">15:30</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">Piazza Chiesa, davanti alla chiesa</strong>, da dove parte il giro per il paese.<br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina o si corre come si preferisce.</span>
+          </p>
+        </td>
+        </tr>
+
+
+
+
+        <tr>
+        <td class="e-pad" style="padding:14px 40px 0;">
+          <p class="e-fg-lr" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#6f6f6f;">
+            Il resto — percorso e cosa portare — te lo scriviamo a questo stesso indirizzo appena è deciso. Non devi fare nulla: il tuo posto è già registrato.
           </p>
         </td>
         </tr>
