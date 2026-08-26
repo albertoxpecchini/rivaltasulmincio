@@ -133,7 +133,9 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   color: var(--sb-fg-light);
 }
 .sb-cr-quando strong { font-weight: 600; color: var(--sb-fg); }
-.sb-cr-vai-giu { margin-top: 1.4rem; }
+/* 44px come gli altri bersagli della pagina (vedi sopra, sui campi): è il
+   tasto più toccato di tutti, l'invito a iscriversi, e .sb-btn da solo dà 38px. */
+.sb-cr-vai-giu { margin-top: 1.4rem; min-height: 44px; }
 
 /* Il manifesto, quando ci sarà. Finché non c'è, questa regola non trova
    niente a cui applicarsi e la pagina non se ne accorge. */
