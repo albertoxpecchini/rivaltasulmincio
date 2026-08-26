@@ -814,6 +814,114 @@ html.dark .sb-riv-flash--cr .sb-panel-inner {
 @media (min-width: 1024px) { .sb-riv-foto-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .sb-riv-foto-grid .sb-riv-foto { margin: 0; max-width: none; }
 
+/* ── Le sei contrade ──────────────────────────────────────────────────────
+   Sei tinte, in un sito che ne ha una sola. Non è uno strappo alla regola per
+   vivacità: il colore È il nome della contrada, come in araldica, e toglierlo
+   vorrebbe dire togliere il dato. Perciò sta solo dove fa quel lavoro —
+   dentro lo stemma e nel pallino accanto al nome — e non arriva mai su un
+   fondo largo né su un comando: bottoni e link restano azzurri come ovunque.
+
+   Le tinte stanno qui e non nel markup: la scheda dichiara di che contrada è
+   con data-contrada, e il colore glielo dà il foglio. Un colore sbagliato si
+   corregge in un posto solo, e le pagine non ne sanno niente.
+
+   Al buio non sono le stesse: marrone e viola, su fondo #141414, scendono
+   sotto la soglia di lettura. Si schiariscono, come fa il sito coi suoi
+   azzurri. */
+.sb-riv-contrade {
+  --ctr-filanda: #8a4b28;
+  --ctr-roccolo: #3d8b36;
+  --ctr-colonie: #0a7fb8;
+  --ctr-piasaroi: #a8830a;
+  --ctr-platana: #7a4fb5;
+  --ctr-fanfane: #c05812;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin: 1.2rem 0;
+}
+html.dark .sb-riv-contrade {
+  --ctr-filanda: #cc8f60;
+  --ctr-roccolo: #74c161;
+  --ctr-colonie: #52badf;
+  --ctr-piasaroi: #e5c145;
+  --ctr-platana: #b494e9;
+  --ctr-fanfane: #f09050;
+}
+@media (min-width: 560px) { .sb-riv-contrade { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .sb-riv-contrade { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.sb-riv-contrada { min-width: 0; }
+.sb-riv-contrada[data-contrada="filanda"]  { --ctr: var(--ctr-filanda); }
+.sb-riv-contrada[data-contrada="roccolo"]  { --ctr: var(--ctr-roccolo); }
+.sb-riv-contrada[data-contrada="colonie"]  { --ctr: var(--ctr-colonie); }
+.sb-riv-contrada[data-contrada="piasaroi"] { --ctr: var(--ctr-piasaroi); }
+.sb-riv-contrada[data-contrada="platana"]  { --ctr: var(--ctr-platana); }
+.sb-riv-contrada[data-contrada="fanfane"]  { --ctr: var(--ctr-fanfane); }
+
+.sb-riv-contrada .sb-panel-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.1rem 1.2rem;
+}
+
+/* Lo stemma è un'icona al tratto come tutte le altre del sito: cambia solo
+   che il suo currentColor non è quello del testo, è quello della contrada.
+   La piastrella ha la sagoma tagliata del sito, non un angolo tondo, e non ha
+   filo: un bordo tinto sulle diagonali andrebbe ridisegnato col trucco di
+   --sb-shape-edge, che il filo lo prende da --sb-border-strong e resterebbe
+   grigio. Un velo di tinta sul fondo dice la stessa cosa e non mente. */
+.sb-riv-stemma {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  clip-path: var(--sb-shape-sm);
+  color: var(--ctr);
+  background: color-mix(in srgb, var(--ctr) 11%, var(--sb-surface-100));
+}
+
+.sb-riv-contrada-t { min-width: 0; display: grid; gap: 0.2rem; }
+.sb-riv-contrada-t h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+}
+.sb-riv-contrada-t p { margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-riv-contrada-c {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-contrada-c::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--ctr);
+}
+
+/* ── La striscia ──────────────────────────────────────────────────────────
+   Gli stessi sei, in fila e senza descrizione, per le pagine dove le contrade
+   si nominano di passaggio e sei schede intere sarebbero di troppo. Va a capo
+   da sé: su schermo stretto diventano due file da tre. */
+.sb-riv-contrade--fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  margin: 1.2rem 0 0.9rem;
+}
+.sb-riv-contrade--fila .sb-riv-contrada { display: flex; align-items: center; gap: 0.55rem; }
+.sb-riv-contrade--fila .sb-riv-stemma { width: 2.2rem; height: 2.2rem; }
+.sb-riv-contrade--fila .sb-riv-contrada-n { font-size: 0.86rem; color: var(--sb-fg-light); }
+
 /* ═══════════════════════════════════════════════════════════════════════════
    LA MAPPA — Leaflet vestito coi token del sito
    ═══════════════════════════════════════════════════════════════════════════ */

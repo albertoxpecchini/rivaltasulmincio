@@ -538,6 +538,122 @@ const renderBanner = () => {
     </figure>`;
 };
 
+/* ── Le sei contrade ──────────────────────────────────────────────────────
+   Rivalta si divide in sei contrade, e le sei ricorrono in due pagine: per
+   esteso in /eventi, in fila su /color-runner. Stanno scritte qui una volta
+   sola — nome, colore, stemma — e le pagine le chiamano con {{CONTRADE}} e
+   {{CONTRADE_FILA}}. Il giorno che arriva l'artwork vero degli stemmi si
+   cambia questo elenco, non due pagine.
+
+   Gli stemmi sono ridisegnati al tratto sulla stessa griglia 24×24 delle
+   altre icone del sito: quelli veri sono dipinti a colori pieni sui cartelli
+   che stanno in mostra alle giornate del Palio, e questi ne sono la
+   traduzione, non la copia. Il colore non è qui: lo dà assets/rivalta.css a
+   partire da `slug`, così una tinta sbagliata si corregge in un posto solo.
+
+   `nota` dice cosa c'è dipinto sul cartello, e — dove il sito ha già il dato
+   altrove — dove quel nome ricompare in paese. Niente etimologie inventate:
+   di Filanda, Piasaröi e Fanfane si dice solo lo stemma, perché di più non
+   si sa. */
+const icona = (d) =>
+  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" ` +
+  `stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+
+const CONTRADE = [
+  {
+    slug: "filanda",
+    nome: "la Filanda",
+    colore: "marrone",
+    nota: "La filanda, e accanto il bozzolo del baco da seta.",
+    stemma: icona(
+      `<path d="M2.6 11.5 8.5 6l5.9 5.5"/><path d="M4.3 11.5V20h8.4v-8.5"/>` +
+      `<path d="M7.1 20v-4h3v4"/><path d="M18.8 20v-4.3"/><ellipse cx="18.8" cy="11.9" rx="2.4" ry="3.4"/>`
+    ),
+  },
+  {
+    slug: "roccolo",
+    nome: "il Roccolo",
+    colore: "verde",
+    nota: "Il boschetto del roccolo. In paese il nome è rimasto a Via Roccolo.",
+    stemma: icona(
+      `<circle cx="12" cy="8.5" r="4.2"/><circle cx="6.3" cy="11.9" r="3.1"/><circle cx="17.7" cy="11.9" r="3.1"/>` +
+      `<path d="M12 20v-7"/><path d="M6.3 20v-5"/><path d="M17.7 20v-5"/><path d="M3.5 20h17"/>`
+    ),
+  },
+  {
+    slug: "colonie",
+    nome: "le Colonie",
+    colore: "azzurro",
+    nota: "La barca a vela con la croce. Il nome torna nell'insegna del pub «Le Antiche Colonie».",
+    stemma: icona(
+      `<path d="M3.8 15.5h16.4l-2.3 4.5H6.1z"/><path d="M12 15.5V3.5"/>` +
+      `<path d="M6.8 5.5h10.4v7H6.8z"/><path d="M6.8 9h10.4"/>`
+    ),
+  },
+  {
+    slug: "piasaroi",
+    nome: "i Piasaröi",
+    colore: "giallo",
+    nota: "La torre, col tetto rosso e la finestra sul fronte.",
+    stemma: icona(
+      `<path d="M5.8 9.5 12 4l6.2 5.5"/><path d="M7.6 9.5V20h8.8V9.5"/>` +
+      `<rect x="10" y="12" width="4" height="4.4" rx="0.6"/><path d="M4.5 20h15"/>`
+    ),
+  },
+  {
+    slug: "platana",
+    nome: "la Plàtana",
+    colore: "viola",
+    nota: "Il platano. È il nome di Piazza Platana, del suo parco e dell'Area Feste.",
+    stemma: icona(
+      `<path d="M4.6 9.6C4.6 6.2 7.9 3.5 12 3.5s7.4 2.7 7.4 6.1-3.3 5.6-7.4 5.6-7.4-1.8-7.4-5.6Z"/>` +
+      `<path d="M12 20v-5.2"/><path d="M9 20h6"/>`
+    ),
+  },
+  {
+    slug: "fanfane",
+    nome: "le Fanfane",
+    colore: "arancione",
+    nota: "L'anfora, con l'acqua che le passa sul collo.",
+    stemma: icona(
+      `<path d="M9.2 3.5h5.6"/>` +
+      `<path d="M10 3.5v1.5c0 2.3-3.6 3.5-3.6 7.4 0 4.2 2.5 7.6 5.6 7.6s5.6-3.4 5.6-7.6c0-3.9-3.6-5.1-3.6-7.4V3.5"/>` +
+      `<path d="M10 5.4C8 5.9 6.9 7.3 7 8.9"/><path d="M14 5.4c2 .5 3.1 1.9 3 3.5"/>` +
+      `<path d="M8.2 13.6c1.2-1 2.5-1 3.8 0s2.6 1 3.8 0"/>`
+    ),
+  },
+];
+
+/* Per esteso: una scheda a testa, con lo stemma, il nome, cosa c'è dipinto e
+   il colore. */
+const renderContrade = () =>
+  `<div class="sb-riv-contrade">\n` +
+  CONTRADE.map(
+    (c) =>
+      `      <div class="sb-riv-contrada" data-contrada="${c.slug}">\n` +
+      `        <div class="sb-panel"><div class="sb-panel-inner">\n` +
+      `          <span class="sb-riv-stemma">${c.stemma}</span>\n` +
+      `          <div class="sb-riv-contrada-t">\n` +
+      `            <h4>${c.nome}</h4>\n` +
+      `            <p>${c.nota}</p>\n` +
+      `            <span class="sb-riv-contrada-c">${c.colore}</span>\n` +
+      `          </div>\n` +
+      `        </div></div>\n` +
+      `      </div>`
+  ).join("\n") +
+  `\n    </div>`;
+
+/* In fila: stemma e nome, niente altro. */
+const renderContradeFila = () =>
+  `<div class="sb-riv-contrade sb-riv-contrade--fila">\n` +
+  CONTRADE.map(
+    (c) =>
+      `      <div class="sb-riv-contrada" data-contrada="${c.slug}">` +
+      `<span class="sb-riv-stemma">${c.stemma}</span>` +
+      `<span class="sb-riv-contrada-n">${c.nome}</span></div>`
+  ).join("\n") +
+  `\n    </div>`;
+
 /* ── Indice della ricerca ────────────────────────────────────────────────
    Da ogni pagina pubblica: un nome breve, l'indirizzo, la descrizione e
    l'elenco delle sezioni ancorate. L'etichetta della sezione la dà l'indice
@@ -629,6 +745,8 @@ for (const file of bodies) {
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
+      .replace("{{CONTRADE_FILA}}", renderContradeFila)
+      .replace("{{CONTRADE}}", renderContrade)
   );
 
   const title = meta(src, "title");
