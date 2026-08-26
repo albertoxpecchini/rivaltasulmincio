@@ -277,15 +277,6 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   flex-shrink: 0;
 }
 .sb-nav-brand-name { font-size: 0.98rem; font-weight: 500; white-space: nowrap; letter-spacing: -0.01em; }
-.sb-local {
-  font-size: 0.66rem;
-  font-weight: 700;
-  padding: 0.1rem 0.5rem;
-  border-radius: 999px;
-  background: var(--sb-btn-bg);
-  border: 1px solid var(--sb-btn-bd);
-  color: var(--sb-btn-fg);
-}
 .sb-nav-links { position: relative; display: none; align-items: center; gap: 0.15rem; }
 @media (min-width: 1080px) { .sb-nav-links { display: flex; } }
 .sb-nav-link {

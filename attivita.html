@@ -49,9 +49,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <header>
     <nav class="sb-nav" aria-label="Navigazione principale">
       <div class="sb-container sb-nav-inner">
-        <a class="sb-nav-brand" href="/">
-          <span class="sb-nav-brand-name">Rivalta sul Mincio</span>
-          <span class="sb-local">MN</span>
+        <a class="sb-nav-brand" href="/" aria-label="Rivalta sul Mincio — pagina iniziale">
+          <!-- La tessera del sito: stesso smusso, stesso azzurro, il Mincio
+               dentro. Fa da marchio dove prima c'era la pillola «MN». -->
+          <img class="sb-riv-brand-glyph" src="assets/favicon.svg" alt="" width="24" height="24" decoding="async">
+          <span class="sb-nav-brand-name">Rivalta<span class="sb-riv-brand-tail"> sul Mincio</span></span>
         </a>
         <div class="sb-nav-links">
           <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
@@ -72,8 +74,23 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         <div class="sb-nav-right">
           <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
                preferenze stanno insieme nella barra di controllo in basso a
-               sinistra (foot.html). Nella nav resta solo ciò che serve a
-               navigare. -->
+               sinistra (foot.html). Nella nav resta ciò che serve a navigare:
+               la ricerca, da quando il sito è aggiornato, e la firma. -->
+          <button class="sb-riv-search-open" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="/" aria-label="Cerca nel sito">
+            <svg class="sb-riv-search-open-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="sb-riv-search-open-t">Cerca</span>
+            <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
+          </button>
+
+          <span class="sb-riv-updated">
+            <span class="sb-riv-updated-dot" aria-hidden="true"></span>
+            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-26" data-updated="2026-08-26">26 ago</time>
+          </span>
+
+          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+            <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
+          </a>
+
           <button class="sb-burger" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-sheet" aria-label="Apri il menu">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
@@ -93,6 +110,39 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
         </nav>
+        <div class="sb-riv-menu-foot">
+          <button class="sb-riv-menu-cerca" type="button" data-search-open>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            Cerca nel sito
+          </button>
+          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-26" data-updated="2026-08-26">26 agosto 2026</time></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Ricerca ──────────────────────────────────────────────────────────
+         Una tendina sopra la pagina, non una pagina a parte: la si apre col
+         tasto in testata, con «/» o con ⌘K, e si chiude con Esc o toccando
+         fuori. L'indice è già nel browser (assets/ricerca-dati.js, generato
+         dal build): nessuna chiamata di rete, funziona anche offline.
+         Senza JavaScript il tasto non compare — la navigazione basta. -->
+    <div class="sb-riv-cerca" id="rsm-cerca" hidden>
+      <div class="sb-riv-cerca-scrim" data-cerca-close></div>
+      <div class="sb-riv-cerca-box" role="dialog" aria-modal="true" aria-labelledby="rsm-cerca-tit">
+        <h2 class="sb-riv-cerca-tit" id="rsm-cerca-tit">Cerca nel sito</h2>
+        <div class="sb-panel"><div class="sb-panel-inner sb-riv-cerca-pad">
+          <div class="sb-riv-cerca-field">
+            <svg class="sb-riv-cerca-field-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="search" class="sb-riv-cerca-input" id="rsm-cerca-input" role="combobox" aria-expanded="true" aria-controls="rsm-cerca-lista" aria-autocomplete="list" aria-label="Cerca nel sito" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Pagine, sezioni, argomenti…">
+            <kbd class="sb-riv-kbd">esc</kbd>
+          </div>
+          <ul class="sb-riv-cerca-lista" id="rsm-cerca-lista" role="listbox" aria-label="Risultati della ricerca"></ul>
+          <p class="sb-riv-cerca-vuoto" hidden>Nessun risultato per «<span data-cerca-q></span>».</p>
+          <div class="sb-riv-cerca-pie" aria-hidden="true">
+            <span><kbd class="sb-riv-kbd">↑</kbd><kbd class="sb-riv-kbd">↓</kbd> scorri</span>
+            <span><kbd class="sb-riv-kbd">↵</kbd> apri</span>
+          </div>
+        </div></div>
       </div>
     </div>
   </header>
@@ -402,11 +452,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <div class="sb-foot-bottom">
       <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
       <div class="sb-foot-bottom-links">
-        <span>Sito creato da <a class="sb-foot-by" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener">albertopecchini.it</a></span>
+        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+          <img src="assets/loghi/ap.png" alt="Alberto Pecchini" width="18" height="18" decoding="async" loading="lazy">
+        </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
       </div>
-      <span>Updated 11 agosto 2026</span>
+      <span>Ultimo aggiornamento: <time datetime="2026-08-26" data-updated="2026-08-26">26 agosto 2026</time></span>
     </div>
   </div>
 </footer>
@@ -456,5 +508,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      niente che serva a leggere o a navigare il sito, e la pillola della nav ha
      bisogno che rivalta.js abbia già segnato la voce della pagina aperta. -->
 <script src="assets/glass.js"></script>
+<!-- La ricerca: prima l'indice (assets/ricerca-dati.js, generato dal build),
+     poi il comportamento della tendina. Due file per tutte le pagine, in
+     cache dopo la prima. Se l'indice non c'è, ricerca.js si tira indietro
+     da sé e il tasto non compare. -->
+<script src="assets/ricerca-dati.js"></script>
+<script src="assets/ricerca.js"></script>
 </body>
 </html>

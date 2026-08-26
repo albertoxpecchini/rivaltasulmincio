@@ -11,6 +11,7 @@
    runtime, si serve così com'è. Lo script serve solo a chi modifica il sito.
    ═══════════════════════════════════════════════════════════════════════════ */
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
+import { execSync } from "node:child_process";
 
 /* Dominio di produzione. Serve per due cose che DEVONO dire la stessa identica
    riga, o Search Console le tratta come pagine diverse: l'URL canonico nella
@@ -19,6 +20,32 @@ const SITE = "https://www.rivaltasulmincio.it";
 
 const head = readFileSync("_build/head.html", "utf8");
 const foot = readFileSync("_build/foot.html", "utf8");
+
+/* ── Ultimo aggiornamento del sito ───────────────────────────────────────
+   "Quando il sito è cambiato l'ultima volta" è la data dell'ultimo commit:
+   scritta una volta qui e messa in testata, nel foglio del menu su schermo
+   stretto e in fondo alla pagina. Si prende la sola parte YYYY-MM-DD della
+   data del commit — niente oggetto Date, così il fuso orario di chi fa il
+   build non sposta il giorno. Fuori da un repo git (uno zip scaricato) si
+   ripiega sulla data di oggi. */
+const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const MESI_BREVI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+
+const dataUltimoCommit = () => {
+  try {
+    const iso = execSync("git log -1 --format=%cI", {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso.slice(0, 10);
+  } catch {}
+  return new Date().toLocaleDateString("sv"); // "sv" formatta come YYYY-MM-DD
+};
+
+const AGG_ISO = dataUltimoCommit();
+const [AGG_A, AGG_M, AGG_G] = AGG_ISO.split("-").map(Number);
+const AGG_LUNGO = `${AGG_G} ${MESI[AGG_M - 1]} ${AGG_A}`;
+const AGG_BREVE = `${AGG_G} ${MESI_BREVI[AGG_M - 1]}`;
 
 // Titolo e descrizione stanno in testa al frammento, come due commenti: così
 // il contenuto e i suoi metadati non possono separarsi.
@@ -511,10 +538,81 @@ const renderBanner = () => {
     </figure>`;
 };
 
+/* ── Indice della ricerca ────────────────────────────────────────────────
+   Da ogni pagina pubblica: un nome breve, l'indirizzo, la descrizione e
+   l'elenco delle sezioni ancorate. L'etichetta della sezione la dà l'indice
+   in cima alla pagina (.sb-riv-toc) quando c'è — è già scritta bene lì —
+   altrimenti il titolo <h2> della sezione. A ogni sezione si allega anche un
+   pezzo del suo testo (non mostrato, solo cercabile): così «autobus» porta a
+   /muoversi#trasporti anche se la parola non è nel titolo della sezione.
+
+   Il risultato finisce in assets/ricerca-dati.js, che assets/ricerca.js
+   legge per la tendina «Cerca» in testata: nessuna chiamata a runtime,
+   l'indice è già qui. */
+const senzaTag = (s) =>
+  s
+    .replace(/<(script|style|svg)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&(amp|lt|gt|quot|#39|nbsp|egrave|agrave|ograve|igrave|ugrave|eacute);/g, (_, e) =>
+      ({ amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'", nbsp: " ",
+         egrave: "è", agrave: "à", ograve: "ò", igrave: "ì", ugrave: "ù", eacute: "é" }[e])
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+
+const sezioniDi = (html) => {
+  const etichetta = {};
+  const toc = html.match(/<nav class="sb-riv-toc"[\s\S]*?<\/nav>/);
+  if (toc) {
+    for (const m of toc[0].matchAll(/href="#([^"]+)">([\s\S]*?)<\/a>/g)) {
+      etichetta[m[1]] = senzaTag(m[2]);
+    }
+  }
+  const pulisci = (s) => senzaTag(s).replace(/^\d{1,3}\s*[–—.)]\s+/, "").trim();
+  const taglia = (s, n) => senzaTag(s).slice(0, n).replace(/\s+\S*$/, "");
+
+  const out = [];
+  const visti = new Set();
+  // Lo split su <section taglia il documento in blocchi che finiscono dove
+  // comincia la sezione dopo: un <h2> non può sconfinare in quella seguente.
+  for (const blocco of html.split(/<section\b/).slice(1)) {
+    const id = (blocco.match(/^[^>]*\bid="([^"]+)"/) || [])[1];
+    if (!id || visti.has(id)) continue;
+    const h2 = blocco.match(/<h2\b[^>]*>([\s\S]*?)<\/h2>/);
+    const nome = pulisci(etichetta[id] || (h2 ? h2[1] : ""));
+    if (nome) {
+      visti.add(id);
+      const testo = taglia(blocco.replace(/<h2\b[\s\S]*?<\/h2>/i, " "), 320);
+      out.push(testo ? [nome, id, testo] : [nome, id]);
+    }
+    // Anche i sotto-titoli con un'ancora propria (l'unico <h3> con id nella
+    // pagina, tipo #stazione-meteo): sono bersagli di collegamento veri.
+    for (const m of blocco.matchAll(/<h3\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h3>/g)) {
+      if (visti.has(m[1])) continue;
+      const sub = pulisci(m[2]);
+      if (!sub) continue;
+      visti.add(m[1]);
+      const dopo = blocco.slice(blocco.indexOf(m[0]) + m[0].length);
+      const testo = taglia(dopo, 220);
+      out.push(testo ? [sub, m[1], testo] : [sub, m[1]]);
+    }
+  }
+  return out;
+};
+
+/* Qualche parola in più a livello di pagina: l'occhiello (.sb-riv-lede) o il
+   primo paragrafo. Non si mostra, si cerca soltanto. */
+const parolePagina = (html) => {
+  const lede = html.match(/<p class="sb-riv-lede"[^>]*>([\s\S]*?)<\/p>/);
+  const primo = html.match(/<p\b[^>]*>([\s\S]*?)<\/p>/);
+  return senzaTag((lede || primo || [, ""])[1]).slice(0, 240).replace(/\s+\S*$/, "");
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
 const sitemap = [];
+const ricerca = [];
 
 for (const file of bodies) {
   const page = file.replace(".body.html", "");
@@ -576,7 +674,7 @@ for (const file of bodies) {
   const noindex = optMeta(src, "noindex", "false") === "true";
   const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
 
-  const out =
+  let out =
     head
       .replace("{{TITLE}}", title)
       .replace("{{DESC}}", desc)
@@ -589,9 +687,25 @@ for (const file of bodies) {
     `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
     foot.replace("{{SCRIPTS}}", scriptExtra);
 
+  /* La data dell'ultimo commit sta in testata e in fondo a ogni pagina, con
+     tre forme: l'attributo `datetime` legge la macchina, la riga lunga si
+     legge in fondo, quella breve in testata dove lo spazio è poco. */
+  out = out
+    .replace(/\{\{UPDATED_ISO\}\}/g, AGG_ISO)
+    .replace(/\{\{UPDATED_LONG\}\}/g, AGG_LUNGO)
+    .replace(/\{\{UPDATED_SHORT\}\}/g, AGG_BREVE);
+
   writeFileSync(`${page}.html`, out);
 
   if (!noindex) {
+    ricerca.push({
+      t: page === "index" ? "Home" : senzaTag((body.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/) || [, ""])[1]) || title.split("—")[0].trim(),
+      u: page === "index" ? "/" : `/${page}`,
+      d: desc,
+      x: parolePagina(body),
+      h: sezioniDi(body),
+    });
+
     sitemap.push({
       loc: canonical,
       // Data dell'ultima modifica VERA del contenuto: il timestamp del frammento
@@ -627,6 +741,22 @@ writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
 );
 console.log(`✓ sitemap.xml  (${sitemap.length} URL)`);
+
+/* ── Dati della ricerca ──────────────────────────────────────────────────
+   Lo stesso elenco che genera le pagine genera l'indice: una pagina nuova
+   entra nella ricerca da sé. Va in assets/ (che il browser scarica), non in
+   _build/ (che resta a casa), e si committa già pronto come sitemap.xml. */
+writeFileSync(
+  "assets/ricerca-dati.js",
+  `/* Generato da build.mjs — NON modificare a mano.
+   Indice della ricerca: nome, indirizzo, descrizione e sezioni ancorate di
+   ogni pagina pubblica. Lo rigenera ogni build; lo legge assets/ricerca.js
+   per la tendina «Cerca» in testata. */
+window.RSM_RICERCA = ${JSON.stringify(ricerca)};
+`
+);
+const nSezioni = ricerca.reduce((n, p) => n + p.h.length, 0);
+console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} sezioni)`);
 
 /* ── Le mail della Color Runner ───────────────────────────────────────────
    Due mail — la ricevuta di chi ha pagato e l'avviso a chi non è arrivato in

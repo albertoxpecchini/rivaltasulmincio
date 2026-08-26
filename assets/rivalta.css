@@ -1002,3 +1002,334 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   margin: 0.35rem 0 0;
   font-size: 0.84rem;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TESTATA — marchio, ricerca, «aggiornato il…», firma
+
+   La nav resta quella del design system (.sb-nav, .sb-nav-link, la pillola):
+   qui si aggiunge solo ciò che nel sistema non c'era. Tre cose:
+   · un marchio vero al posto della pillola «MN» — la tessera del sito;
+   · un tasto di ricerca che apre una tendina (vedi più sotto);
+   · da quando il sito è aggiornato, letto dall'ultimo commit dal build.
+   Più la firma .ap, che non si scrive più per esteso da nessuna parte.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Il marchio ──────────────────────────────────────────────────────────── */
+.sb-riv-brand-glyph {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sb-nav-brand:hover .sb-riv-brand-glyph { transform: rotate(-6deg); }
+/* Sotto i 380px «sul Mincio» esce: «Rivalta» da solo basta a dire dove si è,
+   e i tasti a destra hanno bisogno di quella larghezza. */
+@media (max-width: 379px) { .sb-riv-brand-tail { display: none; } }
+
+/* ── Tasto di ricerca in testata ─────────────────────────────────────────
+   Due forme sotto lo stesso tasto: da schermo stretto è un'icona sola come
+   l'hamburger accanto; da 1080px in su — dove le voci sono già in fila —
+   diventa un campo finto, smussato come le pillole del sito, con l'etichetta
+   e il tasto rapido «/».
+
+   Nasce nascosto e lo accende ricerca.js con .sb-ready (come fa glass.js col
+   tasto del movimento): senza JavaScript la ricerca non c'è e un tasto che
+   non apre niente è peggio di un tasto che non si vede. */
+.sb-riv-search-open { display: none; }
+.sb-riv-search-open.sb-ready {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sb-fg-light);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.sb-riv-search-open.sb-ready:hover { color: var(--sb-fg); background: var(--sb-overlay); }
+.sb-riv-search-open.sb-ready:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
+.sb-riv-search-open-ico { flex: none; }
+/* Con la sola classe figlia non basta: .sb-riv-search-open-kbd porta anche
+   .sb-riv-kbd, che ha display:inline-flex e vince a pari specificità perché
+   viene dopo. Il selettore discendente la supera senza ambiguità. */
+.sb-riv-search-open .sb-riv-search-open-t,
+.sb-riv-search-open .sb-riv-search-open-kbd { display: none; }
+@media (min-width: 1080px) {
+  .sb-riv-search-open.sb-ready {
+    width: auto;
+    min-width: 9.5rem;
+    height: 32px;
+    padding: 0 0.4rem 0 0.7rem;
+    justify-content: flex-start;
+    clip-path: var(--sb-shape-sm);
+    border-color: var(--sb-border-strong);
+    /* I due gradienti ridisegnano il bordo sulle diagonali che il clip taglia
+       — stessa ricetta di .sb-chip e .sb-riv-toc a. */
+    background: var(--sb-shape-edge), var(--sb-glass-bg);
+    -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+    backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+    color: var(--sb-fg-muted);
+  }
+  .sb-riv-search-open.sb-ready:hover {
+    color: var(--sb-fg);
+    background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-surface-100) 72%, transparent);
+  }
+  /* clip-path porta via l'outline: si ridisegna dentro, con un'ombra inset. */
+  .sb-riv-search-open.sb-ready:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--sb-brand);
+  }
+  .sb-riv-search-open.sb-ready .sb-riv-search-open-t { display: inline; margin-right: auto; }
+  .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: inline-flex; }
+}
+
+/* ── Il tastino ──────────────────────────────────────────────────────────
+   Il disegno di un tasto della tastiera: minuto, mono, radius 4 (la misura
+   dei dettagli più piccoli nel resto del sito). */
+.sb-riv-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5em;
+  height: 1.55em;
+  padding: 0 0.35em;
+  border-radius: 4px;
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-surface-100);
+  color: var(--sb-fg-muted);
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+/* ── «agg. 26 ago» in testata ────────────────────────────────────────────
+   Da 1240px in su, dove c'è spazio: dice a colpo d'occhio se il sito è
+   fresco. Il pallino è quello dei chip, ma spento — in testata un lampo che
+   pulsa all'infinito è rumore. La data la accorcia rivalta.js in «ieri»,
+   «3 giorni fa»; senza JS resta «26 ago». */
+.sb-riv-updated {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  color: var(--sb-fg-muted);
+}
+@media (min-width: 1240px) { .sb-riv-updated { display: inline-flex; } }
+.sb-riv-updated-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--sb-brand);
+}
+.sb-riv-updated-lbl { text-decoration: none; cursor: help; }
+.sb-riv-updated time { color: var(--sb-fg-light); }
+
+/* ── La firma .ap ────────────────────────────────────────────────────────
+   Il marchio di chi ha fatto il sito, non il nome del suo sito scritto per
+   esteso. In testata sta da 768px in su (sotto, lo spazio va ai tasti che
+   servono a navigare); in fondo alla pagina c'è sempre. Il logo è azzurro su
+   trasparente e si legge su tutti e due i temi — resta smorzato, e si accende
+   al passaggio. */
+.sb-riv-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  opacity: 0.55;
+  transition: opacity 0.18s, background 0.18s;
+}
+.sb-riv-mark img { display: block; width: 20px; height: 20px; object-fit: contain; }
+.sb-riv-mark:hover { opacity: 1; background: var(--sb-overlay); }
+.sb-riv-mark:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; opacity: 1; }
+.sb-nav-right .sb-riv-mark { display: none; }
+@media (min-width: 768px) { .sb-nav-right .sb-riv-mark { display: inline-flex; } }
+.sb-riv-mark--foot { width: 28px; height: 28px; }
+.sb-riv-mark--foot img { width: 17px; height: 17px; }
+
+/* ── Coda del foglio del menu (schermo stretto) ──────────────────────────
+   Sotto le voci: il tasto di ricerca (qui a tutta riga, con l'etichetta) e
+   la data dell'ultimo aggiornamento per esteso — le due cose che in testata
+   larga stanno a destra e qui non ci starebbero. */
+.sb-riv-menu-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  padding: 0.9rem 0.7rem 1.2rem;
+  border-top: 1px solid var(--sb-border);
+}
+/* Anche questo lo accende ricerca.js con .sb-ready: senza JS non apre niente. */
+.sb-riv-menu-cerca { display: none; }
+.sb-riv-menu-cerca.sb-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.5rem 0.85rem;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), var(--sb-glass-bg);
+  color: var(--sb-fg-light);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.sb-riv-menu-cerca.sb-ready:hover { color: var(--sb-fg); }
+.sb-riv-menu-cerca.sb-ready:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--sb-brand); }
+.sb-riv-menu-agg { font-size: 0.8rem; color: var(--sb-fg-muted); }
+.sb-riv-menu-agg time { color: var(--sb-fg-light); }
+
+/* ── La tendina di ricerca ───────────────────────────────────────────────
+   Un pannello sopra la pagina, allineato in alto come una palette di comandi.
+   Il fondo è un velo leggero + una sfocatura appena percettibile: quel tanto
+   che stacca la tendina dal testo sotto senza spegnere la pagina. z-index 70:
+   sopra la nav (50), sotto il salto-al-contenuto (100). */
+.sb-riv-cerca {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(1rem, 8vh, 7rem) 1rem 1rem;
+}
+.sb-riv-cerca[hidden] { display: none; }
+.sb-riv-cerca-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--sb-bg) 42%, transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.sb-riv-cerca-box {
+  position: relative;
+  width: min(38rem, 100%);
+}
+/* Il titolo esiste per aria-labelledby, non per essere letto con gli occhi:
+   il campo qui sotto dice già cosa fa. */
+.sb-riv-cerca-tit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.sb-riv-cerca-pad { padding: 0.85rem; gap: 0.7rem; }
+
+/* Il campo: un guscio smussato, stessa ricetta di bordo delle pillole. Il
+   fuoco accende il filo azzurro dentro (l'outline lo mangerebbe il clip). */
+.sb-riv-cerca-field {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.65rem;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), var(--sb-surface-100);
+}
+.sb-riv-cerca-field:focus-within {
+  box-shadow: inset 0 0 0 1px var(--sb-brand);
+  border-color: var(--sb-brand);
+}
+.sb-riv-cerca-field-ico { flex: none; color: var(--sb-fg-muted); }
+.sb-riv-cerca-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--sb-fg);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sb-riv-cerca-input::placeholder { color: var(--sb-fg-muted); }
+.sb-riv-cerca-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+/* La lista dei risultati: scorre da sola quando è lunga, senza trascinarsi
+   dietro la pagina sotto. */
+.sb-riv-cerca-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: min(24rem, 52vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sb-riv-cerca-lista:empty { display: none; }
+.sb-riv-cerca-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--sb-fg-light);
+}
+.sb-riv-cerca-link:hover,
+.sb-riv-cerca-link[aria-selected="true"] {
+  background: var(--sb-overlay);
+  color: var(--sb-fg);
+}
+.sb-riv-cerca-link:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
+.sb-riv-cerca-nome { font-size: 0.9rem; color: var(--sb-fg); min-width: 0; }
+.sb-riv-cerca-nome mark {
+  background: color-mix(in srgb, var(--sb-brand) 22%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 0.1em;
+}
+.sb-riv-cerca-ctx {
+  margin-left: auto;
+  flex: none;
+  font-size: 0.74rem;
+  color: var(--sb-fg-muted);
+  white-space: nowrap;
+}
+.sb-riv-cerca-vuoto { margin: 0.2rem 0.1rem; font-size: 0.85rem; color: var(--sb-fg-muted); }
+.sb-riv-cerca-vuoto[hidden] { display: none; }
+.sb-riv-cerca-pie {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.1rem;
+  font-size: 0.72rem;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-cerca-pie span { display: inline-flex; align-items: center; gap: 0.3rem; }
+@media (max-width: 520px) { .sb-riv-cerca-pie { display: none; } }
+
+/* Entrata: una salita di 6px in 160ms, una volta. prefers-reduced-motion la
+   spegne; il tasto «ferma il movimento» (html.rsm-still) pure. */
+@media (prefers-reduced-motion: no-preference) {
+  .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box {
+    animation: sb-riv-cerca-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; }
+@keyframes sb-riv-cerca-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}

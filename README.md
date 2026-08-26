@@ -42,12 +42,12 @@ tema chiaro/scuro nativo.
 
 | Dominio | Valore | Dettaglio |
 | :--- | :--- | :--- |
-| **Pagine pubblicate** | **10** | 3.954 righe di HTML **generato**, indirizzi senza estensione |
-| **Sorgenti in `_build/`** | **2.181 righe** | 10 frammenti di contenuto + guscio (`head.html` · `foot.html`) |
-| **Design system** | **2.034 righe CSS** | `sb.css` (1.007) · `rivalta.css` (841) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.197 righe**, 5 file | `rivalta.js` (91) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) · `meteo.js` (214) |
+| **Pagine pubblicate** | **12** | HTML **generato**, indirizzi senza estensione |
+| **Sorgenti in `_build/`** | 12 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
+| **Design system** | **2.516 righe CSS** | `sb.css` (998) · `rivalta.css` (1.332) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **1.488 righe**, 6 file | `rivalta.js` (115) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) · `meteo.js` (214) · `ricerca.js` (267) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
-| **Build** | **496 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Build** | **933 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
 | **Luoghi censiti** | **110** | 55 luoghi + 55 attività in `_build/luoghi.json`, 84 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
@@ -260,12 +260,15 @@ rivaltasulmincio/
 ├── index.html … mappa.html     # le 10 pagine, GENERATE — non modificarle a mano
 ├── assets/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
-│   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, mappa)
-│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva
+│   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, testata, ricerca)
+│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma relativa
+│   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
+│   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
-│   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro
+│   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro — fa anche da marchio in testata
+│   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
 │   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
 ├── api/                        # le tre cose che NON girano nel browser di chi legge
@@ -289,7 +292,7 @@ rivaltasulmincio/
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
-├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml e le due mail
+├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
 ├── serve.mjs                   # anteprima locale con cleanUrls (non va online)
 ├── prova-conferma.mjs          # `npm test`: 15 casi sulle mail, con Stripe finto (non va online)
 ├── prova-invio.mjs             # manda una mail vera a sé stessi, per guardarla (non va online)
@@ -802,6 +805,33 @@ Priorità e frequenza si dichiarano nel frammento, con due commenti facoltativi 
 senza aver cambiato niente non deve dire ai motori che tutte e nove le pagine sono state riscritte.
 
 `robots.txt` è statico e non ha esclusioni: nove pagine pubbliche, nessuna area riservata.
+
+---
+
+## 🔍 La ricerca in testata
+
+Il tasto **Cerca** in testata (o il tasto `/`, o `⌘K` / `Ctrl K`) apre una tendina sopra la pagina:
+si scrive, si scorre con le frecce, si apre con `Invio`, si chiude con `Esc` o toccando fuori.
+
+L'indice **è generato** da `build.mjs` — come `sitemap.xml`, dalla stessa lista di frammenti — e
+finisce in `assets/ricerca-dati.js` (`window.RSM_RICERCA`). Per ogni pagina pubblica: nome breve,
+indirizzo, descrizione, e ogni sezione ancorata (l'etichetta la dà l'indice `.sb-riv-toc` in cima
+alla pagina quando c'è, altrimenti il titolo `<h2>`; ci finiscono anche i pochi `<h3 id="…">`).
+A ogni voce è allegato un pezzo del testo della sezione, **non mostrato, solo cercabile**: così
+«autobus» porta a `/muoversi`, «meteo» a `/natura#stazione-meteo`, anche se la parola nel titolo
+non c'è.
+
+Nessuna chiamata di rete: l'indice è già nel browser, la ricerca funziona anche offline.
+`assets/ricerca.js` è il comportamento (~26 kB l'indice, un file solo per tutte le pagine, in cache
+dopo la prima). Senza JavaScript il tasto non compare e la navigazione a voci basta da sola.
+
+## 🕔 «Ultimo aggiornamento»
+
+La data dell'**ultimo commit** (`git log -1`, letta da `build.mjs`) è messa in testata, nel foglio
+del menu su schermo stretto e in fondo a ogni pagina, con tre forme dallo stesso segnaposto:
+`{{UPDATED_ISO}}` per `datetime`, `{{UPDATED_LONG}}` («26 agosto 2026») e `{{UPDATED_SHORT}}`
+(«26 ago»). Con JavaScript `rivalta.js` la accorcia in forma relativa — «oggi», «ieri», «3 giorni
+fa» — e sposta la data per esteso nel `title`. Fuori da un repo git il build ripiega su oggi.
 
 ---
 
