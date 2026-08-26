@@ -168,17 +168,18 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   color: var(--sb-fg-light);
 }
 .sb-cr-quando strong { font-weight: 600; color: var(--sb-fg); }
-/* 44px come gli altri bersagli della pagina (vedi sopra, sui campi): è il
-   tasto più toccato di tutti, l'invito a iscriversi, e .sb-btn da solo dà 38px. */
-.sb-cr-vai-giu { margin-top: 1.4rem; min-height: 44px; }
 
-/* Sotto l'intestazione — occhiello, titolo, data, lede, tasto — passa una
-   lastra bassa e larga: le quattro polveri della camminata in diagonale e
-   sopra una lama di lucido, appena percettibili. È tagliata come ogni altra
-   lastra del sito e vive dietro il testo, in un contesto d'impilamento suo
-   (isolation + z-index negativo), così occhiello e titolo restano nitidi.
-   Stesso velo della scheda in home (.sb-riv-flash--cr) e del manifesto qui
-   sotto: tre lastre, una sola idea. */
+/* Sotto l'intestazione — occhiello, titolo, data, lede — passa una lastra
+   bassa e larga: le quattro polveri della camminata in diagonale e sopra una
+   lama di lucido, appena percettibili. È tagliata come ogni altra lastra del
+   sito e vive dietro il testo, in un contesto d'impilamento suo (isolation +
+   z-index negativo), così occhiello e titolo restano nitidi. Stesso velo
+   della scheda in home (.sb-riv-flash--cr) e del manifesto qui sotto: tre
+   lastre, una sola idea.
+
+   Niente tasto nell'intestazione: «Iscriviti alla camminata» è già il titolo
+   della sezione subito sotto, e un bottone che galleggiava sul velo, sopra
+   l'angolo tagliato della lastra, si vedeva storto. */
 .sb-cr .sb-riv-pagehead { position: relative; isolation: isolate; }
 .sb-cr .sb-riv-pagehead::before {
   content: "";
@@ -440,6 +441,7 @@ html.dark .sb-cr .sb-riv-pagehead::before {
   line-height: 1.6;
 }
 .sb-cr-nota strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cr-nota a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 .sb-cr-esito {
   display: none;
@@ -480,6 +482,7 @@ html.dark .sb-cr .sb-riv-pagehead::before {
    col pollice al primo colpo. */
 .sb-cr-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
 .sb-cr-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
+.sb-cr-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
@@ -573,10 +576,6 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     <h1>Color Runner</h1>
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026</strong> — per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-    <a class="sb-btn sb-btn--primary sb-cr-vai-giu" href="#iscrizione">
-      <span>Iscriviti — 11 €</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-    </a>
     
   </section>
 
@@ -589,7 +588,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     <div class="sb-cr-lastra" style="margin-top:1.4rem"><div class="sb-panel"><div class="sb-panel-inner">
 
       <div class="sb-cr-nota">
-        La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché alla camminata arrivino i 10 € pieni. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati.
+        La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché alla camminata arrivino i 10 € pieni. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-runner-regolamento">regolamento</a>.
       </div>
 
       <div id="cr-esito" class="sb-cr-esito" role="status"></div>
@@ -670,7 +669,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
 
         <div class="sb-cr-consenso">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
-          <label for="cr-consenso">Acconsento al trattamento dei miei dati per l'organizzazione della Color Runner. Nome, cognome, codice fiscale, indirizzo, email e telefono restano agli organizzatori e a Stripe, che gestisce il pagamento: non vengono ceduti ad altri e non servono a mandare pubblicità.</label>
+          <label for="cr-consenso">Ho letto e accetto il <a href="/color-runner-regolamento" target="_blank" rel="noopener">regolamento della Color Runner</a> e l'informativa sul trattamento dei dati che contiene.</label>
         </div>
 
         <button class="sb-btn sb-btn--primary sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
