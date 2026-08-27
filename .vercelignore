@@ -17,6 +17,9 @@ assets/loghi/README.md
 # I sorgenti React da cui è portata la barra di controllo: servono a chi
 # rimette le mani sul sito, non al browser di chi lo legge.
 theme/
+# Le tavole di Claude Design (locandina e banner) col loro runtime: officina,
+# non produzione. Da qui si esporta il file finito, non lo si serve.
+design/
 # Vite serve solo all'anteprima locale: in produzione l'HTML è già statico.
 vite.config.mjs
 package.json
