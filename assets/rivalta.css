@@ -731,151 +731,17 @@ html.dark .sb-riv-flash--cr .sb-panel-inner {
 }
 
 /* ── Il banner della Color Runner ─────────────────────────────────────────
-   Il manifesto dell'evento, in HTML e non in un'immagine: testo vero in
-   Titillium Web, tema chiaro/scuro nativo, nitido a ogni scala. Tre pagine se
-   lo passano — grande su /color-runner, dov'è il richiamo dell'iscrizione;
-   una striscia incassata nella scheda .sb-riv-flash--cr in home; una
-   striscia-collegamento in coda al regolamento, che resta pagina di lettura e
-   non si accende più di così.
-
-   Il colore sta dove il sito glielo concede: un banco di polveri sfocate
-   spinto a destra e, sopra, un lavaggio della superficie che tiene pulito il
-   lato del testo. Le quattro tinte sono quelle di .sb-cr e di
-   .sb-riv-flash--cr, riscritte per esteso perché né la home né il regolamento
-   le conoscono. Taglio, rim e ombra li porta .sb-panel come a ogni lastra. */
-.sb-riv-crbanner { margin-top: 2rem; }
-a.sb-riv-crbanner { display: block; text-decoration: none; color: inherit; }
-
-.sb-riv-crbanner-corpo {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.4rem;
-  min-height: clamp(210px, 32vw, 270px);
-  padding: clamp(1.3rem, 3.6vw, 2.1rem);
-}
-
-/* Il banco di polveri: quattro aloni sfocati pesati verso destra, nell'ordine
-   del sito — magenta, giallo, ciano, viola — e sopra un lavaggio della
-   superficie sul lato sinistro. Sfoca lo strato, non la lastra: lo smusso e
-   il rim non si toccano. */
-.sb-riv-crbanner-polvere {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(closest-side, rgba(255, 45, 135, 0.85), rgba(255, 45, 135, 0) 100%) 58% -22% / 46% 84% no-repeat,
-    radial-gradient(closest-side, rgba(255, 198, 26, 0.8), rgba(255, 198, 26, 0) 100%) 72% 8% / 40% 74% no-repeat,
-    radial-gradient(closest-side, rgba(15, 178, 239, 0.9), rgba(15, 178, 239, 0) 100%) 82% 44% / 50% 96% no-repeat,
-    radial-gradient(closest-side, rgba(138, 92, 246, 0.92), rgba(138, 92, 246, 0) 100%) 98% 84% / 46% 88% no-repeat;
-  filter: blur(40px);
-}
-.sb-riv-crbanner-polvere::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    var(--sb-surface-75) 0 24%,
-    color-mix(in srgb, var(--sb-surface-75) 52%, transparent) 42%,
-    transparent 60%
-  );
-}
-/* Al buio le tinte diventano lampade e si abbassano, come gli azzurri del
-   sito e il velo della testata di /color-runner. */
-html.dark .sb-riv-crbanner-polvere { opacity: 0.5; }
-
-.sb-riv-crbanner-testo { display: grid; gap: 0.5rem; max-width: 42ch; }
-.sb-riv-crbanner-data {
-  margin: 0;
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--sb-brand-text);
-}
-.sb-riv-crbanner-tit {
-  margin: 0;
-  font-size: clamp(2rem, 6.4vw, 3.4rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 0.94;
-  color: var(--sb-fg);
-}
-.sb-riv-crbanner-sub {
-  margin: 0;
-  font-size: clamp(0.95rem, 2vw, 1.2rem);
-  font-weight: 300;
-  line-height: 1.35;
-  color: var(--sb-fg-light);
-}
-.sb-riv-crbanner-nome {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0.15rem 0 0;
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--sb-fg);
-}
-a.sb-riv-crbanner .sb-riv-crbanner-nome svg { transition: transform 0.15s ease; }
-a.sb-riv-crbanner:hover .sb-riv-crbanner-nome svg { transform: translateX(3px); }
-
-/* La tessera del sito — quadrato azzurro con lo smusso e il Mincio dentro, la
-   stessa del marchio in testata — fa da firma in basso. */
-.sb-riv-crbanner-marchio {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.92rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--sb-fg);
-}
-.sb-riv-crbanner-tessera {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  background: var(--sb-brand);
-  clip-path: var(--sb-shape-sm);
-}
-.sb-riv-crbanner-tessera svg { display: block; }
-
-/* Grande: /color-runner. Il titolo torna a caratteri di manifesto — la
-   pagina sopra lo dice piano, qui lo dice forte. */
-.sb-riv-crbanner--manifesto .sb-riv-crbanner-corpo { min-height: clamp(230px, 36vw, 300px); }
-
-/* Striscia: home e regolamento. Bassa, in riga, senza titolo: l'occhiello e
-   la tessera bastano, il nome dell'evento è lì accanto. */
-.sb-riv-crbanner--striscia .sb-riv-crbanner-corpo {
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  min-height: clamp(64px, 11vw, 88px);
-  padding: clamp(1rem, 2.8vw, 1.5rem) clamp(1.2rem, 3.2vw, 1.9rem);
-}
-
-/* Incassata nella scheda .sb-riv-flash--cr in home: niente lastra propria,
-   sborda fino ai bordi del vetro della scheda e da quello si fa tagliare gli
-   angoli. Il margine negativo pareggia il padding di .sb-riv-flash
-   .sb-panel-inner; sotto resta una riga di stacco dal badge. */
-.sb-riv-crbanner--incasso {
-  margin: calc(-1 * clamp(1.2rem, 2.6vw, 1.7rem));
-  margin-bottom: 0.4rem;
-}
-.sb-riv-crbanner--incasso .sb-riv-crbanner-corpo { border-bottom: 1px solid var(--sb-border); }
-.sb-riv-crbanner--incasso .sb-riv-crbanner-polvere { opacity: 0.8; }
-html.dark .sb-riv-crbanner--incasso .sb-riv-crbanner-polvere { opacity: 0.42; }
-
-@media print {
-  .sb-riv-crbanner-polvere { display: none; }
+   Il manifesto è disegnato a parte (design/color-runner/) ed entra com'è:
+   una figura sola, a tutta la colonna, con lo smusso del sito e nient'altro
+   — niente lastra, niente cornice, o sarebbe un riquadro dentro un riquadro.
+   Le tre pagine — /color-runner, home, regolamento — mostrano lo stesso file.
+   Il colore vive dentro l'immagine, non intorno. */
+.sb-riv-crbanner {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+  clip-path: var(--sb-shape-lg);
 }
 
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */

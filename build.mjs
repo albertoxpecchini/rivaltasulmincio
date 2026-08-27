@@ -519,67 +519,25 @@ ${LOGHI.map((l) => {
     </div>`;
 
 /* ── Il banner della Color Runner ─────────────────────────────────────────
-   Il manifesto dell'evento, in HTML e non in un'immagine: testo vero in
-   Titillium Web, tema chiaro/scuro nativo, nitido a ogni scala. Forma e colore
-   li tiene .sb-riv-crbanner in assets/rivalta.css.
+   Il manifesto è disegnato a parte (design/color-runner/, tela di Claude
+   Design) ed esportato in assets/foto/color-runner-banner.webp. {{BANNER}} lo
+   mette com'è — una <img> sola, a tutta la colonna, con lo smusso del sito —
+   nella testata di /color-runner, in cima agli aggiornamenti in home e in
+   coda al regolamento. Le tre pagine mostrano lo stesso file.
 
-   Un pezzo, tre tagli, tutti da {{BANNER}} — che nel frammento di ogni pagina
-   sta nel punto giusto: grande dentro la testata di /color-runner; una
-   striscia incassata nella scheda in home; una striscia-collegamento in coda
-   al regolamento. La data sta scritta qui una volta per tutte e tre. */
-const CR_DATA = "Domenica 20 settembre 2026";
+   Finché il file non c'è, il segnaposto non lascia né un buco né una cornice
+   vuota: le pagine stanno in piedi lo stesso. Rifà il manifesto? Riesporta con
+   questo nome e ricompare al primo build. */
+const BANNER = "color-runner-banner";
+let bannerTrovato = null;
 
-const tesseraMincio =
-  `<span class="sb-riv-crbanner-tessera">` +
-  `<svg width="18" height="11" viewBox="0 0 24 14" fill="none" aria-hidden="true">` +
-  `<path d="M1 4.6c2.6-3 5.1-3 7.7 0s5.1 3 7.7 0 5.1-3 6.6-1.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>` +
-  `<path d="M1 10c2.6-3 5.1-3 7.7 0s5.1 3 7.7 0 5.1-3 6.6-1.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>` +
-  `</svg></span>`;
-
-const marchioMincio =
-  `<div class="sb-riv-crbanner-marchio">${tesseraMincio}<span>Rivalta sul Mincio</span></div>`;
-
-const renderBanner = (page) => {
-  if (page === "color-runner") {
-    return `<figure class="sb-riv-crbanner sb-riv-crbanner--manifesto">
-      <div class="sb-panel"><div class="sb-panel-inner">
-        <div class="sb-riv-crbanner-corpo">
-          <span class="sb-riv-crbanner-polvere" aria-hidden="true"></span>
-          <div class="sb-riv-crbanner-testo">
-            <p class="sb-riv-crbanner-tit">Color Runner</p>
-            <p class="sb-riv-crbanner-sub">Camminata a colori, non competitiva — per le vie di Rivalta sul Mincio</p>
-          </div>
-          ${marchioMincio}
-        </div>
-      </div></div>
-    </figure>`;
-  }
-  if (page === "index") {
-    return `<div class="sb-riv-crbanner sb-riv-crbanner--striscia sb-riv-crbanner--incasso">
-            <div class="sb-riv-crbanner-corpo">
-              <span class="sb-riv-crbanner-polvere" aria-hidden="true"></span>
-              <div class="sb-riv-crbanner-testo">
-                <p class="sb-riv-crbanner-data">${CR_DATA} · dalle 15:30</p>
-              </div>
-              ${marchioMincio}
-            </div>
-          </div>`;
-  }
-  if (page === "color-runner-regolamento") {
-    return `<a class="sb-riv-crbanner sb-riv-crbanner--striscia" href="/color-runner">
-    <div class="sb-panel"><div class="sb-panel-inner">
-      <div class="sb-riv-crbanner-corpo">
-        <span class="sb-riv-crbanner-polvere" aria-hidden="true"></span>
-        <div class="sb-riv-crbanner-testo">
-          <p class="sb-riv-crbanner-data">${CR_DATA}</p>
-          <p class="sb-riv-crbanner-nome">Color Runner <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p>
-        </div>
-        ${marchioMincio}
-      </div>
-    </div></div>
-  </a>`;
-  }
-  return "";
+const renderBanner = () => {
+  bannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
+    .map((est) => `assets/foto/${BANNER}.${est}`)
+    .find((p) => existsSync(p));
+  if (!bannerTrovato) return "";
+  return `<img class="sb-riv-crbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
+      alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
 };
 
 /* ── Le sei contrade ──────────────────────────────────────────────────────
@@ -788,7 +746,7 @@ for (const file of bodies) {
       .replace("{{METEO}}", renderMeteo)
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
-      .replace("{{BANNER}}", () => renderBanner(page))
+      .replace("{{BANNER}}", renderBanner)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
   );
@@ -1081,6 +1039,12 @@ if (loghiMancanti.length) {
 ⚠ loghi: ne mancano ${loghiMancanti.length} — ${loghiMancanti.join("  ")}`);
   console.log(`  Vanno in assets/loghi/ con quel nome esatto (svg, png, webp o jpg).`);
   console.log(`  Finché non ci sono, su /color-runner al loro posto si legge il nome.`);
+}
+
+if (!bannerTrovato) {
+  console.log(`
+⚠ banner Color Runner: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
+  console.log(`  L'originale è la tela in design/color-runner/: si riesporta e ricompare.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

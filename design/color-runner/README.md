@@ -36,14 +36,19 @@ Il rosso è escluso apposta: sul sito vuol dire «errore».
 
 - **Locandina** → esporta in PDF (o PNG ad alta risoluzione) in formato A4, pronto per la
   stampa o da allegare a una mail. Resta un pezzo da tela: sul sito non va.
-- **Banner** → è già nel sito, ma **non come immagine**: è stato ridisegnato in HTML nel
-  componente condiviso `.sb-riv-crbanner` ([`assets/rivalta.css`](../../assets/rivalta.css)),
-  con il markup in [`build.mjs`](../../build.mjs) sotto `renderBanner`. Testo vero in
-  Titillium Web, tema chiaro/scuro nativo, nitido a ogni scala. Compare in tre tagli:
-  grande su [`/color-runner`](../../color-runner.html), una striscia in
-  [home](../../index.html) dentro la scheda `.sb-riv-flash--cr`, una striscia-collegamento
-  in coda al [regolamento](../../color-runner-regolamento.html). `banner.dc.html` resta il
-  riferimento visivo da cui è nato.
+- **Banner** → esporta in PNG e riducilo a `assets/foto/color-runner-banner.webp`
+  (2400 × 900, ~55 kB). È **il file di `banner.dc.html`, messo com'è**: `build.mjs`
+  (`renderBanner`) lo pesca da lì e lo mette come `<img class="sb-riv-crbanner">` — una
+  figura sola, con lo smusso del sito e nient'altro, niente lastra intorno. Compare uguale
+  in tre punti: nella testata di [`/color-runner`](../../color-runner.html), in cima agli
+  «Aggiornamenti recenti» in [home](../../index.html), in coda al
+  [regolamento](../../color-runner-regolamento.html). La regola CSS è due righe in
+  [`assets/rivalta.css`](../../assets/rivalta.css); il resto è dentro l'immagine.
+  Se manca il file, il segnaposto non lascia buchi e il build lo dice.
+
+  > Il `.webp` è stato ricavato aprendo `banner.dc.html` in un browser senza il runtime di
+  > Claude Design (il `<div>` da 1600 × 600 si compone da solo) e fotografandolo a 2×.
+  > Rifatto il manifesto sulla tela, si riesporta con lo stesso nome.
 
 ## Perché sta qui e non va online
 
