@@ -124,31 +124,42 @@ html.dark .sb-cr-vernice::before,
 html.dark .sb-cr-vernice::after { opacity: 0.5; }
 
 /* ═══ L'intestazione ═════════════════════════════════════════════════════════
-   È quella del sito, .sb-riv-pagehead: occhiello azzurro, titolo in tondo,
-   lede. Si aggiunge una riga sola, la data, che nelle altre pagine non c'è
-   perché le altre pagine non sono un invito. */
-.sb-cr-quando {
-  margin: 0.8rem 0 0;
-  font-size: 1.02rem;
-  line-height: 1.5;
-  color: var(--sb-fg-light);
-}
-.sb-cr-quando strong { font-weight: 600; color: var(--sb-fg); }
+   Non c'è: occhiello, titolo, data e «cos'è» li dice il manifesto, che è
+   un'immagine (.sb-riv-crbanner in assets/rivalta.css, senza niente intorno).
+   Il colore dell'evento resta al fondale (.sb-cr-vernice). Della vecchia
+   testata resta un h1 fuori campo, .sb-riv-vh. */
 
-/* L'intestazione non porta nessun velo: è la .sb-riv-pagehead del sito e
-   basta. Il colore dell'evento lo tiene il fondale (.sb-cr-vernice) e, sotto,
-   l'immagine del manifesto.
-
-   Il manifesto è solo quello: .sb-riv-crbanner in assets/rivalta.css non gli
-   mette niente intorno, e il segnaposto qui sotto sta FUORI dalla testata.
-   Lo stesso file sta in home e in coda al regolamento. */
-
-/* ═══ La lastra del modulo ═══════════════════════════════════════════════════
-   È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
-   stesso rim, stesso smusso, stessa ombra. Larga 46rem come i testi delle
-   altre pagine — quanto una riga che si legge, non quanto lo schermo. */
+/* ═══ La lastra del modulo, e la locandina di fianco ════════════════════════
+   Il modulo è .sb-panel/.sb-panel-inner, la lastra del sito: stesso rim,
+   stesso smusso. Da schermo largo gli sta accanto la locandina, a destra e
+   più grande che si può; da telefono la locandina sparisce e resta la sola
+   colonna del modulo, larga 46rem come i testi delle altre pagine. */
+.sb-cr-iscr { margin-top: 1.4rem; }
 .sb-cr-lastra { max-width: 46rem; }
 .sb-cr-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
+
+/* La locandina di fianco: nascosta sotto i 60rem, dove una A4 su colonna
+   stretta non si guarda. Sopra, è una spalla che resta in vista mentre si
+   compila (sticky), con l'anteprima grande quanto la colonna le concede. */
+.sb-cr-loc-lato { display: none; }
+.sb-cr-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
+.sb-cr-loc-lato-p { margin: 0.3rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-cr-loc-lato .sb-riv-crloc { margin-top: 0.9rem; }
+.sb-cr-loc-lato .sb-riv-crloc-a { max-width: none; width: 100%; }
+
+@media (min-width: 60rem) {
+  .sb-cr-iscr {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) 1fr;
+    gap: clamp(1.6rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .sb-cr-loc-lato {
+    display: block;
+    position: sticky;
+    top: 84px;
+  }
+}
 
 /* ═══ L'avanzamento ══════════════════════════════════════════════════════════
    Compilare un modulo è una scala, e una scala si sale meglio se si vede
@@ -335,7 +346,7 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    8px, fondo neutro. Solo l'esito cambia tinta, ed è l'unico che deve — dice
    come è andata. */
 .sb-cr-nota {
-  margin: 0 0 1.3rem;
+  margin: 0;
   padding: 0.8rem 0.95rem;
   border: 1px solid var(--sb-border);
   border-radius: 8px;
@@ -475,17 +486,13 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
      sui suoi pseudo-elementi — qui dentro non c'è niente da leggere. -->
   <div class="sb-cr-vernice" aria-hidden="true"></div>
 
-  <section class="sb-container sb-riv-pagehead">
-    <span class="sb-riv-eyebrow">Iscrizioni aperte</span>
-    <h1>Color Runner</h1>
-    <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026, dalle 15:30</strong> — ritrovo in Piazza Chiesa, davanti alla chiesa, poi giro per le vie di Rivalta sul Mincio</p>
-    <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-  </section>
-
-  <!-- Il banner fuori dalla testata: dentro la sezione .sb-riv-pagehead c'è il
-       velo di polveri, e un'immagine appoggiata lì sopra sembra incorniciata.
-       Qui è solo il file, sul fondo della pagina. -->
-  <div class="sb-container">{{BANNER}}</div>
+  <!-- Niente testata scritta: occhiello, titolo, data e «cos'è» li dice il
+       manifesto qui sotto, che è un'immagine. Un h1 fuori campo resta per la
+       struttura del documento e per chi naviga a orecchio. -->
+  <div class="sb-container">
+    <h1 class="sb-riv-vh">Color Runner — camminata a colori, domenica 20 settembre 2026, Rivalta sul Mincio</h1>
+    {{BANNER}}
+  </div>
 
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead sb-sechead--start">
@@ -493,11 +500,13 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
       <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto.</p>
     </div>
 
-    <div class="sb-cr-lastra" style="margin-top:1.4rem"><div class="sb-panel"><div class="sb-panel-inner">
+    <!-- Da schermo largo il modulo e la locandina stanno affiancati: la
+         locandina a destra, più grande che si può. Da telefono la locandina
+         non c'è (una A4 su una colonna stretta non la guarda nessuno) e resta
+         solo il modulo. -->
+    <div class="sb-cr-iscr">
 
-      <div class="sb-cr-nota">
-        La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché alla camminata arrivino i 10 € pieni. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-runner-regolamento">regolamento</a>.
-      </div>
+    <div class="sb-cr-lastra"><div class="sb-panel"><div class="sb-panel-inner">
 
       <div id="cr-esito" class="sb-cr-esito" role="status"></div>
 
@@ -580,6 +589,12 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
           <label for="cr-consenso">Ho letto e accetto il <a href="/color-runner-regolamento" target="_blank" rel="noopener">regolamento della Color Runner</a> e l'informativa sul trattamento dei dati che contiene.</label>
         </div>
 
+        <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
+             quando serve, cioè un attimo prima di pagare. -->
+        <div class="sb-cr-nota">
+          La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché alla camminata arrivino i 10 € pieni. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-runner-regolamento">regolamento</a>.
+        </div>
+
         <button class="sb-btn sb-btn--primary sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
       </form>
 
@@ -588,16 +603,14 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
       </noscript>
 
     </div></div></div>
-  </section>
 
-  <!-- La locandina A4: l'altro pezzo disegnato sulla tela. L'anteprima è
-       un'immagine e basta; il clic scarica il PDF da stampare. -->
-  <section class="sb-container sb-riv-sec" id="locandina">
-    <div class="sb-sechead sb-sechead--start">
-      <h2>La locandina</h2>
-      <p>Scaricala, stampala e attaccala dove può servire.</p>
+      <aside class="sb-cr-loc-lato" aria-label="La locandina da stampare">
+        <p class="sb-cr-loc-lato-t">La locandina</p>
+        <p class="sb-cr-loc-lato-p">Scaricala, stampala e attaccala dove può servire.</p>
+        {{LOCANDINA}}
+      </aside>
+
     </div>
-    {{LOCANDINA}}
   </section>
 
   <!-- Gli stemmi delle contrade sulla pagina della camminata: li ha chiesti

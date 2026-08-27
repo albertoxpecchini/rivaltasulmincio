@@ -45,10 +45,20 @@
         <p>Quello che sta per succedere in paese, quello che è cambiato di recente, e cosa si dice di Rivalta sui giornali.</p>
       </div>
 
-      <!-- La Color Runner in home è solo il manifesto: l'immagine di
-           design/color-runner/, che porta alla pagina dell'evento. Niente
-           scheda di testo — quella stava in /color-runner. -->
-      <a class="sb-riv-crbanner-link" href="/color-runner" aria-label="Color Runner — domenica 20 settembre 2026, vai alla pagina dell'evento">{{BANNER}}</a>
+      <!-- La Color Runner in home: il manifesto dentro una cornice del sito
+           (.sb-panel, stesso smusso), con i tasti per aprire l'evento. Da
+           schermo largo i tasti stanno sulla metà destra dell'immagine — la
+           zona di sole polveri — su un vetro; da telefono l'immagine sta
+           sopra e i tasti sotto, a tutta larghezza. -->
+      <div class="sb-riv-crhome">
+        <div class="sb-panel"><div class="sb-panel-inner">
+          {{BANNER}}
+          <div class="sb-riv-crhome-azioni">
+            <a class="sb-btn sb-btn--primary" href="/color-runner#iscrizione"><span>Iscriviti alla camminata</span></a>
+            <a class="sb-btn sb-btn--secondary" href="/color-runner-regolamento"><span>Regolamento</span></a>
+          </div>
+        </div></div>
+      </div>
 
       <div class="sb-riv-flash sb-riv-flash--min">
         <div class="sb-panel"><div class="sb-panel-inner">

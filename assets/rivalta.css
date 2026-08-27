@@ -681,24 +681,75 @@
 .sb-riv-flash--min p { font-size: 0.85rem; line-height: 1.6; }
 .sb-riv-flash--min .sb-riv-flash-actions { margin-top: 0.35rem; gap: 0.9rem; }
 
+/* Testo fuori campo: sta nel DOM per la struttura e per chi legge a orecchio,
+   non si vede. Stessa ricetta di .sb-riv-cerca-tit. */
+.sb-riv-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Il banner della Color Runner ─────────────────────────────────────────
    L'immagine di design/color-runner/banner.dc.html, messa e basta: nessuna
-   lastra, nessun taglio, nessun fondo dietro. Larga quanto la colonna, la
-   stessa in tre pagine — in home prende il posto della scheda dell'evento ed
-   è un collegamento, su /color-runner e nel regolamento è solo l'immagine. */
+   lastra, nessun taglio. Un filo di bordo perché il suo fondo è quasi bianco
+   come la pagina e senza si perderebbe (come per la locandina). La stessa in
+   tre pagine — su /color-runner e in cima al regolamento è solo l'immagine;
+   in home entra nella cornice qui sotto, coi tasti dell'evento (e lì il bordo
+   lo dà già la lastra). */
 .sb-riv-crbanner {
   display: block;
   width: 100%;
   height: auto;
   margin: 2rem 0 0;
+  border: 1px solid var(--sb-border);
 }
-.sb-riv-crbanner-link { display: block; margin: 2rem 0 0; }
-.sb-riv-crbanner-link .sb-riv-crbanner { margin: 0; }
 
-/* La locandina A4: l'anteprima del foglio, non a tutta pagina — un A4 grande
-   quanto lo schermo non lo guarda nessuno. Un filo di bordo perché il foglio
-   è quasi bianco come la pagina e senza si perderebbe; il clic scarica il
-   PDF, e il cursore lo dice. Nessun'altra cornice: è l'immagine e basta. */
+/* ── La cornice della Color Runner in home ───────────────────────────────
+   Il manifesto è il richiamo all'evento, e porta i tasti per aprirlo: una
+   lastra del sito (.sb-panel, stesso rim e stesso smusso) con dentro
+   l'immagine e i due tasti. Da schermo largo i tasti stanno sovrapposti alla
+   metà destra dell'immagine — la zona di sole polveri — su un vetro dei
+   token del sito; sotto i 48rem l'immagine sta sopra e i tasti sotto, a
+   tutta larghezza. */
+.sb-riv-crhome { margin-top: 2rem; }
+.sb-riv-crhome .sb-riv-crbanner { margin: 0; border: 0; }
+.sb-riv-crhome-azioni {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1rem, 3.5vw, 1.4rem);
+}
+.sb-riv-crhome-azioni .sb-btn { width: 100%; }
+
+@media (min-width: 48rem) {
+  .sb-riv-crhome .sb-panel-inner { display: grid; }
+  .sb-riv-crhome .sb-riv-crbanner { grid-area: 1 / 1; }
+  .sb-riv-crhome-azioni {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: end;
+    width: min(16rem, 42%);
+    margin: clamp(1rem, 3vw, 1.9rem);
+    padding: clamp(0.85rem, 2vw, 1.1rem);
+    background: color-mix(in srgb, var(--sb-bg) 78%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+    box-shadow: inset 0 1px 0 var(--sb-glass-spec);
+    clip-path: var(--sb-shape-sm);
+  }
+}
+
+/* ── La locandina A4 ─────────────────────────────────────────────────────
+   L'anteprima del foglio, con un filo di bordo perché è quasi bianco come la
+   pagina; il clic scarica il PDF, e il cursore lo dice. Nessun'altra cornice.
+   In fondo a /color-runner l'anteprima è piccola; nella spalla del modulo
+   (.sb-cr-loc-lato, solo da schermo largo) è larga quanto la colonna. */
 .sb-riv-crloc { margin: 1.6rem 0 0; }
 .sb-riv-crloc-a {
   display: inline-block;
