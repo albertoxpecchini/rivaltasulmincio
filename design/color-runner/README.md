@@ -58,6 +58,23 @@ resto è dentro le immagini.
 > screenshot a 2× per i `.webp`, stampa in PDF A4 per la locandina. Rifatti i pezzi sulla
 > tela, si riesporta con questi nomi e ricompaiono al primo build.
 
+### Scorciatoia: `locandina.render.html`
+
+Copia autonoma della sola locandina — stesso markup di `locandina.dc.html` ma senza
+`<x-dc>`/`<doc-page>` né runtime, pagina A4 vera con i font da Google Fonts. Serve a
+riesportare `webp` + `pdf` con Chrome headless, senza aprire Claude Design:
+
+```
+chrome --headless --no-pdf-header-footer --print-to-pdf=color-runner-locandina.pdf \
+  --virtual-time-budget=10000 locandina.render.html
+chrome --headless --force-device-scale-factor=2 --window-size=794,1123 \
+  --screenshot=shot.png --virtual-time-budget=10000 locandina.render.html
+# shot.png (1588×2246) → ridimensiona a 1240×1754 e salva in webp (es. sharp/squoosh)
+```
+
+Se si tocca `locandina.dc.html`, riportare la stessa modifica qui dentro (i due file
+vanno tenuti allineati a mano).
+
 ## Perché sta qui e non va online
 
 `design/` è in [`.vercelignore`](../../.vercelignore): è officina. In produzione ci va solo
