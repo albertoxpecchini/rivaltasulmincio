@@ -12,6 +12,34 @@ runtime.
 | `doc-page.js`, `support.js` | Il runtime di Claude Design che le due tavole caricano con `<script src="./…">`. Senza, i `.dc.html` non si compongono | — |
 | `.thumbnail` | Anteprima del canvas (WebP 640 × 335), la usa Claude Design | — |
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
+| `risottata/` | La striscia della **risottata finale** — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
+
+## La risottata — `risottata/`
+
+Tela di Claude Design importata da `claude.ai/design`. Diversa dalle altre due: il piatto
+è un `<image-slot>` in cui è stata trascinata una foto (un risotto alla pilota), salvata
+in `.image-slots.state.json` accanto al `.dc.html`.
+
+| File | Cos'è |
+| :--- | :--- |
+| `risottata-banner.dc.html` | L'originale editabile (usa `support.js` + `image-slot.js`) |
+| `image-slot.js`, `support.js` | Il runtime di Claude Design per questa tela |
+| `.image-slots.state.json` | La foto del piatto, in base64, com'è stata inserita nella tela |
+| `risottata-banner.render.html` | Copia **piatta e autonoma**: niente `<x-dc>`/`<image-slot>`, font Titillium Web in base64, la foto messa come sfondo di un cerchio. Zero rete. È da qui che si riesporta il webp |
+
+**Riesportare** `assets/foto/risottata-banner.webp` (2400 × 900): screenshot di
+`risottata-banner.render.html` con Chrome headless a scala 1, poi `sharp` in webp —
+stesso giro della locandina.
+
+```
+chrome --headless --force-device-scale-factor=1 --window-size=2400,900 \
+  --screenshot=shot.png --virtual-time-budget=12000 risottata/risottata-banner.render.html
+# shot.png (2400×900) → webp, quality ~88
+```
+
+Se si rifà la tela su Claude Design, si riscarica `.dc.html` + `.image-slots.state.json`
+e si rigenera `risottata-banner.render.html` (rimettendo la foto da `.u` del sidecar come
+`background-image` del cerchio).
 
 ## Da dove vengono i dati
 

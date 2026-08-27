@@ -400,9 +400,10 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
 .sb-cr-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ═══ La risottata ══════════════════════════════════════════════════════════
-   Facoltativa: una spunta come quella del consenso, e sotto — solo quando è
-   spuntata — lo "switcher" per dire quante persone restano a mangiare. Non è un
-   campo obbligatorio, non entra nel conto di «quanto manca», non si paga qui. */
+   Facoltativa: la striscia della risottata in testa, poi una spunta come quella
+   del consenso, e sotto — solo quando è spuntata — lo "switcher" per dire quante
+   persone restano a mangiare. Non è un campo obbligatorio, non entra nel conto
+   di «quanto manca», non si paga qui. */
 .sb-cr-risotto {
   display: grid;
   gap: 0.85rem;
@@ -412,6 +413,9 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   background: var(--sb-surface-100);
   transition: border-color 0.2s ease;
 }
+/* La striscia è già l'immagine col suo filo di bordo: dentro la lastra non le
+   serve il margine che porta altrove, e il raggio si accorda a quello del box. */
+.sb-cr-risotto .sb-riv-crbanner { margin: 0; border-radius: 6px; }
 .sb-cr-risotto:focus-within { border-color: var(--sb-brand); }
 .sb-cr-risotto-spunta {
   display: grid;
@@ -670,6 +674,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
         </div>
 
         <div class="sb-cr-risotto">
+          {{RISOTTA_BANNER}}
           <label class="sb-cr-risotto-spunta">
             <input type="checkbox" id="cr-risotto" name="risotto">
             <span>Mi fermo alla <strong>risottata finale</strong>, dopo la camminata <span class="sb-cr-facolt">su prenotazione</span></span>
