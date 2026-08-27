@@ -731,17 +731,14 @@ html.dark .sb-riv-flash--cr .sb-panel-inner {
 }
 
 /* ── Il banner della Color Runner ─────────────────────────────────────────
-   Il manifesto è disegnato a parte (design/color-runner/) ed entra com'è:
-   una figura sola, a tutta la colonna, con lo smusso del sito e nient'altro
-   — niente lastra, niente cornice, o sarebbe un riquadro dentro un riquadro.
-   Le tre pagine — /color-runner, home, regolamento — mostrano lo stesso file.
-   Il colore vive dentro l'immagine, non intorno. */
+   L'immagine di design/color-runner/banner.dc.html, messa e basta: nessuna
+   lastra, nessun taglio, nessun fondo dietro. Larga quanto la colonna, la
+   stessa in tre pagine — /color-runner, home, regolamento. */
 .sb-riv-crbanner {
   display: block;
   width: 100%;
   height: auto;
-  margin-top: 2rem;
-  clip-path: var(--sb-shape-lg);
+  margin: 2rem 0 0;
 }
 
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */

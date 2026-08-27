@@ -275,11 +275,11 @@ html.dark .sb-cr .sb-riv-pagehead::before {
     var(--sb-glass-bg);
 }
 
-/* Il manifesto dell'evento è un'immagine sola: .sb-riv-crbanner in
-   assets/rivalta.css le dà solo lo smusso del sito, nient'altro. Il markup e
-   il file (assets/foto/color-runner-banner.webp) li mette il build al
-   segnaposto qui sotto, dopo la lede. Lo stesso banner sta in home e in coda
-   al regolamento. */
+/* Il manifesto dell'evento è solo un'immagine: .sb-riv-crbanner in
+   assets/rivalta.css non le mette niente intorno. Il file
+   (assets/foto/color-runner-banner.webp) lo mette il build al segnaposto qui
+   sotto, che sta FUORI dalla testata — sul velo di polveri sembrerebbe
+   incorniciato. Lo stesso banner sta in home e in coda al regolamento. */
 
 /* ═══ La lastra del modulo ═══════════════════════════════════════════════════
    È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
@@ -617,9 +617,13 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     <h1>Color Runner</h1>
     <p class="sb-cr-quando"><strong>Domenica 20 settembre 2026, dalle 15:30</strong> — ritrovo in Piazza Chiesa, davanti alla chiesa, poi giro per le vie di Rivalta sul Mincio</p>
     <p class="sb-riv-lede">Camminata (o corsa) a colori <strong>non competitiva</strong>: si va a passo libero, non c'è classifica, lungo il percorso si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-    <img class="sb-riv-crbanner" src="assets/foto/color-runner-banner.webp" width="2400" height="900" decoding="async"
-      alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">
   </section>
+
+  <!-- Il banner fuori dalla testata: dentro la sezione .sb-riv-pagehead c'è il
+       velo di polveri, e un'immagine appoggiata lì sopra sembra incorniciata.
+       Qui è solo il file, sul fondo della pagina. -->
+  <div class="sb-container"><img class="sb-riv-crbanner" src="assets/foto/color-runner-banner.webp" width="2400" height="900" decoding="async"
+      alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30."></div>
 
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead sb-sechead--start">
