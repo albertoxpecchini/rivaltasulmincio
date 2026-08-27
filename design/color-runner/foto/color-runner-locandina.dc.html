@@ -18,28 +18,23 @@
 </helmet>
 <div style="width: 1240px; height: 1754px; position: relative; overflow: hidden; background: #fcfcfc; font-family: 'Titillium Web', sans-serif;">
 
-  <!-- griglia tecnica, sfumata -->
-  <div style="position: absolute; inset: 0; background-image: linear-gradient(to right,#dbdbdb 1px,transparent 1px),linear-gradient(to bottom,#dbdbdb 1px,transparent 1px); background-size: 84px 84px; opacity: 0.55; -webkit-mask-image: radial-gradient(ellipse 80% 74% at 52% 42%, #000 26%, transparent 100%); mask-image: radial-gradient(ellipse 80% 74% at 52% 42%, #000 26%, transparent 100%); pointer-events: none;"></div>
+  <!-- griglia tecnica: solo nell'area di testo, molto leggera -->
+  <div style="position: absolute; left: 0; top: 460px; right: 0; bottom: 0; background-image: linear-gradient(to right,#dbdbdb 1px,transparent 1px),linear-gradient(to bottom,#dbdbdb 1px,transparent 1px); background-size: 84px 84px; opacity: 0.4; -webkit-mask-image: radial-gradient(ellipse 78% 70% at 50% 34%, #000 6%, transparent 100%); mask-image: radial-gradient(ellipse 78% 70% at 50% 34%, #000 6%, transparent 100%); pointer-events: none;"></div>
 
-  <!-- veli di polvere colorata -->
-  <div style="position: absolute; inset: 0; pointer-events: none; opacity: 0.95;">
-    <div style="position: absolute; left: -12%; top: 1%; width: 60%; height: 30%; background: radial-gradient(closest-side, rgba(15,178,239,0.20), rgba(15,178,239,0) 100%); filter: blur(26px);"></div>
-    <div style="position: absolute; right: -14%; top: 20%; width: 64%; height: 32%; background: radial-gradient(closest-side, rgba(255,45,135,0.16), rgba(255,45,135,0) 100%); filter: blur(30px);"></div>
-    <div style="position: absolute; left: 6%; bottom: -6%; width: 68%; height: 28%; background: radial-gradient(closest-side, rgba(255,198,26,0.16), rgba(255,198,26,0) 100%); filter: blur(32px);"></div>
-    <div style="position: absolute; right: 4%; bottom: 4%; width: 44%; height: 22%; background: radial-gradient(closest-side, rgba(138,92,246,0.13), rgba(138,92,246,0) 100%); filter: blur(30px);"></div>
+  <!-- traccia di colore, bassa e appena percettibile -->
+  <div style="position: absolute; inset: 0; pointer-events: none;">
+    <div style="position: absolute; left: -6%; bottom: 2%; width: 62%; height: 26%; background: radial-gradient(closest-side, rgba(255,198,26,0.11), rgba(255,198,26,0) 100%); filter: blur(34px);"></div>
+    <div style="position: absolute; right: -8%; bottom: 18%; width: 52%; height: 22%; background: radial-gradient(closest-side, rgba(255,45,135,0.08), rgba(255,45,135,0) 100%); filter: blur(34px);"></div>
   </div>
 
-  <!-- la foto: dissolta nel foglio da una maschera radiale, in alto a destra.
-       Trascina/zooma il PNG nello slot; la sfumatura resta. -->
-  <div style="position: absolute; right: -80px; top: -40px; width: 820px; height: 900px; -webkit-mask-image: radial-gradient(120% 120% at 74% 34%, #000 0%, #000 30%, rgba(0,0,0,0.3) 60%, transparent 80%); mask-image: radial-gradient(120% 120% at 74% 34%, #000 0%, #000 30%, rgba(0,0,0,0.3) 60%, transparent 80%);">
-    <image-slot id="colorrun-photo-a4" shape="rect" fit="cover" style="width: 820px; height: 900px;" placeholder="bambini che corrono lanciando polveri colorate e vernice — luce piena, movimento"></image-slot>
+  <!-- fascia foto a pieno taglio: trascina o clicca per caricare -->
+  <div style="position: absolute; left: 0; top: 0; width: 1240px; height: 460px; background: #f1f3f4;">
+    <image-slot id="colorrun-photo-a4" shape="rect" fit="cover" style="width: 1240px; height: 460px;" placeholder="bambini che corrono lanciando polveri colorate — luce piena, movimento"></image-slot>
   </div>
-  <!-- velo bianco sotto il titolo -->
-  <div style="position: absolute; left: 0; top: 0; width: 100%; height: 780px; background: linear-gradient(180deg, rgba(252,252,252,0) 0%, rgba(252,252,252,0) 42%, rgba(252,252,252,0.6) 66%, #fcfcfc 90%); pointer-events: none;"></div>
-  <div style="position: absolute; left: 0; top: 0; width: 540px; height: 780px; background: linear-gradient(90deg, #fcfcfc 0%, rgba(252,252,252,0.75) 46%, rgba(252,252,252,0) 100%); pointer-events: none;"></div>
+  <div style="position: absolute; left: 0; top: 460px; width: 1240px; height: 5px; background: #00A6EB; pointer-events: none;"></div>
 
   <!-- contenuto -->
-  <div style="position: absolute; inset: 0; box-sizing: border-box; padding: 112px 118px; display: flex; flex-direction: column;">
+  <div style="position: absolute; left: 0; right: 0; top: 465px; bottom: 72px; box-sizing: border-box; padding: 30px 118px 0; display: flex; flex-direction: column; pointer-events: none;">
 
     <div style="display: flex; align-items: center; gap: 14px;">
       <div style="width: 52px; height: 52px; flex: none; background: #00A6EB; clip-path: polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px); display: flex; align-items: center; justify-content: center;">
@@ -53,13 +48,13 @@
       <div style="font-family: 'Roboto Mono', monospace; font-size: 15px; letter-spacing: 0.04em; color: #8f8f8f;">rivaltasulmincio.it</div>
     </div>
 
-    <div style="margin-top: 118px; font-size: 17px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0a5f86;">Iscrizioni aperte</div>
+    <div style="margin-top: 30px; font-size: 17px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0a5f86;">Iscrizioni aperte</div>
 
-    <h1 style="margin: 16px 0 0; font-size: 128px; line-height: 0.9; font-weight: 400; letter-spacing: -0.03em; color: #171717;">Color Runner</h1>
+    <h1 style="margin: 16px 0 0; font-size: 110px; line-height: 0.92; font-weight: 400; letter-spacing: -0.03em; color: #171717;">Color Runner</h1>
 
     <p style="margin-top: 24px; font-size: 30px; line-height: 1.32; font-weight: 300; color: #525252; max-width: 22ch;">Camminata (o corsa) a colori, non competitiva</p>
 
-    <div style="margin-top: 90px; background: rgba(255,255,255,0.78); border: 1px solid #e8e8e8; box-shadow: 0 24px 60px rgba(23,23,23,0.06); clip-path: polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px); padding: 32px 36px; display: grid; grid-template-columns: 112px 1fr; gap: 14px 26px; align-items: baseline;">
+    <div style="margin-top: 62px; background: rgba(255,255,255,0.78); border: 1px solid #e8e8e8; box-shadow: 0 24px 60px rgba(23,23,23,0.06); clip-path: polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px); padding: 32px 36px; display: grid; grid-template-columns: 112px 1fr; gap: 14px 26px; align-items: baseline;">
       <div style="font-family: 'Roboto Mono', monospace; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: #8f8f8f;">Quando</div>
       <div style="font-size: 26px; font-weight: 600; letter-spacing: -0.01em; color: #171717;">Domenica 20 settembre 2026 — dalle 15:30</div>
       <div style="grid-column: 1 / -1; height: 1px; background: #e8e8e8;"></div>
@@ -67,14 +62,14 @@
       <div style="font-size: 23px; line-height: 1.35; color: #171717;">Ritrovo in Piazza Chiesa, davanti alla chiesa — Rivalta sul Mincio (Rodigo, MN)</div>
     </div>
 
-    <p style="margin-top: 40px; font-size: 22px; line-height: 1.6; color: #525252; text-align: justify; hyphens: auto; text-wrap: pretty; max-width: 56ch;">Si va a passo libero: niente cronometro, niente classifica. Lungo le vie del paese, stazioni che ti coprono di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
+    <p style="margin-top: 32px; font-size: 22px; line-height: 1.6; color: #525252; text-align: justify; hyphens: auto; text-wrap: pretty; max-width: 56ch;">Si va a passo libero: niente cronometro, niente classifica. Lungo le vie del paese, stazioni che ti coprono di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
 
-    <div style="margin-top: 30px; display: flex; align-items: flex-start; gap: 20px; font-size: 16px; line-height: 1.55; color: #8f8f8f;">
+    <div style="margin-top: 24px; display: flex; align-items: flex-start; gap: 20px; font-size: 16px; line-height: 1.55; color: #8f8f8f;">
       <div style="width: 38px; height: 1px; background: #00A6EB; margin-top: 11px; flex: none;"></div>
       <p style="max-width: 58ch;">Polveri atossiche a base di amido di mais, si lavano con acqua e sapone · Vestiti e scarpe che possono macchiarsi, meglio una maglietta chiara · Ora esatta di partenza e percorso comunicati via email agli iscritti</p>
     </div>
 
-    <div style="flex: 1; min-height: 24px;"></div>
+    <div style="flex: 1; min-height: 0;"></div>
 
     <div style="background: rgba(255,255,255,0.82); border: 1px solid #e8e8e8; box-shadow: 0 24px 60px rgba(23,23,23,0.06); clip-path: polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px); padding: 32px 36px; display: flex; align-items: flex-end; justify-content: space-between; gap: 28px;">
       <div>
@@ -91,7 +86,7 @@
       </div>
     </div>
 
-    <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #e8e8e8; font-size: 15px; line-height: 1.6; color: #8f8f8f; max-width: 82ch;">Organizzano Rebecca Zovi, Elena Colla e Alessandra Nosè con l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Regolamento completo su rivaltasulmincio.it/color-runner-regolamento</div>
+    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e8e8e8; font-size: 15px; line-height: 1.6; color: #8f8f8f; max-width: 82ch;">Organizzano Rebecca Zovi, Elena Colla e Alessandra Nosè con l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Regolamento completo su rivaltasulmincio.it/color-runner-regolamento</div>
 
   </div>
 </div>

@@ -19,13 +19,19 @@ runtime.
 
 `banner.dc.html` e `locandina.dc.html` qui sopra sono le versioni **astratte** (nuvole di
 colore disegnate) — restano come storia. Le versioni vive hanno una **foto** (bambini che
-corrono lanciando colori), **dissolta nel foglio** da una maschera radiale — niente
-rettangolo netto.
+corrono lanciando colori):
+
+- **banner**: la foto a destra, **dissolta nel foglio** da una maschera radiale (niente
+  rettangolo netto);
+- **locandina A4**: la foto come **fascia a pieno taglio in cima** (1240 × 460), filo
+  azzurro sotto, poi il testo su bianco.
 
 | File in `foto/` | Cos'è |
 | :--- | :--- |
 | `color-runner-banner.dc.html` | Banner 2400 × 900, `<image-slot id="colorrun-photo">` a destra |
-| `color-runner-locandina.dc.html` | Locandina A4 1240 × 1754, `<image-slot id="colorrun-photo-a4">` in alto a destra |
+| `color-runner-locandina.dc.html` | Locandina A4 1240 × 1754, `<image-slot id="colorrun-photo-a4">` nella fascia in alto |
+| `color-runner-banner.render.html`, `color-runner-locandina.render.html` | Copie piatte e autonome (foto + font inline) da cui si riesporta |
+| `.image-slots.state.json` | Le foto com'erano nelle tele. **Nota:** DesignSync `get_file` tronca il sidecar oltre i 256 KiB (con 3 foto ci arriva): per riprenderlo intero si **riscarica la cartella del progetto** da claude.ai/design |
 | `image-slot.js`, `support.js` | Runtime di Claude Design per queste due tele |
 
 Le tele editabili stanno su **Claude Design**, progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
@@ -37,10 +43,12 @@ risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo 
 
 1. Su Claude Design si apre il file (banner o locandina), si trascina il PNG nello slot,
    si posiziona, **Salva**. La stessa foto va bene per tutti e due.
-2. `DesignSync get_file` del `.dc.html` e di `.image-slots.state.json` dal progetto.
+2. Si **riscarica la cartella del progetto** (`~/Downloads/Risottata banner design/`):
+   contiene i `.dc.html` aggiornati e il `.image-slots.state.json` intero. (`DesignSync
+   get_file` va bene per i `.dc.html`, ma tronca il sidecar quando è grande.)
 3. Si genera il `.render.html` piatto e autonomo: `<image-slot>` → `<div>` col
-   `background-image` da `.u` del sidecar (sotto la stessa maschera radiale), font in
-   base64, veli di colore come nel `.dc.html`. Zero rete.
+   `background-image` da `.u` del sidecar, font in base64. Zero rete. Per la locandina il
+   `.render.html` ha anche il CSS di stampa (`@page A4`) per il PDF.
 4. Screenshot Chrome headless a scala 1 → `sharp` in webp:
    - banner → **`assets/foto/color-runner-banner.webp`** (2400 × 900)
    - locandina → **`assets/foto/color-runner-locandina.webp`** (1240 × 1754) e il PDF A4
