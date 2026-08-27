@@ -567,16 +567,22 @@ const renderRisottaBanner = () => {
    home, /comunita, /eventi, il regolamento — così l'evento si presenta
    sempre allo stesso modo. Una definizione sola: se cambiano i tasti,
    cambiano dappertutto. Senza il file del banner, sparisce tutto il blocco:
-   nessuna cornice vuota. */
-const renderBannerHome = () => {
+   nessuna cornice vuota.
+
+   Sulla pagina del regolamento il tasto «Regolamento» punterebbe a sé stessa:
+   lì resta solo «Iscriviti». */
+const renderBannerHome = (page) => {
   const img = renderBanner();
   if (!img) return "";
+  const regolamento =
+    page === "color-runner-regolamento"
+      ? ""
+      : `\n            <a class="sb-btn sb-btn--secondary" href="/color-runner-regolamento"><span>Regolamento</span></a>`;
   return `<div class="sb-riv-crhome">
         <div class="sb-panel"><div class="sb-panel-inner">
           ${img}
           <div class="sb-riv-crhome-azioni">
-            <a class="sb-btn sb-btn--primary" href="/color-runner#iscrizione"><span>Iscriviti alla camminata</span></a>
-            <a class="sb-btn sb-btn--secondary" href="/color-runner-regolamento"><span>Regolamento</span></a>
+            <a class="sb-btn sb-btn--primary" href="/color-runner#iscrizione"><span>Iscriviti alla camminata</span></a>${regolamento}
           </div>
         </div></div>
       </div>`;
@@ -811,7 +817,7 @@ for (const file of bodies) {
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
-      .replace("{{CR_HOME}}", renderBannerHome)
+      .replace("{{CR_HOME}}", () => renderBannerHome(page))
       .replace("{{RISOTTA_BANNER}}", renderRisottaBanner)
       .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
