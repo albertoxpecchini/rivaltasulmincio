@@ -518,18 +518,22 @@ ${LOGHI.map((l) => {
 }).join("\n")}
     </div>`;
 
-/* ── Il banner della Color Runner ─────────────────────────────────────────
-   Il manifesto è disegnato a parte (design/color-runner/, tela di Claude
-   Design) ed esportato in assets/foto/color-runner-banner.webp. {{BANNER}} lo
-   mette com'è — una <img> sola, a tutta la colonna, con lo smusso del sito —
-   nella testata di /color-runner, in cima agli aggiornamenti in home e in
-   coda al regolamento. Le tre pagine mostrano lo stesso file.
+/* ── Il banner e la locandina della Color Runner ─────────────────────────
+   Due pezzi disegnati a parte (design/color-runner/, tela di Claude Design) ed
+   esportati in assets/: il banner orizzontale e la locandina A4.
 
-   Finché il file non c'è, il segnaposto non lascia né un buco né una cornice
-   vuota: le pagine stanno in piedi lo stesso. Rifà il manifesto? Riesporta con
-   questo nome e ricompare al primo build. */
+   {{BANNER}} mette il banner com'è — una <img> sola, niente intorno — nella
+   testata di /color-runner, al posto della scheda dell'evento in home (dove è
+   un collegamento) e in coda al regolamento. {{LOCANDINA}} mette la locandina
+   su /color-runner: l'anteprima porta al PDF A4 da stampare.
+
+   Finché il file non c'è, il segnaposto non lascia né un buco né una cornice:
+   la pagina sta in piedi lo stesso. Rifatti i pezzi sulla tela, si riesporta
+   con questi nomi e ricompaiono al primo build. */
 const BANNER = "color-runner-banner";
+const LOCANDINA = "color-runner-locandina";
 let bannerTrovato = null;
+let locandinaTrovata = null;
 
 const renderBanner = () => {
   bannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
@@ -538,6 +542,21 @@ const renderBanner = () => {
   if (!bannerTrovato) return "";
   return `<img class="sb-riv-crbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
       alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
+};
+
+const renderLocandina = () => {
+  locandinaTrovata = ["webp", "avif", "png", "jpg"]
+    .map((est) => `assets/foto/${LOCANDINA}.${est}`)
+    .find((p) => existsSync(p));
+  if (!locandinaTrovata) return "";
+  const pdf = `assets/${LOCANDINA}.pdf`;
+  const scaricabile = existsSync(pdf);
+  return `<figure class="sb-riv-crloc">
+      <a class="sb-riv-crloc-a" href="${scaricabile ? pdf : locandinaTrovata}"${scaricabile ? " download" : ' target="_blank" rel="noopener"'}>
+        <img src="${locandinaTrovata}" width="1240" height="1754" loading="lazy" decoding="async"
+          alt="Locandina A4 della Color Runner: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona su rivaltasulmincio.it/color-runner.">
+      </a>
+    </figure>`;
 };
 
 /* ── Le sei contrade ──────────────────────────────────────────────────────
@@ -747,6 +766,7 @@ for (const file of bodies) {
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
+      .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
   );
@@ -1045,6 +1065,12 @@ if (!bannerTrovato) {
   console.log(`
 ⚠ banner Color Runner: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
   console.log(`  L'originale è la tela in design/color-runner/: si riesporta e ricompare.`);
+}
+
+if (!locandinaTrovata) {
+  console.log(`
+⚠ locandina Color Runner: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
+  console.log(`  L'anteprima e il link al PDF su /color-runner compaiono col file.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

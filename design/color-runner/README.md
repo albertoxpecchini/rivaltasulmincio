@@ -1,8 +1,9 @@
 # La locandina e il banner della Color Runner
 
 Due tavole disegnate su tela di **Claude Design** (canvas «Locandina A4 verticale») e
-scaricate qui intere. Non finiscono nel sito da sole: sono l'originale editabile da cui si
-esporta il file vero — la locandina da stampare, l'immagine del banner per `/color-runner`.
+scaricate qui intere. Sono l'**originale editabile**: nel sito ci va il file esportato
+(vedi «Come i due pezzi entrano nel sito» più sotto), non questi `.dc.html` col loro
+runtime.
 
 | File | Cos'è | Misura |
 | :--- | :--- | :--- |
@@ -32,23 +33,30 @@ di luce sul bordo alto, griglia tecnica da 64 px che sfuma sul fondo. Le **polve
 al fondale: veli tenui sulla locandina, una nuvola più accesa sul banner, mai sotto il testo.
 Il rosso è escluso apposta: sul sito vuol dire «errore».
 
-## Come si tira fuori il file finito
+## Come i due pezzi entrano nel sito
 
-- **Locandina** → esporta in PDF (o PNG ad alta risoluzione) in formato A4, pronto per la
-  stampa o da allegare a una mail. Resta un pezzo da tela: sul sito non va.
-- **Banner** → esporta in PNG e riducilo a `assets/foto/color-runner-banner.webp`
-  (2400 × 900, ~55 kB). È **il file di `banner.dc.html`, messo com'è**: `build.mjs`
-  (`renderBanner`) lo pesca da lì e lo mette come `<img class="sb-riv-crbanner">` — una
-  figura sola, con lo smusso del sito e nient'altro, niente lastra intorno. Compare uguale
-  in tre punti: nella testata di [`/color-runner`](../../color-runner.html), in cima agli
-  «Aggiornamenti recenti» in [home](../../index.html), in coda al
-  [regolamento](../../color-runner-regolamento.html). La regola CSS è due righe in
-  [`assets/rivalta.css`](../../assets/rivalta.css); il resto è dentro l'immagine.
-  Se manca il file, il segnaposto non lascia buchi e il build lo dice.
+Tutti e due sono **il file della tela, messo com'è** — nessuna cornice, nessuna lastra. Il
+build li pesca da `assets/` e li mette al posto di `{{BANNER}}` / `{{LOCANDINA}}`; se un
+file manca, il segnaposto non lascia buchi e il build lo dice.
 
-  > Il `.webp` è stato ricavato aprendo `banner.dc.html` in un browser senza il runtime di
-  > Claude Design (il `<div>` da 1600 × 600 si compone da solo) e fotografandolo a 2×.
-  > Rifatto il manifesto sulla tela, si riesporta con lo stesso nome.
+- **Banner** → `assets/foto/color-runner-banner.webp` (2400 × 900, ~55 kB). `renderBanner`
+  lo mette come `<img class="sb-riv-crbanner">` nella testata di
+  [`/color-runner`](../../color-runner.html), al posto della scheda dell'evento in
+  [home](../../index.html) (dove è un collegamento) e in coda al
+  [regolamento](../../color-runner-regolamento.html).
+- **Locandina** → `assets/foto/color-runner-locandina.webp` (1240 × 1754, ~90 kB) per
+  l'anteprima e `assets/color-runner-locandina.pdf` (A4) per la stampa. `renderLocandina`
+  le mette nella sezione «La locandina» di `/color-runner`: l'anteprima è un'immagine e il
+  clic scarica il PDF.
+
+La regola CSS di tutti e due sono poche righe in
+[`assets/rivalta.css`](../../assets/rivalta.css) (`.sb-riv-crbanner`, `.sb-riv-crloc`); il
+resto è dentro le immagini.
+
+> I file sono stati ricavati aprendo `banner.dc.html` / `locandina.dc.html` in un browser
+> **senza** il runtime di Claude Design (il markup si compone da solo) e catturandolo:
+> screenshot a 2× per i `.webp`, stampa in PDF A4 per la locandina. Rifatti i pezzi sulla
+> tela, si riesporta con questi nomi e ricompaiono al primo build.
 
 ## Perché sta qui e non va online
 

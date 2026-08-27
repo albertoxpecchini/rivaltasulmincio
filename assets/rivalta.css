@@ -695,6 +695,20 @@
 .sb-riv-crbanner-link { display: block; margin: 2rem 0 0; }
 .sb-riv-crbanner-link .sb-riv-crbanner { margin: 0; }
 
+/* La locandina A4: l'anteprima del foglio, non a tutta pagina — un A4 grande
+   quanto lo schermo non lo guarda nessuno. Un filo di bordo perché il foglio
+   è quasi bianco come la pagina e senza si perderebbe; il clic scarica il
+   PDF, e il cursore lo dice. Nessun'altra cornice: è l'immagine e basta. */
+.sb-riv-crloc { margin: 1.6rem 0 0; }
+.sb-riv-crloc-a {
+  display: inline-block;
+  width: 100%;
+  max-width: 22rem;
+  border: 1px solid var(--sb-border);
+  cursor: pointer;
+}
+.sb-riv-crloc-a img { display: block; width: 100%; height: auto; }
+
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */
 .sb-riv-pager {
   display: flex;
