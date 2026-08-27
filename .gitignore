@@ -1,2 +1,8 @@
 # Vite e le sue dipendenze vivono solo sulla macchina di chi modifica il sito.
 node_modules/
+
+# Le chiavi per provare le funzioni in api/ da locale (ISCRITTI_CHIAVE,
+# STRIPE_SECRET_KEY, …). Sono segreti: in produzione le mette Vercel, qui NO.
+# Il modello di cosa ci va sta in .env.example, quello sì versionato.
+.env
+.env.local

@@ -22,7 +22,7 @@
 import { stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { pathToFileURL } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 
 const ROOT = process.cwd();
 
@@ -119,29 +119,46 @@ const anteprimaVercel = () => ({
   },
 });
 
-export default defineConfig({
-  plugins: [anteprimaVercel()],
+export default defineConfig(({ mode }) => {
+  /* Le funzioni in api/ leggono le chiavi da `process.env` — in produzione ce
+     le mette Vercel. In locale, senza `ISCRITTI_CHIAVE` e `STRIPE_SECRET_KEY`,
+     `/api/iscritti-color-runner` risponde 503 «zona iscritti non configurata» e
+     la pagina /iscritti non si può nemmeno provare.
 
-  /* "mpa": nove pagine indipendenti, nessuna applicazione a pagina singola.
-     Senza, Vite servirebbe la home per ogni indirizzo che non trova e i 404
-     resterebbero invisibili proprio in anteprima, che è dove servono. */
-  appType: "mpa",
+     Qui le peschiamo da un file `.env` in radice — `loadEnv` col prefisso ""
+     prende tutte le variabili, non solo quelle `VITE_` — e le ribaltiamo in
+     `process.env`, che è dove le cerca il codice della funzione, identico a
+     com'è su Vercel. Chi ha già esportato la variabile nella shell vince: il
+     file riempie solo i vuoti. Il `.env` sta nel .gitignore: sono segreti, e
+     come il resto dell'officina non esce di qui. */
+  for (const [k, v] of Object.entries(loadEnv(mode, ROOT, ""))) {
+    if (process.env[k] === undefined) process.env[k] = v;
+  }
 
-  // Le immagini e i fogli di stile stanno già in assets/ e vanno serviti da
-  // lì: non c'è nessuna cartella public/ da copiare.
-  publicDir: false,
+  return {
+    plugins: [anteprimaVercel()],
 
-  server: {
-    /* `host: true` = in ascolto su tutti gli indirizzi della macchina, non
-       solo su localhost. All'avvio Vite stampa due righe: Local (dal computer)
-       e Network — quest'ultima è l'indirizzo 10.x della rete di casa, da
-       aprire dal telefono o da un altro computer collegato allo stesso Wi-Fi.
-       Non è scritto a mano qui apposta: cambia da solo quando cambia rete. */
-    host: true,
-    // La 5173 la occupa già un altro Vite su questo computer.
-    port: 5174,
-    // Meglio fallire che ritrovarsi su una porta a caso mentre il telefono
-    // punta ancora alla 5174.
-    strictPort: true,
-  },
+    /* "mpa": nove pagine indipendenti, nessuna applicazione a pagina singola.
+       Senza, Vite servirebbe la home per ogni indirizzo che non trova e i 404
+       resterebbero invisibili proprio in anteprima, che è dove servono. */
+    appType: "mpa",
+
+    // Le immagini e i fogli di stile stanno già in assets/ e vanno serviti da
+    // lì: non c'è nessuna cartella public/ da copiare.
+    publicDir: false,
+
+    server: {
+      /* `host: true` = in ascolto su tutti gli indirizzi della macchina, non
+         solo su localhost. All'avvio Vite stampa due righe: Local (dal computer)
+         e Network — quest'ultima è l'indirizzo 10.x della rete di casa, da
+         aprire dal telefono o da un altro computer collegato allo stesso Wi-Fi.
+         Non è scritto a mano qui apposta: cambia da solo quando cambia rete. */
+      host: true,
+      // La 5173 la occupa già un altro Vite su questo computer.
+      port: 5174,
+      // Meglio fallire che ritrovarsi su una porta a caso mentre il telefono
+      // punta ancora alla 5174.
+      strictPort: true,
+    },
+  };
 });

@@ -26,3 +26,7 @@ package.json
 package-lock.json
 node_modules/
 .gitignore
+# Le chiavi per l'anteprima locale: in produzione le variabili le mette Vercel.
+.env
+.env.local
+.env.example

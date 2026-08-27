@@ -888,6 +888,22 @@ link interno dà 404 mentre in produzione funziona: `serve.mjs` riproduce appost
 di `vercel.json`. Va bene anche `npx serve .` (porta 3000), che lo fa da sé, ma si tira dietro un
 albero di dipendenze per una cosa che qui sono cinquanta righe.
 
+### Provare le funzioni `api/` in locale — `npm run dev`
+
+`serve.mjs` mostra le pagine; per provare anche le funzioni in `api/` c'è `npm run dev` (Vite:
+`http://localhost:5174`, e in ascolto anche sull'indirizzo di rete `10.x`, così le pagine si aprono
+dal telefono). Le funzioni leggono le chiavi da `process.env` — in produzione le mette Vercel, in
+locale da un file **`.env`** in radice, che `git` ignora perché sono segreti:
+
+```bash
+cp .env.example .env      # poi riempire ISCRITTI_CHIAVE e STRIPE_SECRET_KEY
+npm run dev
+```
+
+Senza `.env`, `/iscritti` risponde «zona iscritti non configurata: manca `ISCRITTI_CHIAVE`» e non
+si arriva nemmeno a digitare la chiave. In `.env` la chiave la si inventa: dev'essere solo la stessa
+che si scrive nella porta della pagina. Una variabile già esportata nella shell vince sul file.
+
 ---
 
 ## ♿ Accessibilità
