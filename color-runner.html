@@ -219,67 +219,13 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
 }
 .sb-cr-quando strong { font-weight: 600; color: var(--sb-fg); }
 
-/* Sotto l'intestazione — occhiello, titolo, data, lede — passa una lastra
-   bassa e larga: le quattro polveri della camminata in diagonale e sopra una
-   lama di lucido, appena percettibili. È tagliata come ogni altra lastra del
-   sito e vive dietro il testo, in un contesto d'impilamento suo (isolation +
-   z-index negativo), così occhiello e titolo restano nitidi. Stesso velo
-   della scheda in home (.sb-riv-flash--cr) e del manifesto qui sotto: tre
-   lastre, una sola idea.
+/* L'intestazione non porta nessun velo: è la .sb-riv-pagehead del sito e
+   basta. Il colore dell'evento lo tiene il fondale (.sb-cr-vernice) e, sotto,
+   l'immagine del manifesto.
 
-   Niente tasto nell'intestazione: «Iscriviti alla camminata» è già il titolo
-   della sezione subito sotto, e un bottone che galleggiava sul velo, sopra
-   l'angolo tagliato della lastra, si vedeva storto. */
-/* Il velo è una lastra DIETRO il testo, non un fondo a tutta pagina: sta
-   dentro i margini della testata. Sopra e sotto resta dentro il padding di
-   .sb-riv-pagehead — e il padding di sotto qui cresce, o la lastra si
-   chiuderebbe sopra l'ultima riga della lede. Ai lati arriva quasi alla
-   colonna del testo (il padding di .sb-container), sbordando di un soffio:
-   mai fino al bordo dello schermo. */
-.sb-cr .sb-riv-pagehead {
-  position: relative;
-  isolation: isolate;
-  padding-bottom: clamp(2.8rem, 5.5vw, 3.8rem);
-}
-.sb-cr .sb-riv-pagehead::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset:
-    clamp(1.5rem, 3vw, 2.4rem)
-    clamp(0.9rem, 2.5vw, 3rem)
-    clamp(1.2rem, 2.2vw, 1.9rem);
-  clip-path: var(--sb-shape-lg);
-  box-shadow: inset 0 1px 0 var(--sb-glass-spec);
-  background:
-    linear-gradient(122deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0) 46%),
-    linear-gradient(
-      122deg,
-      color-mix(in srgb, var(--cr-magenta) 13%, transparent),
-      color-mix(in srgb, var(--cr-giallo) 10%, transparent) 34%,
-      color-mix(in srgb, var(--cr-ciano) 10%, transparent) 66%,
-      color-mix(in srgb, var(--cr-viola) 13%, transparent)
-    ),
-    var(--sb-glass-bg);
-}
-html.dark .sb-cr .sb-riv-pagehead::before {
-  background:
-    linear-gradient(122deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 46%),
-    linear-gradient(
-      122deg,
-      color-mix(in srgb, var(--cr-magenta) 20%, transparent),
-      color-mix(in srgb, var(--cr-giallo) 15%, transparent) 34%,
-      color-mix(in srgb, var(--cr-ciano) 15%, transparent) 66%,
-      color-mix(in srgb, var(--cr-viola) 20%, transparent)
-    ),
-    var(--sb-glass-bg);
-}
-
-/* Il manifesto dell'evento è solo un'immagine: .sb-riv-crbanner in
-   assets/rivalta.css non le mette niente intorno. Il file
-   (assets/foto/color-runner-banner.webp) lo mette il build al segnaposto qui
-   sotto, che sta FUORI dalla testata — sul velo di polveri sembrerebbe
-   incorniciato. Lo stesso banner sta in home e in coda al regolamento. */
+   Il manifesto è solo quello: .sb-riv-crbanner in assets/rivalta.css non gli
+   mette niente intorno, e il segnaposto qui sotto sta FUORI dalla testata.
+   Lo stesso file sta in home e in coda al regolamento. */
 
 /* ═══ La lastra del modulo ═══════════════════════════════════════════════════
    È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
@@ -603,8 +549,7 @@ html.rsm-still .sb-cr-vernice::before,
 html.rsm-still .sb-cr-vernice::after { animation: none; }
 
 @media print {
-  .sb-cr-vernice,
-  .sb-cr .sb-riv-pagehead::before { display: none; }
+  .sb-cr-vernice { display: none; }
 }
 </style>
 
