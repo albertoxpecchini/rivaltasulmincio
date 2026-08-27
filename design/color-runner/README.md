@@ -35,11 +35,15 @@ Il rosso è escluso apposta: sul sito vuol dire «errore».
 ## Come si tira fuori il file finito
 
 - **Locandina** → esporta in PDF (o PNG ad alta risoluzione) in formato A4, pronto per la
-  stampa o da allegare a una mail.
-- **Banner** → esporta in PNG 1600 × 600 e mettilo come `<img>` nello slot `.sb-cr-banner`
-  in cima a [`/color-runner`](../../color-runner.html), che oggi è previsto nel CSS ma
-  vuoto. L'immagine ci entra dentro una `.sb-panel`: la forma tagliata e il filo di colore
-  glieli mette la pagina, il file non deve portarseli dietro.
+  stampa o da allegare a una mail. Resta un pezzo da tela: sul sito non va.
+- **Banner** → è già nel sito, ma **non come immagine**: è stato ridisegnato in HTML nel
+  componente condiviso `.sb-riv-crbanner` ([`assets/rivalta.css`](../../assets/rivalta.css)),
+  con il markup in [`build.mjs`](../../build.mjs) sotto `renderBanner`. Testo vero in
+  Titillium Web, tema chiaro/scuro nativo, nitido a ogni scala. Compare in tre tagli:
+  grande su [`/color-runner`](../../color-runner.html), una striscia in
+  [home](../../index.html) dentro la scheda `.sb-riv-flash--cr`, una striscia-collegamento
+  in coda al [regolamento](../../color-runner-regolamento.html). `banner.dc.html` resta il
+  riferimento visivo da cui è nato.
 
 ## Perché sta qui e non va online
 

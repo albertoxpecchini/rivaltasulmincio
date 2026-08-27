@@ -191,32 +191,10 @@ html.dark .sb-cr .sb-riv-pagehead::before {
     var(--sb-glass-bg);
 }
 
-/* Il manifesto, quando ci sarà. Finché non c'è, queste regole non trovano
-   niente a cui applicarsi e la pagina non se ne accorge. */
-.sb-cr-banner { margin: 2rem 0 0; }
-/* Niente raggio sull'immagine: il manifesto sta dentro una .sb-panel, e la
-   forma gliela dà il taglio della lastra come a ogni altra card del sito. */
-.sb-cr-banner img { display: block; width: 100%; height: auto; }
-/* Stesso velo della testata: le polveri lungo il rim, e sopra l'immagine —
-   che copre lo sfondo della lastra — un lucido in diagonale su uno strato
-   proprio, così si vede anche quando il manifesto è pieno. */
-.sb-cr-banner .sb-panel {
-  background: linear-gradient(
-    115deg,
-    color-mix(in srgb, var(--cr-magenta) 72%, transparent),
-    color-mix(in srgb, var(--cr-giallo) 66%, transparent) 34%,
-    color-mix(in srgb, var(--cr-ciano) 66%, transparent) 66%,
-    color-mix(in srgb, var(--cr-viola) 72%, transparent)
-  );
-}
-.sb-cr-banner .sb-panel-inner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(122deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0) 40%);
-}
+/* Il manifesto dell'evento è il banner condiviso .sb-riv-crbanner
+   (assets/rivalta.css): grande qui dentro la testata, una striscia in home e
+   in coda al regolamento. Il segnaposto del build, dopo la lede, lo mette al
+   suo posto — grande, perché qui page vale "color-runner". */
 
 /* ═══ La lastra del modulo ═══════════════════════════════════════════════════
    È .sb-panel e .sb-panel-inner, la lastra del sito, senza una riga sopra:
@@ -541,8 +519,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
 
 @media print {
   .sb-cr-vernice,
-  .sb-cr .sb-riv-pagehead::before,
-  .sb-cr-banner .sb-panel-inner::after { display: none; }
+  .sb-cr .sb-riv-pagehead::before { display: none; }
 }
 </style>
 
