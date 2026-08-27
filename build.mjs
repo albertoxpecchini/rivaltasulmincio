@@ -554,7 +554,7 @@ const renderLocandina = () => {
   return `<figure class="sb-riv-crloc">
       <a class="sb-riv-crloc-a" href="${scaricabile ? pdf : locandinaTrovata}"${scaricabile ? " download" : ' target="_blank" rel="noopener"'}>
         <img src="${locandinaTrovata}" width="1240" height="1754" decoding="async"
-          alt="Locandina A4 della Color Runner: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona su rivaltasulmincio.it/color-runner.">
+          alt="Locandina A4 della Color Runner: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-runner.">
       </a>
     </figure>`;
 };
