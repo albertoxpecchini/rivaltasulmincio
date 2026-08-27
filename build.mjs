@@ -544,6 +544,28 @@ const renderBanner = () => {
       alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
 };
 
+/* ── Il blocco «Color Runner come in home» ────────────────────────────────
+   {{BANNER}} è la sola immagine; {{CR_HOME}} è come la home la mostra: il
+   banner dentro una cornice del sito (.sb-panel) coi due tasti dell'evento.
+   Lo usa ogni pagina che nomina la camminata fuori da /color-runner — la
+   home, /comunita, /eventi, il regolamento — così l'evento si presenta
+   sempre allo stesso modo. Una definizione sola: se cambiano i tasti,
+   cambiano dappertutto. Senza il file del banner, sparisce tutto il blocco:
+   nessuna cornice vuota. */
+const renderBannerHome = () => {
+  const img = renderBanner();
+  if (!img) return "";
+  return `<div class="sb-riv-crhome">
+        <div class="sb-panel"><div class="sb-panel-inner">
+          ${img}
+          <div class="sb-riv-crhome-azioni">
+            <a class="sb-btn sb-btn--primary" href="/color-runner#iscrizione"><span>Iscriviti alla camminata</span></a>
+            <a class="sb-btn sb-btn--secondary" href="/color-runner-regolamento"><span>Regolamento</span></a>
+          </div>
+        </div></div>
+      </div>`;
+};
+
 const renderLocandina = () => {
   locandinaTrovata = ["webp", "avif", "png", "jpg"]
     .map((est) => `assets/foto/${LOCANDINA}.${est}`)
@@ -773,6 +795,7 @@ for (const file of bodies) {
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
+      .replace("{{CR_HOME}}", renderBannerHome)
       .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
