@@ -47,6 +47,15 @@ const NOTA_COMMISSIONI =
    riguardano. Se le due righe divergono, le mail smettono di partire. */
 const EVENTO = "color-runner-2026-09-20";
 
+/* Le iscrizioni online si chiudono alle 23:59 del 18 settembre — due giorni
+   prima della camminata, il tempo di chiudere gli elenchi per l'assicurazione.
+   `+02:00` è l'ora legale italiana di settembre: senza il fuso, un server a
+   Londra taglierebbe un'ora prima. Passata questa data la POST risponde 403 e
+   non apre nessun pagamento; la GET di verifica resta aperta, perché chi ha
+   pagato all'ultimo minuto torna dal pagamento dopo la mezzanotte. */
+const CHIUSURA_ISO = "2026-09-18T23:59:59+02:00";
+const CHIUSURA_MS = Date.parse(CHIUSURA_ISO);
+
 const SITE = "https://www.rivaltasulmincio.it";
 
 /* Meno del limite di 10 secondi dichiarato in vercel.json: se Stripe tarda,
@@ -124,6 +133,16 @@ async function verifica(req, res, chiave) {
    price_data, metadata): è la stessa forma richiesta a chi lo chiama da
    curl o da un backend senza SDK. */
 async function iscrivi(req, res, chiave) {
+  /* Iscrizioni chiuse: si dice qui, prima di guardare i campi, così chi arriva
+     tardi legge «chiuse» e non «codice fiscale non valido». Il `chiuse: true`
+     lo usa la pagina per nascondere il modulo invece di dire «riprova». */
+  if (Date.now() > CHIUSURA_MS) {
+    return res.status(403).json({
+      errore: "le iscrizioni alla Color Runner si sono chiuse alle 23:59 del 18 settembre",
+      chiuse: true,
+    });
+  }
+
   const nome = pulisci(req.body?.nome, 80);
   const cognome = pulisci(req.body?.cognome, 80);
   const email = pulisci(req.body?.email, 200);

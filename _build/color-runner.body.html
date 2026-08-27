@@ -582,7 +582,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead sb-sechead--start">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto.</p>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>.</p>
     </div>
 
     <!-- Da schermo largo il modulo e la locandina stanno affiancati: la
@@ -759,9 +759,22 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   var stato = query.get("stato");
   var sessione = query.get("sessione");
 
-  if (stato === "ok" && !sessione) {
-    mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
-  } else if (stato === "ok") {
+  /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-runner
+     (23:59 del 18 settembre, ora italiana). Qui serve solo a nascondere il
+     modulo e spiegare perché — il «no» che conta lo dà comunque la funzione. Il
+     ritorno dal pagamento (`stato=ok` con la sessione) non è toccato: chi paga
+     all'ultimo minuto torna qui dopo la mezzanotte e deve vedere la conferma. */
+  var CHIUSURA_MS = Date.parse("2026-09-18T23:59:59+02:00");
+  var chiuse = Date.now() > CHIUSURA_MS;
+
+  function chiudiModulo(testo) {
+    form.style.display = "none";
+    var avanz = document.getElementById("cr-avanz");
+    if (avanz) avanz.hidden = true;
+    mostra("neutro", testo);
+  }
+
+  if (stato === "ok" && sessione) {
     form.style.display = "none";
     mostra("neutro", "Un momento, controllo il pagamento…");
 
@@ -773,8 +786,12 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
       })
       .catch(function () {
         mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
-        form.style.display = "";
+        if (!chiuse) form.style.display = "";
       });
+  } else if (chiuse) {
+    chiudiModulo("Le iscrizioni online alla Color Runner si sono chiuse alle 23:59 del 18 settembre. Se ti sei iscritto trovi la ricevuta nella tua email; per il resto scrivi alle organizzatrici.");
+  } else if (stato === "ok" && !sessione) {
+    mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
   } else if (stato === "annullato") {
     mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto.");
   }
@@ -1204,6 +1221,11 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
 
+    if (chiuse) {
+      chiudiModulo("Le iscrizioni online alla Color Runner si sono chiuse alle 23:59 del 18 settembre.");
+      return;
+    }
+
     var primo = null;
     CAMPI.forEach(function (c) {
       c.toccato = true;
@@ -1244,6 +1266,13 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
+        /* Iscrizioni chiuse fra il caricamento della pagina e l'invio: la
+           funzione risponde 403 con `chiuse`, e qui si toglie il modulo invece
+           di dire «riprova tra poco», che manderebbe a sbattere di nuovo. */
+        if (res.d && res.d.chiuse) {
+          chiudiModulo(res.d.errore.charAt(0).toUpperCase() + res.d.errore.slice(1) + ".");
+          return;
+        }
         if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
         location.href = res.d.url;
       })
