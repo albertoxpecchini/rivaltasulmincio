@@ -13,30 +13,39 @@ runtime.
 | `.thumbnail` | Anteprima del canvas (WebP 640 × 335), la usa Claude Design | — |
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `risottata/` | La striscia della **risottata finale** — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
-| `banner-foto/` | Il **banner Color Runner con la foto** (bambini che lanciano colori) — sostituisce `banner.dc.html` come sorgente del banner vivo (vedi sotto) | 2400 × 900 px |
+| `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
-## Il banner con la foto — `banner-foto/`
+## Banner e locandina con la foto — `foto/`
 
-`banner.dc.html` qui sopra è il banner **astratto** (nuvole di colore disegnate); è la
-versione storica. Il banner vivo del sito ora è **con una foto**: `banner-foto/color-runner-banner.dc.html`,
-con un `<image-slot id="colorrun-photo">` dove va trascinata la foto dei bambini.
+`banner.dc.html` e `locandina.dc.html` qui sopra sono le versioni **astratte** (nuvole di
+colore disegnate) — restano come storia. Le versioni vive hanno una **foto** (bambini che
+corrono lanciando colori), **dissolta nel foglio** da una maschera radiale — niente
+rettangolo netto.
 
-La tela editabile sta su **Claude Design**, nel progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
-(«Risottata banner design», file `Color Runner Banner.dc.html`, accanto alla risottata —
-stessi `image-slot.js`/`support.js`, slot id diverso quindi il sidecar non collide).
+| File in `foto/` | Cos'è |
+| :--- | :--- |
+| `color-runner-banner.dc.html` | Banner 2400 × 900, `<image-slot id="colorrun-photo">` a destra |
+| `color-runner-locandina.dc.html` | Locandina A4 1240 × 1754, `<image-slot id="colorrun-photo-a4">` in alto a destra |
+| `image-slot.js`, `support.js` | Runtime di Claude Design per queste due tele |
 
-**Giro completo quando arriva una foto nuova:**
+Le tele editabili stanno su **Claude Design**, progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
+(file `Color Runner Banner.dc.html` e `Color Runner Locandina.dc.html`, accanto alla
+risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo sidecar
+`.image-slots.state.json` senza collisioni).
 
-1. Su Claude Design si apre `Color Runner Banner.dc.html`, si trascina il PNG nello slot,
-   si posiziona, Salva.
-2. Da qui: `DesignSync get_file` del `.dc.html` e di `.image-slots.state.json` dal progetto.
-3. Si genera `banner-foto/color-runner-banner.render.html` — copia piatta e autonoma:
-   `<image-slot>` sostituito da un `<div>` col `background-image` preso da `.u` del sidecar,
-   font Titillium Web in base64, feather bianco e nuvole di colore come nel `.dc.html`.
-4. Screenshot con Chrome headless a scala 1, finestra 2400 × 900 → `sharp` in webp →
-   **`assets/foto/color-runner-banner.webp`** (sovrascrive quello astratto).
-5. `node build.mjs` — il banner nuovo entra ovunque (`{{BANNER}}` e `{{CR_HOME}}`: home,
-   /color-runner, /comunita, /eventi, regolamento).
+**Giro completo quando arriva una foto (PNG):**
+
+1. Su Claude Design si apre il file (banner o locandina), si trascina il PNG nello slot,
+   si posiziona, **Salva**. La stessa foto va bene per tutti e due.
+2. `DesignSync get_file` del `.dc.html` e di `.image-slots.state.json` dal progetto.
+3. Si genera il `.render.html` piatto e autonomo: `<image-slot>` → `<div>` col
+   `background-image` da `.u` del sidecar (sotto la stessa maschera radiale), font in
+   base64, veli di colore come nel `.dc.html`. Zero rete.
+4. Screenshot Chrome headless a scala 1 → `sharp` in webp:
+   - banner → **`assets/foto/color-runner-banner.webp`** (2400 × 900)
+   - locandina → **`assets/foto/color-runner-locandina.webp`** (1240 × 1754) e il PDF A4
+5. `node build.mjs` — il banner entra ovunque (`{{BANNER}}`/`{{CR_HOME}}`), la locandina
+   nell'anteprima di `/color-runner`.
 
 ## La risottata — `risottata/`
 

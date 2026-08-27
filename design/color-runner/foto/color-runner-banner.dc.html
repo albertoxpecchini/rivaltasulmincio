@@ -30,14 +30,17 @@
   <div style="position: absolute; right: 3%; bottom: 4%; width: 540px; height: 540px; background: radial-gradient(closest-side, rgba(138,92,246,0.26), rgba(138,92,246,0) 100%); filter: blur(58px);"></div>
   <div style="position: absolute; left: 1%; bottom: 0%; width: 460px; height: 380px; background: radial-gradient(closest-side, rgba(255,45,135,0.13), rgba(255,45,135,0) 100%); filter: blur(72px);"></div>
 
-  <!-- la foto: bambini che corrono lanciando polveri e vernice. Occupa la
-       destra e sborda appena il bordo; trascinala/zoomala nello slot. -->
-  <div style="position: absolute; right: -50px; top: 36px; width: 1180px; height: 828px;">
-    <image-slot id="colorrun-photo" shape="rounded" radius="18" fit="cover" style="width: 1180px; height: 828px;" placeholder="bambini che corrono lanciando polveri colorate e vernice — luce piena, movimento, spazio libero verso sinistra"></image-slot>
+  <!-- la foto: bambini che corrono lanciando polveri e vernice. Non un
+       rettangolo netto: una maschera radiale la dissolve su tutti i lati nel
+       fondo della pagina, più in fretta verso sinistra dove c'è il titolo.
+       Trascina/zooma il PNG nello slot; la sfumatura resta. -->
+  <div style="position: absolute; right: -120px; top: 0; width: 1560px; height: 900px; -webkit-mask-image: radial-gradient(115% 128% at 72% 50%, #000 0%, #000 34%, rgba(0,0,0,0.35) 62%, transparent 82%); mask-image: radial-gradient(115% 128% at 72% 50%, #000 0%, #000 34%, rgba(0,0,0,0.35) 62%, transparent 82%);">
+    <image-slot id="colorrun-photo" shape="rect" fit="cover" style="width: 1560px; height: 900px;" placeholder="bambini che corrono lanciando polveri colorate e vernice — luce piena, movimento, spazio libero verso sinistra"></image-slot>
   </div>
 
-  <!-- sfumatura bianca sul bordo sinistro della foto, così il titolo resta pulito -->
-  <div style="position: absolute; left: 1108px; top: 0; width: 380px; height: 900px; background: linear-gradient(90deg, #fcfcfc 0%, rgba(252,252,252,0.72) 34%, rgba(252,252,252,0) 100%); pointer-events: none;"></div>
+  <!-- un ultimo velo bianco leggerissimo sulla fascia del titolo, così «Color
+       Runner» resta pulito anche se la foto è chiara in quel punto -->
+  <div style="position: absolute; left: 0; top: 0; width: 1180px; height: 900px; background: linear-gradient(90deg, #fcfcfc 0%, rgba(252,252,252,0.9) 40%, rgba(252,252,252,0.35) 72%, rgba(252,252,252,0) 100%); pointer-events: none;"></div>
 
   <!-- testo a sinistra -->
   <div style="position: absolute; left: 132px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; max-width: 1040px;">
