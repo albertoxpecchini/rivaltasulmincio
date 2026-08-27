@@ -13,6 +13,30 @@ runtime.
 | `.thumbnail` | Anteprima del canvas (WebP 640 × 335), la usa Claude Design | — |
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `risottata/` | La striscia della **risottata finale** — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
+| `banner-foto/` | Il **banner Color Runner con la foto** (bambini che lanciano colori) — sostituisce `banner.dc.html` come sorgente del banner vivo (vedi sotto) | 2400 × 900 px |
+
+## Il banner con la foto — `banner-foto/`
+
+`banner.dc.html` qui sopra è il banner **astratto** (nuvole di colore disegnate); è la
+versione storica. Il banner vivo del sito ora è **con una foto**: `banner-foto/color-runner-banner.dc.html`,
+con un `<image-slot id="colorrun-photo">` dove va trascinata la foto dei bambini.
+
+La tela editabile sta su **Claude Design**, nel progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
+(«Risottata banner design», file `Color Runner Banner.dc.html`, accanto alla risottata —
+stessi `image-slot.js`/`support.js`, slot id diverso quindi il sidecar non collide).
+
+**Giro completo quando arriva una foto nuova:**
+
+1. Su Claude Design si apre `Color Runner Banner.dc.html`, si trascina il PNG nello slot,
+   si posiziona, Salva.
+2. Da qui: `DesignSync get_file` del `.dc.html` e di `.image-slots.state.json` dal progetto.
+3. Si genera `banner-foto/color-runner-banner.render.html` — copia piatta e autonoma:
+   `<image-slot>` sostituito da un `<div>` col `background-image` preso da `.u` del sidecar,
+   font Titillium Web in base64, feather bianco e nuvole di colore come nel `.dc.html`.
+4. Screenshot con Chrome headless a scala 1, finestra 2400 × 900 → `sharp` in webp →
+   **`assets/foto/color-runner-banner.webp`** (sovrascrive quello astratto).
+5. `node build.mjs` — il banner nuovo entra ovunque (`{{BANNER}}` e `{{CR_HOME}}`: home,
+   /color-runner, /comunita, /eventi, regolamento).
 
 ## La risottata — `risottata/`
 
