@@ -168,6 +168,37 @@ const importoItaliano = (centesimi, valuta) =>
     currency: String(valuta || "eur").toUpperCase(),
   }).format((centesimi || 0) / 100);
 
+/* ── La riga della risottata ──────────────────────────────────────────────
+   Nel modello della ricevuta c'è {{RISOTTO}} su una riga sua. Per chi non ha
+   prenotato la risottata al suo posto non va niente; per chi l'ha prenotata va
+   questa sotto-lastra, nello stesso stile del riepilogo del pagamento. `n` è un
+   intero già stretto fra 1 e 10 in fase d'iscrizione: qui lo si ristringe
+   comunque, perché un metadata si può anche modificare a mano nel dashboard. */
+export const coperti = (n) => (n === 1 ? "1 coperto" : `${n} coperti`);
+
+export function bloccoRisotto(n) {
+  const q = Math.min(10, Math.max(1, Math.floor(Number(n)) || 1));
+  return `<tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="e-sub" style="background:#f6f6f6; border:1px solid #e8e8e8; border-radius:10px; clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+            <tr>
+            <td style="padding:20px 22px;">
+              <div class="e-fg-m" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8f8f8f;">
+                Risottata finale
+              </div>
+              <p class="e-fg-l" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.6; color:#525252;">
+                Ti abbiamo segnato per la risottata dopo la camminata: <strong class="e-fg" style="color:#171717; font-weight:600;">${coperti(q)}</strong> a tuo nome.
+              </p>
+              <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
+                È su prenotazione e non si paga adesso. Se il numero cambia, o non ti fermi più, rispondi a questa mail e lo sistemiamo.
+              </p>
+            </td>
+            </tr>
+          </table>
+        </td>
+        </tr>`;
+}
+
 /* ── La firma ─────────────────────────────────────────────────────────────
    L'intestazione ha la forma `t=1700000000,v1=abc…`, e i `v1` possono essere
    più d'uno mentre si cambia il segreto senza fermare niente: basta che uno
@@ -358,16 +389,24 @@ export default async function handler(req, res) {
       const importo = importoItaliano(sessione.amount_total, sessione.currency);
       const data = dataItaliana(pi?.created || avviso.created);
 
+      /* La risottata: "si" più un numero di coperti, o niente. Sta nei metadata
+         della sessione, messo lì all'iscrizione. Nella mail diventa una riga in
+         più (HTML) e un paragrafo in più (testo) — solo per chi l'ha prenotata. */
+      const risotto = sessione.metadata?.risotto === "si";
+      const risottoN = Math.min(10, Math.max(1, Math.floor(Number(sessione.metadata?.risotto_persone)) || 1));
+
+      const html = riempi(MODELLO_RICEVUTA, {
+        NOME: nome,
+        DATA: data,
+        IMPORTO_QUOTA: importoQuota,
+        IMPORTO_COMMISSIONI: importoCommissioni,
+        IMPORTO: importo,
+      }).replace("{{RISOTTO}}", () => (risotto ? bloccoRisotto(risottoN) : ""));
+
       await spedisci({
         a: email,
         oggetto: OGGETTO_RICEVUTA,
-        html: riempi(MODELLO_RICEVUTA, {
-          NOME: nome,
-          DATA: data,
-          IMPORTO_QUOTA: importoQuota,
-          IMPORTO_COMMISSIONI: importoCommissioni,
-          IMPORTO: importo,
-        }),
+        html,
         testo:
           `Ciao ${nome || ""}, la tua iscrizione alla Color Runner del 20 settembre è ` +
           `registrata e la quota è pagata.\n\n` +
@@ -376,6 +415,10 @@ export default async function handler(req, res) {
           `Totale, pagato con carta il ${data}: ${importo}\n\n` +
           `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
           `pagamento: all'organizzazione arriva la quota intera.\n\n` +
+          (risotto
+            ? `Risottata finale: ti abbiamo segnato ${coperti(risottoN)} a tuo nome. ` +
+              `È su prenotazione e non si paga adesso; se il numero cambia, rispondi a questa mail.\n\n`
+            : "") +
           `Questa mail è la tua conferma: tienila, non serve stamparla.\n` +
           `Ci vediamo il 20!\n\n` +
           `Il gruppo del Palio delle Contrade — Rivalta sul Mincio\n${SITE}`,
@@ -591,6 +634,8 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
           </table>
         </td>
         </tr>
+
+        {{RISOTTO}}
 
         <tr>
         <td class="e-pad" style="padding:32px 40px 0;">

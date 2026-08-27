@@ -107,6 +107,12 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", env = {}, pag
   if (atteso.totaleCent !== undefined && res.corpo?.totaleCent !== atteso.totaleCent) {
     problemi.push(`totale ${res.corpo?.totaleCent}, atteso ${atteso.totaleCent}`);
   }
+  if (atteso.risottoCoperti !== undefined && res.corpo?.risottoCoperti !== atteso.risottoCoperti) {
+    problemi.push(`${res.corpo?.risottoCoperti} coperti risotto, attesi ${atteso.risottoCoperti}`);
+  }
+  if (atteso.risottoPrenotazioni !== undefined && res.corpo?.risottoPrenotazioni !== atteso.risottoPrenotazioni) {
+    problemi.push(`${res.corpo?.risottoPrenotazioni} prenotazioni risotto, attese ${atteso.risottoPrenotazioni}`);
+  }
   if (atteso.nienteDati && res.corpo?.iscritti) {
     problemi.push("ha risposto con un elenco quando non doveva rispondere affatto");
   }
@@ -215,7 +221,57 @@ await prova("più pagine: le legge tutte", {
 await prova("nessun iscritto → elenco vuoto, non un errore", {
   chiave: CHIAVE,
   pagine: [{ data: [], has_more: false }],
-  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0 },
+  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0, risottoCoperti: 0, risottoPrenotazioni: 0 },
+});
+
+console.log("\n── La risottata ───────────────────────────────────────────────");
+
+/* Una sessione pagata con la risottata prenotata per `persone` coperti. */
+const conRisotto = (n, persone) =>
+  sessione(n, {
+    metadata: {
+      evento: EVENTO,
+      nome: "Nome" + n,
+      cognome: "Cognome" + n,
+      codice_fiscale: "RSSMRA85T10A562S",
+      indirizzo: "Via Sette Frati " + n,
+      telefono: "—",
+      note: "—",
+      consenso: "2026-08-25T10:00:00.000Z",
+      risotto: "si",
+      risotto_persone: String(persone),
+    },
+  });
+
+await prova("coperti e prenotazioni: somma solo chi ha pagato e ha spuntato", {
+  chiave: CHIAVE,
+  pagine: [
+    {
+      data: [
+        conRisotto(1, 2),
+        conRisotto(2, 3),
+        sessione(3), // pagato ma niente risottata
+        { ...conRisotto(4, 4), payment_status: "unpaid" }, // risottata ma non pagato → non conta
+      ],
+      has_more: false,
+    },
+  ],
+  atteso: { codice: 200, iscritti: 3, risottoCoperti: 5, risottoPrenotazioni: 2 },
+});
+
+await prova("metadati risottata senza numero → vale un coperto, non zero", {
+  chiave: CHIAVE,
+  pagine: [
+    {
+      data: [
+        sessione(1, {
+          metadata: { evento: EVENTO, nome: "Nome1", cognome: "C1", risotto: "si" },
+        }),
+      ],
+      has_more: false,
+    },
+  ],
+  atteso: { codice: 200, iscritti: 1, risottoCoperti: 1, risottoPrenotazioni: 1 },
 });
 
 await prova("l'elenco non finisce in nessuna cache", {
@@ -254,12 +310,31 @@ global.fetch = async () => risposta(500, { error: { message: "Stripe giù" } });
   const i = res.corpo?.iscritti?.[0] || {};
   const pieno = i.nome && i.cognome && i.codiceFiscale && i.indirizzo && i.email && i.quandoISO;
   const trattini = i.telefono === "" && i.note === "";
-  if (pieno && trattini) {
+  const risottoSpento = i.risotto === false && i.risottoPersone === 0;
+  if (pieno && trattini && risottoSpento) {
     passate++;
-    console.log("  ok   la scheda arriva completa, e i «—» dei campi vuoti restano vuoti");
+    console.log("  ok   la scheda arriva completa, i «—» restano vuoti, la risottata è spenta");
   } else {
     fallite++;
     console.log(`  NO   scheda incompleta: ${JSON.stringify(i)}`);
+  }
+}
+
+/* E che quando la risottata è prenotata, la scheda la porti: booleano vero e
+   numero di coperti, non una stringa "si" da interpretare a valle. */
+{
+  process.env.STRIPE_SECRET_KEY = "sk_test_finta";
+  process.env.ISCRITTI_CHIAVE = CHIAVE;
+  global.fetch = stubFetch([{ data: [conRisotto(9, 3)], has_more: false }]);
+  const res = finestra();
+  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
+  const i = res.corpo?.iscritti?.[0] || {};
+  if (i.risotto === true && i.risottoPersone === 3) {
+    passate++;
+    console.log("  ok   la scheda di chi resta a mangiare porta risotto:true e i coperti");
+  } else {
+    fallite++;
+    console.log(`  NO   risottata non riportata: ${JSON.stringify(i)}`);
   }
 }
 

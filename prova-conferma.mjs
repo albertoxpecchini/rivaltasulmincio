@@ -102,6 +102,13 @@ const SESSIONE_NON_PAGATA = {
   payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },
 };
 
+/* Come SESSIONE_PAGATA, ma con la risottata prenotata per tre. È l'unica
+   differenza: nella ricevuta deve comparire la riga dei coperti. */
+const SESSIONE_PAGATA_RISOTTO = {
+  ...SESSIONE_PAGATA,
+  metadata: { ...SESSIONE_PAGATA.metadata, risotto: "si", risotto_persone: "3" },
+};
+
 let passate = 0;
 let fallite = 0;
 
@@ -119,6 +126,7 @@ async function prova(nome, { evento, opzioniReq = {}, stub, atteso }) {
   const res = finestraRisposta();
   await handler(richiesta(evento, opzioniReq), res);
 
+  const corpoMail = ((poste[0]?.html || "") + "\n" + (poste[0]?.text || ""));
   const esito = {
     codice: res.codice,
     mail: poste.length,
@@ -126,10 +134,13 @@ async function prova(nome, { evento, opzioniReq = {}, stub, atteso }) {
     a: poste[0]?.to?.[0] || "",
   };
 
+  const lista = (v) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
   const ok =
     esito.codice === atteso.codice &&
     esito.mail === atteso.mail &&
-    (atteso.oggetto === undefined || esito.oggetto.includes(atteso.oggetto));
+    (atteso.oggetto === undefined || esito.oggetto.includes(atteso.oggetto)) &&
+    lista(atteso.contiene).every((s) => corpoMail.includes(s)) &&
+    lista(atteso.nonContiene).every((s) => !corpoMail.includes(s));
 
   console.log(`${ok ? "  ok  " : "  NO  "} ${nome}`);
   if (!ok) {
@@ -177,6 +188,29 @@ await prova("posta giù → 500, così Stripe ritenta", {
   evento: ev("checkout.session.completed"),
   stub: { sessione: SESSIONE_PAGATA, postaRompe: true },
   atteso: { codice: 500, mail: 1 },
+});
+
+await prova("ha prenotato la risottata → la ricevuta cita i coperti", {
+  evento: ev("checkout.session.completed"),
+  stub: { sessione: SESSIONE_PAGATA_RISOTTO },
+  atteso: { codice: 200, mail: 1, oggetto: "Iscrizione confermata", contiene: "3 coperti" },
+});
+
+await prova("non ha prenotato la risottata → nessuna riga risotto, nessun segnaposto", {
+  evento: ev("checkout.session.completed"),
+  stub: { sessione: SESSIONE_PAGATA },
+  atteso: { codice: 200, mail: 1, nonContiene: ["{{RISOTTO}}", "Risottata finale", "coperti"] },
+});
+
+await prova("risottata per uno → «1 coperto», non «1 coperti»", {
+  evento: ev("checkout.session.completed"),
+  stub: {
+    sessione: {
+      ...SESSIONE_PAGATA,
+      metadata: { ...SESSIONE_PAGATA.metadata, risotto: "si", risotto_persone: "1" },
+    },
+  },
+  atteso: { codice: 200, mail: 1, contiene: "1 coperto", nonContiene: "1 coperti" },
 });
 
 console.log("\n── Il pagamento NON è andato a buon fine ──────────────────────");

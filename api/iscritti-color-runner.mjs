@@ -113,6 +113,13 @@ export default async function handler(req, res) {
           continue;
         }
         const m = s.metadata || {};
+        /* La risottata: "si" più il numero di coperti, o niente. Chi cucina
+           guarda questi due — e il totale qui sotto — non le nove righe della
+           scheda. `risottoPersone` resta 0 per chi non si ferma a mangiare. */
+        const risotto = m.risotto === "si";
+        const risottoPersone = risotto
+          ? Math.min(10, Math.max(1, Math.floor(Number(m.risotto_persone)) || 1))
+          : 0;
         iscritti.push({
           id: s.id,
           nome: m.nome || "",
@@ -123,6 +130,8 @@ export default async function handler(req, res) {
           telefono: m.telefono === "—" ? "" : m.telefono || "",
           note: m.note === "—" ? "" : m.note || "",
           consenso: m.consenso || "",
+          risotto,
+          risottoPersone,
           quandoISO: new Date(s.created * 1000).toISOString(),
           importoCent: s.amount_total ?? 0,
         });
@@ -140,6 +149,11 @@ export default async function handler(req, res) {
       iscritti,
       incompleti,
       totaleCent: iscritti.reduce((s, i) => s + i.importoCent, 0),
+      /* Per la risottata: quante prenotazioni e quanti coperti in tutto. Li
+         conta la funzione una volta, così la pagina non rifà la somma a ogni
+         ridisegno e chi cucina ha il numero pronto. */
+      risottoPrenotazioni: iscritti.filter((i) => i.risotto).length,
+      risottoCoperti: iscritti.reduce((s, i) => s + i.risottoPersone, 0),
       aggiornatoISO: new Date().toISOString(),
     });
   } catch (errore) {

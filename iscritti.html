@@ -295,6 +295,47 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-variant-numeric: tabular-nums;
 }
 
+/* ── La risottata ──────────────────────────────────────────────────────────
+   Due cose per chi cucina: quanti coperti in tutto (la riga sotto i conti) e
+   un interruttore per vedere solo chi si ferma a mangiare. La riga sparisce
+   quando nessuno ha ancora prenotato: finché è zero non è un dato, è rumore. */
+.sb-is-risotto[hidden] { display: none; }
+.sb-is-risotto {
+  margin: 0 0 0.7rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid var(--sb-border);
+  border-radius: var(--is-r);
+  background: color-mix(in srgb, var(--sb-brand) 8%, transparent);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--sb-fg-light);
+}
+.sb-is-risotto b {
+  color: var(--sb-fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.sb-is-filtro {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.86rem;
+  color: var(--sb-fg-light);
+  cursor: pointer;
+}
+.sb-is-filtro input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  accent-color: var(--sb-brand);
+}
+.sb-is-filtro[hidden] { display: none; }
+
+/* La riga «Risottata» dentro la scheda: il numero di coperti in evidenza come
+   la quota, così scorrendo l'elenco filtrato si sommano a occhio. */
+.sb-is-dato dd.sb-is-coperti { font-weight: 600; color: var(--sb-fg); font-variant-numeric: tabular-nums; }
+
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con nove colonne su uno schermo di telefono si
    legge scorrendo in orizzontale, ed è il modo più sicuro per non far leggere
@@ -417,6 +458,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         </div>
       </div>
 
+      <p class="sb-is-risotto" id="is-risotto" hidden></p>
+
       <div class="sb-is-barra">
         <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
         <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
@@ -424,6 +467,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       </div>
 
       <input class="sb-is-campo sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, via, codice fiscale…" autocomplete="off" enterkeyhint="search">
+
+      <label class="sb-is-filtro" id="is-filtro" hidden>
+        <input type="checkbox" id="is-solo-risotto">
+        Solo chi si ferma alla risottata
+      </label>
 
       <p class="sb-is-conteggio" id="is-conteggio" hidden></p>
 
@@ -452,6 +500,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var esito = document.getElementById("is-esito");
   var cerca = document.getElementById("is-cerca");
   var conteggio = document.getElementById("is-conteggio");
+  var risottoLinea = document.getElementById("is-risotto");
+  var filtro = document.getElementById("is-filtro");
+  var soloRisotto = document.getElementById("is-solo-risotto");
   var CHIAVE_MEM = "rsm-iscritti-chiave";
 
   var dati = null;
@@ -477,6 +528,10 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     var d = new Date(iso);
     if (isNaN(d)) return iso;
     return d.toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function coperti(n) {
+    return n === 1 ? "1 coperto" : n + " coperti";
   }
 
   /* ── Una scheda per iscritto ────────────────────────────────────────────
@@ -532,6 +587,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     voce("Email", i.email, null, "mailto:");
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
+    voce("Risottata", i.risotto ? coperti(i.risottoPersone) : "", "sb-is-coperti");
     voce("Iscritto il", quando(i.quandoISO));
 
     inner.appendChild(dl);
@@ -547,30 +603,41 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   function disegna() {
     if (!dati) return;
     var q = normalizza(cerca.value.trim());
+    var solo = !!(soloRisotto && soloRisotto.checked);
     var visti = dati.iscritti.filter(function (i) {
+      if (solo && !i.risotto) return false;
       if (!q) return true;
-      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono].join(" ")).indexOf(q) > -1;
+      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.risotto ? "risotto risottata" : ""].join(" ")).indexOf(q) > -1;
     });
 
     /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
        mentre si cerca: senza, chi filtra vede accorciarsi l'elenco e non sa
-       se sta guardando tre persone su dodici o tre in tutto. */
+       se sta guardando tre persone su dodici o tre in tutto. Col filtro
+       risottata attivo dice anche quanti coperti fanno, che è il numero che
+       chi cucina sta cercando. */
     if (!dati.iscritti.length) {
       conteggio.hidden = true;
     } else {
       conteggio.hidden = false;
-      conteggio.textContent = q
+      var testo = (q || solo)
         ? visti.length + " di " + dati.iscritti.length
         : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscritto" : " iscritti");
+      if (solo) {
+        var somma = visti.reduce(function (s, i) { return s + i.risottoPersone; }, 0);
+        testo += " · " + coperti(somma);
+      }
+      conteggio.textContent = testo;
     }
 
     elenco.innerHTML = "";
     if (!visti.length) {
       var vuoto = document.createElement("p");
       vuoto.className = "sb-is-vuoto";
-      vuoto.textContent = dati.iscritti.length
-        ? "Nessuno corrisponde a quello che hai scritto."
-        : "Ancora nessun iscritto. Il primo che paga compare qui.";
+      vuoto.textContent = !dati.iscritti.length
+        ? "Ancora nessun iscritto. Il primo che paga compare qui."
+        : solo
+          ? "Nessuno si è ancora prenotato alla risottata."
+          : "Nessuno corrisponde a quello che hai scritto.";
       elenco.appendChild(vuoto);
       return;
     }
@@ -591,6 +658,28 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         document.getElementById("is-n").textContent = String(dati.iscritti.length);
         document.getElementById("is-tot").textContent = euro(dati.totaleCent);
         document.getElementById("is-inc").textContent = String(dati.incompleti);
+
+        /* La risottata: la riga del totale e l'interruttore del filtro
+           compaiono solo se qualcuno si è prenotato. A zero non sono un dato. */
+        var prenotazioni = dati.risottoPrenotazioni || 0;
+        if (prenotazioni > 0) {
+          risottoLinea.innerHTML = "";
+          risottoLinea.appendChild(document.createTextNode("Risottata finale: "));
+          var b1 = document.createElement("b");
+          b1.textContent = coperti(dati.risottoCoperti || 0);
+          risottoLinea.appendChild(b1);
+          risottoLinea.appendChild(document.createTextNode(" · "));
+          var b2 = document.createElement("b");
+          b2.textContent = prenotazioni + (prenotazioni === 1 ? " prenotazione" : " prenotazioni");
+          risottoLinea.appendChild(b2);
+          risottoLinea.hidden = false;
+          filtro.hidden = false;
+        } else {
+          risottoLinea.hidden = true;
+          filtro.hidden = true;
+          soloRisotto.checked = false;
+        }
+
         porta.hidden = true;
         zona.hidden = false;
         mostra(null, "");
@@ -624,6 +713,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   document.getElementById("is-aggiorna").addEventListener("click", carica);
   cerca.addEventListener("input", disegna);
+  soloRisotto.addEventListener("change", disegna);
 
   document.getElementById("is-esci").addEventListener("click", function () {
     scorda();
@@ -632,6 +722,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     elenco.innerHTML = "";
     cerca.value = "";
     conteggio.hidden = true;
+    soloRisotto.checked = false;
+    filtro.hidden = true;
+    risottoLinea.hidden = true;
     zona.hidden = true;
     porta.hidden = false;
     campoChiave.value = "";
@@ -646,13 +739,14 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
      e senza basta un indirizzo con un punto e virgola per spostare tutte le
      colonne di una casa. */
   function csv() {
-    var testate = ["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"];
+    var testate = ["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Risottata", "Coperti", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"];
     var campo = function (v) { return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; };
     var righe = [testate.map(campo).join(";")];
 
     dati.iscritti.forEach(function (i) {
       righe.push([
         i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.note,
+        i.risotto ? "sì" : "no", i.risotto ? i.risottoPersone : "",
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
         i.consenso, i.id

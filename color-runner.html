@@ -483,6 +483,91 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
 .sb-cr-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
 .sb-cr-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
+/* ═══ La risottata ══════════════════════════════════════════════════════════
+   Facoltativa: una spunta come quella del consenso, e sotto — solo quando è
+   spuntata — lo "switcher" per dire quante persone restano a mangiare. Non è un
+   campo obbligatorio, non entra nel conto di «quanto manca», non si paga qui. */
+.sb-cr-risotto {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+  transition: border-color 0.2s ease;
+}
+.sb-cr-risotto:focus-within { border-color: var(--sb-brand); }
+.sb-cr-risotto-spunta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  cursor: pointer;
+}
+.sb-cr-risotto-spunta input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
+.sb-cr-risotto-spunta span { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
+.sb-cr-risotto-spunta strong { font-weight: 600; color: var(--sb-fg); }
+
+/* Il pannello dei coperti sta dentro la lastra, staccato dalla spunta da un
+   capello grigio. `hidden` lo toglie del tutto finché non serve. */
+.sb-cr-quanti[hidden] { display: none; }
+.sb-cr-quanti {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--sb-border);
+}
+.sb-cr-quanti-eti { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
+
+/* Lo switcher: −  n  +. I due tasti sono quadrati e grossi come un bersaglio
+   da pollice; il numero in mezzo è in cifre a larghezza fissa, non un campo da
+   digitare (readonly): si muove solo coi tasti, e non può finire in uno stato
+   sbagliato. */
+.sb-cr-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--sb-surface-75);
+}
+.sb-cr-step {
+  width: 2.6rem;
+  min-height: 2.6rem;
+  border: 0;
+  background: transparent;
+  color: var(--sb-fg);
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sb-cr-step:hover { background: var(--sb-overlay); }
+.sb-cr-step:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
+.sb-cr-step[disabled] { color: var(--sb-fg-muted); cursor: not-allowed; }
+.sb-cr-stepper input {
+  width: 2.8rem;
+  border: 0;
+  border-left: 1px solid var(--sb-border-strong);
+  border-right: 1px solid var(--sb-border-strong);
+  background: transparent;
+  color: var(--sb-fg);
+  font: inherit;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  pointer-events: none;
+}
+.sb-cr-stepper input::-webkit-outer-spin-button,
+.sb-cr-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
    larghezza del modulo, e il permesso di andare a capo — la scritta è lunga e
@@ -665,6 +750,21 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
             <textarea id="cr-note" name="note" rows="2" maxlength="300" enterkeyhint="done"></textarea>
           </div>
           <p class="sb-cr-aiuto" id="cr-note-aiuto"></p>
+        </div>
+
+        <div class="sb-cr-risotto">
+          <label class="sb-cr-risotto-spunta">
+            <input type="checkbox" id="cr-risotto" name="risotto">
+            <span>Mi fermo alla <strong>risottata finale</strong>, dopo la camminata <span class="sb-cr-facolt">su prenotazione</span></span>
+          </label>
+          <div class="sb-cr-quanti" id="cr-quanti" hidden>
+            <span class="sb-cr-quanti-eti">Quante persone si fermano a mangiare <span class="sb-cr-facolt">te compreso</span></span>
+            <div class="sb-cr-stepper">
+              <button type="button" class="sb-cr-step" id="cr-risotto-meno" aria-label="Un coperto in meno">&minus;</button>
+              <input type="number" id="cr-risotto-n" name="risottoPersone" value="1" min="1" max="10" step="1" inputmode="numeric" readonly aria-label="Numero di coperti">
+              <button type="button" class="sb-cr-step" id="cr-risotto-piu" aria-label="Un coperto in più">+</button>
+            </div>
+          </div>
         </div>
 
         <div class="sb-cr-consenso">
@@ -960,6 +1060,41 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   });
   consenso.addEventListener("change", conta);
 
+  /* ── La risottata ──────────────────────────────────────────────────────
+     La spunta scopre lo switcher dei coperti; lo switcher tiene il numero fra
+     1 e 10 e spegne il tasto quando si è al minimo o al massimo. È tutto
+     facoltativo: niente di questo entra nel conto di «quanto manca» né blocca
+     l'invio, e /api/iscrizione-color-runner ristringe comunque il numero. */
+  var risotto = document.getElementById("cr-risotto");
+  var quanti = document.getElementById("cr-quanti");
+  var risottoN = document.getElementById("cr-risotto-n");
+  var risottoMeno = document.getElementById("cr-risotto-meno");
+  var risottoPiu = document.getElementById("cr-risotto-piu");
+  var RIS_MIN = 1, RIS_MAX = 10;
+
+  function risottoLeggi() {
+    var n = parseInt(risottoN.value, 10);
+    if (isNaN(n)) n = RIS_MIN;
+    return Math.min(RIS_MAX, Math.max(RIS_MIN, n));
+  }
+  function risottoScrivi(n) {
+    n = Math.min(RIS_MAX, Math.max(RIS_MIN, n));
+    risottoN.value = String(n);
+    risottoMeno.disabled = n <= RIS_MIN;
+    risottoPiu.disabled = n >= RIS_MAX;
+  }
+  function risottoAggiorna() {
+    quanti.hidden = !risotto.checked;
+    if (risotto.checked) risottoScrivi(risottoLeggi());
+  }
+  risotto.addEventListener("change", function () {
+    risottoAggiorna();
+    if (risotto.checked) portaSu(quanti);
+  });
+  risottoMeno.addEventListener("click", function () { risottoScrivi(risottoLeggi() - 1); });
+  risottoPiu.addEventListener("click", function () { risottoScrivi(risottoLeggi() + 1); });
+  risottoAggiorna();
+
   /* ── L'indirizzo che si compone da sé ───────────────────────────────────
      Le vie vere di Rivalta, con i civici mappati in OpenStreetMap, messe qui
      dal build. Si scrivono due lettere e la via esce; si sceglie la via e
@@ -1201,7 +1336,9 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
         indirizzo: form.indirizzo.value,
         telefono: form.telefono.value,
         note: form.note.value,
-        consenso: consenso.checked
+        consenso: consenso.checked,
+        risotto: risotto.checked,
+        risottoPersone: risotto.checked ? risottoLeggi() : 0
       })
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })

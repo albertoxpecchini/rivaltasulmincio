@@ -133,6 +133,16 @@ async function iscrivi(req, res, chiave) {
   const note = pulisci(req.body?.note, 300) || "—";
   const consenso = req.body?.consenso === true;
 
+  /* La risottata finale è a prenotazione e non si paga qui: è solo un numero di
+     coperti da segnare accanto all'iscrizione. Chi non spunta niente vale zero;
+     chi spunta vale almeno uno (sé stesso), al massimo dieci — oltre, si scrive
+     alle organizzatrici. Il numero arriva da un modulo pubblico: si stringe nel
+     range e non ci si fida di quello che dice. */
+  const vuoleRisotto = req.body?.risotto === true;
+  const risottoPersone = vuoleRisotto
+    ? Math.min(10, Math.max(1, Math.floor(Number(req.body?.risottoPersone)) || 1))
+    : 0;
+
   if (!nome || !cognome || !EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "nome, cognome o email mancanti o non validi" });
   }
@@ -187,6 +197,11 @@ async function iscrivi(req, res, chiave) {
   parametri.set("metadata[indirizzo]", indirizzo);
   parametri.set("metadata[telefono]", telefono);
   parametri.set("metadata[note]", note);
+  /* La risottata: "si"/"no" e quanti coperti. Viaggiano nei metadata come tutto
+     il resto — è da qui che /api/conferma-color-runner ci scrive la riga nella
+     mail e /api/iscritti-color-runner tira su la lista di chi resta a mangiare. */
+  parametri.set("metadata[risotto]", vuoleRisotto ? "si" : "no");
+  parametri.set("metadata[risotto_persone]", String(risottoPersone));
   /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
      che serve se un domani qualcuno chiede conto di quei dati. */
   parametri.set("metadata[consenso]", new Date().toISOString());

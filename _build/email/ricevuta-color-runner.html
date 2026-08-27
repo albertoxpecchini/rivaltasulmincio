@@ -214,6 +214,14 @@
         </td>
         </tr>
 
+        <!-- ── La risottata ────────────────────────────────────────────
+             Riga per chi ha prenotato la risottata finale, e nient'altro
+             per chi non l'ha fatto. Non è una sezione del build: il
+             segnaposto lo riempie /api/conferma-color-runner al momento di
+             spedire, guardando i metadata della sessione — con la sotto-lastra
+             già pronta se i coperti ci sono, con il vuoto se non ci sono. -->
+        {{RISOTTO}}
+
         <!--sezione:quando-->
         <!-- ── Dove e quando ─────────────────────────────────────────────
              Salta tutta se in evento.json manca l'ora o il luogo del

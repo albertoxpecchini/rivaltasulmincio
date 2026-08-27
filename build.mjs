@@ -994,6 +994,10 @@ const compilaMail = (nome) => {
     "{{IMPORTO_COMMISSIONI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
+    /* Non è un dato dell'evento: lo riempie /api/conferma-color-runner a runtime,
+       per iscritto, con la riga della risottata o con il vuoto. Qui basta che il
+       build non lo prenda per un segnaposto dimenticato. */
+    "{{RISOTTO}}",
   ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
   if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
