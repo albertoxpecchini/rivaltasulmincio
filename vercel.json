@@ -18,6 +18,13 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
     },
     {
+      "source": "/assets/(.*\\.pdf)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "attachment" }
+      ]
+    },
+    {
       "source": "/data/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }]
     }

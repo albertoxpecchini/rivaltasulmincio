@@ -551,8 +551,15 @@ const renderLocandina = () => {
   if (!locandinaTrovata) return "";
   const pdf = `assets/${LOCANDINA}.pdf`;
   const scaricabile = existsSync(pdf);
+  /* Il PDF si scarica: `download` col nome file, e in più `target="_blank"` così
+     se un browser ignora `download` (o il Content-Disposition del server) il PDF
+     si apre in una scheda invece di sembrare «bloccato». Senza PDF, si apre
+     l'anteprima. */
+  const collegamento = scaricabile
+    ? ` href="${pdf}" download="${LOCANDINA}.pdf" target="_blank" rel="noopener"`
+    : ` href="${locandinaTrovata}" target="_blank" rel="noopener"`;
   return `<figure class="sb-riv-crloc">
-      <a class="sb-riv-crloc-a" href="${scaricabile ? pdf : locandinaTrovata}"${scaricabile ? " download" : ' target="_blank" rel="noopener"'}>
+      <a class="sb-riv-crloc-a"${collegamento}>
         <img src="${locandinaTrovata}" width="1240" height="1754" decoding="async"
           alt="Locandina A4 della Color Runner: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-runner.">
       </a>

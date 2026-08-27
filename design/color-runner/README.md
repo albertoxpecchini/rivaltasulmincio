@@ -58,22 +58,35 @@ resto è dentro le immagini.
 > screenshot a 2× per i `.webp`, stampa in PDF A4 per la locandina. Rifatti i pezzi sulla
 > tela, si riesporta con questi nomi e ricompaiono al primo build.
 
-### Scorciatoia: `locandina.render.html`
+### Riesportare la locandina senza Claude Design
 
-Copia autonoma della sola locandina — stesso markup di `locandina.dc.html` ma senza
-`<x-dc>`/`<doc-page>` né runtime, pagina A4 vera con i font da Google Fonts. Serve a
-riesportare `webp` + `pdf` con Chrome headless, senza aprire Claude Design:
+Da radice progetto:
 
 ```
-chrome --headless --no-pdf-header-footer --print-to-pdf=color-runner-locandina.pdf \
-  --virtual-time-budget=10000 locandina.render.html
-chrome --headless --force-device-scale-factor=2 --window-size=794,1123 \
-  --screenshot=shot.png --virtual-time-budget=10000 locandina.render.html
-# shot.png (1588×2246) → ridimensiona a 1240×1754 e salva in webp (es. sharp/squoosh)
+npm install            # una volta: serve `sharp`
+npm run render:locandina
 ```
 
-Se si tocca `locandina.dc.html`, riportare la stessa modifica qui dentro (i due file
-vanno tenuti allineati a mano).
+Rigenera `assets/foto/color-runner-locandina.webp` (1240×1754) e
+`assets/color-runner-locandina.pdf` (A4). Poi si controllano le due uscite e si committano.
+
+Come funziona:
+
+- **`locandina.render.html`** — copia autonoma della sola locandina: stesso markup di
+  `locandina.dc.html` ma senza `<x-dc>`/`<doc-page>` né runtime, pagina A4 vera, **font
+  Titillium Web e Roboto Mono già dentro il file** (woff2 in base64, sottoinsiemi latin +
+  latin-ext). Nessuna rete: il risultato è identico online e offline.
+- **`render-locandina.mjs`** — trova Chrome o Edge da solo (`CHROME_PATH` per forzarlo),
+  fa PDF (`--print-to-pdf`) e screenshot 2× (1588×2246), poi `sharp` lo riduce a
+  1240×1754 e lo salva in webp.
+
+Se si tocca `locandina.dc.html`, riportare la stessa modifica in `locandina.render.html`
+(i due file vanno tenuti allineati a mano; i blocchi `@font-face` in testa non si
+toccano). Per rifare i font da capo: scaricare il CSS di Google Fonts e sostituire ogni
+`url(https://…woff2)` col woff2 in `data:font/woff2;base64,…`.
+
+Il **banner** non ha una scorciatoia: non porta testo che cambia spesso, si rifà sulla
+tela quando serve.
 
 ## Perché sta qui e non va online
 

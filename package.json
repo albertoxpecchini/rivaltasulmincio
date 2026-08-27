@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "vite",
     "build": "node build.mjs",
-    "test": "node prova-conferma.mjs && node prova-iscritti.mjs"
+    "test": "node prova-conferma.mjs && node prova-iscritti.mjs",
+    "render:locandina": "node design/color-runner/render-locandina.mjs"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "vite": "^7.1.14"
   }
 }
