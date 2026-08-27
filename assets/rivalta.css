@@ -713,10 +713,10 @@
 /* ── La cornice della Color Runner in home ───────────────────────────────
    Il manifesto è il richiamo all'evento, e porta i tasti per aprirlo: una
    lastra del sito (.sb-panel, stesso rim e stesso smusso) con dentro
-   l'immagine e i due tasti. Da schermo largo i tasti stanno sovrapposti alla
-   metà destra dell'immagine — la zona di sole polveri — su un vetro dei
-   token del sito; sotto i 48rem l'immagine sta sopra e i tasti sotto, a
-   tutta larghezza. */
+   l'immagine e i due tasti. Da schermo largo i tasti stanno in basso al
+   centro dell'immagine, su un vetro dei token del sito, così non coprono i
+   bambini che corrono; sotto i 48rem l'immagine sta sopra e i tasti sotto,
+   a tutta larghezza. */
 .sb-riv-crhome { margin-top: 2rem; }
 .sb-riv-crhome .sb-riv-crbanner { margin: 0; border: 0; }
 .sb-riv-crhome-azioni {
@@ -730,19 +730,24 @@
 @media (min-width: 48rem) {
   .sb-riv-crhome .sb-panel-inner { display: grid; }
   .sb-riv-crhome .sb-riv-crbanner { grid-area: 1 / 1; }
+  /* I tasti sovrapposti alla striscia stanno in basso al centro: la parte
+     alta e i lati dell'immagine — dove corrono i bambini — restano liberi. */
   .sb-riv-crhome-azioni {
     grid-area: 1 / 1;
-    align-self: center;
-    justify-self: end;
-    width: min(16rem, 42%);
-    margin: clamp(1rem, 3vw, 1.9rem);
-    padding: clamp(0.85rem, 2vw, 1.1rem);
+    flex-direction: row;
+    align-self: end;
+    justify-self: center;
+    width: auto;
+    max-width: min(92%, 34rem);
+    margin: 0 0 clamp(0.9rem, 2.6vw, 1.6rem);
+    padding: clamp(0.6rem, 1.6vw, 0.9rem);
     background: color-mix(in srgb, var(--sb-bg) 78%, transparent);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
     backdrop-filter: blur(10px) saturate(140%);
     box-shadow: inset 0 1px 0 var(--sb-glass-spec);
     clip-path: var(--sb-shape-sm);
   }
+  .sb-riv-crhome-azioni .sb-btn { width: auto; }
 }
 
 /* ── La locandina A4 ─────────────────────────────────────────────────────
