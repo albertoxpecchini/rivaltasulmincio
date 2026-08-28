@@ -47,9 +47,13 @@
 
       <!-- NOTIZIA IN EVIDENZA — a scadenza. Resta in pagina fino alle 18:00 di
            martedì 1 settembre 2026 (96 ore dalla pubblicazione dell'articolo,
-           venerdì 28 agosto ore 18:07). Lo <script> in fondo al blocco lo
-           rimuove alla scadenza anche senza un nuovo build; per toglierlo
-           prima, cancellare tutto il <div class="sb-riv-flash sb-riv-flash--urgente" …>.
+           venerdì 28 agosto ore 18:07). Lo <script> subito dopo il blocco:
+             · alla scadenza toglie l'avviso anche senza un nuovo build;
+             · finché l'avviso è in pagina, nasconde la stessa notizia nella
+               rassegna qui sotto — così in home compare una volta sola — e la
+               fa ricomparire quando l'avviso scade.
+           Per toglierlo prima, cancellare il <div class="sb-riv-flash
+           sb-riv-flash--urgente" …> INSIEME al suo <script>.
            Il ROSSO è un'eccezione voluta e circoscritta: è l'unico punto del
            sito con un secondo colore, riservato agli avvisi urgenti (maltempo,
            strade chiuse, allerta). Uno per volta. -->
@@ -65,16 +69,38 @@
             <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">Leggi l'articolo su Gazzetta di Mantova <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
           </div>
         </div></div>
-        <script>
-          (function (el) {
-            if (!el) return;
-            var t = Date.parse(el.getAttribute("data-scade"));
-            if (!t) return;
-            if (Date.now() >= t) { el.remove(); return; }
-            setTimeout(function () { el.remove(); }, t - Date.now());
-          })(document.currentScript.parentNode);
-        </script>
       </div>
+      <script>
+        (function (box) {
+          if (!box) return;
+          var quando = Date.parse(box.getAttribute("data-scade"));
+          if (quando && Date.now() >= quando) { box.remove(); return; }
+
+          var rimando = box.querySelector("a[href]");
+          var url = rimando ? rimando.getAttribute("href") : "";
+          var testa = box.querySelector("h3");
+          var titolo = testa ? testa.textContent.trim() : "";
+
+          function gemello() {
+            var carte = document.querySelectorAll(".sb-riv-news a.sb-riv-news-card");
+            for (var i = 0; i < carte.length; i++) {
+              var t = carte[i].querySelector(".sb-riv-news-title");
+              if (carte[i].getAttribute("href") === url || (titolo && t && t.textContent.trim() === titolo)) return carte[i];
+            }
+            return null;
+          }
+          function sincronizza() {
+            var doppio = gemello();
+            if (doppio) doppio.style.display = "none";
+            if (quando) setTimeout(function () {
+              box.remove();
+              if (doppio) doppio.style.display = "";
+            }, quando - Date.now());
+          }
+          if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", sincronizza);
+          else sincronizza();
+        })(document.currentScript.previousElementSibling);
+      </script>
 
       <div class="sb-riv-news">
 {{NEWS}}
