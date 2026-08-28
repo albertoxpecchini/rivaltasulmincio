@@ -665,7 +665,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
             Domenica 20 settembre — ritrovo dalle <strong class="e-fg" style="color:#171717; font-weight:600;">15:30</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">Piazza Chiesa, davanti alla chiesa</strong>, da dove parte il giro per il paese.<br>
-            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina o si corre come si preferisce.</span>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span>
           </p>
         </td>
         </tr>
