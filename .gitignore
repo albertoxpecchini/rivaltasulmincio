@@ -6,3 +6,7 @@ node_modules/
 # Il modello di cosa ci va sta in .env.example, quello sì versionato.
 .env
 .env.local
+
+# Il corpo della pull request che notizie.mjs prepara per il workflow della
+# rassegna: file di lavoro, si rigenera a ogni giro.
+notizie-nuove.md

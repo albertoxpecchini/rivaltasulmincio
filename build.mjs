@@ -71,6 +71,17 @@ const renderNews = () => {
   const items = JSON.parse(readFileSync("_build/notizie.json", "utf8"))
     .sort((a, b) => (a.data < b.data ? 1 : -1));
 
+  /* Le voci che l'automazione (notizie.mjs) ha appena pescato arrivano con
+     `nota` vuota e `daRivedere: true`: vanno rifinite a mano — nota scritta da
+     noi e link diretto alla testata — prima di dare per buona la pull request.
+     Qui non bloccano il build, ma si fanno sentire. */
+  const daRivedere = items.filter((n) => n.daRivedere);
+  if (daRivedere.length) {
+    console.log(`⚠ Rassegna: ${daRivedere.length} voci ancora da rivedere in _build/notizie.json`);
+    for (const n of daRivedere) console.log(`  · ${n.titolo} — ${n.testata}`);
+    console.log(`  Scrivere la nota, mettere il link diretto all'articolo e togliere "daRivedere".`);
+  }
+
   return items
     .map(
       (n) => `        <a class="sb-card sb-riv-news-card" href="${escape(n.url)}" target="_blank" rel="noreferrer noopener">
@@ -81,8 +92,9 @@ const renderNews = () => {
             </div>
             <h3 class="sb-riv-news-title">${escape(n.titolo)}</h3>${
               n.autore ? `\n            <p class="sb-riv-news-by">di ${escape(n.autore)}</p>` : ""
+            }${
+              n.nota ? `\n            <p class="sb-riv-news-note">${escape(n.nota)}</p>` : ""
             }
-            <p class="sb-riv-news-note">${escape(n.nota)}</p>
             <span class="sb-link sb-riv-news-go">Leggi su ${escape(n.testata)}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
           </div></div>
         </a>`

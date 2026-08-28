@@ -1,0 +1,68 @@
+# Rassegna stampa — un giro al giorno.
+#
+# notizie.mjs interroga la ricerca di Google News per «rivalta sul mincio»,
+# scarta quello che è già in _build/notizie.json e aggiunge il resto come voci
+# da rivedere. Se ha trovato qualcosa, il workflow rigenera la home e apre una
+# pull request in bozza: titolo e nota vanno rifiniti a mano prima di unire.
+#
+# Perché funzioni serve, una volta sola, in
+#   Settings › Actions › General › Workflow permissions
+# spuntare «Allow GitHub Actions to create and approve pull requests».
+
+name: Rassegna stampa
+
+on:
+  schedule:
+    - cron: "0 5 * * *" # 05:00 UTC — mattina in Italia
+  workflow_dispatch:
+    inputs:
+      giorni:
+        description: "Quanti giorni indietro guardare"
+        required: false
+        default: "60"
+      max:
+        description: "Quante voci nuove al massimo"
+        required: false
+        default: "12"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: rassegna
+  cancel-in-progress: false
+
+jobs:
+  rassegna:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Cerca notizie nuove
+        env:
+          RASSEGNA_GIORNI: ${{ github.event.inputs.giorni }}
+          RASSEGNA_MAX: ${{ github.event.inputs.max }}
+        run: node notizie.mjs
+
+      - name: Rigenera il sito
+        run: node build.mjs
+
+      - name: Apri la pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: rassegna/nuovi-titoli
+          base: main
+          draft: true
+          title: "Rassegna stampa: nuovi titoli su Rivalta"
+          commit-message: "rassegna: nuovi titoli dalla ricerca Google News"
+          body-path: notizie-nuove.md
+          labels: rassegna
+          delete-branch: true
+          add-paths: |
+            _build/notizie.json
+            index.html
