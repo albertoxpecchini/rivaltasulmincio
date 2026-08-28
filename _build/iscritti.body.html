@@ -1,5 +1,5 @@
-<!--title: Iscritti Color Runner — zona organizzatori | Rivalta sul Mincio-->
-<!--desc: Elenco degli iscritti alla Color Runner del 20 settembre, riservato a chi organizza.-->
+<!--title: Iscritti Color Walk — zona organizzatori | Rivalta sul Mincio-->
+<!--desc: Elenco degli iscritti alla Color Walk del 20 settembre, riservato a chi organizza.-->
 <!--noindex: true-->
 
 <!-- ═══════════════════════════════════════════════════════════════════════
@@ -9,7 +9,7 @@
 
      Ma il link non è la serratura. La serratura è la chiave in
      ISCRITTI_CHIAVE (una variabile d'ambiente su Vercel) che
-     /api/iscritti-color-runner pretende a ogni richiesta: senza, non risponde.
+     /api/iscritti-color-walk pretende a ogni richiesta: senza, non risponde.
      Questa pagina è un lettore, non un archivio — di suo non sa niente e non
      conserva niente.
 
@@ -53,7 +53,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
 .sb-is .sb-container {
   max-width: var(--is-col);
-  /* Stessa formula di /color-runner: il margine si calcola sulla larghezza
+  /* Stessa formula di /color-walk: il margine si calcola sulla larghezza
      vera dello schermo — minimo 1.4rem, poi il 6.5% dello schermo, con un
      tetto a 2.2rem oltre il quale ci pensa il max-width della colonna. */
   padding-inline: clamp(1.4rem, 6.5vw, 2.2rem);
@@ -336,7 +336,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   <section class="sb-container sb-riv-pagehead">
     <span class="sb-riv-eyebrow">Zona organizzatori</span>
-    <h1>Iscritti alla Color Runner</h1>
+    <h1>Iscritti alla Color Walk</h1>
     <p class="sb-riv-lede">Chi ha pagato la quota del 20 settembre, letto dai pagamenti Stripe. Serve la chiave: questa pagina non tiene niente di suo.</p>
   </section>
 
@@ -583,7 +583,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   function carica() {
     mostra("attesa", "Leggo i pagamenti…");
-    return fetch("/api/iscritti-color-runner", { headers: { "x-chiave": chiave } })
+    return fetch("/api/iscritti-color-walk", { headers: { "x-chiave": chiave } })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, stato: r.status, d: d }; }); })
       .then(function (res) {
         if (!res.ok) {
@@ -699,12 +699,12 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   document.getElementById("is-csv").addEventListener("click", function () {
     if (!dati || !dati.iscritti.length) return mostra("errore", "Non c'è ancora niente da scaricare.");
-    scarica("iscritti-color-runner-" + new Date().toISOString().slice(0, 10) + ".csv", csv());
+    scarica("iscritti-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csv());
   });
 
   document.getElementById("is-preno-csv").addEventListener("click", function () {
     if (!dati || !dati.risottoPrenotazioni) return mostra("errore", "Nessuna prenotazione alla risottata, per ora.");
-    scarica("risotto-color-runner-" + new Date().toISOString().slice(0, 10) + ".csv", csvRisotto());
+    scarica("risotto-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csvRisotto());
   });
 
   // Chi torna sulla pagina nella stessa scheda non riscrive la chiave.

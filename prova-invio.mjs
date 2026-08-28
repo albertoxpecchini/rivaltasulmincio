@@ -9,7 +9,7 @@
    Manda una mail sola, all'indirizzo che gli si dà, con dati inventati.
    Non tocca Stripe, non tocca pagamenti, non tocca iscritti: prende gli
    stessi due modelli e la stessa funzione di spedizione che usa il webhook —
-   importati da api/conferma-color-runner.mjs, non ricopiati — così quello che
+   importati da api/conferma-color-walk.mjs, non ricopiati — così quello che
    si vede arrivare è esattamente quello che arriverà a chi paga.
 
    Serve la chiave di Resend nell'ambiente della propria shell:
@@ -26,7 +26,7 @@
 
    Non gira su Vercel: sta in .vercelignore insieme a build.mjs e serve.mjs.
    ═══════════════════════════════════════════════════════════════════════════ */
-import { spedisci, riempi, MODELLO_RICEVUTA, MODELLO_FALLITA, ORGANIZZATORI } from "./api/conferma-color-runner.mjs";
+import { spedisci, riempi, MODELLO_RICEVUTA, MODELLO_FALLITA, ORGANIZZATORI } from "./api/conferma-color-walk.mjs";
 
 const a = process.argv[2];
 const quale = (process.argv[3] || "ricevuta").toLowerCase();
@@ -62,17 +62,17 @@ const data = new Intl.DateTimeFormat("it-IT", {
 const mail =
   quale === "fallita"
     ? {
-        oggetto: "[PROVA] Iscrizione non completata — Color Runner, 20 settembre",
+        oggetto: "[PROVA] Iscrizione non completata — Color Walk, 20 settembre",
         html: riempi(MODELLO_FALLITA, {
           NOME: "Rebecca",
           MOTIVO: "la pagina di pagamento si è chiusa prima che il pagamento fosse completato.",
         }),
         testo:
-          "PROVA. Ciao Rebecca, il pagamento della quota della Color Runner non è " +
+          "PROVA. Ciao Rebecca, il pagamento della quota della Color Walk non è " +
           "andato a buon fine. Non ti abbiamo preso niente.",
       }
     : {
-        oggetto: "[PROVA] Iscrizione confermata — Color Runner, 20 settembre",
+        oggetto: "[PROVA] Iscrizione confermata — Color Walk, 20 settembre",
         html: riempi(MODELLO_RICEVUTA, {
           NOME: "Rebecca",
           DATA: data,
@@ -81,12 +81,12 @@ const mail =
           IMPORTO: "11,00 €",
         }),
         testo:
-          "PROVA. Ciao Rebecca, la tua iscrizione alla Color Runner del 20 settembre " +
+          "PROVA. Ciao Rebecca, la tua iscrizione alla Color Walk del 20 settembre " +
           `è registrata e la quota è pagata. 10,00 € di quota + 1,00 € di commissioni di servizio = 11,00 € il ${data}.`,
       };
 
 console.log(`
-  mittente     ${process.env.POSTA_MITTENTE || "(predefinito: color-runner@rivaltasulmincio.it)"}
+  mittente     ${process.env.POSTA_MITTENTE || "(predefinito: color-walk@rivaltasulmincio.it)"}
   rispondi a   ${ORGANIZZATORI || "(nessuno — _build/email/evento.json è ancora senza organizzatori)"}
   a            ${a}
   modello      ${quale === "fallita" ? "mancato pagamento" : "ricevuta"}

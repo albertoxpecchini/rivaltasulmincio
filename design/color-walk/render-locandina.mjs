@@ -1,11 +1,11 @@
-/* Riesporta la locandina della Color Runner senza Claude Design.
+/* Riesporta la locandina della Color Walk senza Claude Design.
  *
- *   node design/color-runner/render-locandina.mjs
+ *   node design/color-walk/render-locandina.mjs
  *
- * Sorgente:  design/color-runner/locandina.render.html
+ * Sorgente:  design/color-walk/locandina.render.html
  *            (copia standalone di locandina.dc.html, font inclusi: nessuna rete)
- * Uscite:    assets/foto/color-runner-locandina.webp   1240 x 1754
- *            assets/color-runner-locandina.pdf          A4, una pagina
+ * Uscite:    assets/foto/color-walk-locandina.webp   1240 x 1754
+ *            assets/color-walk-locandina.pdf          A4, una pagina
  *
  * Serve Chrome o Edge (cerca da solo i percorsi soliti su Windows/macOS/Linux;
  * si puo forzare con CHROME_PATH) e il pacchetto `sharp` (devDependency).
@@ -19,8 +19,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const repo = join(here, "..", "..");
 const SRC = join(here, "locandina.render.html");
-const OUT_WEBP = join(repo, "assets", "foto", "color-runner-locandina.webp");
-const OUT_PDF = join(repo, "assets", "color-runner-locandina.pdf");
+const OUT_WEBP = join(repo, "assets", "foto", "color-walk-locandina.webp");
+const OUT_PDF = join(repo, "assets", "color-walk-locandina.pdf");
 const WIDTH = 1240;
 const HEIGHT = 1754;
 

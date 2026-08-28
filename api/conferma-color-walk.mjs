@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   /api/conferma-color-runner — la mail che chiude l'iscrizione alla Color
-   Runner. Una sola, e quella giusta:
+   /api/conferma-color-walk — la mail che chiude l'iscrizione alla Color
+   Walk. Una sola, e quella giusta:
 
      · quota incassata      → la ricevuta, con nome, la quota, le commissioni
                               di servizio, il totale e la data
@@ -47,7 +47,7 @@
    rinvii di Stripe sono fatti apposta per ripetersi.
 
    ── Da mettere a mano, su Vercel ─────────────────────────────────────────
-     STRIPE_SECRET_KEY      la stessa di /api/iscrizione-color-runner
+     STRIPE_SECRET_KEY      la stessa di /api/iscrizione-color-walk
      STRIPE_WEBHOOK_SECRET  whsec_… lo dà Stripe quando si crea il webhook
      RESEND_API_KEY         la chiave del servizio che spedisce
      POSTA_MITTENTE         (facoltativa) l'indirizzo del mittente
@@ -63,15 +63,15 @@ export const config = { api: { bodyParser: false } };
 
 const SITE = "https://www.rivaltasulmincio.it";
 
-/* Marchio che il POST di /api/iscrizione-color-runner mette su ogni sessione
+/* Marchio che il POST di /api/iscrizione-color-walk mette su ogni sessione
    che crea. Serve a non rispondere agli avvisi di pagamenti che un domani
    nasceranno per altro: quelli non li riguarda questa mail. */
-const EVENTO = "color-runner-2026-09-20";
+const EVENTO = "color-walk-2026-09-20";
 
-const OGGETTO_RICEVUTA = "Iscrizione confermata — Color Runner, 20 settembre";
-const OGGETTO_FALLITA = "Iscrizione non completata — Color Runner, 20 settembre";
+const OGGETTO_RICEVUTA = "Iscrizione confermata — Color Walk, 20 settembre";
+const OGGETTO_FALLITA = "Iscrizione non completata — Color Walk, 20 settembre";
 
-const MITTENTE_PREDEFINITO = "Color Runner — Rivalta sul Mincio <color-runner@rivaltasulmincio.it>";
+const MITTENTE_PREDEFINITO = "Color Walk — Rivalta sul Mincio <color-walk@rivaltasulmincio.it>";
 
 /* Cinque minuti, la tolleranza consigliata da Stripe: oltre, un avviso vero
    intercettato da qualcuno e rigiocato più tardi non viene più accettato. */
@@ -408,9 +408,9 @@ export default async function handler(req, res) {
         oggetto: OGGETTO_RICEVUTA,
         html,
         testo:
-          `Ciao ${nome || ""}, la tua iscrizione alla Color Runner del 20 settembre è ` +
+          `Ciao ${nome || ""}, la tua iscrizione alla Color Walk del 20 settembre è ` +
           `registrata e la quota è pagata.\n\n` +
-          `Iscrizione Color Runner — 20 settembre: ${importoQuota}\n` +
+          `Iscrizione Color Walk — 20 settembre: ${importoQuota}\n` +
           `Commissioni di servizio: ${importoCommissioni}\n` +
           `Totale, pagato con carta il ${data}: ${importo}\n\n` +
           `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
@@ -465,10 +465,10 @@ export default async function handler(req, res) {
       oggetto: OGGETTO_FALLITA,
       html: riempi(MODELLO_FALLITA, { NOME: nome, MOTIVO: motivo }),
       testo:
-        `Ciao ${nome || ""}, il pagamento della quota della Color Runner non è andato ` +
+        `Ciao ${nome || ""}, il pagamento della quota della Color Walk non è andato ` +
         `a buon fine: ${motivo} La tua iscrizione non è registrata e il posto non è tenuto.\n\n` +
         `Non ti abbiamo preso niente: sul conto non arriva nessun addebito.\n\n` +
-        `Se vuoi riprovare, il modulo è qui: ${SITE}/color-runner\n\n` +
+        `Se vuoi riprovare, il modulo è qui: ${SITE}/color-walk\n\n` +
         `Il gruppo del Palio delle Contrade — Rivalta sul Mincio`,
     });
 
@@ -490,8 +490,8 @@ export default async function handler(req, res) {
    ═══════════════════════════════════════════════════════════════════════════ */
 /* build:modelli:inizio */
 /* Generato da build.mjs — NON modificare a mano.
-   I sorgenti sono _build/email/ricevuta-color-runner.html,
-   _build/email/fallita-color-runner.html e _build/email/evento.json. */
+   I sorgenti sono _build/email/ricevuta-color-walk.html,
+   _build/email/fallita-color-walk.html e _build/email/evento.json. */
 
 export const ORGANIZZATORI = "";
 
@@ -503,7 +503,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 <meta name="x-apple-disable-message-reformatting">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<title>Iscrizione confermata — Color Runner, 20 settembre</title>
+<title>Iscrizione confermata — Color Walk, 20 settembre</title>
 
 
 <style>
@@ -538,7 +538,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 <body class="e-ground" style="margin:0; padding:0; background:#f0f0f0; -webkit-font-smoothing:antialiased;">
 
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
-  La tua iscrizione alla Color Runner del 20 settembre è registrata e la quota è pagata.
+  La tua iscrizione alla Color Walk del 20 settembre è registrata e la quota è pagata.
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -558,7 +558,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
             Iscrizione confermata
           </div>
           <h1 class="e-fg" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:28px; line-height:1.25; font-weight:600; color:#171717;">
-            Color&nbsp;Runner — 20 settembre
+            Color&nbsp;Walk — 20 settembre
           </h1>
         </td>
         </tr>
@@ -586,7 +586,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Iscrizione Color Runner — 20 settembre
+                  Iscrizione Color Walk — 20 settembre
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
                   {{IMPORTO_QUOTA}}
@@ -680,7 +680,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
     <tr>
     <td style="padding:22px 12px 0;" align="center">
       <p class="e-fg-m" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; line-height:1.7; color:#8f8f8f;">
-        Hai ricevuto questa mail perché ti sei iscritto alla Color Runner su
+        Hai ricevuto questa mail perché ti sei iscritto alla Color Walk su
         <a class="e-brand" href="https://www.rivaltasulmincio.it" style="color:#0a6285;">rivaltasulmincio.it</a>.<br>
         Non è una lista di invio: non ti arriverà altro. Per qualsiasi cosa, rispondi pure a questo messaggio.
       </p>
@@ -708,7 +708,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
 <meta name="x-apple-disable-message-reformatting">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<title>Iscrizione non completata — Color Runner, 20 settembre</title>
+<title>Iscrizione non completata — Color Walk, 20 settembre</title>
 
 
 <style>
@@ -735,7 +735,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
 <body class="e-ground" style="margin:0; padding:0; background:#f0f0f0; -webkit-font-smoothing:antialiased;">
 
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
-  L'iscrizione alla Color Runner non è stata completata e non ti è stato addebitato nulla.
+  L'iscrizione alla Color Walk non è stata completata e non ti è stato addebitato nulla.
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -755,7 +755,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
             Iscrizione non completata
           </div>
           <h1 class="e-fg" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:28px; line-height:1.25; font-weight:600; color:#171717;">
-            Color&nbsp;Runner — 20 settembre
+            Color&nbsp;Walk — 20 settembre
           </h1>
         </td>
         </tr>
@@ -809,7 +809,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
           <table role="presentation" cellpadding="0" cellspacing="0" border="0">
             <tr>
             <td class="e-btn" style="background:#72c7e3; border:1px solid #2d94c1; border-radius:6px;">
-              <a href="https://www.rivaltasulmincio.it/color-runner" style="display:inline-block; padding:10px 20px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:14px; font-weight:600; color:#101010;">
+              <a href="https://www.rivaltasulmincio.it/color-walk" style="display:inline-block; padding:10px 20px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:14px; font-weight:600; color:#101010;">
                 Riprova l'iscrizione
               </a>
             </td>
@@ -837,7 +837,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
     <tr>
     <td style="padding:22px 12px 0;" align="center">
       <p class="e-fg-m" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; line-height:1.7; color:#8f8f8f;">
-        Hai ricevuto questa mail perché hai cominciato un'iscrizione alla Color Runner su
+        Hai ricevuto questa mail perché hai cominciato un'iscrizione alla Color Walk su
         <a class="e-brand" href="https://www.rivaltasulmincio.it" style="color:#0a6285;">rivaltasulmincio.it</a>.<br>
         Non è una lista di invio: non ti arriverà altro. Per qualsiasi cosa, rispondi pure a questo messaggio.
       </p>

@@ -695,14 +695,14 @@
   border: 0;
 }
 
-/* ── Il banner della Color Runner ─────────────────────────────────────────
-   L'immagine di design/color-runner/banner.dc.html, messa e basta: nessuna
+/* ── Il banner della Color Walk ─────────────────────────────────────────
+   L'immagine di design/color-walk/banner.dc.html, messa e basta: nessuna
    lastra, nessun taglio. Un filo di bordo perché il suo fondo è quasi bianco
    come la pagina e senza si perderebbe (come per la locandina). La stessa in
-   tre pagine — su /color-runner e in cima al regolamento è solo l'immagine;
+   tre pagine — su /color-walk e in cima al regolamento è solo l'immagine;
    in home entra nella cornice qui sotto, coi tasti dell'evento (e lì il bordo
    lo dà già la lastra). */
-.sb-riv-crbanner {
+.sb-riv-cwbanner {
   display: block;
   width: 100%;
   height: auto;
@@ -710,29 +710,29 @@
   border: 1px solid var(--sb-border);
 }
 
-/* ── La cornice della Color Runner in home ───────────────────────────────
+/* ── La cornice della Color Walk in home ───────────────────────────────
    Il manifesto è il richiamo all'evento, e porta i tasti per aprirlo: una
    lastra del sito (.sb-panel, stesso rim e stesso smusso) con dentro
    l'immagine e i due tasti. Da schermo largo i tasti stanno in basso al
    centro dell'immagine, su un vetro dei token del sito, così non coprono i
    bambini che corrono; sotto i 48rem l'immagine sta sopra e i tasti sotto,
    a tutta larghezza. */
-.sb-riv-crhome { margin-top: 2rem; }
-.sb-riv-crhome .sb-riv-crbanner { margin: 0; border: 0; }
-.sb-riv-crhome-azioni {
+.sb-riv-cwhome { margin-top: 2rem; }
+.sb-riv-cwhome .sb-riv-cwbanner { margin: 0; border: 0; }
+.sb-riv-cwhome-azioni {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   padding: clamp(1rem, 3.5vw, 1.4rem);
 }
-.sb-riv-crhome-azioni .sb-btn { width: 100%; }
+.sb-riv-cwhome-azioni .sb-btn { width: 100%; }
 
 @media (min-width: 48rem) {
-  .sb-riv-crhome .sb-panel-inner { display: grid; }
-  .sb-riv-crhome .sb-riv-crbanner { grid-area: 1 / 1; }
+  .sb-riv-cwhome .sb-panel-inner { display: grid; }
+  .sb-riv-cwhome .sb-riv-cwbanner { grid-area: 1 / 1; }
   /* I tasti sovrapposti alla striscia stanno in basso al centro: la parte
      alta e i lati dell'immagine — dove corrono i bambini — restano liberi. */
-  .sb-riv-crhome-azioni {
+  .sb-riv-cwhome-azioni {
     grid-area: 1 / 1;
     flex-direction: row;
     align-self: end;
@@ -747,23 +747,23 @@
     box-shadow: inset 0 1px 0 var(--sb-glass-spec);
     clip-path: var(--sb-shape-sm);
   }
-  .sb-riv-crhome-azioni .sb-btn { width: auto; }
+  .sb-riv-cwhome-azioni .sb-btn { width: auto; }
 }
 
 /* ── La locandina A4 ─────────────────────────────────────────────────────
    L'anteprima del foglio, con un filo di bordo perché è quasi bianco come la
    pagina; il clic scarica il PDF, e il cursore lo dice. Nessun'altra cornice.
-   In fondo a /color-runner l'anteprima è piccola; nella spalla del modulo
-   (.sb-cr-loc-lato, solo da schermo largo) è larga quanto la colonna. */
-.sb-riv-crloc { margin: 1.6rem 0 0; }
-.sb-riv-crloc-a {
+   In fondo a /color-walk l'anteprima è piccola; nella spalla del modulo
+   (.sb-cw-loc-lato, solo da schermo largo) è larga quanto la colonna. */
+.sb-riv-cwloc { margin: 1.6rem 0 0; }
+.sb-riv-cwloc-a {
   display: inline-block;
   width: 100%;
   max-width: 22rem;
   border: 1px solid var(--sb-border);
   cursor: pointer;
 }
-.sb-riv-crloc-a img { display: block; width: 100%; height: auto; }
+.sb-riv-cwloc-a img { display: block; width: 100%; height: auto; }
 
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */
 .sb-riv-pager {
@@ -1285,7 +1285,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 
    Il file ap.png ha il bianco cotto dentro (come dice assets/loghi/README):
    quindi la piastrella è bianca in tutti e due i temi — stessa eccezione,
-   stesso motivo di .sb-cr-logo su /color-runner. Resta smorzata, così sul
+   stesso motivo di .sb-cw-logo su /color-walk. Resta smorzata, così sul
    fondo scuro non è un lampo, e si accende al passaggio. */
 .sb-riv-mark {
   display: inline-flex;

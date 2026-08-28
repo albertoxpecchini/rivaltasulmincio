@@ -1,6 +1,6 @@
 # I loghi
 
-Tre file, e li cerca `build.mjs` per la striscia in fondo a [`/color-runner`](../../_build/color-runner.body.html).
+Tre file, e li cerca `build.mjs` per la striscia in fondo a [`/color-walk`](../../_build/color-walk.body.html).
 
 Il nome file **non è una proposta, è la chiave**: il logo compare da sé al primo build dopo
 che il file è entrato qui. Se ne manca uno, al suo posto la pagina scrive il nome — che in
@@ -24,7 +24,7 @@ scuro perde i suoi, e questi non sono nostri da ritoccare.
 I tre marchi hanno tre forme diverse — uno largo, uno verticale, uno quadrato — e la stessa
 altezza per tutti li farebbe leggere sbagliati: il largo sembrerebbe il doppio degli altri e
 lo stemma una miniatura. Si pareggiano **a occhio**, ognuno con la sua altezza, nel foglio di
-stile della pagina (`.sb-cr-logo--anspi`, `--rodigo`, `--ap`). Chi sostituisce un file con
+stile della pagina (`.sb-cw-logo--anspi`, `--rodigo`, `--ap`). Chi sostituisce un file con
 uno di forma diversa deve ripassare di lì.
 
 Lo stemma pesa 72 kB per un disegno che in pagina è alto una cinquantina di pixel: è un

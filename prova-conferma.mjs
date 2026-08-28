@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Banco di prova per api/conferma-color-runner.mjs — `node prova-conferma.mjs`.
+   Banco di prova per api/conferma-color-walk.mjs — `node prova-conferma.mjs`.
 
    La domanda a cui questo file risponde è una sola, ed è quella che conta:
    quando qualcuno paga (quota più commissioni di servizio), parte davvero la
@@ -14,7 +14,7 @@
    .vercelignore insieme a build.mjs e serve.mjs.
    ═══════════════════════════════════════════════════════════════════════════ */
 import { createHmac } from "node:crypto";
-import handler from "./api/conferma-color-runner.mjs";
+import handler from "./api/conferma-color-walk.mjs";
 
 const SEGRETO = "whsec_prova";
 process.env.STRIPE_SECRET_KEY = "sk_test_finta";
@@ -87,12 +87,12 @@ const SESSIONE_PAGATA = {
      commissioni per la ricevuta, invece di ricopiare un numero. */
   line_items: {
     data: [
-      { description: "Iscrizione Color Runner — 20 settembre", amount_total: 1000 },
+      { description: "Iscrizione Color Walk — 20 settembre", amount_total: 1000 },
       { description: "Commissioni di servizio", amount_total: 100 },
     ],
   },
   customer_details: { email: "rebecca@example.com", name: "Rebecca Rossi" },
-  metadata: { evento: "color-runner-2026-09-20", nome: "Rebecca", cognome: "Rossi" },
+  metadata: { evento: "color-walk-2026-09-20", nome: "Rebecca", cognome: "Rossi" },
   payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },
 };
 

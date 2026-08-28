@@ -273,8 +273,8 @@ rivaltasulmincio/
 │   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
 ├── api/                        # le tre cose che NON girano nel browser di chi legge
 │   ├── meteo.mjs               #   la stazione di meteomincio, tradotta in JSON
-│   ├── iscrizione-color-runner.mjs   #   apre il pagamento, e verifica il ritorno
-│   └── conferma-color-runner.mjs     #   il webhook Stripe: manda la ricevuta o l'avviso
+│   ├── iscrizione-color-walk.mjs   #   apre il pagamento, e verifica il ritorno
+│   └── conferma-color-walk.mjs     #   il webhook Stripe: manda la ricevuta o l'avviso
 │                               #   (in coda ha un blocco GENERATO da build.mjs: le due mail)
 ├── data/
 │   ├── rivalta_dataset.json    #   l'estratto OpenStreetMap completo (ODbL) — 330 POI
@@ -286,9 +286,9 @@ rivaltasulmincio/
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
 │   ├── luoghi.json             #   il registro dei 110 luoghi: coordinate, foto, schede
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
-│   └── email/                  #   le due mail della Color Runner, sorgente
-│       ├── ricevuta-color-runner.html   #     a chi ha pagato
-│       ├── fallita-color-runner.html    #     a chi si è fermato a metà
+│   └── email/                  #   le due mail della Color Walk, sorgente
+│       ├── ricevuta-color-walk.html   #     a chi ha pagato
+│       ├── fallita-color-walk.html    #     a chi si è fermato a metà
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
@@ -370,8 +370,8 @@ sequenceDiagram
 | **Piastrelle OpenStreetMap** | il fondo della mappa (ODbL, con attribuzione) | client, **solo su `/mappa`** |
 | **meteomincio.it** | la lettura della stazione di Rivalta | server, via `/api/meteo`, per la home e `/natura` |
 | **Vercel** | hosting statico + tre funzioni, `cleanUrls`, header di cache | produzione |
-| **Stripe** | l'incasso della quota Color Runner e l'avviso di com'è andata | server, via `/api/iscrizione-color-runner` e `/api/conferma-color-runner` |
-| **Resend** | la spedizione delle due mail della Color Runner | server, via `/api/conferma-color-runner` |
+| **Stripe** | l'incasso della quota Color Walk e l'avviso di com'è andata | server, via `/api/iscrizione-color-walk` e `/api/conferma-color-walk` |
+| **Resend** | la spedizione delle due mail della Color Walk | server, via `/api/conferma-color-walk` |
 
 Quello che il browser scarica sono pagine, fogli di stile, gli script e — solo se lo si chiede — il
 dataset da `/dati`. Le chiamate a runtime sono **due**: `/mappa` scarica le piastrelle da
@@ -448,18 +448,18 @@ Un solo script serve tutte e due le forme, e non le conosce: cerca gli elementi 
 `data-meteo` e ci scrive il campo che chiedono. Una terza forma, un domani, non richiede una riga
 in più lì dentro.
 
-### La Color Runner — l'iscrizione che incassa davvero
+### La Color Walk — l'iscrizione che incassa davvero
 
-La seconda cosa che non gira nel browser di chi legge. `/color-runner` raccoglie i dati di chi si
+La seconda cosa che non gira nel browser di chi legge. `/color-walk` raccoglie i dati di chi si
 iscrive alla camminata a colori del 20 settembre e incassa **11 €** — quota **10 €** più **1 € di
 commissioni di servizio**, due voci distinte nel Checkout — un pagamento vero, in un passaggio solo.
 L'euro in più copre quanto il circuito di pagamento trattiene su ogni incasso, così alla camminata
 arriva la quota intera. La pagina **non sta nel menu** — le nove porte d'ingresso sono quelle
 e restano nove — ma è pubblica: la richiamano la home, `/comunita` e `/eventi`, ed entra in
 sitemap. Per rimetterla in disparte basta rimettere `noindex: true` in testa a
-[`_build/color-runner.body.html`](_build/color-runner.body.html) e rifare il build.
+[`_build/color-walk.body.html`](_build/color-walk.body.html) e rifare il build.
 
-[`api/iscrizione-color-runner.mjs`](api/iscrizione-color-runner.mjs) parla con l'API REST di Stripe
+[`api/iscrizione-color-walk.mjs`](api/iscrizione-color-walk.mjs) parla con l'API REST di Stripe
 via `fetch`, **senza il pacchetto npm `stripe`**: stesso zero-dipendenze del resto del sito, stesso
 stile di `api/meteo.mjs`. Fa due mestieri secondo il metodo con cui lo si chiama:
 
@@ -468,11 +468,11 @@ stile di `api/meteo.mjs`. Fa due mestieri secondo il metodo con cui lo si chiama
 | `POST` | il modulo manda nome, cognome, email, telefono, note e il consenso spuntato; nasce una sessione Stripe Checkout e la risposta è l'indirizzo a cui mandare il browser a pagare |
 | `GET ?sessione=cs_…` | al ritorno dal pagamento la pagina chiede a Stripe se quella sessione è stata **davvero** pagata |
 
-E accanto c'è [`api/conferma-color-runner.mjs`](api/conferma-color-runner.mjs), che non lo chiama
+E accanto c'è [`api/conferma-color-walk.mjs`](api/conferma-color-walk.mjs), che non lo chiama
 il sito: lo chiama Stripe. È il webhook che manda la mail.
 
 Il secondo esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo basterebbe
-aprire `/color-runner?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato una lira.
+aprire `/color-walk?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato una lira.
 Chi ha pagato ha in mano anche l'identificativo di sessione — che non si indovina — ed è quello, non
 la parola `ok`, a decidere cosa la pagina scrive.
 
@@ -518,7 +518,7 @@ guardarlo. Non sono scritti come una pagina del sito: la posta non è il web, e 
 `color-mix()`, flex e grid in Outlook e Gmail non esistono. Stessa grammatica visiva del sito,
 tecnica diversa: tabelle, stili in linea, i token di `assets/sb.css` risolti a mano in hex.
 
-`node build.mjs` li compila **dentro** `api/conferma-color-runner.mjs`, fra due marcatori.
+`node build.mjs` li compila **dentro** `api/conferma-color-walk.mjs`, fra due marcatori.
 Sembra un giro largo, ed è il punto: `_build/` è in `.vercelignore`, quindi su Vercel quei file non
 arrivano — compilati diventano due stringhe dentro la funzione, e non c'è niente che possa mancare
 all'appello proprio mentre qualcuno sta pagando. Il blocco fra i marcatori è **generato**: si
@@ -559,9 +559,9 @@ rideploy:
 
 | Variabile | Dove si prende | Se manca |
 | :--- | :--- | :--- |
-| `STRIPE_WEBHOOK_SECRET` | Stripe → **Developers → Webhooks → Add endpoint**, indirizzo `https://www.rivaltasulmincio.it/api/conferma-color-runner`, eventi `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`. Il `whsec_…` compare a endpoint creato | gli avvisi vengono accettati **senza verificarne la firma** (quello che conta si rilegge comunque da Stripe, ma è un buco: nei log si vede) |
+| `STRIPE_WEBHOOK_SECRET` | Stripe → **Developers → Webhooks → Add endpoint**, indirizzo `https://www.rivaltasulmincio.it/api/conferma-color-walk`, eventi `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`. Il `whsec_…` compare a endpoint creato | gli avvisi vengono accettati **senza verificarne la firma** (quello che conta si rilegge comunque da Stripe, ma è un buco: nei log si vede) |
 | `RESEND_API_KEY` | [resend.com](https://resend.com) → **API Keys**, dopo aver verificato il dominio `rivaltasulmincio.it` in **Domains** (record SPF e DKIM dal pannello DNS) | la funzione risponde 500 e Stripe **continua a riprovare per tre giorni**: appena la chiave c'è, le mail arretrate partono |
-| `POSTA_MITTENTE` | facoltativa. Il mittente, forma `Nome <indirizzo@dominio>`. Il dominio dev'essere quello verificato in Resend | vale `Color Runner — Rivalta sul Mincio <color-runner@rivaltasulmincio.it>` |
+| `POSTA_MITTENTE` | facoltativa. Il mittente, forma `Nome <indirizzo@dominio>`. Il dominio dev'essere quello verificato in Resend | vale `Color Walk — Rivalta sul Mincio <color-walk@rivaltasulmincio.it>` |
 
 Il webhook si prova senza aspettare un vero iscritto: in Stripe, dalla scheda dell'endpoint,
 **Send test webhook**. E in locale [`prova-conferma.mjs`](prova-conferma.mjs) — `npm test`, zero
@@ -624,7 +624,7 @@ partire da `organizzatori`: senza quell'indirizzo le mail partono senza un posto
 e il piede che dice «rispondi pure a questo messaggio» promette una cosa che non c'è.
 
 Gli importi che il codice usa stanno in **un punto solo**: `QUOTA_CENT` e `COMMISSIONI_CENT` in
-`api/iscrizione-color-runner.mjs` (in centesimi). Il testo di `_build/color-runner.body.html` li
+`api/iscrizione-color-walk.mjs` (in centesimi). Il testo di `_build/color-walk.body.html` li
 ripete a parole per chi legge — se si cambiano i centesimi, va riallineato anche quello. Nelle mail
 non sono ricopiati: la ricevuta mostra le voci lette da Stripe (`expand[]=line_items`), quello che
 è stato incassato davvero.

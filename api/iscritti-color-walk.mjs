@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   /api/iscritti-color-runner — l'elenco di chi si è iscritto alla Color
-   Runner, per chi organizza. Lo legge la pagina /iscritti.
+   /api/iscritti-color-walk — l'elenco di chi si è iscritto alla Color
+   Walk, per chi organizza. Lo legge la pagina /iscritti.
 
    L'elenco degli iscritti non è un database nostro: è la lista dei pagamenti
    nel dashboard Stripe, e i dati del modulo ci viaggiano dentro come metadata
-   della sessione (vedi api/iscrizione-color-runner.mjs). Questa funzione non
+   della sessione (vedi api/iscrizione-color-walk.mjs). Questa funzione non
    fa altro che rileggerli da lì e rimetterli in fila. Non c'è niente da
    tenere allineato, perché non c'è una seconda copia.
 
@@ -32,9 +32,9 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
 /* Deve dire la stessa identica riga di EVENTO nelle altre due funzioni della
-   Color Runner: è il marchio con cui si riconoscono le sessioni che la
+   Color Walk: è il marchio con cui si riconoscono le sessioni che la
    riguardano fra tutti i pagamenti del sito. */
-const EVENTO = "color-runner-2026-09-20";
+const EVENTO = "color-walk-2026-09-20";
 
 const ATTESA_MS = 8000;
 

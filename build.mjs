@@ -434,8 +434,8 @@ ${mini}
       </aside>`;
 };
 
-/* ── Le vie del paese, per il modulo della Color Runner ───────────────────
-   {{VIE}} diventa un blocco JSON che il modulo di /color-runner legge dal DOM
+/* ── Le vie del paese, per il modulo della Color Walk ───────────────────
+   {{VIE}} diventa un blocco JSON che il modulo di /color-walk legge dal DOM
    per suggerire l'indirizzo mentre lo si scrive. Sono le vie vere di Rivalta
    con i civici mappati in OpenStreetMap: chi abita qui trova il suo indirizzo
    in due lettere e lo sceglie, invece di scriverlo ognuno a modo suo — «V.
@@ -486,7 +486,7 @@ const renderVie = () => {
   }
 
   const ordinate = Object.fromEntries([...vie.entries()].sort((a, b) => a[0].localeCompare(b[0], "it")));
-  return `<script type="application/json" id="cr-vie">${JSON.stringify(ordinate).replace(/</g, "\\u003c")}</script>`;
+  return `<script type="application/json" id="cw-vie">${JSON.stringify(ordinate).replace(/</g, "\\u003c")}</script>`;
 };
 
 /* ── I loghi di chi c'è dietro ────────────────────────────────────────────
@@ -498,14 +498,14 @@ const renderVie = () => {
    L'estensione non è fissata: vince il primo formato trovato, in quest'ordine.
    Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo. */
 const LOGHI = [
-  { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cr-logo--anspi" },
-  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Stemma del Comune di Rodigo", url: "https://comune.rodigo.mn.it", classe: "sb-cr-logo--rodigo" },
-  { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cr-logo--ap" },
+  { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
+  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Stemma del Comune di Rodigo", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
+  { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cw-logo--ap" },
 ];
 
 const loghiMancanti = [];
 const renderLoghi = () =>
-  `<div class="sb-cr-loghi">
+  `<div class="sb-cw-loghi">
 ${LOGHI.map((l) => {
   const trovato = ["svg", "png", "webp", "jpg"]
     .map((est) => `assets/loghi/${l.file}.${est}`)
@@ -513,25 +513,25 @@ ${LOGHI.map((l) => {
   if (!trovato) loghiMancanti.push(`${l.file}.svg`);
   const dentro = trovato
     ? `<img src="${trovato}" alt="${escape(l.desc)}" loading="lazy" decoding="async">`
-    : `<span class="sb-cr-logo-t">${escape(l.nome)}</span>`;
-  return `      <a class="sb-cr-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
+    : `<span class="sb-cw-logo-t">${escape(l.nome)}</span>`;
+  return `      <a class="sb-cw-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
 }).join("\n")}
     </div>`;
 
-/* ── Il banner e la locandina della Color Runner ─────────────────────────
-   Due pezzi disegnati a parte (design/color-runner/, tela di Claude Design) ed
+/* ── Il banner e la locandina della Color Walk ─────────────────────────
+   Due pezzi disegnati a parte (design/color-walk/, tela di Claude Design) ed
    esportati in assets/: il banner orizzontale e la locandina A4.
 
    {{BANNER}} mette il banner com'è — una <img> sola, niente intorno — nella
-   testata di /color-runner, al posto della scheda dell'evento in home (dove è
+   testata di /color-walk, al posto della scheda dell'evento in home (dove è
    un collegamento) e in coda al regolamento. {{LOCANDINA}} mette la locandina
-   su /color-runner: l'anteprima porta al PDF A4 da stampare.
+   su /color-walk: l'anteprima porta al PDF A4 da stampare.
 
    Finché il file non c'è, il segnaposto non lascia né un buco né una cornice:
    la pagina sta in piedi lo stesso. Rifatti i pezzi sulla tela, si riesporta
    con questi nomi e ricompaiono al primo build. */
-const BANNER = "color-runner-banner";
-const LOCANDINA = "color-runner-locandina";
+const BANNER = "color-walk-banner";
+const LOCANDINA = "color-walk-locandina";
 const RISOTTA_BANNER = "risottata-banner";
 let bannerTrovato = null;
 let locandinaTrovata = null;
@@ -542,28 +542,28 @@ const renderBanner = () => {
     .map((est) => `assets/foto/${BANNER}.${est}`)
     .find((p) => existsSync(p));
   if (!bannerTrovato) return "";
-  return `<img class="sb-riv-crbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
-      alt="Color Runner — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
+  return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
+      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
 };
 
 /* {{RISOTTA_BANNER}} è la striscia della risottata finale — stessa misura e
-   stesso trattamento del banner della camminata (.sb-riv-crbanner, immagine
-   sola col filo di bordo). Va nella zona risottata del modulo /color-runner,
-   sopra la spunta. La tela è in design/color-runner/risottata/. Senza il file,
+   stesso trattamento del banner della camminata (.sb-riv-cwbanner, immagine
+   sola col filo di bordo). Va nella zona risottata del modulo /color-walk,
+   sopra la spunta. La tela è in design/color-walk/risottata/. Senza il file,
    il segnaposto non lascia buchi. */
 const renderRisottaBanner = () => {
   risottaBannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
     .map((est) => `assets/foto/${RISOTTA_BANNER}.${est}`)
     .find((p) => existsSync(p));
   if (!risottaBannerTrovato) return "";
-  return `<img class="sb-riv-crbanner" src="${risottaBannerTrovato}" width="2400" height="900" decoding="async" loading="lazy"
-        alt="Risottata finale della Color Runner — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">`;
+  return `<img class="sb-riv-cwbanner" src="${risottaBannerTrovato}" width="2400" height="900" decoding="async" loading="lazy"
+        alt="Risottata finale della Color Walk — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">`;
 };
 
-/* ── Il blocco «Color Runner come in home» ────────────────────────────────
-   {{BANNER}} è la sola immagine; {{CR_HOME}} è come la home la mostra: il
+/* ── Il blocco «Color Walk come in home» ────────────────────────────────
+   {{BANNER}} è la sola immagine; {{CW_HOME}} è come la home la mostra: il
    banner dentro una cornice del sito (.sb-panel) coi due tasti dell'evento.
-   Lo usa ogni pagina che nomina la camminata fuori da /color-runner — la
+   Lo usa ogni pagina che nomina la camminata fuori da /color-walk — la
    home, /comunita, /eventi, il regolamento — così l'evento si presenta
    sempre allo stesso modo. Una definizione sola: se cambiano i tasti,
    cambiano dappertutto. Senza il file del banner, sparisce tutto il blocco:
@@ -575,14 +575,14 @@ const renderBannerHome = (page) => {
   const img = renderBanner();
   if (!img) return "";
   const regolamento =
-    page === "color-runner-regolamento"
+    page === "color-walk-regolamento"
       ? ""
-      : `\n            <a class="sb-btn sb-btn--secondary" href="/color-runner-regolamento"><span>Regolamento</span></a>`;
-  return `<div class="sb-riv-crhome">
+      : `\n            <a class="sb-btn sb-btn--secondary" href="/color-walk-regolamento"><span>Regolamento</span></a>`;
+  return `<div class="sb-riv-cwhome">
         <div class="sb-panel"><div class="sb-panel-inner">
           ${img}
-          <div class="sb-riv-crhome-azioni">
-            <a class="sb-btn sb-btn--primary" href="/color-runner#iscrizione"><span>Iscriviti alla camminata</span></a>${regolamento}
+          <div class="sb-riv-cwhome-azioni">
+            <a class="sb-btn sb-btn--primary" href="/color-walk#iscrizione"><span>Iscriviti alla camminata</span></a>${regolamento}
           </div>
         </div></div>
       </div>`;
@@ -602,17 +602,17 @@ const renderLocandina = () => {
   const collegamento = scaricabile
     ? ` href="${pdf}" download="${LOCANDINA}.pdf" target="_blank" rel="noopener"`
     : ` href="${locandinaTrovata}" target="_blank" rel="noopener"`;
-  return `<figure class="sb-riv-crloc">
-      <a class="sb-riv-crloc-a"${collegamento}>
+  return `<figure class="sb-riv-cwloc">
+      <a class="sb-riv-cwloc-a"${collegamento}>
         <img src="${locandinaTrovata}" width="1240" height="1754" decoding="async"
-          alt="Locandina A4 della Color Runner: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-runner.">
+          alt="Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.">
       </a>
     </figure>`;
 };
 
 /* ── Le sei contrade ──────────────────────────────────────────────────────
    Rivalta si divide in sei contrade, e le sei ricorrono in due pagine: per
-   esteso in /eventi, in fila su /color-runner. Stanno scritte qui una volta
+   esteso in /eventi, in fila su /color-walk. Stanno scritte qui una volta
    sola — nome, colore, stemma — e le pagine le chiamano con {{CONTRADE}} e
    {{CONTRADE_FILA}}. Il giorno che arriva l'artwork vero degli stemmi si
    cambia questo elenco, non due pagine.
@@ -817,7 +817,7 @@ for (const file of bodies) {
       .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
-      .replace("{{CR_HOME}}", () => renderBannerHome(page))
+      .replace("{{CW_HOME}}", () => renderBannerHome(page))
       .replace("{{RISOTTA_BANNER}}", renderRisottaBanner)
       .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
@@ -951,7 +951,7 @@ window.RSM_RICERCA = ${JSON.stringify(ricerca)};
 const nSezioni = ricerca.reduce((n, p) => n + p.h.length, 0);
 console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} sezioni)`);
 
-/* ── Le mail della Color Runner ───────────────────────────────────────────
+/* ── Le mail della Color Walk ───────────────────────────────────────────
    Due mail — la ricevuta di chi ha pagato e l'avviso a chi non è arrivato in
    fondo — vivono come HTML in _build/email/, perché è lì che si guardano e si
    correggono: aprendole nel browser. Ma a spedirle è una funzione su Vercel, e
@@ -959,7 +959,7 @@ console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} 
 
    Quindi il build le porta di là. Risolve i dati dell'evento, toglie via le
    sezioni che non hanno ancora i loro dati, e scrive il risultato dentro
-   api/conferma-color-runner.mjs, fra due marcatori. Da lì in poi sono due
+   api/conferma-color-walk.mjs, fra due marcatori. Da lì in poi sono due
    stringhe dentro la funzione: nessun file da leggere a runtime, nessuna
    configurazione di bundling da indovinare, niente che possa mancare
    all'appello proprio mentre qualcuno sta pagando.
@@ -1040,7 +1040,7 @@ const compilaMail = (nome) => {
     "{{IMPORTO_COMMISSIONI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
-    /* Non è un dato dell'evento: lo riempie /api/conferma-color-runner a runtime,
+    /* Non è un dato dell'evento: lo riempie /api/conferma-color-walk a runtime,
        per iscritto, con la riga della risottata o con il vuoto. Qui basta che il
        build non lo prenda per un segnaposto dimenticato. */
     "{{RISOTTO}}",
@@ -1056,22 +1056,22 @@ const compilaMail = (nome) => {
 const stringa = (t) =>
   "`" + t.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${") + "`";
 
-const FUNZIONE = "api/conferma-color-runner.mjs";
+const FUNZIONE = "api/conferma-color-walk.mjs";
 const sorgente = readFileSync(FUNZIONE, "utf8");
 const marcatori = /(\/\* build:modelli:inizio \*\/\n)[\s\S]*?(\/\* build:modelli:fine \*\/)/;
 if (!marcatori.test(sorgente)) {
   throw new Error(`${FUNZIONE}: mancano i marcatori build:modelli:inizio … build:modelli:fine`);
 }
 
-const ricevuta = compilaMail("ricevuta-color-runner.html");
-const fallita = compilaMail("fallita-color-runner.html");
+const ricevuta = compilaMail("ricevuta-color-walk.html");
+const fallita = compilaMail("fallita-color-walk.html");
 
 /* `export` e non `const` semplice: prova-invio.mjs importa questi due modelli
    per spedirsi una mail vera prima che lo faccia un iscritto vero. Vercel
    guarda solo l'export di default, gli altri non gli danno fastidio. */
 const generato = `/* Generato da build.mjs — NON modificare a mano.
-   I sorgenti sono _build/email/ricevuta-color-runner.html,
-   _build/email/fallita-color-runner.html e _build/email/evento.json. */
+   I sorgenti sono _build/email/ricevuta-color-walk.html,
+   _build/email/fallita-color-walk.html e _build/email/evento.json. */
 
 export const ORGANIZZATORI = ${JSON.stringify(String(evento.organizzatori || "").trim())};
 
@@ -1103,7 +1103,7 @@ if (saltate.length) {
   const vuoti = Object.keys(campiMail).filter(
     (k) => String(campiMail[k] ?? "").trim() === ""
   );
-  console.log(`\n⚠ mail Color Runner: ${saltate.length} sezioni non entrano — ${saltate.map(([k]) => k).join(", ")}.`);
+  console.log(`\n⚠ mail Color Walk: ${saltate.length} sezioni non entrano — ${saltate.map(([k]) => k).join(", ")}.`);
   console.log(`  Campi vuoti in _build/email/evento.json: ${vuoti.join(", ")}`);
   if (!sezioni.contatto) {
     console.log(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
@@ -1115,25 +1115,25 @@ if (loghiMancanti.length) {
   console.log(`
 ⚠ loghi: ne mancano ${loghiMancanti.length} — ${loghiMancanti.join("  ")}`);
   console.log(`  Vanno in assets/loghi/ con quel nome esatto (svg, png, webp o jpg).`);
-  console.log(`  Finché non ci sono, su /color-runner al loro posto si legge il nome.`);
+  console.log(`  Finché non ci sono, su /color-walk al loro posto si legge il nome.`);
 }
 
 if (!bannerTrovato) {
   console.log(`
-⚠ banner Color Runner: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
-  console.log(`  L'originale è la tela in design/color-runner/: si riesporta e ricompare.`);
+⚠ banner Color Walk: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
+  console.log(`  L'originale è la tela in design/color-walk/: si riesporta e ricompare.`);
 }
 
 if (!locandinaTrovata) {
   console.log(`
-⚠ locandina Color Runner: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
-  console.log(`  L'anteprima e il link al PDF su /color-runner compaiono col file.`);
+⚠ locandina Color Walk: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
+  console.log(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
 }
 
 if (!risottaBannerTrovato) {
   console.log(`
 ⚠ banner risottata: manca assets/foto/${RISOTTA_BANNER}.webp (o .png/.jpg/.avif/.svg).`);
-  console.log(`  La tela è in design/color-runner/risottata/: si riesporta e ricompare sopra la spunta.`);
+  console.log(`  La tela è in design/color-walk/risottata/: si riesporta e ricompare sopra la spunta.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

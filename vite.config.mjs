@@ -35,7 +35,7 @@ const isFile = async (p) => {
 };
 
 /* Vercel consegna alla funzione un corpo già interpretato; Node no. Le due
-   forme che il sito usa davvero sono JSON (il modulo della Color Runner) e
+   forme che il sito usa davvero sono JSON (il modulo della Color Walk) e
    nessun corpo (il meteo, che è una GET): oltre quelle si passa il testo
    grezzo, che è meglio di far finta di niente. */
 const leggiCorpo = async (req) => {
@@ -122,7 +122,7 @@ const anteprimaVercel = () => ({
 export default defineConfig(({ mode }) => {
   /* Le funzioni in api/ leggono le chiavi da `process.env` — in produzione ce
      le mette Vercel. In locale, senza `ISCRITTI_CHIAVE` e `STRIPE_SECRET_KEY`,
-     `/api/iscritti-color-runner` risponde 503 «zona iscritti non configurata» e
+     `/api/iscritti-color-walk` risponde 503 «zona iscritti non configurata» e
      la pagina /iscritti non si può nemmeno provare.
 
      Qui le peschiamo da un file `.env` in radice — `loadEnv` col prefisso ""

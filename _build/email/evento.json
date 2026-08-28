@@ -1,6 +1,6 @@
 {
   "_nota": [
-    "I dati dell'evento che finiscono dentro le mail della Color Runner.",
+    "I dati dell'evento che finiscono dentro le mail della Color Walk.",
     "Li compila chi organizza, non il codice: qui sono in un JSON e non dentro",
     "l'HTML perché cambiarli non deve voler dire rimettere le mani in una mail.",
     "",
@@ -10,7 +10,7 @@
     "più avanti — che è la verità, ed è meglio di [ORA DEL RITROVO].",
     "",
     "Dopo ogni modifica: `node build.mjs`, e le mail si ricompilano dentro",
-    "api/conferma-color-runner.mjs. Senza build, qui non cambia niente."
+    "api/conferma-color-walk.mjs. Senza build, qui non cambia niente."
   ],
 
   "organizzatori": "",

@@ -6,14 +6,14 @@
 <meta name="x-apple-disable-message-reformatting">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<title>Iscrizione confermata — Color Runner, 20 settembre</title>
+<title>Iscrizione confermata — Color Walk, 20 settembre</title>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     MAIL DI CONFERMA/RICEVUTA — Color Runner, 20 settembre.
+     MAIL DI CONFERMA/RICEVUTA — Color Walk, 20 settembre.
 
      Questo file è il SORGENTE della mail, non la mail. `node build.mjs` lo
-     compila — insieme a fallita-color-runner.html e a evento.json — dentro
-     api/conferma-color-runner.mjs, che è la funzione che la spedisce davvero.
+     compila — insieme a fallita-color-walk.html e a evento.json — dentro
+     api/conferma-color-walk.mjs, che è la funzione che la spedisce davvero.
      Si modifica qui e si rifà il build; modificarla là dentro non serve, il
      build successivo la riscrive.
 
@@ -109,7 +109,7 @@
 <!-- Anteprima nella lista dei messaggi: si legge prima di aprire, e non si
      vede una volta aperta. Senza, il client pesca la prima riga a caso. -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
-  La tua iscrizione alla Color Runner del 20 settembre è registrata e la quota è pagata.
+  La tua iscrizione alla Color Walk del 20 settembre è registrata e la quota è pagata.
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -131,7 +131,7 @@
             Iscrizione confermata
           </div>
           <h1 class="e-fg" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:28px; line-height:1.25; font-weight:600; color:#171717;">
-            Color&nbsp;Runner — 20 settembre
+            Color&nbsp;Walk — 20 settembre
           </h1>
         </td>
         </tr>
@@ -165,7 +165,7 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Iscrizione Color Runner — 20 settembre
+                  Iscrizione Color Walk — 20 settembre
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
                   {{IMPORTO_QUOTA}}
@@ -217,7 +217,7 @@
         <!-- ── La risottata ────────────────────────────────────────────
              Riga per chi ha prenotato la risottata finale, e nient'altro
              per chi non l'ha fatto. Non è una sezione del build: il
-             segnaposto lo riempie /api/conferma-color-runner al momento di
+             segnaposto lo riempie /api/conferma-color-walk al momento di
              spedire, guardando i metadata della sessione — con la sotto-lastra
              già pronta se i coperti ci sono, con il vuoto se non ci sono. -->
         {{RISOTTO}}
@@ -359,7 +359,7 @@
     <tr>
     <td style="padding:22px 12px 0;" align="center">
       <p class="e-fg-m" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; line-height:1.7; color:#8f8f8f;">
-        Hai ricevuto questa mail perché ti sei iscritto alla Color Runner su
+        Hai ricevuto questa mail perché ti sei iscritto alla Color Walk su
         <a class="e-brand" href="https://www.rivaltasulmincio.it" style="color:#0a6285;">rivaltasulmincio.it</a>.<br>
         Non è una lista di invio: non ti arriverà altro. Per qualsiasi cosa, rispondi pure a questo messaggio.
       </p>

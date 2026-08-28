@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   /api/iscrizione-color-runner — l'iscrizione alla Color Runner del
+   /api/iscrizione-color-walk — l'iscrizione alla Color Walk del
    20 settembre: raccolta dati e incasso di quota e commissioni, in un
    passaggio solo.
 
@@ -13,7 +13,7 @@
      GET   ?sessione=cs_...  al ritorno dal pagamento la pagina chiede
            «questa sessione è stata davvero pagata?». Serve perché
            l'indirizzo di ritorno lo può digitare chiunque: senza questo
-           controllo basterebbe aprire /color-runner?stato=ok per vedersi
+           controllo basterebbe aprire /color-walk?stato=ok per vedersi
            dire «iscrizione ricevuta» senza aver pagato una lira.
 
    Chiama direttamente l'API REST di Stripe via fetch, senza il pacchetto
@@ -36,16 +36,16 @@
 const QUOTA_CENT = 1000; // 10,00 €
 const COMMISSIONI_CENT = 100; // 1,00 €
 const VALUTA = "eur";
-const DESCRIZIONE_PRODOTTO = "Iscrizione Color Runner — 20 settembre";
+const DESCRIZIONE_PRODOTTO = "Iscrizione Color Walk — 20 settembre";
 const DESCRIZIONE_COMMISSIONI = "Commissioni di servizio";
 const NOTA_COMMISSIONI =
   "Il circuito di pagamento trattiene una piccola commissione su ogni incasso: " +
   "questo euro la copre, così alla camminata arrivano 10 € pieni.";
 
-/* Deve dire la stessa identica riga di EVENTO in api/conferma-color-runner.mjs:
+/* Deve dire la stessa identica riga di EVENTO in api/conferma-color-walk.mjs:
    è il marchio con cui quella funzione riconosce le sessioni che la
    riguardano. Se le due righe divergono, le mail smettono di partire. */
-const EVENTO = "color-runner-2026-09-20";
+const EVENTO = "color-walk-2026-09-20";
 
 /* Le iscrizioni online si chiudono alle 23:59 del 18 settembre — due giorni
    prima della camminata, il tempo di chiudere gli elenchi per l'assicurazione.
@@ -138,7 +138,7 @@ async function iscrivi(req, res, chiave) {
      lo usa la pagina per nascondere il modulo invece di dire «riprova». */
   if (Date.now() > CHIUSURA_MS) {
     return res.status(403).json({
-      errore: "le iscrizioni alla Color Runner si sono chiuse alle 23:59 del 18 settembre",
+      errore: "le iscrizioni alla Color Walk si sono chiuse alle 23:59 del 18 settembre",
       chiuse: true,
     });
   }
@@ -186,8 +186,8 @@ async function iscrivi(req, res, chiave) {
      momento del rimando: è quello che poi la pagina ci riporta indietro da
      verificare. Le graffe le codifica URLSearchParams, e Stripe le rilegge
      tali e quali — è la stessa cosa che succede chiamandolo da curl. */
-  parametri.set("success_url", `${SITE}/color-runner?stato=ok&sessione={CHECKOUT_SESSION_ID}`);
-  parametri.set("cancel_url", `${SITE}/color-runner?stato=annullato`);
+  parametri.set("success_url", `${SITE}/color-walk?stato=ok&sessione={CHECKOUT_SESSION_ID}`);
+  parametri.set("cancel_url", `${SITE}/color-walk?stato=annullato`);
   parametri.set("line_items[0][quantity]", "1");
   parametri.set("line_items[0][price_data][currency]", VALUTA);
   parametri.set("line_items[0][price_data][unit_amount]", String(QUOTA_CENT));
@@ -201,8 +201,8 @@ async function iscrivi(req, res, chiave) {
   parametri.set("line_items[1][price_data][product_data][name]", DESCRIZIONE_COMMISSIONI);
   parametri.set("line_items[1][price_data][product_data][description]", NOTA_COMMISSIONI);
   parametri.set("payment_intent_data[description]", `${DESCRIZIONE_PRODOTTO} — ${nome} ${cognome}`);
-  /* Il marchio dell'evento. Oggi la Color Runner è l'unica cosa che si paga
-     su questo sito, ma /api/conferma-color-runner risponde a ogni avviso di
+  /* Il marchio dell'evento. Oggi la Color Walk è l'unica cosa che si paga
+     su questo sito, ma /api/conferma-color-walk risponde a ogni avviso di
      pagamento che Stripe manda: è questo a dirgli quali sono i suoi. */
   parametri.set("metadata[evento]", EVENTO);
   parametri.set("metadata[nome]", nome);
@@ -217,8 +217,8 @@ async function iscrivi(req, res, chiave) {
   parametri.set("metadata[telefono]", telefono);
   parametri.set("metadata[note]", note);
   /* La risottata: "si"/"no" e quanti coperti. Viaggiano nei metadata come tutto
-     il resto — è da qui che /api/conferma-color-runner ci scrive la riga nella
-     mail e /api/iscritti-color-runner tira su la lista di chi resta a mangiare. */
+     il resto — è da qui che /api/conferma-color-walk ci scrive la riga nella
+     mail e /api/iscritti-color-walk tira su la lista di chi resta a mangiare. */
   parametri.set("metadata[risotto]", vuoleRisotto ? "si" : "no");
   parametri.set("metadata[risotto_persone]", String(risottoPersone));
   /* Quando è stato dato il consenso, non solo che è stato dato: è la parte

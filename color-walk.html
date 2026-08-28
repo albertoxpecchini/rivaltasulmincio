@@ -1,69 +1,153 @@
-<!--title: Color Runner 20 settembre — iscrizioni | Rivalta sul Mincio-->
-<!--prio: 0.8-->
-<!--freq: weekly-->
-<!--desc: Iscrizione online con pagamento della quota alla Color Runner del 20 settembre a Rivalta sul Mincio: camminata/corsa a colori non competitiva per le vie del paese.-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Color Walk 20 settembre — iscrizioni | Rivalta sul Mincio</title>
+<meta name="description" content="Iscrizione online con pagamento della quota alla Color Walk del 20 settembre a Rivalta sul Mincio: camminata/corsa a colori non competitiva per le vie del paese.">
+<meta name="theme-color" content="#fcfcfc">
+<link rel="canonical" href="https://www.rivaltasulmincio.it/color-walk">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rivalta sul Mincio">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Color Walk 20 settembre — iscrizioni | Rivalta sul Mincio">
+<meta property="og:description" content="Iscrizione online con pagamento della quota alla Color Walk del 20 settembre a Rivalta sul Mincio: camminata/corsa a colori non competitiva per le vie del paese.">
+<meta property="og:url" content="https://www.rivaltasulmincio.it/color-walk">
+<meta name="twitter:title" content="Color Walk 20 settembre — iscrizioni | Rivalta sul Mincio">
+<meta name="twitter:description" content="Iscrizione online con pagamento della quota alla Color Walk del 20 settembre a Rivalta sul Mincio: camminata/corsa a colori non competitiva per le vie del paese.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/sb.css">
+<link rel="stylesheet" href="assets/rivalta.css">
+<link rel="stylesheet" href="assets/controlbar.css">
 
+<!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
+     entrando su una pagina che finirà scura. Scelta manuale se c'è,
+     altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
 
-<!-- ════════════════════════════════════════════════════════════════════════
-     La pagina dell'iscrizione alla Color Runner, vestita con il design
-     system del sito e non con un vestito suo. Vale la pena scrivere perché,
-     perché prima non era così.
+     Stessa cosa per il movimento: la scelta fatta con il tasto vale da subito,
+     prima che il foglio di stile decida. Senza scelta manuale non si scrive
+     nessuna classe e comanda @media (prefers-reduced-motion). -->
+<script>
+(function(){try{var g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};
+var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((new Date().getHours()>=8&&new Date().getHours()<20)?"light":"dark");
+var d=document.documentElement;d.classList.toggle("dark",t==="dark");d.setAttribute("data-rsm-theme",t);
+d.style.setProperty("--ap-boot-bg",t==="dark"?"#141414":"#fcfcfc");
+var m=g("rsm-motion-mode")==="manual"?g("rsm-motion-manual"):null;
+if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm-still")}catch(e){}})();
+</script>
+</head>
+<body>
+<div class="sb-home">
+  <div class="sb-bg" aria-hidden="true"><div class="sb-bg-grid"></div></div>
+  <a class="sb-skip" href="#main">Salta al contenuto</a>
 
-     ── Una pagina del sito, non un volantino ──────────────────────────────
-     Il colore dell'evento sta in un posto solo: il fondale. Ed è fatto come
-     quello di tutte le altre pagine — veli radiali fissi che derivano piano,
-     la griglia tecnica sopra — con le polveri colorate al posto dei due
-     azzurri. Da lì in su è il sito: intestazione .sb-riv-pagehead come
-     /eventi e /natura, sezioni .sb-riv-sec, lastra .sb-panel, tasti .sb-btn,
-     campi coi bordi e i raggi del design system, azzurro brand sul fuoco.
+  <header>
+    <nav class="sb-nav" aria-label="Navigazione principale">
+      <div class="sb-container sb-nav-inner">
+        <a class="sb-nav-brand" href="/" aria-label="Rivalta sul Mincio — pagina iniziale">
+          <!-- La tessera del sito: stesso smusso, stesso azzurro, il Mincio
+               dentro. Fa da marchio dove prima c'era la pillola «MN». -->
+          <img class="sb-riv-brand-glyph" src="assets/favicon.svg" alt="" width="24" height="24" decoding="async">
+          <span class="sb-nav-brand-name">Rivalta<span class="sb-riv-brand-tail"> sul Mincio</span></span>
+        </a>
+        <div class="sb-nav-links">
+          <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
+               perché nell'ordine di pittura deve finirci sotto, ed è
+               aria-hidden perché non dice niente che l'attributo
+               aria-current sulla voce non dica già meglio. -->
+          <span class="sb-nav-pill" aria-hidden="true"></span>
+          <a class="sb-nav-link" href="/paese">Il paese</a>
+          <a class="sb-nav-link" href="/servizi">Servizi</a>
+          <a class="sb-nav-link" href="/attivita">Attività</a>
+          <a class="sb-nav-link" href="/comunita">Comunità</a>
+          <a class="sb-nav-link" href="/muoversi">Muoversi</a>
+          <a class="sb-nav-link" href="/natura">Natura</a>
+          <a class="sb-nav-link" href="/eventi">Eventi</a>
+          <a class="sb-nav-link" href="/mappa">Mappa</a>
+          <a class="sb-nav-link" href="/dati">Dati</a>
+        </div>
+        <div class="sb-nav-right">
+          <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
+               preferenze stanno insieme nella barra di controllo in basso a
+               sinistra (foot.html). Nella nav resta ciò che serve a navigare:
+               la ricerca, da quando il sito è aggiornato, e la firma. -->
+          <button class="sb-riv-search-open" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="/" aria-label="Cerca nel sito">
+            <svg class="sb-riv-search-open-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="sb-riv-search-open-t">Cerca</span>
+            <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
+          </button>
 
-     La regola che tiene tutto insieme è quella di sb.css: grigi ovunque più
-     UNA tinta viva. Qui la tinta viva è l'evento, e sta nel fondo. I comandi
-     — tasti, fuochi, barra dell'avanzamento, spunte — restano azzurri come
-     nel resto del sito, perché sono gli stessi comandi. L'unica eccezione è
-     il rosso degli errori, che non è un accento: è un segnale, e un errore
-     che non è rosso non si legge come un errore.
+          <span class="sb-riv-updated">
+            <span class="sb-riv-updated-dot" aria-hidden="true"></span>
+            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-27" data-updated="2026-08-27">27 ago</time>
+          </span>
 
-     ── Resta una pagina da telefono ───────────────────────────────────────
-     Il link gira nel gruppo del paese e si apre col pollice stando in piedi
-     da qualche parte. Due misure non vengono dal design system ma dal dito,
-     e sono dichiarate come tali dove stanno scritte: i campi alti 44px e le
-     voci della tendina 2.9rem. Sotto quelle, un dito ne prende due insieme.
+          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+            <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
+          </a>
 
-     E niente sotto i 16 pixel nei campi, col font dichiarato a pezzi separati
-     e mai con la scorciatoia «font:» — la nota per esteso sta sulla regola dei
-     campi: è il posto dove l'errore si rifà.
+          <button class="sb-burger" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-sheet" aria-label="Apri il menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="sb-menu-sheet" id="menu-sheet">
+      <div class="sb-container">
+        <nav class="sb-menu-nav" aria-label="Navigazione del sito">
+          <a href="/paese">Il paese</a>
+          <a href="/servizi">Servizi</a>
+          <a href="/attivita">Attività</a>
+          <a href="/comunita">Comunità</a>
+          <a href="/muoversi">Muoversi</a>
+          <a href="/natura">Natura</a>
+          <a href="/eventi">Eventi</a>
+          <a href="/mappa">Mappa</a>
+          <a href="/dati">Dati e fonti</a>
+        </nav>
+        <div class="sb-riv-menu-foot">
+          <button class="sb-riv-menu-cerca" type="button" data-search-open>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            Cerca nel sito
+          </button>
+          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-27" data-updated="2026-08-27">27 agosto 2026</time></span>
+        </div>
+      </div>
+    </div>
 
-     Il modulo si sposta da solo: ogni campo che prende il fuoco sale sotto la
-     barra di navigazione, invio porta al successivo, il codice fiscale passa
-     avanti da sé quando i sedici caratteri tornano, e scegliere l'indirizzo
-     dalla tendina fa lo stesso. Chi compila non deve mai cercare dove è
-     finito il campo dopo.
+    <!-- ── Ricerca ──────────────────────────────────────────────────────────
+         Una tendina sopra la pagina, non una pagina a parte: la si apre col
+         tasto in testata, con «/» o con ⌘K, e si chiude con Esc o toccando
+         fuori. L'indice è già nel browser (assets/ricerca-dati.js, generato
+         dal build): nessuna chiamata di rete, funziona anche offline.
+         Senza JavaScript il tasto non compare — la navigazione basta. -->
+    <div class="sb-riv-cerca" id="rsm-cerca" hidden>
+      <div class="sb-riv-cerca-scrim" data-cerca-close></div>
+      <div class="sb-riv-cerca-box" role="dialog" aria-modal="true" aria-labelledby="rsm-cerca-tit">
+        <h2 class="sb-riv-cerca-tit" id="rsm-cerca-tit">Cerca nel sito</h2>
+        <div class="sb-panel"><div class="sb-panel-inner sb-riv-cerca-pad">
+          <div class="sb-riv-cerca-field">
+            <svg class="sb-riv-cerca-field-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="search" class="sb-riv-cerca-input" id="rsm-cerca-input" role="combobox" aria-expanded="true" aria-controls="rsm-cerca-lista" aria-autocomplete="list" aria-label="Cerca nel sito" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Pagine, sezioni, argomenti…">
+            <kbd class="sb-riv-kbd">esc</kbd>
+          </div>
+          <ul class="sb-riv-cerca-lista" id="rsm-cerca-lista" role="listbox" aria-label="Risultati della ricerca"></ul>
+          <p class="sb-riv-cerca-vuoto" hidden>Nessun risultato per «<span data-cerca-q></span>».</p>
+          <div class="sb-riv-cerca-pie" aria-hidden="true">
+            <span><kbd class="sb-riv-kbd">↑</kbd><kbd class="sb-riv-kbd">↓</kbd> scorri</span>
+            <span><kbd class="sb-riv-kbd">↵</kbd> apri</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </header>
 
-     ── Il modulo ──────────────────────────────────────────────────────────
-     Il pagamento è vero: la carta viene addebitata di 11 € — quota 10 € più
-     1 € di commissioni di servizio, due voci distinte nel Checkout — e li
-     incassa Stripe. L'elenco degli iscritti è la lista dei pagamenti nel
-     dashboard Stripe; i dati del modulo viaggiano come metadata.
-
-     I due importi sono scritti in un punto solo per il codice: QUOTA_CENT e
-     COMMISSIONI_CENT in api/iscrizione-color-runner.mjs. Il testo qui sotto
-     li ripete a parole per chi legge. Nelle mail non sono ricopiati: la
-     ricevuta mostra le voci che Stripe dice di aver incassato davvero.
-
-     L'esito dell'iscrizione non lo dice solo questa pagina. A pagamento
-     concluso Stripe avvisa /api/conferma-color-runner, che manda la ricevuta
-     a chi ha pagato e — a chi si è fermato a metà — la mail che dice che non
-     è andata. Vale anche se il browser qui non ci torna mai: la certezza sta
-     lì, non nel ritorno dalla pagina di pagamento.
-
-     L'indirizzo non si scrive: si sceglie. Le vie di Rivalta con i loro
-     civici arrivano da OpenStreetMap al momento del build (il blocco in fondo
-     alla pagina, meno di tre kB) e compaiono mentre si digita. È la differenza
-     fra un elenco di iscritti ordinabile e un elenco in cui la stessa casa
-     compare in tre grafie diverse. Chi abita fuori scrive libero: il campo non
-     impedisce niente, suggerisce e basta.
-     ════════════════════════════════════════════════════════════════════════ -->
+  <main class="sb-main" id="main">
 <style>
 /* ═══ La tavolozza ═══════════════════════════════════════════════════════════
    Le sei tinte delle polveri colorate. Stanno in un posto solo, il fondale, e
@@ -94,7 +178,7 @@
 .sb-home:has(.sb-cr)::before,
 .sb-home:has(.sb-cr)::after { content: none; }
 
-.sb-cr-vernice {
+.sb-cw-vernice {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -104,15 +188,15 @@
      è la sola parte che qualche browser potrebbe leggere storta. */
   contain: layout paint;
 }
-.sb-cr-vernice::before,
-.sb-cr-vernice::after { content: ""; position: absolute; inset: 0; }
-.sb-cr-vernice::before {
+.sb-cw-vernice::before,
+.sb-cw-vernice::after { content: ""; position: absolute; inset: 0; }
+.sb-cw-vernice::before {
   background:
     radial-gradient(58rem 32rem at 16% -8%, color-mix(in srgb, var(--cr-magenta) 20%, transparent), transparent 62%),
     radial-gradient(42rem 26rem at 6% 68%, color-mix(in srgb, var(--cr-giallo) 15%, transparent), transparent 64%);
   animation: sb-drift-a 74s ease-in-out infinite alternate;
 }
-.sb-cr-vernice::after {
+.sb-cw-vernice::after {
   background:
     radial-gradient(52rem 30rem at 86% 2%, color-mix(in srgb, var(--cr-ciano) 18%, transparent), transparent 60%),
     radial-gradient(46rem 28rem at 94% 82%, color-mix(in srgb, var(--cr-viola) 15%, transparent), transparent 62%);
@@ -120,13 +204,13 @@
 }
 /* Al buio le stesse tinte diventano lampade: si abbassano, come fa il sito
    con i suoi azzurri. */
-html.dark .sb-cr-vernice::before,
-html.dark .sb-cr-vernice::after { opacity: 0.5; }
+html.dark .sb-cw-vernice::before,
+html.dark .sb-cw-vernice::after { opacity: 0.5; }
 
 /* ═══ L'intestazione ═════════════════════════════════════════════════════════
    Non c'è: occhiello, titolo, data e «cos'è» li dice il manifesto, che è
-   un'immagine (.sb-riv-crbanner in assets/rivalta.css, senza niente intorno).
-   Il colore dell'evento resta al fondale (.sb-cr-vernice). Della vecchia
+   un'immagine (.sb-riv-cwbanner in assets/rivalta.css, senza niente intorno).
+   Il colore dell'evento resta al fondale (.sb-cw-vernice). Della vecchia
    testata resta un h1 fuori campo, .sb-riv-vh. */
 
 /* ═══ La lastra del modulo, e la locandina di fianco ════════════════════════
@@ -134,27 +218,27 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    stesso smusso. Da schermo largo gli sta accanto la locandina, a destra e
    più grande che si può; da telefono la locandina sparisce e resta la sola
    colonna del modulo, larga 46rem come i testi delle altre pagine. */
-.sb-cr-iscr { margin-top: 1.4rem; }
-.sb-cr-lastra { max-width: 46rem; }
-.sb-cr-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
+.sb-cw-iscr { margin-top: 1.4rem; }
+.sb-cw-lastra { max-width: 46rem; }
+.sb-cw-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
 
 /* La locandina di fianco: nascosta sotto i 60rem, dove una A4 su colonna
    stretta non si guarda. Sopra, è una spalla che resta in vista mentre si
    compila (sticky), con l'anteprima grande quanto la colonna le concede. */
-.sb-cr-loc-lato { display: none; }
-.sb-cr-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
-.sb-cr-loc-lato-p { margin: 0.3rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-.sb-cr-loc-lato .sb-riv-crloc { margin-top: 0.9rem; }
-.sb-cr-loc-lato .sb-riv-crloc-a { max-width: none; width: 100%; }
+.sb-cw-loc-lato { display: none; }
+.sb-cw-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
+.sb-cw-loc-lato-p { margin: 0.3rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-cw-loc-lato .sb-riv-cwloc { margin-top: 0.9rem; }
+.sb-cw-loc-lato .sb-riv-cwloc-a { max-width: none; width: 100%; }
 
 @media (min-width: 60rem) {
-  .sb-cr-iscr {
+  .sb-cw-iscr {
     display: grid;
     grid-template-columns: minmax(0, 46rem) 1fr;
     gap: clamp(1.6rem, 4vw, 3rem);
     align-items: start;
   }
-  .sb-cr-loc-lato {
+  .sb-cw-loc-lato {
     display: block;
     position: sticky;
     top: 84px;
@@ -165,8 +249,8 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    Compilare un modulo è una scala, e una scala si sale meglio se si vede
    quanti gradini restano. Si riempie per scaleX — trasformazione, non
    larghezza: nessun ricalcolo di layout a ogni tasto premuto. */
-.sb-cr-avanz { margin: 0 0 1.4rem; }
-.sb-cr-avanz-riga {
+.sb-cw-avanz { margin: 0 0 1.4rem; }
+.sb-cw-avanz-riga {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -178,14 +262,14 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   text-transform: uppercase;
   color: var(--sb-fg-muted);
 }
-.sb-cr-avanz-n { color: var(--sb-fg-light); font-variant-numeric: tabular-nums; }
-.sb-cr-avanz-barra {
+.sb-cw-avanz-n { color: var(--sb-fg-light); font-variant-numeric: tabular-nums; }
+.sb-cw-avanz-barra {
   height: 6px;
   border-radius: 999px;
   background: var(--sb-surface-200);
   overflow: hidden;
 }
-.sb-cr-avanz-fill {
+.sb-cw-avanz-fill {
   height: 100%;
   transform: scaleX(var(--p, 0));
   transform-origin: left center;
@@ -202,10 +286,10 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    un campo e un bottone che stanno a due centimetri l'uno dall'altro devono
    essere fatti della stessa cosa. Niente colore per campo: dove si sta
    scrivendo lo dice il bordo azzurro, che è l'unico acceso in pagina. */
-.sb-cr-form { display: grid; gap: 1.05rem; }
+.sb-cw-form { display: grid; gap: 1.05rem; }
 
-.sb-cr-campo { display: grid; gap: 0.35rem; }
-.sb-cr-campo > label {
+.sb-cw-campo { display: grid; gap: 0.35rem; }
+.sb-cw-campo > label {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -214,11 +298,11 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   font-weight: 500;
   color: var(--sb-fg);
 }
-.sb-cr-facolt { font-weight: 400; font-size: 0.8rem; color: var(--sb-fg-muted); }
+.sb-cw-facolt { font-weight: 400; font-size: 0.8rem; color: var(--sb-fg-muted); }
 
-.sb-cr-box { position: relative; display: flex; }
-.sb-cr-box input,
-.sb-cr-box textarea {
+.sb-cw-box { position: relative; display: flex; }
+.sb-cw-box input,
+.sb-cw-box textarea {
   width: 100%;
   /* 44px non viene dal design system ma dal dito: è la misura sotto la quale
      un bersaglio sul telefono si sbaglia. */
@@ -242,27 +326,27 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   padding: 0.6rem 2.4rem 0.6rem 0.8rem;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
-.sb-cr-box textarea { padding-right: 0.8rem; resize: vertical; }
+.sb-cw-box textarea { padding-right: 0.8rem; resize: vertical; }
 /* Il codice fiscale spaziato: sedici caratteri tutti attaccati non si
    rileggono, ed è il campo che più di tutti si ricontrolla. Il maiuscolo lo
    mette anche il CSS oltre al JS, così si vede già mentre il dito digita. */
 #cr-cf { text-transform: uppercase; letter-spacing: 0.06em; }
-.sb-cr-box input::placeholder,
-.sb-cr-box textarea::placeholder { color: var(--sb-fg-muted); }
-.sb-cr-box input:focus,
-.sb-cr-box textarea:focus { border-color: var(--sb-brand); background: var(--sb-surface-75); }
+.sb-cw-box input::placeholder,
+.sb-cw-box textarea::placeholder { color: var(--sb-fg-muted); }
+.sb-cw-box input:focus,
+.sb-cw-box textarea:focus { border-color: var(--sb-brand); background: var(--sb-surface-75); }
 /* L'anello del fuoco lo disegna sb.css per tutto il sito, e si porta dietro un
    border-radius di 4px per la sua forma. Su un campo da 6px si vedrebbe
    l'angolo stringersi nel momento in cui ci si entra: qui glielo si rimette. */
-.sb-cr-box input:focus-visible,
-.sb-cr-box textarea:focus-visible { border-radius: 6px; }
+.sb-cw-box input:focus-visible,
+.sb-cw-box textarea:focus-visible { border-radius: 6px; }
 
-.sb-cr-campo[data-stato="ok"] .sb-cr-box input { border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent); }
-.sb-cr-campo[data-stato="ko"] .sb-cr-box input { border-color: var(--cr-rosso); }
+.sb-cw-campo[data-stato="ok"] .sb-cw-box input { border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent); }
+.sb-cw-campo[data-stato="ko"] .sb-cw-box input { border-color: var(--cr-rosso); }
 
 /* Il segno di spunta: appare in scala, non in dissolvenza. È l'unico premio
    che questo modulo può dare a chi ha scritto bene il codice fiscale. */
-.sb-cr-segno {
+.sb-cw-segno {
   position: absolute;
   top: 50%;
   right: 0.7rem;
@@ -279,25 +363,25 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   transition: opacity 0.16s ease, transform 0.18s ease;
   pointer-events: none;
 }
-.sb-cr-campo[data-stato="ok"] .sb-cr-segno,
-.sb-cr-campo[data-stato="ko"] .sb-cr-segno { opacity: 1; transform: scale(1); }
+.sb-cw-campo[data-stato="ok"] .sb-cw-segno,
+.sb-cw-campo[data-stato="ko"] .sb-cw-segno { opacity: 1; transform: scale(1); }
 /* Sulla spunta il nero, come sul tasto primario: l'azzurro brand è chiaro in
    tutti e due i temi, e il bianco sopra ci sparirebbe. */
-.sb-cr-campo[data-stato="ok"] .sb-cr-segno { background: var(--sb-brand); color: var(--sb-btn-fg); }
-.sb-cr-campo[data-stato="ok"] .sb-cr-segno::before { content: "\2713"; }
-.sb-cr-campo[data-stato="ko"] .sb-cr-segno { background: var(--cr-rosso); color: #fff; }
-.sb-cr-campo[data-stato="ko"] .sb-cr-segno::before { content: "!"; }
+.sb-cw-campo[data-stato="ok"] .sb-cw-segno { background: var(--sb-brand); color: var(--sb-btn-fg); }
+.sb-cw-campo[data-stato="ok"] .sb-cw-segno::before { content: "\2713"; }
+.sb-cw-campo[data-stato="ko"] .sb-cw-segno { background: var(--cr-rosso); color: #fff; }
+.sb-cw-campo[data-stato="ko"] .sb-cw-segno::before { content: "!"; }
 
-.sb-cr-aiuto { margin: 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
-.sb-cr-aiuto:empty { display: none; }
-.sb-cr-campo[data-stato="ko"] .sb-cr-aiuto { color: var(--cr-rosso); }
+.sb-cw-aiuto { margin: 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
+.sb-cw-aiuto:empty { display: none; }
+.sb-cw-campo[data-stato="ko"] .sb-cw-aiuto { color: var(--cr-rosso); }
 
 /* ═══ L'indirizzo che si compone da sé ═══════════════════════════════════════
    La tendina è opaca e non di vetro, di proposito: è un contenitore che
    scorre, e una sfocatura di sfondo su un contenitore che scorre costa una
    passata di blur per fotogramma — sul telefono si sente. */
-.sb-cr-auto { position: relative; }
-.sb-cr-lista {
+.sb-cw-auto { position: relative; }
+.sb-cw-lista {
   position: absolute;
   z-index: 30;
   top: calc(100% + 0.3rem);
@@ -317,9 +401,9 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   background: var(--sb-bg);
   box-shadow: var(--sb-shadow-card);
 }
-.sb-cr-lista[hidden] { display: none; }
+.sb-cw-lista[hidden] { display: none; }
 /* Alte 2.9rem: è la misura sotto la quale un dito ne prende due insieme. */
-.sb-cr-voce {
+.sb-cw-voce {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -329,23 +413,23 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   font-size: 0.95rem;
   cursor: pointer;
 }
-.sb-cr-voce:hover { background: var(--sb-overlay); }
-.sb-cr-voce[aria-selected="true"] { background: color-mix(in srgb, var(--sb-brand) 14%, transparent); }
-.sb-cr-voce b { font-weight: 600; color: var(--sb-fg); }
-.sb-cr-voce-n {
+.sb-cw-voce:hover { background: var(--sb-overlay); }
+.sb-cw-voce[aria-selected="true"] { background: color-mix(in srgb, var(--sb-brand) 14%, transparent); }
+.sb-cw-voce b { font-weight: 600; color: var(--sb-fg); }
+.sb-cw-voce-n {
   margin-left: auto;
   padding-left: 0.6rem;
   font-size: 0.72rem;
   color: var(--sb-fg-muted);
   white-space: nowrap;
 }
-.sb-cr-voce-pin { flex: none; color: var(--sb-brand-text); }
+.sb-cw-voce-pin { flex: none; color: var(--sb-brand-text); }
 
 /* ═══ La nota, l'esito, il consenso ══════════════════════════════════════════
    Tre riquadri di servizio sulla stessa grammatica: bordo del sito, raggio da
    8px, fondo neutro. Solo l'esito cambia tinta, ed è l'unico che deve — dice
    come è andata. */
-.sb-cr-nota {
+.sb-cw-nota {
   margin: 0;
   padding: 0.8rem 0.95rem;
   border: 1px solid var(--sb-border);
@@ -355,10 +439,10 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   font-size: 0.85rem;
   line-height: 1.6;
 }
-.sb-cr-nota strong { font-weight: 600; color: var(--sb-fg); }
-.sb-cr-nota a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+.sb-cw-nota strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cw-nota a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
-.sb-cr-esito {
+.sb-cw-esito {
   display: none;
   margin: 0 0 1.2rem;
   padding: 0.85rem 1rem;
@@ -367,21 +451,21 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   font-size: 0.9rem;
   line-height: 1.55;
 }
-.sb-cr-esito--ok {
+.sb-cw-esito--ok {
   display: block;
   background: color-mix(in srgb, var(--sb-brand) 12%, transparent);
   border-color: color-mix(in srgb, var(--sb-brand) 45%, transparent);
   color: var(--sb-fg);
 }
-.sb-cr-esito--neutro { display: block; background: var(--sb-surface-100); color: var(--sb-fg-light); }
-.sb-cr-esito--errore {
+.sb-cw-esito--neutro { display: block; background: var(--sb-surface-100); color: var(--sb-fg-light); }
+.sb-cw-esito--errore {
   display: block;
   background: color-mix(in srgb, var(--cr-rosso) 12%, transparent);
   border-color: color-mix(in srgb, var(--cr-rosso) 45%, transparent);
   color: var(--sb-fg);
 }
 
-.sb-cr-consenso {
+.sb-cw-consenso {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.7rem;
@@ -392,19 +476,19 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   background: var(--sb-surface-100);
   transition: border-color 0.2s ease;
 }
-.sb-cr-consenso:focus-within { border-color: var(--sb-brand); }
+.sb-cw-consenso:focus-within { border-color: var(--sb-brand); }
 /* La casella è 1.25rem e non 1rem: è una spunta obbligatoria, e va colpita
    col pollice al primo colpo. */
-.sb-cr-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
-.sb-cr-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
-.sb-cr-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+.sb-cw-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
+.sb-cw-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
+.sb-cw-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ═══ La risottata ══════════════════════════════════════════════════════════
    Facoltativa: la striscia della risottata in testa, poi una spunta come quella
    del consenso, e sotto — solo quando è spuntata — lo "switcher" per dire quante
    persone restano a mangiare. Non è un campo obbligatorio, non entra nel conto
    di «quanto manca», non si paga qui. */
-.sb-cr-risotto {
+.sb-cw-risotto {
   display: grid;
   gap: 0.85rem;
   padding: 0.85rem 0.95rem;
@@ -415,23 +499,23 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
 }
 /* La striscia è già l'immagine col suo filo di bordo: dentro la lastra non le
    serve il margine che porta altrove, e il raggio si accorda a quello del box. */
-.sb-cr-risotto .sb-riv-crbanner { margin: 0; border-radius: 6px; }
-.sb-cr-risotto:focus-within { border-color: var(--sb-brand); }
-.sb-cr-risotto-spunta {
+.sb-cw-risotto .sb-riv-cwbanner { margin: 0; border-radius: 6px; }
+.sb-cw-risotto:focus-within { border-color: var(--sb-brand); }
+.sb-cw-risotto-spunta {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.7rem;
   align-items: start;
   cursor: pointer;
 }
-.sb-cr-risotto-spunta input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
-.sb-cr-risotto-spunta span { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
-.sb-cr-risotto-spunta strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cw-risotto-spunta input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
+.sb-cw-risotto-spunta span { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
+.sb-cw-risotto-spunta strong { font-weight: 600; color: var(--sb-fg); }
 
 /* Il pannello dei coperti sta dentro la lastra, staccato dalla spunta da un
    capello grigio. `hidden` lo toglie del tutto finché non serve. */
-.sb-cr-quanti[hidden] { display: none; }
-.sb-cr-quanti {
+.sb-cw-quanti[hidden] { display: none; }
+.sb-cw-quanti {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -440,13 +524,13 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   padding-top: 0.85rem;
   border-top: 1px solid var(--sb-border);
 }
-.sb-cr-quanti-eti { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
+.sb-cw-quanti-eti { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
 
 /* Lo switcher: −  n  +. I due tasti sono quadrati e grossi come un bersaglio
    da pollice; il numero in mezzo è in cifre a larghezza fissa, non un campo da
    digitare (readonly): si muove solo coi tasti, e non può finire in uno stato
    sbagliato. */
-.sb-cr-stepper {
+.sb-cw-stepper {
   display: inline-flex;
   align-items: stretch;
   border: 1px solid var(--sb-border-strong);
@@ -454,7 +538,7 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   overflow: hidden;
   background: var(--sb-surface-75);
 }
-.sb-cr-step {
+.sb-cw-step {
   width: 2.6rem;
   min-height: 2.6rem;
   border: 0;
@@ -467,10 +551,10 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   -webkit-appearance: none;
   appearance: none;
 }
-.sb-cr-step:hover { background: var(--sb-overlay); }
-.sb-cr-step:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
-.sb-cr-step[disabled] { color: var(--sb-fg-muted); cursor: not-allowed; }
-.sb-cr-stepper input {
+.sb-cw-step:hover { background: var(--sb-overlay); }
+.sb-cw-step:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
+.sb-cw-step[disabled] { color: var(--sb-fg-muted); cursor: not-allowed; }
+.sb-cw-stepper input {
   width: 2.8rem;
   border: 0;
   border-left: 1px solid var(--sb-border-strong);
@@ -485,15 +569,15 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   appearance: textfield;
   pointer-events: none;
 }
-.sb-cr-stepper input::-webkit-outer-spin-button,
-.sb-cr-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.sb-cw-stepper input::-webkit-outer-spin-button,
+.sb-cw-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
    larghezza del modulo, e il permesso di andare a capo — la scritta è lunga e
    sul telefono stretto su una riga non ci sta. Andando a capo però sfonda i
    38px fissi del .sb-btn, e allora l'altezza diventa un minimo. */
-.sb-cr-vai {
+.sb-cw-vai {
   width: 100%;
   height: auto;
   min-height: 44px;
@@ -503,21 +587,21 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
 }
 /* Mentre apre il pagamento: la freccia del cursore dice che sta lavorando, e
    il tasto smorzato che non è più premibile. */
-.sb-cr-vai[disabled] { cursor: progress; opacity: 0.6; }
+.sb-cw-vai[disabled] { cursor: progress; opacity: 0.6; }
 
 /* ═══ I loghi ════════════════════════════════════════════════════════════════
    Su piastrella bianca anche al buio: un logo a colori su fondo nero perde i
    suoi, e questi tre non sono nostri da ritoccare. La piastrella è una card
    del sito — bordo, raggio da 10px, ombra e due pixel di sollevamento al
    passaggio, gli stessi delle card di tutte le altre pagine. */
-.sb-cr-loghi {
+.sb-cw-loghi {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 }
-.sb-cr-logo {
+.sb-cw-logo {
   display: grid;
   place-items: center;
   min-width: 5.5rem;
@@ -531,25 +615,25 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
   text-decoration: none;
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
-.sb-cr-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
-.sb-cr-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
+.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
+.sb-cw-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
 
 /* Tre marchi di tre forme diverse — uno largo, uno verticale, uno quadrato —
    e una sola altezza per tutti li farebbe leggere sbagliati: il largo
    sembrerebbe il doppio degli altri e lo stemma una miniatura. Si pareggiano
    a occhio, non a righello, ognuno con la sua misura. */
-.sb-cr-logo--anspi img { max-height: 2.1rem; }
-.sb-cr-logo--rodigo { padding: 0.3rem 0.9rem; }
-.sb-cr-logo--rodigo img { max-height: 3.4rem; }
+.sb-cw-logo--anspi img { max-height: 2.1rem; }
+.sb-cw-logo--rodigo { padding: 0.3rem 0.9rem; }
+.sb-cw-logo--rodigo img { max-height: 3.4rem; }
 /* L'icona .ap è quadrata e il bianco intorno al marchio ce l'ha già dentro:
    la piastrella non ne aggiunge altro, o il «.ap» resterebbe grande la metà
    degli altri due. */
-.sb-cr-logo--ap { padding: 0; }
-.sb-cr-logo--ap img { max-height: 4rem; }
+.sb-cw-logo--ap { padding: 0; }
+.sb-cw-logo--ap img { max-height: 4rem; }
 
-.sb-cr-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
-.sb-cr-logo--ap .sb-cr-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
-.sb-cr-loghi-nota { margin: 0.9rem 0 0; text-align: center; font-size: 0.78rem; color: var(--sb-fg-muted); }
+.sb-cw-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
+.sb-cw-logo--ap .sb-cw-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
+.sb-cw-loghi-nota { margin: 0.9rem 0 0; text-align: center; font-size: 0.78rem; color: var(--sb-fg-muted); }
 
 /* ═══ Meno movimento ═════════════════════════════════════════════════════════
    In pagina si muove una cosa sola: la deriva dei due veli del fondale, la
@@ -558,29 +642,28 @@ html.dark .sb-cr-vernice::after { opacity: 0.5; }
    «ferma» della barra in basso. Il fondale non sparisce: resta a colori,
    immobile. Tutto il resto che si muoveva qui dentro non c'è più. */
 @media (prefers-reduced-motion: reduce) {
-  html:not(.rsm-motion) .sb-cr-vernice::before,
-  html:not(.rsm-motion) .sb-cr-vernice::after { animation: none !important; }
+  html:not(.rsm-motion) .sb-cw-vernice::before,
+  html:not(.rsm-motion) .sb-cw-vernice::after { animation: none !important; }
 }
-html.rsm-still .sb-cr-vernice::before,
-html.rsm-still .sb-cr-vernice::after { animation: none; }
+html.rsm-still .sb-cw-vernice::before,
+html.rsm-still .sb-cw-vernice::after { animation: none; }
 
 @media print {
-  .sb-cr-vernice { display: none; }
+  .sb-cw-vernice { display: none; }
 }
 </style>
 
 <div class="sb-cr">
 
-<!-- Il fondale: decorazione pura, aria-hidden. I due veli li disegna il CSS
-     sui suoi pseudo-elementi — qui dentro non c'è niente da leggere. -->
-  <div class="sb-cr-vernice" aria-hidden="true"></div>
+<div class="sb-cw-vernice" aria-hidden="true"></div>
 
   <!-- Niente testata scritta: occhiello, titolo, data e «cos'è» li dice il
        manifesto qui sotto, che è un'immagine. Un h1 fuori campo resta per la
        struttura del documento e per chi naviga a orecchio. -->
   <div class="sb-container">
-    <h1 class="sb-riv-vh">Color Runner — camminata a colori, domenica 20 settembre 2026, Rivalta sul Mincio</h1>
-    {{BANNER}}
+    <h1 class="sb-riv-vh">Color Walk — camminata a colori, domenica 20 settembre 2026, Rivalta sul Mincio</h1>
+    <img class="sb-riv-cwbanner" src="assets/foto/color-walk-banner.webp" width="2400" height="900" decoding="async"
+      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">
   </div>
 
   <section class="sb-container sb-riv-sec" id="iscrizione">
@@ -593,126 +676,132 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
          locandina a destra, più grande che si può. Da telefono la locandina
          non c'è (una A4 su una colonna stretta non la guarda nessuno) e resta
          solo il modulo. -->
-    <div class="sb-cr-iscr">
+    <div class="sb-cw-iscr">
 
-    <div class="sb-cr-lastra"><div class="sb-panel"><div class="sb-panel-inner">
+    <div class="sb-cw-lastra"><div class="sb-panel"><div class="sb-panel-inner">
 
-      <div id="cr-esito" class="sb-cr-esito" role="status"></div>
+      <div id="cr-esito" class="sb-cw-esito" role="status"></div>
 
-      <div class="sb-cr-avanz" id="cr-avanz" hidden>
-        <div class="sb-cr-avanz-riga">
+      <div class="sb-cw-avanz" id="cr-avanz" hidden>
+        <div class="sb-cw-avanz-riga">
           <span>Quanto manca</span>
-          <span class="sb-cr-avanz-n"><span id="cr-fatti">0</span> di <span id="cr-totale">6</span></span>
+          <span class="sb-cw-avanz-n"><span id="cr-fatti">0</span> di <span id="cr-totale">6</span></span>
         </div>
-        <div class="sb-cr-avanz-barra"><div class="sb-cr-avanz-fill" id="cr-fill"></div></div>
+        <div class="sb-cw-avanz-barra"><div class="sb-cw-avanz-fill" id="cr-fill"></div></div>
       </div>
 
-      <form class="sb-cr-form" id="cr-form" novalidate>
-        <div class="sb-cr-campo" data-campo="nome">
+      <form class="sb-cw-form" id="cr-form" novalidate>
+        <div class="sb-cw-campo" data-campo="nome">
           <label for="cr-nome">Nome</label>
-          <div class="sb-cr-box">
+          <div class="sb-cw-box">
             <input type="text" id="cr-nome" name="nome" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-describedby="cr-nome-aiuto">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cr-aiuto" id="cr-nome-aiuto"></p>
+          <p class="sb-cw-aiuto" id="cr-nome-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="cognome">
+        <div class="sb-cw-campo" data-campo="cognome">
           <label for="cr-cognome">Cognome</label>
-          <div class="sb-cr-box">
+          <div class="sb-cw-box">
             <input type="text" id="cr-cognome" name="cognome" autocomplete="family-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-describedby="cr-cognome-aiuto">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cr-aiuto" id="cr-cognome-aiuto"></p>
+          <p class="sb-cw-aiuto" id="cr-cognome-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="cf">
+        <div class="sb-cw-campo" data-campo="cf">
           <label for="cr-cf">Codice fiscale</label>
-          <div class="sb-cr-box">
+          <div class="sb-cw-box">
             <input type="text" id="cr-cf" name="cf" maxlength="16" required spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" placeholder="RSSMRA85M01F205Z" aria-describedby="cr-cf-aiuto">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cr-aiuto" id="cr-cf-aiuto">Serve per l'assicurazione. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
+          <p class="sb-cw-aiuto" id="cr-cf-aiuto">Serve per l'assicurazione. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="email">
-          <label for="cr-email">Email <span class="sb-cr-facolt">qui arriva la conferma</span></label>
-          <div class="sb-cr-box">
+        <div class="sb-cw-campo" data-campo="email">
+          <label for="cr-email">Email <span class="sb-cw-facolt">qui arriva la conferma</span></label>
+          <div class="sb-cw-box">
             <input type="email" id="cr-email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" enterkeyhint="next" maxlength="200" required spellcheck="false" aria-describedby="cr-email-aiuto">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cr-aiuto" id="cr-email-aiuto"></p>
+          <p class="sb-cw-aiuto" id="cr-email-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo sb-cr-auto" data-campo="indirizzo">
+        <div class="sb-cw-campo sb-cw-auto" data-campo="indirizzo">
           <label for="cr-indirizzo">Indirizzo di residenza</label>
-          <div class="sb-cr-box">
+          <div class="sb-cw-box">
             <input type="text" id="cr-indirizzo" name="indirizzo" maxlength="120" required autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next"
                    role="combobox" aria-expanded="false" aria-controls="cr-lista" aria-autocomplete="list" aria-describedby="cr-indirizzo-aiuto"
                    placeholder="Scrivi la via…">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <ul class="sb-cr-lista" id="cr-lista" role="listbox" aria-label="Vie di Rivalta sul Mincio" hidden></ul>
-          <p class="sb-cr-aiuto" id="cr-indirizzo-aiuto">Le vie di Rivalta escono da sé: tocca la tua, poi il numero civico. Se abiti fuori, scrivi l'indirizzo per esteso.</p>
+          <ul class="sb-cw-lista" id="cr-lista" role="listbox" aria-label="Vie di Rivalta sul Mincio" hidden></ul>
+          <p class="sb-cw-aiuto" id="cr-indirizzo-aiuto">Le vie di Rivalta escono da sé: tocca la tua, poi il numero civico. Se abiti fuori, scrivi l'indirizzo per esteso.</p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="telefono">
-          <label for="cr-telefono">Telefono <span class="sb-cr-facolt">facoltativo</span></label>
-          <div class="sb-cr-box">
+        <div class="sb-cw-campo" data-campo="telefono">
+          <label for="cr-telefono">Telefono <span class="sb-cw-facolt">facoltativo</span></label>
+          <div class="sb-cw-box">
             <input type="tel" id="cr-telefono" name="telefono" autocomplete="tel" inputmode="tel" enterkeyhint="next" maxlength="40" aria-describedby="cr-telefono-aiuto">
-            <span class="sb-cr-segno" aria-hidden="true"></span>
+            <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cr-aiuto" id="cr-telefono-aiuto"></p>
+          <p class="sb-cw-aiuto" id="cr-telefono-aiuto"></p>
         </div>
 
-        <div class="sb-cr-campo" data-campo="note">
-          <label for="cr-note">Note <span class="sb-cr-facolt">facoltativo</span></label>
-          <div class="sb-cr-box">
+        <div class="sb-cw-campo" data-campo="note">
+          <label for="cr-note">Note <span class="sb-cw-facolt">facoltativo</span></label>
+          <div class="sb-cw-box">
             <textarea id="cr-note" name="note" rows="2" maxlength="300" enterkeyhint="done"></textarea>
           </div>
-          <p class="sb-cr-aiuto" id="cr-note-aiuto"></p>
+          <p class="sb-cw-aiuto" id="cr-note-aiuto"></p>
         </div>
 
-        <div class="sb-cr-risotto">
-          {{RISOTTA_BANNER}}
-          <label class="sb-cr-risotto-spunta">
+        <div class="sb-cw-risotto">
+          <img class="sb-riv-cwbanner" src="assets/foto/risottata-banner.webp" width="2400" height="900" decoding="async" loading="lazy"
+        alt="Risottata finale della Color Walk — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">
+          <label class="sb-cw-risotto-spunta">
             <input type="checkbox" id="cr-risotto" name="risotto">
-            <span>Mi fermo alla <strong>risottata finale</strong>, dopo la camminata <span class="sb-cr-facolt">su prenotazione</span></span>
+            <span>Mi fermo alla <strong>risottata finale</strong>, dopo la camminata <span class="sb-cw-facolt">su prenotazione</span></span>
           </label>
-          <div class="sb-cr-quanti" id="cr-quanti" hidden>
-            <span class="sb-cr-quanti-eti">Quante persone si fermano a mangiare <span class="sb-cr-facolt">te compreso</span></span>
-            <div class="sb-cr-stepper">
-              <button type="button" class="sb-cr-step" id="cr-risotto-meno" aria-label="Un coperto in meno">&minus;</button>
+          <div class="sb-cw-quanti" id="cr-quanti" hidden>
+            <span class="sb-cw-quanti-eti">Quante persone si fermano a mangiare <span class="sb-cw-facolt">te compreso</span></span>
+            <div class="sb-cw-stepper">
+              <button type="button" class="sb-cw-step" id="cr-risotto-meno" aria-label="Un coperto in meno">&minus;</button>
               <input type="number" id="cr-risotto-n" name="risottoPersone" value="1" min="1" max="10" step="1" inputmode="numeric" readonly aria-label="Numero di coperti">
-              <button type="button" class="sb-cr-step" id="cr-risotto-piu" aria-label="Un coperto in più">+</button>
+              <button type="button" class="sb-cw-step" id="cr-risotto-piu" aria-label="Un coperto in più">+</button>
             </div>
           </div>
         </div>
 
-        <div class="sb-cr-consenso">
+        <div class="sb-cw-consenso">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
-          <label for="cr-consenso">Ho letto e accetto il <a href="/color-runner-regolamento" target="_blank" rel="noopener">regolamento della Color Runner</a> e l'informativa sul trattamento dei dati che contiene.</label>
+          <label for="cr-consenso">Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene.</label>
         </div>
 
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
              quando serve, cioè un attimo prima di pagare. -->
-        <div class="sb-cr-nota">
-          La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché i 10 € arrivino pieni all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-runner-regolamento">regolamento</a>.
+        <div class="sb-cw-nota">
+          La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché i 10 € arrivino pieni all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
         </div>
 
-        <button class="sb-btn sb-btn--primary sb-cr-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
+        <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
       </form>
 
       <noscript>
-        <p class="sb-cr-aiuto" style="margin-top:1rem">Questo modulo ha bisogno di JavaScript per aprire il pagamento. Se lo tieni spento, scrivi alle organizzatrici: ti iscrivono loro.</p>
+        <p class="sb-cw-aiuto" style="margin-top:1rem">Questo modulo ha bisogno di JavaScript per aprire il pagamento. Se lo tieni spento, scrivi alle organizzatrici: ti iscrivono loro.</p>
       </noscript>
 
     </div></div></div>
 
-      <aside class="sb-cr-loc-lato" aria-label="La locandina da stampare">
-        <p class="sb-cr-loc-lato-t">La locandina</p>
-        <p class="sb-cr-loc-lato-p">Scaricala, stampala e attaccala dove può servire.</p>
-        {{LOCANDINA}}
+      <aside class="sb-cw-loc-lato" aria-label="La locandina da stampare">
+        <p class="sb-cw-loc-lato-t">La locandina</p>
+        <p class="sb-cw-loc-lato-p">Scaricala, stampala e attaccala dove può servire.</p>
+        <figure class="sb-riv-cwloc">
+      <a class="sb-riv-cwloc-a" href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener">
+        <img src="assets/foto/color-walk-locandina.webp" width="1240" height="1754" decoding="async"
+          alt="Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.">
+      </a>
+    </figure>
       </aside>
 
     </div>
@@ -728,19 +817,30 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
       <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. Sono quelle del Palio.</p>
     </div>
 
-    {{CONTRADE_FILA}}
+    <div class="sb-riv-contrade sb-riv-contrade--fila">
+      <div class="sb-riv-contrada" data-contrada="filanda"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.6 11.5 8.5 6l5.9 5.5"/><path d="M4.3 11.5V20h8.4v-8.5"/><path d="M7.1 20v-4h3v4"/><path d="M18.8 20v-4.3"/><ellipse cx="18.8" cy="11.9" rx="2.4" ry="3.4"/></svg></span><span class="sb-riv-contrada-n">la Filanda</span></div>
+      <div class="sb-riv-contrada" data-contrada="roccolo"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="4.2"/><circle cx="6.3" cy="11.9" r="3.1"/><circle cx="17.7" cy="11.9" r="3.1"/><path d="M12 20v-7"/><path d="M6.3 20v-5"/><path d="M17.7 20v-5"/><path d="M3.5 20h17"/></svg></span><span class="sb-riv-contrada-n">il Roccolo</span></div>
+      <div class="sb-riv-contrada" data-contrada="colonie"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.8 15.5h16.4l-2.3 4.5H6.1z"/><path d="M12 15.5V3.5"/><path d="M6.8 5.5h10.4v7H6.8z"/><path d="M6.8 9h10.4"/></svg></span><span class="sb-riv-contrada-n">le Colonie</span></div>
+      <div class="sb-riv-contrada" data-contrada="piasaroi"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 9.5 12 4l6.2 5.5"/><path d="M7.6 9.5V20h8.8V9.5"/><rect x="10" y="12" width="4" height="4.4" rx="0.6"/><path d="M4.5 20h15"/></svg></span><span class="sb-riv-contrada-n">i Piasaröi</span></div>
+      <div class="sb-riv-contrada" data-contrada="platana"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.6 9.6C4.6 6.2 7.9 3.5 12 3.5s7.4 2.7 7.4 6.1-3.3 5.6-7.4 5.6-7.4-1.8-7.4-5.6Z"/><path d="M12 20v-5.2"/><path d="M9 20h6"/></svg></span><span class="sb-riv-contrada-n">la Plàtana</span></div>
+      <div class="sb-riv-contrada" data-contrada="fanfane"><span class="sb-riv-stemma"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 3.5h5.6"/><path d="M10 3.5v1.5c0 2.3-3.6 3.5-3.6 7.4 0 4.2 2.5 7.6 5.6 7.6s5.6-3.4 5.6-7.6c0-3.9-3.6-5.1-3.6-7.4V3.5"/><path d="M10 5.4C8 5.9 6.9 7.3 7 8.9"/><path d="M14 5.4c2 .5 3.1 1.9 3 3.5"/><path d="M8.2 13.6c1.2-1 2.5-1 3.8 0s2.6 1 3.8 0"/></svg></span><span class="sb-riv-contrada-n">le Fanfane</span></div>
+    </div>
 
     <p class="sb-riv-cap">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-link" href="/eventi#contrade">le contrade in /eventi</a>.</p>
   </section>
 
   <section class="sb-container sb-riv-sec">
-    {{LOGHI}}
-    <p class="sb-cr-loghi-nota">Organizzano Rebecca Zovi, Elena Colla e Alessandra Nosè con l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</p>
+    <div class="sb-cw-loghi">
+      <a class="sb-cw-logo sb-cw-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
+      <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Stemma del Comune di Rodigo"><img src="assets/loghi/comune-rodigo.webp" alt="Stemma del Comune di Rodigo" loading="lazy" decoding="async"></a>
+      <a class="sb-cw-logo sb-cw-logo--ap" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener" title="Alberto Pecchini"><img src="assets/loghi/ap.png" alt="Alberto Pecchini" loading="lazy" decoding="async"></a>
+    </div>
+    <p class="sb-cw-loghi-nota">Organizzano Rebecca Zovi, Elena Colla e Alessandra Nosè con l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</p>
   </section>
 
 </div>
 
-{{VIE}}
+<script type="application/json" id="cw-vie">{"Piazza Basile":["1"],"Piazza Chiesa":["1","1b","3","4","13","15","16"],"Piazza Platana":["3","12","13","19","20","22"],"Piazza Silvio Arrivabene":[],"Strada Camignana":[],"Strada Francesca Est":["109b","166"],"Strada Mirandola":[],"Strada Panicella":[],"Strada Pilone":[],"Strada Settefrati":["2"],"Strada Vedusino":["5"],"Via Aldo Moro":[],"Via Andrea Costa":[],"Via Antonio Gramsci":["1","3","6","7","11","19","20","21","22","23","24","25","27","29","35","51","53","56","58","59","60","62","64","68","70","72","74","76","78","80","84","88","90"],"Via Ariello":[],"Via Belvedere":["1","1a","3","3/a","5"],"Via Caduti del Lavoro":[],"Via Campino":[],"Via Claudio Monteverdi":[],"Via Danilo Martelli":[],"Via dei Cavatori":[],"Via dei Pescatori":[],"Via della Libertà":[],"Via della Resistenza":[],"Via delle Arellaie":["1"],"Via Don Arnaldo Bodini":[],"Via Don Benini":[],"Via Don Giovanni Minzoni":[],"Via Don Primo Mazzolari":[],"Via Due Giugno":[],"Via Enzo Ferrari":[],"Via Eugenio Curiel":[],"Via Filippo Turati":["1","2","4","6","7","8","9","11","14","16","18","20","21","23","25","27","29","31","33","35","36","37","38","40","41","42","43","44a","44b","44c","48","50","52","54","56"],"Via Francesca":["42","60"],"Via Fratelli Cervi":[],"Via Giacomo Brodolini":[],"Via Giacomo Puccini":[],"Via Giovanni Arrivabene":["1"],"Via Giuseppe Di Vittorio":[],"Via Giuseppe Garibaldi":["21"],"Via Giuseppe Mazzini":[],"Via Giuseppe Verdi":[],"Via Innocente Venturi":[],"Via Luigi Morelli":[],"Via Madonnina":[],"Via Matilde di Canossa":[],"Via Mezzadrelli":[],"Via Panicella":["2"],"Via Papa Giovanni Paolo II":[],"Via Papa Giovanni Paolo VI":[],"Via Papa San Pio X":[],"Via Pilota":[],"Via Porto":["31"],"Via Renzo Ascari":[],"Via Renzo Regattieri":[],"Via Roccolo":["30","32","34","36","45","47","49","51","53","55"],"Via Salvador Allende":[],"Via Salvo D'Acquisto":[],"Via Sandro Pertini":[],"Via Sant'Antonio":[],"Via Sette Frati":["2","6","9","10","11","12","13","16","17","18","19","20","21","22","23","25","27","29","31","33","37","38","43","45","47","51","53","54","55","57","59","60","61","62","64","65","66","69","71","77","79","80","83","85","87","92"],"Via SS. Patroni Vigilio e Donato":[],"Via Tertulliano Battisti":["1","2","3","4"],"Via Tezzone":["13","34","43"],"Via Todeschino":[],"Via Venticinque Aprile":[],"Via Vincenzo Bellini":[],"Via Virgilio":[],"Via Vittorina Gementi":["1"],"Via Walter Tobagi":[],"Via Zibramonda":["2","4","5","6","8","10","11","12","13","14","15","18","24","26","30"],"Vicolo Gilberto Pagliari":[],"Vicolo Luigi Guizzon":[]}</script>
 <script>
 (function () {
   var form = document.getElementById("cr-form");
@@ -751,7 +851,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   var ETICHETTA = bottone.querySelector("span").textContent;
 
   function mostra(tipo, testo) {
-    esito.className = "sb-cr-esito sb-cr-esito--" + tipo;
+    esito.className = "sb-cw-esito sb-cw-esito--" + tipo;
     esito.textContent = testo;
   }
 
@@ -764,7 +864,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   var stato = query.get("stato");
   var sessione = query.get("sessione");
 
-  /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-runner
+  /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-walk
      (23:59 del 18 settembre, ora italiana). Qui serve solo a nascondere il
      modulo e spiegare perché — il «no» che conta lo dà comunque la funzione. Il
      ritorno dal pagamento (`stato=ok` con la sessione) non è toccato: chi paga
@@ -783,7 +883,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     form.style.display = "none";
     mostra("neutro", "Un momento, controllo il pagamento…");
 
-    fetch("/api/iscrizione-color-runner?sessione=" + encodeURIComponent(sessione))
+    fetch("/api/iscrizione-color-walk?sessione=" + encodeURIComponent(sessione))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.pagato) throw new Error("non risulta pagata");
@@ -794,7 +894,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
         if (!chiuse) form.style.display = "";
       });
   } else if (chiuse) {
-    chiudiModulo("Le iscrizioni online alla Color Runner si sono chiuse alle 23:59 del 18 settembre. Se ti sei iscritto trovi la ricevuta nella tua email; per il resto scrivi alle organizzatrici.");
+    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. Se ti sei iscritto trovi la ricevuta nella tua email; per il resto scrivi alle organizzatrici.");
   } else if (stato === "ok" && !sessione) {
     mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
   } else if (stato === "annullato") {
@@ -987,7 +1087,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
      La spunta scopre lo switcher dei coperti; lo switcher tiene il numero fra
      1 e 10 e spegne il tasto quando si è al minimo o al massimo. È tutto
      facoltativo: niente di questo entra nel conto di «quanto manca» né blocca
-     l'invio, e /api/iscrizione-color-runner ristringe comunque il numero. */
+     l'invio, e /api/iscrizione-color-walk ristringe comunque il numero. */
   var risotto = document.getElementById("cr-risotto");
   var quanti = document.getElementById("cr-quanti");
   var risottoN = document.getElementById("cr-risotto-n");
@@ -1024,7 +1124,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
      escono i suoi numeri. Chi abita fuori scrive libero: la tendina suggerisce
      e non impedisce mai niente. */
   var VIE = {};
-  try { VIE = JSON.parse(document.getElementById("cr-vie").textContent); } catch (e) {}
+  try { VIE = JSON.parse(document.getElementById("cw-vie").textContent); } catch (e) {}
   var NOMI = Object.keys(VIE);
 
   var input = document.getElementById("cr-indirizzo");
@@ -1075,7 +1175,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     return frammento;
   }
 
-  var PIN = '<svg class="sb-cr-voce-pin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+  var PIN = '<svg class="sb-cw-voce-pin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
 
   /* Ogni proposta sa se è una via da completare o un indirizzo finito
      (`fine`): scegliendo una via la tendina resta aperta sui suoi civici,
@@ -1141,7 +1241,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     lista.innerHTML = "";
     voci = elenco.map(function (v, i) {
       var li = document.createElement("li");
-      li.className = "sb-cr-voce";
+      li.className = "sb-cw-voce";
       li.id = "cr-voce-" + i;
       li.setAttribute("role", "option");
       li.setAttribute("aria-selected", "false");
@@ -1149,7 +1249,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
       li.appendChild(evidenzia(v.testo.trim(), q));
       if (v.nota) {
         var n = document.createElement("span");
-        n.className = "sb-cr-voce-n";
+        n.className = "sb-cw-voce-n";
         n.textContent = v.nota;
         li.appendChild(n);
       }
@@ -1221,13 +1321,13 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   /* ── L'invio ────────────────────────────────────────────────────────────
      Il primo campo sbagliato si porta il fuoco: chi ha sbagliato non deve
      cercare dove. Il controllo qui è una cortesia verso chi compila — quello
-     che conta è in /api/iscrizione-color-runner, che non si fida di questa
+     che conta è in /api/iscrizione-color-walk, che non si fida di questa
      pagina né di chi la apre. */
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
 
     if (chiuse) {
-      chiudiModulo("Le iscrizioni online alla Color Runner si sono chiuse alle 23:59 del 18 settembre.");
+      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre.");
       return;
     }
 
@@ -1253,7 +1353,7 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
     bottone.disabled = true;
     bottone.querySelector("span").textContent = "Un momento…";
 
-    fetch("/api/iscrizione-color-runner", {
+    fetch("/api/iscrizione-color-walk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1291,3 +1391,138 @@ html.rsm-still .sb-cr-vernice::after { animation: none; }
   conta();
 })();
 </script>
+  </main>
+</div>
+
+<footer class="sb-home sb-foot">
+  <div class="sb-container sb-foot-wrap">
+    <div class="sb-foot-grid">
+      <div class="sb-foot-card">
+        <div class="sb-panel"><div class="sb-panel-inner sb-foot-pad">
+          <div>
+            <a class="sb-foot-name" href="/">Rivalta sul Mincio</a>
+            <p class="sb-foot-role">Frazione del Comune di Rodigo — Provincia di Mantova · Dossier informativo del paese</p>
+            <div class="sb-foot-social">
+              <a href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" aria-label="Comune di Rodigo" title="Comune di Rodigo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 21V10l8-6 8 6v11"/><path d="M9 21v-5h6v5"/></svg></a>
+              <a href="https://www.prolocorivalta.mn.it/" target="_blank" rel="noreferrer noopener" aria-label="Pro Loco Rivalta sul Mincio" title="Pro Loco Rivalta"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></a>
+              <a href="https://www.parcodelmincio.it" target="_blank" rel="noreferrer noopener" aria-label="Parco Regionale del Mincio" title="Parco del Mincio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></a>
+              <a href="https://museorivaltasulmincio.it/" target="_blank" rel="noreferrer noopener" aria-label="Museo Etnografico dei Mestieri del Fiume" title="Museo Etnografico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 10h16M12 3 3 8h18ZM6 10v11M10 10v11M14 10v11M18 10v11"/></svg></a>
+              <a href="https://www.openstreetmap.org/#map=15/45.1802/10.6771" target="_blank" rel="noreferrer noopener" aria-label="Rivalta su OpenStreetMap" title="OpenStreetMap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2Z"/><path d="M9 4v14M15 6v14"/></svg></a>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="sb-foot-card">
+        <div class="sb-panel"><div class="sb-panel-inner sb-foot-pad">
+          <div class="sb-foot-links-grid">
+            <div class="sb-foot-col">
+              <h3>Il paese</h3>
+              <ul>
+                <li><a href="/paese#anagrafica">Anagrafica</a></li>
+                <li><a href="/paese#demografia">Demografia</a></li>
+                <li><a href="/paese#edificato">Edificato</a></li>
+                <li><a href="/paese#monumenti">Monumenti</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Servizi</h3>
+              <ul>
+                <li><a href="/servizi#amministrazione">Amministrazione</a></li>
+                <li><a href="/servizi#salute">Farmacia e salute</a></li>
+                <li><a href="/servizi#rifiuti">Rifiuti 2026</a></li>
+                <li><a href="/servizi#connettivita">Fibra e 5G</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Vivere</h3>
+              <ul>
+                <li><a href="/attivita">Negozi e locali</a></li>
+                <li><a href="/comunita#scuole">Scuole</a></li>
+                <li><a href="/comunita#sport">Sport</a></li>
+                <li><a href="/eventi">Eventi</a></li>
+              </ul>
+            </div>
+            <div class="sb-foot-col">
+              <h3>Territorio</h3>
+              <ul>
+                <li><a href="/muoversi#strade">Strade e vie</a></li>
+                <li><a href="/muoversi#trasporti">Autobus</a></li>
+                <li><a href="/natura#acque">Corsi d'acqua</a></li>
+                <li><a href="/dati">Dati e fonti</a></li>
+              </ul>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="sb-foot-hairline" aria-hidden="true"></div>
+
+    <div class="sb-foot-bottom">
+      <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
+      <div class="sb-foot-bottom-links">
+        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+          <img src="assets/loghi/ap.png" alt="Alberto Pecchini" width="18" height="18" decoding="async" loading="lazy">
+        </a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/dati">Fonti</a>
+      </div>
+      <span>Ultimo aggiornamento: <time datetime="2026-08-27" data-updated="2026-08-27">27 agosto 2026</time></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Barra di controllo ───────────────────────────────────────────────────
+     Tema · sensore orario · movimento. Sta fuori dal bordo sinistro e lascia
+     sporgere la linguetta; esce quando ci si avvicina.
+
+     Porta con sé .sb-home perché è da lì che arrivano i token del tema, come
+     fa il footer. Sta FUORI da .sb-home di pagina, alla radice del body:
+     dentro, il fondale fisso della pagina la ritaglierebbe. -->
+<div class="sb-home sb-ctl">
+  <div class="sb-ctl-slide" id="rsm-controlbar">
+    <div class="sb-panel sb-ctl-panel"><div class="sb-panel-inner">
+      <button class="sb-ctl-btn" type="button" data-theme-toggle aria-label="Passa al tema scuro" title="Tema scuro">
+        <span class="sb-ctl-ico" aria-hidden="true">
+          <svg data-icon-moon width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <svg data-icon-sun style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </span>
+      </button>
+      <button class="sb-ctl-btn sb-ctl-auto" type="button" data-auto-toggle aria-pressed="true" title="Sensore orario attivo (08–20 chiaro, resto scuro)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span>Auto</span>
+      </button>
+      <span class="sb-ctl-div" aria-hidden="true"></span>
+      <!-- Il tasto del movimento nasce nascosto e lo mostra glass.js: è l'unico
+           file del sito che può legittimamente non arrivare, e un tasto che non
+           fa niente è peggio di un tasto che non c'è. -->
+      <button class="sb-ctl-btn sb-motion-toggle" type="button" data-motion-toggle aria-pressed="true" aria-label="Ferma il movimento">
+        <svg data-icon-motion width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 12.6 8l4.5 1.6L12.6 11 11 15.5 9.4 11 5 9.6 9.4 8Z"/><path d="M18 15.2l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7Z"/></svg>
+        <svg data-icon-still style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 12.6 8l4.5 1.6L12.6 11 11 15.5 9.4 11 5 9.6 9.4 8Z"/><path d="M4 4l16 16"/></svg>
+      </button>
+    </div></div>
+    <button class="sb-ctl-grip" type="button" aria-controls="rsm-controlbar" aria-expanded="false" aria-label="Mostra le preferenze" title="Mostra le preferenze">
+      <svg data-icon-left style="display:none" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+<!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
+     un pannello con ombra e fondo proprio) verrebbe ritagliata. -->
+<div class="sb-theme-wipe" aria-hidden="true"></div>
+
+<script src="assets/rivalta.js"></script>
+<script src="assets/controlbar.js"></script>
+<!-- Il movimento del vetro è un file a parte e viene dopo: qui dentro non c'è
+     niente che serva a leggere o a navigare il sito, e la pillola della nav ha
+     bisogno che rivalta.js abbia già segnato la voce della pagina aperta. -->
+<script src="assets/glass.js"></script>
+<!-- La ricerca: prima l'indice (assets/ricerca-dati.js, generato dal build),
+     poi il comportamento della tendina. Due file per tutte le pagine, in
+     cache dopo la prima. Se l'indice non c'è, ricerca.js si tira indietro
+     da sé e il tasto non compare. -->
+<script src="assets/ricerca-dati.js"></script>
+<script src="assets/ricerca.js"></script>
+</body>
+</html>

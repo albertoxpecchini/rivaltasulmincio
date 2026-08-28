@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Banco di prova per api/iscritti-color-runner.mjs — `node prova-iscritti.mjs`.
+   Banco di prova per api/iscritti-color-walk.mjs — `node prova-iscritti.mjs`.
 
    Questa funzione è l'unica del sito che, se sbaglia, consegna a uno
    sconosciuto il codice fiscale e l'indirizzo di casa di chi si è iscritto.
@@ -17,10 +17,10 @@
    Va rilanciato dopo ogni modifica alla funzione. Non gira su Vercel: sta in
    .vercelignore insieme a build.mjs e agli altri banchi di prova.
    ═══════════════════════════════════════════════════════════════════════════ */
-import handler from "./api/iscritti-color-runner.mjs";
+import handler from "./api/iscritti-color-walk.mjs";
 
 const CHIAVE = "chiave-di-prova-degli-organizzatori";
-const EVENTO = "color-runner-2026-09-20";
+const EVENTO = "color-walk-2026-09-20";
 
 const risposta = (stato, corpo) => ({
   ok: stato >= 200 && stato < 300,

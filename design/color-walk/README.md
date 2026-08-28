@@ -1,4 +1,4 @@
-# La locandina e il banner della Color Runner
+# La locandina e il banner della Color Walk
 
 Due tavole disegnate su tela di **Claude Design** (canvas «Locandina A4 verticale») e
 scaricate qui intere. Sono l'**originale editabile**: nel sito ci va il file esportato
@@ -8,7 +8,7 @@ runtime.
 | File | Cos'è | Misura |
 | :--- | :--- | :--- |
 | `locandina.dc.html` | Locandina A4 verticale — evento, quando/dove, quota, iscrizioni, organizzatori | 210 × 297 mm |
-| `banner.dc.html` | Striscia orizzontale per la testa della pagina `/color-runner` | 1600 × 600 px |
+| `banner.dc.html` | Striscia orizzontale per la testa della pagina `/color-walk` | 1600 × 600 px |
 | `doc-page.js`, `support.js` | Il runtime di Claude Design che le due tavole caricano con `<script src="./…">`. Senza, i `.dc.html` non si compongono | — |
 | `.thumbnail` | Anteprima del canvas (WebP 640 × 335), la usa Claude Design | — |
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
@@ -28,14 +28,14 @@ corrono lanciando colori):
 
 | File in `foto/` | Cos'è |
 | :--- | :--- |
-| `color-runner-banner.dc.html` | Banner 2400 × 900, `<image-slot id="colorrun-photo">` a destra |
-| `color-runner-locandina.dc.html` | Locandina A4 1240 × 1754, `<image-slot id="colorrun-photo-a4">` nella fascia in alto |
-| `color-runner-banner.render.html`, `color-runner-locandina.render.html` | Copie piatte e autonome (foto + font inline) da cui si riesporta |
+| `color-walk-banner.dc.html` | Banner 2400 × 900, `<image-slot id="colorwalk-photo">` a destra |
+| `color-walk-locandina.dc.html` | Locandina A4 1240 × 1754, `<image-slot id="colorwalk-photo-a4">` nella fascia in alto |
+| `color-walk-banner.render.html`, `color-walk-locandina.render.html` | Copie piatte e autonome (foto + font inline) da cui si riesporta |
 | `.image-slots.state.json` | Le foto com'erano nelle tele. **Nota:** DesignSync `get_file` tronca il sidecar oltre i 256 KiB (con 3 foto ci arriva): per riprenderlo intero si **riscarica la cartella del progetto** da claude.ai/design |
 | `image-slot.js`, `support.js` | Runtime di Claude Design per queste due tele |
 
 Le tele editabili stanno su **Claude Design**, progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
-(file `Color Runner Banner.dc.html` e `Color Runner Locandina.dc.html`, accanto alla
+(file `Color Walk Banner.dc.html` e `Color Walk Locandina.dc.html`, accanto alla
 risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo sidecar
 `.image-slots.state.json` senza collisioni).
 
@@ -50,10 +50,10 @@ risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo 
    `background-image` da `.u` del sidecar, font in base64. Zero rete. Per la locandina il
    `.render.html` ha anche il CSS di stampa (`@page A4`) per il PDF.
 4. Screenshot Chrome headless a scala 1 → `sharp` in webp:
-   - banner → **`assets/foto/color-runner-banner.webp`** (2400 × 900)
-   - locandina → **`assets/foto/color-runner-locandina.webp`** (1240 × 1754) e il PDF A4
-5. `node build.mjs` — il banner entra ovunque (`{{BANNER}}`/`{{CR_HOME}}`), la locandina
-   nell'anteprima di `/color-runner`.
+   - banner → **`assets/foto/color-walk-banner.webp`** (2400 × 900)
+   - locandina → **`assets/foto/color-walk-locandina.webp`** (1240 × 1754) e il PDF A4
+5. `node build.mjs` — il banner entra ovunque (`{{BANNER}}`/`{{CW_HOME}}`), la locandina
+   nell'anteprima di `/color-walk`.
 
 ## La risottata — `risottata/`
 
@@ -84,10 +84,10 @@ e si rigenera `risottata-banner.render.html` (rimettendo la foto da `.u` del sid
 
 ## Da dove vengono i dati
 
-Testi e cifre sono copiati da [`/color-runner`](../../color-runner.html) e dal
-[regolamento](../../color-runner-regolamento.html) **al 27 agosto 2026**: domenica 20
+Testi e cifre sono copiati da [`/color-walk`](../../color-walk.html) e dal
+[regolamento](../../color-walk-regolamento.html) **al 27 agosto 2026**: domenica 20
 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa, quota 10 € (+1 € di commissioni),
-iscrizioni su `rivaltasulmincio.it/color-runner`, organizzano Rebecca Zovi, Elena Colla e
+iscrizioni su `rivaltasulmincio.it/color-walk`, organizzano Rebecca Zovi, Elena Colla e
 Alessandra Nosè. **Non si aggiornano da soli**: se in pagina cambia una data, un luogo o un
 prezzo, queste due tavole vanno riaperte e rifatte a mano.
 
@@ -108,18 +108,18 @@ Tutti e due sono **il file della tela, messo com'è** — nessuna cornice, nessu
 build li pesca da `assets/` e li mette al posto di `{{BANNER}}` / `{{LOCANDINA}}`; se un
 file manca, il segnaposto non lascia buchi e il build lo dice.
 
-- **Banner** → `assets/foto/color-runner-banner.webp` (2400 × 900, ~55 kB). `renderBanner`
-  lo mette come `<img class="sb-riv-crbanner">` nella testata di
-  [`/color-runner`](../../color-runner.html), al posto della scheda dell'evento in
+- **Banner** → `assets/foto/color-walk-banner.webp` (2400 × 900, ~55 kB). `renderBanner`
+  lo mette come `<img class="sb-riv-cwbanner">` nella testata di
+  [`/color-walk`](../../color-walk.html), al posto della scheda dell'evento in
   [home](../../index.html) (dove è un collegamento) e in coda al
-  [regolamento](../../color-runner-regolamento.html).
-- **Locandina** → `assets/foto/color-runner-locandina.webp` (1240 × 1754, ~90 kB) per
-  l'anteprima e `assets/color-runner-locandina.pdf` (A4) per la stampa. `renderLocandina`
-  le mette nella sezione «La locandina» di `/color-runner`: l'anteprima è un'immagine e il
+  [regolamento](../../color-walk-regolamento.html).
+- **Locandina** → `assets/foto/color-walk-locandina.webp` (1240 × 1754, ~90 kB) per
+  l'anteprima e `assets/color-walk-locandina.pdf` (A4) per la stampa. `renderLocandina`
+  le mette nella sezione «La locandina» di `/color-walk`: l'anteprima è un'immagine e il
   clic scarica il PDF.
 
 La regola CSS di tutti e due sono poche righe in
-[`assets/rivalta.css`](../../assets/rivalta.css) (`.sb-riv-crbanner`, `.sb-riv-crloc`); il
+[`assets/rivalta.css`](../../assets/rivalta.css) (`.sb-riv-cwbanner`, `.sb-riv-cwloc`); il
 resto è dentro le immagini.
 
 > I file sono stati ricavati aprendo `banner.dc.html` / `locandina.dc.html` in un browser
@@ -136,8 +136,8 @@ npm install            # una volta: serve `sharp`
 npm run render:locandina
 ```
 
-Rigenera `assets/foto/color-runner-locandina.webp` (1240×1754) e
-`assets/color-runner-locandina.pdf` (A4). Poi si controllano le due uscite e si committano.
+Rigenera `assets/foto/color-walk-locandina.webp` (1240×1754) e
+`assets/color-walk-locandina.pdf` (A4). Poi si controllano le due uscite e si committano.
 
 Come funziona:
 
