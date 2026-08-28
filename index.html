@@ -213,6 +213,37 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         <p>Quello che sta per succedere in paese, quello che è cambiato di recente, e cosa si dice di Rivalta sui giornali.</p>
       </div>
 
+      <!-- NOTIZIA IN EVIDENZA — a scadenza. Resta in pagina fino alle 18:00 di
+           martedì 1 settembre 2026 (96 ore dalla pubblicazione dell'articolo,
+           venerdì 28 agosto ore 18:07). Lo <script> in fondo al blocco lo
+           rimuove alla scadenza anche senza un nuovo build; per toglierlo
+           prima, cancellare tutto il <div class="sb-riv-flash sb-riv-flash--urgente" …>.
+           Il ROSSO è un'eccezione voluta e circoscritta: è l'unico punto del
+           sito con un secondo colore, riservato agli avvisi urgenti (maltempo,
+           strade chiuse, allerta). Uno per volta. -->
+      <div class="sb-riv-flash sb-riv-flash--urgente" data-scade="2026-09-01T18:00:00+02:00" role="alert">
+        <div class="sb-panel"><div class="sb-panel-inner">
+          <span class="sb-riv-flash-badge sb-riv-flash-badge--urgente">● Ultim'ora — maltempo</span>
+          <h3>Tromba d'aria nel Mantovano: alberi abbattuti e tetti scoperchiati</h3>
+          <p>Nel tardo pomeriggio di <strong>venerdì 28 agosto</strong> un violento temporale ha colpito il Mantovano, con alberi caduti sulle strade in tutto il territorio. A <strong>Rivalta</strong> la <strong>Festa dell'Unità</strong> è rimasta senza corrente e il vento ha portato via parte del tendone allestito per l'arrivo di Elly Schlein, arrivo che resta confermato.</p>
+          <div class="sb-riv-flash-meta">
+            <span class="sb-chip"><span class="sb-chip-dot" aria-hidden="true"></span>Gazzetta di Mantova — 28 agosto 2026</span>
+          </div>
+          <div class="sb-riv-flash-actions">
+            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">Leggi l'articolo su Gazzetta di Mantova <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div></div>
+        <script>
+          (function (el) {
+            if (!el) return;
+            var t = Date.parse(el.getAttribute("data-scade"));
+            if (!t) return;
+            if (Date.now() >= t) { el.remove(); return; }
+            setTimeout(function () { el.remove(); }, t - Date.now());
+          })(document.currentScript.parentNode);
+        </script>
+      </div>
+
       <!-- La Color Walk in home: il manifesto dentro una cornice del sito
            (.sb-panel, stesso smusso), con i tasti per aprire l'evento. Da
            schermo largo i tasti stanno sulla metà destra dell'immagine — la
@@ -250,6 +281,18 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </div>
 
       <div class="sb-riv-news">
+        <a class="sb-card sb-riv-news-card" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-news-pad">
+            <div class="sb-riv-news-top">
+              <span class="sb-riv-news-src">Gazzetta di Mantova</span>
+              <span class="sb-riv-news-date">28 agosto 2026</span>
+            </div>
+            <h3 class="sb-riv-news-title">Tromba d'aria nel Mantovano: alberi abbattuti e tetti scoperchiati</h3>
+            <p class="sb-riv-news-by">di Redazione Web</p>
+            <p class="sb-riv-news-note">Rivalta senza corrente alla Festa dell'Unità e tendone scoperchiato dal vento; alberi sulle strade in tutto il Mantovano</p>
+            <span class="sb-link sb-riv-news-go">Leggi su Gazzetta di Mantova<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </div></div>
+        </a>
         <a class="sb-card sb-riv-news-card" href="https://mantovauno.it/home-page/festa-dellunita-di-rivalta-nel-secondo-weekend-arrivano-elly-schlein-e-stefano-bonaccini/" target="_blank" rel="noreferrer noopener">
           <div class="sb-panel"><div class="sb-panel-inner sb-riv-news-pad">
             <div class="sb-riv-news-top">

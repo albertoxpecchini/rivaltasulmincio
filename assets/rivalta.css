@@ -681,6 +681,31 @@
 .sb-riv-flash--min p { font-size: 0.85rem; line-height: 1.6; }
 .sb-riv-flash--min .sb-riv-flash-actions { margin-top: 0.35rem; gap: 0.9rem; }
 
+/* ── Avviso urgente, a scadenza ──────────────────────────────────────────
+   L'ECCEZIONE alla regola dell'unico colore. Un avviso che deve saltare
+   all'occhio — maltempo, strada chiusa, allerta — porta il ROSSO: filo
+   spesso a sinistra, lastra appena tinta, pillola piena rossa, titolo più
+   marcato. Ne sta uno per volta in pagina e a tempo: lo <script> nel blocco
+   lo rimuove alla scadenza. Il rosso è definito qui, nei due temi, e non
+   esce da questo blocco. */
+.sb-home { --sb-urg: #c81e1e; --sb-urg-bg: rgba(200, 30, 30, 0.06); --sb-urg-fg: #a11515; }
+html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); --sb-urg-fg: #ff8f8f; }
+
+.sb-riv-flash--urgente { margin-top: 1.4rem; }
+.sb-riv-flash--urgente .sb-panel-inner {
+  border-left: 3px solid var(--sb-urg);
+  background: var(--sb-urg-bg);
+}
+.sb-riv-flash--urgente h3 { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash--urgente p { color: var(--sb-fg-light); font-size: 0.95rem; }
+.sb-riv-flash-badge--urgente {
+  background: var(--sb-urg);
+  border-color: var(--sb-urg);
+  color: #fff;
+  box-shadow: none;
+}
+.sb-riv-flash--urgente .sb-link { color: var(--sb-urg-fg); font-weight: 600; }
+
 /* Testo fuori campo: sta nel DOM per la struttura e per chi legge a orecchio,
    non si vede. Stessa ricetta di .sb-riv-cerca-tit. */
 .sb-riv-vh {
