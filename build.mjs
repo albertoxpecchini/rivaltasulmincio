@@ -588,25 +588,36 @@ const renderBannerHome = (page) => {
       </div>`;
 };
 
+/* La locandina si guarda come un foglio in un lettore di documenti: l'anteprima
+   (l'immagine, .webp leggera ma nitida — è ricavata dallo stesso PNG del PDF) e
+   sotto un tasto che apre il PDF A4 già pronto per la stampa. Il clic
+   sull'anteprima apre anch'esso il PDF, nel visore del browser (Ctrl+P e via).
+   Se il PDF non c'è, resta la sola anteprima che si apre a dimensione piena. */
 const renderLocandina = () => {
   locandinaTrovata = ["webp", "avif", "png", "jpg"]
     .map((est) => `assets/foto/${LOCANDINA}.${est}`)
     .find((p) => existsSync(p));
   if (!locandinaTrovata) return "";
   const pdf = `assets/${LOCANDINA}.pdf`;
-  const scaricabile = existsSync(pdf);
-  /* Il PDF si scarica: `download` col nome file, e in più `target="_blank"` così
-     se un browser ignora `download` (o il Content-Disposition del server) il PDF
-     si apre in una scheda invece di sembrare «bloccato». Senza PDF, si apre
-     l'anteprima. */
-  const collegamento = scaricabile
-    ? ` href="${pdf}" download="${LOCANDINA}.pdf" target="_blank" rel="noopener"`
-    : ` href="${locandinaTrovata}" target="_blank" rel="noopener"`;
+  const conPdf = existsSync(pdf);
+  const alt =
+    "Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, " +
+    "ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a " +
+    "persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.";
+  const anteprima = conPdf
+    ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
+    : ` href="${locandinaTrovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;
+  const stampa = conPdf
+    ? `\n      <a class="sb-btn sb-btn--primary sb-riv-cwloc-print" href="${pdf}" download="${LOCANDINA}.pdf" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <span>Stampa la locandina — PDF A4</span>
+      </a>`
+    : "";
   return `<figure class="sb-riv-cwloc">
-      <a class="sb-riv-cwloc-a"${collegamento}>
-        <img src="${locandinaTrovata}" width="1240" height="1754" decoding="async"
-          alt="Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.">
-      </a>
+      <a class="sb-riv-cwloc-a"${anteprima}>
+        <img src="${locandinaTrovata}" width="1240" height="1754" loading="lazy" decoding="async"
+          alt="${alt}">
+      </a>${stampa}
     </figure>`;
 };
 

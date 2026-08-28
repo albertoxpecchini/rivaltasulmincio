@@ -84,7 +84,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
           <span class="sb-riv-updated">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-27" data-updated="2026-08-27">27 ago</time>
+            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-28" data-updated="2026-08-28">28 ago</time>
           </span>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
@@ -115,7 +115,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-27" data-updated="2026-08-27">27 agosto 2026</time></span>
+          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-28" data-updated="2026-08-28">28 agosto 2026</time></span>
         </div>
       </div>
     </div>
@@ -228,8 +228,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 .sb-cw-loc-lato { display: none; }
 .sb-cw-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
 .sb-cw-loc-lato-p { margin: 0.3rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-.sb-cw-loc-lato .sb-riv-cwloc { margin-top: 0.9rem; }
-.sb-cw-loc-lato .sb-riv-cwloc-a { max-width: none; width: 100%; }
+.sb-cw-loc-lato .sb-riv-cwloc { margin-top: 0.9rem; max-width: none; }
 
 @media (min-width: 60rem) {
   .sb-cw-iscr {
@@ -797,9 +796,13 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         <p class="sb-cw-loc-lato-t">La locandina</p>
         <p class="sb-cw-loc-lato-p">Scaricala, stampala e attaccala dove può servire.</p>
         <figure class="sb-riv-cwloc">
-      <a class="sb-riv-cwloc-a" href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener">
-        <img src="assets/foto/color-walk-locandina.webp" width="1240" height="1754" decoding="async"
+      <a class="sb-riv-cwloc-a" href="assets/color-walk-locandina.pdf" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)">
+        <img src="assets/foto/color-walk-locandina.webp" width="1240" height="1754" loading="lazy" decoding="async"
           alt="Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.">
+      </a>
+      <a class="sb-btn sb-btn--primary sb-riv-cwloc-print" href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <span>Stampa la locandina — PDF A4</span>
       </a>
     </figure>
       </aside>
@@ -1468,7 +1471,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
       </div>
-      <span>Ultimo aggiornamento: <time datetime="2026-08-27" data-updated="2026-08-27">27 agosto 2026</time></span>
+      <span>Ultimo aggiornamento: <time datetime="2026-08-28" data-updated="2026-08-28">28 agosto 2026</time></span>
     </div>
   </div>
 </footer>

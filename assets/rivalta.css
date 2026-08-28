@@ -751,19 +751,32 @@
 }
 
 /* ── La locandina A4 ─────────────────────────────────────────────────────
-   L'anteprima del foglio, con un filo di bordo perché è quasi bianco come la
-   pagina; il clic scarica il PDF, e il cursore lo dice. Nessun'altra cornice.
-   In fondo a /color-walk l'anteprima è piccola; nella spalla del modulo
-   (.sb-cw-loc-lato, solo da schermo largo) è larga quanto la colonna. */
-.sb-riv-cwloc { margin: 1.6rem 0 0; }
-.sb-riv-cwloc-a {
-  display: inline-block;
-  width: 100%;
+   Un foglio in un lettore di documenti: l'anteprima col filo di bordo e
+   un'ombra bassa che la stacca dalla pagina, e sotto il tasto che apre il PDF
+   A4 pronto da stampare. Il clic sull'anteprima apre lo stesso PDF (cursore
+   zoom-in). In fondo a /color-walk sta in colonna stretta; nella spalla del
+   modulo (.sb-cw-loc-lato, solo da schermo largo) è larga quanto la colonna. */
+.sb-riv-cwloc {
+  margin: 1.6rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   max-width: 22rem;
+}
+.sb-riv-cwloc-a {
+  display: block;
   border: 1px solid var(--sb-border);
-  cursor: pointer;
+  box-shadow: 0 6px 24px -12px rgba(0, 0, 0, 0.3);
+  cursor: zoom-in;
 }
 .sb-riv-cwloc-a img { display: block; width: 100%; height: auto; }
+.sb-riv-cwloc-print {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
 
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */
 .sb-riv-pager {

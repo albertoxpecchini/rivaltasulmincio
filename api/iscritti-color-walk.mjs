@@ -33,8 +33,11 @@ import { createHash, timingSafeEqual } from "node:crypto";
 
 /* Deve dire la stessa identica riga di EVENTO nelle altre due funzioni della
    Color Walk: è il marchio con cui si riconoscono le sessioni che la
-   riguardano fra tutti i pagamenti del sito. */
+   riguardano fra tutti i pagamenti del sito. `color-runner-2026-09-20` è il
+   vecchio marchio (l'evento si chiamava «Color Runner»): le sessioni di prima
+   del cambio nome lo portano scritto e si contano lo stesso. */
 const EVENTO = "color-walk-2026-09-20";
+const EVENTI_VALIDI = new Set([EVENTO, "color-runner-2026-09-20"]);
 
 const ATTESA_MS = 8000;
 
@@ -107,7 +110,7 @@ export default async function handler(req, res) {
       if (!sessioni.length) break;
 
       for (const s of sessioni) {
-        if (s.metadata?.evento !== EVENTO) continue;
+        if (!EVENTI_VALIDI.has(s.metadata?.evento)) continue;
         if (s.payment_status !== "paid") {
           incompleti++;
           continue;

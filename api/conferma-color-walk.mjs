@@ -65,8 +65,14 @@ const SITE = "https://www.rivaltasulmincio.it";
 
 /* Marchio che il POST di /api/iscrizione-color-walk mette su ogni sessione
    che crea. Serve a non rispondere agli avvisi di pagamenti che un domani
-   nasceranno per altro: quelli non li riguarda questa mail. */
+   nasceranno per altro: quelli non li riguarda questa mail.
+
+   `color-runner-2026-09-20` è il vecchio marchio, da quando l'evento si
+   chiamava «Color Runner»: le sessioni create prima del cambio nome lo portano
+   scritto nei metadata, che non si riscrivono. Si accettano tutte e due — è
+   sempre la stessa camminata del 20 settembre. */
 const EVENTO = "color-walk-2026-09-20";
+const EVENTI_VALIDI = new Set([EVENTO, "color-runner-2026-09-20"]);
 
 const OGGETTO_RICEVUTA = "Iscrizione confermata — Color Walk, 20 settembre";
 const OGGETTO_FALLITA = "Iscrizione non completata — Color Walk, 20 settembre";
@@ -348,7 +354,7 @@ export default async function handler(req, res) {
     );
 
     const marchio = sessione.metadata?.evento;
-    if (marchio && marchio !== EVENTO) {
+    if (marchio && !EVENTI_VALIDI.has(marchio)) {
       return res.status(200).json({ ignorato: "sessione di un altro evento" });
     }
 

@@ -42,9 +42,10 @@ const NOTA_COMMISSIONI =
   "Il circuito di pagamento trattiene una piccola commissione su ogni incasso: " +
   "questo euro la copre, così alla camminata arrivano 10 € pieni.";
 
-/* Deve dire la stessa identica riga di EVENTO in api/conferma-color-walk.mjs:
-   è il marchio con cui quella funzione riconosce le sessioni che la
-   riguardano. Se le due righe divergono, le mail smettono di partire. */
+/* Il marchio che va sulle sessioni nuove. conferma-color-walk.mjs e
+   iscritti-color-walk.mjs riconoscono questo e anche il vecchio
+   `color-runner-2026-09-20` (le sessioni di prima del cambio nome): l'importante
+   è che il valore scritto qui sia fra quelli che loro accettano. */
 const EVENTO = "color-walk-2026-09-20";
 
 /* Le iscrizioni online si chiudono alle 23:59 del 18 settembre — due giorni
