@@ -1052,8 +1052,9 @@ const compilaMail = (nome) => {
     "{{IMPORTO}}",
     "{{MOTIVO}}",
     /* Non è un dato dell'evento: lo riempie /api/conferma-color-walk a runtime,
-       per iscritto, con la riga della risottata o con il vuoto. Qui basta che il
-       build non lo prenda per un segnaposto dimenticato. */
+       per iscritto, con la riga della risottata — prenotata e per quanti, o non
+       prenotata. Qui basta che il build non lo prenda per un segnaposto
+       dimenticato. */
     "{{RISOTTO}}",
   ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));

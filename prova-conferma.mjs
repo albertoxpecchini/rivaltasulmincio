@@ -196,10 +196,15 @@ await prova("ha prenotato la risottata → la ricevuta cita i coperti", {
   atteso: { codice: 200, mail: 1, oggetto: "Iscrizione confermata", contiene: "3 coperti" },
 });
 
-await prova("non ha prenotato la risottata → nessuna riga risotto, nessun segnaposto", {
+await prova("non ha prenotato la risottata → la ricevuta lo dice, niente segnaposto", {
   evento: ev("checkout.session.completed"),
   stub: { sessione: SESSIONE_PAGATA },
-  atteso: { codice: 200, mail: 1, nonContiene: ["{{RISOTTO}}", "Risottata finale", "coperti"] },
+  atteso: {
+    codice: 200,
+    mail: 1,
+    contiene: ["Risottata finale", "Non prenotata"],
+    nonContiene: ["{{RISOTTO}}", "coperti", "coperto"],
+  },
 });
 
 await prova("risottata per uno → «1 coperto», non «1 coperti»", {
