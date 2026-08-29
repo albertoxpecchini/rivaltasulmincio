@@ -28,6 +28,8 @@
 .sb-riv-lede,
 .sb-riv-note,
 .sb-riv-cap,
+.sb-riv-cit p,
+.sb-riv-crono-fatto,
 .sb-riv-flash p,
 .sb-riv-cardpad p,
 .sb-riv-news-note,
@@ -49,6 +51,8 @@
   .sb-riv-lede,
   .sb-riv-note,
   .sb-riv-cap,
+  .sb-riv-cit p,
+  .sb-riv-crono-fatto,
   .sb-riv-flash p,
   .sb-riv-cardpad p,
   .sb-riv-news-note,
@@ -496,6 +500,87 @@
   text-transform: uppercase;
   color: var(--sb-brand-text);
 }
+
+/* ── Citazioni storiche ───────────────────────────────────────────────────
+   Le pagine di storia riportano passi di cronaca lunghi: vanno separati dalla
+   prosa, ma non sono avvertenze. Stessa forma della nota — un filo a sinistra
+   — con il filo grigio invece che azzurro e il corsivo al posto del colore.
+   È il modo del sito di distinguere due cose senza aggiungere un hue. */
+.sb-riv-cit {
+  margin: 1.3rem 0;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  max-width: 46rem;
+  border-left: 2px solid var(--sb-border-stronger);
+}
+.sb-riv-cit p {
+  margin: 0 0 0.7rem;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-cit-fonte {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-cit-fonte a { color: var(--sb-brand-text); text-decoration: none; }
+.sb-riv-cit-fonte a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Cronologia ───────────────────────────────────────────────────────────
+   Una tabella a due colonne saprebbe dire le stesse date, ma non che sono una
+   sequenza: qui la colonna di sinistra è un asse, e ogni voce ci si aggancia
+   con un pallino. Le date che contano davvero — quelle che nel testo hanno
+   una sezione tutta loro — hanno il pallino azzurro; le altre grigio.
+
+   Il filo è il border-left della singola voce, non un pseudo-elemento steso
+   su tutta la lista: così l'ultima voce può spegnerlo e la linea finisce
+   sull'ultimo pallino invece di proseguire nel vuoto. */
+.sb-riv-crono {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  max-width: 46rem;
+}
+.sb-riv-crono-riga {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.15rem 1.4rem;
+  padding: 0 0 1.05rem 1.2rem;
+  border-left: 1px solid var(--sb-border);
+}
+@media (min-width: 560px) {
+  .sb-riv-crono-riga { grid-template-columns: 6rem 1fr; padding-left: 1.4rem; }
+}
+.sb-riv-crono-riga:last-child { padding-bottom: 0; border-left-color: transparent; }
+/* Il pallino a cavallo del filo: 6px di diametro su un filo da 1px, cioè
+   -2.5px per restare centrato. */
+.sb-riv-crono-riga::before {
+  content: "";
+  position: absolute;
+  left: -3.5px;
+  top: 0.4rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sb-border-stronger);
+}
+.sb-riv-crono-riga--chiave::before { background: var(--sb-brand); }
+.sb-riv-crono-anno {
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-crono-riga--chiave .sb-riv-crono-anno { color: var(--sb-fg); font-weight: 500; }
+.sb-riv-crono-fatto {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-crono-fatto strong { font-weight: 600; color: var(--sb-fg); }
 
 /* ── Schede chiave/valore ─────────────────────────────────────────────── */
 .sb-riv-kv { margin: 0; }
@@ -1270,6 +1355,39 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   }
   .sb-riv-search-open.sb-ready .sb-riv-search-open-t { display: inline; margin-right: auto; }
   .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: inline-flex; }
+}
+
+/* ── La decima voce ───────────────────────────────────────────────────────
+   sb.css fa comparire la fila di voci a 1080px, misura tarata su nove. Con
+   /storia sono dieci, e a quella larghezza l'ultima finirebbe sotto la
+   ricerca. Invece di accorciare le etichette — che sono i nomi delle pagine,
+   non didascalie — si sposta il cambio a 1160px: nella fascia in mezzo
+   restano l'hamburger e la ricerca in forma d'icona, esattamente come sotto
+   i 1080. Le regole di sb.css non si toccano: sono un estratto fedele della
+   fonte, e questo è un vincolo di questo sito soltanto. */
+@media (min-width: 1080px) and (max-width: 1159.98px) {
+  .sb-nav-links { display: none; }
+  .sb-burger[data-menu-toggle] { display: inline-flex; }
+  .sb-riv-search-open.sb-ready {
+    width: 34px;
+    height: 34px;
+    min-width: 0;
+    padding: 0;
+    justify-content: center;
+    clip-path: none;
+    border-color: transparent;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .sb-riv-search-open.sb-ready:hover { background: var(--sb-overlay); }
+  .sb-riv-search-open.sb-ready:focus-visible {
+    outline: 2px solid var(--sb-brand);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+  .sb-riv-search-open.sb-ready .sb-riv-search-open-t,
+  .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: none; }
 }
 
 /* ── Il tastino ──────────────────────────────────────────────────────────

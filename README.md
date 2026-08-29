@@ -4,7 +4,7 @@
 
 **Sito statico, zero dipendenze** — il dossier completo di **Rivalta sul Mincio**
 (frazione del Comune di Rodigo, provincia di Mantova): anagrafica, servizi, attività,
-comunità, viabilità, natura, eventi e una mappa interattiva. Dieci pagine di HTML
+comunità, viabilità, natura, storia, eventi e una mappa interattiva. Undici pagine di HTML
 puro, generate da un assemblatore di 260 righe, vestite con il design system **`.sb-`** di
 [albertopecchini.it](https://albertopecchini.it) — palette neutra, un solo azzurro,
 tema chiaro/scuro nativo.
@@ -42,8 +42,8 @@ tema chiaro/scuro nativo.
 
 | Dominio | Valore | Dettaglio |
 | :--- | :--- | :--- |
-| **Pagine pubblicate** | **12** | HTML **generato**, indirizzi senza estensione |
-| **Sorgenti in `_build/`** | 12 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
+| **Pagine pubblicate** | **13** | HTML **generato**, indirizzi senza estensione |
+| **Sorgenti in `_build/`** | 13 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
 | **Design system** | **2.516 righe CSS** | `sb.css` (998) · `rivalta.css` (1.332) · `controlbar.css` (186) |
 | **JavaScript nel browser** | **1.488 righe**, 6 file | `rivalta.js` (115) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) · `meteo.js` (214) · `ricerca.js` (267) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
@@ -73,14 +73,14 @@ indicizzato non si rompono. I link interni si scrivono root-assoluti (`/paese`, 
 
 ### Modificare il sito
 
-Le dieci pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
+Le undici pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
 
 ```bash
 node build.mjs
 ```
 
-Dieci pagine condividono la stessa nav e lo stesso footer. Tenerne dieci copie a mano significa che
-prima o poi nove sono aggiornate e una no, ed è sempre quella che qualcuno apre.
+Undici pagine condividono la stessa nav e lo stesso footer. Tenerne undici copie a mano significa che
+prima o poi dieci sono aggiornate e una no, ed è sempre quella che qualcuno apre.
 
 Titolo e descrizione di ogni pagina stanno in testa al rispettivo frammento, come due commenti —
 così il contenuto e i suoi metadati non possono separarsi:
@@ -95,7 +95,7 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 
 ---
 
-## 🧭 Le dieci pagine
+## 🧭 Le undici pagine
 
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
@@ -104,6 +104,7 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | :--- | :--- | :---: | :--- |
 | `/` | `index.body.html` | 1.0 | Il paese in sintesi + **«Rivalta sui giornali»** (rassegna stampa) |
 | `/paese` | `paese.body.html` | 0.7 | Anagrafica, etimologia, dati ISTAT e demografia, edificato, monumenti |
+| `/storia` | `storia.body.html` | 0.7 | Ripalta matildica, il castello e l'assedio del 1091, la nascita della valle, i mestieri del fiume |
 | `/servizi` | `servizi.body.html` | 0.8 | Comune e sportelli, farmacia, banche, calendario rifiuti, fibra e 5G |
 | `/attivita` | `attivita.body.html` | 0.8 | Alimentari, tabaccheria, bar e ristoranti, ricettività, mercato, aziende |
 | `/comunita` | `comunita.body.html` | 0.7 | Scuole, Museo Etnografico dei Mestieri del Fiume, biblioteca, Pro Loco, sport |
@@ -819,9 +820,9 @@ Priorità e frequenza si dichiarano nel frammento, con due commenti facoltativi 
 ```
 
 `lastmod` è la data di ultima modifica **del frammento sorgente**, non di oggi: rigenerare il sito
-senza aver cambiato niente non deve dire ai motori che tutte e nove le pagine sono state riscritte.
+senza aver cambiato niente non deve dire ai motori che tutte le pagine sono state riscritte.
 
-`robots.txt` è statico e non ha esclusioni: nove pagine pubbliche, nessuna area riservata.
+`robots.txt` è statico e non ha esclusioni: solo pagine pubbliche, nessuna area riservata.
 
 ---
 
