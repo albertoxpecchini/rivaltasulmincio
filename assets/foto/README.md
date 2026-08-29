@@ -8,7 +8,10 @@ segnaposto nella pagina non produce niente — nessun buco, nessuna immagine rot
 
 **Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB.
 
-I luoghi stanno in questa cartella, le attività in `attivita/`. Titolo, testo alternativo e
+I luoghi stanno in questa cartella, le attività in `attivita/`. In `storia/` ci sono invece le
+immagini d'archivio della pagina `/storia` — carte, affreschi, reperti: non passano da
+`luoghi.json` e non hanno uno slug, perché non sono posti. Le figure sono scritte a mano nel
+frammento, con la didascalia e l'autore accanto. Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 

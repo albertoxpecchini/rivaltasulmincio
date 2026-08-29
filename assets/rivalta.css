@@ -971,6 +971,13 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
 @media (min-width: 640px) { .sb-riv-foto-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .sb-riv-foto-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .sb-riv-foto-grid .sb-riv-foto { margin: 0; max-width: none; }
+/* Due figure sole. La griglia dei luoghi va a tre colonne da 1024px in su, e
+   due tessere su tre lascerebbero mezza fila vuota: qui le colonne restano
+   due a tutte le larghezze. Vince sulla regola sopra per specificità, non
+   per ordine — sono due classi contro una. */
+@media (min-width: 640px) {
+  .sb-riv-foto-grid--due { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* ── Le sei contrade ──────────────────────────────────────────────────────
    Sei tinte, in un sito che ne ha una sola. Non è uno strappo alla regola per
