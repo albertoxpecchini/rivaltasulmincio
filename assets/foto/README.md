@@ -196,16 +196,17 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | :--- | :--- | :--- |
 | `attivita/coyotes-bar.jpg` | Coyote's Bar | Via Sette Frati 6 |
 | `attivita/bottega-atipica.jpg` | Bottega Atipica | Via Antonio Gramsci 1 |
-| `attivita/ostello-del-mincio.jpg` | Ostello del Mincio | 45.17972, 10.68131 |
-| `attivita/bar-platano.jpg` | Bar Platano | 45.16905, 10.67636 |
+| `attivita/bar-ostello-il-faro.jpg` | Bar e Ostello Il Faro | Via Porto 23 |
+| `attivita/bar-platano.jpg` | Bar Platano | Strada Francesca Est 162 |
+| `attivita/rivalta-green-village.jpg` | Rivalta Green Village | Strada Vedusino 5 |
 | `attivita/pizzeria-osteria-la-stella.jpg` | Pizzeria - Osteria «La Stella» | Via Filippo Turati 6 |
 | `attivita/opificio-alimentare.jpg` | Opificio Alimentare | Via Francesca 42 |
 | `attivita/pizzangolo.jpg` | Pizzangolo | Via Giovanni Arrivabene 1 |
-| `attivita/la-coccia-volante.jpg` | La Coccia Volante | 45.17489, 10.67017 |
-| `attivita/le-antiche-colonie.jpg` | Le Antiche Colonie | 45.17534, 10.67577 |
-| `attivita/gelateria-2-0.jpg` | Gelateria 2.0 | 45.16937, 10.67739 |
+| `attivita/la-coccia-volante.jpg` | La Coccia Volante | Strada Francesca Est 150 |
+| `attivita/le-antiche-colonie.jpg` | Le Antiche Colonie | Via Francesca 88/A |
+| `attivita/gelateria-2-0.jpg` | Gelateria 2.0 | Via Francesca Est 128 |
 | `attivita/gelateria-mon-amour.jpg` | Gelateria Mon Amour | Via Tezzone 13 |
-| `attivita/tesoro-living-resort.jpg` | Tesoro Living Resort | 45.18886, 10.67550 |
+| `attivita/tesoro-living-resort.jpg` | Tesoro Living Resort | Via Sette Frati 96 |
 | `attivita/ristorante-corte-catenaccio.jpg` | Ristorante Pizzeria «Corte Catenaccio» | Strada Francesca Est 109b |
 | `attivita/corte-mincio-osteria.jpg` | Corte Mincio Osteria con Pizzeria | Via Porto 43 |
 | `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | Strada Camignana 6 |

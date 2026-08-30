@@ -39,7 +39,7 @@
     { "id": "aperitivo", "n": "Aperitivo",        "d": "Voglio solo bere qualcosa" },
     { "id": "veloce",    "n": "Pranzo veloce",    "d": "Ho poco tempo" },
     { "id": "speciale",  "n": "Cena speciale",    "d": "Voglio una cena che si ricordi" },
-    { "id": "scoperta",  "n": "Non lo conosco",   "d": "Voglio provare qualcosa che non ho mai mangiato" }
+    { "id": "scoperta",  "n": "Da provare",       "d": "Voglio provare qualcosa che non ho mai mangiato" }
   ],
 
   "piatti": [
@@ -196,7 +196,8 @@
         { "luogo": "pizzeria-osteria-la-stella", "come": "Impasti seguiti da Roberto, istruttore della Nazionale Italiana Pizzaioli; ogni tanto anche serate di *pizza fritta*.", "fascia": "25–35 €" },
         { "luogo": "corte-mincio-osteria", "come": "Pizze classiche, dalla marinara a quelle con il crudo di Parma DOP. Osteria e pizzeria in riva al Mincio." },
         { "luogo": "pizzangolo", "come": "Pizza *d'asporto*, con consegna." },
-        { "luogo": "ristorante-corte-catenaccio", "come": "Ristorante e pizzeria; la cucina lavora anche *senza glutine*, vegano e vegetariano." }
+        { "luogo": "ristorante-corte-catenaccio", "come": "Ristorante e pizzeria; la cucina lavora anche *senza glutine*, vegano e vegetariano." },
+        { "luogo": "rivalta-green-village", "come": "Ristorante e pizzeria del Village, *tutti i giorni* 12–15 e 19–22." }
       ]
     },
 
@@ -230,9 +231,10 @@
       "dove": [
         { "luogo": "coyotes-bar", "come": "Dehors esterno, locale accessibile. In centro, a due passi dalla piazza." },
         { "luogo": "bottega-atipica", "come": "Bar in centro, in Via Gramsci." },
-        { "luogo": "ostello-del-mincio", "come": "Il bar dell'ostello, in riva al Mincio." },
-        { "luogo": "le-antiche-colonie", "come": "Pub, poco fuori dall'abitato." },
-        { "luogo": "bar-platano", "come": "Bar sulla Francesca Est, fuori dal paese." }
+        { "luogo": "bar-ostello-il-faro", "come": "Il bar dell'ostello, in riva al Mincio: fino al 2025 si chiamava Ostello del Mincio." },
+        { "luogo": "le-antiche-colonie", "come": "Birreria, poco fuori dall'abitato." },
+        { "luogo": "bar-platano", "come": "Bar sulla Francesca Est, all'altezza del distributore." },
+        { "luogo": "rivalta-green-village", "come": "Il bar del Village, aperto fino a mezzanotte: lun–ven dalle 9:30, sa–do dalle 8:30." }
       ]
     },
 
