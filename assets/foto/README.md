@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **153** in tutto.
+Elenco completo dei file da produrre: **152** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -43,13 +43,12 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `chiesa-canova.jpg` | Chiesa di Canova | località Canova — ~1,66 km |
 | `cimitero-rivalta.jpg` | Cimitero di Rivalta sul Mincio | — |
 
-## Corti e centro storico — 4
+## Corti e centro storico — 3
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `corte-arrivabene.jpg` | Corte Arrivabene | zona Via Giovanni Arrivabene |
 | `via-porto-centro-storico.jpg` | Via Porto e il centro storico | Via Porto |
-| `villa-arrivabene.jpg` | Villa Arrivabene | 576 m dal centro |
 | `la-dana.jpg` | La Dana | 231 m dal centro |
 
 ## Parchi e verde — 8
