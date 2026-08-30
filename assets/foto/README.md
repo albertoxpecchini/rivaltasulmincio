@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **133** in tutto.
+Elenco completo dei file da produrre: **139** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -145,7 +145,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/copelli-formaggi.jpg` | Copelli Formaggi | Strada Francesca Est 137/139 |
 | `attivita/spaccio-formaggi-cm.jpg` | Spaccio Formaggi C.M. | Strada Francesca Est 174 |
 
-## Negozi — 13
+## Negozi — 12
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -158,7 +158,6 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/bicimania.jpg` | Bicimania | 45.18049, 10.67171 |
 | `attivita/giannace.jpg` | Giannace | Via Filippo Turati 36 |
 | `attivita/autolavaggio-ranzato.jpg` | Autolavaggio Ranzato | 45.16885, 10.67679 |
-| `attivita/malaguti-autoriparazioni.jpg` | Malaguti Luigi — autoriparazioni | Via Giuseppe Garibaldi 23 |
 | `attivita/borgoflora.jpg` | Borgoflora | Strada Camignana 19 |
 | `attivita/eurogiardini.jpg` | Eurogiardini | Strada Francesca Est 127/C |
 | `attivita/bosio-carrozzeria.jpg` | Bosio Giuseppe — carrozzeria | Strada Francesca Est 112 |
@@ -230,6 +229,18 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/parcheggio-piazza-milite-ignoto.jpg` | Parcheggio di Piazza Milite Ignoto | 45.18121, 10.67719 |
 | `attivita/parcheggio-piazza-basile.jpg` | Parcheggio di Piazza Emanuele Basile | 45.17660, 10.67706 |
 | `attivita/torre-telecomunicazioni.jpg` | Torre di telecomunicazioni | 45.18056, 10.67688 |
+
+## Aziende — 7
+
+| File | Luogo | Dove |
+| :--- | :--- | :--- |
+| `attivita/fuji-seal-italy.jpg` | Fuji Seal Italy S.r.l. | Via Enzo Ferrari 33 |
+| `attivita/ondabox.jpg` | Ondabox S.r.l. | Via Enzo Ferrari 25/27 |
+| `attivita/rpl-lubrificanti.jpg` | RPL Lubrificanti S.r.l. | Via Enzo Ferrari 3 |
+| `attivita/italiana-distribuzione-lubrificanti.jpg` | Italiana Distribuzione Lubrificanti S.r.l. | Via Enzo Ferrari 1/3 |
+| `attivita/al-so-manufatti-cemento.jpg` | AL.SO. S.r.l. | Strada Settefrati 40 |
+| `attivita/donelli-costruzioni.jpg` | Donelli S.r.l. Costruzioni Generali | Via Filippo Turati 1 |
+| `attivita/lo-scampolaio.jpg` | Lo Scampolaio | Via Francesca Est 121 |
 
 ## Ricettività e associazioni — 10
 
