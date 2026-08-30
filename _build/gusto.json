@@ -1,0 +1,266 @@
+{
+  "_nota": [
+    "Il registro del gusto: le voglie, i piatti, e chi li fa.",
+    "",
+    "La pagina /mangiare non parte dai locali ma dalla domanda che uno si fa",
+    "davvero prima di uscire di casa: «cosa mi va?». Da qui escono i tasti",
+    "delle voglie, le schede dei piatti e, sotto ogni piatto, i locali che lo",
+    "propongono. Il nome, l'indirizzo, la mappa e il collegamento alla scheda",
+    "NON si scrivono qui: `luogo` è uno slug di _build/luoghi.json e tutto il",
+    "resto viene da lì, come per {{luogo:...}}. Uno slug che non esiste ferma",
+    "il build.",
+    "",
+    "`voglie` sono i tasti in cima alla pagina; ogni piatto dichiara a quali",
+    "risponde. Una voglia senza piatti, o un piatto che nomina una voglia che",
+    "non esiste, fermano il build: un tasto che apre il vuoto è peggio di un",
+    "tasto che non c'è.",
+    "",
+    "`come` è la sola frase che dice cosa quel locale fa di quel piatto, e va",
+    "scritta da una fonte — la carta del locale, il suo sito, l'ente che lo",
+    "censisce — non dedotta dalla categoria. Se non risulta, il locale non",
+    "entra sotto quel piatto: un elenco che indovina è peggio di un elenco",
+    "corto.",
+    "",
+    "`fascia` è la spesa indicativa a persona come la dichiarano i portali di",
+    "prenotazione, non il locale: sta qui perché è la seconda domanda che uno",
+    "si fa, ed è marcata come indicativa dovunque compaia.",
+    "",
+    "In `cose`, `perche`, `quando` e `come` un *asterisco per parte* diventa",
+    "grassetto. È l'unico markup ammesso: tutto il resto è testo, e viene",
+    "sfuggito."
+  ],
+
+  "voglie": [
+    { "id": "pesce",     "n": "Pesce",            "d": "Ho voglia di pesce" },
+    { "id": "mantovana", "n": "Cucina mantovana", "d": "Voglio mangiare tipico" },
+    { "id": "carne",     "n": "Carne",            "d": "Ho voglia di carne" },
+    { "id": "pizza",     "n": "Pizza",            "d": "Voglio una pizza" },
+    { "id": "dolci",     "n": "Dolci e gelato",   "d": "Voglio chiudere con un dolce" },
+    { "id": "aperitivo", "n": "Aperitivo",        "d": "Voglio solo bere qualcosa" },
+    { "id": "veloce",    "n": "Pranzo veloce",    "d": "Ho poco tempo" },
+    { "id": "speciale",  "n": "Cena speciale",    "d": "Voglio una cena che si ricordi" },
+    { "id": "scoperta",  "n": "Non lo conosco",   "d": "Voglio provare qualcosa che non ho mai mangiato" }
+  ],
+
+  "piatti": [
+    {
+      "slug": "luccio-alla-rivaltese",
+      "nome": "Luccio alla Rivaltese",
+      "voglie": ["pesce", "mantovana", "scoperta"],
+      "occhiello": "Il piatto che porta il nome del paese",
+      "cose": "Luccio del Mincio lessato dieci-dodici minuti, spinato e squamato. Poi la ricetta si divide in due. *In salsa*: una salsa di cipolla, capperi, pelati, peperoni, acciughe, rosmarino, noce moscata e aceto, cotta una mezz'ora; il pesce si serve tiepido con la polenta abbrustolita. *In bianco*: niente salsa, solo pepe nero, olio extravergine, noce moscata, Grana Padano grattugiato e succo di limone.",
+      "perche": "Non è un piatto mantovano che a Rivalta si fa anche: è un piatto *di* Rivalta. Il 3 aprile 2013 la Regione Lombardia ha iscritto tutte e due le versioni nell'Elenco dei Prodotti Agroalimentari Tradizionali indicando come territorio Rivalta sul Mincio, ed è oggi anche De.Co. comunale. È il filo che lega la cucina di adesso all'economia di pesca che ha tenuto in piedi il paese per secoli.",
+      "quando": "Il luccio in bianco è tradizionalmente il piatto della vigilia di Pasqua. A inizio luglio è il centro della Festa del Pesce e del Luccio alla Rivaltese, la festa principale del paese: nel 2026 è la 41ª edizione.",
+      "dove": [
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Luccio in salsa alla rivaltese con polenta abbrustolita*, in carta fra gli antipasti di pesce." },
+        { "luogo": "opificio-alimentare", "come": "*Luccio in salsa* fra i piatti della casa.", "fascia": "30–40 €" }
+      ],
+      "vedi": [
+        { "href": "/eventi#dettaglio2026", "t": "La Festa del Pesce, edizione 2026" },
+        { "href": "/eventi#luccio", "t": "Il riconoscimento regionale e la De.Co." }
+      ]
+    },
+
+    {
+      "slug": "fritto-di-pesce-di-lago",
+      "nome": "Fritto di pesce di lago",
+      "voglie": ["pesce", "mantovana"],
+      "cose": "Il pesce dei laghi e del fiume passato in pastella e fritto: il modo in cui a Mantova si è sempre mangiato quello che si pescava sotto casa.",
+      "dove": [
+        { "luogo": "corte-mincio-osteria", "come": "*Fritto di pesce di lago* in pastella, fra i secondi." }
+      ]
+    },
+
+    {
+      "slug": "pesce-di-mare",
+      "nome": "Pesce di mare",
+      "voglie": ["pesce", "speciale"],
+      "cose": "Crudi, primi e griglie di mare: a Rivalta si mangia anche pesce che dal Mincio non è mai passato.",
+      "dove": [
+        { "luogo": "la-coccia-volante", "come": "Cucina di *solo pesce*, in prevalenza pescato dell'Adriatico scelto dal titolare. Il menù cambia ogni mese, più i piatti del giorno." },
+        { "luogo": "ristorante-corte-catenaccio", "come": "Spaghetti alle vongole veraci, tagliolini neri con code di gambero, branzino ai ferri, grigliata e fritto misto." },
+        { "luogo": "tesoro-living-resort", "come": "Antipasti, primi e secondi di mare in carta, accanto a quelli di terra.", "fascia": "circa 30 €" },
+        { "luogo": "pizzeria-osteria-la-stella", "come": "Bigoli al nero di seppia e pesce fresco, accanto alla cucina mantovana della casa.", "fascia": "25–35 €" }
+      ]
+    },
+
+    {
+      "slug": "pesce-di-fiume",
+      "nome": "Pesce di fiume",
+      "voglie": ["pesce", "scoperta"],
+      "cose": "Il pescato del Mincio portato in tavola dove il Mincio passa: è il pesce di cui il paese ha vissuto per secoli, e oggi si trova solo dove qualcuno lo cucina ancora.",
+      "dove": [
+        { "luogo": "agriturismo-germano-reale", "come": "Piatti mantovani e *pesce di fiume* nei menu di stagione, con formaggi, salumi, miele e olio dell'azienda." }
+      ]
+    },
+
+    {
+      "slug": "tortelli-di-zucca",
+      "nome": "Tortelli di zucca",
+      "voglie": ["mantovana"],
+      "occhiello": "Il primo piatto di Mantova",
+      "cose": "Pasta all'uovo ripiena di zucca e amaretti, servita al burro fuso e salvia. È il piatto della vigilia di Natale, e di tutto il resto dell'anno.",
+      "dove": [
+        { "luogo": "corte-mincio-osteria", "come": "*Tortelli di zucca* ripieni di zucca e amaretti, fra i primi." },
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Tortelli di zucca al burro fuso e salvia*, fra i primi della tradizione." },
+        { "luogo": "corte-panicella", "come": "Tortelli di zucca nel menu fisso della corte.", "fascia": "menu fisso 25 €" }
+      ]
+    },
+
+    {
+      "slug": "riso-alla-pilota",
+      "nome": "Riso alla pilota",
+      "voglie": ["mantovana", "scoperta"],
+      "occhiello": "Da provare almeno una volta",
+      "cose": "Riso cotto per assorbimento — l'acqua è misurata, non si scola niente — e condito con il pistùm, la carne di maiale macinata. Prende il nome dai *piloti*, gli operai che pilavano il riso nelle risaie della bassa.",
+      "dove": [
+        { "luogo": "corte-mincio-osteria", "come": "*Riso alla pilota* con carne di maiale, fra i primi." }
+      ]
+    },
+
+    {
+      "slug": "risotti",
+      "nome": "Risotti",
+      "voglie": ["mantovana"],
+      "cose": "Il riso è di casa: le risaie cominciano qui accanto, e il risotto è il piatto su cui ogni cucina del posto mette la propria firma.",
+      "dove": [
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Risotto alla Mantovana* fra i primi della tradizione." },
+        { "luogo": "opificio-alimentare", "come": "Risotto zucca e salsiccia, risotto ai funghi con formaggio del Garda.", "fascia": "30–40 €" },
+        { "luogo": "corte-panicella", "come": "Risotti di stagione nel menu della corte.", "fascia": "menu fisso 25 €" }
+      ]
+    },
+
+    {
+      "slug": "stracotto-d-asino",
+      "nome": "Maccheroni con lo stracotto d'asino",
+      "voglie": ["mantovana", "carne", "scoperta"],
+      "occhiello": "Da provare almeno una volta",
+      "cose": "Carne d'asino cotta per ore nel vino finché non si sfalda, e con quel sugo si condiscono i maccheroni all'uovo. È uno dei piatti più mantovani che ci siano, e uno di quelli che fuori di qui non si trovano quasi mai.",
+      "dove": [
+        { "luogo": "pizzeria-osteria-la-stella", "come": "*Maccheroncini con stracotto d'asino*: è il piatto più richiesto della casa.", "fascia": "25–35 €" },
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Maccheroni all'uovo con stracotto d'asino*, fra i primi della tradizione." }
+      ]
+    },
+
+    {
+      "slug": "capunsei",
+      "nome": "Capunsei",
+      "voglie": ["mantovana", "scoperta"],
+      "occhiello": "Da provare almeno una volta",
+      "cose": "Gnocchetti di pane raffermo grattugiato, grana, brodo e noce moscata — niente patate, niente farina — tirati a mano nella forma di un fusello e serviti con burro e salvia. Vengono dalle colline moreniche, appena a nord di qui.",
+      "dove": [
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Capunsei casalini*, dichiarati in carta come ricetta tipica delle Colline Moreniche." }
+      ]
+    },
+
+    {
+      "slug": "agnolini-e-tortellini",
+      "nome": "Agnolini e tortellini",
+      "voglie": ["mantovana"],
+      "cose": "La pasta ripiena delle feste: l'agnolino mantovano, e il tortellino che a Natale non manca su nessuna tavola.",
+      "dove": [
+        { "luogo": "ristorante-corte-catenaccio", "come": "*Agnolini al burro fuso e salvia*, fra i primi della tradizione." },
+        { "luogo": "agriturismo-germano-reale", "come": "Tortellini in brodo nei menu delle feste." }
+      ]
+    },
+
+    {
+      "slug": "carne-alla-griglia",
+      "nome": "Carne alla griglia e arrosti",
+      "voglie": ["carne"],
+      "cose": "Il fuoco vivo, il taglio grosso, la polenta accanto: quello che si mangia quando la voglia è di carne e basta.",
+      "dove": [
+        { "luogo": "opificio-alimentare", "come": "La griglia è il tratto della casa: il cuoco incrocia le tecniche di cottura sudamericane con i prodotti lombardi, spesso in menu a tema.", "fascia": "30–40 €" },
+        { "luogo": "corte-mincio-osteria", "come": "Costata di manzo alla griglia, cappone ripieno al forno, maccheroni con ragù di cervo, polenta con i porcini." }
+      ]
+    },
+
+    {
+      "slug": "salumi-e-formaggi",
+      "nome": "Salumi e formaggi del posto",
+      "voglie": ["carne", "mantovana", "aperitivo"],
+      "cose": "Il tagliere: salame mantovano, cotechino, i formaggi delle latterie qui attorno. Fa da antipasto, o da tutta la sera.",
+      "dove": [
+        { "luogo": "agriturismo-germano-reale", "come": "Formaggi, salumi, miele e olio *prodotti nell'azienda stessa*: qui il chilometro zero è letterale." },
+        { "luogo": "opificio-alimentare", "come": "Antipasto della casa e tagliere di salumi e formaggi.", "fascia": "30–40 €" },
+        { "luogo": "corte-panicella", "come": "Formaggi locali e cotechino nel menu della corte.", "fascia": "menu fisso 25 €" }
+      ]
+    },
+
+    {
+      "slug": "pizza",
+      "nome": "Pizza",
+      "voglie": ["pizza"],
+      "cose": "Quattro posti la fanno, e in quattro modi diversi: in osteria, sul fiume, da portare via, o senza glutine.",
+      "dove": [
+        { "luogo": "pizzeria-osteria-la-stella", "come": "Impasti seguiti da Roberto, istruttore della Nazionale Italiana Pizzaioli; ogni tanto anche serate di *pizza fritta*.", "fascia": "25–35 €" },
+        { "luogo": "corte-mincio-osteria", "come": "Pizze classiche, dalla marinara a quelle con il crudo di Parma DOP. Osteria e pizzeria in riva al Mincio." },
+        { "luogo": "pizzangolo", "come": "Pizza *d'asporto*, con consegna." },
+        { "luogo": "ristorante-corte-catenaccio", "come": "Ristorante e pizzeria; la cucina lavora anche *senza glutine*, vegano e vegetariano." }
+      ]
+    },
+
+    {
+      "slug": "gelato",
+      "nome": "Gelato artigianale",
+      "voglie": ["dolci", "veloce"],
+      "cose": "Il cono da mangiare seduti fuori, che d'estate lungo la Francesca è già mezzo motivo per fermarsi.",
+      "dove": [
+        { "luogo": "gelateria-2-0", "come": "Gelato artigianale, con posti a sedere all'aperto." }
+      ]
+    },
+
+    {
+      "slug": "dolci-della-casa",
+      "nome": "Dolci della casa",
+      "voglie": ["dolci"],
+      "cose": "Il dolce fatto in cucina la mattina stessa: quello che cambia col giorno e che sul menu, di solito, è scritto a mano.",
+      "dove": [
+        { "luogo": "corte-mincio-osteria", "come": "Il dolce della casa, in carta." },
+        { "luogo": "agriturismo-germano-reale", "come": "Dolci fatti in casa, serviti anche a colazione." },
+        { "luogo": "corte-panicella", "come": "Dolce compreso nel menu fisso.", "fascia": "menu fisso 25 €" }
+      ]
+    },
+
+    {
+      "slug": "aperitivo",
+      "nome": "Un aperitivo",
+      "voglie": ["aperitivo"],
+      "cose": "Non sempre si esce per mangiare. Cinque posti dove ci si siede e basta: due sul fiume, tre fra il centro e la Francesca.",
+      "dove": [
+        { "luogo": "coyotes-bar", "come": "Dehors esterno, locale accessibile. In centro, a due passi dalla piazza." },
+        { "luogo": "bottega-atipica", "come": "Bar in centro, in Via Gramsci." },
+        { "luogo": "ostello-del-mincio", "come": "Il bar dell'ostello, in riva al Mincio." },
+        { "luogo": "le-antiche-colonie", "come": "Pub, poco fuori dall'abitato." },
+        { "luogo": "bar-platano", "come": "Bar sulla Francesca Est, fuori dal paese." }
+      ]
+    },
+
+    {
+      "slug": "pranzo-veloce",
+      "nome": "Qualcosa al volo",
+      "voglie": ["veloce"],
+      "cose": "Mezz'ora e via: una pizza da portare via, un gelato, o la spesa dal panificio e dagli alimentari del paese.",
+      "dove": [
+        { "luogo": "pizzangolo", "come": "Pizza d'asporto con consegna." },
+        { "luogo": "ristorante-corte-catenaccio", "come": "Fa asporto, oltre al servizio in sala." },
+        { "luogo": "gelateria-2-0", "come": "Gelato artigianale, con tavolini fuori." }
+      ],
+      "vedi": [
+        { "href": "/attivita#negozi", "t": "Panifici e alimentari del paese" }
+      ]
+    },
+
+    {
+      "slug": "cena-speciale",
+      "nome": "Una cena speciale",
+      "voglie": ["speciale"],
+      "cose": "Quando la sera conta: una cascina restaurata sull'acqua, una corte dentro il Parco, o una carta dei vini da leggere con calma.",
+      "dove": [
+        { "luogo": "la-coccia-volante", "come": "Cascina restaurata in riva al Mincio, cucina di solo pesce e menu degustazione. Sala curata e pergolato all'aperto." },
+        { "luogo": "tesoro-living-resort", "come": "Antica corte di campagna restaurata dentro il Parco del Mincio: ristorante, camere e SPA.", "fascia": "circa 30 €" },
+        { "luogo": "pizzeria-osteria-la-stella", "come": "Osteria contemporanea con una cantina di oltre 160 etichette italiane.", "fascia": "25–35 €" }
+      ]
+    }
+  ]
+}

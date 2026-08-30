@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **154** in tutto.
+Elenco completo dei file da produrre: **153** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -135,7 +135,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `meridiane-a-muro.jpg` | Le meridiane a muro | Via Turati, Via Francesca, centro |
 | `capanno-birdwatching-via-porto.jpg` | Capanno per birdwatching | Via Porto |
 
-## Alimentari — 11
+## Alimentari — 10
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -149,7 +149,6 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/ins-mercato.jpg` | In's Mercato | 45.16872, 10.67776 |
 | `attivita/macelleria-mambrini.jpg` | Macelleria Mambrini | Via Filippo Turati 56 |
 | `attivita/copelli-formaggi.jpg` | Copelli Formaggi | Strada Francesca Est 137/139 |
-| `attivita/spaccio-formaggi-cm.jpg` | Spaccio Formaggi C.M. | Strada Francesca Est 174 |
 
 ## Negozi — 14
 
