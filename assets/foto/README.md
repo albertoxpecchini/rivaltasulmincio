@@ -199,8 +199,8 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/tesoro-living-resort.jpg` | Tesoro Living Resort | 45.18886, 10.67550 |
 | `attivita/ristorante-corte-catenaccio.jpg` | Ristorante Pizzeria «Corte Catenaccio» | Strada Francesca Est 109b |
 | `attivita/corte-mincio-osteria.jpg` | Corte Mincio Osteria con Pizzeria | Via Porto 43 |
-| `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | — |
-| `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | — |
+| `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | Strada Camignana 6 |
+| `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | Strada Pilone |
 
 ## Servizi — 11
 

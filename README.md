@@ -49,7 +49,7 @@ tema chiaro/scuro nativo.
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **933 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
-| **Luoghi censiti** | **127** | 55 luoghi + 72 attività in `_build/luoghi.json`, 86 con coordinate OSM |
+| **Luoghi censiti** | **127** | 55 luoghi + 72 attività in `_build/luoghi.json`, 92 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
 | **Numeri civici** | **177** su **21 vie** | mappati in OpenStreetMap, non un archivio anagrafico |
 | **Dossier sorgente** | **1.044 righe** Markdown | `data/rivalta-sul-mincio-dossier.md` |
@@ -719,7 +719,7 @@ mappa, le fotografie e le schede della pagina `/mappa`.
 }
 ```
 
-Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **86 voci su 127** hanno un
+Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **92 voci su 127** hanno un
 punto. Le altre sono aree, percorsi o cose diffuse — il fiume, le capezzagne, le meridiane — che un
 punto non ce l'hanno, e il cui collegamento ricade sulla ricerca per nome di OpenStreetMap.
 
