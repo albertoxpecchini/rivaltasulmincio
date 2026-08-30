@@ -49,7 +49,7 @@ tema chiaro/scuro nativo.
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **933 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
-| **Luoghi censiti** | **129** | 55 luoghi + 74 attività in `_build/luoghi.json`, 93 con coordinate OSM |
+| **Luoghi censiti** | **130** | 55 luoghi + 75 attività in `_build/luoghi.json`, 95 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
 | **Numeri civici** | **177** su **21 vie** | mappati in OpenStreetMap, non un archivio anagrafico |
 | **Dossier sorgente** | **1.044 righe** Markdown | `data/rivalta-sul-mincio-dossier.md` |
@@ -285,7 +285,7 @@ rivaltasulmincio/
 │   ├── foot.html               #   guscio: footer + script
 │   ├── <pagina>.body.html      #   il contenuto di ogni pagina (10 frammenti)
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
-│   ├── luoghi.json             #   il registro dei 129 luoghi: coordinate, foto, schede
+│   ├── luoghi.json             #   il registro dei 130 luoghi: coordinate, foto, schede
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 │   └── email/                  #   le due mail della Color Walk, sorgente
 │       ├── ricevuta-color-walk.html   #     a chi ha pagato
@@ -699,8 +699,8 @@ to create and approve pull requests».)
 
 ## 📍 Il registro dei luoghi
 
-**[`_build/luoghi.json`](_build/luoghi.json)** è l'anagrafe dei posti di cui il sito parla: **129
-voci**, 55 luoghi e 74 attività. Un file solo, perché le stesse informazioni servono a tre cose che
+**[`_build/luoghi.json`](_build/luoghi.json)** è l'anagrafe dei posti di cui il sito parla: **130
+voci**, 55 luoghi e 75 attività. Un file solo, perché le stesse informazioni servono a tre cose che
 altrimenti si scriverebbero tre volte e divergerebbero al primo cambiamento — i collegamenti alla
 mappa, le fotografie e le schede della pagina `/mappa`.
 
@@ -719,7 +719,7 @@ mappa, le fotografie e le schede della pagina `/mappa`.
 }
 ```
 
-Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **93 voci su 129** hanno un
+Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **95 voci su 130** hanno un
 punto. Le altre sono aree, percorsi o cose diffuse — il fiume, le capezzagne, le meridiane — che un
 punto non ce l'hanno, e il cui collegamento ricade sulla ricerca per nome di OpenStreetMap.
 
@@ -744,7 +744,7 @@ collegamento rotto scoperto in produzione costa più di un build che si ferma.
 Le fotografie si mettono in **`assets/foto/`** (le attività in `assets/foto/attivita/`) con
 **esattamente** il nome file scritto nel campo `foto` del registro, poi `node build.mjs`.
 
-Non serve toccare l'HTML: i segnaposto `{{foto:…}}` sono **già scritti** nelle pagine per tutte e 129
+Non serve toccare l'HTML: i segnaposto `{{foto:…}}` sono **già scritti** nelle pagine per tutte e 130
 le voci. Finché il jpg non c'è, il segnaposto non produce niente — nessun buco, nessuna immagine
 rotta. Il giorno che il file entra nella cartella, la figura compare da sé.
 
@@ -786,7 +786,7 @@ mostrare una mappa vuota a chi ha la linea lenta.
   controllo agisce sulla mappa senza che `mappa.js` ne sappia nulla.
 - **Movimento fermo rispettato:** con `html.rsm-still` o `prefers-reduced-motion` Leaflet nasce
   senza animazioni di zoom e dissolvenza.
-- **Senza JavaScript la pagina regge:** sotto la mappa c'è l'elenco completo dei 129 luoghi, ognuno
+- **Senza JavaScript la pagina regge:** sotto la mappa c'è l'elenco completo dei 130 luoghi, ognuno
   con il suo collegamento a OpenStreetMap.
 
 Le etichette italiane dei tipi OSM stanno in **[`_build/tipi.json`](_build/tipi.json)**, insieme al

@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **129** in tutto.
+Elenco completo dei file da produrre: **130** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -62,7 +62,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `campino-oratorio.jpg` | Campino Oratorio | Vicolo Gilberto Pagliari |
 | `area-gioco-via-madonnina.jpg` | Aree gioco di Via Madonnina | zona Via Madonnina |
 
-## Fiume e navigazione — 7
+## Fiume e navigazione — 8
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -73,6 +73,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `fiume-mincio.jpg` | Il fiume Mincio | — |
 | `valli-del-mincio.jpg` | Riserva Naturale Valli del Mincio | — |
 | `fior-di-loto-lago-superiore.jpg` | Fioritura del fior di loto | Lago Superiore |
+| `attivita/navigazione-mincio.jpg` | Navigazione Mincio | Via Porto 61 |
 
 ## Cultura — 4
 
@@ -87,8 +88,8 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
-| `scuola-infanzia-rosa-minelli.jpg` | Scuola dell'Infanzia «Rosa Minelli» | Via Tezzone 34 |
-| `scuola-primaria-guastalla.jpg` | Scuola Primaria «A. M. Guastalla» | Via Vittorina Gementi 1 |
+| `scuola-infanzia-rosa-minelli.jpg` | Scuola dell'Infanzia «Rosa Minelli» | Via Vittorina Gementi 1 |
+| `scuola-primaria-guastalla.jpg` | Scuola Primaria «Adriano e Michele Guastalla» | Via Tezzone 34 |
 
 ## Sport — 6
 
@@ -160,7 +161,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/malaguti-autoriparazioni.jpg` | Malaguti Luigi — autoriparazioni | Via Giuseppe Garibaldi 23 |
 | `attivita/borgoflora.jpg` | Borgoflora | Strada Camignana 19 |
 | `attivita/eurogiardini.jpg` | Eurogiardini | Strada Francesca Est 127/C |
-| `attivita/bosio-carrozzeria.jpg` | Bosio Giuseppe — carrozzeria | Strada Francesca Est |
+| `attivita/bosio-carrozzeria.jpg` | Bosio Giuseppe — carrozzeria | Strada Francesca Est 112 |
 
 ## Cura della persona — 5
 
