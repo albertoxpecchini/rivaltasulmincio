@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **110** in tutto.
+Elenco completo dei file da produrre: **111** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -215,10 +215,11 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/parcheggio-piazza-basile.jpg` | Parcheggio di Piazza Emanuele Basile | 45.17660, 10.67706 |
 | `attivita/torre-telecomunicazioni.jpg` | Torre di telecomunicazioni | 45.18056, 10.67688 |
 
-## Ricettività e associazioni — 3
+## Ricettività e associazioni — 4
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `attivita/b-and-b-rivalta-green-village.jpg` | B&B del Rivalta Green Village | Via Vedusino 5 |
 | `attivita/sede-pro-loco-canoa-point.jpg` | Pro Loco Rivalta APS / Canoa Point | Via Porto 31 |
+| `attivita/centro-sociale-pusiun-granda.jpg` | Centro Sociale «La Pusiun Granda» | Via Sette Frati 54 |
 | `attivita/waterways-mincio.jpg` | Waterways Mincio | — |
