@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **112** in tutto.
+Elenco completo dei file da produrre: **127** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -128,7 +128,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `meridiane-a-muro.jpg` | Le meridiane a muro | Via Turati, Via Francesca, centro |
 | `capanno-birdwatching-via-porto.jpg` | Capanno per birdwatching | Via Porto |
 
-## Alimentari — 8
+## Alimentari — 10
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -140,8 +140,10 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/panificio-marchini.jpg` | Panificio Marchini | Via Antonio Gramsci 35 |
 | `attivita/centro-alimenti-senza-glutine.jpg` | Centro Alimenti Senza Glutine | 45.17667, 10.67246 |
 | `attivita/ins-mercato.jpg` | In's Mercato | 45.16872, 10.67776 |
+| `attivita/macelleria-mambrini.jpg` | Macelleria Mambrini | Via Filippo Turati 56 |
+| `attivita/copelli-formaggi.jpg` | Copelli Formaggi | Strada Francesca Est 137/139 |
 
-## Negozi — 9
+## Negozi — 12
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -154,8 +156,11 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/bicimania.jpg` | Bicimania | 45.18049, 10.67171 |
 | `attivita/giannace.jpg` | Giannace | Via Filippo Turati 36 |
 | `attivita/autolavaggio-ranzato.jpg` | Autolavaggio Ranzato | 45.16885, 10.67679 |
+| `attivita/malaguti-autoriparazioni.jpg` | Malaguti Luigi — autoriparazioni | Via Giuseppe Garibaldi 23 |
+| `attivita/borgoflora.jpg` | Borgoflora | Strada Camignana 19 |
+| `attivita/eurogiardini.jpg` | Eurogiardini | Strada Francesca Est 127/C |
 
-## Cura della persona — 4
+## Cura della persona — 5
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -163,8 +168,9 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/non-solo-lady.jpg` | Non Solo Lady | Piazza Chiesa 1b |
 | `attivita/rivaroli-cristian.jpg` | Rivaroli Cristian | Via Antonio Gramsci |
 | `attivita/centro-estetico-athenas.jpg` | Centro Estetico Athenas | Via Antonio Gramsci 80 |
+| `attivita/studio-estetico-marmaris.jpg` | Studio Estetico Marmaris | Via Panicella 1C |
 
-## Uffici e studi — 4
+## Uffici e studi — 7
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -172,8 +178,11 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/marco-munari-consulente.jpg` | Marco Munari, consulente informatico | Via Filippo Turati 50 |
 | `attivita/pm-microwave.jpg` | PM Microwave | 45.17843, 10.67131 |
 | `attivita/studio-dentistico-sproccati.jpg` | Studio Dentistico dr. Sproccati | Via Filippo Turati 18 |
+| `attivita/studio-salardi.jpg` | Studio Salardi | Via Antonio Gramsci 78 |
+| `attivita/margot-manifacture.jpg` | Margot Manifacture | Piazza Silvio Arrivabene 7 |
+| `attivita/officina-colore-naturale.jpg` | Officina del Colore Naturale | Via Papa Giovanni Paolo II 17 |
 
-## Locali e ristoranti — 12
+## Locali e ristoranti — 15
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -189,8 +198,11 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/gelateria-2-0.jpg` | Gelateria 2.0 | 45.16937, 10.67739 |
 | `attivita/tesoro-living-resort.jpg` | Tesoro Living Resort | 45.18886, 10.67550 |
 | `attivita/ristorante-corte-catenaccio.jpg` | Ristorante Pizzeria «Corte Catenaccio» | Strada Francesca Est 109b |
+| `attivita/corte-mincio-osteria.jpg` | Corte Mincio Osteria con Pizzeria | Via Porto 43 |
+| `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | — |
+| `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | — |
 
-## Servizi — 10
+## Servizi — 11
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -204,6 +216,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/centro-raccolta-fossato.jpg` | Centro di raccolta di Fossato | Strada Fossato, Rodigo |
 | `attivita/distributore-eni.jpg` | Distributore Eni | Strada Francesca Est 166 |
 | `attivita/colonnine-enel-x.jpg` | Colonnine di ricarica Enel X | 45.17674, 10.67648 |
+| `attivita/studi-medici-belvedere.jpg` | Studi Medici | Via Belvedere 1A |
 
 ## Mercato e mobilità — 5
 
@@ -215,7 +228,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/parcheggio-piazza-basile.jpg` | Parcheggio di Piazza Emanuele Basile | 45.17660, 10.67706 |
 | `attivita/torre-telecomunicazioni.jpg` | Torre di telecomunicazioni | 45.18056, 10.67688 |
 
-## Ricettività e associazioni — 5
+## Ricettività e associazioni — 7
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -223,4 +236,6 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/sede-pro-loco-canoa-point.jpg` | Pro Loco Rivalta APS / Canoa Point | Via Porto 31 |
 | `attivita/centro-sociale-pusiun-granda.jpg` | Centro Sociale «La Pusiun Granda» | Via Sette Frati 58 |
 | `attivita/centro-ter.jpg` | Centro Ter — Centro Terza Età | Via Sette Frati 58 |
+| `attivita/b-and-b-un-passo-dal-fiume.jpg` | B&B A Un Passo Dal Fiume | Via Antonio Gramsci 51 |
+| `attivita/b-and-b-canossa.jpg` | B&B Canossa | Via Matilde di Canossa 64 |
 | `attivita/waterways-mincio.jpg` | Waterways Mincio | — |
