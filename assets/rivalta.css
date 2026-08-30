@@ -1364,15 +1364,19 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: inline-flex; }
 }
 
-/* ── La decima voce ───────────────────────────────────────────────────────
+/* ── L'undicesima voce ───────────────────────────────────────────────────
    sb.css fa comparire la fila di voci a 1080px, misura tarata su nove. Con
-   /storia sono dieci, e a quella larghezza l'ultima finirebbe sotto la
-   ricerca. Invece di accorciare le etichette — che sono i nomi delle pagine,
-   non didascalie — si sposta il cambio a 1160px: nella fascia in mezzo
-   restano l'hamburger e la ricerca in forma d'icona, esattamente come sotto
-   i 1080. Le regole di sb.css non si toccano: sono un estratto fedele della
-   fonte, e questo è un vincolo di questo sito soltanto. */
-@media (min-width: 1080px) and (max-width: 1159.98px) {
+   /storia erano dieci e il cambio si era già spostato a 1160px; con
+   /mangiare sono undici, e undici a 1160px non ci stanno: 1280px. Invece di
+   accorciare le etichette — che sono i nomi delle pagine, non didascalie —
+   nella fascia in mezzo restano l'hamburger e la ricerca in forma d'icona,
+   esattamente come sotto i 1080. Le regole di sb.css non si toccano: sono un
+   estratto fedele della fonte, e questo è un vincolo di questo sito soltanto.
+
+   La stessa misura è scritta una seconda volta in rivalta.js, dove il foglio
+   del menu si richiude tornando al layout largo: se si sposta qui, si sposta
+   anche lì. */
+@media (min-width: 1080px) and (max-width: 1279.98px) {
   .sb-nav-links { display: none; }
   .sb-burger[data-menu-toggle] { display: inline-flex; }
   .sb-riv-search-open.sb-ready {
@@ -1655,4 +1659,156 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 @keyframes sb-riv-cerca-in {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: none; }
+}
+
+/* ── «Cosa vuoi mangiare?» ────────────────────────────────────────────────
+   /mangiare capovolge /attivita: là c'è l'elenco dei locali, qui si parte
+   dalla voglia e il locale arriva in fondo alla scheda, dopo aver detto che
+   cos'è il piatto. Niente colore nuovo per distinguere i tasti accesi da
+   quelli spenti — il testo si accende e il resto resta muto, come per i
+   filtri della mappa, di cui questi tasti sono i fratelli. */
+.sb-riv-mang-voglie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+.sb-riv-mang-voglia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.85rem;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), var(--sb-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  box-shadow: inset 0 1px 0 var(--sb-glass-spec);
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--sb-fg-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.sb-riv-mang-voglia:hover { border-color: var(--sb-border-stronger); color: var(--sb-fg-light); }
+.sb-riv-mang-voglia:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
+.sb-riv-mang-voglia[aria-pressed="true"] {
+  color: var(--sb-fg);
+  border-color: var(--sb-border-stronger);
+  background: var(--sb-shape-edge), var(--sb-surface-200);
+}
+.sb-riv-mang-voglia-c {
+  font-size: 0.75rem;
+  color: var(--sb-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.sb-riv-mang-voglia[aria-pressed="true"] .sb-riv-mang-voglia-c { color: var(--sb-fg-light); }
+
+/* Due colonne da 1024px in su. align-items:start perché le schede hanno
+   altezze molto diverse — un piatto con un locale e uno con cinque — e
+   stirarle alla più alta lascerebbe mezza scheda di vuoto. */
+.sb-riv-mang-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+@media (min-width: 1024px) { .sb-riv-mang-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.sb-riv-mang-piatto { scroll-margin-top: 84px; }
+.sb-riv-mang-pad { padding: 1.2rem 1.3rem 1.3rem; }
+.sb-riv-mang-occhiello {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+}
+.sb-riv-mang-pad h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--sb-fg);
+}
+.sb-riv-mang-cose,
+.sb-riv-mang-perche { max-width: none; font-size: 0.92rem; }
+
+/* «Quando» è una riga sola con l'etichetta a sinistra: la stagionalità è
+   l'informazione che fa cambiare programma, e sepolta in un paragrafo non
+   si vede. */
+.sb-riv-mang-quando {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-mang-quando > span:first-child {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+  padding-top: 0.22rem;
+}
+
+.sb-riv-mang-dovet {
+  margin: 1.1rem 0 0.7rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--sb-border);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-mang-dove {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sb-riv-mang-locale > p { margin: 0; }
+.sb-riv-mang-locale-t {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+  font-size: 0.92rem;
+  color: var(--sb-fg);
+}
+.sb-riv-mang-locale-t strong { font-weight: 600; }
+/* La cifra è indicativa e lo deve sembrare: sta in tono muto accanto al nome,
+   non in evidenza come farebbe un listino. */
+.sb-riv-mang-fascia {
+  font-size: 0.75rem;
+  color: var(--sb-fg-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sb-riv-mang-locale-d { margin: 0.15rem 0 0.35rem; font-size: 0.8rem; }
+.sb-riv-mang-come {
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-mang-come strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-mang-locale .sb-link { margin-top: 0.3rem; font-size: 0.8rem; }
+
+.sb-riv-mang-vedi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  margin: 1.1rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--sb-border);
+  font-size: 0.82rem;
 }

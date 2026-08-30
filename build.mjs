@@ -289,6 +289,108 @@ ${voci}
     .join("\n");
 };
 
+/* ── Il gusto — «cosa vuoi mangiare?» ─────────────────────────────────────
+   /mangiare non è l'elenco dei ristoranti: quello è /attivita. Qui si parte
+   dalla domanda che uno si fa davvero prima di uscire — «cosa mi va?» — e si
+   arriva al locale come ultima riga, non come prima.
+
+   {{VOGLIE}} diventa la fila dei tasti più le schede dei piatti. Il contenuto
+   sta in _build/gusto.json; i locali sotto ogni piatto sono slug del registro
+   dei luoghi, quindi nome, indirizzo, mappa e scheda arrivano da lì e restano
+   un posto solo da correggere il giorno che un locale cambia indirizzo.
+
+   Senza JavaScript i tasti non filtrano ma tutte le schede sono già in
+   pagina: la pagina resta intera, si legge solo tutta invece che a pezzi. */
+const enfasi = (s) =>
+  escape(s).replace(/\*([^*]+)\*/g, (_, t) => `<strong>${t}</strong>`);
+
+const renderVoglie = () => {
+  const { voglie, piatti } = JSON.parse(readFileSync("_build/gusto.json", "utf8"));
+
+  const idVoglie = new Set(voglie.map((v) => v.id));
+  for (const p of piatti) {
+    for (const v of p.voglie) {
+      if (!idVoglie.has(v)) throw new Error(`gusto.json — il piatto "${p.slug}" dichiara la voglia "${v}", che non esiste`);
+    }
+    for (const d of p.dove) {
+      if (!perSlug.has(d.luogo)) throw new Error(`gusto.json — "${p.slug}" manda a "${d.luogo}", slug assente da _build/luoghi.json`);
+    }
+  }
+  const conta = (id) => piatti.filter((p) => p.voglie.includes(id)).length;
+  for (const v of voglie) {
+    if (!conta(v.id)) throw new Error(`gusto.json — la voglia "${v.id}" non ha nemmeno un piatto: un tasto che apre il vuoto`);
+  }
+
+  const tasti = [
+    `          <button class="sb-riv-mang-voglia" type="button" id="voglia-tutto" data-voglia="tutto" aria-pressed="true">
+            <span class="sb-riv-mang-voglia-n">Tutto</span>
+            <span class="sb-riv-mang-voglia-c">${piatti.length}</span>
+          </button>`,
+    ...voglie.map(
+      (v) => `          <button class="sb-riv-mang-voglia" type="button" id="voglia-${v.id}" data-voglia="${v.id}" aria-pressed="false" title="${escape(v.d)}">
+            <span class="sb-riv-mang-voglia-n">${escape(v.n)}</span>
+            <span class="sb-riv-mang-voglia-c">${conta(v.id)}</span>
+          </button>`
+    ),
+  ].join("\n");
+
+  /* Una riga per locale: chi è, dove sta (il pallino apre OpenStreetMap come
+     ovunque nel sito), cosa ne fa di questo piatto, e quanto si spende — se
+     il dato esiste, e detto per quello che è. */
+  const dove = (d) => {
+    const l = perSlug.get(d.luogo);
+    const indirizzo = l.indirizzo
+      ? geoLink(osmUrl(l), l.indirizzo, l.nome)
+      : geoLink(osmUrl(l), l.dist_m != null ? `~${l.dist_m} m dal centro` : "apri nella mappa", l.nome);
+    const fascia = d.fascia
+      ? `<span class="sb-riv-mang-fascia" title="spesa indicativa a persona, dichiarata dai portali di prenotazione">${escape(d.fascia)}</span>`
+      : "";
+    return `            <li class="sb-riv-mang-locale">
+              <p class="sb-riv-mang-locale-t"><strong>${escape(l.nome)}</strong>${fascia}</p>
+              <p class="sb-riv-mang-locale-d">${indirizzo}</p>
+              <p class="sb-riv-mang-come">${enfasi(d.come)}</p>
+              <a class="sb-link" href="${escape(l.pagina)}">Contatti e orari</a>
+            </li>`;
+  };
+
+  const schede = piatti
+    .map((p) => {
+      const occhiello = p.occhiello
+        ? `\n        <span class="sb-riv-mang-occhiello">${escape(p.occhiello)}</span>`
+        : "";
+      const perche = p.perche ? `\n        <p class="sb-riv-p sb-riv-mang-perche">${enfasi(p.perche)}</p>` : "";
+      const quando = p.quando
+        ? `\n        <p class="sb-riv-mang-quando"><span>Quando</span>${enfasi(p.quando)}</p>`
+        : "";
+      const vedi = p.vedi
+        ? `\n        <p class="sb-riv-mang-vedi">${p.vedi
+            .map((v) => `<a class="sb-link" href="${escape(v.href)}">${escape(v.t)}</a>`)
+            .join("")}</p>`
+        : "";
+      return `      <article class="sb-panel sb-riv-mang-piatto" id="${p.slug}" data-voglie="${p.voglie.join(" ")}">
+        <div class="sb-panel-inner sb-riv-mang-pad">${occhiello}
+        <h3>${escape(p.nome)}</h3>
+        <p class="sb-riv-p sb-riv-mang-cose">${enfasi(p.cose)}</p>${perche}${quando}
+        <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
+        <ul class="sb-riv-mang-dove">
+${p.dove.map(dove).join("\n")}
+        </ul>${vedi}
+        </div>
+      </article>`;
+    })
+    .join("\n");
+
+  return `<div class="sb-riv-mang">
+        <div class="sb-riv-mang-voglie" role="group" aria-label="Cosa vuoi mangiare">
+${tasti}
+        </div>
+        <p class="sb-riv-cap" id="mang-conteggio">${piatti.length} cose da mangiare, in ${new Set(piatti.flatMap((p) => p.dove.map((d) => d.luogo))).size} locali. Senza JavaScript i tasti non filtrano: l'elenco resta qui sotto per intero.</p>
+        <div class="sb-riv-mang-lista">
+${schede}
+        </div>
+      </div>`;
+};
+
 /* ── La stazione in diretta ───────────────────────────────────────────────
    {{METEO}} diventa i riquadri che assets/meteo.js riempie ogni minuto con la
    lettura vera della stazione di Rivalta. Qui c'è solo la forma: quali misure
@@ -834,6 +936,7 @@ for (const file of bodies) {
       .trim()
       .replace("{{NEWS}}", renderNews)
       .replace("{{MAPPA}}", renderMappa)
+      .replace("{{VOGLIE}}", renderVoglie)
       .replace("{{LUOGHI}}", renderLuoghi)
       .replace("{{METEO_ORA}}", renderMeteoOra)
       .replace("{{METEO}}", renderMeteo)
@@ -863,9 +966,14 @@ for (const file of bodies) {
      è lo stesso file e sa riempirle tutte e due. */
   const conMeteo = src.includes("{{METEO}}") || src.includes("{{METEO_ORA}}");
 
+  /* E i tasti delle voglie di /mangiare: novanta righe di script che nessuna
+     altra pagina userebbe, quindi le scarica solo quella. */
+  const conGusto = src.includes("{{VOGLIE}}");
+
   const scriptExtra =
     (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
-    (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "");
+    (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
+    (conGusto ? `<script src="assets/gusto.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:

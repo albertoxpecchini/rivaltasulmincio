@@ -4,7 +4,7 @@
 
 **Sito statico, zero dipendenze** — il dossier completo di **Rivalta sul Mincio**
 (frazione del Comune di Rodigo, provincia di Mantova): anagrafica, servizi, attività,
-comunità, viabilità, natura, storia, eventi e una mappa interattiva. Undici pagine di HTML
+comunità, viabilità, natura, storia, eventi, gastronomia e una mappa interattiva. Dodici pagine di HTML
 puro, generate da un assemblatore di 260 righe, vestite con il design system **`.sb-`** di
 [albertopecchini.it](https://albertopecchini.it) — palette neutra, un solo azzurro,
 tema chiaro/scuro nativo.
@@ -42,13 +42,14 @@ tema chiaro/scuro nativo.
 
 | Dominio | Valore | Dettaglio |
 | :--- | :--- | :--- |
-| **Pagine pubblicate** | **13** | HTML **generato**, indirizzi senza estensione |
-| **Sorgenti in `_build/`** | 13 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **2.516 righe CSS** | `sb.css` (998) · `rivalta.css` (1.332) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.488 righe**, 6 file | `rivalta.js` (115) · `controlbar.js` (364) · `glass.js` (328) · `mappa.js` (200) · `meteo.js` (214) · `ricerca.js` (267) |
+| **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
+| **Sorgenti in `_build/`** | 15 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
+| **Design system** | **2.998 righe CSS** | `sb.css` (998) · `rivalta.css` (1.814) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **1.578 righe**, 7 file | `rivalta.js` (115) · `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `meteo.js` (214) · `mappa.js` (200) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
-| **Build** | **933 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Build** | **1.282 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
+| **Cose da mangiare** | **18** | 9 voglie, 18 piatti e 15 locali in `_build/gusto.json` |
 | **Luoghi censiti** | **152** | 65 luoghi + 87 attività in `_build/luoghi.json`, 123 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
 | **Numeri civici** | **177** su **21 vie** | mappati in OpenStreetMap, non un archivio anagrafico |
@@ -73,14 +74,14 @@ indicizzato non si rompono. I link interni si scrivono root-assoluti (`/paese`, 
 
 ### Modificare il sito
 
-Le undici pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
+Le dodici pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
 
 ```bash
 node build.mjs
 ```
 
-Undici pagine condividono la stessa nav e lo stesso footer. Tenerne undici copie a mano significa che
-prima o poi dieci sono aggiornate e una no, ed è sempre quella che qualcuno apre.
+Dodici pagine condividono la stessa nav e lo stesso footer. Tenerne dodici copie a mano significa che
+prima o poi undici sono aggiornate e una no, ed è sempre quella che qualcuno apre.
 
 Titolo e descrizione di ogni pagina stanno in testa al rispettivo frammento, come due commenti —
 così il contenuto e i suoi metadati non possono separarsi:
@@ -95,7 +96,7 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 
 ---
 
-## 🧭 Le undici pagine
+## 🧭 Le dodici pagine
 
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
@@ -107,6 +108,7 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | `/storia` | `storia.body.html` | 0.7 | Ripalta matildica, il castello e l'assedio del 1091, la nascita della valle, i mestieri del fiume |
 | `/servizi` | `servizi.body.html` | 0.8 | Comune e sportelli, farmacia, banche, calendario rifiuti, fibra e 5G |
 | `/attivita` | `attivita.body.html` | 0.8 | Alimentari, tabaccheria, bar e ristoranti, ricettività, mercato, aziende |
+| `/mangiare` | `mangiare.body.html` | 0.9 | **«Cosa vuoi mangiare?»** — si sceglie la voglia, non il locale: 18 piatti, e chi li fa |
 | `/comunita` | `comunita.body.html` | 0.7 | Scuole, Museo Etnografico dei Mestieri del Fiume, biblioteca, Pro Loco, sport |
 | `/muoversi` | `muoversi.body.html` | 0.7 | Le 74 vie con fondo e limiti, dossi, 106 incroci, parcheggi, linea APAM 13 |
 | `/natura` | `natura.body.html` | 0.7 | Parchi, Riserva Naturale Valli del Mincio, uso del suolo, ciclabili, navigazione |
@@ -258,7 +260,7 @@ cambiando tema. Con `prefers-reduced-motion` l'onda non parte: il tema cambia e 
 
 ```
 rivaltasulmincio/
-├── index.html … mappa.html     # le 10 pagine, GENERATE — non modificarle a mano
+├── index.html … mappa.html     # le pagine, GENERATE — non modificarle a mano
 ├── assets/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
 │   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, testata, ricerca)
@@ -268,6 +270,7 @@ rivaltasulmincio/
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
+│   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
 │   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro — fa anche da marchio in testata
 │   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
@@ -283,9 +286,10 @@ rivaltasulmincio/
 ├── _build/                     # l'officina: NON va online (.vercelignore)
 │   ├── head.html               #   guscio: <head> + nav, con {{TITLE}} e {{DESC}}
 │   ├── foot.html               #   guscio: footer + script
-│   ├── <pagina>.body.html      #   il contenuto di ogni pagina (10 frammenti)
+│   ├── <pagina>.body.html      #   il contenuto di ogni pagina (15 frammenti)
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
 │   ├── luoghi.json             #   il registro dei 152 luoghi: coordinate, foto, schede
+│   ├── gusto.json              #   il registro del gusto: voglie, piatti e chi li fa (/mangiare)
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 │   └── email/                  #   le due mail della Color Walk, sorgente
 │       ├── ricevuta-color-walk.html   #     a chi ha pagato
@@ -736,6 +740,58 @@ Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
 
 Uno slug che non esiste **fa fallire il build**, come già succede a un frammento senza titolo: un
 collegamento rotto scoperto in produzione costa più di un build che si ferma.
+
+---
+
+## 🍽 Il registro del gusto
+
+**[`_build/gusto.json`](_build/gusto.json)** è la sorgente di `/mangiare`, la pagina che capovolge
+`/attivita`: là c'è l'elenco dei locali, qui si parte dalla domanda che uno si fa davvero prima di
+uscire di casa — **«cosa mi va?»** — e il locale arriva in fondo alla scheda, dopo aver detto che
+cos'è il piatto e perché è di qui.
+
+Il file contiene **9 voglie** (i tasti in cima alla pagina) e **18 piatti**. Ogni piatto dichiara a
+quali voglie risponde e, sotto, chi lo fa:
+
+```json
+{
+  "slug": "luccio-alla-rivaltese",
+  "nome": "Luccio alla Rivaltese",
+  "voglie": ["pesce", "mantovana", "scoperta"],
+  "occhiello": "Il piatto che porta il nome del paese",
+  "cose": "Luccio del Mincio lessato dieci-dodici minuti… *In salsa*: …",
+  "perche": "Non è un piatto mantovano che a Rivalta si fa anche: è un piatto *di* Rivalta…",
+  "quando": "Il luccio in bianco è tradizionalmente il piatto della vigilia di Pasqua…",
+  "dove": [
+    { "luogo": "ristorante-corte-catenaccio", "come": "*Luccio in salsa alla rivaltese con polenta abbrustolita*, in carta fra gli antipasti di pesce." }
+  ]
+}
+```
+
+`luogo` è uno **slug del registro dei luoghi**: nome, indirizzo, collegamento a OpenStreetMap e
+rimando alla scheda arrivano da lì, esattamente come per `{{luogo:…}}`. Un locale che cambia
+indirizzo si corregge in un posto solo. Uno slug che non esiste, una voglia che nessun piatto
+nomina o una voglia dichiarata da un piatto e non esistente **fermano il build**: un tasto che apre
+il vuoto è peggio di un tasto che non c'è.
+
+In `cose`, `perche`, `quando` e `come` un `*asterisco per parte*` diventa grassetto. È l'unico
+markup ammesso: tutto il resto è testo, e viene sfuggito.
+
+### La regola che tiene in piedi la pagina
+
+Un locale compare sotto un piatto **solo se quel piatto risulta da una fonte** — la carta del
+locale, il suo sito, o l'ente che lo censisce. Non si deduce dalla categoria: «è un ristorante di
+pesce, quindi avrà il luccio» qui non basta. Un elenco che indovina è peggio di un elenco corto, e
+qui l'errore lo pagherebbe un ristoratore vero.
+
+Il campo `fascia` è la **spesa indicativa a persona dichiarata dai portali di prenotazione**, non un
+listino: sta nel file perché è la seconda domanda che uno si fa, ed è marcata come indicativa
+dovunque compaia. Carte, prezzi e giorni di chiusura cambiano senza avvisare nessuno — è la parte
+del sito che invecchia più in fretta.
+
+`{{VOGLIE}}` nel frammento diventa la fila dei tasti più le schede. I tasti li filtra
+[`assets/gusto.js`](assets/gusto.js), che la pagina scarica solo perché il segnaposto c'è: senza
+JavaScript le schede sono comunque tutte in pagina, si legge tutto invece che a pezzi.
 
 ---
 
