@@ -105,7 +105,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `campo-calcetto.jpg` | Campo da calcetto | zona Via Giacomo Brodolini |
 | `campo-tamburello.jpg` | Campo da tamburello | zona Via Madonnina |
 | `arcieri-gonzaga-campo-tiro.jpg` | Arcieri Gonzaga — campo di tiro con l'arco | Via Pilota |
-| `rivalta-green-village.jpg` | Rivalta Green Village | Via Vedusino 5 |
+| `rivalta-green-village.jpg` | Rivalta Green Village | Strada Vedusino 5 |
 
 ## Piazze e vie — 6
 
@@ -264,7 +264,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
-| `attivita/b-and-b-rivalta-green-village.jpg` | B&B del Rivalta Green Village | Via Vedusino 5 |
+| `attivita/b-and-b-rivalta-green-village.jpg` | B&B del Rivalta Green Village | Strada Vedusino 5 |
 | `attivita/sede-pro-loco-canoa-point.jpg` | Pro Loco Rivalta APS / Canoa Point | Via Porto 31 |
 | `attivita/centro-sociale-pusiun-granda.jpg` | Centro Sociale «La Pusiun Granda» | Via Sette Frati 58 |
 | `attivita/centro-ter.jpg` | Centro Ter — Centro Terza Età | Via Sette Frati 58 |
