@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **139** in tutto.
+Elenco completo dei file da produrre: **154** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -43,14 +43,16 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `chiesa-canova.jpg` | Chiesa di Canova | località Canova — ~1,66 km |
 | `cimitero-rivalta.jpg` | Cimitero di Rivalta sul Mincio | — |
 
-## Corti e centro storico — 2
+## Corti e centro storico — 4
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `corte-arrivabene.jpg` | Corte Arrivabene | zona Via Giovanni Arrivabene |
 | `via-porto-centro-storico.jpg` | Via Porto e il centro storico | Via Porto |
+| `villa-arrivabene.jpg` | Villa Arrivabene | 576 m dal centro |
+| `la-dana.jpg` | La Dana | 231 m dal centro |
 
-## Parchi e verde — 7
+## Parchi e verde — 8
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -61,8 +63,9 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `area-verde-via-garibaldi.jpg` | Area verde di Via Garibaldi | Via Giuseppe Garibaldi — 49 m dal centro |
 | `campino-oratorio.jpg` | Campino Oratorio | Vicolo Gilberto Pagliari |
 | `area-gioco-via-madonnina.jpg` | Aree gioco di Via Madonnina | zona Via Madonnina |
+| `boschetto-della-chiesa.jpg` | Boschetto della Chiesa | dietro Piazza Chiesa |
 
-## Fiume e navigazione — 8
+## Fiume e navigazione — 9
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -74,8 +77,9 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `valli-del-mincio.jpg` | Riserva Naturale Valli del Mincio | — |
 | `fior-di-loto-lago-superiore.jpg` | Fioritura del fior di loto | Lago Superiore |
 | `attivita/navigazione-mincio.jpg` | Navigazione Mincio | Via Porto 61 |
+| `cavana.jpg` | La Cavana | 422 m dal centro |
 
-## Cultura — 4
+## Cultura — 5
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -83,13 +87,15 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `centro-visita-parco-mincio.jpg` | Centro Visita del Parco Regionale del Mincio | Via Porto 31 |
 | `biblioteca-pietro-morelli.jpg` | Biblioteca Comunale «Dr. Pietro Morelli» | Via Porto 31 |
 | `museo-diffuso-pannelli.jpg` | Museo Diffuso di Rivalta sul Mincio | percorso in paese |
+| `casetta-dei-libri.jpg` | Casetta dei Libri | zona Piazza Chiesa |
 
-## Scuole — 2
+## Scuole — 3
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `scuola-infanzia-rosa-minelli.jpg` | Scuola dell'Infanzia «Rosa Minelli» | Via Vittorina Gementi 1 |
 | `scuola-primaria-guastalla.jpg` | Scuola Primaria «Adriano e Michele Guastalla» | Via Tezzone 34 |
+| `asilo-nido-il-dono.jpg` | Asilo Nido «Il Dono» | Via Vittorina Gementi |
 
 ## Sport — 6
 
@@ -145,7 +151,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/copelli-formaggi.jpg` | Copelli Formaggi | Strada Francesca Est 137/139 |
 | `attivita/spaccio-formaggi-cm.jpg` | Spaccio Formaggi C.M. | Strada Francesca Est 174 |
 
-## Negozi — 12
+## Negozi — 14
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -158,6 +164,8 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/bicimania.jpg` | Bicimania | 45.18049, 10.67171 |
 | `attivita/giannace.jpg` | Giannace | Via Filippo Turati 36 |
 | `attivita/autolavaggio-ranzato.jpg` | Autolavaggio Ranzato | 45.16885, 10.67679 |
+| `attivita/ape-maglia.jpg` | Ape Maglia | Via Filippo Turati 1 |
+| `attivita/le-terre-di-flo.jpg` | Le Terre di Flo | centro paese — 58 m |
 | `attivita/borgoflora.jpg` | Borgoflora | Strada Camignana 19 |
 | `attivita/eurogiardini.jpg` | Eurogiardini | Strada Francesca Est 127/C |
 | `attivita/bosio-carrozzeria.jpg` | Bosio Giuseppe — carrozzeria | Strada Francesca Est 112 |
@@ -184,7 +192,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/margot-manifacture.jpg` | Margot Manifacture | Piazza Silvio Arrivabene 7 |
 | `attivita/officina-colore-naturale.jpg` | Officina del Colore Naturale | Via Papa Giovanni Paolo II 17 |
 
-## Locali e ristoranti — 15
+## Locali e ristoranti — 16
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -198,13 +206,14 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/la-coccia-volante.jpg` | La Coccia Volante | 45.17489, 10.67017 |
 | `attivita/le-antiche-colonie.jpg` | Le Antiche Colonie | 45.17534, 10.67577 |
 | `attivita/gelateria-2-0.jpg` | Gelateria 2.0 | 45.16937, 10.67739 |
+| `attivita/gelateria-mon-amour.jpg` | Gelateria Mon Amour | Via Tezzone 13 |
 | `attivita/tesoro-living-resort.jpg` | Tesoro Living Resort | 45.18886, 10.67550 |
 | `attivita/ristorante-corte-catenaccio.jpg` | Ristorante Pizzeria «Corte Catenaccio» | Strada Francesca Est 109b |
 | `attivita/corte-mincio-osteria.jpg` | Corte Mincio Osteria con Pizzeria | Via Porto 43 |
 | `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | Strada Camignana 6 |
 | `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | Strada Pilone |
 
-## Servizi — 11
+## Servizi — 12
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -218,6 +227,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/centro-raccolta-fossato.jpg` | Centro di raccolta di Fossato | Strada Fossato, Rodigo |
 | `attivita/distributore-eni.jpg` | Distributore Eni | Strada Francesca Est 166 |
 | `attivita/colonnine-enel-x.jpg` | Colonnine di ricarica Enel X | 45.17674, 10.67648 |
+| `attivita/ambulatorio-veterinario-bonazzi.jpg` | Ambulatorio Veterinario dott. Bonazzi Luciano | Via Filippo Turati 36 |
 | `attivita/studi-medici-belvedere.jpg` | Studi Medici | Via Belvedere 1A |
 
 ## Mercato e mobilità — 5
@@ -229,6 +239,16 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/parcheggio-piazza-milite-ignoto.jpg` | Parcheggio di Piazza Milite Ignoto | 45.18121, 10.67719 |
 | `attivita/parcheggio-piazza-basile.jpg` | Parcheggio di Piazza Emanuele Basile | 45.17660, 10.67706 |
 | `attivita/torre-telecomunicazioni.jpg` | Torre di telecomunicazioni | 45.18056, 10.67688 |
+
+## Fossi e acque minori — 5
+
+| File | Luogo | Dove |
+| :--- | :--- | :--- |
+| `fosso-bernardi.jpg` | Fosso Bernardi | 473 m dal centro |
+| `fossa-din-mes.jpg` | Fossa d'in mes | 487 m dal centro |
+| `fosso-davanti-al-porto.jpg` | Fosso davanti al porto | 580 m dal centro |
+| `fosso-scudler.jpg` | Fosso scudler | 728 m dal centro |
+| `fossa-del-gioco.jpg` | Fossa del gioco | 790 m dal centro |
 
 ## Aziende — 7
 
