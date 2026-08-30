@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **130** in tutto.
+Elenco completo dei file da produrre: **133** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -231,7 +231,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/parcheggio-piazza-basile.jpg` | Parcheggio di Piazza Emanuele Basile | 45.17660, 10.67706 |
 | `attivita/torre-telecomunicazioni.jpg` | Torre di telecomunicazioni | 45.18056, 10.67688 |
 
-## Ricettività e associazioni — 7
+## Ricettività e associazioni — 10
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -241,4 +241,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/centro-ter.jpg` | Centro Ter — Centro Terza Età | Via Sette Frati 58 |
 | `attivita/b-and-b-un-passo-dal-fiume.jpg` | B&B A Un Passo Dal Fiume | Via Antonio Gramsci 51 |
 | `attivita/b-and-b-canossa.jpg` | B&B Canossa | Via Matilde di Canossa 64 |
+| `attivita/avis-rivalta.jpg` | AVIS Rivalta sul Mincio | Via Sette Frati 13 |
+| `attivita/croce-rossa-via-sette-frati.jpg` | Croce Rossa Italiana — punto di Rivalta | Via Sette Frati 15 |
+| `attivita/associazione-il-germoglio.jpg` | Associazione «Il Germoglio» ETS | Via Porto 1 |
 | `attivita/waterways-mincio.jpg` | Waterways Mincio | — |
