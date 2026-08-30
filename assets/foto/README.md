@@ -198,7 +198,6 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/bottega-atipica.jpg` | Bottega Atipica | Via Antonio Gramsci 1 |
 | `attivita/bar-ostello-il-faro.jpg` | Bar e Ostello Il Faro | Via Porto 23 |
 | `attivita/bar-platano.jpg` | Bar Platano | Strada Francesca Est 162 |
-| `attivita/rivalta-green-village.jpg` | Rivalta Green Village | Strada Vedusino 5 |
 | `attivita/pizzeria-osteria-la-stella.jpg` | Pizzeria - Osteria «La Stella» | Via Filippo Turati 6 |
 | `attivita/opificio-alimentare.jpg` | Opificio Alimentare | Via Francesca 42 |
 | `attivita/pizzangolo.jpg` | Pizzangolo | Via Giovanni Arrivabene 1 |

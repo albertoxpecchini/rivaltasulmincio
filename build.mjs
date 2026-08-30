@@ -336,7 +336,12 @@ const renderVoglie = () => {
 
   /* Una riga per locale: chi è, dove sta (il pallino apre OpenStreetMap come
      ovunque nel sito), cosa ne fa di questo piatto, e quanto si spende — se
-     il dato esiste, e detto per quello che è. */
+     il dato esiste, e detto per quello che è.
+
+     La scheda è quella che il registro dichiara, tranne quando il posto è
+     raccontato altrove per quello che fa di principale: il Green Village sta
+     in /comunita perché è un polo sportivo, ma chi arriva qui cerca gli orari
+     della pizzeria. Per quei casi la voce di gusto.json può dire . */
   const dove = (d) => {
     const l = perSlug.get(d.luogo);
     const indirizzo = l.indirizzo
@@ -349,7 +354,7 @@ const renderVoglie = () => {
               <p class="sb-riv-mang-locale-t"><strong>${escape(l.nome)}</strong>${fascia}</p>
               <p class="sb-riv-mang-locale-d">${indirizzo}</p>
               <p class="sb-riv-mang-come">${enfasi(d.come)}</p>
-              <a class="sb-link" href="${escape(l.pagina)}">Contatti e orari</a>
+              <a class="sb-link" href="${escape(d.scheda || l.pagina)}">Contatti e orari</a>
             </li>`;
   };
 
