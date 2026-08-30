@@ -221,6 +221,6 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | :--- | :--- | :--- |
 | `attivita/b-and-b-rivalta-green-village.jpg` | B&B del Rivalta Green Village | Via Vedusino 5 |
 | `attivita/sede-pro-loco-canoa-point.jpg` | Pro Loco Rivalta APS / Canoa Point | Via Porto 31 |
-| `attivita/centro-sociale-pusiun-granda.jpg` | Centro Sociale «La Pusiun Granda» | Via Sette Frati 54 |
+| `attivita/centro-sociale-pusiun-granda.jpg` | Centro Sociale «La Pusiun Granda» | Via Sette Frati 58 |
 | `attivita/centro-ter.jpg` | Centro Ter — Centro Terza Età | Via Sette Frati 58 |
 | `attivita/waterways-mincio.jpg` | Waterways Mincio | — |
