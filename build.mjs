@@ -747,11 +747,19 @@ const renderLocandina = () => {
    {{CONTRADE_FILA}}. Il giorno che arriva l'artwork vero degli stemmi si
    cambia questo elenco, non due pagine.
 
-   Gli stemmi sono ridisegnati al tratto sulla stessa griglia 24×24 delle
-   altre icone del sito: quelli veri sono dipinti a colori pieni sui cartelli
-   che stanno in mostra alle giornate del Palio, e questi ne sono la
-   traduzione, non la copia. Il colore non è qui: lo dà assets/rivalta.css a
-   partire da `slug`, così una tinta sbagliata si corregge in un posto solo.
+   Ogni contrada porta DUE stemmi, e non è un doppione: `arte` è il disegno
+   vero, a colori pieni come sui cartelli del Palio, e va nella scheda grande
+   di /eventi, dove c'è lo spazio per vederlo; `stemma` è la stessa cosa
+   ridisegnata al tratto sulla griglia 24×24 delle altre icone del sito, e
+   serve alla fila di /color-walk, dove la piastrella è 2,2 rem e un disegno
+   a colori diventerebbe una macchia. Il colore non è in nessuno dei due: lo
+   dà assets/rivalta.css a partire da `slug`, così una tinta sbagliata si
+   corregge in un posto solo.
+
+   I file di `arte` stanno in assets/icone/, uno per slug: il `.webp` a 256 px
+   è quello che va in pagina, il `.png` accanto è il master alla misura piena.
+   Se un giorno arriva l'artwork ufficiale delle contrade, si sostituisce il
+   file e basta — qui non cambia niente.
 
    `nota` dice cosa c'è dipinto sul cartello, e — dove il sito ha già il dato
    altrove — dove quel nome ricompare in paese. Niente etimologie inventate:
@@ -764,6 +772,8 @@ const icona = (d) =>
 const CONTRADE = [
   {
     slug: "filanda",
+    arte: "assets/icone/filanda.webp",
+    arteAlt: "la filanda con la ciminiera e il bozzolo del baco da seta",
     nome: "la Filanda",
     colore: "marrone",
     nota: "La filanda, e accanto il bozzolo del baco da seta.",
@@ -774,6 +784,8 @@ const CONTRADE = [
   },
   {
     slug: "roccolo",
+    arte: "assets/icone/roccolo.webp",
+    arteAlt: "il boschetto di alberi verdi",
     nome: "il Roccolo",
     colore: "verde",
     nota: "Il boschetto del roccolo. In paese il nome è rimasto a Via Roccolo.",
@@ -784,6 +796,8 @@ const CONTRADE = [
   },
   {
     slug: "colonie",
+    arte: "assets/icone/colonie.webp",
+    arteAlt: "la caravella con la croce blu sulla vela",
     nome: "le Colonie",
     colore: "azzurro",
     nota: "La barca a vela con la croce. Il nome torna nell'insegna del pub «Le Antiche Colonie».",
@@ -794,6 +808,8 @@ const CONTRADE = [
   },
   {
     slug: "piasaroi",
+    arte: "assets/icone/piasaroi.webp",
+    arteAlt: "la torre gialla col tetto rosso e la campana",
     nome: "i Piasaröi",
     colore: "giallo",
     nota: "La torre, col tetto rosso e la finestra sul fronte.",
@@ -804,6 +820,8 @@ const CONTRADE = [
   },
   {
     slug: "platana",
+    arte: "assets/icone/platana.webp",
+    arteAlt: "il platano dalla chioma viola",
     nome: "la Plàtana",
     colore: "viola",
     nota: "Il platano. È il nome di Piazza Platana, del suo parco e dell'Area Feste.",
@@ -814,6 +832,8 @@ const CONTRADE = [
   },
   {
     slug: "fanfane",
+    arte: "assets/icone/fanfane.webp",
+    arteAlt: "l'anfora arancione che versa acqua",
     nome: "le Fanfane",
     colore: "arancione",
     nota: "L'anfora, con l'acqua che le passa sul collo.",
@@ -826,15 +846,28 @@ const CONTRADE = [
   },
 ];
 
-/* Per esteso: una scheda a testa, con lo stemma, il nome, cosa c'è dipinto e
-   il colore. */
+/* Il nome delle contrade porta l'articolo dentro («la Filanda», «i Piasaröi»),
+   e nel testo alternativo va retto: «lo stemma DELLA Filanda», «DEI Piasaröi».
+   Sei nomi, sei articoli scritti a mano: una regola per ricavarli sarebbe più
+   lunga della tabella. */
+const ARTICOLO = {
+  filanda: "della Filanda",
+  roccolo: "del Roccolo",
+  colonie: "delle Colonie",
+  piasaroi: "dei Piasaröi",
+  platana: "della Plàtana",
+  fanfane: "delle Fanfane",
+};
+
+/* Per esteso: una scheda a testa, col disegno dello stemma, il nome, cosa c'è
+   dipinto e il colore. */
 const renderContrade = () =>
   `<div class="sb-riv-contrade">\n` +
   CONTRADE.map(
     (c) =>
       `      <div class="sb-riv-contrada" data-contrada="${c.slug}">\n` +
       `        <div class="sb-panel"><div class="sb-panel-inner">\n` +
-      `          <span class="sb-riv-stemma">${c.stemma}</span>\n` +
+      `          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="${c.arte}" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma ${ARTICOLO[c.slug]}: ${c.arteAlt}"></span>\n` +
       `          <div class="sb-riv-contrada-t">\n` +
       `            <h4>${c.nome}</h4>\n` +
       `            <p>${c.nota}</p>\n` +

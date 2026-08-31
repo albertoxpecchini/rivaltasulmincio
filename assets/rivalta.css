@@ -1024,8 +1024,12 @@ html.dark .sb-riv-contrade {
 .sb-riv-contrada[data-contrada="platana"]  { --ctr: var(--ctr-platana); }
 .sb-riv-contrada[data-contrada="fanfane"]  { --ctr: var(--ctr-fanfane); }
 
+/* La scheda è orizzontale: stemma a sinistra, testo a destra. Il
+   flex-direction va scritto: .sb-panel-inner nasce a colonna in sb.css, e
+   senza questa riga i due pezzi si impilano. */
 .sb-riv-contrada .sb-panel-inner {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: 0.85rem;
   padding: 1.1rem 1.2rem;
@@ -1047,6 +1051,22 @@ html.dark .sb-riv-contrade {
   color: var(--ctr);
   background: color-mix(in srgb, var(--ctr) 11%, var(--sb-surface-100));
 }
+
+/* La piastrella col disegno vero dello stemma, nella scheda grande di
+   /eventi. Più larga di quella al tratto — 4 rem contro 2,7 — perché una
+   caravella con la croce, a 43 px, è una macchia; e col fondo CHIARO IN TUTTI
+   E DUE I TEMI, come le piastrelle dei loghi in fondo a /color-walk e per la
+   stessa ragione: questi disegni hanno il contorno nero e le campiture piene,
+   e su fondo scuro il contorno sparisce e i verdi del boschetto affogano. Il
+   velo di tinta resta, così la contrada si riconosce dal colore anche qui. */
+.sb-riv-stemma--arte {
+  width: 4rem;
+  height: 4rem;
+  padding: 0.25rem;
+  background: color-mix(in srgb, var(--ctr) 9%, #ffffff);
+}
+html.dark .sb-riv-stemma--arte { background: color-mix(in srgb, var(--ctr) 12%, #ffffff); }
+.sb-riv-stemma--arte img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 .sb-riv-contrada-t { min-width: 0; display: grid; gap: 0.2rem; }
 .sb-riv-contrada-t h4 {
