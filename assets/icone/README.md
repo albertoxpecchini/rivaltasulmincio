@@ -27,10 +27,14 @@ node -e "require('sharp')('assets/icone/<slug>.png').resize(256,256,{fit:'contai
 
 ## Dove finiscono
 
-Nella scheda grande di [`/eventi#contrade`](../../_build/eventi.body.html), a 4 rem, dentro
-la piastrella `.sb-riv-stemma--arte`. Non nella fila in fondo a `/color-walk`: lì la
-piastrella è 2,2 rem e un disegno a colori diventa una macchia, quindi restano gli stemmi al
-tratto. I due si scelgono in `build.mjs`, dove ogni contrada porta sia `arte` sia `stemma`.
+In due punti, generati tutti e due da `build.mjs`: la scheda grande di
+[`/eventi#contrade`](../../_build/eventi.body.html), dove la piastrella è 4 rem, e la fila in
+fondo a [`/color-walk`](../../_build/color-walk.body.html), dove è 2,8 rem. La classe è la
+stessa, `.sb-riv-stemma--arte`.
+
+Gli stessi sei disegni stanno anche **dentro il banner e la locandina**, ma lì sono cotti
+nell'immagine esportata da Claude Design: se un file cambia qui, quelle due vanno riesportate
+a mano, non si aggiornano da sole.
 
 La piastrella ha il **fondo chiaro in tutti e due i temi**, come quelle dei loghi in fondo a
 `/color-walk` e per la stessa ragione: questi disegni hanno il contorno nero e le campiture

@@ -1105,6 +1105,10 @@ html.dark .sb-riv-stemma--arte { background: color-mix(in srgb, var(--ctr) 12%, 
 }
 .sb-riv-contrade--fila .sb-riv-contrada { display: flex; align-items: center; gap: 0.55rem; }
 .sb-riv-contrade--fila .sb-riv-stemma { width: 2.2rem; height: 2.2rem; }
+/* La fila porta lo stesso disegno della scheda grande: a 2,2 rem non si
+   legge, quindi la sua piastrella si allarga. Resta più piccola di quella
+   di /eventi — qui accanto c'è solo il nome, non tre righe di testo. */
+.sb-riv-contrade--fila .sb-riv-stemma--arte { width: 2.8rem; height: 2.8rem; padding: 0.15rem; }
 .sb-riv-contrade--fila .sb-riv-contrada-n { font-size: 0.86rem; color: var(--sb-fg-light); }
 
 /* ═══════════════════════════════════════════════════════════════════════════

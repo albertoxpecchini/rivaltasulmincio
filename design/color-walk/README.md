@@ -15,6 +15,14 @@ runtime.
 | `aperitivo/` | La striscia dell’**aperitivo** di fine camminata — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
+> **Le copie qui dentro sono indietro (1° settembre 2026).** Banner e locandina pubblicati
+> in `assets/` sono stati riesportati da Claude Design con roba che in questi `.dc.html` e
+> `.render.html` non c'è: il **logo ANSPI**, il **QR code** verso `/color-walk`, i **sei
+> stemmi delle contrade**, lo **stemma del Comune** e il logo **Fiordiloto**. Chi riapre
+> queste tavole per cambiare una virgola e riesporta **cancella tutto quello**. Prima di
+> toccarle si riscarica la cartella del progetto da claude.ai/design, come dice il giro qui
+> sotto.
+
 ## Banner e locandina con la foto — `foto/`
 
 `banner.dc.html` e `locandina.dc.html` qui sopra sono le versioni **astratte** (nuvole di

@@ -748,14 +748,17 @@ const renderLocandina = () => {
    {{CONTRADE_FILA}}. Il giorno che arriva l'artwork vero degli stemmi si
    cambia questo elenco, non due pagine.
 
-   Ogni contrada porta DUE stemmi, e non è un doppione: `arte` è il disegno
-   vero, a colori pieni come sui cartelli del Palio, e va nella scheda grande
-   di /eventi, dove c'è lo spazio per vederlo; `stemma` è la stessa cosa
-   ridisegnata al tratto sulla griglia 24×24 delle altre icone del sito, e
-   serve alla fila di /color-walk, dove la piastrella è 2,2 rem e un disegno
-   a colori diventerebbe una macchia. Il colore non è in nessuno dei due: lo
-   dà assets/rivalta.css a partire da `slug`, così una tinta sbagliata si
-   corregge in un posto solo.
+   `arte` è il disegno vero, a colori pieni come sui cartelli del Palio: lo
+   usano tutte e due le rese, la scheda grande di /eventi e la fila di
+   /color-walk. Il colore della contrada non è qui: lo dà assets/rivalta.css a
+   partire da `slug`, così una tinta sbagliata si corregge in un posto solo.
+
+   `stemma` è lo stesso soggetto ridisegnato al tratto sulla griglia 24×24
+   delle altre icone del sito. **Oggi non lo rende nessuna pagina**: serviva
+   alla fila finché la piastrella era 2,2 rem e un disegno a colori ci si
+   riduceva a una macchia. Resta qui perché è il ricambio del giorno che
+   l'artwork dovesse sparire, non perché sia in uso — se quel giorno non
+   arriva, si cancella insieme a `icona()`.
 
    I file di `arte` stanno in assets/icone/, uno per slug: il `.webp` a 256 px
    è quello che va in pagina, il `.png` accanto è il master alla misura piena.
@@ -879,13 +882,17 @@ const renderContrade = () =>
   ).join("\n") +
   `\n    </div>`;
 
-/* In fila: stemma e nome, niente altro. */
+/* In fila: stemma e nome, niente altro. Anche qui il disegno vero, come
+   nella scheda grande: la piastrella della fila si allarga apposta a 2,8 rem
+   per reggerlo. */
 const renderContradeFila = () =>
   `<div class="sb-riv-contrade sb-riv-contrade--fila">\n` +
   CONTRADE.map(
     (c) =>
       `      <div class="sb-riv-contrada" data-contrada="${c.slug}">` +
-      `<span class="sb-riv-stemma">${c.stemma}</span>` +
+      `<span class="sb-riv-stemma sb-riv-stemma--arte">` +
+      `<img src="${c.arte}" width="256" height="256" loading="lazy" decoding="async" ` +
+      `alt="Lo stemma ${ARTICOLO[c.slug]}: ${c.arteAlt}"></span>` +
       `<span class="sb-riv-contrada-n">${c.nome}</span></div>`
   ).join("\n") +
   `\n    </div>`;
