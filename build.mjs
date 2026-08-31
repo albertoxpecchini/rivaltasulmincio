@@ -651,10 +651,10 @@ ${LOGHI.map((l) => {
    con questi nomi e ricompaiono al primo build. */
 const BANNER = "color-walk-banner";
 const LOCANDINA = "color-walk-locandina";
-const RISOTTA_BANNER = "risottata-banner";
+const APERITIVO_BANNER = "aperitivo-banner";
 let bannerTrovato = null;
 let locandinaTrovata = null;
-let risottaBannerTrovato = null;
+let aperitivoBannerTrovato = null;
 
 const renderBanner = () => {
   bannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
@@ -665,18 +665,18 @@ const renderBanner = () => {
       alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
 };
 
-/* {{RISOTTA_BANNER}} è la striscia della risottata finale — stessa misura e
+/* {{APERITIVO_BANNER}} è la striscia dell’aperitivo — stessa misura e
    stesso trattamento del banner della camminata (.sb-riv-cwbanner, immagine
-   sola col filo di bordo). Va nella zona risottata del modulo /color-walk,
-   sopra la spunta. La tela è in design/color-walk/risottata/. Senza il file,
+   sola col filo di bordo). Va nella zona aperitivo del modulo /color-walk,
+   sopra la spunta. La tela è in design/color-walk/aperitivo/. Senza il file,
    il segnaposto non lascia buchi. */
-const renderRisottaBanner = () => {
-  risottaBannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
-    .map((est) => `assets/foto/${RISOTTA_BANNER}.${est}`)
+const renderAperitivoBanner = () => {
+  aperitivoBannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
+    .map((est) => `assets/foto/${APERITIVO_BANNER}.${est}`)
     .find((p) => existsSync(p));
-  if (!risottaBannerTrovato) return "";
-  return `<img class="sb-riv-cwbanner" src="${risottaBannerTrovato}" width="2400" height="900" decoding="async" loading="lazy"
-        alt="Risottata finale della Color Walk — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">`;
+  if (!aperitivoBannerTrovato) return "";
+  return `<img class="sb-riv-cwbanner" src="${aperitivoBannerTrovato}" width="2400" height="900" decoding="async" loading="lazy"
+        alt="Aperitivo della Color Walk — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">`;
 };
 
 /* ── Il blocco «Color Walk come in home» ────────────────────────────────
@@ -949,7 +949,7 @@ for (const file of bodies) {
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
       .replace("{{CW_HOME}}", () => renderBannerHome(page))
-      .replace("{{RISOTTA_BANNER}}", renderRisottaBanner)
+      .replace("{{APERITIVO_BANNER}}", renderAperitivoBanner)
       .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
@@ -1177,10 +1177,10 @@ const compilaMail = (nome) => {
     "{{IMPORTO}}",
     "{{MOTIVO}}",
     /* Non è un dato dell'evento: lo riempie /api/conferma-color-walk a runtime,
-       per iscritto, con la riga della risottata — prenotata e per quanti, o non
-       prenotata. Qui basta che il build non lo prenda per un segnaposto
+       per iscritto, con la riga dell’aperitivo — prenotato e per quanti, o non
+       prenotato. Qui basta che il build non lo prenda per un segnaposto
        dimenticato. */
-    "{{RISOTTO}}",
+    "{{APERITIVO}}",
   ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
   if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
@@ -1267,10 +1267,10 @@ if (!locandinaTrovata) {
   console.log(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
 }
 
-if (!risottaBannerTrovato) {
+if (!aperitivoBannerTrovato) {
   console.log(`
-⚠ banner risottata: manca assets/foto/${RISOTTA_BANNER}.webp (o .png/.jpg/.avif/.svg).`);
-  console.log(`  La tela è in design/color-walk/risottata/: si riesporta e ricompare sopra la spunta.`);
+⚠ banner aperitivo: manca assets/foto/${APERITIVO_BANNER}.webp (o .png/.jpg/.avif/.svg).`);
+  console.log(`  La tela è in design/color-walk/aperitivo/: si riesporta e ricompare sopra la spunta.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

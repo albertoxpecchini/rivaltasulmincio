@@ -12,7 +12,7 @@ runtime.
 | `doc-page.js`, `support.js` | Il runtime di Claude Design che le due tavole caricano con `<script src="./…">`. Senza, i `.dc.html` non si compongono | — |
 | `.thumbnail` | Anteprima del canvas (WebP 640 × 335), la usa Claude Design | — |
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
-| `risottata/` | La striscia della **risottata finale** — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
+| `aperitivo/` | La striscia dell’**aperitivo** di fine camminata — sottoprogetto a parte (vedi sotto) | 2400 × 900 px |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
 ## Banner e locandina con la foto — `foto/`
@@ -36,14 +36,14 @@ corrono lanciando colori):
 
 Le tele editabili stanno su **Claude Design**, progetto `adc6ffc7-1111-4420-8a1b-610cba5dba81`
 (file `Color Walk Banner.dc.html` e `Color Walk Locandina.dc.html`, accanto alla
-risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo sidecar
+aperitivo — stessi `image-slot.js`/`support.js`, slot id distinti → un solo sidecar
 `.image-slots.state.json` senza collisioni).
 
 **Giro completo quando arriva una foto (PNG):**
 
 1. Su Claude Design si apre il file (banner o locandina), si trascina il PNG nello slot,
    si posiziona, **Salva**. La stessa foto va bene per tutti e due.
-2. Si **riscarica la cartella del progetto** (`~/Downloads/Risottata banner design/`):
+2. Si **riscarica la cartella del progetto** (`~/Downloads/Risottata banner design/` — su Claude Design la cartella ha ancora il nome di prima):
    contiene i `.dc.html` aggiornati e il `.image-slots.state.json` intero. (`DesignSync
    get_file` va bene per i `.dc.html`, ma tronca il sidecar quando è grande.)
 3. Si genera il `.render.html` piatto e autonomo: `<image-slot>` → `<div>` col
@@ -55,31 +55,31 @@ risottata — stessi `image-slot.js`/`support.js`, slot id distinti → un solo 
 5. `node build.mjs` — il banner entra ovunque (`{{BANNER}}`/`{{CW_HOME}}`), la locandina
    nell'anteprima di `/color-walk`.
 
-## La risottata — `risottata/`
+## L’aperitivo — `aperitivo/`
 
 Tela di Claude Design importata da `claude.ai/design`. Diversa dalle altre due: il piatto
-è un `<image-slot>` in cui è stata trascinata una foto (un risotto alla pilota), salvata
+è un `<image-slot>` in cui è stata trascinata una foto (due spritz con arachidi), salvata
 in `.image-slots.state.json` accanto al `.dc.html`.
 
 | File | Cos'è |
 | :--- | :--- |
-| `risottata-banner.dc.html` | L'originale editabile (usa `support.js` + `image-slot.js`) |
+| `aperitivo-banner.dc.html` | L'originale editabile (usa `support.js` + `image-slot.js`) |
 | `image-slot.js`, `support.js` | Il runtime di Claude Design per questa tela |
-| `.image-slots.state.json` | La foto del piatto, in base64, com'è stata inserita nella tela |
-| `risottata-banner.render.html` | Copia **piatta e autonoma**: niente `<x-dc>`/`<image-slot>`, font Titillium Web in base64, la foto messa come sfondo di un cerchio. Zero rete. È da qui che si riesporta il webp |
+| `.image-slots.state.json` | La foto, in base64, com'è stata inserita nella tela. Lo slot si chiama `aperitivo-plate` |
+| `aperitivo-banner.render.html` | Copia **piatta e autonoma**: niente `<x-dc>`/`<image-slot>`, font Titillium Web in base64, la foto messa come sfondo di un cerchio. Zero rete. È da qui che si riesporta il webp |
 
-**Riesportare** `assets/foto/risottata-banner.webp` (2400 × 900): screenshot di
-`risottata-banner.render.html` con Chrome headless a scala 1, poi `sharp` in webp —
+**Riesportare** `assets/foto/aperitivo-banner.webp` (2400 × 900): screenshot di
+`aperitivo-banner.render.html` con Chrome headless a scala 1, poi `sharp` in webp —
 stesso giro della locandina.
 
 ```
 chrome --headless --force-device-scale-factor=1 --window-size=2400,900 \
-  --screenshot=shot.png --virtual-time-budget=12000 risottata/risottata-banner.render.html
+  --screenshot=shot.png --virtual-time-budget=12000 aperitivo/aperitivo-banner.render.html
 # shot.png (2400×900) → webp, quality ~88
 ```
 
 Se si rifà la tela su Claude Design, si riscarica `.dc.html` + `.image-slots.state.json`
-e si rigenera `risottata-banner.render.html` (rimettendo la foto da `.u` del sidecar come
+e si rigenera `aperitivo-banner.render.html` (rimettendo la foto da `.u` del sidecar come
 `background-image` del cerchio).
 
 ## Da dove vengono i dati

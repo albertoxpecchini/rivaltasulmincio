@@ -174,28 +174,28 @@ const importoItaliano = (centesimi, valuta) =>
     currency: String(valuta || "eur").toUpperCase(),
   }).format((centesimi || 0) / 100);
 
-/* ── La riga della risottata ──────────────────────────────────────────────
-   Nel modello della ricevuta c'è {{RISOTTO}} su una riga sua, e ci va SEMPRE
-   una sotto-lastra: la ricevuta deve dire nero su bianco se la risottata è
-   prenotata o no, non lasciarlo intendere dal silenzio. `n` coperti (1..10) →
-   prenotata; `n` zero (o non numero) → non prenotata. Il valore arriva dai
+/* ── La riga dell’aperitivo ──────────────────────────────────────────────
+   Nel modello della ricevuta c'è {{APERITIVO}} su una riga sua, e ci va SEMPRE
+   una sotto-lastra: la ricevuta deve dire nero su bianco se l’aperitivo è
+   prenotato o no, non lasciarlo intendere dal silenzio. `n` persone (1..10) →
+   prenotato; `n` zero (o non numero) → non prenotato. Il valore arriva dai
    metadata della sessione, che si possono anche correggere a mano nel
    dashboard, quindi qui si ristringe comunque. */
-export const coperti = (n) => (n === 1 ? "1 coperto" : `${n} coperti`);
+export const persone = (n) => (n === 1 ? "1 persona" : `${n} persone`);
 
-export function bloccoRisotto(n) {
+export function bloccoAperitivo(n) {
   const q = Math.floor(Number(n)) || 0;
-  const prenotata = q >= 1;
+  const prenotato = q >= 1;
   const quanti = Math.min(10, Math.max(1, q));
-  const corpo = prenotata
+  const corpo = prenotato
     ? `<p class="e-fg-l" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.6; color:#525252;">
-                Ti abbiamo segnato per la risottata dopo la camminata: <strong class="e-fg" style="color:#171717; font-weight:600;">${coperti(quanti)}</strong> a tuo nome.
+                Ti abbiamo segnato per l’aperitivo dopo la camminata: <strong class="e-fg" style="color:#171717; font-weight:600;">${persone(quanti)}</strong> a tuo nome.
               </p>
               <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
                 È su prenotazione e non si paga adesso. Se il numero cambia, o non ti fermi più, rispondi a questa mail e lo sistemiamo.
               </p>`
     : `<p class="e-fg-l" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.6; color:#525252;">
-                <strong class="e-fg" style="color:#171717; font-weight:600;">Non prenotata.</strong> Non ti fermi per la risottata dopo la camminata.
+                <strong class="e-fg" style="color:#171717; font-weight:600;">Non prenotato.</strong> Non ti fermi per l’aperitivo dopo la camminata.
               </p>
               <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
                 Se cambi idea, rispondi a questa mail: finché ci sono posti ti segniamo.
@@ -206,7 +206,7 @@ export function bloccoRisotto(n) {
             <tr>
             <td style="padding:20px 22px;">
               <div class="e-fg-m" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8f8f8f;">
-                Risottata finale
+                Aperitivo
               </div>
               ${corpo}
             </td>
@@ -406,13 +406,19 @@ export default async function handler(req, res) {
       const importo = importoItaliano(sessione.amount_total, sessione.currency);
       const data = dataItaliana(pi?.created || avviso.created);
 
-      /* La risottata: "si" più un numero di coperti, oppure no. Sta nei metadata
+      /* L’aperitivo: "si" più un numero di persone, oppure no. Sta nei metadata
          della sessione, messo lì all'iscrizione. Nella mail c'è sempre — una
-         riga (HTML) e un paragrafo (testo) — che dice se è prenotata e per
-         quanti, o che non lo è. `risottoN` è 0 quando non è prenotata. */
-      const risotto = sessione.metadata?.risotto === "si";
-      const risottoN = risotto
-        ? Math.min(10, Math.max(1, Math.floor(Number(sessione.metadata?.risotto_persone)) || 1))
+         riga (HTML) e un paragrafo (testo) — che dice se è prenotato e per
+         quanti, o che non lo è. `aperitivoN` è 0 quando non è prenotato.
+
+         Si legge anche la vecchia coppia `risotto`/`risotto_persone`: fino al
+         1° settembre 2026 la sosta finale era una risottata, e le sessioni
+         aperte prima portano quei nomi. Stessa logica del marchio EVENTO —
+         il nome cambia in pagina, le ricevute già emesse non si rompono. */
+      const meta = sessione.metadata || {};
+      const aperitivo = (meta.aperitivo ?? meta.risotto) === "si";
+      const aperitivoN = aperitivo
+        ? Math.min(10, Math.max(1, Math.floor(Number(meta.aperitivo_persone ?? meta.risotto_persone)) || 1))
         : 0;
 
       const html = riempi(MODELLO_RICEVUTA, {
@@ -421,7 +427,7 @@ export default async function handler(req, res) {
         IMPORTO_QUOTA: importoQuota,
         IMPORTO_COMMISSIONI: importoCommissioni,
         IMPORTO: importo,
-      }).replace("{{RISOTTO}}", () => bloccoRisotto(risottoN));
+      }).replace("{{APERITIVO}}", () => bloccoAperitivo(aperitivoN));
 
       await spedisci({
         a: email,
@@ -435,10 +441,10 @@ export default async function handler(req, res) {
           `Totale, pagato con carta il ${data}: ${importo}\n\n` +
           `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
           `pagamento: all'organizzazione arriva la quota intera.\n\n` +
-          (risottoN
-            ? `Risottata finale: prenotata, ${coperti(risottoN)} a tuo nome. ` +
+          (aperitivoN
+            ? `Aperitivo: prenotato, ${persone(aperitivoN)} a tuo nome. ` +
               `È su prenotazione e non si paga adesso; se il numero cambia, rispondi a questa mail.\n\n`
-            : `Risottata finale: non prenotata, non ti fermi a mangiare. ` +
+            : `Aperitivo: non prenotato, non ti fermi all’aperitivo. ` +
               `Se cambi idea, rispondi a questa mail: finché ci sono posti ti segniamo.\n\n`) +
           `Questa mail è la tua conferma: tienila, non serve stamparla.\n` +
           `Ci vediamo il 20!\n\n` +
@@ -656,7 +662,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </td>
         </tr>
 
-        {{RISOTTO}}
+        {{APERITIVO}}
 
         <tr>
         <td class="e-pad" style="padding:32px 40px 0;">

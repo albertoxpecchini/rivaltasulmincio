@@ -102,11 +102,11 @@ const SESSIONE_NON_PAGATA = {
   payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },
 };
 
-/* Come SESSIONE_PAGATA, ma con la risottata prenotata per tre. È l'unica
-   differenza: nella ricevuta deve comparire la riga dei coperti. */
-const SESSIONE_PAGATA_RISOTTO = {
+/* Come SESSIONE_PAGATA, ma con l’aperitivo prenotato per tre. È l'unica
+   differenza: nella ricevuta deve comparire la riga dei persone. */
+const SESSIONE_PAGATA_APERITIVO = {
   ...SESSIONE_PAGATA,
-  metadata: { ...SESSIONE_PAGATA.metadata, risotto: "si", risotto_persone: "3" },
+  metadata: { ...SESSIONE_PAGATA.metadata, aperitivo: "si", aperitivo_persone: "3" },
 };
 
 let passate = 0;
@@ -190,32 +190,32 @@ await prova("posta giù → 500, così Stripe ritenta", {
   atteso: { codice: 500, mail: 1 },
 });
 
-await prova("ha prenotato la risottata → la ricevuta cita i coperti", {
+await prova("ha prenotato l’aperitivo → la ricevuta cita le persone", {
   evento: ev("checkout.session.completed"),
-  stub: { sessione: SESSIONE_PAGATA_RISOTTO },
-  atteso: { codice: 200, mail: 1, oggetto: "Iscrizione confermata", contiene: "3 coperti" },
+  stub: { sessione: SESSIONE_PAGATA_APERITIVO },
+  atteso: { codice: 200, mail: 1, oggetto: "Iscrizione confermata", contiene: "3 persone" },
 });
 
-await prova("non ha prenotato la risottata → la ricevuta lo dice, niente segnaposto", {
+await prova("non ha prenotato l’aperitivo → la ricevuta lo dice, niente segnaposto", {
   evento: ev("checkout.session.completed"),
   stub: { sessione: SESSIONE_PAGATA },
   atteso: {
     codice: 200,
     mail: 1,
-    contiene: ["Risottata finale", "Non prenotata"],
-    nonContiene: ["{{RISOTTO}}", "coperti", "coperto"],
+    contiene: ["Aperitivo", "Non prenotato"],
+    nonContiene: ["{{APERITIVO}}", " persone", "1 persona"],
   },
 });
 
-await prova("risottata per uno → «1 coperto», non «1 coperti»", {
+await prova("aperitivo per uno → «1 persona», non «1 persone»", {
   evento: ev("checkout.session.completed"),
   stub: {
     sessione: {
       ...SESSIONE_PAGATA,
-      metadata: { ...SESSIONE_PAGATA.metadata, risotto: "si", risotto_persone: "1" },
+      metadata: { ...SESSIONE_PAGATA.metadata, aperitivo: "si", aperitivo_persone: "1" },
     },
   },
-  atteso: { codice: 200, mail: 1, contiene: "1 coperto", nonContiene: "1 coperti" },
+  atteso: { codice: 200, mail: 1, contiene: "1 persona", nonContiene: "1 persone" },
 });
 
 console.log("\n── Il pagamento NON è andato a buon fine ──────────────────────");

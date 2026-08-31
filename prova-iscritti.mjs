@@ -107,11 +107,11 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", env = {}, pag
   if (atteso.totaleCent !== undefined && res.corpo?.totaleCent !== atteso.totaleCent) {
     problemi.push(`totale ${res.corpo?.totaleCent}, atteso ${atteso.totaleCent}`);
   }
-  if (atteso.risottoCoperti !== undefined && res.corpo?.risottoCoperti !== atteso.risottoCoperti) {
-    problemi.push(`${res.corpo?.risottoCoperti} coperti risotto, attesi ${atteso.risottoCoperti}`);
+  if (atteso.aperitivoPersoneTotali !== undefined && res.corpo?.aperitivoPersoneTotali !== atteso.aperitivoPersoneTotali) {
+    problemi.push(`${res.corpo?.aperitivoPersoneTotali} persone all’aperitivo, attese ${atteso.aperitivoPersoneTotali}`);
   }
-  if (atteso.risottoPrenotazioni !== undefined && res.corpo?.risottoPrenotazioni !== atteso.risottoPrenotazioni) {
-    problemi.push(`${res.corpo?.risottoPrenotazioni} prenotazioni risotto, attese ${atteso.risottoPrenotazioni}`);
+  if (atteso.aperitivoPrenotazioni !== undefined && res.corpo?.aperitivoPrenotazioni !== atteso.aperitivoPrenotazioni) {
+    problemi.push(`${res.corpo?.aperitivoPrenotazioni} prenotazioni aperitivo, attese ${atteso.aperitivoPrenotazioni}`);
   }
   if (atteso.nienteDati && res.corpo?.iscritti) {
     problemi.push("ha risposto con un elenco quando non doveva rispondere affatto");
@@ -221,13 +221,13 @@ await prova("più pagine: le legge tutte", {
 await prova("nessun iscritto → elenco vuoto, non un errore", {
   chiave: CHIAVE,
   pagine: [{ data: [], has_more: false }],
-  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0, risottoCoperti: 0, risottoPrenotazioni: 0 },
+  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0, aperitivoPersoneTotali: 0, aperitivoPrenotazioni: 0 },
 });
 
-console.log("\n── La risottata ───────────────────────────────────────────────");
+console.log("\n── L’aperitivo ───────────────────────────────────────────────");
 
-/* Una sessione pagata con la risottata prenotata per `persone` coperti. */
-const conRisotto = (n, persone) =>
+/* Una sessione pagata con l’aperitivo prenotato per `persone` persone. */
+const conAperitivo = (n, persone) =>
   sessione(n, {
     metadata: {
       evento: EVENTO,
@@ -238,40 +238,40 @@ const conRisotto = (n, persone) =>
       telefono: "—",
       note: "—",
       consenso: "2026-08-25T10:00:00.000Z",
-      risotto: "si",
-      risotto_persone: String(persone),
+      aperitivo: "si",
+      aperitivo_persone: String(persone),
     },
   });
 
-await prova("coperti e prenotazioni: somma solo chi ha pagato e ha spuntato", {
+await prova("persone e prenotazioni: somma solo chi ha pagato e ha spuntato", {
   chiave: CHIAVE,
   pagine: [
     {
       data: [
-        conRisotto(1, 2),
-        conRisotto(2, 3),
-        sessione(3), // pagato ma niente risottata
-        { ...conRisotto(4, 4), payment_status: "unpaid" }, // risottata ma non pagato → non conta
+        conAperitivo(1, 2),
+        conAperitivo(2, 3),
+        sessione(3), // pagato ma niente aperitivo
+        { ...conAperitivo(4, 4), payment_status: "unpaid" }, // aperitivo ma non pagato → non conta
       ],
       has_more: false,
     },
   ],
-  atteso: { codice: 200, iscritti: 3, risottoCoperti: 5, risottoPrenotazioni: 2 },
+  atteso: { codice: 200, iscritti: 3, aperitivoPersoneTotali: 5, aperitivoPrenotazioni: 2 },
 });
 
-await prova("metadati risottata senza numero → vale un coperto, non zero", {
+await prova("metadati aperitivo senza numero → vale una persona, non zero", {
   chiave: CHIAVE,
   pagine: [
     {
       data: [
         sessione(1, {
-          metadata: { evento: EVENTO, nome: "Nome1", cognome: "C1", risotto: "si" },
+          metadata: { evento: EVENTO, nome: "Nome1", cognome: "C1", aperitivo: "si" },
         }),
       ],
       has_more: false,
     },
   ],
-  atteso: { codice: 200, iscritti: 1, risottoCoperti: 1, risottoPrenotazioni: 1 },
+  atteso: { codice: 200, iscritti: 1, aperitivoPersoneTotali: 1, aperitivoPrenotazioni: 1 },
 });
 
 await prova("l'elenco non finisce in nessuna cache", {
@@ -310,31 +310,31 @@ global.fetch = async () => risposta(500, { error: { message: "Stripe giù" } });
   const i = res.corpo?.iscritti?.[0] || {};
   const pieno = i.nome && i.cognome && i.codiceFiscale && i.indirizzo && i.email && i.quandoISO;
   const trattini = i.telefono === "" && i.note === "";
-  const risottoSpento = i.risotto === false && i.risottoPersone === 0;
-  if (pieno && trattini && risottoSpento) {
+  const aperitivoSpento = i.aperitivo === false && i.aperitivoPersone === 0;
+  if (pieno && trattini && aperitivoSpento) {
     passate++;
-    console.log("  ok   la scheda arriva completa, i «—» restano vuoti, la risottata è spenta");
+    console.log("  ok   la scheda arriva completa, i «—» restano vuoti, l’aperitivo è spento");
   } else {
     fallite++;
     console.log(`  NO   scheda incompleta: ${JSON.stringify(i)}`);
   }
 }
 
-/* E che quando la risottata è prenotata, la scheda la porti: booleano vero e
-   numero di coperti, non una stringa "si" da interpretare a valle. */
+/* E che quando l’aperitivo è prenotato, la scheda la porti: booleano vero e
+   numero di persone, non una stringa "si" da interpretare a valle. */
 {
   process.env.STRIPE_SECRET_KEY = "sk_test_finta";
   process.env.ISCRITTI_CHIAVE = CHIAVE;
-  global.fetch = stubFetch([{ data: [conRisotto(9, 3)], has_more: false }]);
+  global.fetch = stubFetch([{ data: [conAperitivo(9, 3)], has_more: false }]);
   const res = finestra();
   await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
   const i = res.corpo?.iscritti?.[0] || {};
-  if (i.risotto === true && i.risottoPersone === 3) {
+  if (i.aperitivo === true && i.aperitivoPersone === 3) {
     passate++;
-    console.log("  ok   la scheda di chi resta a mangiare porta risotto:true e i coperti");
+    console.log("  ok   la scheda di chi si ferma all’aperitivo porta aperitivo:true e le persone");
   } else {
     fallite++;
-    console.log(`  NO   risottata non riportata: ${JSON.stringify(i)}`);
+    console.log(`  NO   aperitivo non riportato: ${JSON.stringify(i)}`);
   }
 }
 

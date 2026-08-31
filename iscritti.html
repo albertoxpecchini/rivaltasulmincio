@@ -86,7 +86,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
           <span class="sb-riv-updated">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-30" data-updated="2026-08-30">30 ago</time>
+            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-08-31" data-updated="2026-08-31">31 ago</time>
           </span>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
@@ -119,7 +119,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-30" data-updated="2026-08-30">30 agosto 2026</time></span>
+          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-08-31" data-updated="2026-08-31">31 agosto 2026</time></span>
         </div>
       </div>
     </div>
@@ -300,8 +300,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 }
 
 /* ── La zona prenotazioni ─────────────────────────────────────────────────
-   Chi cucina la risottata non ha bisogno delle nove righe della scheda: gli
-   servono i nomi e i coperti, sommati, e un tasto per portarseli via. È una
+   Chi cucina l’aperitivo non ha bisogno delle nove righe della scheda: gli
+   servono i nomi e le persone, sommate, e un tasto per portarseli via. È una
    lastra sua, sopra l'elenco grande, che compare solo quando c'è almeno una
    prenotazione — a zero non è un dato, è rumore. */
 .sb-is-preno[hidden] { display: none; }
@@ -365,9 +365,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-variant-numeric: tabular-nums;
 }
 
-/* La riga «Risottata» dentro la scheda grande: il numero di coperti in
+/* La riga «Aperitivo» dentro la scheda grande: il numero di persone in
    evidenza come la quota, così anche scorrendo l'elenco intero si notano. */
-.sb-is-dato dd.sb-is-coperti { font-weight: 600; color: var(--sb-fg); font-variant-numeric: tabular-nums; }
+.sb-is-dato dd.sb-is-persone { font-weight: 600; color: var(--sb-fg); font-variant-numeric: tabular-nums; }
 
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con nove colonne su uno schermo di telefono si
@@ -491,12 +491,12 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         </div>
       </div>
 
-      <!-- La zona prenotazioni: nomi e coperti della risottata, con il suo
+      <!-- La zona prenotazioni: nomi e persone dell’aperitivo, con il suo
            tasto per scaricarla da sola. Compare solo se qualcuno ha prenotato. -->
       <section class="sb-panel sb-is-preno" id="is-preno" hidden>
         <div class="sb-panel-inner">
           <div class="sb-is-preno-testa">
-            <h2 class="sb-is-preno-tit">Prenotazioni risottata</h2>
+            <h2 class="sb-is-preno-tit">Prenotazioni aperitivo</h2>
             <button class="sb-btn sb-btn--secondary sb-is-preno-giu" type="button" id="is-preno-csv">Scarica</button>
           </div>
           <p class="sb-is-preno-tot" id="is-preno-tot"></p>
@@ -569,8 +569,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     return d.toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
   }
 
-  function coperti(n) {
-    return n === 1 ? "1 coperto" : n + " coperti";
+  function persone(n) {
+    return n === 1 ? "1 persona" : n + " persone";
   }
 
   /* ── Una scheda per iscritto ────────────────────────────────────────────
@@ -626,7 +626,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     voce("Email", i.email, null, "mailto:");
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
-    voce("Risottata", i.risotto ? coperti(i.risottoPersone) : "", "sb-is-coperti");
+    voce("Aperitivo", i.aperitivo ? persone(i.aperitivoPersone) : "", "sb-is-persone");
     voce("Iscritto il", quando(i.quandoISO));
 
     inner.appendChild(dl);
@@ -644,7 +644,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     var q = normalizza(cerca.value.trim());
     var visti = dati.iscritti.filter(function (i) {
       if (!q) return true;
-      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.risotto ? "risotto risottata" : ""].join(" ")).indexOf(q) > -1;
+      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.aperitivo ? "aperitivo" : ""].join(" ")).indexOf(q) > -1;
     });
 
     /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
@@ -674,7 +674,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   /* ── La zona prenotazioni ──────────────────────────────────────────────
      Solo chi si ferma a mangiare, in ordine alfabetico di cognome — una lista
-     da spuntare, non da leggere per data. Nome e coperti, e il totale sopra.
+     da spuntare, non da leggere per data. Nome e persone, e il totale sopra.
      Sta a parte dall'elenco grande e dalla ricerca: è la lista del cuoco. */
   function ordinaPreno(a, b) {
     return (a.cognome + " " + a.nome).localeCompare(b.cognome + " " + b.nome, "it", { sensitivity: "base" });
@@ -682,7 +682,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
   function disegnaPreno() {
     if (!dati) return;
-    var righe = dati.iscritti.filter(function (i) { return i.risotto; }).slice().sort(ordinaPreno);
+    var righe = dati.iscritti.filter(function (i) { return i.aperitivo; }).slice().sort(ordinaPreno);
     prenoLista.innerHTML = "";
 
     if (!righe.length) {
@@ -690,9 +690,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       return;
     }
 
-    var tot = righe.reduce(function (s, i) { return s + i.risottoPersone; }, 0);
+    var tot = righe.reduce(function (s, i) { return s + i.aperitivoPersone; }, 0);
     prenoTot.textContent =
-      righe.length + (righe.length === 1 ? " prenotazione" : " prenotazioni") + " · " + coperti(tot);
+      righe.length + (righe.length === 1 ? " prenotazione" : " prenotazioni") + " · " + persone(tot);
 
     righe.forEach(function (i) {
       var li = document.createElement("li");
@@ -701,7 +701,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       nome.textContent = (i.nome + " " + i.cognome).trim() || "(senza nome)";
       var n = document.createElement("span");
       n.className = "sb-is-preno-n";
-      n.textContent = String(i.risottoPersone);
+      n.textContent = String(i.aperitivoPersone);
       li.appendChild(nome);
       li.appendChild(n);
       prenoLista.appendChild(li);
@@ -787,11 +787,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var fileCsv = function (righe) { return "﻿" + righe.join("\r\n") + "\r\n"; };
 
   function csv() {
-    var righe = [rigaCsv(["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Risottata", "Coperti", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
+    var righe = [rigaCsv(["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Aperitivo", "Persone", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
         i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.note,
-        i.risotto ? "sì" : "no", i.risotto ? i.risottoPersone : "",
+        i.aperitivo ? "sì" : "no", i.aperitivo ? i.aperitivoPersone : "",
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
         i.consenso, i.id
@@ -800,15 +800,15 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     return fileCsv(righe);
   }
 
-  /* La lista della risottata da sola: nomi, coperti, e una riga «Totale» in
+  /* La lista dell’aperitivo da sola: nomi, persone, e una riga «Totale» in
      fondo — è il foglio che chi cucina si stampa. In ordine alfabetico come
      la zona qui sopra. */
-  function csvRisotto() {
-    var soloLoro = dati.iscritti.filter(function (i) { return i.risotto; }).slice().sort(ordinaPreno);
-    var righe = [rigaCsv(["Nome", "Cognome", "Coperti"])];
-    soloLoro.forEach(function (i) { righe.push(rigaCsv([i.nome, i.cognome, i.risottoPersone])); });
+  function csvAperitivo() {
+    var soloLoro = dati.iscritti.filter(function (i) { return i.aperitivo; }).slice().sort(ordinaPreno);
+    var righe = [rigaCsv(["Nome", "Cognome", "Persone"])];
+    soloLoro.forEach(function (i) { righe.push(rigaCsv([i.nome, i.cognome, i.aperitivoPersone])); });
     righe.push(rigaCsv(["Totale", soloLoro.length + (soloLoro.length === 1 ? " prenotazione" : " prenotazioni"),
-      soloLoro.reduce(function (s, i) { return s + i.risottoPersone; }, 0)]));
+      soloLoro.reduce(function (s, i) { return s + i.aperitivoPersone; }, 0)]));
     return fileCsv(righe);
   }
 
@@ -832,8 +832,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   });
 
   document.getElementById("is-preno-csv").addEventListener("click", function () {
-    if (!dati || !dati.risottoPrenotazioni) return mostra("errore", "Nessuna prenotazione alla risottata, per ora.");
-    scarica("risotto-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csvRisotto());
+    if (!dati || !dati.aperitivoPrenotazioni) return mostra("errore", "Nessuna prenotazione all’aperitivo, per ora.");
+    scarica("aperitivo-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csvAperitivo());
   });
 
   // Chi torna sulla pagina nella stessa scheda non riscrive la chiave.
@@ -923,7 +923,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
       </div>
-      <span>Ultimo aggiornamento: <time datetime="2026-08-30" data-updated="2026-08-30">30 agosto 2026</time></span>
+      <span>Ultimo aggiornamento: <time datetime="2026-08-31" data-updated="2026-08-31">31 agosto 2026</time></span>
     </div>
   </div>
 </footer>

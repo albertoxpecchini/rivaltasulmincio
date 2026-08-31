@@ -26,20 +26,20 @@
 
    Non gira su Vercel: sta in .vercelignore insieme a build.mjs e serve.mjs.
    ═══════════════════════════════════════════════════════════════════════════ */
-import { spedisci, riempi, bloccoRisotto, coperti, MODELLO_RICEVUTA, MODELLO_FALLITA, ORGANIZZATORI } from "./api/conferma-color-walk.mjs";
+import { spedisci, riempi, bloccoAperitivo, persone, MODELLO_RICEVUTA, MODELLO_FALLITA, ORGANIZZATORI } from "./api/conferma-color-walk.mjs";
 
 const a = process.argv[2];
 const quale = (process.argv[3] || "ricevuta").toLowerCase();
-/* Quarto argomento: quanti coperti alla risottata. 0 (o assente) = non
-   prenotata. Serve a vedere nella prova le due righe della ricevuta. */
-const risottoN = Math.min(10, Math.max(0, Math.floor(Number(process.argv[4])) || 0));
+/* Quarto argomento: quanti persone all’aperitivo. 0 (o assente) = non
+   prenotato. Serve a vedere nella prova le due righe della ricevuta. */
+const aperitivoN = Math.min(10, Math.max(0, Math.floor(Number(process.argv[4])) || 0));
 
 if (!a || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)) {
   console.error(`
-  Uso:  node prova-invio.mjs <indirizzo> [ricevuta|fallita] [coperti risottata]
+  Uso:  node prova-invio.mjs <indirizzo> [ricevuta|fallita] [persone aperitivo]
 
-    node prova-invio.mjs io@example.it              la ricevuta, risottata non prenotata
-    node prova-invio.mjs io@example.it ricevuta 3   la ricevuta, risottata per 3
+    node prova-invio.mjs io@example.it              la ricevuta, aperitivo non prenotato
+    node prova-invio.mjs io@example.it ricevuta 3   la ricevuta, aperitivo per 3
     node prova-invio.mjs io@example.it fallita      l'avviso di mancato pagamento
 `);
   process.exit(1);
@@ -83,15 +83,15 @@ const mail =
           IMPORTO_QUOTA: "10,00 €",
           IMPORTO_COMMISSIONI: "1,00 €",
           IMPORTO: "11,00 €",
-        }).replace("{{RISOTTO}}", () => bloccoRisotto(risottoN)),
+        }).replace("{{APERITIVO}}", () => bloccoAperitivo(aperitivoN)),
         testo:
           "PROVA. Ciao Rebecca, la tua iscrizione alla Color Walk del 20 settembre " +
           `è registrata e la quota è pagata. 10,00 € di quota + 1,00 € di commissioni di servizio = 11,00 € il ${data}.
 
 ` +
-          (risottoN
-            ? `Risottata finale: prenotata, ${coperti(risottoN)} a tuo nome.`
-            : "Risottata finale: non prenotata."),
+          (aperitivoN
+            ? `Aperitivo: prenotato, ${persone(aperitivoN)} a tuo nome.`
+            : "Aperitivo: non prenotato."),
       };
 
 console.log(`
