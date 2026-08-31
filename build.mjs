@@ -662,7 +662,7 @@ const renderBanner = () => {
     .find((p) => existsSync(p));
   if (!bannerTrovato) return "";
   return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
-      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa dalle 15:30.">`;
+      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa alle 15:45, partenza alle 16:00.">`;
 };
 
 /* {{APERITIVO_BANNER}} è la striscia dell’aperitivo — stessa misura e
@@ -720,8 +720,9 @@ const renderLocandina = () => {
   const pdf = `assets/${LOCANDINA}.pdf`;
   const conPdf = existsSync(pdf);
   const alt =
-    "Locandina A4 della Color Walk: domenica 20 settembre 2026 dalle 15:30, " +
-    "ritrovo in Piazza Chiesa a Rivalta sul Mincio. Iscrizioni online 10 € a " +
+    "Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle " +
+    "15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. " +
+    "Iscrizioni online 10 € a " +
     "persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.";
   const anteprima = conPdf
     ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
@@ -1143,8 +1144,11 @@ const evento = JSON.parse(readFileSync("_build/email/evento.json", "utf8"));
    peggio di nessuna, e una parentesi graffa è peggio di tutte e due. */
 const pieno = (k) => String(evento[k] ?? "").trim() !== "";
 const sezioni = {
-  quando: ["ritrovoOra", "ritrovoLuogo"].every(pieno),
-  percorso: ["partenza", "distanza"].every(pieno),
+  /* L'ora di partenza sta con il ritrovo, non col percorso: è quello che
+     serve a chi legge per non arrivare tardi, e non deve restare fuori dalla
+     ricevuta solo perché non si sa ancora quanto è lungo il giro. */
+  quando: ["ritrovoOra", "ritrovoLuogo", "partenza"].every(pieno),
+  percorso: pieno("distanza"),
   portare: ["portare", "fornito"].every(pieno),
   rimborsi: ["dataLimite", "rimborsi"].every(pieno),
   contatto: pieno("organizzatori"),

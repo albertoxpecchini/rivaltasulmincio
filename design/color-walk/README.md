@@ -85,8 +85,8 @@ e si rigenera `aperitivo-banner.render.html` (rimettendo la foto da `.u` del sid
 ## Da dove vengono i dati
 
 Testi e cifre sono copiati da [`/color-walk`](../../color-walk.html) e dal
-[regolamento](../../color-walk-regolamento.html) **al 27 agosto 2026**: domenica 20
-settembre 2026 dalle 15:30, ritrovo in Piazza Chiesa, quota 10 € (+1 € di commissioni),
+[regolamento](../../color-walk-regolamento.html) **al 1° settembre 2026**: domenica 20
+settembre 2026, ritrovo alle 15:45 in Piazza Chiesa e partenza alle 16:00, quota 10 € (+1 € di commissioni),
 iscrizioni su `rivaltasulmincio.it/color-walk`, organizzano Rebecca Zovi, Elena Colla e
 Alessandra Nosè. **Non si aggiornano da soli**: se in pagina cambia una data, un luogo o un
 prezzo, queste due tavole vanno riaperte e rifatte a mano.
