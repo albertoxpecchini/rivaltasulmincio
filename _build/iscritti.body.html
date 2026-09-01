@@ -21,6 +21,14 @@
      la chiave non finisce mai in un indirizzo da scaricare — e quindi né nella
      cronologia, né nei registri del server, né in un link inoltrato per
      sbaglio.
+
+     ── Un pagamento non è una persona ─────────────────────────────────────
+     Chi si iscrive è maggiorenne e può portare con sé i minori a suo carico.
+     Un pagamento vale quindi da una a nove persone, e i due numeri restano
+     distinti dappertutto: il numero grande in cima è quello dei PARTECIPANTI
+     — perché il tetto di 300 è di persone e non di pagamenti — la riga sotto
+     la ricerca dice tutti e due, e il CSV esce con una riga per persona,
+     perché è l'elenco su cui si spuntano le sacche.
      ═══════════════════════════════════════════════════════════════════════ -->
 
 <style>
@@ -267,7 +275,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   <section class="sb-container sb-riv-pagehead">
     <span class="sb-riv-eyebrow">Zona organizzatori</span>
     <h1>Iscritti alla Color Walk</h1>
-    <p class="sb-riv-lede">Chi ha pagato la quota del 20 settembre, letto dai pagamenti Stripe. Serve la chiave: questa pagina non tiene niente di suo.</p>
+    <p class="sb-riv-lede">Chi ha pagato la quota del 20 settembre, letto dai pagamenti Stripe. Un'iscrizione può valere più persone: chi ha pagato più i minori che ha iscritto con sé. Serve la chiave: questa pagina non tiene niente di suo.</p>
   </section>
 
   <section class="sb-container sb-is-sec">
@@ -286,7 +294,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     <div class="sb-is-zona" id="is-zona" hidden>
       <div class="sb-panel sb-is-conti">
         <div class="sb-panel-inner sb-is-conti-in">
-          <div class="sb-is-conto"><b id="is-n">0</b><span>iscritti</span></div>
+          <div class="sb-is-conto"><b id="is-n">0</b><span>persone su 300</span></div>
           <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div>
           <div class="sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div>
         </div>
@@ -298,7 +306,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
       </div>
 
-      <input class="sb-is-campo sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, via, codice fiscale…" autocomplete="off" enterkeyhint="search">
+      <input class="sb-is-campo sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, codice fiscale, email…" autocomplete="off" enterkeyhint="search">
 
       <p class="sb-is-conteggio" id="is-conteggio" hidden></p>
 
@@ -306,7 +314,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     </div>
 
     <p class="sb-is-nota">
-      Qui dentro ci sono dati di persone vere — codice fiscale e indirizzo di casa compresi. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo.
+      Qui dentro ci sono dati di persone vere — codice fiscale e data di nascita compresi, e i nomi dei minori che qualcuno ha iscritto con sé. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo.
     </p>
 
     <noscript>
@@ -402,15 +410,33 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       dl.appendChild(d);
     }
 
+    voce("Nato il", data(i.dataNascita));
     voce("Cod. fisc.", i.codiceFiscale, "sb-is-mono");
-    voce("Indirizzo", i.indirizzo);
     voce("Email", i.email, null, "mailto:");
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
     voce("Iscritto il", quando(i.quandoISO));
 
+    /* I minori a carico, uno per riga sotto i dati di chi li ha iscritti.
+       Non sono una scheda loro: sono dentro questa, perché è così che sono
+       stati iscritti e perché chi consegna le sacche deve vedere in un colpo
+       che a questo nome corrispondono tre persone. */
+    (i.minori || []).forEach(function (m, k) {
+      var eta = m.dataNascita ? " · " + data(m.dataNascita) : "";
+      var cf = m.codiceFiscale ? " · " + m.codiceFiscale : "";
+      voce(k === 0 ? "Con sé" : "", (m.nome + " " + m.cognome).trim() + eta + cf);
+    });
+
     inner.appendChild(dl);
     return panel;
+  }
+
+  /* Una data ISO com'è scritta in Italia. Se arriva vuota o storta si
+     restituisce com'è: meglio una data strana che una scheda senza il campo. */
+  function data(iso) {
+    if (!/^d{4}-d{2}-d{2}$/.test(String(iso || ""))) return iso || "";
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
   }
 
   function normalizza(s) {
@@ -424,7 +450,10 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     var q = normalizza(cerca.value.trim());
     var visti = dati.iscritti.filter(function (i) {
       if (!q) return true;
-      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono].join(" ")).indexOf(q) > -1;
+      /* Si cerca anche fra i minori: chi cerca «Bianchi» deve trovare
+         l'iscrizione anche quando Bianchi è il figlio e non chi ha pagato. */
+      var minori = (i.minori || []).map(function (m) { return m.nome + " " + m.cognome + " " + m.codiceFiscale; }).join(" ");
+      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.email, i.telefono, minori].join(" ")).indexOf(q) > -1;
     });
 
     /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
@@ -434,9 +463,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       conteggio.hidden = true;
     } else {
       conteggio.hidden = false;
+      var persone = dati.persone != null ? dati.persone : dati.iscritti.length;
       conteggio.textContent = q
-        ? visti.length + " di " + dati.iscritti.length
-        : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscritto" : " iscritti");
+        ? visti.length + " di " + dati.iscritti.length + " iscrizioni"
+        : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscrizione · " : " iscrizioni · ") +
+          persone + (persone === 1 ? " persona" : " persone");
     }
 
     elenco.innerHTML = "";
@@ -463,7 +494,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
           throw guaio;
         }
         dati = res.d;
-        document.getElementById("is-n").textContent = String(dati.iscritti.length);
+        /* Il numero grande è quello delle PERSONE, non delle iscrizioni: il
+           tetto di 300 è di partecipanti, e un pagamento può valerne tre. */
+        document.getElementById("is-n").textContent = String(dati.persone != null ? dati.persone : dati.iscritti.length);
         document.getElementById("is-tot").textContent = euro(dati.totaleCent);
         document.getElementById("is-inc").textContent = String(dati.incompleti);
 
@@ -525,15 +558,27 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var rigaCsv = function (celle) { return celle.map(campoCsv).join(";"); };
   var fileCsv = function (righe) { return "﻿" + righe.join("\r\n") + "\r\n"; };
 
+  /* Una riga per PERSONA e non per pagamento: è l'elenco che serve al banco
+     delle sacche, dove si spunta chi arriva. Il minore porta scritto accanto
+     chi lo ha iscritto e ne risponde, e l'importo sta solo sulla riga di chi
+     ha pagato — sommando la colonna deve venire fuori l'incasso vero, non il
+     triplo. */
   function csv() {
-    var righe = [rigaCsv(["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
+    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
-        i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.note,
+        "maggiorenne", i.nome, i.cognome, data(i.dataNascita), i.codiceFiscale, i.email, i.telefono, "", i.note,
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
         i.consenso, i.id
       ]));
+      (i.minori || []).forEach(function (m) {
+        righe.push(rigaCsv([
+          "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",
+          (i.nome + " " + i.cognome).trim(), "",
+          quando(i.quandoISO), "", i.consenso, i.id
+        ]));
+      });
     });
     return fileCsv(righe);
   }

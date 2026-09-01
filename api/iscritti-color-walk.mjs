@@ -8,10 +8,19 @@
    fa altro che rileggerli da lì e rimetterli in fila. Non c'è niente da
    tenere allineato, perché non c'è una seconda copia.
 
+   ── Un'iscrizione può valere più persone ──────────────────────────────────
+   Chi si iscrive è maggiorenne e può portare con sé i minori a suo carico
+   (vedi api/iscrizione-color-walk.mjs). Un pagamento, quindi, non è più una
+   persona: è un adulto più i suoi minori, scritti nei metadata come
+   `minore_1`, `minore_2`… Qui si sciolgono e si contano uno per uno, perché
+   il tetto dell'evento è di 300 PARTECIPANTI e non di 300 pagamenti — e
+   perché l'elenco che serve al ritiro delle sacche è quello delle persone.
+
    ── Qui dentro passano dati di persone vere ───────────────────────────────
-   Nome, cognome, CODICE FISCALE, indirizzo di casa, email e telefono di
-   chiunque si sia iscritto. È il dato più sensibile che questo sito tocchi, e
-   sta dietro l'unica porta chiusa a chiave del progetto:
+   Nome, cognome, CODICE FISCALE, data di nascita, email e telefono di
+   chiunque si sia iscritto, e i nomi dei minori che qualcuno porta con sé. È
+   il dato più sensibile che questo sito tocchi, e sta dietro l'unica porta
+   chiusa a chiave del progetto:
 
      · serve la chiave in ISCRITTI_CHIAVE, una variabile d'ambiente su Vercel.
        Se non è impostata la funzione non risponde — non «risponde a tutti»:
@@ -47,7 +56,39 @@ const ATTESA_MS = 8000;
 const PER_PAGINA = 100;
 const PAGINE_MAX = 10;
 
+/* Il materiale che ANSPI ha a disposizione basta per trecento persone: è il
+   tetto dell'evento, e la pagina /iscritti lo mostra accanto al conto di
+   quante ne sono state iscritte finora. */
+const TETTO_PARTECIPANTI = 300;
+
+/* Quanti minori una singola iscrizione può portare: la stessa cifra di
+   MAX_MINORI in api/iscrizione-color-walk.mjs. Qui serve solo a sapere fin
+   dove cercare le chiavi `minore_N` nei metadata. */
+const MAX_MINORI = 8;
+
 const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
+
+/* I minori scritti nei metadata: una chiave per uno, quattro campi separati
+   da una barra verticale — nome, cognome, data di nascita, codice fiscale
+   (`—` se non è stato dato). Si legge quello che c'è e si tira via il resto:
+   una chiave malformata non deve far sparire l'intera iscrizione dall'elenco
+   di chi sta consegnando le sacche. */
+function leggiMinori(m) {
+  const minori = [];
+  for (let i = 1; i <= MAX_MINORI; i++) {
+    const riga = m[`minore_${i}`];
+    if (!riga) continue;
+    const [nome = "", cognome = "", dataNascita = "", codiceFiscale = ""] = String(riga).split("|");
+    if (!nome && !cognome) continue;
+    minori.push({
+      nome: nome.trim(),
+      cognome: cognome.trim(),
+      dataNascita: dataNascita.trim(),
+      codiceFiscale: codiceFiscale.trim() === "—" ? "" : codiceFiscale.trim(),
+    });
+  }
+  return minori;
+}
 
 /* Le due chiavi passano da uno sha256 prima del confronto: così sono sempre
    lunghe uguali — timingSafeEqual pretende due buffer della stessa misura, e
@@ -121,11 +162,12 @@ export default async function handler(req, res) {
           nome: m.nome || "",
           cognome: m.cognome || "",
           codiceFiscale: m.codice_fiscale || "",
-          indirizzo: m.indirizzo || "",
+          dataNascita: m.data_nascita || "",
           email: s.customer_details?.email || s.customer_email || "",
           telefono: m.telefono === "—" ? "" : m.telefono || "",
           note: m.note === "—" ? "" : m.note || "",
           consenso: m.consenso || "",
+          minori: leggiMinori(m),
           quandoISO: new Date(s.created * 1000).toISOString(),
           importoCent: s.amount_total ?? 0,
         });
@@ -142,6 +184,11 @@ export default async function handler(req, res) {
       evento: EVENTO,
       iscritti,
       incompleti,
+      /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
+         il modulo, e quante persone cammineranno. È il secondo a doversi
+         fermare sotto il tetto. */
+      persone: iscritti.reduce((n, i) => n + 1 + i.minori.length, 0),
+      tetto: TETTO_PARTECIPANTI,
       totaleCent: iscritti.reduce((s, i) => s + i.importoCent, 0),
       aggiornatoISO: new Date().toISOString(),
     });

@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Eventi — Festa del Pesce, Sagra dei Patroni e calendario 2026</title>
-<meta name="description" content="Il calendario degli eventi di Rivalta sul Mincio: Festa del Pesce e del Luccio alla Rivaltese, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca. Date 2026.">
+<title>Modulo di iscrizione da stampare — Color Walk 20 settembre | Rivalta sul Mincio</title>
+<meta name="description" content="Il modulo cartaceo per iscriversi alla Color Walk del 20 settembre sul posto, in Piazza Chiesa prima della partenza: dati, dichiarazione di responsabilità e quote da pagare in contanti.">
 <meta name="theme-color" content="#fcfcfc">
-<link rel="canonical" href="https://www.rivaltasulmincio.it/eventi">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.rivaltasulmincio.it/color-walk-modulo">
+<meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rivalta sul Mincio">
 <meta property="og:locale" content="it_IT">
-<meta property="og:title" content="Eventi — Festa del Pesce, Sagra dei Patroni e calendario 2026">
-<meta property="og:description" content="Il calendario degli eventi di Rivalta sul Mincio: Festa del Pesce e del Luccio alla Rivaltese, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca. Date 2026.">
-<meta property="og:url" content="https://www.rivaltasulmincio.it/eventi">
-<meta name="twitter:title" content="Eventi — Festa del Pesce, Sagra dei Patroni e calendario 2026">
-<meta name="twitter:description" content="Il calendario degli eventi di Rivalta sul Mincio: Festa del Pesce e del Luccio alla Rivaltese, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca. Date 2026.">
+<meta property="og:title" content="Modulo di iscrizione da stampare — Color Walk 20 settembre | Rivalta sul Mincio">
+<meta property="og:description" content="Il modulo cartaceo per iscriversi alla Color Walk del 20 settembre sul posto, in Piazza Chiesa prima della partenza: dati, dichiarazione di responsabilità e quote da pagare in contanti.">
+<meta property="og:url" content="https://www.rivaltasulmincio.it/color-walk-modulo">
+<meta name="twitter:title" content="Modulo di iscrizione da stampare — Color Walk 20 settembre | Rivalta sul Mincio">
+<meta name="twitter:description" content="Il modulo cartaceo per iscriversi alla Color Walk del 20 settembre sul posto, in Piazza Chiesa prima della partenza: dati, dichiarazione di responsabilità e quote da pagare in contanti.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -152,219 +152,325 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </header>
 
   <main class="sb-main" id="main">
-<section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Sezione 19</span>
-  <h1>Eventi</h1>
-  <p class="sb-riv-lede">Il paese si raduna quasi tutto all'<strong>Area Feste Platana</strong> e sul fiume. Due appuntamenti fanno da cardine all'anno: la <strong>Festa del Pesce</strong> a luglio e la <strong>Sagra dei Patroni</strong> a settembre.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
-    <a href="#calendario">Calendario ricorrente</a>
-    <a href="#dettaglio2026">Dettaglio 2026</a>
-    <a href="#contrade">Le sei contrade</a>
-    <a href="#luccio">Il piatto identitario</a>
-    <a href="#aggiornamenti">Aggiornamenti</a>
-  </nav>
-</section>
+<style>
+/* ═══ Il foglio ═══════════════════════════════════════════════════════════════
+   A schermo è una pagina del sito come le altre. In stampa diventa una A4:
+   margini della stampante, nero su bianco, niente che si muova. */
+.sb-cwm { max-width: 52rem; }
 
-<section class="sb-container sb-riv-sec" id="calendario">
-  <div class="sb-sechead sb-sechead--start">
-    <span class="sb-riv-secnum">19 — Ricorrenze</span>
-    <h2>Calendario ricorrente annuale</h2>
+.sb-cwm-testa {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.9rem;
+  border-bottom: 2px solid var(--sb-fg);
+}
+.sb-cwm-t { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--sb-fg); }
+.sb-cwm-st { margin: 0.25rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--sb-fg-light); }
+.sb-cwm-quando { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); text-align: right; }
+.sb-cwm-quando strong { color: var(--sb-fg); }
+
+/* ═══ I blocchi ══════════════════════════════════════════════════════════════
+   Un riquadro per argomento, col suo numero: chi sta al banco delle
+   iscrizioni con venti persone in fila deve poter dire «manca il tre». */
+.sb-cwm-blocco { margin-top: 1.4rem; }
+.sb-cwm-h {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg);
+}
+.sb-cwm-h span {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--sb-fg-muted);
+}
+
+/* ═══ Le righe da riempire a penna ═══════════════════════════════════════════
+   Un bordo sotto e basta. `min-height` e non `height`: se una griglia va a
+   capo su carta stretta, la riga si allunga invece di schiacciarsi. */
+.sb-cwm-riga { display: grid; gap: 0.9rem 1.2rem; }
+.sb-cwm-r2 { grid-template-columns: 1fr 1fr; }
+.sb-cwm-r3 { grid-template-columns: 1.2fr 1fr 1.4fr; }
+@media (max-width: 34rem) {
+  .sb-cwm-r2, .sb-cwm-r3 { grid-template-columns: 1fr; }
+}
+
+.sb-cwm-campo { min-width: 0; }
+.sb-cwm-et {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-cwm-vuoto {
+  min-height: 2.1rem;
+  border-bottom: 1px solid var(--sb-border-strong);
+}
+.sb-cwm-vuoto--alto { min-height: 3.2rem; }
+
+/* ═══ La tabella dei minori ══════════════════════════════════════════════════
+   Quattro righe: di più su una A4 non ci stanno insieme a tutto il resto, e
+   una famiglia con cinque figli compila due fogli. Il numero di riga a
+   sinistra serve a chi ricopia l'elenco dopo. */
+.sb-cwm-tab { width: 100%; border-collapse: collapse; }
+.sb-cwm-tab th {
+  padding: 0 0.5rem 0.3rem 0;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-cwm-tab td {
+  padding: 0;
+  border-bottom: 1px solid var(--sb-border-strong);
+  height: 2.1rem;
+}
+.sb-cwm-tab td:first-child,
+.sb-cwm-tab th:first-child {
+  width: 1.8rem;
+  border-bottom: none;
+  font-size: 0.8rem;
+  color: var(--sb-fg-muted);
+  vertical-align: bottom;
+  padding-bottom: 0.35rem;
+}
+.sb-cwm-tab td + td { border-right: 1px solid transparent; }
+
+/* ═══ Il conto ═══════════════════════════════════════════════════════════════
+   Le due quote, e lo spazio per scrivere quante persone e quanto in tutto.
+   La casella del totale è un riquadro vero e non una riga: è il numero che
+   chi incassa deve trovare al primo sguardo. */
+.sb-cwm-conto {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.2rem;
+  align-items: end;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 8px;
+}
+@media (max-width: 34rem) { .sb-cwm-conto { grid-template-columns: 1fr; } }
+.sb-cwm-quote { margin: 0; font-size: 0.85rem; line-height: 1.9; color: var(--sb-fg-light); }
+.sb-cwm-quote strong { color: var(--sb-fg); }
+.sb-cwm-tot { text-align: right; }
+.sb-cwm-tot-et { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sb-fg-muted); }
+.sb-cwm-tot-box {
+  min-width: 9rem;
+  min-height: 2.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid var(--sb-fg);
+  border-radius: 6px;
+}
+
+/* ═══ La dichiarazione ═══════════════════════════════════════════════════════
+   Il pezzo che conta, e si vede che conta: filo spesso a sinistra e testo
+   più fitto. Non è un riquadro di servizio, è quello che si firma. */
+.sb-cwm-dich {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--sb-border-strong);
+  border-left: 3px solid var(--sb-fg);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--sb-fg-light);
+}
+.sb-cwm-dich p { margin: 0 0 0.6rem; }
+.sb-cwm-dich p:last-child { margin-bottom: 0; }
+.sb-cwm-dich strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cwm-dich a { color: var(--sb-brand-text); }
+
+.sb-cwm-firma { margin-top: 1.3rem; }
+.sb-cwm-pie {
+  margin-top: 1.4rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--sb-border);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--sb-fg-muted);
+}
+
+/* ═══ La stampa ══════════════════════════════════════════════════════════════
+   Il sito intorno sparisce e resta il foglio, che deve stare in UNA A4 sola:
+   una dichiarazione da firmare con la firma sul retro non la firma nessuno.
+
+   Due cose non ovvie, e tutte e due sono errori che si vedono solo stampando.
+
+   La prima: il fondo. Il tema del sito lo decide chi guarda, e chi stampa da
+   un browser in tema scuro si ritroverebbe un foglio nero con sopra del testo
+   nero. Qui il bianco e il nero si impongono su html e body, non solo sul
+   foglio: le variabili del tema non decidono più niente.
+
+   La seconda: la misura del testo. Tutto il foglio è in rem, quindi basta
+   abbassare la radice per stringere ogni cosa insieme — margini, righe,
+   caratteri — mantenendo le proporzioni. A 14.4px il modulo entra in una
+   pagina con i suoi quattro posti per i minori; i valori qui sotto sono
+   quelli che ci fanno stare, non numeri tondi scelti a occhio. */
+@media print {
+  @page { size: A4; margin: 11mm; }
+
+  html { font-size: 14.4px; }
+  /* Il fondo del sito non sta su body: sta su .sb-home, il guscio che
+     avvolge ogni pagina (e che si porta dietro anche i veli del fondale sui
+     suoi pseudo-elementi). Sbiancare solo body lascerebbe il foglio grigio o
+     nero a seconda del tema di chi stampa — è esattamente l'errore che si
+     scopre soltanto guardando il primo foglio uscito dalla stampante. */
+  html, body, .sb-home, .sb-main {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .sb-home::before, .sb-home::after { display: none !important; }
+
+  .sb-nav, .sb-foot, .sb-ctl, .sb-riv-pager, .sb-cwm-solo-schermo { display: none !important; }
+  .sb-main { padding: 0 !important; }
+  .sb-container { max-width: none !important; padding: 0 !important; }
+  /* Su carta la colonna è larga quanto il foglio: le 52rem servono a chi
+     legge a schermo, dove intorno c'è spazio da riempire. */
+  .sb-cwm { max-width: none !important; }
+
+  .sb-cwm, .sb-cwm * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .sb-cwm-et, .sb-cwm-h span, .sb-cwm-tab th, .sb-cwm-tot-et, .sb-cwm-pie { color: #444 !important; }
+  .sb-cwm-vuoto, .sb-cwm-tab td, .sb-cwm-conto, .sb-cwm-dich, .sb-cwm-tot-box { border-color: #000 !important; }
+  .sb-cwm-testa { border-bottom-color: #000 !important; }
+
+  /* Il recupero dei millimetri, in ordine di quanto rendono. */
+  .sb-cwm-blocco { margin-top: 1rem; }
+  .sb-cwm-riga { gap: 0.7rem 1.2rem; }
+  .sb-cwm-vuoto { min-height: 1.95rem; }
+  .sb-cwm-vuoto--alto { min-height: 2.7rem; }
+  .sb-cwm-tab td { height: 1.95rem; }
+  .sb-cwm-dich { padding: 0.7rem 0.9rem; line-height: 1.5; }
+  .sb-cwm-dich p { margin-bottom: 0.45rem; }
+  .sb-cwm-conto { padding: 0.7rem 0.9rem; }
+  .sb-cwm-quote { line-height: 1.75; }
+  .sb-cwm-firma { margin-top: 1rem; }
+  .sb-cwm-pie { margin-top: 0.9rem; padding-top: 0.5rem; }
+
+  /* Un blocco non si spezza fra due fogli: se un giorno il testo cresce e la
+     pagina diventa due, che almeno la dichiarazione resti tutta intera con
+     la sua firma sotto. */
+  .sb-cwm-blocco, .sb-cwm-dich, .sb-cwm-conto { break-inside: avoid; page-break-inside: avoid; }
+}
+</style>
+
+<section class="sb-container sb-cwm">
+
+  <!-- A schermo si spiega cos'è questo foglio; in stampa la spiegazione non
+       serve, chi ce l'ha in mano lo sa già. -->
+  <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem">
+    <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
+    <h1 style="margin:0.35rem 0 0">Modulo da stampare</h1>
+    <p class="sb-riv-lede">Il modulo per iscriversi <strong>sul posto</strong>, in Piazza Chiesa prima della partenza, pagando in contanti al ritiro della sacca. Stampalo e portalo già compilato: si fa prima, e al banco resta solo da firmare e pagare. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 del 18 settembre.</p>
+    <p style="font-size:0.9rem;margin-top:0.9rem"><button type="button" class="sb-btn sb-btn--primary" onclick="window.print()">Stampa il modulo</button></p>
   </div>
 
-  <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
-      <table class="sb-riv-table sb-riv-table--wide">
-        <thead><tr><th scope="col">Periodo</th><th scope="col">Evento</th><th scope="col">Luogo</th></tr></thead>
-        <tbody>
-          <tr><td class="nowrap"><strong>6 gennaio</strong></td><td><strong>«Brusa la Vècia — Burièl»</strong> — falò della Befana, dalle 18:00</td><td>Piazza Basile, davanti al Palazzetto</td></tr>
-          <tr><td class="nowrap">Marzo</td><td><strong>Pulimincio</strong> — pulizia rive e acque del Mincio (22ª ed. nel 2026, l'8 marzo)</td><td>rive del Mincio</td></tr>
-          <tr><td class="nowrap">20 marzo ca.</td><td><strong>Fiumi di Primavera</strong> — Giornata Mondiale dell'Acqua</td><td>Mantova, Lungolago Gonzaga</td></tr>
-          <tr><td class="nowrap">Marzo–novembre</td><td><strong>Cammina Mantova</strong> — rassegna di percorsi a passo lento</td><td>territorio mantovano</td></tr>
-          <tr><td class="nowrap">Maggio</td><td><strong>«Maggio nella Valle»</strong> — cartellone congiunto Rivalta e Grazie di Curtatone, presentato alla prima edizione del <strong>2025</strong> come un «gemellaggio» fra le due località del Mincio: turismo, cultura, natura e tradizioni in un programma solo</td><td>Rivalta e Grazie</td></tr>
-          <tr><td class="nowrap">Fine giugno</td><td><strong>Cena Tedesca «Ein Prosit»</strong> — cena benefica (18ª ed. nel 2026) pro Casa del Sole ETS e ANFFAS ETS</td><td>Area Feste Platana</td></tr>
-          <tr><td class="nowrap">Fine giugno</td><td>Raduno canoistico</td><td>Corte Mincio</td></tr>
-          <tr><td class="nowrap">Inizio luglio</td><td><strong>Festa del Pesce e del Luccio alla Rivaltese</strong> — evento principale del paese, 41ª ed. nel 2026</td><td>Area Feste Platana</td></tr>
-          <tr><td class="nowrap">Inizio luglio</td><td><strong>Baracca dei Nott-Ambuli</strong> — musica live e street food del gruppo giovani Pro Loco (5ª ed. 2026)</td><td>Area Feste Platana</td></tr>
-          <tr><td class="nowrap">Giugno–settembre</td><td>Escursioni serali in barca: Plenilunio, Tramonto, degustazioni</td><td>Corte Mincio</td></tr>
-          <tr><td class="nowrap">Fine agosto</td><td><strong>Festa de l'Unità</strong> — sei serate di cucina mantovana, incontri e musica</td><td>Area Feste La Platana</td></tr>
-          <tr><td class="nowrap">Agosto–settembre</td><td><strong>Festival del Benessere in Natura nel Parco del Mincio</strong> — escursioni notturne in canoa</td><td>lungo il Mincio</td></tr>
-          <tr><td class="nowrap">Inizio settembre</td><td>Raduno canoistico</td><td>Corte Mincio</td></tr>
-          <tr><td class="nowrap">20 settembre 2026</td><td><strong>Color Walk</strong> — camminata a colori non competitiva, ritrovo 15:45 e partenza 16:00, quota 10 € (5 € dai 6 ai 17 anni), al posto dei tornei del Palio; se piove si rinvia al 26 settembre (<a href="/color-walk">iscrizioni</a>)</td><td>partenza da Piazza Chiesa, poi vie del paese</td></tr>
-          <tr><td class="nowrap">Settembre, 4ª domenica</td><td><strong>Sagra dei Patroni + Palio delle Contrade</strong> — tornei di calcetto, bocce, pallavolo; giochi di una volta al parco di Fondo Mincio; regata del palio; risottata e musica in Piazza Chiesa; pranzo dei Patroni (<a href="#contrade">le sei contrade</a>)</td><td>paese / Fondo Mincio</td></tr>
-          <tr><td class="nowrap">Inizio ottobre</td><td>Raduno canoistico</td><td>Corte Mincio</td></tr>
-          <tr><td class="nowrap">Dicembre</td><td><strong>Natale a Rivalta</strong> — eventi, arte (Mincio ART) e tradizioni sul fiume</td><td>paese</td></tr>
-        </tbody>
-      </table>
-    </div></div></div>
-  </div>
-</section>
-
-<section class="sb-container sb-riv-sec" id="dettaglio2026">
-  <div class="sb-sechead sb-sechead--start">
-    <span class="sb-riv-secnum">19 — Anno in corso</span>
-    <h2>Dettaglio 2026</h2>
+  <div class="sb-cwm-testa">
+    <div>
+      <p class="sb-cwm-t">Color Walk — modulo di iscrizione</p>
+      <p class="sb-cwm-st">Camminata a colori non competitiva per le vie di Rivalta sul Mincio<br>Associazione San Filippo Neri ANSPI APS-ETS — Rodigo (MN), C.F. 93061070202</p>
+    </div>
+    <div class="sb-cwm-quando">
+      <strong>Domenica 20 settembre 2026</strong><br>
+      Ritrovo 15:45 · Partenza 16:00<br>
+      Piazza Chiesa, Rivalta sul Mincio<br>
+      Se piove: <strong>sabato 26 settembre</strong>
+    </div>
   </div>
 
-  <div class="sb-riv-cwhome">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <img class="sb-riv-cwbanner" src="assets/foto/color-walk-banner.webp" width="2400" height="900" decoding="async"
-      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa alle 15:45, partenza alle 16:00.">
-          <div class="sb-riv-cwhome-azioni">
-            <a class="sb-btn sb-btn--primary" href="/color-walk#iscrizione"><span>Iscriviti alla camminata</span></a>
-            <a class="sb-btn sb-btn--secondary" href="/color-walk-regolamento"><span>Regolamento</span></a>
-          </div>
-        </div></div>
-      </div>
-
-  <p class="sb-riv-p" style="margin-top:1.4rem">Domenica <strong>20 settembre 2026</strong>: ritrovo alle <strong>15:45</strong> in <strong>Piazza Chiesa</strong>, davanti alla chiesa, <strong>partenza alle 16:00</strong>, poi giro per le vie del paese. Camminata a colori non competitiva, quota <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> dai 6 ai 17 anni, aperitivo compreso: quest'anno prende il posto dei tornei del Palio delle Contrade. Si iscrive un maggiorenne, che può aggiungere i minori a suo carico; ci si può iscrivere online o il giorno stesso in piazza, in contanti. In caso di pioggia si rinvia a <strong>sabato 26 settembre</strong>. Il <a href="/color-walk-regolamento">regolamento</a> ha tutte le regole.</p>
-
-  <div class="sb-riv-grid" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Festa del Pesce e del Luccio alla Rivaltese — 41ª edizione</h4>
-      <p>Venerdì <strong>3, 4, 5 luglio</strong> e venerdì <strong>10, 11, 12 luglio 2026</strong>, Area Feste Platana. Cucina dalle <strong>19:30</strong>.</p>
-      <p>Da oltre quarant'anni valorizza la gastronomia locale legata al pesce d'acqua dolce.</p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Baracca dei Nott-Ambuli — 5ª edizione</h4>
-      <p>Le stesse sei serate della Festa del Pesce, Area Feste Platana. Musica dal vivo, street food, aggregazione. Organizzata dal gruppo giovani della Pro Loco.</p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Cena Tedesca «Ein Prosit» — 18ª edizione</h4>
-      <p>Venerdì <strong>26 giugno 2026, ore 20:30</strong>, Area Feste Platana. Cena benefica a favore di Casa del Sole ETS e ANFFAS ETS.</p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Festa de l'Unità</h4>
-      <p><strong>21, 22, 23</strong> e <strong>28, 29, 30 agosto 2026</strong>, Area Feste La Platana. Sei giornate di cucina mantovana, incontri, musica e solidarietà, sul tema «Costruiamo gentilezza».</p>
-      <p>L'edizione 2026 è dedicata a <strong>Ildebrando Parmigiani</strong>, storico volontario e anima di lunga data della festa rivaltese.</p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Festival del Benessere in Natura</h4>
-      <p>Due escursioni notturne in canoa lungo il Mincio, in territorio di Rodigo: <strong>«Pagaiando con la luna piena»</strong> il <strong>29 agosto 2026</strong> e <strong>«Il Mincio in canoa»</strong> il <strong>6 settembre 2026</strong>.</p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Pulimincio — 22ª edizione</h4>
-      <p>Domenica <strong>8 marzo 2026</strong>. A Rivalta è coordinato dalla Pro Loco con Gruppo Canoistico Rivaltese e Waterways Mincio, con il supporto del Comune.</p>
-      <p>Nel 2025 avevano partecipato <strong>oltre 500 volontari</strong> sull'intera asta fluviale.</p>
-    </div></div>
+  <!-- ── 1. CHI SI ISCRIVE ──────────────────────────────────────────────── -->
+  <div class="sb-cwm-blocco">
+    <p class="sb-cwm-h">1 · Chi si iscrive <span>dev'essere maggiorenne — quota 10 €</span></p>
+    <div class="sb-cwm-riga sb-cwm-r2">
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Nome</span><div class="sb-cwm-vuoto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Cognome</span><div class="sb-cwm-vuoto"></div></div>
+    </div>
+    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Data di nascita</span><div class="sb-cwm-vuoto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Codice fiscale</span><div class="sb-cwm-vuoto"></div></div>
+    </div>
+    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Email</span><div class="sb-cwm-vuoto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Telefono (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
+    </div>
   </div>
 
-  <div class="sb-riv-note">
-    <span class="sb-riv-note-t">Il Mincio in Canoa</span>
-    <p class="sb-riv-p">Discesa <strong>Pozzolo → Rivalta</strong>, ~19 km lungo Pozzolo, Massimbona, Goito, Sacca e Rivalta. Ritrovo a Pozzolo presso la Piscina Rita, partenza <strong>ore 10:00</strong>, arrivo a Corte Mincio verso le <strong>13:00</strong>.</p>
-    <p class="sb-riv-p">Quote indicative: <strong>10 €</strong> escursione guidata con assicurazione · <strong>20 €</strong> con cena finale · <strong>10 €</strong> solo cena per accompagnatori.</p>
+  <!-- ── 2. I MINORI ────────────────────────────────────────────────────── -->
+  <div class="sb-cwm-blocco">
+    <p class="sb-cwm-h">2 · Chi cammina con te <span>minori dai 6 ai 17 anni a tuo carico — quota 5 € ciascuno · sotto i 6 anni non serve iscriversi</span></p>
+    <table class="sb-cwm-tab">
+      <thead>
+        <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td></td><td></td><td></td></tr>
+        <tr><td>2</td><td></td><td></td><td></td></tr>
+        <tr><td>3</td><td></td><td></td><td></td></tr>
+        <tr><td>4</td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
   </div>
-</section>
 
-<section class="sb-container sb-riv-sec" id="contrade">
-  <div class="sb-sechead sb-sechead--start">
-    <span class="sb-riv-secnum">19 — Palio</span>
-    <h2>Le sei contrade</h2>
-    <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. A settembre si sfidano al <strong>Palio delle Contrade</strong>: calcetto, bocce, pallavolo, i giochi di una volta al parco di Fondo Mincio e la regata sul Mincio.</p>
-  </div>
-
-  <div class="sb-riv-contrade">
-      <div class="sb-riv-contrada" data-contrada="filanda">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/filanda.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma della Filanda: la filanda con la ciminiera e il bozzolo del baco da seta"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>la Filanda</h4>
-            <p>La filanda, e accanto il bozzolo del baco da seta.</p>
-            <span class="sb-riv-contrada-c">marrone</span>
-          </div>
-        </div></div>
-      </div>
-      <div class="sb-riv-contrada" data-contrada="roccolo">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/roccolo.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma del Roccolo: il boschetto di alberi verdi"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>il Roccolo</h4>
-            <p>Il boschetto del roccolo. In paese il nome è rimasto a Via Roccolo.</p>
-            <span class="sb-riv-contrada-c">verde</span>
-          </div>
-        </div></div>
-      </div>
-      <div class="sb-riv-contrada" data-contrada="colonie">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/colonie.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma delle Colonie: la caravella con la croce blu sulla vela"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>le Colonie</h4>
-            <p>La barca a vela con la croce. Il nome torna nell'insegna del pub «Le Antiche Colonie».</p>
-            <span class="sb-riv-contrada-c">azzurro</span>
-          </div>
-        </div></div>
-      </div>
-      <div class="sb-riv-contrada" data-contrada="piasaroi">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/piasaroi.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma dei Piasaröi: la torre gialla col tetto rosso e la campana"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>i Piasaröi</h4>
-            <p>La torre, col tetto rosso e la finestra sul fronte.</p>
-            <span class="sb-riv-contrada-c">giallo</span>
-          </div>
-        </div></div>
-      </div>
-      <div class="sb-riv-contrada" data-contrada="platana">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/platana.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma della Plàtana: il platano dalla chioma viola"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>la Plàtana</h4>
-            <p>Il platano. È il nome di Piazza Platana, del suo parco e dell'Area Feste.</p>
-            <span class="sb-riv-contrada-c">viola</span>
-          </div>
-        </div></div>
-      </div>
-      <div class="sb-riv-contrada" data-contrada="fanfane">
-        <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/fanfane.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma delle Fanfane: l'anfora arancione che versa acqua"></span>
-          <div class="sb-riv-contrada-t">
-            <h4>le Fanfane</h4>
-            <p>L'anfora, con l'acqua che le passa sul collo.</p>
-            <span class="sb-riv-contrada-c">arancione</span>
-          </div>
-        </div></div>
+  <!-- ── 3. IL CONTO ────────────────────────────────────────────────────── -->
+  <div class="sb-cwm-blocco">
+    <p class="sb-cwm-h">3 · Quanto <span>si paga in contanti al ritiro della sacca</span></p>
+    <div class="sb-cwm-conto">
+      <p class="sb-cwm-quote">
+        Maggiorenni · <strong>10 €</strong> ciascuno · n. ______<br>
+        Dai 6 ai 17 anni · <strong>5 €</strong> ciascuno · n. ______<br>
+        La quota comprende la sacca, il sacchetto di polveri colorate e l'aperitivo di fine camminata.
+      </p>
+      <div class="sb-cwm-tot">
+        <span class="sb-cwm-tot-et">Totale versato</span>
+        <div class="sb-cwm-tot-box"></div>
       </div>
     </div>
-
-  <p class="sb-riv-cap">Gli stemmi qui sopra sono la versione a colori dei cartelli che stanno in mostra alle giornate del Palio: ridisegnati, non fotografati. Sono gli stessi che tornano nella fila in fondo a <a href="/color-walk">/color-walk</a> e sulla locandina.</p>
-</section>
-
-<section class="sb-container sb-riv-sec" id="luccio">
-  <div class="sb-sechead sb-sechead--start">
-    <span class="sb-riv-secnum">19 — Gastronomia</span>
-    <h2>Il piatto identitario</h2>
   </div>
 
-  <p class="sb-riv-p" style="margin-top:1.2rem">Il <strong>«Luccio alla Rivaltese»</strong>, nelle due varianti <strong>in salsa</strong> e <strong>in bianco</strong>, è stato inserito nel <strong>2013</strong> nell'Elenco Regionale dei Prodotti Agroalimentari Tradizionali della Lombardia ed è oggi anche <strong>De.Co. Comunale</strong> (Denominazione Comunale).</p>
-  <p class="sb-riv-p">È il piatto attorno a cui ruota la festa principale del paese, e il filo che lega la cucina di oggi all'economia di pesca che per secoli ha tenuto in piedi Rivalta — vedi <a href="/attivita#economia">Economia</a>.</p>
-  <p class="sb-riv-p">La ricetta per esteso — in salsa e in bianco — e i locali che lo tengono in carta stanno in <a href="/mangiare#luccio-alla-rivaltese">Cosa vuoi mangiare?</a>.</p>
-</section>
+  <!-- ── 4. LA DICHIARAZIONE ────────────────────────────────────────────── -->
+  <div class="sb-cwm-blocco">
+    <p class="sb-cwm-h">4 · Dichiarazione di responsabilità <span>da leggere prima di firmare</span></p>
+    <div class="sb-cwm-dich">
+      <p>Il sottoscritto dichiara di avere <strong>almeno 18 anni</strong>, di essere in condizioni fisiche idonee a un'attività fisica leggera e di <strong>partecipare alla Color Walk sotto la propria responsabilità</strong>.</p>
+      <p>Dichiara di essere <strong>responsabile dei minori indicati al punto 2</strong>, di accompagnarli per tutto il percorso e di assumere questa dichiarazione anche per loro.</p>
+      <p>Dichiara di essere a conoscenza che <strong>non è prevista alcuna copertura assicurativa</strong> a favore dei partecipanti, e che eventuali tessere o polizze personali restano a carico del singolo.</p>
+      <p>Dichiara di aver letto e di accettare il <strong>regolamento della Color Walk</strong>, pubblicato su <strong>rivaltasulmincio.it/color-walk-regolamento</strong>, e l'informativa sul trattamento dei dati che contiene — compreso il punto 8, per cui <strong>chi non vuole comparire nelle fotografie non partecipa</strong> — anche per i minori iscritti.</p>
+      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati raccolti servono a gestire l'iscrizione, il pagamento e questa dichiarazione, e non vengono ceduti ad altri.</p>
+    </div>
 
-<section class="sb-container sb-riv-sec" id="aggiornamenti">
-  <div class="sb-sechead sb-sechead--start">
-    <span class="sb-riv-secnum">19 — Fonti</span>
-    <h2>Dove seguire gli aggiornamenti</h2>
-    <p>Le date qui riportate valgono al momento della rilevazione: prima di partire, verificale sempre alla fonte.</p>
+    <div class="sb-cwm-riga sb-cwm-r3 sb-cwm-firma">
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Luogo e data</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Ricevuto da (organizzazione)</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Firma di chi si iscrive</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
+    </div>
   </div>
 
-  <div class="sb-riv-grid sb-riv-grid--3">
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Pro Loco e Comune</h4>
-      <p><a href="https://www.rivaltasulmincio.com" target="_blank" rel="noreferrer noopener">rivaltasulmincio.com</a><br><a href="https://comune.rodigo.mn.it/vivere-il-comune/eventi/" target="_blank" rel="noreferrer noopener">comune.rodigo.mn.it — eventi</a></p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Cultura e territorio</h4>
-      <p><a href="https://www.rivaltasiracconta.it" target="_blank" rel="noreferrer noopener">rivaltasiracconta.it</a><br><a href="https://www.mincioart.it" target="_blank" rel="noreferrer noopener">mincioart.it</a><br><a href="https://www.parcodelmincio.it" target="_blank" rel="noreferrer noopener">parcodelmincio.it</a></p>
-    </div></div>
-    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
-      <h4>Canoa e social</h4>
-      <p><a href="https://www.ilmincioincanoa.org" target="_blank" rel="noreferrer noopener">ilmincioincanoa.org</a><br>Facebook: Pro Loco Rivalta sul Mincio APS, Comune di Rodigo</p>
-    </div></div>
-  </div>
+  <p class="sb-cwm-pie">
+    Color Walk — domenica 20 settembre 2026, Rivalta sul Mincio (Rodigo, MN). Organizza l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo. Iscrizioni fino a esaurimento dei 300 posti disponibili. Informazioni e regolamento completo: rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
+  </p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link" href="/natura">← Natura</a>
-    <a class="sb-link" href="/dati">Dati e fonti <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="sb-link" href="/color-walk">← Iscrizione online</a>
+    <a class="sb-link" href="/color-walk-regolamento">Regolamento <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
+
 </section>
   </main>
 </div>

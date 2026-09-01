@@ -2,7 +2,8 @@
    Banco di prova per api/iscritti-color-walk.mjs — `node prova-iscritti.mjs`.
 
    Questa funzione è l'unica del sito che, se sbaglia, consegna a uno
-   sconosciuto il codice fiscale e l'indirizzo di casa di chi si è iscritto.
+   sconosciuto il codice fiscale e la data di nascita di chi si è iscritto,
+   e i nomi dei minori che ha iscritto con sé.
    Le domande a cui questo file risponde sono quindi due, nell'ordine:
 
      1. la porta regge? (chiave assente, sbagliata, di lunghezza diversa,
@@ -40,10 +41,14 @@ const sessione = (n, extra = {}) => ({
     nome: "Nome" + n,
     cognome: "Cognome" + n,
     codice_fiscale: "RSSMRA85T10A562S",
-    indirizzo: "Via Sette Frati " + n,
+    data_nascita: "1985-12-10",
     telefono: "—",
     note: "—",
     consenso: "2026-08-25T10:00:00.000Z",
+    /* Un minore a carico: serve a provare che un pagamento vale più di una
+       persona, e che la riga dei metadata si rilegge intera. */
+    n_minori: "1",
+    minore_1: `Figlio${n}|Cognome${n}|2015-04-02|—`,
   },
   ...extra,
 });
@@ -252,14 +257,21 @@ global.fetch = async () => risposta(500, { error: { message: "Stripe giù" } });
   const res = finestra();
   await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
   const i = res.corpo?.iscritti?.[0] || {};
-  const pieno = i.nome && i.cognome && i.codiceFiscale && i.indirizzo && i.email && i.quandoISO;
+  const pieno = i.nome && i.cognome && i.codiceFiscale && i.dataNascita && i.email && i.quandoISO;
   const trattini = i.telefono === "" && i.note === "";
-  if (pieno && trattini) {
+  /* Il minore va riletto dai metadata, e il «—» del codice fiscale che non
+     c'era deve tornare vuoto come gli altri. Se un giorno i minori sparissero
+     dalla lettura, il tetto dei 300 si conterebbe sbagliato e i controlli qui
+     sopra passerebbero lo stesso. */
+  const m = i.minori?.[0] || {};
+  const conMinore = m.nome === "Figlio7" && m.dataNascita === "2015-04-02" && m.codiceFiscale === "";
+  const persone = res.corpo?.persone === 2 && res.corpo?.tetto === 300;
+  if (pieno && trattini && conMinore && persone) {
     passate++;
-    console.log("  ok   la scheda arriva completa, i «—» restano vuoti");
+    console.log("  ok   la scheda arriva completa, col minore a carico e i «—» vuoti");
   } else {
     fallite++;
-    console.log(`  NO   scheda incompleta: ${JSON.stringify(i)}`);
+    console.log(`  NO   scheda incompleta: ${JSON.stringify(i)} — persone: ${res.corpo?.persone}`);
   }
 }
 

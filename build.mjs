@@ -553,61 +553,6 @@ ${mini}
       </aside>`;
 };
 
-/* ── Le vie del paese, per il modulo della Color Walk ───────────────────
-   {{VIE}} diventa un blocco JSON che il modulo di /color-walk legge dal DOM
-   per suggerire l'indirizzo mentre lo si scrive. Sono le vie vere di Rivalta
-   con i civici mappati in OpenStreetMap: chi abita qui trova il suo indirizzo
-   in due lettere e lo sceglie, invece di scriverlo ognuno a modo suo — «V.
-   Sette Frati 12», «via settefrati, 12», «Via Sette Frati n. 12» sono tre
-   grafie della stessa casa, e a chi poi legge l'elenco degli iscritti tocca
-   riconoscerle a mano.
-
-   Non è un archivio anagrafico e non pretende di esserlo: i civici sono
-   quelli che risultano mappati (177 su 21 vie), e le vie senza nemmeno un
-   civico in OSM restano nell'elenco lo stesso — la via si sceglie dalla lista
-   e il numero si scrive a mano. Il campo accetta comunque testo libero: chi
-   abita fuori Rivalta scrive il suo indirizzo e nessuno glielo impedisce. */
-const VIE_ESCLUSE = new Set([
-  // Non sono indirizzi di casa: nessuno ci abita.
-  "Ciclabile Rivalta sul Mincio - Grazie",
-  "Sottopasso",
-]);
-
-/* Due nomi arrivano da OSM in una forma che in un elenco di indirizzi si
-   leggerebbe come uno sbaglio nostro. Si correggono qui, non nel dataset:
-   quel file è la copia fedele di quanto scaricato, e va lasciato tale.
-   La correzione giusta sta a monte, in OpenStreetMap. */
-const VIE_CORREZIONI = {
-  "Via Gacomo Puccini": "Via Giacomo Puccini", // refuso in OSM
-  "Via T. Battisti": "Via Tertulliano Battisti", // stessa via, scritta corta
-};
-
-const renderVie = () => {
-  const ds = JSON.parse(readFileSync("data/rivalta_dataset.json", "utf8"));
-  const nome = (n) => VIE_CORREZIONI[n] || n;
-  const vie = new Map();
-
-  for (const s of ds.strade) {
-    if (!s.nome || s.nome === "(senza nome)" || VIE_ESCLUSE.has(s.nome)) continue;
-    vie.set(nome(s.nome), []);
-  }
-  for (const [via, civici] of Object.entries(ds.civici_mappati)) {
-    const chiave = nome(via);
-    if (VIE_ESCLUSE.has(via)) continue;
-    const elenco = vie.get(chiave) || [];
-    // Ordine di casa: 2, 6, 9, 10 — non 10, 2, 6 come ordinerebbe il testo.
-    vie.set(
-      chiave,
-      [...new Set([...elenco, ...civici])].sort(
-        (a, b) => parseInt(a, 10) - parseInt(b, 10) || a.localeCompare(b)
-      )
-    );
-  }
-
-  const ordinate = Object.fromEntries([...vie.entries()].sort((a, b) => a[0].localeCompare(b[0], "it")));
-  return `<script type="application/json" id="cw-vie">${JSON.stringify(ordinate).replace(/</g, "\\u003c")}</script>`;
-};
-
 /* ── I loghi di chi c'è dietro ────────────────────────────────────────────
    Stessa regola delle fotografie: il logo compare solo se il file esiste
    davvero. Finché non c'è, al suo posto sta il nome scritto — che in una
@@ -618,7 +563,21 @@ const renderVie = () => {
    Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo. */
 const LOGHI = [
   { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
-  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Stemma del Comune di Rodigo", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
+  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Comune di Rodigo — con il patrocinio del Comune", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
+  /* Chi mette il cibo, le bevande e una mano il 20 settembre. Sono attività
+     del paese e un'associazione di volontariato: nessuna ha un sito, e per
+     loro `url` non c'è — la piastrella resta una piastrella e non finge un
+     collegamento che non porta da nessuna parte. Fin qui i file dei marchi
+     non ci sono ancora: il build stampa il nome scritto e lo dice fra gli
+     avvisi a ogni compilazione, finché non arrivano.
+
+     Marchini e Storti mancano di proposito: non sono confermati, e un logo
+     stampato per sbaglio è più difficile da togliere che da aggiungere. */
+  { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
+  { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
+  { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio" },
+  { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi" },
+  { file: "fior-di-loto", nome: "Fior di Loto", desc: "Profumeria «Fior di Loto» di Rivalta sul Mincio" },
   { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cw-logo--ap" },
 ];
 
@@ -633,6 +592,11 @@ ${LOGHI.map((l) => {
   const dentro = trovato
     ? `<img src="${trovato}" alt="${escape(l.desc)}" loading="lazy" decoding="async">`
     : `<span class="sb-cw-logo-t">${escape(l.nome)}</span>`;
+  /* Un marchio senza sito non diventa un collegamento che non porta da
+     nessuna parte: resta una piastrella e basta. Fuori dal marcatore <a>
+     sparisce anche il title, che su un elemento non interattivo non lo
+     legge nessuno: la stessa frase sta già nell'alt dell'immagine. */
+  if (!l.url) return `      <div class="sb-cw-logo ${l.classe || ""}">${dentro}</div>`;
   return `      <a class="sb-cw-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
 }).join("\n")}
     </div>`;
@@ -706,9 +670,10 @@ const renderLocandina = () => {
   const alt =
     "Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle " +
     "15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. " +
-    "Iscrizioni online 10 € a " +
-    "persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk. " +
-    "A fine camminata, aperitivo in piazza: niente prenotazione.";
+    "Iscrizioni 10 € per chi ha 18 anni o più e 5 € dai 6 ai 17, su " +
+    "rivaltasulmincio.it/color-walk o sul posto in contanti. " +
+    "A fine camminata, aperitivo in piazza compreso nella quota: niente prenotazione. " +
+    "Se piove, si rinvia a sabato 26 settembre.";
   const anteprima = conPdf
     ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
     : ` href="${locandinaTrovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;
@@ -971,7 +936,6 @@ for (const file of bodies) {
       .replace("{{LUOGHI}}", renderLuoghi)
       .replace("{{METEO_ORA}}", renderMeteoOra)
       .replace("{{METEO}}", renderMeteo)
-      .replace("{{VIE}}", renderVie)
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
       .replace("{{CW_HOME}}", () => renderBannerHome(page))
@@ -1187,8 +1151,15 @@ const compilaMail = (nome) => {
      non fanno niente: sono quattro kB per messaggio di conversazione fra chi
      mantiene il sito. Restano nel sorgente, che è dove si leggono.
      Le condizionali di Outlook (<!--[if mso]> … <![endif]-->) sopravvivono:
-     qui non ce ne sono, ma il giorno che servissero non vanno tolte. */
-  src = src.replace(/[ \t]*<!--(?!\[if)[\s\S]*?-->\r?\n?/g, "");
+     qui non ce ne sono, ma il giorno che servissero non vanno tolte.
+
+     Sopravvivono anche i marcatori `se:` — <!--se:chiave--> … <!--/se--> —
+     che NON sono roba del build: li scioglie api/conferma-color-walk.mjs al
+     momento di spedire, quando sa com'è fatta quella singola iscrizione. Le
+     sezioni qui sopra dipendono da evento.json, che è uguale per tutti; i
+     marcatori `se:` dipendono da chi ha compilato il modulo — se una
+     famiglia ha iscritto dei ragazzi o no. */
+  src = src.replace(/[ \t]*<!--(?!\[if|se:|\/se-->)[\s\S]*?-->\r?\n?/g, "");
 
   // Poi i dati dell'evento. Vengono da un JSON scritto a mano e finiscono in
   // HTML: passano dall'escape come qualunque altro testo di provenienza umana.
@@ -1197,11 +1168,18 @@ const compilaMail = (nome) => {
   }
 
   const restati = src.match(/\{\{[A-Z_]+\}\}/g) || [];
+  /* I segnaposto che il build lascia in piedi di proposito: li riempie
+     api/conferma-color-walk.mjs con quello che Stripe conferma del pagamento
+     e con chi è stato iscritto. Qualunque altro `{{...}}` rimasto è un dato
+     che nessuno riempirà mai, e il build si ferma invece di spedirlo. */
   const attesi = [
     "{{NOME}}",
     "{{DATA}}",
-    "{{IMPORTO_QUOTA}}",
-    "{{IMPORTO_COMMISSIONI}}",
+    "{{PARTECIPANTI}}",
+    "{{VOCE_ADULTI}}",
+    "{{IMPORTO_ADULTI}}",
+    "{{VOCE_RAGAZZI}}",
+    "{{IMPORTO_RAGAZZI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
   ];

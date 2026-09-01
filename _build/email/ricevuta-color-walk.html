@@ -49,9 +49,12 @@
      cambiano da sé. È il prezzo di non poter usare le variabili.
 
      ── I due tipi di segnaposto ─────────────────────────────────────────
-     {{NOME}} {{DATA}} {{IMPORTO}} — li riempie la funzione al momento di
-     spedire, con quello che la persona ha scritto nel modulo e con quello
-     che Stripe conferma del pagamento. Non si toccano.
+     {{NOME}} {{DATA}} {{IMPORTO}} {{PARTECIPANTI}} e le quattro voci del
+     riepilogo ({{VOCE_ADULTI}} {{IMPORTO_ADULTI}} {{VOCE_RAGAZZI}}
+     {{IMPORTO_RAGAZZI}}) — li riempie la funzione al momento di spedire,
+     con quello che la persona ha scritto nel modulo e con quello che Stripe
+     conferma del pagamento. Non si toccano. Un'iscrizione può valere più
+     persone: un maggiorenne più i minori che porta con sé.
 
      {{RITROVO_ORA}} e compagni — li riempie il build leggendo
      _build/email/evento.json. Sono le cose che sanno le organizzatrici e non
@@ -109,7 +112,7 @@
 <!-- Anteprima nella lista dei messaggi: si legge prima di aprire, e non si
      vede una volta aperta. Senza, il client pesca la prima riga a caso. -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
-  La tua iscrizione alla Color Walk del 20 settembre è registrata e la quota è pagata.
+  La tua iscrizione alla Color Walk del 20 settembre è registrata e il pagamento è andato a buon fine.
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -139,7 +142,7 @@
         <tr>
         <td class="e-pad" style="padding:20px 40px 0;">
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:16px; line-height:1.6; color:#525252;">
-            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e la quota è stata pagata. Questa mail è la tua conferma: tienila, non serve stamparla.
+            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e il pagamento è andato a buon fine. Questa mail è la tua conferma: tienila, non serve stamparla.
           </p>
         </td>
         </tr>
@@ -147,9 +150,16 @@
         <!-- ── Il riepilogo del pagamento ──────────────────────────────
              La parte "ricevuta". Sotto-lastra con lo smusso piccolo
              (--sb-cut, 10px) e i numeri in mono, come i dati sul sito.
-             Tre righe: la quota, le commissioni di servizio e il totale.
-             I tre importi li passa la funzione, letti da Stripe voce per
-             voce — non sono ricopiati qui. -->
+
+             Una riga per fascia — i maggiorenni, e i 6-17 anni se ce ne
+             sono — più il totale. Voci e importi li passa la funzione,
+             letti da Stripe voce per voce: non sono ricopiati qui, e non
+             c'è nessuna riga di commissioni perché a chi si iscrive non
+             ne viene chiesta nessuna.
+
+             La riga dei ragazzi sta dentro un marcatore `se:` che scioglie
+             la funzione al momento di spedire, non il build: dipende da
+             quella singola iscrizione, non da evento.json. -->
 
 
         <tr>
@@ -165,24 +175,25 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Iscrizione Color Walk — 20 settembre
+                  {{VOCE_ADULTI}}
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
-                  {{IMPORTO_QUOTA}}
+                  {{IMPORTO_ADULTI}}
                 </td>
                 </tr>
               </table>
-
+<!--se:ragazzi-->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Commissioni di servizio
+                  {{VOCE_RAGAZZI}}
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
-                  {{IMPORTO_COMMISSIONI}}
+                  {{IMPORTO_RAGAZZI}}
                 </td>
                 </tr>
               </table>
+<!--/se-->
 
               <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:16px 0;">&nbsp;</div>
 
@@ -199,11 +210,14 @@
 
               <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:16px 0;">&nbsp;</div>
 
+              <!-- Chi è iscritto, per nome. È la riga che serve davvero a
+                   un genitore: la conferma che i figli sono dentro, e non
+                   solo che qualcuno ha pagato. -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                  Le <span class="e-fg-l" style="color:#525252;">commissioni di servizio</span> coprono quanto trattiene il circuito di pagamento: all'organizzazione arriva la quota intera.<br>
-                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta.
+                  <span class="e-fg-m" style="color:#8f8f8f;">Chi è iscritto:</span> <span class="e-fg-l" style="color:#525252;">{{PARTECIPANTI}}</span><br>
+                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
                 </td>
                 </tr>
               </table>

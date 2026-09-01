@@ -379,54 +379,126 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 .sb-cw-aiuto:empty { display: none; }
 .sb-cw-campo[data-stato="ko"] .sb-cw-aiuto { color: var(--cr-rosso); }
 
-/* ═══ L'indirizzo che si compone da sé ═══════════════════════════════════════
-   La tendina è opaca e non di vetro, di proposito: è un contenitore che
-   scorre, e una sfocatura di sfondo su un contenitore che scorre costa una
-   passata di blur per fotogramma — sul telefono si sente. */
-.sb-cw-auto { position: relative; }
-.sb-cw-lista {
-  position: absolute;
-  z-index: 30;
-  top: calc(100% + 0.3rem);
-  left: 0;
-  right: 0;
-  /* Sul telefono la tendina non deve finire sotto la tastiera: si ferma a poco
-     più di un terzo dello schermo e scorre dentro sé stessa. */
-  max-height: 38vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  margin: 0;
-  padding: 0.25rem;
-  list-style: none;
-  border: 1px solid var(--sb-border-strong);
-  border-radius: 10px;
-  background: var(--sb-bg);
-  box-shadow: var(--sb-shadow-card);
+/* La data di nascita è un campo nativo: il selettore lo dà il sistema, ed è
+   quello che chi compila già sa usare. Su iOS un input[type=date] vuoto resta
+   più basso degli altri e col testo grigio disallineato: gli si impone la
+   stessa altezza e lo stesso interno degli altri campi, o nella colonna si
+   vede il gradino. */
+.sb-cw-box input[type="date"] {
+  padding-right: 0.8rem;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 44px;
 }
-.sb-cw-lista[hidden] { display: none; }
-/* Alte 2.9rem: è la misura sotto la quale un dito ne prende due insieme. */
-.sb-cw-voce {
+.sb-cw-box input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+.sb-cw-box input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
+
+/* ═══ Chi cammina con te ═════════════════════════════════════════════════════
+   I minori a carico di chi si iscrive. Ognuno è un riquadro con dentro i
+   suoi campi: rientrato e con un filo a sinistra, così si legge a colpo
+   d'occhio che appartengono a chi ha compilato sopra e non sono una seconda
+   iscrizione.
+
+   Il riquadro si aggiunge e si toglie. Togliere non chiede conferma — è un
+   modulo, non un contratto — ma il tasto sta a destra e piccolo, dove non si
+   preme per sbaglio scendendo col pollice. */
+.sb-cw-gruppo { display: grid; gap: 0.8rem; }
+.sb-cw-gruppo-t {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--sb-fg);
+}
+.sb-cw-gruppo-p { margin: -0.5rem 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
+
+.sb-cw-min {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem 0.95rem;
+  border: 1px solid var(--sb-border);
+  border-left: 3px solid color-mix(in srgb, var(--sb-brand) 55%, transparent);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+}
+.sb-cw-min-testa {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  min-height: 2.9rem;
-  padding: 0.5rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 1rem;
 }
-.sb-cw-voce:hover { background: var(--sb-overlay); }
-.sb-cw-voce[aria-selected="true"] { background: color-mix(in srgb, var(--sb-brand) 14%, transparent); }
-.sb-cw-voce b { font-weight: 600; color: var(--sb-fg); }
-.sb-cw-voce-n {
-  margin-left: auto;
-  padding-left: 0.6rem;
+.sb-cw-min-n {
   font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: var(--sb-fg-muted);
+}
+/* Il tasto «togli» non è un .sb-btn: è un comando minore dentro un riquadro,
+   e un bottone pieno qui peserebbe come il tasto che manda il modulo. */
+.sb-cw-min-via {
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 6px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: var(--sb-fg-lighter);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.sb-cw-min-via:hover { border-color: var(--cr-rosso); color: var(--cr-rosso); }
+
+/* Nome e cognome del minore stanno affiancati da 30rem in su: sono due campi
+   corti, li si compila di fila, e in colonna il riquadro diventerebbe una
+   torre. Sul telefono tornano uno sotto l'altro come tutti gli altri. */
+@media (min-width: 30rem) {
+  .sb-cw-min-due { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+}
+
+.sb-cw-piu {
+  justify-self: start;
+  padding: 0.55rem 0.9rem;
+  border: 1px dashed var(--sb-border-strong);
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--sb-brand-text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.sb-cw-piu:hover { border-color: var(--sb-brand); background: var(--sb-surface-100); }
+.sb-cw-piu[disabled] { opacity: 0.5; cursor: default; color: var(--sb-fg-muted); }
+.sb-cw-piu[disabled]:hover { border-color: var(--sb-border-strong); background: transparent; }
+
+/* ═══ Il conto ═══════════════════════════════════════════════════════════════
+   Quanto si sta per pagare, scritto prima del tasto e non solo sopra di esso:
+   la somma cambia mentre si aggiungono persone, e chi compila deve vederla
+   cambiare. I numeri in tabular-nums, come tutti i dati del sito. */
+.sb-cw-conto {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+}
+.sb-cw-conto-v { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
+.sb-cw-conto-s {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sb-fg);
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.sb-cw-voce-pin { flex: none; color: var(--sb-brand-text); }
 
 /* ═══ La nota, l'esito, il consenso ══════════════════════════════════════════
    Tre riquadri di servizio sulla stessa grammatica: bordo del sito, raggio da
@@ -484,6 +556,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    col pollice al primo colpo. */
 .sb-cw-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
 .sb-cw-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
+.sb-cw-consenso strong { font-weight: 600; color: var(--sb-fg); }
 .sb-cw-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
@@ -505,9 +578,12 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 
 /* ═══ I loghi ════════════════════════════════════════════════════════════════
    Su piastrella bianca anche al buio: un logo a colori su fondo nero perde i
-   suoi, e questi tre non sono nostri da ritoccare. La piastrella è una card
-   del sito — bordo, raggio da 10px, ombra e due pixel di sollevamento al
-   passaggio, gli stessi delle card di tutte le altre pagine. */
+   suoi, e non sono nostri da ritoccare. La piastrella è una card del sito —
+   bordo, raggio da 10px, ombra e due pixel di sollevamento al passaggio, gli
+   stessi delle card di tutte le altre pagine. Il sollevamento però solo su
+   quelle che sono collegamenti: le attività del paese un sito non ce l'hanno,
+   e una piastrella che si alza sotto il dito promette un tocco che non porta
+   da nessuna parte. */
 .sb-cw-loghi {
   display: flex;
   flex-wrap: wrap;
@@ -529,13 +605,14 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   text-decoration: none;
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
-.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
+a.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
 .sb-cw-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
 
-/* Tre marchi di tre forme diverse — uno largo, uno verticale, uno quadrato —
-   e una sola altezza per tutti li farebbe leggere sbagliati: il largo
-   sembrerebbe il doppio degli altri e lo stemma una miniatura. Si pareggiano
-   a occhio, non a righello, ognuno con la sua misura. */
+/* Marchi di forme diverse — uno largo, uno verticale, uno quadrato — e una
+   sola altezza per tutti li farebbe leggere sbagliati: il largo sembrerebbe
+   il doppio degli altri e lo stemma una miniatura. Si pareggiano a occhio,
+   non a righello, ognuno con la sua misura. Chi non ha ancora mandato il file
+   compare come nome scritto e non ha bisogno di niente. */
 .sb-cw-logo--anspi img { max-height: 2.1rem; }
 .sb-cw-logo--rodigo { padding: 0.3rem 0.9rem; }
 .sb-cw-logo--rodigo img { max-height: 3.4rem; }
@@ -583,7 +660,8 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead sb-sechead--start">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>. A fine camminata c'è l'aperitivo in Piazza Chiesa, per tutti: non si prenota, ci si ferma e si brinda.</p>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. A fine camminata c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
+      <p>Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>, ma ci si può iscrivere anche <strong>il giorno stesso</strong>, in piazza prima della partenza, con il <a href="/color-walk-modulo">modulo cartaceo</a> e in contanti. Il materiale basta per <strong>300 partecipanti</strong>. Se piove, la camminata è rinviata a <strong>sabato 26 settembre</strong>.</p>
       <p style="margin-top:0.8rem"><a href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener" style="font-size:0.9rem;font-weight:500">Scarica la locandina in PDF →</a></p>
     </div>
 
@@ -624,13 +702,22 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <p class="sb-cw-aiuto" id="cr-cognome-aiuto"></p>
         </div>
 
+        <div class="sb-cw-campo" data-campo="nascita">
+          <label for="cr-nascita">Data di nascita</label>
+          <div class="sb-cw-box">
+            <input type="date" id="cr-nascita" name="nascita" required autocomplete="bday" enterkeyhint="next" min="1900-01-01" max="2008-09-20" aria-describedby="cr-nascita-aiuto">
+            <span class="sb-cw-segno" aria-hidden="true"></span>
+          </div>
+          <p class="sb-cw-aiuto" id="cr-nascita-aiuto">Per iscriversi bisogna essere maggiorenni: i minori li iscrive un adulto insieme a sé, qui sotto.</p>
+        </div>
+
         <div class="sb-cw-campo" data-campo="cf">
           <label for="cr-cf">Codice fiscale</label>
           <div class="sb-cw-box">
             <input type="text" id="cr-cf" name="cf" maxlength="16" required spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" placeholder="RSSMRA85M01F205Z" aria-describedby="cr-cf-aiuto">
             <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cw-aiuto" id="cr-cf-aiuto">Serve per l'assicurazione. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
+          <p class="sb-cw-aiuto" id="cr-cf-aiuto">Serve a dare una certezza in più su chi si assume la responsabilità. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
         </div>
 
         <div class="sb-cw-campo" data-campo="email">
@@ -642,18 +729,6 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <p class="sb-cw-aiuto" id="cr-email-aiuto"></p>
         </div>
 
-        <div class="sb-cw-campo sb-cw-auto" data-campo="indirizzo">
-          <label for="cr-indirizzo">Indirizzo di residenza</label>
-          <div class="sb-cw-box">
-            <input type="text" id="cr-indirizzo" name="indirizzo" maxlength="120" required autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next"
-                   role="combobox" aria-expanded="false" aria-controls="cr-lista" aria-autocomplete="list" aria-describedby="cr-indirizzo-aiuto"
-                   placeholder="Scrivi la via…">
-            <span class="sb-cw-segno" aria-hidden="true"></span>
-          </div>
-          <ul class="sb-cw-lista" id="cr-lista" role="listbox" aria-label="Vie di Rivalta sul Mincio" hidden></ul>
-          <p class="sb-cw-aiuto" id="cr-indirizzo-aiuto">Le vie di Rivalta escono da sé: tocca la tua, poi il numero civico. Se abiti fuori, scrivi l'indirizzo per esteso.</p>
-        </div>
-
         <div class="sb-cw-campo" data-campo="telefono">
           <label for="cr-telefono">Telefono <span class="sb-cw-facolt">facoltativo</span></label>
           <div class="sb-cw-box">
@@ -661,6 +736,18 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
             <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
           <p class="sb-cw-aiuto" id="cr-telefono-aiuto"></p>
+        </div>
+
+        <!-- ── Chi cammina con te ────────────────────────────────────────
+             I minori a carico. Non è un secondo modulo: sono dentro questa
+             iscrizione, perché è chi compila sopra a rispondere di loro. La
+             riga si clona dal <template> qui sotto — nel documento non c'è
+             finché non la si chiede. -->
+        <div class="sb-cw-gruppo" id="cr-gruppo">
+          <p class="sb-cw-gruppo-t">Chi cammina con te <span class="sb-cw-facolt">facoltativo</span></p>
+          <p class="sb-cw-gruppo-p">I minori dai 6 ai 17 anni che iscrivi insieme a te e accompagni per tutto il percorso — 5 € ciascuno. Sotto i 6 anni non serve iscriverli.</p>
+          <div id="cr-minori"></div>
+          <button type="button" class="sb-cw-piu" id="cr-piu">+ Aggiungi un minore</button>
         </div>
 
         <div class="sb-cw-campo" data-campo="note">
@@ -671,22 +758,80 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <p class="sb-cw-aiuto" id="cr-note-aiuto"></p>
         </div>
 
+        <!-- Il conto, appena sopra la dichiarazione: si vede cambiare mentre
+             si aggiungono persone, e si rilegge un attimo prima di pagare. -->
+        <div class="sb-cw-conto">
+          <span class="sb-cw-conto-v" id="cr-conto-voci">1 maggiorenne · 10 €</span>
+          <span class="sb-cw-conto-s" id="cr-conto-somma">10 €</span>
+        </div>
+
         <div class="sb-cw-consenso">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
-          <label for="cr-consenso">Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene.</label>
+          <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
         </div>
 
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
              quando serve, cioè un attimo prima di pagare. -->
         <div class="sb-cw-nota">
-          La quota è di <strong>10 € a persona</strong>, più <strong>1 € di commissioni di servizio</strong>: la trattiene il circuito di pagamento su ogni incasso, e l'euro serve a coprirla perché i 10 € arrivino pieni all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. In tutto la carta viene addebitata di <strong>11 €</strong>, e le due voci restano separate sia sulla pagina di pagamento sia sulla ricevuta. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sotto — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. Un'iscrizione per persona: per iscriverne un'altra, ricompila il modulo con i suoi dati. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
+          La quota è di <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> per ogni ragazzo dai 6 ai 17 anni, e va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor: non c'è niente da pagare a parte. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sopra — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. <strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
         </div>
 
-        <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 11 € (10 € quota + 1 € commissioni)</span></button>
+        <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 10 €</span></button>
       </form>
 
+      <!-- La riga di un minore. Sta in un <template>: non è nel documento
+           finché non se ne chiede una, e i suoi campi non finiscono nel
+           modulo per sbaglio. Gli id li completa il JS con il numero della
+           riga, perché una label deve puntare a un id unico. -->
+      <template id="cr-modello-minore">
+        <div class="sb-cw-min" data-minore>
+          <div class="sb-cw-min-testa">
+            <span class="sb-cw-min-n" data-etichetta>Minore</span>
+            <button type="button" class="sb-cw-min-via" data-togli>Togli</button>
+          </div>
+
+          <div class="sb-cw-min-due">
+            <div class="sb-cw-campo" data-campo="m-nome">
+              <label data-per="m-nome">Nome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="m-nome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="m-nome"></p>
+            </div>
+
+            <div class="sb-cw-campo" data-campo="m-cognome">
+              <label data-per="m-cognome">Cognome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="m-cognome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="m-cognome"></p>
+            </div>
+          </div>
+
+          <div class="sb-cw-campo" data-campo="m-nascita">
+            <label data-per="m-nascita">Data di nascita</label>
+            <div class="sb-cw-box">
+              <input type="date" data-id="m-nascita" required min="2008-09-21" max="2020-09-20">
+              <span class="sb-cw-segno" aria-hidden="true"></span>
+            </div>
+            <p class="sb-cw-aiuto" data-aiuto="m-nascita">Dai 6 ai 17 anni compiuti il 20 settembre.</p>
+          </div>
+
+          <div class="sb-cw-campo" data-campo="m-cf">
+            <label data-per="m-cf">Codice fiscale <span class="sb-cw-facolt">facoltativo</span></label>
+            <div class="sb-cw-box">
+              <input type="text" data-id="m-cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" style="text-transform:uppercase; letter-spacing:0.06em">
+              <span class="sb-cw-segno" aria-hidden="true"></span>
+            </div>
+            <p class="sb-cw-aiuto" data-aiuto="m-cf">Se ce l'hai sottomano. Chi risponde di lui sei tu, e il tuo lo abbiamo già.</p>
+          </div>
+        </div>
+      </template>
+
       <noscript>
-        <p class="sb-cw-aiuto" style="margin-top:1rem">Questo modulo ha bisogno di JavaScript per aprire il pagamento. Se lo tieni spento, scrivi alle organizzatrici: ti iscrivono loro.</p>
+        <p class="sb-cw-aiuto" style="margin-top:1rem">Questo modulo ha bisogno di JavaScript per aprire il pagamento. Se lo tieni spento, stampa il <a href="/color-walk-modulo">modulo cartaceo</a> e portalo in piazza il giorno stesso, oppure scrivi a <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>.</p>
       </noscript>
 
     </div></div></div>
@@ -697,7 +842,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         <figure class="sb-riv-cwloc">
       <a class="sb-riv-cwloc-a" href="assets/color-walk-locandina.pdf" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)">
         <img src="assets/foto/color-walk-locandina.webp" width="1240" height="1754" loading="lazy" decoding="async"
-          alt="Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle 15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. Iscrizioni online 10 € a persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk. A fine camminata, aperitivo in piazza: niente prenotazione.">
+          alt="Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle 15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. Iscrizioni 10 € per chi ha 18 anni o più e 5 € dai 6 ai 17, su rivaltasulmincio.it/color-walk o sul posto in contanti. A fine camminata, aperitivo in piazza compreso nella quota: niente prenotazione. Se piove, si rinvia a sabato 26 settembre.">
       </a>
       <a class="sb-btn sb-btn--primary sb-riv-cwloc-print" href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
@@ -706,6 +851,49 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     </figure>
       </aside>
 
+    </div>
+  </section>
+
+  <!-- ── Il percorso ─────────────────────────────────────────────────────
+       Le vie nell'ordine in cui si passano, decise da chi organizza. Le
+       sette postazioni di colore invece NON stanno qui: si sa che sono
+       sette, non ancora dove. Scriverne una a caso vorrebbe dire mandare
+       qualcuno ad aspettare in un posto sbagliato, e la pagina dice quello
+       che si sa — che è sempre meglio di un numero inventato. -->
+  <section class="sb-container sb-riv-sec" id="percorso">
+    <div class="sb-sechead sb-sechead--start">
+      <h2>Il percorso</h2>
+      <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Si va a passo libero: non c'è cronometro e non c'è classifica.</p>
+    </div>
+
+    <ol class="sb-riv-ul">
+      <li class="sb-riv-li"><strong>Piazza della Chiesa</strong> — partenza</li>
+      <li class="sb-riv-li">Via Zibramonda, gli stradelli</li>
+      <li class="sb-riv-li">Via Zibramonda</li>
+      <li class="sb-riv-li">Attraversamento di Via Settefrati</li>
+      <li class="sb-riv-li">Via Don A. Bodini</li>
+      <li class="sb-riv-li">Via 25 Aprile</li>
+      <li class="sb-riv-li">Attraversamento di Via Garibaldi</li>
+      <li class="sb-riv-li">Via della Resistenza</li>
+      <li class="sb-riv-li">Via Papa Giovanni II</li>
+      <li class="sb-riv-li">Via Panicella</li>
+      <li class="sb-riv-li">Via Bedini</li>
+      <li class="sb-riv-li">Via Monteverdi</li>
+      <li class="sb-riv-li">Via Rossini</li>
+      <li class="sb-riv-li">Attraversamento di Via Francesca</li>
+      <li class="sb-riv-li">Via Arrivabene</li>
+      <li class="sb-riv-li">Via Gramsci — il percorso <strong>non scende verso il Mincio</strong></li>
+      <li class="sb-riv-li"><strong>Piazzale della Chiesa</strong> — arrivo, e aperitivo</li>
+    </ol>
+
+    <div class="sb-riv-note">
+      <span class="sb-riv-note-t">Le sette postazioni di colore</span>
+      <p>Lungo il giro ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Dove stanno esattamente lo diciamo agli iscritti <strong>per email nei giorni prima</strong>, insieme alla lunghezza del percorso.</p>
+    </div>
+
+    <div class="sb-riv-note">
+      <span class="sb-riv-note-t">Gli attraversamenti</span>
+      <p>Via Settefrati, Via Garibaldi e Via Francesca si attraversano con la strada <strong>chiusa temporaneamente</strong>, il tempo di far passare la camminata, con il supporto della <strong>Polizia Locale</strong>. Per il resto si cammina su strade urbane aperte: si tiene la destra, si seguono le indicazioni dei volontari e si dà sempre precedenza ai mezzi di soccorso.</p>
     </div>
   </section>
 
@@ -734,15 +922,20 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   <section class="sb-container sb-riv-sec">
     <div class="sb-cw-loghi">
       <a class="sb-cw-logo sb-cw-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
-      <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Stemma del Comune di Rodigo"><img src="assets/loghi/comune-rodigo.webp" alt="Stemma del Comune di Rodigo" loading="lazy" decoding="async"></a>
+      <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo — con il patrocinio del Comune"><img src="assets/loghi/comune-rodigo.webp" alt="Comune di Rodigo — con il patrocinio del Comune" loading="lazy" decoding="async"></a>
+      <div class="sb-cw-logo "><span class="sb-cw-logo-t">AVIS Rivalta</span></div>
+      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Pizzangolo</span></div>
+      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Farmacia Tona</span></div>
+      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Non Solo Lady</span></div>
+      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Fior di Loto</span></div>
       <a class="sb-cw-logo sb-cw-logo--ap" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener" title="Alberto Pecchini"><img src="assets/loghi/ap.png" alt="Alberto Pecchini" loading="lazy" decoding="async"></a>
     </div>
-    <p class="sb-cw-loghi-nota">Organizzano Rebecca Zovi, Elena Colla e Alessandra Nosè con l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</p>
+    <p class="sb-cw-loghi-nota">Organizza l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Con il patrocinio del Comune di Rodigo · Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</p>
   </section>
 
 </div>
 
-<script type="application/json" id="cw-vie">{"Piazza Basile":["1"],"Piazza Chiesa":["1","1b","3","4","13","15","16"],"Piazza Platana":["3","12","13","19","20","22"],"Piazza Silvio Arrivabene":[],"Strada Camignana":[],"Strada Francesca Est":["109b","166"],"Strada Mirandola":[],"Strada Panicella":[],"Strada Pilone":[],"Strada Settefrati":["2"],"Strada Vedusino":["5"],"Via Aldo Moro":[],"Via Andrea Costa":[],"Via Antonio Gramsci":["1","3","6","7","11","19","20","21","22","23","24","25","27","29","35","51","53","56","58","59","60","62","64","68","70","72","74","76","78","80","84","88","90"],"Via Ariello":[],"Via Belvedere":["1","1a","3","3/a","5"],"Via Caduti del Lavoro":[],"Via Campino":[],"Via Claudio Monteverdi":[],"Via Danilo Martelli":[],"Via dei Cavatori":[],"Via dei Pescatori":[],"Via della Libertà":[],"Via della Resistenza":[],"Via delle Arellaie":["1"],"Via Don Arnaldo Bodini":[],"Via Don Benini":[],"Via Don Giovanni Minzoni":[],"Via Don Primo Mazzolari":[],"Via Due Giugno":[],"Via Enzo Ferrari":[],"Via Eugenio Curiel":[],"Via Filippo Turati":["1","2","4","6","7","8","9","11","14","16","18","20","21","23","25","27","29","31","33","35","36","37","38","40","41","42","43","44a","44b","44c","48","50","52","54","56"],"Via Francesca":["42","60"],"Via Fratelli Cervi":[],"Via Giacomo Brodolini":[],"Via Giacomo Puccini":[],"Via Giovanni Arrivabene":["1"],"Via Giuseppe Di Vittorio":[],"Via Giuseppe Garibaldi":["21"],"Via Giuseppe Mazzini":[],"Via Giuseppe Verdi":[],"Via Innocente Venturi":[],"Via Luigi Morelli":[],"Via Madonnina":[],"Via Matilde di Canossa":[],"Via Mezzadrelli":[],"Via Panicella":["2"],"Via Papa Giovanni Paolo II":[],"Via Papa Giovanni Paolo VI":[],"Via Papa San Pio X":[],"Via Pilota":[],"Via Porto":["31"],"Via Renzo Ascari":[],"Via Renzo Regattieri":[],"Via Roccolo":["30","32","34","36","45","47","49","51","53","55"],"Via Salvador Allende":[],"Via Salvo D'Acquisto":[],"Via Sandro Pertini":[],"Via Sant'Antonio":[],"Via Sette Frati":["2","6","9","10","11","12","13","16","17","18","19","20","21","22","23","25","27","29","31","33","37","38","43","45","47","51","53","54","55","57","59","60","61","62","64","65","66","69","71","77","79","80","83","85","87","92"],"Via SS. Patroni Vigilio e Donato":[],"Via Tertulliano Battisti":["1","2","3","4"],"Via Tezzone":["13","34","43"],"Via Todeschino":[],"Via Venticinque Aprile":[],"Via Vincenzo Bellini":[],"Via Virgilio":[],"Via Vittorina Gementi":["1"],"Via Walter Tobagi":[],"Via Zibramonda":["2","4","5","6","8","10","11","12","13","14","15","18","24","26","30"],"Vicolo Gilberto Pagliari":[],"Vicolo Luigi Guizzon":[]}</script>
+
 <script>
 (function () {
   var form = document.getElementById("cr-form");
@@ -750,7 +943,15 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
   var esito = document.getElementById("cr-esito");
   var bottone = document.getElementById("cr-submit");
-  var ETICHETTA = bottone.querySelector("span").textContent;
+
+  /* Le due quote e il tetto dei minori: gli stessi numeri di
+     api/iscrizione-color-walk.mjs, che è chi decide davvero. Qui servono a
+     far vedere il conto mentre si compila — il conto vero lo fa Stripe con
+     le cifre che gli passa la funzione, non questa pagina. */
+  var QUOTA_ADULTO = 10;
+  var QUOTA_MINORE = 5;
+  var MAX_MINORI = 8;
+  var GIORNO_EVENTO = "2026-09-20";
 
   function mostra(tipo, testo) {
     esito.className = "sb-cw-esito sb-cw-esito--" + tipo;
@@ -774,6 +975,8 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   var CHIUSURA_MS = Date.parse("2026-09-18T23:59:59+02:00");
   var chiuse = Date.now() > CHIUSURA_MS;
 
+  var SUL_POSTO = "Il giorno stesso ci si iscrive in piazza prima della partenza, col modulo cartaceo e in contanti.";
+
   function chiudiModulo(testo) {
     form.style.display = "none";
     var avanz = document.getElementById("cr-avanz");
@@ -789,14 +992,15 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.pagato) throw new Error("non risulta pagata");
-        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie! La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
+        var quanti = d.persone > 1 ? " Siete iscritti in " + d.persone + "." : "";
+        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie!" + quanti + " La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
       })
       .catch(function () {
         mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
         if (!chiuse) form.style.display = "";
       });
   } else if (chiuse) {
-    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. Se ti sei iscritto trovi la ricevuta nella tua email; per il resto scrivi alle organizzatrici.");
+    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
   } else if (stato === "ok" && !sessione) {
     mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
   } else if (stato === "annullato") {
@@ -806,7 +1010,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   /* ── Il codice fiscale ──────────────────────────────────────────────────
      Il controllo vero, quello del carattere di controllo, non solo la forma:
      un codice fiscale sbagliato di una lettera passa qualsiasi espressione
-     regolare e si scopre il giorno dell'assicurazione.
+     regolare e nessuno se ne accorge più.
 
      Una tabella sola per i due casi. Nelle posizioni pari il valore è la
      posizione della lettera nell'alfabeto (e la cifra vale sé stessa); nelle
@@ -830,43 +1034,81 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     return v.charAt(15) === String.fromCharCode(65 + (somma % 26));
   }
 
+  /* ── La data dentro il codice fiscale ───────────────────────────────────
+     Il codice porta scritta la data di nascita: due cifre d'anno, una lettera
+     di mese, due cifre di giorno (più 40 per le donne). Confrontarla con la
+     data dichiarata nel campo sopra è quello che rende utile chiedere tutti e
+     due — un nome falso è gratis, una coppia coerente di data e codice no.
+
+     Il secolo non si indovina: l'anno del codice sono due cifre, e le si
+     confronta con le ultime due di quello dichiarato. Le lettere dell'omocodia
+     valgono per le cifre che hanno sostituito. */
+  var MESI_CF = "ABCDEHLMPRST";
+  var OMOCODIA = { L: 0, M: 1, N: 2, P: 3, Q: 4, R: 5, S: 6, T: 7, U: 8, V: 9 };
+
+  function cifraCf(c) {
+    if (c >= "0" && c <= "9") return Number(c);
+    return Object.prototype.hasOwnProperty.call(OMOCODIA, c) ? OMOCODIA[c] : null;
+  }
+
+  function numeroCf(codice, da) {
+    var alta = cifraCf(codice.charAt(da));
+    var bassa = cifraCf(codice.charAt(da + 1));
+    if (alta === null || bassa === null) return null;
+    return alta * 10 + bassa;
+  }
+
+  function cfCombaciaData(codice, iso) {
+    if (!iso) return true; // senza data dichiarata non c'è niente da confrontare
+    var anno = numeroCf(codice, 6);
+    var mese = MESI_CF.indexOf(codice.charAt(8)) + 1;
+    var grezzo = numeroCf(codice, 9);
+    if (anno === null || mese === 0 || grezzo === null) return false;
+    var giorno = grezzo > 40 ? grezzo - 40 : grezzo;
+    var pezzi = iso.split("-");
+    return anno === Number(pezzi[0]) % 100 && mese === Number(pezzi[1]) && giorno === Number(pezzi[2]);
+  }
+
+  /* ── Le età ─────────────────────────────────────────────────────────────
+     Contate al giorno della camminata e non a oggi: chi compie 18 anni il 19
+     settembre si iscrive da sé, chi li compie il 21 è ancora un minore a
+     carico di qualcuno. È la stessa regola che applica la funzione. */
+  var DATA_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+  function dataValida(iso) {
+    if (!DATA_RE.test(iso)) return false;
+    var d = new Date(iso + "T00:00:00Z");
+    return !isNaN(d.getTime()) && d.toISOString().slice(0, 10) === iso;
+  }
+
+  function etaAllEvento(iso) {
+    var n = iso.split("-").map(Number);
+    var e = GIORNO_EVENTO.split("-").map(Number);
+    var anni = e[0] - n[0];
+    if (e[1] < n[1] || (e[1] === n[1] && e[2] < n[2])) anni -= 1;
+    return anni;
+  }
+
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   /* ── I campi ────────────────────────────────────────────────────────────
+     Un campo è un oggetto con dentro i suoi tre pezzi di DOM e due funzioni:
      `prova` dice se il valore va bene, `errore` cosa c'è che non va. Il
      messaggio di errore prende il posto dell'aiuto e poi glielo restituisce:
-     due righe di testo nello stesso punto, mai una sopra l'altra. */
-  var CAMPI = [
-    { id: "nome", obbl: true, prova: function (v) { return v.length >= 2; }, errore: "Scrivi il nome." },
-    { id: "cognome", obbl: true, prova: function (v) { return v.length >= 2; }, errore: "Scrivi il cognome." },
-    { id: "cf", obbl: true, prova: cfValido, errore: "Questo codice fiscale non torna: ricontrolla i sedici caratteri." },
-    { id: "email", obbl: true, prova: function (v) { return EMAIL_RE.test(v); }, errore: "Serve un indirizzo email valido: è lì che arriva la ricevuta." },
-    { id: "indirizzo", obbl: true, prova: function (v) { return v.length >= 5; }, errore: "Scrivi la via e il numero civico." },
-    { id: "telefono", obbl: false, prova: function (v) { return v === "" || /^[0-9+().\/ -]{6,}$/.test(v); }, errore: "Questo numero non sembra un numero di telefono." },
-    { id: "note", obbl: false, prova: function () { return true; }, errore: "" }
-  ];
+     due righe di testo nello stesso punto, mai una sopra l'altra.
 
-  var consenso = document.getElementById("cr-consenso");
-  var avanz = document.getElementById("cr-avanz");
-  var fill = document.getElementById("cr-fill");
-  var fatti = document.getElementById("cr-fatti");
-  var OBBLIGATORI = 0;
-
-  CAMPI.forEach(function (c, i) {
-    c.el = document.getElementById("cr-" + c.id);
-    c.campo = form.querySelector('[data-campo="' + c.id + '"]');
-    c.aiuto = document.getElementById("cr-" + c.id + "-aiuto");
-    c.testo = c.aiuto ? c.aiuto.textContent : "";
-    c.toccato = false;
-    c.indice = i;
-    if (c.obbl) OBBLIGATORI++;
-  });
-  OBBLIGATORI++; // la spunta del consenso conta come un passo
-  document.getElementById("cr-totale").textContent = String(OBBLIGATORI);
+     La stessa forma vale per i campi di chi si iscrive e per quelli dei
+     minori, che nascono e muoiono mentre si compila: la sola differenza è
+     che i primi sono già nel documento e i secondi si clonano. */
+  function campoDa(spec) {
+    spec.toccato = false;
+    spec.testo = spec.aiuto ? spec.aiuto.textContent : "";
+    return spec;
+  }
 
   function valore(c) {
     var v = c.el.value.trim();
-    return c.id === "cf" ? v.toUpperCase().replace(/\s/g, "") : v;
+    return c.maiuscolo ? v.toUpperCase().replace(/\s/g, "") : v;
   }
 
   function statoDi(c) {
@@ -876,8 +1118,8 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   }
 
   /* Si segna in rosso solo un campo già lasciato una volta (`toccato`):
-     strillare alla terza lettera di un indirizzo che ne vuole cinque è il modo
-     più veloce per far chiudere la pagina. Il verde invece arriva subito. */
+     strillare alla terza lettera di un nome che ne vuole cinque è il modo più
+     veloce per far chiudere la pagina. Il verde invece arriva subito. */
   function dipingi(c) {
     var s = statoDi(c);
     if (s === "ok" && valore(c) !== "") c.campo.setAttribute("data-stato", "ok");
@@ -886,17 +1128,272 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
     if (c.aiuto) {
       var inErrore = c.campo.getAttribute("data-stato") === "ko";
-      c.aiuto.textContent = inErrore ? c.errore : c.testo;
+      c.aiuto.textContent = inErrore ? (typeof c.errore === "function" ? c.errore(valore(c)) : c.errore) : c.testo;
     }
   }
 
+  /* Il codice fiscale di chi si iscrive vuole due cose: che sia un codice
+     vero, e che dica la stessa data di nascita scritta nel campo sopra. Il
+     messaggio distingue i due casi, o chi ha sbagliato l'anno si mette a
+     ricontrollare le sedici lettere una per una. */
+  function cfConData(prendiData) {
+    return {
+      prova: function (v) { return cfValido(v) && cfCombaciaData(v, prendiData()); },
+      errore: function (v) {
+        if (!cfValido(v)) return "Questo codice fiscale non torna: ricontrolla i sedici caratteri.";
+        return "Il codice fiscale dice una data di nascita diversa da quella scritta sopra: controlla quale delle due è sbagliata.";
+      }
+    };
+  }
+
+  var nascitaEl = document.getElementById("cr-nascita");
+  var cfAdulto = cfConData(function () { return nascitaEl.value.trim(); });
+
+  function specAdulto(id, obbl, prova, errore, extra) {
+    var s = {
+      id: id,
+      obbl: obbl,
+      prova: prova,
+      errore: errore,
+      el: document.getElementById("cr-" + id),
+      campo: form.querySelector('[data-campo="' + id + '"]'),
+      aiuto: document.getElementById("cr-" + id + "-aiuto")
+    };
+    if (extra) for (var k in extra) s[k] = extra[k];
+    return campoDa(s);
+  }
+
+  var CAMPI = [
+    specAdulto("nome", true, function (v) { return v.length >= 2; }, "Scrivi il nome."),
+    specAdulto("cognome", true, function (v) { return v.length >= 2; }, "Scrivi il cognome."),
+    specAdulto("nascita", true, function (v) { return dataValida(v) && etaAllEvento(v) >= 18 && etaAllEvento(v) < 120; },
+      function (v) {
+        if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
+        if (etaAllEvento(v) < 18) return "Per iscriversi bisogna essere maggiorenni. Se stai iscrivendo un minore, mettilo fra chi cammina con te, sotto i tuoi dati.";
+        return "Questa data di nascita non è plausibile: controllala.";
+      }),
+    specAdulto("cf", true, cfAdulto.prova, cfAdulto.errore, { maiuscolo: true }),
+    specAdulto("email", true, function (v) { return EMAIL_RE.test(v); }, "Serve un indirizzo email valido: è lì che arriva la ricevuta."),
+    specAdulto("telefono", false, function (v) { return v === "" || /^[0-9+().\/ -]{6,}$/.test(v); }, "Questo numero non sembra un numero di telefono.")
+  ];
+
+  var CAMPO_NOTE = specAdulto("note", false, function () { return true; }, "");
+
+  var consenso = document.getElementById("cr-consenso");
+  var avanz = document.getElementById("cr-avanz");
+  var fill = document.getElementById("cr-fill");
+  var fatti = document.getElementById("cr-fatti");
+  var totaleN = document.getElementById("cr-totale");
+
+  /* ── Chi cammina con te ─────────────────────────────────────────────────
+     Ogni minore è una riga clonata dal <template>, con i suoi quattro campi
+     che entrano ed escono dall'ordine del modulo insieme a lei. Gli id si
+     completano col numero della riga, perché una label deve puntare a un id
+     unico anche quando le righe sono otto. */
+  var modello = document.getElementById("cr-modello-minore");
+  var contenitore = document.getElementById("cr-minori");
+  var tastoPiu = document.getElementById("cr-piu");
+  var righe = [];
+  var seme = 0;
+
+  /* L'ordine in cui si cammina fra i campi con il tasto invio, e in cui si
+     cerca il primo sbagliato all'invio: quello del documento. Le note stanno
+     in fondo perché in fondo stanno nel modulo. */
+  function ordine() {
+    var tutti = CAMPI.slice();
+    righe.forEach(function (r) { tutti = tutti.concat(r.campi); });
+    tutti.push(CAMPO_NOTE);
+    return tutti;
+  }
+
+  function prossimo(c) {
+    var tutti = ordine();
+    var i = tutti.indexOf(c);
+    return i > -1 ? tutti[i + 1] || null : null;
+  }
+
+  function vaiA(c) {
+    if (!c) return;
+    c.el.focus();
+    portaSu(c.campo);
+  }
+
+  function collega(c) {
+    c.el.addEventListener("focus", function () { portaSuDopo(c.campo); });
+
+    c.el.addEventListener("input", function () {
+      /* Il codice fiscale si scrive in maiuscolo mentre lo si digita, senza
+         far saltare il cursore a fine campo a chi sta correggendo in mezzo. */
+      if (c.maiuscolo) {
+        var pos = c.el.selectionStart;
+        var su = c.el.value.toUpperCase();
+        if (su !== c.el.value) { c.el.value = su; c.el.setSelectionRange(pos, pos); }
+      }
+      dipingi(c);
+      conta();
+
+      /* Sedici caratteri e il codice torna: in questo campo non c'è più niente
+         da scrivere, e restarci dentro è solo un tocco in più da fare. Se non
+         torna si resta qui, con l'errore sotto: il passaggio automatico non
+         deve mai portare via da un campo sbagliato. */
+      if (c.maiuscolo && valore(c).length === 16 && statoDi(c) === "ok") {
+        window.setTimeout(function () {
+          if (document.activeElement === c.el) vaiA(prossimo(c));
+        }, 220);
+      }
+    });
+
+    /* Cambiare la data di nascita cambia il verdetto sul codice fiscale, che
+       sta in un altro campo: si ridipinge anche quello, o resta verde una
+       coppia che non torna più. */
+    if (c.id === "nascita") {
+      c.el.addEventListener("change", function () { dipingi(c); dipingiCf(c); conta(); });
+    }
+
+    c.el.addEventListener("blur", function () {
+      c.toccato = true;
+      dipingi(c);
+      conta();
+    });
+
+    /* Invio porta al campo dopo invece di mandare il modulo a metà. Sull'ultimo
+       chiude la tastiera e lascia in vista dichiarazione e bottone. */
+    c.el.addEventListener("keydown", function (ev) {
+      if (ev.key !== "Enter" || c.el.tagName === "TEXTAREA") return;
+      ev.preventDefault();
+      var p = prossimo(c);
+      if (p) vaiA(p);
+      else { c.el.blur(); portaSu(bottone); }
+    });
+  }
+
+  /* Il codice fiscale che sta nella stessa riga della data appena cambiata:
+     quello di chi si iscrive se la data è la sua, quello del minore se la
+     data è di un minore. */
+  function dipingiCf(campoData) {
+    if (campoData === CAMPI[2]) { dipingi(CAMPI[3]); return; }
+    righe.forEach(function (r) {
+      if (r.campi.indexOf(campoData) > -1) r.campi.forEach(function (x) { if (x.maiuscolo) dipingi(x); });
+    });
+  }
+
+  function numeraRighe() {
+    righe.forEach(function (r, i) { r.etichetta.textContent = "Minore " + (i + 1); });
+    tastoPiu.disabled = righe.length >= MAX_MINORI;
+    tastoPiu.textContent = righe.length >= MAX_MINORI
+      ? "Massimo " + MAX_MINORI + " per iscrizione"
+      : (righe.length ? "+ Aggiungi un altro minore" : "+ Aggiungi un minore");
+  }
+
+  function aggiungiMinore(colFuoco) {
+    if (righe.length >= MAX_MINORI) return;
+
+    var frammento = modello.content.cloneNode(true);
+    var nodo = frammento.querySelector("[data-minore]");
+    var n = ++seme;
+
+    /* Gli id: uno per campo e per riga. Le label li ritrovano da `data-per`,
+       gli aiuti da `data-aiuto` — così il modello resta leggibile e qui non
+       si costruiscono stringhe a caso. */
+    nodo.querySelectorAll("[data-id]").forEach(function (el) {
+      var chiave = el.getAttribute("data-id");
+      el.id = "cr-" + chiave + "-" + n;
+      var label = nodo.querySelector('[data-per="' + chiave + '"]');
+      if (label) label.setAttribute("for", el.id);
+      var aiuto = nodo.querySelector('[data-aiuto="' + chiave + '"]');
+      if (aiuto) {
+        aiuto.id = "cr-" + chiave + "-" + n + "-aiuto";
+        el.setAttribute("aria-describedby", aiuto.id);
+      }
+    });
+
+    function campoRiga(chiave, obbl, prova, errore, extra) {
+      var s = {
+        id: chiave,
+        obbl: obbl,
+        prova: prova,
+        errore: errore,
+        el: nodo.querySelector('[data-id="' + chiave + '"]'),
+        campo: nodo.querySelector('[data-campo="' + chiave + '"]'),
+        aiuto: nodo.querySelector('[data-aiuto="' + chiave + '"]')
+      };
+      if (extra) for (var k in extra) s[k] = extra[k];
+      return campoDa(s);
+    }
+
+    var dataEl = nodo.querySelector('[data-id="m-nascita"]');
+    var cfMinore = cfConData(function () { return dataEl.value.trim(); });
+
+    var riga = {
+      nodo: nodo,
+      etichetta: nodo.querySelector("[data-etichetta]"),
+      campi: [
+        campoRiga("m-nome", true, function (v) { return v.length >= 2; }, "Scrivi il nome."),
+        campoRiga("m-cognome", true, function (v) { return v.length >= 2; }, "Scrivi il cognome."),
+        campoRiga("m-nascita", true,
+          function (v) { return dataValida(v) && etaAllEvento(v) >= 6 && etaAllEvento(v) <= 17; },
+          function (v) {
+            if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
+            if (etaAllEvento(v) < 6) return "Sotto i 6 anni non serve iscriversi: si partecipa gratis. Togli questa riga.";
+            return "Il 20 settembre avrà 18 anni o più: va iscritto da sé, con la quota intera.";
+          }),
+        campoRiga("m-cf", false, cfMinore.prova, cfMinore.errore, { maiuscolo: true })
+      ]
+    };
+
+    riga.campi.forEach(collega);
+    riga.campi[2].el.addEventListener("change", function () { dipingi(riga.campi[3]); conta(); });
+
+    nodo.querySelector("[data-togli]").addEventListener("click", function () {
+      righe.splice(righe.indexOf(riga), 1);
+      nodo.remove();
+      numeraRighe();
+      conta();
+    });
+
+    contenitore.appendChild(nodo);
+    righe.push(riga);
+    numeraRighe();
+    conta();
+    if (colFuoco) vaiA(riga.campi[0]);
+  }
+
+  tastoPiu.addEventListener("click", function () { aggiungiMinore(true); });
+
+  /* ── Il conto ───────────────────────────────────────────────────────────
+     Quello che si sta per pagare, ricalcolato a ogni riga aggiunta o tolta.
+     Si contano tutte le righe presenti, anche quelle ancora da compilare: chi
+     ne ha appena aperta una deve vedere subito quanto gli costa, non dopo
+     aver scritto il nome. */
+  var contoVoci = document.getElementById("cr-conto-voci");
+  var contoSomma = document.getElementById("cr-conto-somma");
+
+  function conto() {
+    var n = righe.length;
+    var somma = QUOTA_ADULTO + n * QUOTA_MINORE;
+    contoVoci.textContent = n === 0
+      ? "1 maggiorenne · " + QUOTA_ADULTO + " €"
+      : "1 maggiorenne " + QUOTA_ADULTO + " € · " + n + (n === 1 ? " ragazzo " : " ragazzi ") + QUOTA_MINORE + " € ciascuno";
+    contoSomma.textContent = somma + " €";
+    bottone.querySelector("span").textContent = "Vai al pagamento — " + somma + " €";
+    return somma;
+  }
+
   function conta() {
+    var tutti = ordine();
+    var obbligatori = 1; // la spunta della dichiarazione conta come un passo
     var n = 0;
-    CAMPI.forEach(function (c) { if (c.obbl && statoDi(c) === "ok" && valore(c) !== "") n++; });
+    tutti.forEach(function (c) {
+      if (!c.obbl) return;
+      obbligatori++;
+      if (statoDi(c) === "ok" && valore(c) !== "") n++;
+    });
     if (consenso.checked) n++;
     fatti.textContent = String(n);
-    fill.style.setProperty("--p", n / OBBLIGATORI);
+    totaleN.textContent = String(obbligatori);
+    fill.style.setProperty("--p", n / obbligatori);
     avanz.hidden = n === 0;
+    conto();
     return n;
   }
 
@@ -905,8 +1402,8 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
      tastiera, che si mangia metà schermo, e un campo a metà pagina finisce
      dietro di lei. Al fuoco la pagina scorre finché quel campo non è appena
      sotto la barra di navigazione — sempre nello stesso punto, così compilare
-     diventa un gesto solo ripetuto sette volte, e non una caccia al campo
-     successivo fra una comparsa di tastiera e l'altra.
+     diventa un gesto solo ripetuto, e non una caccia al campo successivo fra
+     una comparsa di tastiera e l'altra.
 
      Sul computer non serve e non si fa: lì il modulo si vede tutto insieme, e
      una pagina che scorre da sé a ogni clic è una pagina che scappa. */
@@ -932,258 +1429,9 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
      suo quando la alza, e due scorrimenti insieme si annullano a vicenda. */
   function portaSuDopo(el) { window.setTimeout(function () { portaSu(el); }, 260); }
 
-  function prossimo(c) { return CAMPI[c.indice + 1] || null; }
-
-  function vaiA(c) {
-    if (!c) return;
-    c.el.focus();
-    portaSu(c.campo);
-  }
-
-  CAMPI.forEach(function (c) {
-    c.el.addEventListener("focus", function () { portaSuDopo(c.campo); });
-
-    c.el.addEventListener("input", function () {
-      /* Il codice fiscale si scrive in maiuscolo mentre lo si digita, senza
-         far saltare il cursore a fine campo a chi sta correggendo in mezzo. */
-      if (c.id === "cf") {
-        var pos = c.el.selectionStart;
-        var su = c.el.value.toUpperCase();
-        if (su !== c.el.value) { c.el.value = su; c.el.setSelectionRange(pos, pos); }
-      }
-      dipingi(c);
-      conta();
-
-      /* Sedici caratteri e il codice torna: in questo campo non c'è più niente
-         da scrivere, e restarci dentro è solo un tocco in più da fare. Se non
-         torna si resta qui, con l'errore sotto: il passaggio automatico non
-         deve mai portare via da un campo sbagliato. */
-      if (c.id === "cf" && valore(c).length === 16 && statoDi(c) === "ok") {
-        window.setTimeout(function () {
-          if (document.activeElement === c.el) vaiA(prossimo(c));
-        }, 220);
-      }
-    });
-
-    c.el.addEventListener("blur", function () {
-      c.toccato = true;
-      dipingi(c);
-      conta();
-    });
-
-    /* Invio porta al campo dopo invece di mandare il modulo a metà. Sull'ultimo
-       chiude la tastiera e lascia in vista consenso e bottone. */
-    c.el.addEventListener("keydown", function (ev) {
-      if (ev.key !== "Enter" || c.el.tagName === "TEXTAREA") return;
-      // Sull'indirizzo, con la tendina aperta, invio sceglie: non è affar nostro.
-      if (c.id === "indirizzo" && !document.getElementById("cr-lista").hidden) return;
-      ev.preventDefault();
-      var p = prossimo(c);
-      if (p) vaiA(p);
-      else { c.el.blur(); portaSu(bottone); }
-    });
-  });
+  CAMPI.forEach(collega);
+  collega(CAMPO_NOTE);
   consenso.addEventListener("change", conta);
-
-  /* ── L'indirizzo che si compone da sé ───────────────────────────────────
-     Le vie vere di Rivalta, con i civici mappati in OpenStreetMap, messe qui
-     dal build. Si scrivono due lettere e la via esce; si sceglie la via e
-     escono i suoi numeri. Chi abita fuori scrive libero: la tendina suggerisce
-     e non impedisce mai niente. */
-  var VIE = {};
-  try { VIE = JSON.parse(document.getElementById("cw-vie").textContent); } catch (e) {}
-  var NOMI = Object.keys(VIE);
-
-  var input = document.getElementById("cr-indirizzo");
-  var lista = document.getElementById("cr-lista");
-  var voci = [];
-  var attivo = -1;
-
-  function normalizza(s) {
-    return s
-      .toLowerCase()
-      .replace(/[àáâä]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i")
-      .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u")
-      .replace(/['’]/g, " ")
-      .replace(/[.,]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  /* Il punteggio decide l'ordine: prima le vie che cominciano come si è
-     scritto, poi quelle in cui ogni parola scritta è l'inizio di una parola
-     del nome («sette fra» trova Via Sette Frati), poi quelle che contengono il
-     testo da qualche parte. Zero vuol dire che non c'entra. */
-  function punteggio(nome, q, parole) {
-    var n = normalizza(nome);
-    if (n.indexOf(q) === 0) return 4;
-    var pezzi = n.split(" ");
-    var tutte = parole.length > 0 && parole.every(function (p) {
-      return pezzi.some(function (x) { return x.indexOf(p) === 0; });
-    });
-    if (tutte) return 3;
-    /* Il pescaggio largo — la via che contiene il testo in mezzo a una parola —
-       vale solo da tre lettere in su. Con due, «se» tirerebbe su anche
-       GiuSEppe, e la tendina direbbe più di quanto chi scrive ha chiesto. */
-    if (q.length >= 3 && n.indexOf(q) > -1) return 2;
-    return 0;
-  }
-
-  function evidenzia(testo, q) {
-    var n = normalizza(testo);
-    var i = q ? n.indexOf(q) : -1;
-    if (i < 0 || !q) return document.createTextNode(testo);
-    var frammento = document.createDocumentFragment();
-    frammento.appendChild(document.createTextNode(testo.slice(0, i)));
-    var b = document.createElement("b");
-    b.textContent = testo.slice(i, i + q.length);
-    frammento.appendChild(b);
-    frammento.appendChild(document.createTextNode(testo.slice(i + q.length)));
-    return frammento;
-  }
-
-  var PIN = '<svg class="sb-cw-voce-pin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
-
-  /* Ogni proposta sa se è una via da completare o un indirizzo finito
-     (`fine`): scegliendo una via la tendina resta aperta sui suoi civici,
-     scegliendo un indirizzo si chiude. È tutta qui la sensazione che
-     l'indirizzo «esca da solo». */
-  function proposte(testo) {
-    var q = normalizza(testo);
-    if (!q) return [];
-
-    // Un numero in coda è un civico, non parte del nome della via.
-    var m = q.match(/^(.*?)[\s,]*(\d+\s*[a-z]?)?$/);
-    var parteVia = (m[1] || "").trim();
-    var civico = (m[2] || "").replace(/\s+/g, "");
-    var cerca = parteVia || q;
-    var parole = cerca.split(" ").filter(Boolean);
-
-    var trovate = [];
-    NOMI.forEach(function (nome) {
-      var p = punteggio(nome, cerca, parole);
-      if (p) trovate.push({ nome: nome, p: p });
-    });
-    trovate.sort(function (a, b) { return b.p - a.p || a.nome.localeCompare(b.nome, "it"); });
-    if (!trovate.length) return [];
-
-    /* Una via sola in ballo, o una via scritta per intero: si passa ai suoi
-       numeri. È il secondo tempo del suggerimento. */
-    var sola = trovate.length === 1 || (trovate[0].p === 4 && normalizza(trovate[0].nome) === cerca);
-    if (sola) {
-      var nome = trovate[0].nome;
-      var civici = VIE[nome] || [];
-      var out = [];
-      civici.forEach(function (n) {
-        if (!civico || normalizza(n).indexOf(civico) === 0) out.push({ testo: nome + " " + n, fine: true });
-      });
-      /* Il civico scritto non risulta mappato: si propone lo stesso, perché
-         l'elenco di OpenStreetMap è incompleto e la casa esiste anche se lì
-         non c'è. */
-      if (civico && !out.length) out.push({ testo: nome + " " + civico, fine: true });
-      if (!civico && !civici.length) out.push({ testo: nome + " ", nota: "scrivi il numero" });
-      return out.slice(0, 30);
-    }
-
-    return trovate.slice(0, 8).map(function (t) {
-      var n = (VIE[t.nome] || []).length;
-      return { testo: t.nome + " ", nota: n ? n + (n === 1 ? " civico" : " civici") : "" };
-    });
-  }
-
-  function chiudi() {
-    lista.hidden = true;
-    lista.innerHTML = "";
-    voci = [];
-    attivo = -1;
-    input.setAttribute("aria-expanded", "false");
-    input.removeAttribute("aria-activedescendant");
-  }
-
-  function apri(testo) {
-    var elenco = proposte(testo);
-    if (!elenco.length) return chiudi();
-
-    var q = normalizza(testo).replace(/\s*\d+\s*[a-z]?$/, "").trim();
-    lista.innerHTML = "";
-    voci = elenco.map(function (v, i) {
-      var li = document.createElement("li");
-      li.className = "sb-cw-voce";
-      li.id = "cr-voce-" + i;
-      li.setAttribute("role", "option");
-      li.setAttribute("aria-selected", "false");
-      li.innerHTML = PIN;
-      li.appendChild(evidenzia(v.testo.trim(), q));
-      if (v.nota) {
-        var n = document.createElement("span");
-        n.className = "sb-cw-voce-n";
-        n.textContent = v.nota;
-        li.appendChild(n);
-      }
-      /* pointerdown e non click: il click arriva dopo il blur, e il blur ha
-         già chiuso la tendina da sotto il dito. Vale per il mouse e per il
-         tocco con lo stesso gesto. */
-      li.addEventListener("pointerdown", function (ev) { ev.preventDefault(); scegli(i); });
-      lista.appendChild(li);
-      return { el: li, dato: v };
-    });
-
-    lista.hidden = false;
-    input.setAttribute("aria-expanded", "true");
-    attivo = -1;
-  }
-
-  function segna(i) {
-    voci.forEach(function (v, k) { v.el.setAttribute("aria-selected", k === i ? "true" : "false"); });
-    attivo = i;
-    if (i > -1) {
-      input.setAttribute("aria-activedescendant", voci[i].el.id);
-      var el = voci[i].el;
-      var alto = el.offsetTop;
-      var basso = alto + el.offsetHeight;
-      if (alto < lista.scrollTop) lista.scrollTop = alto;
-      else if (basso > lista.scrollTop + lista.clientHeight) lista.scrollTop = basso - lista.clientHeight;
-    } else {
-      input.removeAttribute("aria-activedescendant");
-    }
-  }
-
-  var campoIndirizzo = null;
-  CAMPI.forEach(function (c) { if (c.id === "indirizzo") campoIndirizzo = c; });
-
-  function scegli(i) {
-    var v = voci[i] && voci[i].dato;
-    if (!v) return;
-    input.value = v.testo;
-    if (v.fine) {
-      chiudi();
-      campoIndirizzo.toccato = true;
-      dipingi(campoIndirizzo);
-      conta();
-      // Indirizzo completo: si va al campo dopo senza doverlo cercare.
-      vaiA(prossimo(campoIndirizzo));
-    } else {
-      input.focus();
-      apri(input.value); // la via è scelta: adesso escono i suoi numeri
-    }
-  }
-
-  input.addEventListener("input", function () { apri(input.value); });
-  input.addEventListener("focus", function () { if (input.value) apri(input.value); });
-  /* Il ritardo lascia arrivare il tocco sulla voce prima che la tendina
-     sparisca; senza, il dito su un suggerimento non seleziona niente. */
-  input.addEventListener("blur", function () { window.setTimeout(chiudi, 150); });
-
-  input.addEventListener("keydown", function (ev) {
-    if (lista.hidden) {
-      if (ev.key === "ArrowDown" || ev.key === "Down") apri(input.value);
-      return;
-    }
-    if (ev.key === "ArrowDown" || ev.key === "Down") { ev.preventDefault(); segna((attivo + 1) % voci.length); }
-    else if (ev.key === "ArrowUp" || ev.key === "Up") { ev.preventDefault(); segna(attivo <= 0 ? voci.length - 1 : attivo - 1); }
-    else if (ev.key === "Enter" && attivo > -1) { ev.preventDefault(); scegli(attivo); }
-    else if (ev.key === "Escape" || ev.key === "Esc" || ev.key === "Tab") { chiudi(); }
-  });
 
   /* ── L'invio ────────────────────────────────────────────────────────────
      Il primo campo sbagliato si porta il fuoco: chi ha sbagliato non deve
@@ -1194,12 +1442,12 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     ev.preventDefault();
 
     if (chiuse) {
-      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre.");
+      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO);
       return;
     }
 
     var primo = null;
-    CAMPI.forEach(function (c) {
+    ordine().forEach(function (c) {
       c.toccato = true;
       dipingi(c);
       if (!primo && statoDi(c) !== "ok") primo = c;
@@ -1207,12 +1455,13 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     conta();
 
     if (primo) {
-      mostra("errore", "Manca qualcosa: " + (primo.errore || "controlla i campi segnati in rosso"));
+      var testo = typeof primo.errore === "function" ? primo.errore(valore(primo)) : primo.errore;
+      mostra("errore", "Manca qualcosa: " + (valore(primo) === "" ? "controlla i campi segnati in rosso" : testo || "controlla i campi segnati in rosso"));
       vaiA(primo);
       return;
     }
     if (!consenso.checked) {
-      mostra("errore", "Senza la spunta sul consenso non possiamo registrare l'iscrizione.");
+      mostra("errore", "Senza la dichiarazione di responsabilità non possiamo registrare l'iscrizione.");
       consenso.focus();
       return;
     }
@@ -1226,12 +1475,20 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       body: JSON.stringify({
         nome: form.nome.value,
         cognome: form.cognome.value,
+        dataNascita: nascitaEl.value,
         codiceFiscale: form.cf.value.toUpperCase().replace(/\s/g, ""),
         email: form.email.value,
-        indirizzo: form.indirizzo.value,
         telefono: form.telefono.value,
         note: form.note.value,
-        consenso: consenso.checked
+        consenso: consenso.checked,
+        minori: righe.map(function (r) {
+          return {
+            nome: r.campi[0].el.value,
+            cognome: r.campi[1].el.value,
+            dataNascita: r.campi[2].el.value,
+            codiceFiscale: r.campi[3].el.value.toUpperCase().replace(/\s/g, "")
+          };
+        })
       })
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
@@ -1249,10 +1506,11 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       .catch(function (err) {
         mostra("errore", "Non è stato possibile avviare il pagamento (" + err.message + "). Riprova tra poco.");
         bottone.disabled = false;
-        bottone.querySelector("span").textContent = ETICHETTA;
+        conto();
       });
   });
 
+  numeraRighe();
   conta();
 })();
 </script>

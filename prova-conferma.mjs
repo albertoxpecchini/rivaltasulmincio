@@ -78,21 +78,43 @@ const finestraRisposta = () => {
   return r;
 };
 
+/* Un'iscrizione da 20 €: una maggiorenne più due minori a suo carico. Le
+   due voci sono come le espande Stripe, con la quantità sui ragazzi: la
+   funzione ci legge gli importi per fascia invece di ricopiare un numero. */
 const SESSIONE_PAGATA = {
   id: "cs_test_1",
   payment_status: "paid",
-  amount_total: 1100,
+  amount_total: 2000,
   currency: "eur",
-  /* Le due voci come le espande Stripe: la funzione ci legge quota e
-     commissioni per la ricevuta, invece di ricopiare un numero. */
   line_items: {
     data: [
-      { description: "Iscrizione Color Walk — 20 settembre", amount_total: 1000 },
-      { description: "Commissioni di servizio", amount_total: 100 },
+      { description: "Iscrizione Color Walk — 20 settembre · maggiorenne", quantity: 1, amount_total: 1000 },
+      { description: "Iscrizione Color Walk — 20 settembre · dai 6 ai 17 anni", quantity: 2, amount_total: 1000 },
     ],
   },
   customer_details: { email: "rebecca@example.com", name: "Rebecca Rossi" },
-  metadata: { evento: "color-walk-2026-09-20", nome: "Rebecca", cognome: "Rossi" },
+  metadata: {
+    evento: "color-walk-2026-09-20",
+    nome: "Rebecca",
+    cognome: "Rossi",
+    n_minori: "2",
+    minore_1: "Luca|Rossi|2015-04-02|—",
+    minore_2: "Anna|Rossi|2018-11-20|—",
+  },
+  payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },
+};
+
+/* La stessa iscrizione, ma di chi cammina da solo: serve a provare che la
+   riga dei ragazzi sparisce invece di stampare «0 ragazzi — 0,00 €». */
+const SESSIONE_PAGATA_SOLA = {
+  ...SESSIONE_PAGATA,
+  amount_total: 1000,
+  line_items: {
+    data: [
+      { description: "Iscrizione Color Walk — 20 settembre · maggiorenne", quantity: 1, amount_total: 1000 },
+    ],
+  },
+  metadata: { evento: "color-walk-2026-09-20", nome: "Rebecca", cognome: "Rossi", n_minori: "0" },
   payment_intent: { id: "pi_1", created: 1787000000, metadata: {} },
 };
 
@@ -158,6 +180,32 @@ await prova("pagata → parte la ricevuta", {
   evento: ev("checkout.session.completed"),
   stub: { sessione: SESSIONE_PAGATA },
   atteso: { codice: 200, mail: 1, oggetto: "Iscrizione confermata" },
+});
+
+/* La ricevuta di un gruppo deve dire chi è iscritto e quanto è costata
+   ogni fascia. E non deve MAI portarsi dietro un segnaposto o un marcatore
+   di sezione non sciolto: sarebbe una graffa nella posta di una persona
+   vera, ed è il tipo di errore che si scopre solo lì. */
+await prova("gruppo → la ricevuta elenca tutti e divide le due fasce", {
+  evento: ev("checkout.session.completed"),
+  stub: { sessione: SESSIONE_PAGATA },
+  atteso: {
+    codice: 200,
+    mail: 1,
+    contiene: ["Rebecca Rossi", "Luca Rossi", "Anna Rossi", "1 maggiorenne", "2 ragazzi dai 6 ai 17 anni", "20,00", "10,00"],
+    nonContiene: ["{{", "<!--se:", "commissioni di servizio", "Commissioni"],
+  },
+});
+
+await prova("da sola → niente riga dei ragazzi", {
+  evento: ev("checkout.session.completed"),
+  stub: { sessione: SESSIONE_PAGATA_SOLA },
+  atteso: {
+    codice: 200,
+    mail: 1,
+    contiene: ["Rebecca Rossi", "1 maggiorenne"],
+    nonContiene: ["dai 6 ai 17 anni", "{{", "<!--se:"],
+  },
 });
 
 await prova("pagata in differita → parte la ricevuta", {

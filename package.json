@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node build.mjs",
-    "test": "node prova-conferma.mjs && node prova-iscritti.mjs",
+    "test": "node prova-conferma.mjs && node prova-iscrizione.mjs && node prova-iscritti.mjs",
     "render:locandina": "node design/color-walk/render-locandina.mjs"
   },
   "devDependencies": {

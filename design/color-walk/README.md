@@ -14,6 +14,18 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
+> **⚠ La locandina pubblicata dice ancora le cose vecchie (2 settembre 2026).** Il testo di
+> tutte e quattro le tavole qui dentro — `locandina.dc.html`, `locandina.render.html` e le
+> due in `foto/` — è stato aggiornato alle decisioni della riunione: **quote 10 € e 5 €**,
+> niente riga di commissioni, **maglia bianca**, sacca e aperitivo compresi, **rinvio al 26
+> settembre** se piove, e ANSPI al posto dei tre nomi di persona. Ma `assets/color-walk-locandina.pdf`
+> e `assets/foto/color-walk-locandina.webp` **non sono stati riesportati**, perché
+> `npm run render:locandina` renderebbe dalla tavola astratta e butterebbe via logo ANSPI,
+> QR code, stemmi delle contrade e stemma del Comune che stanno solo nella versione
+> pubblicata. **Va rifatta da Claude Design**, col giro qui sotto, riportandoci le stesse
+> modifiche di testo. Finché non si fa, la locandina in stampa dice 10 € + 1 € di
+> commissioni e tre nomi di persona: non va distribuita.
+
 > **Le copie qui dentro sono indietro (1° settembre 2026).** Banner e locandina pubblicati
 > in `assets/` sono stati riesportati da Claude Design con roba che in questi `.dc.html` e
 > `.render.html` non c'è: il **logo ANSPI**, il **QR code** verso `/color-walk`, i **sei

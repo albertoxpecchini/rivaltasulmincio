@@ -2,8 +2,9 @@
    /api/conferma-color-walk — la mail che chiude l'iscrizione alla Color
    Walk. Una sola, e quella giusta:
 
-     · quota incassata      → la ricevuta, con nome, la quota, le commissioni
-                              di servizio, il totale e la data
+     · quote incassate      → la ricevuta, con nome, l'elenco di chi è stato
+                              iscritto, le quote per fascia d'età, il totale
+                              e la data
      · iscrizione a metà    → l'avviso che il pagamento non è andato a buon
                               fine e che non è stato addebitato niente
 
@@ -85,6 +86,28 @@ const TOLLERANZA_S = 300;
 
 const ATTESA_MS = 6000;
 
+/* Quanti minori una singola iscrizione può portare: la stessa cifra di
+   MAX_MINORI in api/iscrizione-color-walk.mjs. Qui serve solo a sapere fin
+   dove cercare le chiavi `minore_N` nei metadata. */
+const MAX_MINORI = 8;
+
+/* I minori scritti nei metadata dalla POST dell'iscrizione: una chiave per
+   uno, quattro campi separati da una barra verticale. Alla ricevuta servono
+   solo nome e cognome — è la riga che dice a un genitore che i figli sono
+   dentro — ma si legge tutta la riga com'è, così la forma sta scritta in un
+   posto solo insieme a chi la produce. */
+function leggiMinori(m) {
+  const minori = [];
+  for (let i = 1; i <= MAX_MINORI; i++) {
+    const riga = m[`minore_${i}`];
+    if (!riga) continue;
+    const [nome = "", cognome = ""] = String(riga).split("|");
+    if (!nome.trim() && !cognome.trim()) continue;
+    minori.push({ nome: nome.trim(), cognome: cognome.trim() });
+  }
+  return minori;
+}
+
 /* ── Le due porte verso l'esterno ─────────────────────────────────────────
    Una per Stripe e una per la posta, ciascuna con la sua autorizzazione e il
    suo timeout scritti in un posto solo. */
@@ -150,6 +173,22 @@ export async function spedisci({ a, oggetto, html, testo }) {
    e chi ci prova con qualcosa di peggio non deve combinare niente. */
 const escape = (s) =>
   String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ── I pezzi che ci sono solo a volte ────────────────────────────────────
+   <!--se:chiave--> … <!--/se--> : un blocco che resta o sparisce a seconda
+   di com'è fatta questa singola iscrizione. Non è lo stesso meccanismo delle
+   sezioni di build.mjs — quelle dipendono da evento.json, uguale per tutti, e
+   si decidono una volta sola quando si compila il modello. Queste dipendono
+   da chi ha compilato il modulo: la riga dei 6-17 anni esiste nella ricevuta
+   di una famiglia e non in quella di chi cammina da solo. */
+export function condiziona(modello, condizioni) {
+  let html = modello;
+  for (const [chiave, tienilo] of Object.entries(condizioni)) {
+    const blocco = new RegExp(`[ \\t]*<!--se:${chiave}-->\\r?\\n?([\\s\\S]*?)<!--/se-->\\r?\\n?`, "g");
+    html = html.replace(blocco, (_, dentro) => (tienilo ? dentro : ""));
+  }
+  return html;
+}
 
 export function riempi(modello, valori) {
   let html = modello;
@@ -348,27 +387,51 @@ export default async function handler(req, res) {
         return res.status(200).json({ ignorato: "ricevuta già spedita" });
       }
 
-      /* Le due voci arrivano da Stripe, non ricopiate a mano: la quota e —
-         separata — la commissione di servizio. Se una sessione tornasse senza
-         il dettaglio (una vecchia sessione a voce unica rimasta in coda), la
-         ricevuta ripiega su «tutto quota, zero commissioni»: resta valida. */
-      const voci = Array.isArray(sessione.line_items?.data) ? sessione.line_items.data : [];
-      const voceCommissioni = voci.find((v) => /commission/i.test(v.description || ""));
-      const commissioniCent = voceCommissioni?.amount_total ?? 0;
-      const quotaCent =
-        voci.find((v) => v !== voceCommissioni)?.amount_total ??
-        (sessione.amount_total || 0) - commissioniCent;
+      /* ── Chi è iscritto, e per quanto ────────────────────────────────
+         Un'iscrizione è un maggiorenne più i minori che porta con sé. I
+         nomi stanno nei metadata, gli importi nelle voci che Stripe
+         conferma di aver incassato: né gli uni né gli altri sono ricopiati
+         a mano qui dentro.
 
-      const importoQuota = importoItaliano(quotaCent, sessione.currency);
-      const importoCommissioni = importoItaliano(commissioniCent, sessione.currency);
+         Le voci si riconoscono dalla descrizione, che è quella scritta da
+         api/iscrizione-color-walk.mjs. Se una sessione tornasse senza il
+         dettaglio — una vecchia sessione rimasta in coda da prima di
+         questo cambio — si ripiega sul totale in una riga sola: la
+         ricevuta resta valida, che è quello che conta. */
+      const m = sessione.metadata || {};
+      const minori = leggiMinori(m);
+
+      const voci = Array.isArray(sessione.line_items?.data) ? sessione.line_items.data : [];
+      const voceRagazzi = voci.find((v) => /6 ai 17/i.test(v.description || ""));
+      const voceAdulti = voci.find((v) => v !== voceRagazzi);
+
+      const nRagazzi = voceRagazzi?.quantity ?? minori.length;
+      const centRagazzi = voceRagazzi?.amount_total ?? 0;
+      const centAdulti = voceAdulti?.amount_total ?? (sessione.amount_total || 0) - centRagazzi;
+
+      const voceAdultiTesto = "Iscrizione — 1 maggiorenne";
+      const voceRagazziTesto = `Iscrizione — ${nRagazzi} ${nRagazzi === 1 ? "ragazzo" : "ragazzi"} dai 6 ai 17 anni`;
+
+      const importoAdulti = importoItaliano(centAdulti, sessione.currency);
+      const importoRagazzi = importoItaliano(centRagazzi, sessione.currency);
       const importo = importoItaliano(sessione.amount_total, sessione.currency);
       const data = dataItaliana(pi?.created || avviso.created);
 
-      const html = riempi(MODELLO_RICEVUTA, {
+      const partecipanti = [
+        `${m.nome || nome} ${m.cognome || ""}`.trim(),
+        ...minori.map((x) => `${x.nome} ${x.cognome}`.trim()),
+      ]
+        .filter(Boolean)
+        .join(" · ");
+
+      const html = riempi(condiziona(MODELLO_RICEVUTA, { ragazzi: nRagazzi > 0 }), {
         NOME: nome,
         DATA: data,
-        IMPORTO_QUOTA: importoQuota,
-        IMPORTO_COMMISSIONI: importoCommissioni,
+        PARTECIPANTI: partecipanti,
+        VOCE_ADULTI: voceAdultiTesto,
+        IMPORTO_ADULTI: importoAdulti,
+        VOCE_RAGAZZI: voceRagazziTesto,
+        IMPORTO_RAGAZZI: importoRagazzi,
         IMPORTO: importo,
       });
 
@@ -378,12 +441,13 @@ export default async function handler(req, res) {
         html,
         testo:
           `Ciao ${nome || ""}, la tua iscrizione alla Color Walk del 20 settembre è ` +
-          `registrata e la quota è pagata.\n\n` +
-          `Iscrizione Color Walk — 20 settembre: ${importoQuota}\n` +
-          `Commissioni di servizio: ${importoCommissioni}\n` +
+          `registrata e il pagamento è andato a buon fine.\n\n` +
+          `${voceAdultiTesto}: ${importoAdulti}\n` +
+          (nRagazzi > 0 ? `${voceRagazziTesto}: ${importoRagazzi}\n` : "") +
           `Totale, pagato con carta il ${data}: ${importo}\n\n` +
-          `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
-          `pagamento: all'organizzazione arriva la quota intera.\n\n` +
+          `Chi è iscritto: ${partecipanti}\n\n` +
+          `La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS ` +
+          `di Rodigo, che organizza la camminata.\n\n` +
           `Questa mail è la tua conferma: tienila, non serve stamparla.\n` +
           `Ci vediamo il 20!\n\n` +
           `Il gruppo del Palio delle Contrade — Rivalta sul Mincio\n${SITE}`,
@@ -458,7 +522,7 @@ export default async function handler(req, res) {
    I sorgenti sono _build/email/ricevuta-color-walk.html,
    _build/email/fallita-color-walk.html e _build/email/evento.json. */
 
-export const ORGANIZZATORI = "";
+export const ORGANIZZATORI = "color-walk@rivaltasulmincio.it";
 
 export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 <html lang="it" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -503,7 +567,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 <body class="e-ground" style="margin:0; padding:0; background:#f0f0f0; -webkit-font-smoothing:antialiased;">
 
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
-  La tua iscrizione alla Color Walk del 20 settembre è registrata e la quota è pagata.
+  La tua iscrizione alla Color Walk del 20 settembre è registrata e il pagamento è andato a buon fine.
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -531,7 +595,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         <tr>
         <td class="e-pad" style="padding:20px 40px 0;">
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:16px; line-height:1.6; color:#525252;">
-            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e la quota è stata pagata. Questa mail è la tua conferma: tienila, non serve stamparla.
+            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e il pagamento è andato a buon fine. Questa mail è la tua conferma: tienila, non serve stamparla.
           </p>
         </td>
         </tr>
@@ -551,24 +615,25 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Iscrizione Color Walk — 20 settembre
+                  {{VOCE_ADULTI}}
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
-                  {{IMPORTO_QUOTA}}
+                  {{IMPORTO_ADULTI}}
                 </td>
                 </tr>
               </table>
-
+<!--se:ragazzi-->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
                 <tr>
                 <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
-                  Commissioni di servizio
+                  {{VOCE_RAGAZZI}}
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
-                  {{IMPORTO_COMMISSIONI}}
+                  {{IMPORTO_RAGAZZI}}
                 </td>
                 </tr>
               </table>
+<!--/se-->
 
               <div class="e-rule" style="height:1px; line-height:1px; font-size:0; background:#e8e8e8; margin:16px 0;">&nbsp;</div>
 
@@ -588,8 +653,8 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                  Le <span class="e-fg-l" style="color:#525252;">commissioni di servizio</span> coprono quanto trattiene il circuito di pagamento: all'organizzazione arriva la quota intera.<br>
-                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta.
+                  <span class="e-fg-m" style="color:#8f8f8f;">Chi è iscritto:</span> <span class="e-fg-l" style="color:#525252;">{{PARTECIPANTI}}</span><br>
+                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
                 </td>
                 </tr>
               </table>
@@ -614,6 +679,17 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </tr>
 
 
+        <tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Cosa portare
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Una maglia bianca — è su quella che i colori si vedono — e vestiti e scarpe che possono macchiarsi per sempre. Utili occhiali da sole e una bandana per naso e bocca quando si attraversa una postazione di colore.<br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Al ritrovo trovi: la sacca, il sacchetto di polveri colorate e, a fine camminata, l'aperitivo in piazza — tutto compreso nella quota</span>
+          </p>
+        </td>
+        </tr>
 
 
         <tr>
@@ -624,7 +700,30 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </td>
         </tr>
 
+        <tr>
+        <td class="e-pad" style="padding:28px 40px 0;">
+          <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
+            Se non puoi più venire
+          </h2>
+          <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
+            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">13 settembre</strong>. La quota non si rimborsa, ma fino a sette giorni prima l'iscrizione si può passare a un'altra persona della stessa fascia d'età, senza costi. Se piove, la camminata è rinviata a sabato 26 settembre e l'iscrizione resta valida senza fare niente: chi a quella data non può esserci ci scrive entro il 24 settembre e la quota viene restituita.
+          </p>
+        </td>
+        </tr>
 
+        <tr>
+        <td class="e-pad" style="padding:30px 40px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+            <td class="e-btn" style="background:#72c7e3; border:1px solid #2d94c1; border-radius:6px;">
+              <a href="mailto:color-walk@rivaltasulmincio.it" style="display:inline-block; padding:10px 20px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:14px; font-weight:600; color:#101010;">
+                Scrivi alle organizzatrici
+              </a>
+            </td>
+            </tr>
+          </table>
+        </td>
+        </tr>
 
         <tr>
         <td class="e-pad" style="padding:30px 40px 40px;">
@@ -782,6 +881,14 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
         </td>
         </tr>
 
+        <tr>
+        <td class="e-pad" style="padding:22px 40px 0;">
+          <p class="e-fg-lr" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:14px; line-height:1.7; color:#6f6f6f;">
+            Se invece il pagamento ti risulta fatto, non rifarlo: scrivi a
+            <a class="e-brand" href="mailto:color-walk@rivaltasulmincio.it" style="color:#0a6285;">color-walk@rivaltasulmincio.it</a> e controlliamo noi.
+          </p>
+        </td>
+        </tr>
 
         <tr>
         <td class="e-pad" style="padding:30px 40px 40px;">
