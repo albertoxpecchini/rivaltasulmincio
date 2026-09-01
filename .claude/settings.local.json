@@ -13,7 +13,13 @@
       "Bash(sed -i 's/<div class=\"sb-panel-inner sb-panel--solid\">/<div class=\"sb-panel-inner\">/g' _build/*.body.html && echo \"rimasti:\" && grep -o 'sb-panel--solid' _build/*.body.html | wc -l)",
       "Bash(node build.mjs)",
       "Bash(node \"C:/Users/pzkko/AppData/Local/Temp/claude/c--Users-pzkko-Documents-rivaltasulmincio/be6e72cf-375c-4bbb-a0c9-00761c4437de/scratchpad/genluoghi.mjs\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node prova-conferma.mjs)",
+      "Bash(grep -E \"\\\\.\\(html|mjs|md\\)$\")",
+      "Bash(pkill -f \"node serve.mjs\")",
+      "Bash(git add *)",
+      "Bash(git commit -q -m ' *)",
+      "Bash(git push *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\pzkko\\Documents\\rivaltasulmincio\\_build"
