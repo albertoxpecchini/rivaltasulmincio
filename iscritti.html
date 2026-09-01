@@ -299,78 +299,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-variant-numeric: tabular-nums;
 }
 
-/* ── La zona prenotazioni ─────────────────────────────────────────────────
-   Chi cucina l’aperitivo non ha bisogno delle nove righe della scheda: gli
-   servono i nomi e le persone, sommate, e un tasto per portarseli via. È una
-   lastra sua, sopra l'elenco grande, che compare solo quando c'è almeno una
-   prenotazione — a zero non è un dato, è rumore. */
-.sb-is-preno[hidden] { display: none; }
-.sb-is-preno { margin: 0 0 1rem; }
-.sb-is-preno .sb-panel-inner { padding: 1rem 1.1rem; }
-
-.sb-is-preno-testa {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
-}
-.sb-is-preno-tit {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--sb-fg);
-}
-/* Il tasto della zona è piccolo — non è l'azione principale della pagina, è
-   una scorciatoia — quindi scende sotto l'altezza dei comandi grandi. Il
-   selettore doppio batte `.sb-is .sb-btn` che fissa l'altezza a --is-h. */
-.sb-is .sb-is-preno-giu {
-  flex: none;
-  min-height: 2.15rem;
-  padding-inline: 0.9rem;
-  font-size: 0.82rem;
-}
-.sb-is-preno-tot {
-  margin: 0.5rem 0 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--sb-fg-lighter);
-  font-variant-numeric: tabular-nums;
-}
-
-.sb-is-preno-lista {
-  list-style: none;
-  margin: 0.85rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.1rem;
-}
-.sb-is-preno-lista li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
-  padding: 0.42rem 0;
-  font-size: 0.92rem;
-  color: var(--sb-fg-light);
-}
-.sb-is-preno-lista li + li { border-top: 1px solid var(--sb-border); }
-.sb-is-preno-nome { color: var(--sb-fg); min-width: 0; overflow-wrap: anywhere; }
-.sb-is-preno-n {
-  flex: none;
-  font-weight: 600;
-  color: var(--sb-fg);
-  font-variant-numeric: tabular-nums;
-}
-
-/* La riga «Aperitivo» dentro la scheda grande: il numero di persone in
-   evidenza come la quota, così anche scorrendo l'elenco intero si notano. */
-.sb-is-dato dd.sb-is-persone { font-weight: 600; color: var(--sb-fg); font-variant-numeric: tabular-nums; }
-
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
-   Non una tabella: una tabella con nove colonne su uno schermo di telefono si
+   Non una tabella: una tabella con otto colonne su uno schermo di telefono si
    legge scorrendo in orizzontale, ed è il modo più sicuro per non far leggere
    niente a nessuno. */
 .sb-is-elenco { display: grid; gap: 0.6rem; }
@@ -491,19 +421,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         </div>
       </div>
 
-      <!-- La zona prenotazioni: nomi e persone dell’aperitivo, con il suo
-           tasto per scaricarla da sola. Compare solo se qualcuno ha prenotato. -->
-      <section class="sb-panel sb-is-preno" id="is-preno" hidden>
-        <div class="sb-panel-inner">
-          <div class="sb-is-preno-testa">
-            <h2 class="sb-is-preno-tit">Prenotazioni aperitivo</h2>
-            <button class="sb-btn sb-btn--secondary sb-is-preno-giu" type="button" id="is-preno-csv">Scarica</button>
-          </div>
-          <p class="sb-is-preno-tot" id="is-preno-tot"></p>
-          <ol class="sb-is-preno-lista" id="is-preno-lista"></ol>
-        </div>
-      </section>
-
       <div class="sb-is-barra">
         <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
         <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
@@ -539,9 +456,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var esito = document.getElementById("is-esito");
   var cerca = document.getElementById("is-cerca");
   var conteggio = document.getElementById("is-conteggio");
-  var preno = document.getElementById("is-preno");
-  var prenoTot = document.getElementById("is-preno-tot");
-  var prenoLista = document.getElementById("is-preno-lista");
   var CHIAVE_MEM = "rsm-iscritti-chiave";
 
   var dati = null;
@@ -567,10 +481,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     var d = new Date(iso);
     if (isNaN(d)) return iso;
     return d.toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-  }
-
-  function persone(n) {
-    return n === 1 ? "1 persona" : n + " persone";
   }
 
   /* ── Una scheda per iscritto ────────────────────────────────────────────
@@ -626,7 +536,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     voce("Email", i.email, null, "mailto:");
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
-    voce("Aperitivo", i.aperitivo ? persone(i.aperitivoPersone) : "", "sb-is-persone");
     voce("Iscritto il", quando(i.quandoISO));
 
     inner.appendChild(dl);
@@ -644,7 +553,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     var q = normalizza(cerca.value.trim());
     var visti = dati.iscritti.filter(function (i) {
       if (!q) return true;
-      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.aperitivo ? "aperitivo" : ""].join(" ")).indexOf(q) > -1;
+      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono].join(" ")).indexOf(q) > -1;
     });
 
     /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
@@ -672,44 +581,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     visti.forEach(function (i) { elenco.appendChild(riga(i)); });
   }
 
-  /* ── La zona prenotazioni ──────────────────────────────────────────────
-     Solo chi si ferma a mangiare, in ordine alfabetico di cognome — una lista
-     da spuntare, non da leggere per data. Nome e persone, e il totale sopra.
-     Sta a parte dall'elenco grande e dalla ricerca: è la lista del cuoco. */
-  function ordinaPreno(a, b) {
-    return (a.cognome + " " + a.nome).localeCompare(b.cognome + " " + b.nome, "it", { sensitivity: "base" });
-  }
-
-  function disegnaPreno() {
-    if (!dati) return;
-    var righe = dati.iscritti.filter(function (i) { return i.aperitivo; }).slice().sort(ordinaPreno);
-    prenoLista.innerHTML = "";
-
-    if (!righe.length) {
-      preno.hidden = true;
-      return;
-    }
-
-    var tot = righe.reduce(function (s, i) { return s + i.aperitivoPersone; }, 0);
-    prenoTot.textContent =
-      righe.length + (righe.length === 1 ? " prenotazione" : " prenotazioni") + " · " + persone(tot);
-
-    righe.forEach(function (i) {
-      var li = document.createElement("li");
-      var nome = document.createElement("span");
-      nome.className = "sb-is-preno-nome";
-      nome.textContent = (i.nome + " " + i.cognome).trim() || "(senza nome)";
-      var n = document.createElement("span");
-      n.className = "sb-is-preno-n";
-      n.textContent = String(i.aperitivoPersone);
-      li.appendChild(nome);
-      li.appendChild(n);
-      prenoLista.appendChild(li);
-    });
-
-    preno.hidden = false;
-  }
-
   function carica() {
     mostra("attesa", "Leggo i pagamenti…");
     return fetch("/api/iscritti-color-walk", { headers: { "x-chiave": chiave } })
@@ -728,7 +599,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         porta.hidden = true;
         zona.hidden = false;
         mostra(null, "");
-        disegnaPreno();
         disegna();
       })
       .catch(function (err) {
@@ -767,8 +637,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     elenco.innerHTML = "";
     cerca.value = "";
     conteggio.hidden = true;
-    preno.hidden = true;
-    prenoLista.innerHTML = "";
     zona.hidden = true;
     porta.hidden = false;
     campoChiave.value = "";
@@ -787,28 +655,15 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var fileCsv = function (righe) { return "﻿" + righe.join("\r\n") + "\r\n"; };
 
   function csv() {
-    var righe = [rigaCsv(["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Aperitivo", "Persone", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
+    var righe = [rigaCsv(["Nome", "Cognome", "Codice fiscale", "Indirizzo", "Email", "Telefono", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
         i.nome, i.cognome, i.codiceFiscale, i.indirizzo, i.email, i.telefono, i.note,
-        i.aperitivo ? "sì" : "no", i.aperitivo ? i.aperitivoPersone : "",
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
         i.consenso, i.id
       ]));
     });
-    return fileCsv(righe);
-  }
-
-  /* La lista dell’aperitivo da sola: nomi, persone, e una riga «Totale» in
-     fondo — è il foglio che chi cucina si stampa. In ordine alfabetico come
-     la zona qui sopra. */
-  function csvAperitivo() {
-    var soloLoro = dati.iscritti.filter(function (i) { return i.aperitivo; }).slice().sort(ordinaPreno);
-    var righe = [rigaCsv(["Nome", "Cognome", "Persone"])];
-    soloLoro.forEach(function (i) { righe.push(rigaCsv([i.nome, i.cognome, i.aperitivoPersone])); });
-    righe.push(rigaCsv(["Totale", soloLoro.length + (soloLoro.length === 1 ? " prenotazione" : " prenotazioni"),
-      soloLoro.reduce(function (s, i) { return s + i.aperitivoPersone; }, 0)]));
     return fileCsv(righe);
   }
 
@@ -829,11 +684,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   document.getElementById("is-csv").addEventListener("click", function () {
     if (!dati || !dati.iscritti.length) return mostra("errore", "Non c'è ancora niente da scaricare.");
     scarica("iscritti-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csv());
-  });
-
-  document.getElementById("is-preno-csv").addEventListener("click", function () {
-    if (!dati || !dati.aperitivoPrenotazioni) return mostra("errore", "Nessuna prenotazione all’aperitivo, per ora.");
-    scarica("aperitivo-color-walk-" + new Date().toISOString().slice(0, 10) + ".csv", csvAperitivo());
   });
 
   // Chi torna sulla pagina nella stessa scheda non riscrive la chiave.

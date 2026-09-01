@@ -398,95 +398,6 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 .sb-cw-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
 .sb-cw-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
-/* ═══ L’aperitivo ══════════════════════════════════════════════════════════
-   Facoltativa: la striscia dell’aperitivo in testa, poi una spunta come quella
-   del consenso, e sotto — solo quando è spuntata — lo "switcher" per dire quante
-   persone restano a mangiare. Non è un campo obbligatorio, non entra nel conto
-   di «quanto manca», non si paga qui. */
-.sb-cw-aperitivo {
-  display: grid;
-  gap: 0.85rem;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid var(--sb-border);
-  border-radius: 8px;
-  background: var(--sb-surface-100);
-  transition: border-color 0.2s ease;
-}
-/* La striscia è già l'immagine col suo filo di bordo: dentro la lastra non le
-   serve il margine che porta altrove, e il raggio si accorda a quello del box. */
-.sb-cw-aperitivo .sb-riv-cwbanner { margin: 0; border-radius: 6px; }
-.sb-cw-aperitivo:focus-within { border-color: var(--sb-brand); }
-.sb-cw-aperitivo-spunta {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.7rem;
-  align-items: start;
-  cursor: pointer;
-}
-.sb-cw-aperitivo-spunta input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
-.sb-cw-aperitivo-spunta span { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
-.sb-cw-aperitivo-spunta strong { font-weight: 600; color: var(--sb-fg); }
-
-/* Il pannello delle persone sta dentro la lastra, staccato dalla spunta da un
-   capello grigio. `hidden` lo toglie del tutto finché non serve. */
-.sb-cw-quanti[hidden] { display: none; }
-.sb-cw-quanti {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.7rem 1rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--sb-border);
-}
-.sb-cw-quanti-eti { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
-
-/* Lo switcher: −  n  +. I due tasti sono quadrati e grossi come un bersaglio
-   da pollice; il numero in mezzo è in cifre a larghezza fissa, non un campo da
-   digitare (readonly): si muove solo coi tasti, e non può finire in uno stato
-   sbagliato. */
-.sb-cw-stepper {
-  display: inline-flex;
-  align-items: stretch;
-  border: 1px solid var(--sb-border-strong);
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--sb-surface-75);
-}
-.sb-cw-step {
-  width: 2.6rem;
-  min-height: 2.6rem;
-  border: 0;
-  background: transparent;
-  color: var(--sb-fg);
-  font: inherit;
-  font-size: 1.25rem;
-  line-height: 1;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-}
-.sb-cw-step:hover { background: var(--sb-overlay); }
-.sb-cw-step:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
-.sb-cw-step[disabled] { color: var(--sb-fg-muted); cursor: not-allowed; }
-.sb-cw-stepper input {
-  width: 2.8rem;
-  border: 0;
-  border-left: 1px solid var(--sb-border-strong);
-  border-right: 1px solid var(--sb-border-strong);
-  background: transparent;
-  color: var(--sb-fg);
-  font: inherit;
-  font-size: 1rem;
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-  -moz-appearance: textfield;
-  appearance: textfield;
-  pointer-events: none;
-}
-.sb-cw-stepper input::-webkit-outer-spin-button,
-.sb-cw-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
    larghezza del modulo, e il permesso di andare a capo — la scritta è lunga e
@@ -585,7 +496,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead sb-sechead--start">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>.</p>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>. A fine camminata c'è l'aperitivo in Piazza Chiesa, per tutti: non si prenota, ci si ferma e si brinda.</p>
       <p style="margin-top:0.8rem"><a href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener" style="font-size:0.9rem;font-weight:500">Scarica la locandina in PDF →</a></p>
     </div>
 
@@ -671,22 +582,6 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
             <textarea id="cr-note" name="note" rows="2" maxlength="300" enterkeyhint="done"></textarea>
           </div>
           <p class="sb-cw-aiuto" id="cr-note-aiuto"></p>
-        </div>
-
-        <div class="sb-cw-aperitivo">
-          {{APERITIVO_BANNER}}
-          <label class="sb-cw-aperitivo-spunta">
-            <input type="checkbox" id="cr-aperitivo" name="aperitivo">
-            <span>Mi fermo all’<strong>aperitivo</strong>, dopo la camminata <span class="sb-cw-facolt">su prenotazione</span></span>
-          </label>
-          <div class="sb-cw-quanti" id="cr-quanti" hidden>
-            <span class="sb-cw-quanti-eti">Quante persone si fermano all’aperitivo <span class="sb-cw-facolt">te compreso</span></span>
-            <div class="sb-cw-stepper">
-              <button type="button" class="sb-cw-step" id="cr-aperitivo-meno" aria-label="Una persona in meno">&minus;</button>
-              <input type="number" id="cr-aperitivo-n" name="aperitivoPersone" value="1" min="1" max="10" step="1" inputmode="numeric" readonly aria-label="Numero di persone">
-              <button type="button" class="sb-cw-step" id="cr-aperitivo-piu" aria-label="Una persona in più">+</button>
-            </div>
-          </div>
         </div>
 
         <div class="sb-cw-consenso">
@@ -983,41 +878,6 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   });
   consenso.addEventListener("change", conta);
 
-  /* ── L’aperitivo ──────────────────────────────────────────────────────
-     La spunta scopre lo switcher delle persone; lo switcher tiene il numero fra
-     1 e 10 e spegne il tasto quando si è al minimo o al massimo. È tutto
-     facoltativo: niente di questo entra nel conto di «quanto manca» né blocca
-     l'invio, e /api/iscrizione-color-walk ristringe comunque il numero. */
-  var aperitivo = document.getElementById("cr-aperitivo");
-  var quanti = document.getElementById("cr-quanti");
-  var aperitivoN = document.getElementById("cr-aperitivo-n");
-  var aperitivoMeno = document.getElementById("cr-aperitivo-meno");
-  var aperitivoPiu = document.getElementById("cr-aperitivo-piu");
-  var APE_MIN = 1, APE_MAX = 10;
-
-  function aperitivoLeggi() {
-    var n = parseInt(aperitivoN.value, 10);
-    if (isNaN(n)) n = APE_MIN;
-    return Math.min(APE_MAX, Math.max(APE_MIN, n));
-  }
-  function aperitivoScrivi(n) {
-    n = Math.min(APE_MAX, Math.max(APE_MIN, n));
-    aperitivoN.value = String(n);
-    aperitivoMeno.disabled = n <= APE_MIN;
-    aperitivoPiu.disabled = n >= APE_MAX;
-  }
-  function aperitivoAggiorna() {
-    quanti.hidden = !aperitivo.checked;
-    if (aperitivo.checked) aperitivoScrivi(aperitivoLeggi());
-  }
-  aperitivo.addEventListener("change", function () {
-    aperitivoAggiorna();
-    if (aperitivo.checked) portaSu(quanti);
-  });
-  aperitivoMeno.addEventListener("click", function () { aperitivoScrivi(aperitivoLeggi() - 1); });
-  aperitivoPiu.addEventListener("click", function () { aperitivoScrivi(aperitivoLeggi() + 1); });
-  aperitivoAggiorna();
-
   /* ── L'indirizzo che si compone da sé ───────────────────────────────────
      Le vie vere di Rivalta, con i civici mappati in OpenStreetMap, messe qui
      dal build. Si scrivono due lettere e la via esce; si sceglie la via e
@@ -1264,9 +1124,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         indirizzo: form.indirizzo.value,
         telefono: form.telefono.value,
         note: form.note.value,
-        consenso: consenso.checked,
-        aperitivo: aperitivo.checked,
-        aperitivoPersone: aperitivo.checked ? aperitivoLeggi() : 0
+        consenso: consenso.checked
       })
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })

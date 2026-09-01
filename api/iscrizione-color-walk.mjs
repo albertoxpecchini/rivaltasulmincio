@@ -153,16 +153,6 @@ async function iscrivi(req, res, chiave) {
   const note = pulisci(req.body?.note, 300) || "—";
   const consenso = req.body?.consenso === true;
 
-  /* L’aperitivo finale è a prenotazione e non si paga qui: è solo un numero di
-     persone da segnare accanto all'iscrizione. Chi non spunta niente vale zero;
-     chi spunta vale almeno uno (sé stesso), al massimo dieci — oltre, si scrive
-     alle organizzatrici. Il numero arriva da un modulo pubblico: si stringe nel
-     range e non ci si fida di quello che dice. */
-  const vuoleAperitivo = req.body?.aperitivo === true;
-  const aperitivoPersone = vuoleAperitivo
-    ? Math.min(10, Math.max(1, Math.floor(Number(req.body?.aperitivoPersone)) || 1))
-    : 0;
-
   if (!nome || !cognome || !EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "nome, cognome o email mancanti o non validi" });
   }
@@ -217,11 +207,6 @@ async function iscrivi(req, res, chiave) {
   parametri.set("metadata[indirizzo]", indirizzo);
   parametri.set("metadata[telefono]", telefono);
   parametri.set("metadata[note]", note);
-  /* L’aperitivo: "si"/"no" e quante persone. Viaggiano nei metadata come tutto
-     il resto — è da qui che /api/conferma-color-walk ci scrive la riga nella
-     mail e /api/iscritti-color-walk tira su la lista di chi resta a mangiare. */
-  parametri.set("metadata[aperitivo]", vuoleAperitivo ? "si" : "no");
-  parametri.set("metadata[aperitivo_persone]", String(aperitivoPersone));
   /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
      che serve se un domani qualcuno chiede conto di quei dati. */
   parametri.set("metadata[consenso]", new Date().toISOString());

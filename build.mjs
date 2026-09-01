@@ -651,10 +651,8 @@ ${LOGHI.map((l) => {
    con questi nomi e ricompaiono al primo build. */
 const BANNER = "color-walk-banner";
 const LOCANDINA = "color-walk-locandina";
-const APERITIVO_BANNER = "aperitivo-banner";
 let bannerTrovato = null;
 let locandinaTrovata = null;
-let aperitivoBannerTrovato = null;
 
 const renderBanner = () => {
   bannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
@@ -663,20 +661,6 @@ const renderBanner = () => {
   if (!bannerTrovato) return "";
   return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
       alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa alle 15:45, partenza alle 16:00.">`;
-};
-
-/* {{APERITIVO_BANNER}} è la striscia dell’aperitivo — stessa misura e
-   stesso trattamento del banner della camminata (.sb-riv-cwbanner, immagine
-   sola col filo di bordo). Va nella zona aperitivo del modulo /color-walk,
-   sopra la spunta. La tela è in design/color-walk/aperitivo/. Senza il file,
-   il segnaposto non lascia buchi. */
-const renderAperitivoBanner = () => {
-  aperitivoBannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
-    .map((est) => `assets/foto/${APERITIVO_BANNER}.${est}`)
-    .find((p) => existsSync(p));
-  if (!aperitivoBannerTrovato) return "";
-  return `<img class="sb-riv-cwbanner" src="${aperitivoBannerTrovato}" width="2400" height="900" decoding="async" loading="lazy"
-        alt="Aperitivo della Color Walk — domenica 20 settembre 2026, a fine camminata in Piazza Chiesa. Su prenotazione, posti limitati.">`;
 };
 
 /* ── Il blocco «Color Walk come in home» ────────────────────────────────
@@ -723,7 +707,8 @@ const renderLocandina = () => {
     "Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle " +
     "15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. " +
     "Iscrizioni online 10 € a " +
-    "persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk.";
+    "persona, più 1 € di commissioni di pagamento, su rivaltasulmincio.it/color-walk. " +
+    "A fine camminata, aperitivo in piazza: niente prenotazione.";
   const anteprima = conPdf
     ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
     : ` href="${locandinaTrovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;
@@ -990,7 +975,6 @@ for (const file of bodies) {
       .replace("{{LOGHI}}", renderLoghi)
       .replace("{{BANNER}}", renderBanner)
       .replace("{{CW_HOME}}", () => renderBannerHome(page))
-      .replace("{{APERITIVO_BANNER}}", renderAperitivoBanner)
       .replace("{{LOCANDINA}}", renderLocandina)
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
@@ -1220,11 +1204,6 @@ const compilaMail = (nome) => {
     "{{IMPORTO_COMMISSIONI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
-    /* Non è un dato dell'evento: lo riempie /api/conferma-color-walk a runtime,
-       per iscritto, con la riga dell’aperitivo — prenotato e per quanti, o non
-       prenotato. Qui basta che il build non lo prenda per un segnaposto
-       dimenticato. */
-    "{{APERITIVO}}",
   ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
   if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
@@ -1309,12 +1288,6 @@ if (!locandinaTrovata) {
   console.log(`
 ⚠ locandina Color Walk: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
   console.log(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
-}
-
-if (!aperitivoBannerTrovato) {
-  console.log(`
-⚠ banner aperitivo: manca assets/foto/${APERITIVO_BANNER}.webp (o .png/.jpg/.avif/.svg).`);
-  console.log(`  La tela è in design/color-walk/aperitivo/: si riesporta e ricompare sopra la spunta.`);
 }
 
 /* ── La lista della spesa ─────────────────────────────────────────────────

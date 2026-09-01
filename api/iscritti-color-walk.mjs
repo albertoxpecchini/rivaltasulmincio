@@ -116,17 +116,6 @@ export default async function handler(req, res) {
           continue;
         }
         const m = s.metadata || {};
-        /* L’aperitivo: "si" più il numero di persone, o niente. Chi organizza
-           guarda questi due — e il totale qui sotto — non le nove righe della
-           scheda. `aperitivoPersone` resta 0 per chi non si ferma.
-
-           Si legge anche la vecchia coppia `risotto`/`risotto_persone`: fino
-           al 1° settembre 2026 la sosta finale era una risottata, e le sessioni
-           aperte prima portano quei nomi. */
-        const aperitivo = (m.aperitivo ?? m.risotto) === "si";
-        const aperitivoPersone = aperitivo
-          ? Math.min(10, Math.max(1, Math.floor(Number(m.aperitivo_persone ?? m.risotto_persone)) || 1))
-          : 0;
         iscritti.push({
           id: s.id,
           nome: m.nome || "",
@@ -137,8 +126,6 @@ export default async function handler(req, res) {
           telefono: m.telefono === "—" ? "" : m.telefono || "",
           note: m.note === "—" ? "" : m.note || "",
           consenso: m.consenso || "",
-          aperitivo,
-          aperitivoPersone,
           quandoISO: new Date(s.created * 1000).toISOString(),
           importoCent: s.amount_total ?? 0,
         });
@@ -156,11 +143,6 @@ export default async function handler(req, res) {
       iscritti,
       incompleti,
       totaleCent: iscritti.reduce((s, i) => s + i.importoCent, 0),
-      /* Per l’aperitivo: quante prenotazioni e quante persone in tutto. Li
-         conta la funzione una volta, così la pagina non rifà la somma a ogni
-         ridisegno e chi cucina ha il numero pronto. */
-      aperitivoPrenotazioni: iscritti.filter((i) => i.aperitivo).length,
-      aperitivoPersoneTotali: iscritti.reduce((s, i) => s + i.aperitivoPersone, 0),
       aggiornatoISO: new Date().toISOString(),
     });
   } catch (errore) {

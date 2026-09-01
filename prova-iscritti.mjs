@@ -107,12 +107,6 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", env = {}, pag
   if (atteso.totaleCent !== undefined && res.corpo?.totaleCent !== atteso.totaleCent) {
     problemi.push(`totale ${res.corpo?.totaleCent}, atteso ${atteso.totaleCent}`);
   }
-  if (atteso.aperitivoPersoneTotali !== undefined && res.corpo?.aperitivoPersoneTotali !== atteso.aperitivoPersoneTotali) {
-    problemi.push(`${res.corpo?.aperitivoPersoneTotali} persone all’aperitivo, attese ${atteso.aperitivoPersoneTotali}`);
-  }
-  if (atteso.aperitivoPrenotazioni !== undefined && res.corpo?.aperitivoPrenotazioni !== atteso.aperitivoPrenotazioni) {
-    problemi.push(`${res.corpo?.aperitivoPrenotazioni} prenotazioni aperitivo, attese ${atteso.aperitivoPrenotazioni}`);
-  }
   if (atteso.nienteDati && res.corpo?.iscritti) {
     problemi.push("ha risposto con un elenco quando non doveva rispondere affatto");
   }
@@ -221,57 +215,7 @@ await prova("più pagine: le legge tutte", {
 await prova("nessun iscritto → elenco vuoto, non un errore", {
   chiave: CHIAVE,
   pagine: [{ data: [], has_more: false }],
-  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0, aperitivoPersoneTotali: 0, aperitivoPrenotazioni: 0 },
-});
-
-console.log("\n── L’aperitivo ───────────────────────────────────────────────");
-
-/* Una sessione pagata con l’aperitivo prenotato per `persone` persone. */
-const conAperitivo = (n, persone) =>
-  sessione(n, {
-    metadata: {
-      evento: EVENTO,
-      nome: "Nome" + n,
-      cognome: "Cognome" + n,
-      codice_fiscale: "RSSMRA85T10A562S",
-      indirizzo: "Via Sette Frati " + n,
-      telefono: "—",
-      note: "—",
-      consenso: "2026-08-25T10:00:00.000Z",
-      aperitivo: "si",
-      aperitivo_persone: String(persone),
-    },
-  });
-
-await prova("persone e prenotazioni: somma solo chi ha pagato e ha spuntato", {
-  chiave: CHIAVE,
-  pagine: [
-    {
-      data: [
-        conAperitivo(1, 2),
-        conAperitivo(2, 3),
-        sessione(3), // pagato ma niente aperitivo
-        { ...conAperitivo(4, 4), payment_status: "unpaid" }, // aperitivo ma non pagato → non conta
-      ],
-      has_more: false,
-    },
-  ],
-  atteso: { codice: 200, iscritti: 3, aperitivoPersoneTotali: 5, aperitivoPrenotazioni: 2 },
-});
-
-await prova("metadati aperitivo senza numero → vale una persona, non zero", {
-  chiave: CHIAVE,
-  pagine: [
-    {
-      data: [
-        sessione(1, {
-          metadata: { evento: EVENTO, nome: "Nome1", cognome: "C1", aperitivo: "si" },
-        }),
-      ],
-      has_more: false,
-    },
-  ],
-  atteso: { codice: 200, iscritti: 1, aperitivoPersoneTotali: 1, aperitivoPrenotazioni: 1 },
+  atteso: { codice: 200, iscritti: 0, incompleti: 0, totaleCent: 0 },
 });
 
 await prova("l'elenco non finisce in nessuna cache", {
@@ -310,31 +254,12 @@ global.fetch = async () => risposta(500, { error: { message: "Stripe giù" } });
   const i = res.corpo?.iscritti?.[0] || {};
   const pieno = i.nome && i.cognome && i.codiceFiscale && i.indirizzo && i.email && i.quandoISO;
   const trattini = i.telefono === "" && i.note === "";
-  const aperitivoSpento = i.aperitivo === false && i.aperitivoPersone === 0;
-  if (pieno && trattini && aperitivoSpento) {
+  if (pieno && trattini) {
     passate++;
-    console.log("  ok   la scheda arriva completa, i «—» restano vuoti, l’aperitivo è spento");
+    console.log("  ok   la scheda arriva completa, i «—» restano vuoti");
   } else {
     fallite++;
     console.log(`  NO   scheda incompleta: ${JSON.stringify(i)}`);
-  }
-}
-
-/* E che quando l’aperitivo è prenotato, la scheda la porti: booleano vero e
-   numero di persone, non una stringa "si" da interpretare a valle. */
-{
-  process.env.STRIPE_SECRET_KEY = "sk_test_finta";
-  process.env.ISCRITTI_CHIAVE = CHIAVE;
-  global.fetch = stubFetch([{ data: [conAperitivo(9, 3)], has_more: false }]);
-  const res = finestra();
-  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
-  const i = res.corpo?.iscritti?.[0] || {};
-  if (i.aperitivo === true && i.aperitivoPersone === 3) {
-    passate++;
-    console.log("  ok   la scheda di chi si ferma all’aperitivo porta aperitivo:true e le persone");
-  } else {
-    fallite++;
-    console.log(`  NO   aperitivo non riportato: ${JSON.stringify(i)}`);
   }
 }
 

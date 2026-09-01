@@ -214,14 +214,6 @@
         </td>
         </tr>
 
-        <!-- ── L’aperitivo ────────────────────────────────────────────
-             Riga per chi ha prenotato l’aperitivo, e nient'altro
-             per chi non l'ha fatto. Non è una sezione del build: il
-             segnaposto lo riempie /api/conferma-color-walk al momento di
-             spedire, guardando i metadata della sessione — con la sotto-lastra
-             già pronta se le persone ci sono, con il vuoto se non ci sono. -->
-        {{APERITIVO}}
-
         <!--sezione:quando-->
         <!-- ── Dove e quando ─────────────────────────────────────────────
              Salta tutta se in evento.json manca l'ora o il luogo del
@@ -236,7 +228,8 @@
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
             Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_ORA}}</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">{{RITROVO_LUOGO}}</strong>, partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">{{PARTENZA}}</strong> per il giro del paese.<br>
-            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span><br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">A fine camminata, aperitivo in piazza per tutti: non si prenota, ci si ferma e si brinda.</span>
           </p>
         </td>
         </tr>

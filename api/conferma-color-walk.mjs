@@ -174,48 +174,6 @@ const importoItaliano = (centesimi, valuta) =>
     currency: String(valuta || "eur").toUpperCase(),
   }).format((centesimi || 0) / 100);
 
-/* ── La riga dell’aperitivo ──────────────────────────────────────────────
-   Nel modello della ricevuta c'è {{APERITIVO}} su una riga sua, e ci va SEMPRE
-   una sotto-lastra: la ricevuta deve dire nero su bianco se l’aperitivo è
-   prenotato o no, non lasciarlo intendere dal silenzio. `n` persone (1..10) →
-   prenotato; `n` zero (o non numero) → non prenotato. Il valore arriva dai
-   metadata della sessione, che si possono anche correggere a mano nel
-   dashboard, quindi qui si ristringe comunque. */
-export const persone = (n) => (n === 1 ? "1 persona" : `${n} persone`);
-
-export function bloccoAperitivo(n) {
-  const q = Math.floor(Number(n)) || 0;
-  const prenotato = q >= 1;
-  const quanti = Math.min(10, Math.max(1, q));
-  const corpo = prenotato
-    ? `<p class="e-fg-l" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.6; color:#525252;">
-                Ti abbiamo segnato per l’aperitivo dopo la camminata: <strong class="e-fg" style="color:#171717; font-weight:600;">${persone(quanti)}</strong> a tuo nome.
-              </p>
-              <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                È su prenotazione e non si paga adesso. Se il numero cambia, o non ti fermi più, rispondi a questa mail e lo sistemiamo.
-              </p>`
-    : `<p class="e-fg-l" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.6; color:#525252;">
-                <strong class="e-fg" style="color:#171717; font-weight:600;">Non prenotato.</strong> Non ti fermi per l’aperitivo dopo la camminata.
-              </p>
-              <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                Se cambi idea, rispondi a questa mail: finché ci sono posti ti segniamo.
-              </p>`;
-  return `<tr>
-        <td class="e-pad" style="padding:28px 40px 0;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="e-sub" style="background:#f6f6f6; border:1px solid #e8e8e8; border-radius:10px; clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
-            <tr>
-            <td style="padding:20px 22px;">
-              <div class="e-fg-m" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8f8f8f;">
-                Aperitivo
-              </div>
-              ${corpo}
-            </td>
-            </tr>
-          </table>
-        </td>
-        </tr>`;
-}
-
 /* ── La firma ─────────────────────────────────────────────────────────────
    L'intestazione ha la forma `t=1700000000,v1=abc…`, e i `v1` possono essere
    più d'uno mentre si cambia il segreto senza fermare niente: basta che uno
@@ -406,28 +364,13 @@ export default async function handler(req, res) {
       const importo = importoItaliano(sessione.amount_total, sessione.currency);
       const data = dataItaliana(pi?.created || avviso.created);
 
-      /* L’aperitivo: "si" più un numero di persone, oppure no. Sta nei metadata
-         della sessione, messo lì all'iscrizione. Nella mail c'è sempre — una
-         riga (HTML) e un paragrafo (testo) — che dice se è prenotato e per
-         quanti, o che non lo è. `aperitivoN` è 0 quando non è prenotato.
-
-         Si legge anche la vecchia coppia `risotto`/`risotto_persone`: fino al
-         1° settembre 2026 la sosta finale era una risottata, e le sessioni
-         aperte prima portano quei nomi. Stessa logica del marchio EVENTO —
-         il nome cambia in pagina, le ricevute già emesse non si rompono. */
-      const meta = sessione.metadata || {};
-      const aperitivo = (meta.aperitivo ?? meta.risotto) === "si";
-      const aperitivoN = aperitivo
-        ? Math.min(10, Math.max(1, Math.floor(Number(meta.aperitivo_persone ?? meta.risotto_persone)) || 1))
-        : 0;
-
       const html = riempi(MODELLO_RICEVUTA, {
         NOME: nome,
         DATA: data,
         IMPORTO_QUOTA: importoQuota,
         IMPORTO_COMMISSIONI: importoCommissioni,
         IMPORTO: importo,
-      }).replace("{{APERITIVO}}", () => bloccoAperitivo(aperitivoN));
+      });
 
       await spedisci({
         a: email,
@@ -441,11 +384,6 @@ export default async function handler(req, res) {
           `Totale, pagato con carta il ${data}: ${importo}\n\n` +
           `Le commissioni di servizio coprono quanto trattiene il circuito di ` +
           `pagamento: all'organizzazione arriva la quota intera.\n\n` +
-          (aperitivoN
-            ? `Aperitivo: prenotato, ${persone(aperitivoN)} a tuo nome. ` +
-              `È su prenotazione e non si paga adesso; se il numero cambia, rispondi a questa mail.\n\n`
-            : `Aperitivo: non prenotato, non ti fermi all’aperitivo. ` +
-              `Se cambi idea, rispondi a questa mail: finché ci sono posti ti segniamo.\n\n`) +
           `Questa mail è la tua conferma: tienila, non serve stamparla.\n` +
           `Ci vediamo il 20!\n\n` +
           `Il gruppo del Palio delle Contrade — Rivalta sul Mincio\n${SITE}`,
@@ -662,8 +600,6 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
         </td>
         </tr>
 
-        {{APERITIVO}}
-
         <tr>
         <td class="e-pad" style="padding:32px 40px 0;">
           <h2 class="e-fg" style="margin:0 0 10px; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:17px; font-weight:600; color:#171717;">
@@ -671,7 +607,8 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
             Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">15:45</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">Piazza Chiesa, davanti alla chiesa</strong>, partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">16:00</strong> per il giro del paese.<br>
-            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span>
+            <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span><br>
+            <span class="e-fg-lr" style="color:#6f6f6f;">A fine camminata, aperitivo in piazza per tutti: non si prenota, ci si ferma e si brinda.</span>
           </p>
         </td>
         </tr>
