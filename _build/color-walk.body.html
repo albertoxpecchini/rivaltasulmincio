@@ -1627,7 +1627,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         })
       })
     })
-      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, stato: r.status, d: d }; }); })
       .then(function (res) {
         /* Iscrizioni chiuse fra il caricamento della pagina e l'invio: la
            funzione risponde 403 con `chiuse`, e qui si toglie il modulo invece
@@ -1654,6 +1654,22 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           return;
         }
 
+        /* Un «no» che la funzione ha già spiegato a parole — codice fiscale
+           che non torna, dichiarazione mancante, troppe iscrizioni non pagate
+           allo stesso indirizzo — si mostra e basta. Dirgli «riprova tra poco»
+           sarebbe un consiglio falso: riprovando succede identico, e chi legge
+           si trova a premere lo stesso tasto tre volte prima di capire che il
+           problema è suo e non della rete.
+
+           «Riprova tra poco» resta invece giusto per tutto il resto: un 500,
+           PayPal che non risponde, la connessione che cade a metà. Lì
+           riprovare è esattamente la cosa da fare. */
+        if (res.d && res.d.errore && res.stato >= 400 && res.stato < 500) {
+          mostra("errore", res.d.errore.charAt(0).toUpperCase() + res.d.errore.slice(1) + ".");
+          bottone.disabled = false;
+          conto();
+          return;
+        }
         if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
         location.href = res.d.url;
       })
