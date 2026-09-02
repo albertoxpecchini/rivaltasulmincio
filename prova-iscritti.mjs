@@ -256,21 +256,27 @@ await prova("chi paga al ritrovo è in elenco; chi ha abbandonato si conta e bas
   },
 });
 
-/* Annullata dal webhook perché il pagamento online è stato rifiutato: è
-   rimasta a metà davvero, e come tale si conta. */
-await prova("un pagamento online annullato è rimasto a metà", {
+/* Annullata vuol dire che non c'è più, chiunque l'abbia annullata: una prova,
+   un doppione, chi aveva prenotato in contanti e non si è presentato, o il
+   webhook dopo un pagamento rifiutato. Non deve restare in nessun conteggio,
+   o è un numero gonfio che non si toglie più. */
+await prova("un pagamento online annullato sparisce, non si conta", {
   chiave: CHIAVE,
   pagine: [[fattura(1), fattura(2, { status: "CANCELLED" })]],
-  atteso: { codice: 200, iscritti: 1, incompleti: 1 },
+  atteso: { codice: 200, iscritti: 1, incompleti: 0 },
 });
 
-/* Annullata a mano da chi organizza: non è mai stata un pagamento a metà, ed
-   è un'iscrizione che non c'è più. Non deve comparire da nessuna parte, o
-   resterebbe a gonfiare un numero per sempre. */
-await prova("un'iscrizione in contanti annullata a mano sparisce, non si conta", {
+await prova("un'iscrizione in contanti annullata sparisce, non si conta", {
   chiave: CHIAVE,
   pagine: [[fattura(1), inContanti(2, { status: "CANCELLED" })]],
   atteso: { codice: 200, iscritti: 1, incompleti: 0 },
+});
+
+/* Quello che invece si conta: aperto online, mai concluso e mai chiuso. */
+await prova("un pagamento online mai concluso resta fra le «a metà»", {
+  chiave: CHIAVE,
+  pagine: [[fattura(1), abbandonata(2)]],
+  atteso: { codice: 200, iscritti: 1, incompleti: 1 },
 });
 
 /* Una fattura senza voci non dice chi è iscritto. Prima spariva in silenzio,
