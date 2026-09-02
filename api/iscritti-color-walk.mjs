@@ -67,7 +67,6 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import {
   EVENTO,
   annullata,
-  cercaFatture,
   tutteLeFatture,
   leggiFattura,
   comePagata,
