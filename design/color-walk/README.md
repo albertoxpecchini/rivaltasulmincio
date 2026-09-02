@@ -14,6 +14,19 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
+> **⚠ Due dati sono cambiati DOPO la v2 del banner e della locandina (2 settembre 2026,
+> pomeriggio):**
+>
+> - il **ritrovo passa dalle 15:45 alle 15:30**, per avere il tempo di controllare le
+>   iscrizioni prima di partire — la partenza resta alle 16:00;
+> - se piove si rinvia a **domenica 27 settembre**, non più a sabato 26.
+>
+> Nel codice sono già ovunque: pagine, regolamento, modulo cartaceo, mail di conferma e
+> testi alternativi delle immagini. **Nelle immagini no**: il banner e la locandina in
+> `assets/` dicono ancora 15:45 e sabato 26, e li rifà a mano chi li disegna. Finché non
+> arriva la versione nuova, la locandina non va distribuita e il banner dice un orario
+> sbagliato a chi lo guarda invece di leggerlo.
+
 > **Banner e locandina pubblicati sono la v2 del 2 settembre 2026, e NON vengono da qui.** È stata
 > disegnata a parte e consegnata già fatta (`a4 banner bambini.pdf` + il PNG a 2480 × 3508,
 > stesso artwork nei due formati; il banner come PNG 4800 × 1800): foto dei bambini, QR verso

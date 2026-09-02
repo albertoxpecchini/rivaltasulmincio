@@ -697,7 +697,7 @@ const renderBanner = () => {
     .find((p) => existsSync(p));
   if (!bannerTrovato) return "";
   return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
-      alt="Color Walk — camminata a colori per tutti, domenica 20 settembre 2026 a Rivalta sul Mincio: ritrovo alle 15:45 in Piazza della Chiesa, partenza alle 16:00. Senza cronometro e senza classifica, lungo le vie del paese. Quote 10 € adulti e 5 € dai 6 ai 17 anni, aperitivo incluso nel prezzo, gadget sacca, iscrizioni anche il giorno stesso. Si consiglia una maglia bianca. In caso di pioggia si rinvia a sabato 26 settembre 2026.">`;
+      alt="Color Walk — camminata a colori per tutti, domenica 20 settembre 2026 a Rivalta sul Mincio: ritrovo alle 15:30 in Piazza della Chiesa, partenza alle 16:00. Senza cronometro e senza classifica, lungo le vie del paese. Quote 10 € adulti e 5 € dai 6 ai 17 anni, aperitivo incluso nel prezzo, gadget sacca, iscrizioni anche il giorno stesso. Si consiglia una maglia bianca. In caso di pioggia si rinvia a domenica 27 settembre 2026.">`;
 };
 
 /* ── Il blocco «Color Walk come in home» ────────────────────────────────
@@ -742,11 +742,11 @@ const renderLocandina = () => {
   const conPdf = existsSync(pdf);
   const alt =
     "Locandina A4 della Color Walk: domenica 20 settembre 2026, ritrovo alle " +
-    "15:45 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. " +
+    "15:30 in Piazza Chiesa a Rivalta sul Mincio e partenza alle 16:00. " +
     "Iscrizioni 10 € per chi ha 18 anni o più e 5 € dai 6 ai 17, su " +
     "rivaltasulmincio.it/color-walk o sul posto in contanti. " +
     "A fine camminata, aperitivo in piazza compreso nella quota: niente prenotazione. " +
-    "Se piove, si rinvia a sabato 26 settembre.";
+    "Se piove, si rinvia a domenica 27 settembre.";
   const anteprima = conPdf
     ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
     : ` href="${locandinaTrovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;

@@ -671,7 +671,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
             Dove e quando
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
-            Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">15:45</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">Piazza Chiesa, davanti alla chiesa</strong>, partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">16:00</strong> per il giro del paese.<br>
+            Domenica 20 settembre — ritrovo alle <strong class="e-fg" style="color:#171717; font-weight:600;">15:30</strong> in <strong class="e-fg" style="color:#171717; font-weight:600;">Piazza Chiesa, davanti alla chiesa</strong>, partenza alle <strong class="e-fg" style="color:#171717; font-weight:600;">16:00</strong> per il giro del paese.<br>
             <span class="e-fg-lr" style="color:#6f6f6f;">Non è una gara: si cammina a passo libero, senza cronometro.</span><br>
             <span class="e-fg-lr" style="color:#6f6f6f;">A fine camminata, aperitivo in piazza per tutti: non si prenota, ci si ferma e si brinda.</span>
           </p>
@@ -706,7 +706,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
             Se non puoi più venire
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
-            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">13 settembre</strong>. La quota non si rimborsa, ma fino a sette giorni prima l'iscrizione si può passare a un'altra persona della stessa fascia d'età, senza costi. Se piove, la camminata è rinviata a sabato 26 settembre e l'iscrizione resta valida senza fare niente: chi a quella data non può esserci ci scrive entro il 24 settembre e la quota viene restituita.
+            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">13 settembre</strong>. La quota non si rimborsa, ma fino a sette giorni prima l'iscrizione si può passare a un'altra persona della stessa fascia d'età, senza costi. Se piove, la camminata è rinviata a domenica 27 settembre e l'iscrizione resta valida senza fare niente: chi a quella data non può esserci ci scrive entro il 25 settembre e la quota viene restituita.
           </p>
         </td>
         </tr>
