@@ -414,7 +414,13 @@ export const registraPagamento = (id, { metodo, nota }) =>
 
    Il tetto di pagine esiste perché una funzione che pagina all'infinito è una
    funzione che un giorno non torna più. Cento per dieci sono mille
-   iscrizioni: per una camminata di paese è un tetto che non si tocca. */
+   iscrizioni: per una camminata di paese è un tetto che non si tocca.
+
+   ATTENZIONE: questa ricerca NON restituisce le voci delle fatture, per
+   quanto gliele si chieda in `fields`. Verificato sul campo, e non è una
+   sottigliezza: una fattura senza voci non dice chi è iscritto. Va bene per
+   contare e per trovare un numero; per leggere un'iscrizione servono
+   trovaFattura() o tutteLeFatture(), che le voci ce le hanno. */
 const PER_PAGINA = 100;
 const PAGINE_MAX = 10;
 
@@ -424,7 +430,44 @@ const PAGINE_MAX = 10;
    partita, o un 500 che chiede a PayPal di riprovare. */
 export async function trovaFattura(numero) {
   const trovate = await cercaFatture({ invoice_number: numero });
-  return trovate.find((f) => String(f?.detail?.invoice_number || "") === numero) || null;
+  const scheda = trovate.find((f) => String(f?.detail?.invoice_number || "") === numero);
+  if (!scheda) return null;
+
+  /* E poi la si rilegge intera. Non è un giro superfluo: la ricerca NON
+     restituisce le voci, per quanto gliele si chieda — verificato sul
+     campo — e senza le voci una fattura non dice chi è iscritto né quanto
+     ha pagato. Chi chiama questa funzione lo fa per scrivere una ricevuta o
+     per segnare un incasso: gli serve la fattura vera, non la sua ombra.
+
+     Costa una chiamata su una fattura sola. Il giorno che la ricerca
+     imparasse a mandare le voci, questa riga diventerebbe superflua e
+     innocua: si toglie e basta. */
+  return (await leggiFattura(scheda.id).catch(() => null)) || scheda;
+}
+
+/* ── Tutte le fatture dell'evento, voci comprese ──────────────────────────
+   Per l'elenco degli iscritti non si usa la ricerca ma l'elenco vero e
+   proprio, che accetta `fields=all` e le voci le manda davvero. Si paga
+   scaricando anche le fatture che non ci riguardano — se un domani su quel
+   conto PayPal ce ne fossero altre — e si filtra qui sul marchio dell'evento.
+
+   È il contrario della scelta di prima, ed è la scelta giusta: meglio
+   filtrare in casa qualche fattura di troppo che ricevere le fatture giuste
+   svuotate di quello che serve. */
+export async function tutteLeFatture() {
+  const fatture = [];
+
+  for (let pagina = 1; pagina <= PAGINE_MAX; pagina++) {
+    const blocco = await paypal(
+      `/v2/invoicing/invoices?page=${pagina}&page_size=${PER_PAGINA}&fields=all&total_required=false`
+    );
+
+    const trovate = blocco?.items || blocco?.invoices || [];
+    fatture.push(...trovate);
+    if (trovate.length < PER_PAGINA) break;
+  }
+
+  return fatture.filter((f) => String(f?.detail?.reference || "") === EVENTO);
 }
 
 export async function cercaFatture(filtro = {}) {

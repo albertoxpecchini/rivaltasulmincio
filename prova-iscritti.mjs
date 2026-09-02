@@ -89,6 +89,14 @@ function stubFetch(pagine, { rotto = false } = {}) {
     const u = String(url);
     if (u.includes("/v1/oauth2/token")) return risposta(200, { access_token: "gettone", expires_in: 3600 });
 
+    /* L'elenco vero e proprio: è da qui che /iscritti legge, perché la
+       ricerca non restituisce le voci delle fatture. */
+    if (u.includes("/v2/invoicing/invoices?")) {
+      if (rotto) return risposta(500, { message: "PayPal giù" });
+      const p = pagine[i++] || [];
+      return risposta(200, { items: p });
+    }
+
     if (u.includes("/search-invoices")) {
       if (rotto) return risposta(500, { message: "PayPal giù" });
       const filtro = JSON.parse(o.body || "{}");
@@ -162,6 +170,8 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   chiedi("incassatoCent", res.corpo?.incassatoCent);
   chiedi("daIncassareCent", res.corpo?.daIncassareCent);
   chiedi("persone", res.corpo?.persone);
+  chiedi("illeggibili", res.corpo?.illeggibili);
+  chiedi("letti", res.corpo?.letti);
   if (atteso.iscritti !== undefined) {
     const n = (res.corpo?.iscritti || []).length;
     if (n !== atteso.iscritti) problemi.push(`${n} iscritti, attesi ${atteso.iscritti}`);
@@ -261,6 +271,16 @@ await prova("un'iscrizione in contanti annullata a mano sparisce, non si conta",
   chiave: CHIAVE,
   pagine: [[fattura(1), inContanti(2, { status: "CANCELLED" })]],
   atteso: { codice: 200, iscritti: 1, incompleti: 0 },
+});
+
+/* Una fattura senza voci non dice chi è iscritto. Prima spariva in silenzio,
+   e sulla pagina «0 persone» era indistinguibile da «non si è iscritto
+   nessuno» — per una persona che invece era lì. Adesso la riga compare, e si
+   conta come una persona, perché una persona lo è. */
+await prova("una fattura illeggibile compare lo stesso e si conta", {
+  chiave: CHIAVE,
+  pagine: [[fattura(1), inContanti(2, { items: [] })]],
+  atteso: { codice: 200, iscritti: 2, illeggibili: 1, letti: 2, persone: 3 },
 });
 
 await prova("le fatture di un altro evento non c'entrano niente", {

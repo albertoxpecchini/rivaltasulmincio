@@ -68,6 +68,7 @@ import {
   EVENTO,
   annullata,
   cercaFatture,
+  tutteLeFatture,
   leggiFattura,
   comePagata,
   leggiMemo,
@@ -150,7 +151,7 @@ export default async function handler(req, res) {
 }
 
 async function elenco(res) {
-  const fatture = await cercaFatture();
+  const fatture = await tutteLeFatture();
 
   const iscritti = [];
   let incompleti = 0;
