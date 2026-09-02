@@ -154,6 +154,17 @@ async function elenco(res) {
     const pagata = saldata(f);
     const memo = leggiMemo(f?.detail?.memo);
 
+    /* Annullata a mano: una prova, un doppione, o qualcuno che aveva
+       prenotato in contanti e non si è presentato. Non è un pagamento
+       lasciato a metà — è un'iscrizione che non c'è più — e non si conta da
+       nessuna parte, o resterebbe a gonfiare un numero per sempre.
+
+       Le annulla anche il webhook, ma solo quelle online, quando il pagamento
+       viene rifiutato: quelle sì che sono rimaste a metà, e infatti sono
+       proprio il caso qui sotto. A dire quale delle due cose è, è il modo di
+       pagare scritto nel memo. */
+    if (annullata(f) && memo.modalita === "contanti") continue;
+
     /* Chi ha aperto il pagamento online e non è arrivato in fondo: non è
        iscritto, e il suo nome non esce di qui. Si conta e basta. */
     if (!pagata && (memo.modalita === "paypal" || annullata(f))) {

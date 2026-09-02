@@ -246,10 +246,21 @@ await prova("chi paga al ritrovo è in elenco; chi ha abbandonato si conta e bas
   },
 });
 
-await prova("una fattura annullata non è un iscritto", {
+/* Annullata dal webhook perché il pagamento online è stato rifiutato: è
+   rimasta a metà davvero, e come tale si conta. */
+await prova("un pagamento online annullato è rimasto a metà", {
   chiave: CHIAVE,
   pagine: [[fattura(1), fattura(2, { status: "CANCELLED" })]],
   atteso: { codice: 200, iscritti: 1, incompleti: 1 },
+});
+
+/* Annullata a mano da chi organizza: non è mai stata un pagamento a metà, ed
+   è un'iscrizione che non c'è più. Non deve comparire da nessuna parte, o
+   resterebbe a gonfiare un numero per sempre. */
+await prova("un'iscrizione in contanti annullata a mano sparisce, non si conta", {
+  chiave: CHIAVE,
+  pagine: [[fattura(1), inContanti(2, { status: "CANCELLED" })]],
+  atteso: { codice: 200, iscritti: 1, incompleti: 0 },
 });
 
 await prova("le fatture di un altro evento non c'entrano niente", {
