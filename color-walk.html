@@ -1198,7 +1198,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
      «ricevuto». */
   var query = new URLSearchParams(location.search);
   var stato = query.get("stato");
-  var ordine = query.get("token");
+  var idOrdine = query.get("token");
 
   /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-walk
      (23:59 del 18 settembre, ora italiana). Qui serve solo a nascondere il
@@ -1217,11 +1217,11 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     mostra("neutro", testo);
   }
 
-  if (stato === "ok" && ordine) {
+  if (stato === "ok" && idOrdine) {
     form.style.display = "none";
     mostra("neutro", "Un momento, controllo il pagamento…");
 
-    fetch("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(ordine))
+    fetch("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(idOrdine))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.pagato) throw new Error("non risulta pagata");
@@ -1234,7 +1234,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       });
   } else if (chiuse) {
     chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
-  } else if (stato === "ok" && !ordine) {
+  } else if (stato === "ok" && !idOrdine) {
     mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
   } else if (stato === "annullato") {
     mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto — e se preferisci, scegliendo di pagare in contanti al ritrovo.");

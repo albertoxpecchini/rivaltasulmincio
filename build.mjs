@@ -995,6 +995,31 @@ const parolePagina = (html) => {
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
+/* ── Un nome, due cose ────────────────────────────────────────────────────
+   Il JavaScript delle pagine sta dentro <script> in fondo ai frammenti, e non
+   passa da nessun controllo: un errore lì non rompe il build, rompe la pagina
+   di chi la apre — e in silenzio, perché il browser non lo dice a nessuno.
+
+   Di tutti i modi di sbagliare, questo controlla il più insidioso: lo stesso
+   nome usato per una funzione e per una variabile nello stesso script. È
+   sintatticamente perfetto, quindi nessun controllo di sintassi lo vede, e il
+   `var` sovrascrive la funzione al primo passaggio. La funzione smette di
+   esistere e la pagina muore al primo clic che la chiama.
+
+   È successo davvero: `var ordine = query.get("token")` accanto a
+   `function ordine()`, e il tasto «Vai al pagamento» ha smesso di rispondere
+   senza che si vedesse niente di storto. Da qui in poi il build lo dice. */
+function nomiRaddoppiati(html) {
+  const scontri = new Set();
+  for (const [, js] of html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)) {
+    const funzioni = new Set([...js.matchAll(/\bfunction\s+([A-Za-z_$][\w$]*)\s*\(/g)].map((m) => m[1]));
+    for (const [, nome] of js.matchAll(/\bvar\s+([A-Za-z_$][\w$]*)\s*=/g)) {
+      if (funzioni.has(nome)) scontri.add(nome);
+    }
+  }
+  return [...scontri];
+}
+
 const sitemap = [];
 const ricerca = [];
 
@@ -1108,6 +1133,17 @@ for (const file of bodies) {
       freq: optMeta(src, "freq", "monthly"),
       prio: optMeta(src, "prio", "0.7"),
     });
+  }
+
+  /* Si ferma, non avvisa: una pagina con dentro questo scontro è una pagina
+     rotta, e pubblicarla con un avviso nel registro del build vuol dire
+     scoprirlo da chi non riesce a iscriversi. */
+  const scontri = nomiRaddoppiati(out);
+  if (scontri.length) {
+    throw new Error(
+      `${page}.html: ${scontri.join(", ")} — stesso nome per una funzione e per un var nello ` +
+        `stesso <script>. Il var sovrascrive la funzione: rinominare la variabile.`
+    );
   }
 
   console.log(`✓ ${page}.html  (${(out.length / 1024).toFixed(1)} kB)`);
