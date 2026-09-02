@@ -548,7 +548,13 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     testa.className = "sb-is-testa";
     var nome = document.createElement("h3");
     nome.className = "sb-is-nome";
-    nome.textContent = (i.nome + " " + i.cognome).trim() || "(senza nome)";
+    /* Una fattura di cui non si riescono a leggere le voci non sparisce:
+       compare così, col suo numero, perché chi organizza possa andarla a
+       guardare su PayPal. Una riga che dice «non so chi sia» è un problema
+       visibile; una riga che manca non la cerca nessuno. */
+    nome.textContent = i.illeggibile
+      ? "Iscrizione non leggibile"
+      : (i.nome + " " + i.cognome).trim() || "(senza nome)";
     var quota = document.createElement("span");
     quota.className = "sb-is-quota";
     quota.textContent = euro(i.importoCent);
@@ -607,6 +613,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       dl.appendChild(d);
     }
 
+    if (i.illeggibile) voce("Fattura", i.numero, "sb-is-mono");
     voce("Nato il", data(i.dataNascita));
     voce("Cod. fisc.", i.codiceFiscale, "sb-is-mono");
     voce("Email", i.email, null, "mailto:");
@@ -671,9 +678,14 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     if (!visti.length) {
       var vuoto = document.createElement("p");
       vuoto.className = "sb-is-vuoto";
+      /* «Nessun iscritto» e «non riesco a vedere gli iscritti» sulla pagina
+         sono la stessa immagine e due guai molto diversi. Se PayPal ha
+         restituito delle fatture e nessuna è finita in elenco, lo si dice. */
       vuoto.textContent = dati.iscritti.length
         ? "Nessuno corrisponde a quello che hai scritto."
-        : "Ancora nessun iscritto. Il primo che compila il modulo compare qui.";
+        : dati.letti
+          ? "PayPal ha restituito " + dati.letti + (dati.letti === 1 ? " fattura" : " fatture") + " per questo evento, ma nessuna risulta un'iscrizione da mostrare. Non è un elenco vuoto: è qualcosa che non torna."
+          : "Ancora nessun iscritto. Il primo che compila il modulo compare qui.";
       elenco.appendChild(vuoto);
       return;
     }

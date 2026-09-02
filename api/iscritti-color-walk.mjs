@@ -84,6 +84,11 @@ import {
    pagheranno al ritrovo: il posto è occupato lo stesso. */
 const TETTO_PARTECIPANTI = 300;
 
+/* Quante fatture al massimo si va a rileggere una per una quando la ricerca
+   torna senza le voci. È una rete di sicurezza, non la strada normale: se si
+   riempie, il guasto è nella ricerca e va risolto là. */
+const MAX_RILETTURE = 60;
+
 const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /* Le due chiavi passano da uno sha256 prima del confronto: così sono sempre
@@ -149,6 +154,8 @@ async function elenco(res) {
 
   const iscritti = [];
   let incompleti = 0;
+  let illeggibili = 0;
+  let riletture = 0;
 
   for (const f of fatture) {
     const pagata = saldata(f);
@@ -172,8 +179,50 @@ async function elenco(res) {
       continue;
     }
 
-    const { adulto, minori } = personeDa(f);
-    if (!adulto) continue;
+    let { adulto, minori } = personeDa(f);
+
+    /* Le voci sono la fattura: senza, non si sa chi è iscritto. La ricerca
+       dovrebbe restituirle — gliele chiediamo — ma se per qualsiasi ragione
+       non arrivano, la fattura si va a rileggere intera prima di rinunciare.
+       Costa una chiamata, e solo per quelle che ne hanno bisogno.
+
+       Se questa rilettura scattasse su tutte, il conto delle chiamate
+       diventerebbe insostenibile e il guasto sarebbe a monte, nella ricerca:
+       per questo si ferma a un tetto e lo dice nel registro invece di
+       trascinare la funzione oltre il tempo che ha. */
+    if (!adulto && riletture < MAX_RILETTURE) {
+      riletture++;
+      const piena = await leggiFattura(f.id).catch(() => null);
+      if (piena) ({ adulto, minori } = personeDa(piena));
+    }
+
+    /* E se ancora non si legge, la riga compare lo stesso. Una fattura che
+       sparisce dall'elenco è una persona che nessuno chiama al banchetto e
+       di cui nessuno si accorge; una riga che dice «non riesco a leggerla»
+       è un problema che si vede, col numero per andarlo a guardare su
+       PayPal. Vale come una persona, perché una persona lo è. */
+    if (!adulto) {
+      illeggibili++;
+      iscritti.push({
+        id: f.id,
+        numero: f?.detail?.invoice_number || "",
+        illeggibile: true,
+        nome: "",
+        cognome: "",
+        codiceFiscale: "",
+        dataNascita: "",
+        email: f?.primary_recipients?.[0]?.billing_info?.email_address || "",
+        telefono: memo.telefono,
+        note: memo.note,
+        consenso: memo.consenso,
+        minori: [],
+        quandoISO: quandoDi(f),
+        importoCent: Math.round(Number(f?.amount?.value || 0) * 100),
+        pagato: pagata,
+        pagamento: comePagata(f),
+      });
+      continue;
+    }
 
     iscritti.push({
       id: f.id,
@@ -208,6 +257,12 @@ async function elenco(res) {
     evento: EVENTO,
     iscritti,
     incompleti,
+    /* Quante fatture di questo evento PayPal ha restituito in tutto, e quante
+       di quelle non si è riusciti a leggere. Servono a distinguere «non c'è
+       nessuno» da «non riesco a vedere nessuno», che sulla pagina di chi
+       organizza sono la stessa immagine e due guai molto diversi. */
+    letti: fatture.length,
+    illeggibili,
     /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
        il modulo, e quante persone cammineranno. È il secondo a doversi
        fermare sotto il tetto. */
