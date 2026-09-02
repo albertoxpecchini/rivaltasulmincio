@@ -244,6 +244,9 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 /* La didascalia è una riga sola e corta: quella il centro se lo merita anche
    nel testo, non solo nel blocco. */
 .sb-cr .sb-riv-cap { text-align: center; }
+/* Anche la fila delle contrade e le fasce dei loghi: sono file di piastrelle
+   che di loro si appoggiano a sinistra, e su questa pagina niente lo fa. */
+.sb-cr .sb-riv-contrade--fila { justify-content: center; }
 
 .sb-cw-iscr { margin-top: 1.4rem; }
 .sb-cw-lastra { max-width: 46rem; margin-left: auto; margin-right: auto; }
@@ -620,7 +623,9 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 
    Le piastrelle restano bianche in tutti e due i temi: un logo a colori su
    fondo scuro perde i suoi, e questi non sono nostri da ritoccare. */
-.sb-cw-enti { display: grid; gap: 1.5rem; }
+/* Lo stacco dal paragrafo della testata: senza, la prima fascia gli sta
+   appiccicata sotto e sembra una sua continuazione invece che un blocco a sé. */
+.sb-cw-enti { display: grid; gap: 1.5rem; margin-top: clamp(1.8rem, 4vw, 2.6rem); }
 
 .sb-cw-ente {
   display: flex;
@@ -647,7 +652,10 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 
 /* L'ultima riga è di servizio e non è un'attestazione: sta più piccola e più
    spenta, com'è giusto che sia. */
-.sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); }
+/* La riga del sito non è un'attestazione e non ha una controparte da
+   affiancare: sta in colonna e in mezzo, marchio sopra e testo sotto. */
+.sb-cw-ente--minuta { flex-direction: column; }
+.sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); text-align: center; }
 .sb-cw-ente-luogo { display: block; }
 
 /* Da schermo largo le fasce diventano due colonne di misura fissa, così le
@@ -656,13 +664,30 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    centrato nella pagina: è la colonna interna a essere allineata, non il
    blocco a essere spostato a sinistra. */
 @media (min-width: 46rem) {
-  .sb-cw-ente:not(.sb-cw-ente--sopra) {
+  /* Colonne di misura decisa tutte e due: con `1fr` la seconda si prendeva
+     quello che restava, la griglia arrivava ai bordi e `justify-content` non
+     aveva più niente da centrare. Adesso la coppia è un blocco, e sta in mezzo. */
+  .sb-cw-ente:not(.sb-cw-ente--sopra):not(.sb-cw-ente--attorno):not(.sb-cw-ente--minuta) {
     display: grid;
-    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-columns: 15rem minmax(0, 26rem);
     justify-content: center;
     align-items: center;
   }
-  .sb-cw-ente:not(.sb-cw-ente--sopra) .sb-cw-loghi { justify-content: flex-end; }
+  .sb-cw-ente:not(.sb-cw-ente--sopra):not(.sb-cw-ente--attorno):not(.sb-cw-ente--minuta) .sb-cw-loghi { justify-content: flex-end; }
+
+  /* La fascia degli enti: uno stemma per lato, la frase in mezzo. Le due
+     colonne laterali hanno la stessa misura, o la riga di testo si sposterebbe
+     dal centro della pagina. */
+  .sb-cw-ente--attorno {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 28rem) 8rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 1.6rem;
+  }
+  .sb-cw-ente--attorno .sb-cw-loghi:first-child { justify-content: flex-end; }
+  .sb-cw-ente--attorno .sb-cw-loghi:last-child { justify-content: flex-start; }
+  .sb-cw-ente--attorno .sb-cw-ente-t { text-align: center; }
 }
 
 @media (max-width: 46rem) {
@@ -1027,12 +1052,14 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       </div>
       <p class="sb-cw-ente-t">Organizza l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, circolo affiliato ad ANSPI, a cui va per intero la quota di iscrizione.</p>
     </div>
-    <div class="sb-cw-ente">
+    <div class="sb-cw-ente sb-cw-ente--attorno">
       <div class="sb-cw-loghi">
         <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo — con il patrocinio del Comune"><img src="assets/loghi/comune-rodigo.webp" alt="Comune di Rodigo — con il patrocinio del Comune" loading="lazy" decoding="async"></a>
-        <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/polizia-locale.webp" alt="Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti" loading="lazy" decoding="async"></div>
       </div>
       <p class="sb-cw-ente-t"><strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della <strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.</p>
+      <div class="sb-cw-loghi">
+        <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/polizia-locale.webp" alt="Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti" loading="lazy" decoding="async"></div>
+      </div>
     </div>
     <div class="sb-cw-ente sb-cw-ente--sopra">
       <p class="sb-cw-ente-t"><strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di fine camminata e quello che ci sta intorno — tutto compreso nella quota.</p>

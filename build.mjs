@@ -586,6 +586,11 @@ const FASCE_LOGHI = [
     ],
   },
   {
+    /* I due stemmi non stanno in fila da una parte: si aprono ai lati della
+       frase, il Comune a sinistra e il Corpo a destra. Sono i due enti che
+       permettono la camminata, e messi così la riga che li nomina sta in
+       mezzo ai loro simboli invece che di fianco a un mucchietto. */
+    attorno: true,
     testo:
       "<strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della " +
       "<strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.",
@@ -639,16 +644,32 @@ const renderPiastrella = (l) => {
   return `        <a class="sb-cw-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
 };
 
+const gruppoLoghi = (loghi) =>
+  `      <div class="sb-cw-loghi">
+${loghi.map(renderPiastrella).join("\n")}
+      </div>`;
+
 const renderLoghi = () =>
   `<div class="sb-cw-enti">
 ${FASCE_LOGHI.map((f) => {
-  const piastrelle = `      <div class="sb-cw-loghi">
-${f.loghi.map(renderPiastrella).join("\n")}
-      </div>`;
   const frase = `      <p class="sb-cw-ente-t">${f.testo}</p>`;
-  const classe = "sb-cw-ente" + (f.sopra ? " sb-cw-ente--sopra" : "") + (f.minuta ? " sb-cw-ente--minuta" : "");
-  // Con la frase sopra, l'ordine nel documento è già quello giusto da leggere.
-  const dentro = f.sopra ? `${frase}\n${piastrelle}` : `${piastrelle}\n${frase}`;
+  const classe =
+    "sb-cw-ente" +
+    (f.sopra ? " sb-cw-ente--sopra" : "") +
+    (f.attorno ? " sb-cw-ente--attorno" : "") +
+    (f.minuta ? " sb-cw-ente--minuta" : "");
+
+  /* Tre disposizioni, e l'ordine nel documento è sempre quello in cui si
+     legge — anche a fogli di stile spenti, anche a voce. */
+  let dentro;
+  if (f.attorno) {
+    // Il primo marchio a sinistra, la frase in mezzo, gli altri a destra.
+    dentro = `${gruppoLoghi(f.loghi.slice(0, 1))}\n${frase}\n${gruppoLoghi(f.loghi.slice(1))}`;
+  } else if (f.sopra) {
+    dentro = `${frase}\n${gruppoLoghi(f.loghi)}`;
+  } else {
+    dentro = `${gruppoLoghi(f.loghi)}\n${frase}`;
+  }
   return `    <div class="${classe}">\n${dentro}\n    </div>`;
 }).join("\n")}
   </div>`;

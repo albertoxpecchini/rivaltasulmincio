@@ -14,20 +14,18 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
-> **⚠ La locandina pubblicata dice ancora le cose vecchie (2 settembre 2026).** Il testo di
-> tutte e quattro le tavole qui dentro — `locandina.dc.html`, `locandina.render.html` e le
-> due in `foto/` — è stato aggiornato alle decisioni della riunione: **quote 10 € e 5 €**,
-> niente riga di commissioni, **maglia bianca**, sacca e aperitivo compresi, **rinvio al 26
-> settembre** se piove, ANSPI al posto dei tre nomi di persona, e la formula che il Comune
-> ha chiesto — **«Con il patrocinio del Comune di Rodigo e la collaborazione della Polizia
-> Locale Mantova Ovest»**, da copiare parola per parola. Mancano anche gli otto loghi nuovi.
-> Ma `assets/color-walk-locandina.pdf`
-> e `assets/foto/color-walk-locandina.webp` **non sono stati riesportati**, perché
-> `npm run render:locandina` renderebbe dalla tavola astratta e butterebbe via logo ANSPI,
-> QR code, stemmi delle contrade e stemma del Comune che stanno solo nella versione
-> pubblicata. **Va rifatta da Claude Design**, col giro qui sotto, riportandoci le stesse
-> modifiche di testo. Finché non si fa, la locandina in stampa dice 10 € + 1 € di
-> commissioni e tre nomi di persona: non va distribuita.
+> **La locandina pubblicata è la v2 del 2 settembre 2026, e NON viene da qui.** È stata
+> disegnata a parte e consegnata già fatta (`a4 banner bambini.pdf` + il PNG a 2480 × 3508,
+> stesso artwork nei due formati): foto dei bambini in cima, QR verso `/color-walk`, quote
+> **10 € e 5 €**, aperitivo incluso, iscrizioni anche il giorno stesso, gadget sacca, maglia
+> bianca, rinvio al 26 settembre, i sei stemmi delle contrade, la formula del Comune per
+> esteso e gli otto marchi degli sponsor. In `assets/` ci sono il PDF tale e quale (15 MB,
+> pronto per la stampa) e il webp 1240 × 1754 per l'anteprima in pagina.
+>
+> Le tavole di Claude Design qui sotto sono **un'altra locandina**: quella astratta di
+> agosto, tenuta come storia. Il loro testo è stato aggiornato alle stesse decisioni, ma
+> `npm run render:locandina` **sovrascriverebbe la v2 con quella** — non lanciarlo, a meno
+> di non volere davvero tornare indietro.
 
 > **Le copie qui dentro sono indietro (1° settembre 2026).** Banner e locandina pubblicati
 > in `assets/` sono stati riesportati da Claude Design con roba che in questi `.dc.html` e
