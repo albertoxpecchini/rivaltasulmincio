@@ -232,6 +232,28 @@ export const pulisci = (v, max) =>
     .trim()
     .slice(0, max);
 
+/* ── Nomi e cognomi con la maiuscola ──────────────────────────────────────
+   Chi compila dal telefono scrive «primo pecchini», e l'`autocapitalize` del
+   modulo è un suggerimento che le tastiere ignorano quando gli pare. Su un
+   elenco che qualcuno legge ad alta voce al banchetto delle sacche, e su una
+   ricevuta che arriva per posta, un nome tutto minuscolo si vede.
+
+   La regola tocca solo le parole scritte TUTTE minuscole o TUTTE maiuscole:
+   «primo» diventa «Primo», «ROSSI» diventa «Rossi». Una parola con le
+   maiuscole già messe a mano — «McDonald», «DeLuca», «LoCicero» — si lascia
+   stare, perché chi l'ha scritta così sa come si scrive il proprio nome
+   meglio di questa funzione.
+
+   Apostrofo e trattino contano come inizio di parola: «d'angelo» diventa
+   «D'Angelo» e «anna-maria» diventa «Anna-Maria». */
+export const maiuscole = (s) =>
+  String(s ?? "").replace(/\S+/g, (parola) => {
+    if (parola !== parola.toLowerCase() && parola !== parola.toUpperCase()) return parola;
+    return parola
+      .toLowerCase()
+      .replace(/(^|[’'\-])(\p{L})/gu, (_, prima, lettera) => prima + lettera.toUpperCase());
+  });
+
 const euro = (centesimi) => (centesimi / 100).toFixed(2);
 const centesimi = (valore) => Math.round(Number(valore || 0) * 100);
 
@@ -332,9 +354,13 @@ export function personeDa(fattura) {
     if (ruolo !== "A" && ruolo !== "M") continue;
     if (!nome.trim() && !cognome.trim()) continue;
 
+    /* Le maiuscole si rimettono anche in lettura, non solo in scrittura: le
+       iscrizioni già registrate prima di questa regola sono sulle fatture
+       com'erano state scritte, e non si riscrivono. Così l'elenco e le mail
+       le mostrano a posto lo stesso. */
     const persona = {
-      nome: nome.trim(),
-      cognome: cognome.trim(),
+      nome: maiuscole(nome.trim()),
+      cognome: maiuscole(cognome.trim()),
       dataNascita: dataNascita.trim(),
       codiceFiscale: codiceFiscale.trim() === "—" ? "" : codiceFiscale.trim(),
       importoCent: centesimi(v.unit_amount?.value) * (Number(v.quantity) || 1),

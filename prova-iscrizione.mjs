@@ -147,6 +147,19 @@ await prova(
     !voci(i).join(" ").includes("3331234567")
 );
 
+/* Dal telefono si scrive tutto minuscolo, e l'autocapitalize del modulo è un
+   suggerimento che le tastiere ignorano quando gli pare. Il nome va a finire
+   su una ricevuta e su un elenco letto ad alta voce al banchetto. */
+await prova(
+  "nome e cognome prendono la maiuscola, comunque siano scritti",
+  { ...BASE, nome: "maria", cognome: "DE ROSSI" },
+  (r, i) =>
+    r.codice === 200 &&
+    voci(i)[0] === "A|Maria|De Rossi|1985-12-10|RSSMRA85T10A562S" &&
+    i.fattura.items[0].name.startsWith("Maria De Rossi") &&
+    i.fattura.primary_recipients[0].billing_info.name.given_name === "Maria"
+);
+
 await prova(
   "nessuna voce di commissioni sulla fattura",
   BASE,

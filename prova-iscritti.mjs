@@ -359,6 +359,29 @@ await prova("senza dire quale iscrizione → 400", {
   atteso: { codice: 400, scritte: 0 },
 });
 
+/* Le iscrizioni registrate prima della regola delle maiuscole stanno sulle
+   fatture com'erano state scritte, e non si riscrivono: la maiuscola gliela
+   rimette la lettura. */
+{
+  process.env.PAYPAL_CLIENT_ID = "finto";
+  process.env.PAYPAL_CLIENT_SECRET = "finto";
+  process.env.ISCRITTI_CHIAVE = CHIAVE;
+  scritte = [];
+  const minuscola = inContanti(8);
+  minuscola.items[0].description = "A|primo|pecchini|1964-09-23|PCCPRM64P23E897V";
+  global.fetch = stubFetch([[minuscola]]);
+  const res = finestra();
+  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
+  const i = res.corpo?.iscritti?.[0] || {};
+  if (i.nome === "Primo" && i.cognome === "Pecchini") {
+    passate++;
+    console.log("  ok   un nome scritto minuscolo prima di questa regola si legge con la maiuscola");
+  } else {
+    fallite++;
+    console.log(`  NO   maiuscole in lettura: «${i.nome} ${i.cognome}», atteso «Primo Pecchini»`);
+  }
+}
+
 /* L'ultima è la più importante di tutte, e non prova la funzione: prova che
    la scheda abbia davvero dentro il codice fiscale, il minore e lo stato del
    pagamento. Se un giorno qualcuno «semplificasse» le voci della fattura, i

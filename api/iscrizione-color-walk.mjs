@@ -47,6 +47,7 @@ import {
   MAX_MINORI,
   MODALITA,
   annullata,
+  maiuscole,
   QUOTA_ADULTO_CENT,
   QUOTA_MINORE_CENT,
   componiFattura,
@@ -182,8 +183,11 @@ function etaAllEvento(iso) {
    18-120 per chi si iscrive, 6-17 per chi porta con sé. L'errore torna
    come stringa in italiano, pronto da mostrare. */
 function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio }) {
-  const nome = pulisci(grezza?.nome, 80);
-  const cognome = pulisci(grezza?.cognome, 80);
+  /* La maiuscola si mette qui, all'ingresso, così è già a posto sulla
+     fattura, nella mail e in elenco — e non in tre posti diversi che prima o
+     poi non si assomigliano più. */
+  const nome = maiuscole(pulisci(grezza?.nome, 80));
+  const cognome = maiuscole(pulisci(grezza?.cognome, 80));
   const dataNascita = pulisci(grezza?.dataNascita, 10);
   const codiceFiscale = pulisci(grezza?.codiceFiscale, 16).toUpperCase();
 
