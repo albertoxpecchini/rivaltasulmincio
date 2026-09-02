@@ -33,3 +33,8 @@ node_modules/
 .env
 .env.local
 .env.example
+
+# I file originali dei loghi, quelli grandi da cui si riesportano i webp
+# serviti in pagina. Restano nel repo perché sono le uniche copie che abbiamo
+# di marchi altrui, ma in produzione non ci vanno: nessuna pagina li apre.
+assets/loghi/originali/

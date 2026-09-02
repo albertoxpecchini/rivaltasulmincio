@@ -576,14 +576,72 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    il tasto smorzato che non è più premibile. */
 .sb-cw-vai[disabled] { cursor: progress; opacity: 0.6; }
 
-/* ═══ I loghi ════════════════════════════════════════════════════════════════
-   Su piastrella bianca anche al buio: un logo a colori su fondo nero perde i
-   suoi, e non sono nostri da ritoccare. La piastrella è una card del sito —
-   bordo, raggio da 10px, ombra e due pixel di sollevamento al passaggio, gli
-   stessi delle card di tutte le altre pagine. Il sollevamento però solo su
-   quelle che sono collegamenti: le attività del paese un sito non ce l'hanno,
-   e una piastrella che si alza sotto il dito promette un tocco che non porta
-   da nessuna parte. */
+/* ═══ Chi c'è dietro ═════════════════════════════════════════════════════════
+   Tre cose diverse, e si vede che sono tre: chi organizza, chi dà il
+   patrocinio, chi mette il cibo. Ogni fascia ha i suoi marchi e la sua frase
+   ACCANTO — non un rigo in punta di piedi sotto a tutto — separate da un filo
+   sottile, che è quanto basta a dire «questo non è quello».
+
+   La frase sta a destra dei marchi e non sotto: di fianco si legge come una
+   didascalia che spiega quei marchi lì, sotto si legge come una nota a piè di
+   pagina che riguarda tutto. È la differenza fra dichiarare un patrocinio e
+   nasconderlo.
+
+   Su schermo stretto le due parti si impilano e si centrano, perché una
+   colonna sola non ha un «di fianco».
+
+   Le piastrelle restano bianche in tutti e due i temi: un logo a colori su
+   fondo scuro perde i suoi, e questi non sono nostri da ritoccare. */
+.sb-cw-enti { display: grid; gap: 1.5rem; }
+
+.sb-cw-ente {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.6rem;
+}
+.sb-cw-ente + .sb-cw-ente { padding-top: 1.5rem; border-top: 1px solid var(--sb-border); }
+
+/* La fascia con sette marchi: la frase non ci sta accanto senza schiacciarli,
+   e allora sale sopra e si allarga. */
+.sb-cw-ente--sopra { flex-direction: column; }
+.sb-cw-ente--sopra .sb-cw-ente-t { max-width: 46rem; text-align: center; }
+
+.sb-cw-ente-t {
+  margin: 0;
+  max-width: 26rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--sb-fg-light);
+}
+.sb-cw-ente-t strong { font-weight: 600; color: var(--sb-fg); }
+
+/* L'ultima riga è di servizio e non è un'attestazione: sta più piccola e più
+   spenta, com'è giusto che sia. */
+.sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); }
+.sb-cw-ente-luogo { display: block; }
+
+/* Da schermo largo le fasce diventano due colonne di misura fissa, così le
+   frasi cominciano tutte sulla stessa riga verticale invece di ballare a
+   seconda di quanti marchi ha ognuna. Il blocco delle due colonne resta
+   centrato nella pagina: è la colonna interna a essere allineata, non il
+   blocco a essere spostato a sinistra. */
+@media (min-width: 46rem) {
+  .sb-cw-ente:not(.sb-cw-ente--sopra) {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .sb-cw-ente:not(.sb-cw-ente--sopra) .sb-cw-loghi { justify-content: flex-end; }
+}
+
+@media (max-width: 46rem) {
+  .sb-cw-ente { flex-direction: column; }
+  .sb-cw-ente-t { text-align: center; }
+}
+
 .sb-cw-loghi {
   display: flex;
   flex-wrap: wrap;
@@ -605,6 +663,9 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   text-decoration: none;
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
+/* Il sollevamento al passaggio solo su quelle che sono collegamenti: le
+   attività del paese un sito non ce l'hanno, e una piastrella che si alza
+   sotto il dito promette un tocco che non porta da nessuna parte. */
 a.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-stronger); }
 .sb-cw-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
 
@@ -631,7 +692,6 @@ a.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-
 
 .sb-cw-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
 .sb-cw-logo--ap .sb-cw-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
-.sb-cw-loghi-nota { margin: 0.9rem 0 0; text-align: center; font-size: 0.78rem; color: var(--sb-fg-muted); }
 
 /* ═══ Meno movimento ═════════════════════════════════════════════════════════
    In pagina si muove una cosa sola: la deriva dei due veli del fondale, la
@@ -926,21 +986,45 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     <p class="sb-riv-cap">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-link" href="/eventi#contrade">le contrade in /eventi</a>.</p>
   </section>
 
-  <section class="sb-container sb-riv-sec">
-    <div class="sb-cw-loghi">
-      <a class="sb-cw-logo sb-cw-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
-      <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo — con il patrocinio del Comune"><img src="assets/loghi/comune-rodigo.webp" alt="Comune di Rodigo — con il patrocinio del Comune" loading="lazy" decoding="async"></a>
-      <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/polizia-locale.png" alt="Corpo Intercomunale di Polizia Locale Mantova Ovest — collabora agli attraversamenti" loading="lazy" decoding="async"></div>
-      <div class="sb-cw-logo "><img src="assets/loghi/avis-rivalta.png" alt="AVIS Rivalta sul Mincio — offre l'aperitivo" loading="lazy" decoding="async"></div>
-      <div class="sb-cw-logo "><img src="assets/loghi/pizzangolo.png" alt="Pizzangolo — pizzeria di Rivalta sul Mincio" loading="lazy" decoding="async"></div>
-      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Panificio Marchini</span></div>
-      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Storti Salumi</span></div>
-      <div class="sb-cw-logo sb-cw-logo--quadro"><span class="sb-cw-logo-t">Farmacia Tona</span></div>
-      <div class="sb-cw-logo "><span class="sb-cw-logo-t">Fiordiloto</span></div>
-      <div class="sb-cw-logo sb-cw-logo--quadro"><span class="sb-cw-logo-t">Non Solo Lady</span></div>
-      <a class="sb-cw-logo sb-cw-logo--ap" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener" title="Alberto Pecchini"><img src="assets/loghi/ap.png" alt="Alberto Pecchini" loading="lazy" decoding="async"></a>
+  <section class="sb-container sb-riv-sec" id="dietro">
+    <div class="sb-sechead sb-sechead--start">
+      <h2>Chi c'è dietro</h2>
+      <p>Chi organizza, chi dà il patrocinio e chi mette il cibo sono tre cose diverse: qui stanno separate, ognuna con quello che fa scritto accanto.</p>
     </div>
-    <p class="sb-cw-loghi-nota">Organizza l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · Con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest · Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</p>
+
+    <div class="sb-cw-enti">
+    <div class="sb-cw-ente">
+      <div class="sb-cw-loghi">
+        <a class="sb-cw-logo sb-cw-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
+      </div>
+      <p class="sb-cw-ente-t">Organizza l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, circolo affiliato ad ANSPI, a cui va per intero la quota di iscrizione.</p>
+    </div>
+    <div class="sb-cw-ente">
+      <div class="sb-cw-loghi">
+        <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo — con il patrocinio del Comune"><img src="assets/loghi/comune-rodigo.webp" alt="Comune di Rodigo — con il patrocinio del Comune" loading="lazy" decoding="async"></a>
+        <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/polizia-locale.webp" alt="Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti" loading="lazy" decoding="async"></div>
+      </div>
+      <p class="sb-cw-ente-t"><strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della <strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.</p>
+    </div>
+    <div class="sb-cw-ente sb-cw-ente--sopra">
+      <p class="sb-cw-ente-t"><strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di fine camminata e quello che ci sta intorno — tutto compreso nella quota.</p>
+      <div class="sb-cw-loghi">
+        <div class="sb-cw-logo "><img src="assets/loghi/avis-rivalta.webp" alt="AVIS Rivalta sul Mincio — offre l'aperitivo" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo "><img src="assets/loghi/pizzangolo.webp" alt="Pizzangolo — pizzeria di Rivalta sul Mincio" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo "><img src="assets/loghi/marchini.webp" alt="Panificio Marchini dal 1923" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo "><img src="assets/loghi/storti.webp" alt="Storti Salumi" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/farmacia-tona.webp" alt="Farmacia Tona di Rivalta sul Mincio" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo "><img src="assets/loghi/fior-di-loto.webp" alt="Fiordiloto profumeria di Rivalta sul Mincio" loading="lazy" decoding="async"></div>
+        <div class="sb-cw-logo sb-cw-logo--quadro"><img src="assets/loghi/non-solo-lady.webp" alt="Non Solo Lady — parrucchiere di Marco Marazzi" loading="lazy" decoding="async"></div>
+      </div>
+    </div>
+    <div class="sb-cw-ente sb-cw-ente--minuta">
+      <div class="sb-cw-loghi">
+        <a class="sb-cw-logo sb-cw-logo--ap" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener" title="Alberto Pecchini"><img src="assets/loghi/ap.png" alt="Alberto Pecchini" loading="lazy" decoding="async"></a>
+      </div>
+      <p class="sb-cw-ente-t">Sito e materiali di <strong>Alberto Pecchini</strong> — <span class="sb-cw-ente-luogo">Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</span></p>
+    </div>
+  </div>
   </section>
 
 </div>

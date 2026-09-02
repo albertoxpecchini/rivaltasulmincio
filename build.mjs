@@ -553,43 +553,77 @@ ${mini}
       </aside>`;
 };
 
-/* ── I loghi di chi c'è dietro ────────────────────────────────────────────
-   Stessa regola delle fotografie: il logo compare solo se il file esiste
-   davvero. Finché non c'è, al suo posto sta il nome scritto — che in una
-   striscia di loghi si legge come una scelta e non come un'immagine rotta.
-   Il giorno che il file entra in assets/loghi/ prende il suo posto da sé.
+/* ── Chi c'è dietro ───────────────────────────────────────────────────────
+   Non è una striscia di loghi: sono tre cose diverse, e mescolarle direbbe
+   una bugia. Chi organizza risponde dell'evento. Il Comune e la Polizia
+   Locale lo permettono — un patrocinio non è una sponsorizzazione, e un
+   marchio istituzionale infilato in fila con le pizzerie fa credere che
+   l'ente abbia pagato per starci. Le attività del paese mettono cibo,
+   bevande e una mano.
 
+   Perciò tre fasce separate da un filo, ognuna con la sua frase scritta
+   ACCANTO ai marchi e in un corpo che si legge — non un rigo in punta di
+   piedi sotto a tutto. La formula del patrocinio è quella che il Comune ha
+   chiesto e va copiata parola per parola: sta scritta in un posto solo, qui.
+
+   Stessa regola delle fotografie per i file: il logo compare solo se il file
+   esiste davvero. Finché non c'è, al suo posto sta il nome scritto — che in
+   una fascia di loghi si legge come una scelta e non come un'immagine rotta.
+   Il giorno che il file entra in assets/loghi/ prende il suo posto da sé.
    L'estensione non è fissata: vince il primo formato trovato, in quest'ordine.
    Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo.
 
-   ── L'ordine, che non è casuale ────────────────────────────────────────
-   Prima chi risponde dell'evento (ANSPI), poi chi lo permette — il Comune
-   che dà il patrocinio e la Polizia Locale che tiene gli attraversamenti —
-   poi chi mette cibo, bevande e una mano, e in fondo chi ha fatto il sito.
-   È l'ordine in cui vanno letti, e la stessa fila che va sulla locandina.
-
-   ── Perché quasi nessuno ha un `url` ───────────────────────────────────
-   Sono attività di paese e associazioni di volontariato: un sito non ce
-   l'hanno. Senza `url` la piastrella resta una piastrella e non finge un
-   collegamento che non porta da nessuna parte. */
-const LOGHI = [
-  { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
-  { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Comune di Rodigo — con il patrocinio del Comune", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
-  { file: "polizia-locale", nome: "Polizia Locale Mantova Ovest", desc: "Corpo Intercomunale di Polizia Locale Mantova Ovest — collabora agli attraversamenti", classe: "sb-cw-logo--quadro" },
-  { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
-  { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
-  { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923" },
-  { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi" },
-  { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
-  { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio" },
-  { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", classe: "sb-cw-logo--quadro" },
-  { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cw-logo--ap" },
+   Quasi nessuno ha un `url`: sono attività di paese e associazioni di
+   volontariato, un sito non ce l'hanno. Senza `url` la piastrella resta una
+   piastrella e non finge un collegamento che non porta da nessuna parte. */
+const FASCE_LOGHI = [
+  {
+    testo:
+      "Organizza l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, " +
+      "circolo affiliato ad ANSPI, a cui va per intero la quota di iscrizione.",
+    loghi: [
+      { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
+    ],
+  },
+  {
+    testo:
+      "<strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della " +
+      "<strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.",
+    loghi: [
+      { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Comune di Rodigo — con il patrocinio del Comune", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
+      { file: "polizia-locale", nome: "Polizia Locale Mantova Ovest", desc: "Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti", classe: "sb-cw-logo--quadro" },
+    ],
+  },
+  {
+    /* Sette marchi: la frase non ci sta accanto senza schiacciarli, e va
+       sopra. È l'unica fascia in cui il testo sta in cima invece che di
+       fianco, e il motivo è la quantità. */
+    sopra: true,
+    testo:
+      "<strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di " +
+      "fine camminata e quello che ci sta intorno — tutto compreso nella quota.",
+    loghi: [
+      { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
+      { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
+      { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923" },
+      { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi" },
+      { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
+      { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio" },
+      { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", classe: "sb-cw-logo--quadro" },
+    ],
+  },
+  {
+    minuta: true,
+    testo: 'Sito e materiali di <strong>Alberto Pecchini</strong> — <span class="sb-cw-ente-luogo">Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</span>',
+    loghi: [
+      { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cw-logo--ap" },
+    ],
+  },
 ];
 
 const loghiMancanti = [];
-const renderLoghi = () =>
-  `<div class="sb-cw-loghi">
-${LOGHI.map((l) => {
+
+const renderPiastrella = (l) => {
   const trovato = ["svg", "png", "webp", "jpg"]
     .map((est) => `assets/loghi/${l.file}.${est}`)
     .find((p) => existsSync(p));
@@ -601,10 +635,23 @@ ${LOGHI.map((l) => {
      nessuna parte: resta una piastrella e basta. Fuori dal marcatore <a>
      sparisce anche il title, che su un elemento non interattivo non lo
      legge nessuno: la stessa frase sta già nell'alt dell'immagine. */
-  if (!l.url) return `      <div class="sb-cw-logo ${l.classe || ""}">${dentro}</div>`;
-  return `      <a class="sb-cw-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
+  if (!l.url) return `        <div class="sb-cw-logo ${l.classe || ""}">${dentro}</div>`;
+  return `        <a class="sb-cw-logo ${l.classe || ""}" href="${escape(l.url)}" target="_blank" rel="noreferrer noopener" title="${escape(l.desc)}">${dentro}</a>`;
+};
+
+const renderLoghi = () =>
+  `<div class="sb-cw-enti">
+${FASCE_LOGHI.map((f) => {
+  const piastrelle = `      <div class="sb-cw-loghi">
+${f.loghi.map(renderPiastrella).join("\n")}
+      </div>`;
+  const frase = `      <p class="sb-cw-ente-t">${f.testo}</p>`;
+  const classe = "sb-cw-ente" + (f.sopra ? " sb-cw-ente--sopra" : "") + (f.minuta ? " sb-cw-ente--minuta" : "");
+  // Con la frase sopra, l'ordine nel documento è già quello giusto da leggere.
+  const dentro = f.sopra ? `${frase}\n${piastrelle}` : `${piastrelle}\n${frase}`;
+  return `    <div class="${classe}">\n${dentro}\n    </div>`;
 }).join("\n")}
-    </div>`;
+  </div>`;
 
 /* ── Il banner e la locandina della Color Walk ─────────────────────────
    Due pezzi disegnati a parte (design/color-walk/, tela di Claude Design) ed
