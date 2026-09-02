@@ -571,6 +571,59 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   color: var(--sb-fg);
 }
 
+/* ═══ La scelta del pagamento ════════════════════════════════════════════════
+   Due caselle grandi, una accanto all'altra, con la stessa grammatica del
+   consenso qui sotto: bordo del sito, 8px, fondo neutro. Sono radio veri
+   dentro delle label — si preme tutta la casella, non il pallino da 12px, che
+   sul telefono è il modo di sbagliare.
+
+   La casella scelta si accende del filo azzurro del sito. Nessun secondo
+   colore, come ovunque: la selezione si vede dal bordo e dal pallino, che
+   bastano. */
+.sb-cw-pagamento { display: grid; gap: 0.6rem; }
+.sb-cw-pagamento > span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-fg-lighter);
+}
+.sb-cw-scelte { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+@media (max-width: 30rem) { .sb-cw-scelte { grid-template-columns: 1fr; } }
+.sb-cw-scelta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.sb-cw-scelta:hover { border-color: var(--sb-border-stronger); }
+.sb-cw-scelta:focus-within { border-color: var(--sb-brand); }
+.sb-cw-scelta:has(input:checked) {
+  border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent);
+  background: color-mix(in srgb, var(--sb-brand) 8%, var(--sb-surface-100));
+}
+.sb-cw-scelta input { margin-top: 0.1rem; width: 1.15rem; height: 1.15rem; flex: none; accent-color: var(--sb-brand); }
+.sb-cw-scelta b { display: block; font-size: 0.9rem; font-weight: 600; color: var(--sb-fg); }
+.sb-cw-scelta small { display: block; margin-top: 0.15rem; font-size: 0.78rem; line-height: 1.5; color: var(--sb-fg-light); }
+
+/* Il campo trappola. Non si vede, non si tabula, non si legge ad alta voce:
+   esiste solo per chi compila il modulo leggendo l'HTML invece della pagina.
+   `display:none` non basta — c'è chi lo cerca — quindi sta fuori schermo. */
+.sb-cw-trappola {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .sb-cw-consenso {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -885,6 +938,35 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <span class="sb-cw-conto-s" id="cr-conto-somma">10 €</span>
         </div>
 
+        <!-- Come si paga. Sta dopo il conto e prima della dichiarazione:
+             si sceglie sapendo già quant'è, e si dichiara per ultimo. -->
+        <div class="sb-cw-pagamento">
+          <span>Come vuoi pagare</span>
+          <div class="sb-cw-scelte">
+            <label class="sb-cw-scelta">
+              <input type="radio" name="pagamento" value="paypal" checked>
+              <span>
+                <b>Adesso, online</b>
+                <small>Con PayPal, carta compresa: non serve avere un conto PayPal. L'iscrizione è chiusa subito.</small>
+              </span>
+            </label>
+            <label class="sb-cw-scelta">
+              <input type="radio" name="pagamento" value="contanti">
+              <span>
+                <b>In contanti, al ritrovo</b>
+                <small>Ti iscrivi adesso e paghi il 20 settembre alle 15:30 davanti alla chiesa, al banchetto, prima di partire.</small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Il campo trappola: per chi compila leggendo l'HTML. Chi legge la
+             pagina non lo vede e non ci finisce dentro tabulando. -->
+        <div class="sb-cw-trappola" aria-hidden="true">
+          <label for="cr-sito">Sito web</label>
+          <input type="text" id="cr-sito" name="sito" tabindex="-1" autocomplete="off">
+        </div>
+
         <div class="sb-cw-consenso">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
           <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
@@ -893,7 +975,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
              quando serve, cioè un attimo prima di pagare. -->
         <div class="sb-cw-nota">
-          La quota è di <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> per ogni ragazzo dai 6 ai 17 anni, e va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor: non c'è niente da pagare a parte. Il pagamento si fa con carta sulle pagine di Stripe: il sito non vede e non conserva i dati della carta. A pagamento fatto arriva una mail di conferma con la ricevuta, all'indirizzo che scrivi qui sopra — e se qualcosa va storto arriva una mail lo stesso, a dirtelo. <strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
+          La quota è di <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> per ogni ragazzo dai 6 ai 17 anni, e va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor: non c'è niente da pagare a parte. Se paghi online il pagamento si fa sulle pagine di PayPal — anche con la carta, senza bisogno di un conto PayPal — e il sito non vede e non conserva i dati della carta; se scegli i contanti, ti iscrivi adesso e porti la quota al banchetto il giorno stesso. In tutti e due i casi arriva una mail all'indirizzo che scrivi qui sopra: la ricevuta se hai già pagato, il promemoria di quanto portare se paghi al ritrovo. <strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
         </div>
 
         <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 10 €</span></button>
@@ -1093,10 +1175,10 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   var esito = document.getElementById("cr-esito");
   var bottone = document.getElementById("cr-submit");
 
-  /* Le due quote e il tetto dei minori: gli stessi numeri di
-     api/iscrizione-color-walk.mjs, che è chi decide davvero. Qui servono a
-     far vedere il conto mentre si compila — il conto vero lo fa Stripe con
-     le cifre che gli passa la funzione, non questa pagina. */
+  /* Le due quote e il tetto dei minori: gli stessi numeri di api/_paypal.mjs,
+     che è chi decide davvero. Qui servono a far vedere il conto mentre si
+     compila — il conto vero lo fanno le voci della fattura, che scrive la
+     funzione, non questa pagina. */
   var QUOTA_ADULTO = 10;
   var QUOTA_MINORE = 5;
   var MAX_MINORI = 8;
@@ -1109,17 +1191,18 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
   /* ── Il ritorno dal pagamento ───────────────────────────────────────────
      Al ritorno non ci si fida dell'indirizzo: `?stato=ok` lo scrive chiunque
-     nella barra del browser. Chi ha pagato davvero ha in mano anche
-     l'identificativo della sessione, ed è quello che l'API fa ricontrollare a
-     Stripe prima che qui si dica «ricevuto». */
+     nella barra del browser. Chi ha pagato davvero torna anche con
+     l'identificativo dell'ordine, che PayPal aggiunge da sé come `token`, ed
+     è quello che l'API fa ricontrollare a PayPal prima che qui si dica
+     «ricevuto». */
   var query = new URLSearchParams(location.search);
   var stato = query.get("stato");
-  var sessione = query.get("sessione");
+  var ordine = query.get("token");
 
   /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-walk
      (23:59 del 18 settembre, ora italiana). Qui serve solo a nascondere il
      modulo e spiegare perché — il «no» che conta lo dà comunque la funzione. Il
-     ritorno dal pagamento (`stato=ok` con la sessione) non è toccato: chi paga
+     ritorno dal pagamento (`stato=ok` con l'ordine) non è toccato: chi paga
      all'ultimo minuto torna qui dopo la mezzanotte e deve vedere la conferma. */
   var CHIUSURA_MS = Date.parse("2026-09-18T23:59:59+02:00");
   var chiuse = Date.now() > CHIUSURA_MS;
@@ -1133,11 +1216,11 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     mostra("neutro", testo);
   }
 
-  if (stato === "ok" && sessione) {
+  if (stato === "ok" && ordine) {
     form.style.display = "none";
     mostra("neutro", "Un momento, controllo il pagamento…");
 
-    fetch("/api/iscrizione-color-walk?sessione=" + encodeURIComponent(sessione))
+    fetch("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(ordine))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.pagato) throw new Error("non risulta pagata");
@@ -1150,10 +1233,10 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       });
   } else if (chiuse) {
     chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
-  } else if (stato === "ok" && !sessione) {
+  } else if (stato === "ok" && !ordine) {
     mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
   } else if (stato === "annullato") {
-    mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto.");
+    mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto — e se preferisci, scegliendo di pagare in contanti al ritrovo.");
   }
 
   /* ── Il codice fiscale ──────────────────────────────────────────────────
@@ -1517,6 +1600,17 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   var contoVoci = document.getElementById("cr-conto-voci");
   var contoSomma = document.getElementById("cr-conto-somma");
 
+  /* Come ha scelto di pagare. Il valore che conta è quello che arriva alla
+     funzione: qui serve solo a cambiare la scritta del tasto. */
+  var sceltePag = form.querySelectorAll('input[name="pagamento"]');
+  function comePaga() {
+    for (var i = 0; i < sceltePag.length; i++) if (sceltePag[i].checked) return sceltePag[i].value;
+    return "paypal";
+  }
+  Array.prototype.forEach.call(sceltePag, function (r) {
+    r.addEventListener("change", conto);
+  });
+
   function conto() {
     var n = righe.length;
     var somma = QUOTA_ADULTO + n * QUOTA_MINORE;
@@ -1524,7 +1618,14 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       ? "1 maggiorenne · " + QUOTA_ADULTO + " €"
       : "1 maggiorenne " + QUOTA_ADULTO + " € · " + n + (n === 1 ? " ragazzo " : " ragazzi ") + QUOTA_MINORE + " € ciascuno";
     contoSomma.textContent = somma + " €";
-    bottone.querySelector("span").textContent = "Vai al pagamento — " + somma + " €";
+    /* Il tasto dice cosa sta per succedere, e sono due cose diverse: o si
+       viene mandati a pagare, o si chiude qui e si paga alla partenza. Un
+       tasto che dicesse «vai al pagamento» a chi ha scelto i contanti
+       prometterebbe una schermata che non arriva. */
+    bottone.querySelector("span").textContent =
+      comePaga() === "contanti"
+        ? "Iscriviti — " + somma + " € da pagare al ritrovo"
+        : "Vai al pagamento — " + somma + " €";
     return somma;
   }
 
@@ -1630,6 +1731,8 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         telefono: form.telefono.value,
         note: form.note.value,
         consenso: consenso.checked,
+        pagamento: comePaga(),
+        sito: form.sito.value,
         minori: righe.map(function (r) {
           return {
             nome: r.campi[0].el.value,
@@ -1649,11 +1752,29 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           chiudiModulo(res.d.errore.charAt(0).toUpperCase() + res.d.errore.slice(1) + ".");
           return;
         }
+
+        /* Chi paga al ritrovo non va da nessuna parte: è già iscritto, e
+           questa pagina è l'unico posto in cui glielo si può dire subito. Il
+           modulo sparisce — ricompilarlo lo iscriverebbe due volte — e resta
+           scritto quanto deve portare. */
+        if (res.ok && res.d && res.d.contanti) {
+          var quanti = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
+          var quanto = (res.d.totaleCent / 100).toFixed(2).replace(".", ",") + " €";
+          chiudiModulo(
+            "Iscrizione registrata" + (res.d.nome ? ", " + res.d.nome : "") + "!" + quanti +
+            " La quota di " + quanto + " si paga al ritrovo, in contanti: domenica 20 settembre alle 15:30 in Piazza Chiesa, al banchetto delle iscrizioni, prima della partenza. Porta la cifra giusta se puoi." +
+            (res.d.spedita
+              ? " Ti abbiamo mandato una mail con il riepilogo."
+              : " La mail di riepilogo non è partita, ma l'iscrizione è registrata lo stesso: se vuoi una conferma scrivi a color-walk@rivaltasulmincio.it.")
+          );
+          return;
+        }
+
         if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
         location.href = res.d.url;
       })
       .catch(function (err) {
-        mostra("errore", "Non è stato possibile avviare il pagamento (" + err.message + "). Riprova tra poco.");
+        mostra("errore", "Non è stato possibile registrare l'iscrizione (" + err.message + "). Riprova tra poco.");
         bottone.disabled = false;
         conto();
       });

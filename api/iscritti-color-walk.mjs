@@ -2,19 +2,45 @@
    /api/iscritti-color-walk — l'elenco di chi si è iscritto alla Color
    Walk, per chi organizza. Lo legge la pagina /iscritti.
 
-   L'elenco degli iscritti non è un database nostro: è la lista dei pagamenti
-   nel dashboard Stripe, e i dati del modulo ci viaggiano dentro come metadata
-   della sessione (vedi api/iscrizione-color-walk.mjs). Questa funzione non
-   fa altro che rileggerli da lì e rimetterli in fila. Non c'è niente da
-   tenere allineato, perché non c'è una seconda copia.
+   Fa due mestieri:
+
+     GET   l'elenco: chi è iscritto, chi ha già pagato e chi paga al ritrovo,
+           quante persone in tutto e quanto c'è ancora da incassare.
+
+     POST  il contante incassato. È il bottone che si preme davanti alla
+           chiesa, quando qualcuno arriva e paga: segna quella fattura come
+           saldata, metodo contanti. Si può fare anche dall'app di PayPal —
+           ma sui gradini della chiesa, col telefono in una mano e i soldi
+           nell'altra, il bottone vince.
+
+   ── L'elenco non è un database nostro ─────────────────────────────────────
+   È l'elenco delle fatture PayPal: ogni iscrizione ne è una, e i dati del
+   modulo ci stanno dentro come voci e memo (vedi api/_paypal.mjs). Questa
+   funzione non fa altro che rileggerle e rimetterle in fila. Non c'è niente
+   da tenere allineato, perché non c'è una seconda copia.
 
    ── Un'iscrizione può valere più persone ──────────────────────────────────
-   Chi si iscrive è maggiorenne e può portare con sé i minori a suo carico
-   (vedi api/iscrizione-color-walk.mjs). Un pagamento, quindi, non è più una
-   persona: è un adulto più i suoi minori, scritti nei metadata come
-   `minore_1`, `minore_2`… Qui si sciolgono e si contano uno per uno, perché
-   il tetto dell'evento è di 300 PARTECIPANTI e non di 300 pagamenti — e
-   perché l'elenco che serve al ritiro delle sacche è quello delle persone.
+   Chi si iscrive è maggiorenne e può portare con sé i minori a suo carico. Un
+   pagamento, quindi, non è una persona: è un adulto più i suoi minori,
+   scritti come voci separate della fattura. Qui si contano uno per uno,
+   perché il tetto dell'evento è di 300 PARTECIPANTI e non di 300 pagamenti —
+   e perché l'elenco che serve al ritiro delle sacche è quello delle persone.
+
+   ── Tre stati, non due ────────────────────────────────────────────────────
+   Con la sola carta gli stati erano due: pagato, o non arrivato in fondo.
+   Adesso sono tre, e la differenza conta parecchio il giorno della
+   camminata:
+
+     · pagato online          la quota è già sul conto;
+     · da incassare           iscritto, viene a pagare al ritrovo. È una
+                              persona che ci sarà: occupa un posto e una
+                              sacca esattamente come le altre;
+     · non completato         ha aperto il pagamento online e non è arrivato
+                              in fondo. Non è iscritto, e nell'elenco non
+                              compare con nome e cognome: se ne conta soltanto
+                              quanti sono. Sono persone che ci hanno
+                              ripensato, e di loro agli organizzatori serve
+                              sapere il numero, non l'anagrafica.
 
    ── Qui dentro passano dati di persone vere ───────────────────────────────
    Nome, cognome, CODICE FISCALE, data di nascita, email e telefono di
@@ -33,62 +59,32 @@
      · la pagina che la interroga è noindex e fuori dalla sitemap, e /api/ è
        già escluso in robots.txt.
 
-   Chi non ha completato il pagamento non entra nell'elenco con nome e
-   cognome: se ne conta soltanto quanti sono. Sono persone che ci hanno
-   ripensato, e di loro agli organizzatori serve sapere il numero, non
-   l'anagrafica.
+   La stessa chiave vale per la POST. Non è una serratura diversa perché non
+   è un potere diverso: chi può leggere l'anagrafica di trecento persone può
+   anche segnare che una di loro ha pagato dieci euro.
    ═══════════════════════════════════════════════════════════════════════════ */
 import { createHash, timingSafeEqual } from "node:crypto";
-
-/* Deve dire la stessa identica riga di EVENTO nelle altre due funzioni della
-   Color Walk: è il marchio con cui si riconoscono le sessioni che la
-   riguardano fra tutti i pagamenti del sito. `color-runner-2026-09-20` è il
-   vecchio marchio (l'evento si chiamava «Color Runner»): le sessioni di prima
-   del cambio nome lo portano scritto e si contano lo stesso. */
-const EVENTO = "color-walk-2026-09-20";
-const EVENTI_VALIDI = new Set([EVENTO, "color-runner-2026-09-20"]);
-
-const ATTESA_MS = 8000;
-
-/* Cento sessioni per pagina, dieci pagine: mille pagamenti. Per una camminata
-   di paese è un tetto che non si tocca, ed esiste solo perché una funzione
-   che pagina all'infinito è una funzione che un giorno non torna più. */
-const PER_PAGINA = 100;
-const PAGINE_MAX = 10;
+import {
+  EVENTO,
+  annullata,
+  cercaFatture,
+  leggiFattura,
+  comePagata,
+  leggiMemo,
+  personeDa,
+  pulisci,
+  registraPagamento,
+  saldata,
+  trovaFattura,
+} from "./_paypal.mjs";
 
 /* Il materiale che ANSPI ha a disposizione basta per trecento persone: è il
    tetto dell'evento, e la pagina /iscritti lo mostra accanto al conto di
-   quante ne sono state iscritte finora. */
+   quante ne sono state iscritte finora. Ci stanno dentro anche quelle che
+   pagheranno al ritrovo: il posto è occupato lo stesso. */
 const TETTO_PARTECIPANTI = 300;
 
-/* Quanti minori una singola iscrizione può portare: la stessa cifra di
-   MAX_MINORI in api/iscrizione-color-walk.mjs. Qui serve solo a sapere fin
-   dove cercare le chiavi `minore_N` nei metadata. */
-const MAX_MINORI = 8;
-
-const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
-
-/* I minori scritti nei metadata: una chiave per uno, quattro campi separati
-   da una barra verticale — nome, cognome, data di nascita, codice fiscale
-   (`—` se non è stato dato). Si legge quello che c'è e si tira via il resto:
-   una chiave malformata non deve far sparire l'intera iscrizione dall'elenco
-   di chi sta consegnando le sacche. */
-function leggiMinori(m) {
-  const minori = [];
-  for (let i = 1; i <= MAX_MINORI; i++) {
-    const riga = m[`minore_${i}`];
-    if (!riga) continue;
-    const [nome = "", cognome = "", dataNascita = "", codiceFiscale = ""] = String(riga).split("|");
-    if (!nome && !cognome) continue;
-    minori.push({
-      nome: nome.trim(),
-      cognome: cognome.trim(),
-      dataNascita: dataNascita.trim(),
-      codiceFiscale: codiceFiscale.trim() === "—" ? "" : codiceFiscale.trim(),
-    });
-  }
-  return minori;
-}
+const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /* Le due chiavi passano da uno sha256 prima del confronto: così sono sempre
    lunghe uguali — timingSafeEqual pretende due buffer della stessa misura, e
@@ -101,17 +97,17 @@ function stessaChiave(a, b) {
   return timingSafeEqual(ha, hb);
 }
 
-const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
+const importoDi = (fattura, persone) => {
+  const totale = Math.round(Number(fattura?.amount?.value || 0) * 100);
+  return totale || persone.reduce((s, p) => s + p.importoCent, 0);
+};
 
-async function stripe(chiave, percorso) {
-  const risposta = await fetch(`https://api.stripe.com/v1/${percorso}`, {
-    headers: { Authorization: `Basic ${Buffer.from(`${chiave}:`).toString("base64")}` },
-    signal: AbortSignal.timeout(ATTESA_MS),
-  });
-  const dati = await risposta.json();
-  if (!risposta.ok) throw new Error(dati?.error?.message || `Stripe ha risposto ${risposta.status}`);
-  return dati;
-}
+/* Quando è stata fatta l'iscrizione. `invoice_date` è un giorno e basta:
+   per mettere in fila le iscrizioni di oggi serve l'ora, che sta nei dati di
+   servizio della fattura. Se non ci fosse, il giorno da solo è meglio di
+   niente — l'ordine dentro la giornata si perde, l'elenco no. */
+const quandoDi = (fattura) =>
+  fattura?.detail?.metadata?.create_time || `${fattura?.detail?.invoice_date || ""}T00:00:00Z`;
 
 export default async function handler(req, res) {
   /* Un elenco di iscritti non si mette in cache da nessuna parte: né nel
@@ -119,15 +115,13 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store, max-age=0");
   res.setHeader("Referrer-Policy", "no-referrer");
 
-  if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
+  if (req.method !== "GET" && req.method !== "POST") {
+    res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ errore: "metodo non consentito" });
   }
 
-  const chiaveStripe = process.env.STRIPE_SECRET_KEY;
   const segreto = process.env.ISCRITTI_CHIAVE;
-
-  if (!chiaveStripe || !segreto) {
+  if (!segreto) {
     return res.status(503).json({
       errore: "zona iscritti non configurata: manca ISCRITTI_CHIAVE fra le variabili d'ambiente",
     });
@@ -140,59 +134,119 @@ export default async function handler(req, res) {
   }
 
   try {
-    const iscritti = [];
-    let incompleti = 0;
-    let dopo = null;
-
-    for (let pagina = 0; pagina < PAGINE_MAX; pagina++) {
-      const query = `limit=${PER_PAGINA}` + (dopo ? `&starting_after=${encodeURIComponent(dopo)}` : "");
-      const blocco = await stripe(chiaveStripe, `checkout/sessions?${query}`);
-      const sessioni = blocco?.data || [];
-      if (!sessioni.length) break;
-
-      for (const s of sessioni) {
-        if (!EVENTI_VALIDI.has(s.metadata?.evento)) continue;
-        if (s.payment_status !== "paid") {
-          incompleti++;
-          continue;
-        }
-        const m = s.metadata || {};
-        iscritti.push({
-          id: s.id,
-          nome: m.nome || "",
-          cognome: m.cognome || "",
-          codiceFiscale: m.codice_fiscale || "",
-          dataNascita: m.data_nascita || "",
-          email: s.customer_details?.email || s.customer_email || "",
-          telefono: m.telefono === "—" ? "" : m.telefono || "",
-          note: m.note === "—" ? "" : m.note || "",
-          consenso: m.consenso || "",
-          minori: leggiMinori(m),
-          quandoISO: new Date(s.created * 1000).toISOString(),
-          importoCent: s.amount_total ?? 0,
-        });
-      }
-
-      if (!blocco.has_more) break;
-      dopo = sessioni[sessioni.length - 1].id;
-    }
-
-    // Prima l'ultimo arrivato: è quello che chi guarda sta cercando.
-    iscritti.sort((a, b) => (a.quandoISO < b.quandoISO ? 1 : -1));
-
-    return res.status(200).json({
-      evento: EVENTO,
-      iscritti,
-      incompleti,
-      /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
-         il modulo, e quante persone cammineranno. È il secondo a doversi
-         fermare sotto il tetto. */
-      persone: iscritti.reduce((n, i) => n + 1 + i.minori.length, 0),
-      tetto: TETTO_PARTECIPANTI,
-      totaleCent: iscritti.reduce((s, i) => s + i.importoCent, 0),
-      aggiornatoISO: new Date().toISOString(),
-    });
+    /* `await` e non solo `return`: senza, un errore là dentro nascerebbe
+       dopo che questa funzione è già finita, e il catch qui sotto non lo
+       vedrebbe passare. */
+    if (req.method === "POST") return await incassa(req, res);
+    return await elenco(res);
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
   }
+}
+
+async function elenco(res) {
+  const fatture = await cercaFatture();
+
+  const iscritti = [];
+  let incompleti = 0;
+
+  for (const f of fatture) {
+    const pagata = saldata(f);
+    const memo = leggiMemo(f?.detail?.memo);
+
+    /* Chi ha aperto il pagamento online e non è arrivato in fondo: non è
+       iscritto, e il suo nome non esce di qui. Si conta e basta. */
+    if (!pagata && (memo.modalita === "paypal" || annullata(f))) {
+      incompleti++;
+      continue;
+    }
+
+    const { adulto, minori } = personeDa(f);
+    if (!adulto) continue;
+
+    iscritti.push({
+      id: f.id,
+      numero: f?.detail?.invoice_number || "",
+      nome: adulto.nome,
+      cognome: adulto.cognome,
+      codiceFiscale: adulto.codiceFiscale,
+      dataNascita: adulto.dataNascita,
+      email: f?.primary_recipients?.[0]?.billing_info?.email_address || "",
+      telefono: memo.telefono,
+      note: memo.note,
+      consenso: memo.consenso,
+      minori: minori.map(({ nome, cognome, dataNascita, codiceFiscale }) => ({
+        nome,
+        cognome,
+        dataNascita,
+        codiceFiscale,
+      })),
+      quandoISO: quandoDi(f),
+      importoCent: importoDi(f, [adulto, ...minori]),
+      pagato: pagata,
+      pagamento: comePagata(f),
+    });
+  }
+
+  // Prima l'ultimo arrivato: è quello che chi guarda sta cercando.
+  iscritti.sort((a, b) => (a.quandoISO < b.quandoISO ? 1 : -1));
+
+  const daIncassare = iscritti.filter((i) => !i.pagato);
+
+  return res.status(200).json({
+    evento: EVENTO,
+    iscritti,
+    incompleti,
+    /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
+       il modulo, e quante persone cammineranno. È il secondo a doversi
+       fermare sotto il tetto. */
+    persone: iscritti.reduce((n, i) => n + 1 + i.minori.length, 0),
+    tetto: TETTO_PARTECIPANTI,
+    /* Quello che è già sul conto, e quello che si raccoglie al banchetto la
+       mattina del 20: due cifre separate perché sono due cose separate, e
+       chi tiene la cassa deve sapere quanti soldi aspettarsi. */
+    incassatoCent: iscritti.filter((i) => i.pagato).reduce((s, i) => s + i.importoCent, 0),
+    daIncassareCent: daIncassare.reduce((s, i) => s + i.importoCent, 0),
+    daIncassare: daIncassare.length,
+    aggiornatoISO: new Date().toISOString(),
+  });
+}
+
+/* ── Il contante che arriva ───────────────────────────────────────────────
+   Si segna la fattura, non un registro nostro: l'iscrizione era già lì, e
+   quello che cambia è che adesso è saldata. Da quel momento la persona
+   compare fra i pagati, sulla pagina di chi organizza e nel pannello di
+   PayPal, senza che nessuno debba riportare niente da nessuna parte.
+
+   Si accetta l'identificativo della fattura o il suo numero: dal telefono si
+   preme un bottone e passa l'identificativo, ma il numero è quello che si
+   legge in elenco, ed è più facile da ridire a voce se qualcosa va storto. */
+async function incassa(req, res) {
+  const id = pulisci(req.body?.fattura, 40);
+  const numero = pulisci(req.body?.numero, 40);
+  if (!id && !numero) return res.status(400).json({ errore: "manca l'iscrizione da segnare" });
+
+  const fattura = id ? await leggiFattura(id).catch(() => null) : await trovaFattura(numero);
+  if (!fattura) return res.status(404).json({ errore: "iscrizione non trovata" });
+
+  /* Il marchio si ricontrolla anche qui: questa chiave apre l'elenco della
+     Color Walk, non il permesso di segnare pagata una qualunque fattura che
+     ci sia sul conto PayPal. */
+  if (String(fattura?.detail?.reference || "") !== EVENTO) {
+    return res.status(404).json({ errore: "iscrizione non trovata" });
+  }
+
+  if (saldata(fattura)) {
+    /* Già segnata: non è un errore, è qualcuno che ha premuto due volte o
+       due persone al banchetto che hanno segnato la stessa. Si risponde di
+       sì, perché il mondo è nello stato che si voleva. */
+    return res.status(200).json({ incassata: true, gia: true, id: fattura.id });
+  }
+
+  await registraPagamento(fattura.id, {
+    metodo: "CASH",
+    nota: "Contanti incassati al ritrovo, prima della partenza",
+  });
+
+  return res.status(200).json({ incassata: true, gia: false, id: fattura.id });
 }

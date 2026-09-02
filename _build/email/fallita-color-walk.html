@@ -21,19 +21,22 @@
      ricevuta-color-walk.html e non si ripete qui.
 
      ── Quando parte ─────────────────────────────────────────────────────
-     Lo decide api/conferma-color-walk.mjs, su avviso di Stripe:
+     Lo decide api/conferma-color-walk.mjs, su avviso di PayPal:
 
-       · sessione scaduta senza pagamento (checkout.session.expired) — è il
-         caso di chi apre il pagamento e poi chiude la pagina. Stripe lo dice
-         alla scadenza, cioè fino a 24 ore dopo: la mail arriva allora, non
-         subito, ed è scritta per essere letta il giorno dopo;
-       · pagamento differito rifiutato (checkout.session.async_payment_failed).
+       · incasso rifiutato (PAYMENT.CAPTURE.DENIED) — la banca ha detto di no
+         a pagamento già approvato;
+       · ordine scaduto (CHECKOUT.ORDER.DECLINED, e i suoi parenti) — è il
+         caso di chi apre il pagamento e poi chiude la pagina.
 
-     Una carta rifiutata mentre si è ancora sulla pagina di Stripe NON fa
+     Una carta rifiutata mentre si è ancora sulle pagine di PayPal NON fa
      partire niente: lì si ritenta subito, e una mail a ogni tentativo sarebbe
-     molestia. E chi ha poi pagato con una seconda sessione non la riceve mai:
-     la funzione, prima di spedirla, chiede a Stripe se quell'indirizzo
-     risulta avere un pagamento riuscito.
+     molestia. E chi ha poi pagato con un secondo tentativo non la riceve mai:
+     la funzione, prima di spedirla, guarda se a quell'indirizzo risulta
+     un'iscrizione saldata.
+
+     Chi ha scelto di pagare in contanti al ritrovo non la riceve mai e poi
+     mai: la sua quota non è «non andata a buon fine», è semplicemente ancora
+     da pagare, e dirgli che l'iscrizione non è registrata sarebbe falso.
 
      ── I segnaposto ─────────────────────────────────────────────────────
      {{NOME}} e {{MOTIVO}} li riempie la funzione al momento di spedire.

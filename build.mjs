@@ -1150,17 +1150,21 @@ const nSezioni = ricerca.reduce((n, p) => n + p.h.length, 0);
 console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} sezioni)`);
 
 /* ── Le mail della Color Walk ───────────────────────────────────────────
-   Due mail — la ricevuta di chi ha pagato e l'avviso a chi non è arrivato in
-   fondo — vivono come HTML in _build/email/, perché è lì che si guardano e si
-   correggono: aprendole nel browser. Ma a spedirle è una funzione su Vercel, e
-   _build/ è in .vercelignore: su Vercel quei file non ci arrivano.
+   Due mail — la ricevuta e l'avviso a chi non è arrivato in fondo al
+   pagamento — vivono come HTML in _build/email/, perché è lì che si guardano
+   e si correggono: aprendole nel browser. Ma a spedirle è una funzione su
+   Vercel, e _build/ è in .vercelignore: su Vercel quei file non ci arrivano.
 
    Quindi il build le porta di là. Risolve i dati dell'evento, toglie via le
    sezioni che non hanno ancora i loro dati, e scrive il risultato dentro
-   api/conferma-color-walk.mjs, fra due marcatori. Da lì in poi sono due
-   stringhe dentro la funzione: nessun file da leggere a runtime, nessuna
-   configurazione di bundling da indovinare, niente che possa mancare
-   all'appello proprio mentre qualcuno sta pagando.
+   api/_posta.mjs, fra due marcatori. Da lì in poi sono due stringhe dentro un
+   modulo: nessun file da leggere a runtime, nessuna configurazione di
+   bundling da indovinare, niente che possa mancare all'appello proprio
+   mentre qualcuno sta pagando.
+
+   Due mail e non tre: la ricevuta è la stessa per chi ha pagato online e per
+   chi paga in contanti al ritrovo. Quello che cambia sta dentro i marcatori
+   condizionali del modello, che scioglie chi spedisce.
 
    Il blocco fra i marcatori è generato: si modifica l'HTML in _build/email/ e
    si rifà il build, non il contrario. Il build successivo lo riscrive.       */
@@ -1241,10 +1245,10 @@ const compilaMail = (nome) => {
   }
 
   const restati = src.match(/\{\{[A-Z_]+\}\}/g) || [];
-  /* I segnaposto che il build lascia in piedi di proposito: li riempie
-     api/conferma-color-walk.mjs con quello che Stripe conferma del pagamento
-     e con chi è stato iscritto. Qualunque altro `{{...}}` rimasto è un dato
-     che nessuno riempirà mai, e il build si ferma invece di spedirlo. */
+  /* I segnaposto che il build lascia in piedi di proposito: li riempie chi
+     spedisce, con quello che la fattura PayPal dice dell'iscrizione e di chi
+     è stato iscritto. Qualunque altro `{{...}}` rimasto è un dato che nessuno
+     riempirà mai, e il build si ferma invece di spedirlo. */
   const attesi = [
     "{{NOME}}",
     "{{DATA}}",
@@ -1267,7 +1271,7 @@ const compilaMail = (nome) => {
 const stringa = (t) =>
   "`" + t.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${") + "`";
 
-const FUNZIONE = "api/conferma-color-walk.mjs";
+const FUNZIONE = "api/_posta.mjs";
 const sorgente = readFileSync(FUNZIONE, "utf8");
 const marcatori = /(\/\* build:modelli:inizio \*\/\n)[\s\S]*?(\/\* build:modelli:fine \*\/)/;
 if (!marcatori.test(sorgente)) {
@@ -1277,9 +1281,9 @@ if (!marcatori.test(sorgente)) {
 const ricevuta = compilaMail("ricevuta-color-walk.html");
 const fallita = compilaMail("fallita-color-walk.html");
 
-/* `export` e non `const` semplice: prova-invio.mjs importa questi due modelli
-   per spedirsi una mail vera prima che lo faccia un iscritto vero. Vercel
-   guarda solo l'export di default, gli altri non gli danno fastidio. */
+/* `export` e non `const` semplice: li importano le due funzioni che
+   spediscono — il webhook e l'iscrizione in contanti — e prova-invio.mjs, che
+   se ne manda una vera prima che lo faccia un iscritto vero. */
 const generato = `/* Generato da build.mjs — NON modificare a mano.
    I sorgenti sono _build/email/ricevuta-color-walk.html,
    _build/email/fallita-color-walk.html e _build/email/evento.json. */

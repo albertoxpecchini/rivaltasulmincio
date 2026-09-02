@@ -129,16 +129,34 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 .sb-is .sb-btn { min-height: var(--is-h); }
 .sb-is .sb-btn:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 
-/* ── I tre conti ───────────────────────────────────────────────────────────
-   Una lastra sola divisa in tre, non tre lastre. Lo smusso del design system
-   è 18px fissi: su un riquadro largo 150px si mangia un quinto del lato, e
-   tre di fila sembrano tre pezzi rotti invece di una striscia. Dentro una
-   lastra sola lo smusso torna a essere quello che è — l'angolo di una lastra
-   — e i tre numeri li separano due capelli grigi. */
+/* ── I quattro conti ───────────────────────────────────────────────────────
+   Una lastra sola divisa in quattro, non quattro lastre. Lo smusso del design
+   system è 18px fissi: su un riquadro largo 150px si mangia un quinto del
+   lato, e quattro di fila sembrano quattro pezzi rotti invece di una
+   striscia. Dentro una lastra sola lo smusso torna a essere quello che è —
+   l'angolo di una lastra — e i numeri li separano dei capelli grigi.
+
+   Erano tre finché si poteva solo pagare online. Il quarto è quello che si
+   raccoglie al banchetto la mattina del 20: chi tiene la cassa deve sapere
+   quanti soldi aspettarsi, e sommare a mente le schede non è un modo.
+
+   Due per riga sul telefono, quattro in fila quando c'è spazio: quattro
+   numeri affiancati su uno schermo stretto diventano quattro colonne di
+   cifre spezzate a metà. */
 .sb-is-conti { margin: 0 0 0.7rem; }
-.sb-is-conti-in { display: grid; grid-template-columns: repeat(3, 1fr); }
+.sb-is-conti-in { display: grid; grid-template-columns: repeat(2, 1fr); }
 .sb-is-conto { text-align: center; padding: 0.9rem 0.5rem; }
-.sb-is-conto + .sb-is-conto { border-left: 1px solid var(--sb-border); }
+/* I fili di separazione seguono l'impaginazione, non l'ordine dei figli: a due
+   colonne il filo verticale sta solo fra le coppie e quello orizzontale
+   divide le due righe. Un `+ .sb-is-conto` secco disegnerebbe un filo a
+   sinistra del terzo riquadro, che a capo riga è appeso al nulla. */
+.sb-is-conto:nth-child(2n) { border-left: 1px solid var(--sb-border); }
+.sb-is-conto:nth-child(n + 3) { border-top: 1px solid var(--sb-border); }
+@media (min-width: 34rem) {
+  .sb-is-conti-in { grid-template-columns: repeat(4, 1fr); }
+  .sb-is-conto:nth-child(n + 3) { border-top: 0; }
+  .sb-is-conto:not(:first-child) { border-left: 1px solid var(--sb-border); }
+}
 .sb-is-conto b {
   display: block;
   font-size: clamp(1.3rem, 5.5vw, 1.6rem);
@@ -196,6 +214,36 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--sb-fg);
+}
+
+/* ── Pagato, o da incassare ──────────────────────────────────────────────
+   Una parola sotto il nome, non una tinta: il design system del sito ha i
+   grigi e un azzurro solo, e «questa persona deve ancora pagare» non è
+   un'emergenza da semaforo — è un'informazione, e come tale si legge.
+
+   Chi deve ancora pagare porta anche il tasto per segnare l'incasso. Sta
+   dentro la sua scheda e non in una barra a parte perché il gesto è «questa
+   persona qui ha appena pagato», e il dito deve trovarlo dove sta guardando
+   l'occhio. */
+.sb-is-stato {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.45rem;
+}
+.sb-is-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-is-tag--attesa { color: var(--sb-brand-text); }
+.sb-is-incassa {
+  height: 30px;
+  padding: 0 0.7rem;
+  font-size: 0.78rem;
 }
 
 /* Etichetta e valore su due colonne fisse, non a flex: così i valori di tutte
@@ -275,7 +323,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   <section class="sb-container sb-riv-pagehead">
     <span class="sb-riv-eyebrow">Zona organizzatori</span>
     <h1>Iscritti alla Color Walk</h1>
-    <p class="sb-riv-lede">Chi ha pagato la quota del 20 settembre, letto dai pagamenti Stripe. Un'iscrizione può valere più persone: chi ha pagato più i minori che ha iscritto con sé. Serve la chiave: questa pagina non tiene niente di suo.</p>
+    <p class="sb-riv-lede">Chi è iscritto al 20 settembre, letto dalle fatture PayPal. C'è chi ha già pagato online e chi paga in contanti al ritrovo: lo dice ogni scheda, e il contante si segna incassato da qui. Un'iscrizione può valere più persone: chi si è iscritto più i minori che ha portato con sé. Serve la chiave: questa pagina non tiene niente di suo.</p>
   </section>
 
   <section class="sb-container sb-is-sec">
@@ -296,6 +344,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         <div class="sb-panel-inner sb-is-conti-in">
           <div class="sb-is-conto"><b id="is-n">0</b><span>persone su 300</span></div>
           <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div>
+          <div class="sb-is-conto"><b id="is-att">0 €</b><span>da incassare</span></div>
           <div class="sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div>
         </div>
       </div>
@@ -385,6 +434,33 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     testa.appendChild(nome);
     testa.appendChild(quota);
     inner.appendChild(testa);
+
+    /* Com'è stata pagata, o come lo sarà. Tre casi e tre parole diverse,
+       perché il giorno della camminata la differenza fra «ha pagato» e «deve
+       pagarti dieci euro» è tutta la ragione per cui questa pagina esiste. */
+    var stato = document.createElement("div");
+    stato.className = "sb-is-stato";
+    var tag = document.createElement("span");
+    tag.className = "sb-is-tag" + (i.pagato ? "" : " sb-is-tag--attesa");
+    tag.textContent = i.pagato
+      ? i.pagamento === "contanti"
+        ? "Contanti · incassati"
+        : "PayPal · pagato"
+      : "Contanti · da incassare";
+    stato.appendChild(tag);
+
+    if (!i.pagato) {
+      var tasto = document.createElement("button");
+      tasto.type = "button";
+      tasto.className = "sb-btn sb-btn--secondary sb-is-incassa";
+      tasto.textContent = "Segna incassati " + euro(i.importoCent);
+      tasto.addEventListener("click", function () {
+        incassa(i, tasto, tag);
+      });
+      stato.appendChild(tasto);
+    }
+
+    inner.appendChild(stato);
 
     var dl = document.createElement("dl");
     dl.className = "sb-is-dati";
@@ -476,15 +552,56 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       vuoto.className = "sb-is-vuoto";
       vuoto.textContent = dati.iscritti.length
         ? "Nessuno corrisponde a quello che hai scritto."
-        : "Ancora nessun iscritto. Il primo che paga compare qui.";
+        : "Ancora nessun iscritto. Il primo che compila il modulo compare qui.";
       elenco.appendChild(vuoto);
       return;
     }
     visti.forEach(function (i) { elenco.appendChild(riga(i)); });
   }
 
+  /* ── Il contante che arriva al banchetto ────────────────────────────────
+     Si preme, e da quel momento quella persona risulta pagata: qui, e nel
+     pannello di PayPal, che è lo stesso posto.
+
+     La conferma prima di scrivere non è una cortesia burocratica: è un tasto
+     premuto col pollice, in piedi, con la coda che aspetta, e segnare pagato
+     chi non ha pagato è un errore che nessuno scopre più — il tasto sparisce
+     e resta una riga che dice il falso.
+
+     Finché la richiesta è in volo il tasto è spento e lo dice. Al ritorno si
+     ricarica tutto invece di aggiustare la riga a mano: i totali in cima
+     cambiano insieme a lei, e due numeri che non si muovono insieme sono il
+     modo più veloce per non fidarsi più di una pagina. */
+  function incassa(i, tasto, tag) {
+    var quanto = euro(i.importoCent);
+    var chi = (i.nome + " " + i.cognome).trim() || "questa iscrizione";
+    if (!confirm("Segnare " + quanto + " incassati in contanti da " + chi + "?")) return;
+
+    tasto.disabled = true;
+    tasto.textContent = "Un momento…";
+
+    fetch("/api/iscritti-color-walk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-chiave": chiave },
+      body: JSON.stringify({ fattura: i.id, numero: i.numero }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.d.incassata) throw new Error((res.d && res.d.errore) || "non è andata");
+        tag.textContent = "Contanti · incassati";
+        tag.className = "sb-is-tag";
+        tasto.remove();
+        return carica();
+      })
+      .catch(function (err) {
+        mostra("errore", "Non è stato possibile segnare l'incasso (" + err.message + "). L'iscrizione non è cambiata: riprova.");
+        tasto.disabled = false;
+        tasto.textContent = "Segna incassati " + quanto;
+      });
+  }
+
   function carica() {
-    mostra("attesa", "Leggo i pagamenti…");
+    mostra("attesa", "Leggo le iscrizioni…");
     return fetch("/api/iscritti-color-walk", { headers: { "x-chiave": chiave } })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, stato: r.status, d: d }; }); })
       .then(function (res) {
@@ -497,7 +614,8 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         /* Il numero grande è quello delle PERSONE, non delle iscrizioni: il
            tetto di 300 è di partecipanti, e un pagamento può valerne tre. */
         document.getElementById("is-n").textContent = String(dati.persone != null ? dati.persone : dati.iscritti.length);
-        document.getElementById("is-tot").textContent = euro(dati.totaleCent);
+        document.getElementById("is-tot").textContent = euro(dati.incassatoCent);
+        document.getElementById("is-att").textContent = euro(dati.daIncassareCent);
         document.getElementById("is-inc").textContent = String(dati.incompleti);
 
         porta.hidden = true;
@@ -564,19 +682,21 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
      ha pagato — sommando la colonna deve venire fuori l'incasso vero, non il
      triplo. */
   function csv() {
-    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento Stripe"])];
+    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento", "Stato", "Fattura"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
         "maggiorenne", i.nome, i.cognome, data(i.dataNascita), i.codiceFiscale, i.email, i.telefono, "", i.note,
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
-        i.consenso, i.id
+        i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+        i.pagato ? "pagato" : "da incassare", i.numero || i.id
       ]));
       (i.minori || []).forEach(function (m) {
         righe.push(rigaCsv([
           "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",
           (i.nome + " " + i.cognome).trim(), "",
-          quando(i.quandoISO), "", i.consenso, i.id
+          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          i.pagato ? "pagato" : "da incassare", i.numero || i.id
         ]));
       });
     });

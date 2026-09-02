@@ -275,11 +275,16 @@ rivaltasulmincio/
 │   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
 │   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
-├── api/                        # le tre cose che NON girano nel browser di chi legge
+├── api/                        # le cose che NON girano nel browser di chi legge
 │   ├── meteo.mjs               #   la stazione di meteomincio, tradotta in JSON
-│   ├── iscrizione-color-walk.mjs   #   apre il pagamento, e verifica il ritorno
-│   └── conferma-color-walk.mjs     #   il webhook Stripe: manda la ricevuta o l'avviso
-│                               #   (in coda ha un blocco GENERATO da build.mjs: le due mail)
+│   ├── iscrizione-color-walk.mjs   #   registra l'iscrizione: apre il pagamento, oppure
+│   │                           #   la segna da pagare al ritrovo. E verifica il ritorno
+│   ├── conferma-color-walk.mjs     #   il webhook PayPal: incassa e manda ricevuta o avviso
+│   ├── iscritti-color-walk.mjs     #   l'elenco per chi organizza, e il tasto «incassato»
+│   ├── _paypal.mjs             #   la porta verso PayPal, e il formato di un'iscrizione
+│   └── _posta.mjs              #   le mail: come si compongono e da dove escono
+│                               #   (in coda ha un blocco GENERATO da build.mjs: i modelli)
+│                               #   il trattino basso dice a Vercel di non farne endpoint
 ├── data/
 │   ├── rivalta_dataset.json    #   l'estratto OpenStreetMap completo (ODbL) — 330 POI
 │   └── …-dossier.md            #   il dossier sorgente in Markdown
@@ -292,7 +297,7 @@ rivaltasulmincio/
 │   ├── gusto.json              #   il registro del gusto: voglie, piatti e chi li fa (/mangiare)
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 │   └── email/                  #   le due mail della Color Walk, sorgente
-│       ├── ricevuta-color-walk.html   #     a chi ha pagato
+│       ├── ricevuta-color-walk.html   #     a chi ha pagato E a chi paga al ritrovo
 │       ├── fallita-color-walk.html    #     a chi si è fermato a metà
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
@@ -300,7 +305,7 @@ rivaltasulmincio/
 ├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
 ├── notizie.mjs                 # cerca-notizie della rassegna: Google News → notizie.json (non va online)
 ├── serve.mjs                   # anteprima locale con cleanUrls (non va online)
-├── prova-conferma.mjs          # `npm test`: 15 casi sulle mail, con Stripe finto (non va online)
+├── prova-conferma.mjs          # `npm test`: 15 casi sulle mail, con PayPal finto (non va online)
 ├── prova-invio.mjs             # manda una mail vera a sé stessi, per guardarla (non va online)
 ├── sitemap.xml                 # GENERATO da build.mjs — non modificarlo a mano
 ├── robots.txt                  # statico, nessuna esclusione
@@ -375,8 +380,8 @@ sequenceDiagram
 | **Google Fonts** | Titillium Web + Roboto Mono | client, con `preconnect` |
 | **Piastrelle OpenStreetMap** | il fondo della mappa (ODbL, con attribuzione) | client, **solo su `/mappa`** |
 | **meteomincio.it** | la lettura della stazione di Rivalta | server, via `/api/meteo`, per la home e `/natura` |
-| **Vercel** | hosting statico + tre funzioni, `cleanUrls`, header di cache | produzione |
-| **Stripe** | l'incasso della quota Color Walk e l'avviso di com'è andata | server, via `/api/iscrizione-color-walk` e `/api/conferma-color-walk` |
+| **Vercel** | hosting statico + quattro funzioni, `cleanUrls`, header di cache | produzione |
+| **PayPal** | l'incasso della quota Color Walk, e il registro delle iscrizioni (una fattura ciascuna) | server, via `/api/iscrizione-color-walk`, `/api/conferma-color-walk` e `/api/iscritti-color-walk` |
 | **Resend** | la spedizione delle due mail della Color Walk | server, via `/api/conferma-color-walk` |
 
 Quello che il browser scarica sono pagine, fogli di stile, gli script e — solo se lo si chiede — il
@@ -457,65 +462,126 @@ in più lì dentro.
 ### La Color Walk — l'iscrizione che incassa davvero
 
 La seconda cosa che non gira nel browser di chi legge. `/color-walk` raccoglie i dati di chi si
-iscrive alla camminata a colori del 20 settembre e incassa **11 €** — quota **10 €** più **1 € di
-commissioni di servizio**, due voci distinte nel Checkout — un pagamento vero, in un passaggio solo.
-L'euro in più copre quanto il circuito di pagamento trattiene su ogni incasso, così alla camminata
-arriva la quota intera. La pagina **non sta nel menu** — le nove porte d'ingresso sono quelle
-e restano nove — ma è pubblica: la richiamano la home, `/comunita` e `/eventi`, ed entra in
-sitemap. Per rimetterla in disparte basta rimettere `noindex: true` in testa a
-[`_build/color-walk.body.html`](_build/color-walk.body.html) e rifare il build.
+iscrive alla camminata a colori del 20 settembre e ne incassa la quota: **10 €** per chi ha 18 anni
+o più, **5 €** per ogni ragazzo dai 6 ai 17 anni. Un'iscrizione è un gruppo — un maggiorenne più i
+minori che porta con sé — e si paga in un colpo solo. Nessuna riga di commissioni da nessuna parte:
+sono un costo dell'organizzazione, non una voce a carico di chi si iscrive. La pagina **non sta nel
+menu** — le nove porte d'ingresso sono quelle e restano nove — ma è pubblica: la richiamano la home,
+`/comunita` e `/eventi`, ed entra in sitemap.
 
-[`api/iscrizione-color-walk.mjs`](api/iscrizione-color-walk.mjs) parla con l'API REST di Stripe
-via `fetch`, **senza il pacchetto npm `stripe`**: stesso zero-dipendenze del resto del sito, stesso
-stile di `api/meteo.mjs`. Fa due mestieri secondo il metodo con cui lo si chiama:
+#### Due modi di pagare, un solo registro
+
+Si può pagare **subito online**, oppure **in contanti al ritrovo** — davanti alla chiesa alle 15:30,
+al banchetto delle iscrizioni, prima della partenza. La scelta cambia solo quello che succede dopo
+l'invio del modulo. L'iscrizione, in tutti e due i casi, è registrata nello stesso momento e nello
+stesso posto.
+
+Quel posto è una **fattura PayPal**, e la scelta merita di essere spiegata perché non è ovvia.
+Prima, con Stripe, l'elenco degli iscritti *era* la lista dei pagamenti nel dashboard, con i campi
+del modulo dentro i `metadata`: niente database, niente seconda copia dei dati di persone vere da
+tenere al sicuro. **PayPal non ha un'API che elenca gli ordini**, quindi quel posto lì non esiste
+più. Le fatture sì: si elencano, si filtrano, hanno campi larghi, e «non ancora pagata» è uno stato
+che hanno già — mentre un pagamento o c'è o non c'è, ed è esattamente la differenza che serviva per
+il contante.
+
+| | quando nasce la fattura | come resta |
+| :--- | :--- | :--- |
+| paga online | alla compilazione del modulo | non saldata finché l'incasso non arriva; poi saldata, metodo PayPal |
+| paga al ritrovo | alla compilazione del modulo | **non saldata**, finché qualcuno non incassa i contanti al banchetto |
+
+Le fatture non vengono mai mandate a chi si iscrive: si creano, si «spediscono» con
+`send_to_recipient: false` — che è il modo di portarle allo stato in cui accettano un pagamento
+senza che PayPal scriva a nessuno — e le mail restano le nostre. Chi si iscrive non deve ricevere
+due messaggi diversi dallo stesso evento.
+
+Nascere prima del pagamento ha una conseguenza che va detta: **chi apre il checkout e non arriva in
+fondo lascia una fattura non saldata**. Non è un rifiuto in mezzo ai piedi — è esattamente il
+«pagamento non completato» che `/iscritti` contava già anche prima, e il memo della fattura dice
+quale delle due cose è, perché ci porta scritto il modo di pagare scelto al momento del modulo.
+
+#### Le funzioni
+
+[`api/_paypal.mjs`](api/_paypal.mjs) parla con l'API REST di PayPal via `fetch`, **senza SDK**:
+stesso zero-dipendenze del resto del sito, stesso stile di `api/meteo.mjs`. Tiene la porta verso
+PayPal e — soprattutto — il **formato** con cui un'iscrizione ci sta dentro: una voce di fattura per
+persona (`A|nome|cognome|data di nascita|codice fiscale`), e telefono, note e ora del consenso nel
+memo riservato, che chi si iscrive non vede mai. Sta in un posto solo perché il formato con cui
+un'iscrizione viene scritta è lo stesso con cui va riletta: il giorno che si dividono, l'elenco
+smette di combaciare con quello che l'iscrizione ha scritto, e nessuno se ne accorge finché non
+manca qualcuno davanti alla chiesa. Il trattino basso davanti al nome dice a Vercel di non farne un
+endpoint.
+
+[`api/iscrizione-color-walk.mjs`](api/iscrizione-color-walk.mjs) fa due mestieri secondo il metodo:
 
 | | |
 |---|---|
-| `POST` | il modulo manda nome, cognome, email, telefono, note e il consenso spuntato; nasce una sessione Stripe Checkout e la risposta è l'indirizzo a cui mandare il browser a pagare |
-| `GET ?sessione=cs_…` | al ritorno dal pagamento la pagina chiede a Stripe se quella sessione è stata **davvero** pagata |
+| `POST` | il modulo manda i dati di chi si iscrive, quelli dei minori che porta, il consenso spuntato e come intende pagare. Nasce la fattura; poi, se paga online, nasce l'ordine e la risposta è l'indirizzo a cui mandare il browser — se paga al ritrovo la risposta è «sei iscritto», e la mail parte subito |
+| `GET ?ordine=…` | al ritorno dal pagamento: **incassa** e poi dice alla pagina com'è andata |
 
-E accanto c'è [`api/conferma-color-walk.mjs`](api/conferma-color-walk.mjs), che non lo chiama
-il sito: lo chiama Stripe. È il webhook che manda la mail.
+[`api/conferma-color-walk.mjs`](api/conferma-color-walk.mjs) non lo chiama il sito: lo chiama
+PayPal. È il webhook che incassa e manda le mail.
 
-Il secondo esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo basterebbe
-aprire `/color-walk?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato una lira.
-Chi ha pagato ha in mano anche l'identificativo di sessione — che non si indovina — ed è quello, non
-la parola `ok`, a decidere cosa la pagina scrive.
+[`api/iscritti-color-walk.mjs`](api/iscritti-color-walk.mjs) è l'elenco per chi organizza, dietro la
+sola porta chiusa a chiave del sito, e in più il **tasto «incassato»**: il gesto del banchetto, con
+il telefono in una mano e i soldi nell'altra. Segna la fattura saldata, metodo contanti. Si potrebbe
+fare anche dall'app PayPal — ma sui gradini della chiesa il bottone vince.
 
-**L'elenco degli iscritti è il dashboard Stripe.** I campi del modulo viaggiano come `metadata`
-della sessione e compaiono lì accanto a ogni pagamento, insieme all'ora in cui il consenso è stato
-dato: niente database, niente foglio a parte, niente seconda copia dei dati di persone vere da
-tenere al sicuro. Il sito non vede mai i dati della carta.
+Il `GET` di verifica esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo
+basterebbe aprire `/color-walk?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato
+una lira. Chi ha pagato torna anche con l'identificativo dell'ordine — che non si indovina, e che
+PayPal aggiunge da sé come `token` — ed è quello, non la parola `ok`, a decidere cosa la pagina
+scrive.
 
-#### Le due mail — e perché non partono dalla pagina
+##### Incassare è un passaggio a parte
 
-Chi paga riceve una **ricevuta**; chi comincia e non arriva in fondo riceve un avviso che dice che
-**il pagamento non è andato a buon fine e che non gli è stato addebitato niente**. Nessuno resta a
-chiedersi se è iscritto o no — che è l'unica cosa, dopo aver dato dieci euro, che si vuole sapere.
+PayPal, quando chi paga approva, **non prende ancora niente**: l'ordine resta approvato e i soldi si
+muovono solo quando glielo si chiede. A chiederlo sono in due — la pagina al ritorno e il webhook —
+e non è una svista: al ritorno dal pagamento non ci si torna sempre. Se a incassare fosse solo la
+pagina, chi ha approvato avrebbe autorizzato un pagamento che non arriva mai; se fosse solo il
+webhook, chi torna resterebbe a guardare «un momento…». Che ci provino tutti e due è sicuro perché
+la seconda volta PayPal risponde `ORDER_ALREADY_CAPTURED`, che non è una brutta notizia: è la
+conferma che i soldi sono già stati presi. Una volta sola, comunque vada.
 
-La mail **non parte dalla pagina di ritorno dal pagamento**, e questa è la scelta che tiene in piedi
-tutto il resto. Al ritorno dal pagamento non ci si torna sempre: si chiude la scheda, finisce la
-batteria, il telefono perde campo mentre Stripe sta rimandando indietro il browser. Il pagamento è
-fatto e la pagina non lo sa. Se la conferma dipendesse da lì, chi ha pagato resterebbe senza.
+#### Le mail — e perché non partono dalla pagina
 
-Parte invece da **Stripe che avvisa il server**, a pagamento concluso, indipendentemente da dove sia
-finito il browser. Quattro proprietà, ognuna col suo perché:
+Chi paga online riceve una **ricevuta**. Chi paga al ritrovo riceve **la stessa mail**, che però dice
+a chiare lettere che **la quota non è ancora pagata** e quanto deve portare — è il punto di tutta
+quella modalità: la differenza fra una persona che arriva con i contanti in mano e una coda di venti
+che scoprono al banchetto di dover pagare. Chi comincia e non arriva in fondo riceve un avviso che
+dice che **il pagamento non è andato a buon fine e che non gli è stato addebitato niente**. Nessuno
+resta a chiedersi se è iscritto o no — che è l'unica cosa, dopo aver dato dieci euro, che si vuole
+sapere.
+
+La mail di chi paga online **non parte dalla pagina di ritorno**, e questa è la scelta che tiene in
+piedi tutto il resto. Al ritorno non ci si torna sempre: si chiude la scheda, finisce la batteria,
+il telefono perde campo mentre PayPal sta rimandando indietro il browser. Se la conferma dipendesse
+da lì, chi ha pagato resterebbe senza. Parte invece da **PayPal che avvisa il server**, a incasso
+concluso, indipendentemente da dove sia finito il browser. Quattro proprietà, ognuna col suo perché:
 
 | | |
 |---|---|
-| **la mail giusta** | la ricevuta parte **solo** se `payment_status` vale `paid` — riletto in quel momento da Stripe con la chiave segreta, non preso dall'avviso ricevuto. Un avviso falso, anche perfettamente firmato, al massimo nomina una sessione: se quella sessione non risulta pagata, non esce niente |
-| **la firma** | ogni avviso di Stripe è firmato in HMAC-SHA256 con `STRIPE_WEBHOOK_SECRET`; la firma si ricalcola sul corpo **grezzo** (per questo `bodyParser` è spento: riscrivere anche solo gli spazi la invaliderebbe) e si confronta a tempo costante. Fuori dai cinque minuti di tolleranza, un avviso vero rigiocato più tardi non vale più |
-| **una sola volta** | spedita la ricevuta, resta un segno nei `metadata` del PaymentIntent, che al giro dopo si rilegge. Serve perché lo stesso pagamento può generare più avvisi, e perché i rinvii di Stripe sono fatti apposta per ripetersi |
-| **prima o poi arriva** | se la spedizione fallisce la funzione risponde **500**, non 200: è il modo di dire a Stripe «rimandamelo». Stripe riprova per tre giorni. Una chiave sbagliata o un servizio di posta giù diventano così una mail in ritardo invece di una mail persa |
+| **la mail giusta** | dell'avviso si prende **una cosa sola**, l'identificativo. Se ha pagato, e quanto, e per quale iscrizione, lo si va a chiedere a PayPal. Un avviso falso, anche perfettamente firmato, al massimo nomina un incasso: se quell'incasso non risulta completato, non esce niente |
+| **la firma** | la verifica PayPal stesso, a cui si rimanda l'avviso con le cinque intestazioni con cui è arrivato e `PAYPAL_WEBHOOK_ID`. Il corpo si infila nella richiesta **tale e quale**, montando il JSON a mano: rileggere e riscrivere lo stesso JSON cambia ordine delle chiavi e spaziatura, e la firma è calcolata sui byte. È lo scoglio su cui si arena chiunque verifichi un webhook PayPal la prima volta — ed è anche perché `bodyParser` è spento |
+| **una sola volta** | il segno di «fatto» non è un registro a parte: è **lo stato della fattura**. Una già saldata non fa ripartire la ricevuta, una già annullata non fa ripartire l'avviso. Serve perché lo stesso pagamento genera più avvisi, e perché i rinvii di PayPal sono fatti apposta per ripetersi |
+| **prima o poi arriva** | se la spedizione fallisce la funzione risponde **500**, non 200: è il modo di dire a PayPal «rimandamelo». PayPal riprova fino a venticinque volte in tre giorni. Una chiave sbagliata o un servizio di posta giù diventano così una mail in ritardo invece di una mail persa |
 
-L'avviso di mancato pagamento parte su **sessione scaduta** (`checkout.session.expired` — chi apre
-il pagamento e chiude la pagina; Stripe lo dice alla scadenza, cioè fino a 24 ore dopo) e su
-**pagamento differito rifiutato**. Una carta rifiutata mentre si è ancora sulla pagina di Stripe non
-fa partire niente: lì si ritenta subito, e una mail a ogni tentativo sarebbe molestia. E chi ha poi
-pagato con una seconda sessione non se lo vede arrivare: prima di spedirlo, la funzione chiede a
-Stripe se a quell'indirizzo risulta un pagamento riuscito. Se la domanda non riesce a farla, la mail
-**non parte**: dire per sbaglio «non sei iscritto» a chi ha pagato è un danno, tacere è un'occasione
-persa.
+La ricevuta parte **prima** che la fattura venga segnata saldata, ed è voluto: al contrario, un
+segno scritto e una spedizione fallita darebbero una mail che non parte più. Meglio il rischio
+remoto di una copia in più che la certezza di uno zero.
+
+L'avviso di mancato pagamento parte su **incasso rifiutato** e sui suoi parenti. Una carta rifiutata
+mentre si è ancora sulle pagine di PayPal non fa partire niente: lì si ritenta subito, e una mail a
+ogni tentativo sarebbe molestia. Chi ha poi pagato con un secondo tentativo non se lo vede arrivare:
+prima di spedirlo la funzione guarda se a quell'indirizzo risulta un'iscrizione saldata, e se la
+domanda non riesce a farla la mail **non parte** — dire per sbaglio «non sei iscritto» a chi ha
+pagato è un danno, tacere è un'occasione persa. E chi paga al ritrovo non la riceve **mai**: la sua
+quota non è «non andata a buon fine», è ancora da pagare.
+
+> **Quello che PayPal non dice.** Chi apre il pagamento e chiude tutto senza approvare non genera
+> nessun avviso: PayPal non ha un evento per gli ordini abbandonati, come invece c'era prima con
+> `checkout.session.expired`. Quella persona non riceve nessuna mail, e la sua iscrizione resta fra
+> le «non completate» che `/iscritti` conta. È una cosa in meno rispetto a prima, ed è scritta qui
+> perché si sappia che manca.
 
 ##### Dove si scrivono
 
@@ -524,9 +590,14 @@ guardarlo. Non sono scritti come una pagina del sito: la posta non è il web, e 
 `color-mix()`, flex e grid in Outlook e Gmail non esistono. Stessa grammatica visiva del sito,
 tecnica diversa: tabelle, stili in linea, i token di `assets/sb.css` risolti a mano in hex.
 
-`node build.mjs` li compila **dentro** `api/conferma-color-walk.mjs`, fra due marcatori.
+Due modelli e non tre: **la ricevuta è la stessa** per chi ha pagato e per chi paga al ritrovo, e i
+pezzi che cambiano stanno dentro due marcatori condizionali che scioglie chi spedisce. Sono due mail
+nello stesso file di proposito — il giorno che si corregge un orario o una frase, si corregge per
+tutti e due; due file separati si sarebbero disallineati alla seconda modifica.
+
+`node build.mjs` li compila **dentro** [`api/_posta.mjs`](api/_posta.mjs), fra due marcatori.
 Sembra un giro largo, ed è il punto: `_build/` è in `.vercelignore`, quindi su Vercel quei file non
-arrivano — compilati diventano due stringhe dentro la funzione, e non c'è niente che possa mancare
+arrivano — compilati diventano due stringhe dentro un modulo, e non c'è niente che possa mancare
 all'appello proprio mentre qualcuno sta pagando. Il blocco fra i marcatori è **generato**: si
 modifica l'HTML in `_build/email/` e si rifà il build, mai il contrario.
 
@@ -537,103 +608,74 @@ parentesi quadra nella posta di qualcuno:** il build toglie via la sezione inter
 cosa portare mancano al loro posto la ricevuta dice che i dettagli arrivano più avanti — che è la
 verità. Ogni build stampa l'elenco di cosa manca ancora.
 
-> La ricevuta di Stripe (**Settings → Payments → Customer emails**) è un'altra cosa e resta
-> separata: quella è la prova del pagamento, questa è la conferma dell'iscrizione. Averle entrambe
-> non fa male.
-
 #### Le chiavi — le cose da mettere a mano
 
-La chiave segreta **non è nel repository e non deve entrarci**. Vive in una variabile d'ambiente su
-Vercel, e finché non c'è l'endpoint risponde `500 pagamento non ancora configurato` senza provarci:
-
-1. Stripe → **Developers → API keys** → copiare la *Secret key* (`sk_live_…` per incassare davvero,
-   `sk_test_…` per provare col numero di carta finto `4242 4242 4242 4242`).
-2. Vercel → progetto → **Settings → Environment Variables** → nome `STRIPE_SECRET_KEY`, valore la
-   chiave, ambiente *Production* (e *Preview*, con la chiave di test, se si vuole provare sui
-   deploy di anteprima).
-3. **Rideployare**: le variabili le legge la funzione all'avvio, un deploy già fatto non le vede.
-
-Per far arrivare **anche** la ricevuta di pagamento di Stripe va spuntato, in Stripe, **Settings →
-Payments → Customer emails → Successful payments**: Checkout riceve già l'indirizzo, ma senza quella
-spunta Stripe in modalità live non scrive a nessuno. La conferma d'iscrizione del sito è un'altra
-cosa e non dipende da quella spunta.
-
-##### E perché le mail partano
-
-Tre variabili in più, sempre in **Settings → Environment Variables**, e sempre seguite da un
-rideploy:
+Le credenziali **non sono nel repository e non devono entrarci**. Vivono nelle variabili d'ambiente
+su Vercel — **Settings → Environment Variables** — e ogni modifica va seguita da un **rideploy**: le
+variabili le legge la funzione all'avvio, un deploy già fatto non le vede.
 
 | Variabile | Dove si prende | Se manca |
 | :--- | :--- | :--- |
-| `STRIPE_WEBHOOK_SECRET` | Stripe → **Developers → Webhooks → Add endpoint**, indirizzo `https://www.rivaltasulmincio.it/api/conferma-color-walk`, eventi `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`. Il `whsec_…` compare a endpoint creato | gli avvisi vengono accettati **senza verificarne la firma** (quello che conta si rilegge comunque da Stripe, ma è un buco: nei log si vede) |
-| `RESEND_API_KEY` | [resend.com](https://resend.com) → **API Keys**, dopo aver verificato il dominio `rivaltasulmincio.it` in **Domains** (record SPF e DKIM dal pannello DNS) | la funzione risponde 500 e Stripe **continua a riprovare per tre giorni**: appena la chiave c'è, le mail arretrate partono |
+| `PAYPAL_CLIENT_ID` | PayPal Developer → **Apps & Credentials** → l'app → *Client ID* | niente iscrizioni: la funzione risponde 502 senza provarci |
+| `PAYPAL_CLIENT_SECRET` | la stessa scheda → *Secret key*. **Va rigenerata se è mai stata incollata da qualche parte**: una chiave che ha lasciato il pannello è una chiave bruciata | come sopra |
+| `PAYPAL_AMBIENTE` | `prova` per la sandbox, qualunque altra cosa o niente per il conto vero | vale **live**: si incassa davvero |
+| `PAYPAL_WEBHOOK_ID` | PayPal Developer → l'app → **Webhooks → Add webhook**, indirizzo `https://www.rivaltasulmincio.it/api/conferma-color-walk`, eventi `CHECKOUT.ORDER.APPROVED`, `PAYMENT.CAPTURE.COMPLETED`, `PAYMENT.CAPTURE.DENIED`, `PAYMENT.CAPTURE.REVERSED`, `CHECKOUT.ORDER.DECLINED` | gli avvisi vengono accettati **senza verificarne la firma** (quello che conta si rilegge comunque da PayPal, ma è un buco: nei log si vede) |
+| `RESEND_API_KEY` | [resend.com](https://resend.com) → **API Keys**, dopo aver verificato il dominio `rivaltasulmincio.it` in **Domains** (record SPF e DKIM dal pannello DNS) | la funzione risponde 500 e PayPal **continua a riprovare per tre giorni**: appena la chiave c'è, le mail arretrate partono |
 | `POSTA_MITTENTE` | facoltativa. Il mittente, forma `Nome <indirizzo@dominio>`. Il dominio dev'essere quello verificato in Resend | vale `Color Walk — Rivalta sul Mincio <color-walk@rivaltasulmincio.it>` |
+| `ISCRITTI_CHIAVE` | la si sceglie: è la chiave che apre `/iscritti` | la zona iscritti risponde **503**. Una porta senza serratura si tiene chiusa, non spalancata |
 
-Il webhook si prova senza aspettare un vero iscritto: in Stripe, dalla scheda dell'endpoint,
-**Send test webhook**. E in locale [`prova-conferma.mjs`](prova-conferma.mjs) — `npm test`, zero
-dipendenze — finge Stripe e il servizio di posta e ripercorre quindici casi senza spedire niente a
-nessuno:
+##### Le prove
+
+`npm test` fa girare i tre banchi — zero dipendenze, solo Node — con PayPal e la posta **finti**:
+sessantadue casi, senza spedire niente a nessuno e senza toccare un pagamento vero.
 
 ```
-── Il pagamento è andato a buon fine ──────────────────────────
-  ok   pagata → parte la ricevuta
-  ok   pagata in differita → parte la ricevuta
-  ok   ricevuta già spedita → non si ripete
-  ok   posta giù → 500, così Stripe ritenta
-
-── Il pagamento NON è andato a buon fine ──────────────────────
-  ok   sessione scaduta → parte l'avviso
-  ok   pagamento differito rifiutato → parte l'avviso
-  ok   scaduta, ma ha pagato con un'altra sessione → niente
-  ok   completata ma non pagata → si aspetta, niente mail
-
-── Chi bussa senza essere Stripe ──────────────────────────────
-  ok   filtro per indirizzo rifiutato da Stripe: ripiega e trova il pagato
-  ok   Stripe muto sul controllo: nel dubbio non accusa chi ha pagato
-  ok   firma sbagliata → 400, nessuna mail
-  ok   firma vecchia di un'ora → 400, nessuna mail
-  ok   avviso firmato che MENTE sul pagamento → nessuna ricevuta
-  ok   sessione di un altro evento → ignorata
-  ok   avviso che non riguarda le sessioni → ignorato
+node prova-conferma.mjs     le mail: quando partono, quale, e quando no
+node prova-iscrizione.mjs   chi entra e a che prezzo, e i due modi di pagare
+node prova-iscritti.mjs     la porta chiusa a chiave, l'elenco, il tasto «incassato»
 ```
 
-Il penultimo è quello che vale la pena rileggere: un avviso con firma **valida** che dichiara un
-pagamento riuscito non fa uscire nessuna ricevuta, perché quel che decide è la risposta di Stripe
-all'interrogazione fatta con la chiave segreta, non quello che l'avviso racconta di sé.
+Due casi vale la pena rileggerli. Un avviso con firma **valida** che dichiara un incasso riuscito
+non fa uscire nessuna ricevuta, perché quel che decide è la risposta di PayPal all'interrogazione,
+non quello che l'avviso racconta di sé. E chi ha scelto i contanti non riceve **mai** l'avviso di
+mancato pagamento, per quanti rifiuti passino di lì.
+
+Il webhook si prova poi senza aspettare un vero iscritto: in PayPal Developer, dalla scheda del
+webhook, **Simulate webhook event**.
 
 ##### La prova che nessuna finzione può dare
 
-`npm test` dice che la funzione **decide** giusto. Non dice che la mail **esce** e che in Gmail su
+`npm test` dice che le funzioni **decidono** giusto. Non dice che la mail **esce** e che in Gmail su
 un telefono si vede come deve — quello lo dice solo una mail vera.
 [`prova-invio.mjs`](prova-invio.mjs) ne manda una, a sé stessi, con dati inventati, senza toccare
-Stripe né pagamenti né iscritti. Usa gli stessi due modelli e la stessa funzione di spedizione del
-webhook, importati e non ricopiati, quindi quello che si vede arrivare è esattamente quello che
-arriverà a chi paga:
+PayPal né pagamenti né iscritti. Parte da una fattura finta e passa dalla stessa funzione che
+compone le mail vere, importata e non ricopiata, quindi quello che si vede arrivare è esattamente
+quello che arriverà a chi si iscrive:
 
 ```powershell
 $env:RESEND_API_KEY = "re_…"
-node prova-invio.mjs io@example.it            # la ricevuta
-node prova-invio.mjs io@example.it fallita    # l'avviso di mancato pagamento
+node prova-invio.mjs io@example.it             # la ricevuta di chi ha pagato
+node prova-invio.mjs io@example.it contanti    # chi paga al ritrovo — deve dire che NON è pagata
+node prova-invio.mjs io@example.it fallita     # l'avviso di mancato pagamento
 ```
 
-**Va fatto girare prima che si iscriva qualcuno davvero.** Il modo tipico di sbagliare è il
-mittente: in Resend si verifica spesso un sottodominio (`send.rivaltasulmincio.it`) mentre
-`POSTA_MITTENTE` è rimasto sul dominio nudo, o viceversa — e allora Resend rifiuta con un 403 che
-da solo non spiega niente. Qui e nei log di Vercel quel caso si dice per esteso, col mittente
-stampato accanto. Ma è meglio scoprirlo con la propria casella che col primo che tira fuori la
-carta: fino a quel momento il pagamento riuscirebbe comunque — l'incasso è di Stripe e non dipende
-dalla mail — e la ricevuta arriverebbe in ritardo, quando la variabile è corretta e Stripe rimanda
-l'avviso.
+**Va fatto girare prima che si iscriva qualcuno davvero**, e tutte e tre. Il modo tipico di sbagliare
+è il mittente: in Resend si verifica spesso un sottodominio (`send.rivaltasulmincio.it`) mentre
+`POSTA_MITTENTE` è rimasto sul dominio nudo, o viceversa — e allora Resend rifiuta con un 403 che da
+solo non spiega niente. Qui e nei log di Vercel quel caso si dice per esteso, col mittente stampato
+accanto. Ma è meglio scoprirlo con la propria casella che col primo che tira fuori la carta: fino a
+quel momento il pagamento riuscirebbe comunque — l'incasso è di PayPal e non dipende dalla mail — e
+la ricevuta arriverebbe in ritardo, quando la variabile è corretta e PayPal rimanda l'avviso.
 
 Va infine compilato **`_build/email/evento.json`** con quello che il gruppo del Palio decide, a
 partire da `organizzatori`: senza quell'indirizzo le mail partono senza un posto a cui rispondere,
 e il piede che dice «rispondi pure a questo messaggio» promette una cosa che non c'è.
 
-Gli importi che il codice usa stanno in **un punto solo**: `QUOTA_CENT` e `COMMISSIONI_CENT` in
-`api/iscrizione-color-walk.mjs` (in centesimi). Il testo di `_build/color-walk.body.html` li
+Le due quote stanno in **un punto solo**: `QUOTA_ADULTO_CENT` e `QUOTA_MINORE_CENT` in
+[`api/_paypal.mjs`](api/_paypal.mjs) (in centesimi). Il testo di `_build/color-walk.body.html` le
 ripete a parole per chi legge — se si cambiano i centesimi, va riallineato anche quello. Nelle mail
-non sono ricopiati: la ricevuta mostra le voci lette da Stripe (`expand[]=line_items`), quello che
-è stato incassato davvero.
+non sono ricopiate: la ricevuta mostra le voci della fattura, una per una, quello che è stato
+davvero scritto nel registro.
 
 ---
 

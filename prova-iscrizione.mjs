@@ -2,21 +2,53 @@
  *
  *   node prova-iscrizione.mjs
  *
- * Stripe non viene mai chiamato: `fetch` è sostituito da un banco di prova
- * che intercetta i parametri e li restituisce da guardare. Quello che si
- * controlla è la parte che decide chi entra e a che prezzo — le due quote,
- * il conto dei minori, e i «no» che la funzione deve dire anche quando la
- * pagina glieli manda buoni, perché la pagina la può scavalcare chiunque.
+ * PayPal non viene mai chiamato: `fetch` è sostituito da un banco di prova
+ * che intercetta quello che gli viene mandato e lo restituisce da guardare.
+ * Quello che si controlla è la parte che decide chi entra e a che prezzo — le
+ * due quote, il conto dei minori, la scelta di come pagare, e i «no» che la
+ * funzione deve dire anche quando la pagina glieli manda buoni, perché la
+ * pagina la può scavalcare chiunque.
  */
 import handler from "./api/iscrizione-color-walk.mjs";
 
-process.env.STRIPE_SECRET_KEY = "sk_test_finto";
+process.env.PAYPAL_CLIENT_ID = "finto";
+process.env.PAYPAL_CLIENT_SECRET = "finto";
+process.env.RESEND_API_KEY = "re_finta";
 
-let ultimo = null;
-global.fetch = async (url, o) => {
-  ultimo = new URLSearchParams(o.body);
-  return { ok: true, json: async () => ({ url: "https://checkout.stripe.com/x" }) };
+/* Quello che è stato mandato a PayPal e alla posta durante l'ultima prova.
+   `fattura` è il corpo della fattura creata: è lì che finiscono i dati di chi
+   si iscrive, ed è quello che questo banco di prova guarda. */
+let inviato;
+
+global.fetch = async (url, o = {}) => {
+  const u = String(url);
+  const corpo = o.body && o.body[0] === "{" ? JSON.parse(o.body) : null;
+  inviato.chiamate.push(`${o.method || "GET"} ${u.replace(/^https:\/\/api-m\.paypal\.com/, "")}`);
+
+  if (u.includes("/v1/oauth2/token")) return risposta({ access_token: "gettone", expires_in: 3600 });
+  if (u.includes("/search-invoices")) return risposta({ items: inviato.gia });
+  if (u.endsWith("/v2/invoicing/invoices")) {
+    inviato.fattura = corpo;
+    return risposta({ id: "INV2-PROVA" });
+  }
+  if (u.includes("/send")) return risposta({});
+  if (u.includes("/v2/checkout/orders")) {
+    inviato.ordine = corpo;
+    return risposta({ id: "ORDINEPROVA00001", links: [{ rel: "payer-action", href: "https://www.paypal.com/checkoutnow?token=ORDINEPROVA00001" }] });
+  }
+  if (u.includes("resend")) {
+    inviato.mail = JSON.parse(o.body);
+    return risposta({ id: "email_1" });
+  }
+  throw new Error("URL non previsto dal banco di prova: " + u);
 };
+
+const risposta = (corpo) => ({
+  ok: true,
+  status: 200,
+  json: async () => corpo,
+  text: async () => JSON.stringify(corpo),
+});
 
 const finestra = () => {
   const r = {};
@@ -35,35 +67,45 @@ const BASE = {
   codiceFiscale: "RSSMRA85T10A562S",
   email: "maria@example.com",
   consenso: true,
+  pagamento: "paypal",
 };
 
 let passate = 0;
 let fallite = 0;
 
-async function prova(nome, corpo, atteso) {
-  ultimo = null;
+async function prova(nome, corpo, atteso, { gia = [] } = {}) {
+  inviato = { fattura: null, ordine: null, mail: null, chiamate: [], gia };
   const res = finestra();
   await handler({ method: "POST", body: corpo }, res);
-  const ok = atteso(res, ultimo);
+  const ok = atteso(res, inviato);
   console.log(`  ${ok ? "ok  " : "NO  "} ${nome}`);
-  if (!ok) console.log(`        ottenuto ${res.codice} ${JSON.stringify(res.corpo)}`);
+  if (!ok) {
+    console.log(`        ottenuto ${res.codice} ${JSON.stringify(res.corpo)}`);
+    console.log(`        fattura  ${JSON.stringify(inviato.fattura?.items)}`);
+  }
   ok ? passate++ : fallite++;
 }
+
+/* Le voci della fattura sono una per persona: ruolo, nome, cognome, data,
+   codice fiscale. È la forma che rilegge tutto il resto del progetto. */
+const voci = (i) => (i.fattura?.items || []).map((v) => v.description);
+const importi = (i) => (i.fattura?.items || []).map((v) => v.unit_amount.value);
 
 console.log("\n── L'iscrizione di gruppo ─────────────────────────────────────");
 
 await prova(
-  "da sola → 10 €, una voce sola sul Checkout",
+  "da sola → 10 €, una voce sola sulla fattura",
   BASE,
-  (r, u) =>
+  (r, i) =>
     r.codice === 200 &&
-    u.get("line_items[0][price_data][unit_amount]") === "1000" &&
-    !u.get("line_items[1][quantity]") &&
-    u.get("metadata[n_minori]") === "0"
+    r.corpo.url.includes("paypal.com") &&
+    voci(i).length === 1 &&
+    voci(i)[0] === "A|Maria|Rossi|1985-12-10|RSSMRA85T10A562S" &&
+    importi(i)[0] === "10.00"
 );
 
 await prova(
-  "con due minori → 10 + 2×5, e i minori nei metadata",
+  "con due minori → 10 + 2×5, una voce per ciascuno",
   {
     ...BASE,
     minori: [
@@ -71,28 +113,131 @@ await prova(
       { nome: "Anna", cognome: "Rossi", dataNascita: "2018-11-20" },
     ],
   },
-  (r, u) =>
+  (r, i) =>
     r.codice === 200 &&
-    u.get("line_items[1][quantity]") === "2" &&
-    u.get("line_items[1][price_data][unit_amount]") === "500" &&
-    u.get("metadata[n_minori]") === "2" &&
-    u.get("metadata[minore_1]") === "Luca|Rossi|2015-04-02|—" &&
-    u.get("metadata[minore_2]") === "Anna|Rossi|2018-11-20|—"
+    voci(i).length === 3 &&
+    voci(i)[1] === "M|Luca|Rossi|2015-04-02|—" &&
+    voci(i)[2] === "M|Anna|Rossi|2018-11-20|—" &&
+    importi(i).join(",") === "10.00,5.00,5.00"
 );
 
 await prova(
-  "l'indirizzo di residenza non si chiede più, e non viaggia",
+  "l'ordine porta il numero della fattura, non i dati di nessuno",
   BASE,
-  (r, u) => r.codice === 200 && u.get("metadata[indirizzo]") === null
+  (r, i) =>
+    r.codice === 200 &&
+    i.ordine.purchase_units[0].invoice_id === i.fattura.detail.invoice_number &&
+    i.ordine.purchase_units[0].custom_id === "color-walk-2026-09-20" &&
+    i.ordine.purchase_units[0].amount.value === "10.00"
 );
 
 await prova(
-  "nessuna voce di commissioni sul Checkout",
+  "il numero della fattura sta nei 25 caratteri che PayPal concede",
   BASE,
-  (r, u) => r.codice === 200 && !u.toString().toLowerCase().includes("commission")
+  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number.length <= 25
+);
+
+await prova(
+  "telefono, note e ora del consenso nel memo riservato, non nelle voci",
+  { ...BASE, telefono: "3331234567", note: "Arrivo un po' dopo" },
+  (r, i) =>
+    r.codice === 200 &&
+    i.fattura.detail.memo.startsWith("paypal|3331234567|") &&
+    i.fattura.detail.memo.endsWith("|Arrivo un po' dopo") &&
+    !voci(i).join(" ").includes("3331234567")
+);
+
+await prova(
+  "nessuna voce di commissioni sulla fattura",
+  BASE,
+  (r, i) => r.codice === 200 && !JSON.stringify(i.fattura).toLowerCase().includes("commission")
+);
+
+console.log("\n── Chi paga al ritrovo ────────────────────────────────────────");
+
+await prova(
+  "contanti → nessun ordine, e la mail parte subito",
+  { ...BASE, pagamento: "contanti" },
+  (r, i) =>
+    r.codice === 200 &&
+    r.corpo.contanti === true &&
+    r.corpo.spedita === true &&
+    r.corpo.totaleCent === 1000 &&
+    !r.corpo.url &&
+    i.ordine === null &&
+    i.fattura.detail.memo.startsWith("contanti|")
+);
+
+/* La mail di chi paga al ritrovo deve dire, senza girarci intorno, che quei
+   soldi NON sono stati pagati. È il punto di tutta questa modalità: chi la
+   riceve deve arrivare con i contanti in mano. */
+await prova(
+  "la mail dei contanti dice che non è pagato, e quanto portare",
+  { ...BASE, pagamento: "contanti", minori: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }] },
+  (r, i) => {
+    const testo = (i.mail?.html || "") + "\n" + (i.mail?.text || "");
+    return (
+      r.codice === 200 &&
+      /non è ancora pagata/i.test(testo) &&
+      /15,00/.test(testo) &&
+      /contanti/i.test(testo) &&
+      !testo.includes("{{") &&
+      !testo.includes("<!--se:") &&
+      !/pagamento è andato a buon fine/.test(testo)
+    );
+  }
+);
+
+await prova(
+  "l'oggetto della mail dei contanti non dice «confermata»",
+  { ...BASE, pagamento: "contanti" },
+  (r, i) => r.codice === 200 && /da pagare/i.test(i.mail.subject) && !/^Iscrizione confermata/.test(i.mail.subject)
+);
+
+await prova("modo di pagare non dichiarato → no", { ...BASE, pagamento: "" }, (r) =>
+  r.codice === 400 && /come pagare/.test(r.corpo.errore)
+);
+
+await prova("modo di pagare inventato → no", { ...BASE, pagamento: "assegno" }, (r) =>
+  r.codice === 400 && /come pagare/.test(r.corpo.errore)
+);
+
+console.log("\n── Il tetto delle iscrizioni non pagate ───────────────────────");
+
+const nonPagata = { id: "INV2-X", status: "UNPAID", detail: { reference: "color-walk-2026-09-20" } };
+
+await prova(
+  "due non pagate allo stesso indirizzo → la terza passa",
+  { ...BASE, pagamento: "contanti" },
+  (r) => r.codice === 200,
+  { gia: [nonPagata, { ...nonPagata, id: "INV2-Y" }] }
+);
+
+await prova(
+  "tre non pagate allo stesso indirizzo → la quarta no",
+  { ...BASE, pagamento: "contanti" },
+  (r) => r.codice === 429 && /non ancora pagate/.test(r.corpo.errore),
+  { gia: [nonPagata, { ...nonPagata, id: "INV2-Y" }, { ...nonPagata, id: "INV2-Z" }] }
+);
+
+await prova(
+  "tre già pagate non contano: quelle sono iscrizioni vere",
+  { ...BASE, pagamento: "contanti" },
+  (r) => r.codice === 200,
+  {
+    gia: [
+      { ...nonPagata, status: "MARKED_AS_PAID" },
+      { ...nonPagata, id: "INV2-Y", status: "MARKED_AS_PAID" },
+      { ...nonPagata, id: "INV2-Z", status: "PAID" },
+    ],
+  }
 );
 
 console.log("\n── Chi la funzione non fa passare ─────────────────────────────");
+
+await prova("il campo trappola pieno → non si registra niente", { ...BASE, sito: "https://spam.example" }, (r, i) =>
+  r.codice === 400 && i.fattura === null
+);
 
 await prova("minorenne che prova a iscriversi da sé", { ...BASE, dataNascita: "2010-01-01" }, (r) =>
   r.codice === 400 && /maggiorenn/.test(r.corpo.errore)
@@ -129,6 +274,15 @@ await prova("senza la dichiarazione di responsabilità", { ...BASE, consenso: fa
 );
 
 await prova("senza email valida", { ...BASE, email: "non-una-email" }, (r) => r.codice === 400);
+
+/* La barra verticale separa i campi dentro una voce: un cognome che ne
+   contenesse una spezzerebbe in due la riga di quella persona quando la si
+   rilegge, e nessuno se ne accorgerebbe fino al ritiro delle sacche. */
+await prova(
+  "una barra verticale dentro un nome non spezza la voce",
+  { ...BASE, nome: "Maria|Luisa" },
+  (r, i) => r.codice === 200 && voci(i)[0].split("|").length === 5
+);
 
 console.log("\n── I casi limite dell'età, contati al 20 settembre ────────────");
 

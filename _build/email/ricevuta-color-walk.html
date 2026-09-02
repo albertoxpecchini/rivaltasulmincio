@@ -12,8 +12,8 @@
      MAIL DI CONFERMA/RICEVUTA — Color Walk, 20 settembre.
 
      Questo file è il SORGENTE della mail, non la mail. `node build.mjs` lo
-     compila — insieme a fallita-color-walk.html e a evento.json — dentro
-     api/conferma-color-walk.mjs, che è la funzione che la spedisce davvero.
+     compila — insieme agli altri modelli e a evento.json — dentro
+     api/_posta.mjs, che è il modulo da cui parte davvero.
      Si modifica qui e si rifà il build; modificarla là dentro non serve, il
      build successivo la riscrive.
 
@@ -52,9 +52,18 @@
      {{NOME}} {{DATA}} {{IMPORTO}} {{PARTECIPANTI}} e le quattro voci del
      riepilogo ({{VOCE_ADULTI}} {{IMPORTO_ADULTI}} {{VOCE_RAGAZZI}}
      {{IMPORTO_RAGAZZI}}) — li riempie la funzione al momento di spedire,
-     con quello che la persona ha scritto nel modulo e con quello che Stripe
+     con quello che la persona ha scritto nel modulo e con quello che PayPal
      conferma del pagamento. Non si toccano. Un'iscrizione può valere più
      persone: un maggiorenne più i minori che porta con sé.
+
+     ── Una mail sola per due esiti ──────────────────────────────────────
+     Questa mail la riceve sia chi ha pagato online sia chi ha scelto di
+     pagare in contanti al ritrovo, e i pezzi che cambiano stanno dentro i
+     due marcatori condizionali "pagato" e "daPagare" (la stessa meccanica
+     della riga dei ragazzi, sciolta al momento di spedire). Sono due mail
+     nello stesso file di proposito: il giorno che si corregge un orario o
+     una frase, si corregge per tutti e due — due file separati si sarebbero
+     disallineati alla seconda modifica.
 
      {{RITROVO_ORA}} e compagni — li riempie il build leggendo
      _build/email/evento.json. Sono le cose che sanno le organizzatrici e non
@@ -112,7 +121,12 @@
 <!-- Anteprima nella lista dei messaggi: si legge prima di aprire, e non si
      vede una volta aperta. Senza, il client pesca la prima riga a caso. -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
+<!--se:pagato-->
   La tua iscrizione alla Color Walk del 20 settembre è registrata e il pagamento è andato a buon fine.
+<!--/se-->
+<!--se:daPagare-->
+  La tua iscrizione alla Color Walk del 20 settembre è registrata: la quota si paga al ritrovo, in contanti.
+<!--/se-->
 </div>
 
 <table role="presentation" class="e-ground" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f0;">
@@ -131,7 +145,12 @@
         <tr>
         <td class="e-pad" style="padding:40px 40px 0;">
           <div class="e-brand" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#0a6285;">
+<!--se:pagato-->
             Iscrizione confermata
+<!--/se-->
+<!--se:daPagare-->
+            Iscrizione registrata — quota da pagare
+<!--/se-->
           </div>
           <h1 class="e-fg" style="margin:12px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:28px; line-height:1.25; font-weight:600; color:#171717;">
             Color&nbsp;Walk — 20 settembre
@@ -142,7 +161,12 @@
         <tr>
         <td class="e-pad" style="padding:20px 40px 0;">
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:16px; line-height:1.6; color:#525252;">
+<!--se:pagato-->
             Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e il pagamento è andato a buon fine. Questa mail è la tua conferma: tienila, non serve stamparla.
+<!--/se-->
+<!--se:daPagare-->
+            Ciao <strong class="e-fg" style="color:#171717; font-weight:600;">{{NOME}}</strong>, la tua iscrizione è registrata e il tuo posto è tenuto. <strong class="e-fg" style="color:#171717; font-weight:600;">La quota non è ancora pagata</strong>: hai scelto di pagarla in contanti al ritrovo, prima della partenza. Questa mail è la tua iscrizione: tienila, non serve stamparla.
+<!--/se-->
           </p>
         </td>
         </tr>
@@ -153,9 +177,9 @@
 
              Una riga per fascia — i maggiorenni, e i 6-17 anni se ce ne
              sono — più il totale. Voci e importi li passa la funzione,
-             letti da Stripe voce per voce: non sono ricopiati qui, e non
-             c'è nessuna riga di commissioni perché a chi si iscrive non
-             ne viene chiesta nessuna.
+             letti dalle voci della fattura PayPal una per una: non sono
+             ricopiati qui, e non c'è nessuna riga di commissioni perché a
+             chi si iscrive non ne viene chiesta nessuna.
 
              La riga dei ragazzi sta dentro un marcatore `se:` che scioglie
              la funzione al momento di spedire, non il build: dipende da
@@ -169,7 +193,12 @@
             <td style="padding:20px 22px;">
 
               <div class="e-fg-m" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8f8f8f;">
+<!--se:pagato-->
                 Riepilogo del pagamento
+<!--/se-->
+<!--se:daPagare-->
+                Riepilogo della quota
+<!--/se-->
               </div>
 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
@@ -200,7 +229,12 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                 <td class="e-stack e-fg" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; font-weight:600; line-height:1.5; color:#171717;">
+<!--se:pagato-->
                   Totale
+<!--/se-->
+<!--se:daPagare-->
+                  Da pagare al ritrovo
+<!--/se-->
                 </td>
                 <td class="e-stack e-stack-r e-fg" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:17px; font-weight:700; color:#171717; white-space:nowrap;">
                   {{IMPORTO}}
@@ -217,7 +251,12 @@
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
                   <span class="e-fg-m" style="color:#8f8f8f;">Chi è iscritto:</span> <span class="e-fg-l" style="color:#525252;">{{PARTECIPANTI}}</span><br>
-                  Pagato con carta il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — pagamento gestito da Stripe, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
+<!--se:pagato-->
+                  Pagato con PayPal il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — il pagamento lo gestisce PayPal, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
+<!--/se-->
+<!--se:daPagare-->
+                  Iscrizione registrata il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span>. <strong class="e-fg" style="color:#171717; font-weight:600;">Porta {{IMPORTO}} in contanti</strong> e cercaci al banchetto delle iscrizioni: si paga lì, prima di partire. Se possibile porta la cifra giusta, il resto al banchetto è sempre poco. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
+<!--/se-->
                 </td>
                 </tr>
               </table>

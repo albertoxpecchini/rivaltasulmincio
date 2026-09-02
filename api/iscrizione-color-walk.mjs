@@ -1,19 +1,31 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    /api/iscrizione-color-walk — l'iscrizione alla Color Walk del
-   20 settembre: raccolta dati e incasso delle quote, in un passaggio solo.
+   20 settembre: raccolta dati e, per chi vuole, incasso della quota.
 
    Fa due mestieri, secondo il metodo con cui lo si chiama:
 
      POST  il modulo manda i dati di chi si iscrive — che deve essere
-           maggiorenne — più quelli dei minori che porta con sé, e il
-           consenso spuntato; qui si apre una sessione Stripe Checkout e si
-           risponde con l'indirizzo a cui mandare il browser a pagare.
+           maggiorenne — più quelli dei minori che porta con sé, il consenso
+           spuntato e come intende pagare. Qui nasce la fattura, e da lì in
+           poi le due strade si dividono.
 
-     GET   ?sessione=cs_...  al ritorno dal pagamento la pagina chiede
-           «questa sessione è stata davvero pagata?». Serve perché
-           l'indirizzo di ritorno lo può digitare chiunque: senza questo
-           controllo basterebbe aprire /color-walk?stato=ok per vedersi
-           dire «iscrizione ricevuta» senza aver pagato una lira.
+     GET   ?ordine=…  al ritorno dal pagamento online la pagina chiede
+           «questo ordine è stato davvero pagato?». Serve perché l'indirizzo
+           di ritorno lo può digitare chiunque: senza questo controllo
+           basterebbe aprire /color-walk?stato=ok per vedersi dire
+           «iscrizione ricevuta» senza aver pagato una lira.
+
+   ── I due modi di pagare ──────────────────────────────────────────────────
+   Si può pagare subito, online, oppure in contanti al ritrovo — davanti alla
+   chiesa alle 15:30 del 20 settembre, prima della partenza. In tutti e due i
+   casi l'iscrizione è registrata nello stesso momento e nello stesso posto:
+   una fattura PayPal, che nasce qui. Quello che cambia è se è saldata.
+
+   Chi paga in contanti riceve la sua mail subito, e quella mail dice a
+   chiare lettere che la quota NON è pagata e quanto deve portare. Non è un
+   dettaglio di cortesia: è la differenza fra una persona che si presenta con
+   i soldi in mano e una coda di venti persone che scoprono al banchetto di
+   dover pagare.
 
    ── Un'iscrizione è un gruppo, non una persona ─────────────────────────
    La regola decisa da chi organizza: ognuno è tutore di sé stesso, e il
@@ -23,44 +35,32 @@
    compiuti il giorno della camminata, e un minore non può esistere qui
    dentro senza l'adulto che lo porta.
 
-   L'addebito è la somma delle quote: 10 € il maggiorenne, 5 € ognuno dei
-   6-17 anni. Sotto i 6 anni non ci si iscrive — si partecipa e basta — ed è
-   il motivo per cui una data di nascita troppo recente viene respinta invece
-   che fatta pagare.
+   La quota è la somma: 10 € il maggiorenne, 5 € ognuno dei 6-17 anni. Sotto
+   i 6 anni non ci si iscrive — si partecipa e basta — ed è il motivo per cui
+   una data di nascita troppo recente viene respinta invece che fatta pagare.
 
    Le commissioni del circuito di pagamento non compaiono da nessuna parte:
-   né qui, né sul Checkout, né nella ricevuta. Sono un costo
+   né qui, né sulle pagine di PayPal, né nella ricevuta. Sono un costo
    dell'organizzazione, non una voce a carico di chi si iscrive.
-
-   Chiama direttamente l'API REST di Stripe via fetch, senza il pacchetto
-   npm `stripe`: stesso principio di zero-dipendenze del resto del sito,
-   stesso stile di /api/meteo.mjs. I dati dell'iscritto viaggiano come
-   metadata della sessione: compaiono così nel dashboard Stripe accanto al
-   pagamento — è quello l'elenco degli iscritti, e non serve né un database
-   né un foglio a parte.
-
-   La chiave segreta vive solo in una variabile d'ambiente su Vercel
-   (STRIPE_SECRET_KEY) — non è mai scritta qui né altrove nel repo.
    ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Le due quote, e il tetto di minori che una singola iscrizione può portare.
-   Il tetto non è una regola dell'evento: è la misura oltre la quale i
-   metadata di Stripe si affollano (50 chiavi in tutto) e un modulo compilato
-   col pollice diventa impraticabile. Otto figli a carico sono già una
-   famiglia grande; chi ne ha di più compila il modulo due volte. */
-const QUOTA_ADULTO_CENT = 1000; // 10,00 €
-const QUOTA_MINORE_CENT = 500; //  5,00 € — dai 6 ai 17 anni
-const MAX_MINORI = 8;
-
-const VALUTA = "eur";
-const DESCRIZIONE_ADULTO = "Iscrizione Color Walk — 20 settembre · maggiorenne";
-const DESCRIZIONE_MINORE = "Iscrizione Color Walk — 20 settembre · dai 6 ai 17 anni";
-
-/* Il marchio che va sulle sessioni nuove. conferma-color-walk.mjs e
-   iscritti-color-walk.mjs riconoscono questo e anche il vecchio
-   `color-runner-2026-09-20` (le sessioni di prima del cambio nome): l'importante
-   è che il valore scritto qui sia fra quelli che loro accettano. */
-const EVENTO = "color-walk-2026-09-20";
+import {
+  MAX_MINORI,
+  MODALITA,
+  QUOTA_ADULTO_CENT,
+  QUOTA_MINORE_CENT,
+  componiFattura,
+  creaFattura,
+  creaOrdine,
+  incassaOrdine,
+  leggiOrdine,
+  numeroFattura,
+  personeDa,
+  pulisci,
+  saldata,
+  spedisciFattura,
+  cercaFatture,
+} from "./_paypal.mjs";
+import { ricevuta, spedisci } from "./_posta.mjs";
 
 /* Il giorno della camminata. Le età si contano a questa data e non a oggi:
    chi compie 18 anni il 19 settembre si iscrive da sé, e chi ne compie 18 il
@@ -69,21 +69,16 @@ const GIORNO_EVENTO = "2026-09-20";
 
 /* Le iscrizioni online si chiudono alle 23:59 del 18 settembre — due giorni
    prima della camminata, il tempo di preparare le sacche e i sacchetti di
-   polvere. Non è più una scadenza assicurativa: chi arriva dopo si iscrive
-   sul posto, col modulo cartaceo e in contanti.
+   polvere. Chi arriva dopo si iscrive sul posto, col modulo cartaceo e in
+   contanti.
    `+02:00` è l'ora legale italiana di settembre: senza il fuso, un server a
    Londra taglierebbe un'ora prima. Passata questa data la POST risponde 403 e
-   non apre nessun pagamento; la GET di verifica resta aperta, perché chi ha
-   pagato all'ultimo minuto torna dal pagamento dopo la mezzanotte. */
+   non registra niente; la GET di verifica resta aperta, perché chi ha pagato
+   all'ultimo minuto torna dal pagamento dopo la mezzanotte. */
 const CHIUSURA_ISO = "2026-09-18T23:59:59+02:00";
 const CHIUSURA_MS = Date.parse(CHIUSURA_ISO);
 
 const SITE = "https://www.rivaltasulmincio.it";
-
-/* Meno del limite di 10 secondi dichiarato in vercel.json: se Stripe tarda,
-   vogliamo rispondere noi con un errore leggibile, non farci spegnere a metà
-   frase lasciando il browser davanti a una pagina bianca. */
-const ATTESA_MS = 8000;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -96,13 +91,32 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CF_RE = /^[A-Z0-9]{16}$/;
 const DATA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-const pulisci = (v, max) => String(v ?? "").trim().slice(0, max);
+/* Gli identificativi degli ordini PayPal: diciassette caratteri fra lettere
+   maiuscole e cifre. Serve a non andare a chiedere a PayPal notizie di una
+   stringa che un ordine non è, scritta a mano nella barra del browser. */
+const ORDINE_RE = /^[A-Z0-9]{10,25}$/;
+
+/* ── Quante iscrizioni non pagate può avere lo stesso indirizzo ────────────
+   Finché si pagava solo con la carta, a fare da filtro era il pagamento: chi
+   compilava il modulo per scherzo si fermava davanti alla richiesta dei
+   soldi. Con i contanti quel filtro non c'è più — ci si iscrive senza pagare
+   niente — e il tetto dell'evento è di trecento persone: riempirlo di nomi
+   falsi diventerebbe questione di un pomeriggio.
+
+   Tre iscrizioni non ancora saldate per indirizzo è una misura, non una
+   fortezza: una famiglia che si iscrive in tre riprese ci sta dentro, e chi
+   ne vuole trecento deve trovarsi cento indirizzi email veri. Per una
+   camminata di paese è la proporzione giusta; una serratura vera vorrebbe
+   una conferma via mail prima dell'iscrizione, e allontanerebbe più
+   iscritti veri di quanti finti ne fermerebbe. */
+const MAX_NON_PAGATE = 3;
+const STATI_NON_PAGATE = ["DRAFT", "SENT", "UNPAID", "PAYMENT_PENDING", "PARTIALLY_PAID"];
 
 /* ── Età e codice fiscale ─────────────────────────────────────────────────
-   Il codice fiscale non serve più alla polizza — non c'è polizza. Serve a
-   dare una certezza in più su chi si sta assumendo delle responsabilità:
-   un nome falso è gratis, un codice fiscale falso che torna anche con la
-   data di nascita dichiarata è un'altra cosa.
+   Il codice fiscale non serve alla polizza — non c'è polizza. Serve a dare
+   una certezza in più su chi si sta assumendo delle responsabilità: un nome
+   falso è gratis, un codice fiscale falso che torna anche con la data di
+   nascita dichiarata è un'altra cosa.
 
    Perciò qui il codice non si legge solo nella forma: si controlla che la
    data che porta dentro sia quella dichiarata nel modulo. È il confronto
@@ -203,54 +217,47 @@ function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio }) {
   return { persona: { nome, cognome, dataNascita, codiceFiscale } };
 }
 
-/* Una sola porta verso Stripe, così l'autorizzazione e il timeout stanno
-   scritti in un posto solo. `corpo` assente = richiesta in lettura (GET). */
-async function stripe(chiave, percorso, corpo) {
-  const risposta = await fetch(`https://api.stripe.com/v1/${percorso}`, {
-    method: corpo ? "POST" : "GET",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${chiave}:`).toString("base64")}`,
-      ...(corpo ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
-    },
-    body: corpo ? corpo.toString() : undefined,
-    signal: AbortSignal.timeout(ATTESA_MS),
-  });
-
-  const dati = await risposta.json();
-  if (!risposta.ok) throw new Error(dati?.error?.message || `Stripe ha risposto ${risposta.status}`);
-  return dati;
-}
-
 export default async function handler(req, res) {
-  const chiave = process.env.STRIPE_SECRET_KEY;
-  if (!chiave) {
-    return res.status(500).json({ errore: "pagamento non ancora configurato" });
-  }
-
-  if (req.method === "GET") return verifica(req, res, chiave);
-  if (req.method === "POST") return iscrivi(req, res, chiave);
+  if (req.method === "GET") return verifica(req, res);
+  if (req.method === "POST") return iscrivi(req, res);
 
   res.setHeader("Allow", "GET, POST");
   return res.status(405).json({ errore: "metodo non consentito" });
 }
 
 /* ── Il ritorno dal pagamento ─────────────────────────────────────────────
-   L'identificativo di sessione non è indovinabile, quindi chi ce l'ha è chi
+   Due cose, in quest'ordine. Prima si incassa: PayPal, quando chi paga
+   approva, non prende ancora niente, e i soldi si muovono solo quando
+   glielo si chiede. Poi si guarda com'è andata e lo si dice alla pagina.
+
+   Incassare qui e anche nel webhook non è una svista: è che al ritorno dal
+   pagamento non ci si torna sempre, e la seconda richiesta di incasso PayPal
+   la riconosce e non la esegue due volte.
+
+   L'identificativo dell'ordine non è indovinabile, quindi chi ce l'ha è chi
    ha appena pagato: gli si può dire il suo nome e quante persone ha
-   iscritto. Fuori di lì non esce niente — né l'email né l'importo né gli
-   altri campi. */
-async function verifica(req, res, chiave) {
-  const id = pulisci(req.query?.sessione, 100);
-  if (!/^cs_[A-Za-z0-9_]+$/.test(id)) {
-    return res.status(400).json({ errore: "sessione non valida" });
+   iscritto. Fuori di lì non esce niente — né l'email né il codice fiscale né
+   gli altri campi. */
+async function verifica(req, res) {
+  const id = pulisci(req.query?.ordine, 40).toUpperCase();
+  if (!ORDINE_RE.test(id)) {
+    return res.status(400).json({ errore: "ordine non valido" });
   }
 
   try {
-    const sessione = await stripe(chiave, `checkout/sessions/${encodeURIComponent(id)}`);
+    const incassato = await incassaOrdine(id);
+    /* Se l'incasso era già stato fatto, quello che torna è il rifiuto
+       tollerato e non l'ordine: lo si rilegge, perché è dall'ordine che si
+       capisce se i soldi ci sono. */
+    const ordine = incassato?.giaFatto ? await leggiOrdine(id) : incassato;
+
+    const voci = ordine?.purchase_units?.[0]?.items || [];
+    const { adulto, minori } = personeDa({ items: voci });
+
     return res.status(200).json({
-      pagato: sessione.payment_status === "paid",
-      nome: sessione.metadata?.nome || "",
-      persone: 1 + (Number(sessione.metadata?.n_minori) || 0),
+      pagato: ordine?.status === "COMPLETED",
+      nome: adulto?.nome || "",
+      persone: adulto ? 1 + minori.length : 0,
     });
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
@@ -258,11 +265,11 @@ async function verifica(req, res, chiave) {
 }
 
 /* ── L'iscrizione ─────────────────────────────────────────────────────────
-   Stripe Checkout vuole i parametri in x-www-form-urlencoded, con la
-   notazione a parentesi quadre per gli oggetti annidati (line_items,
-   price_data, metadata): è la stessa forma richiesta a chi lo chiama da
-   curl o da un backend senza SDK. */
-async function iscrivi(req, res, chiave) {
+   La fattura nasce prima di qualunque pagamento, ed è il registro: da lì in
+   poi chi paga online viene mandato a un ordine che di quella fattura porta
+   solo il numero, e chi paga in contanti non viene mandato da nessuna
+   parte. */
+async function iscrivi(req, res) {
   /* Iscrizioni chiuse: si dice qui, prima di guardare i campi, così chi arriva
      tardi legge «chiuse» e non «codice fiscale non valido». Il `chiuse: true`
      lo usa la pagina per nascondere il modulo invece di dire «riprova». */
@@ -272,6 +279,20 @@ async function iscrivi(req, res, chiave) {
         "le iscrizioni online si sono chiuse alle 23:59 del 18 settembre — " +
         "il giorno stesso ci si iscrive sul posto, prima della partenza",
       chiuse: true,
+    });
+  }
+
+  /* Il campo trappola. Non esiste per chi compila — è nascosto, fuori
+     dall'ordine di tabulazione e senza etichetta — quindi se arriva pieno
+     l'ha riempito qualcosa che legge l'HTML e non la pagina. Non si dice
+     «sei un robot»: si dice che non è riuscita, e si dà un indirizzo a cui
+     scrivere, perché la persona vera che dovesse finirci in mezzo per una
+     stranezza del suo browser non deve restare senza una via d'uscita. */
+  if (pulisci(req.body?.sito, 200)) {
+    return res.status(400).json({
+      errore:
+        "non è stato possibile registrare l'iscrizione da questo modulo — " +
+        "scrivi a color-walk@rivaltasulmincio.it e ti iscriviamo noi",
     });
   }
 
@@ -288,12 +309,16 @@ async function iscrivi(req, res, chiave) {
   const adulto = letto.persona;
 
   const email = pulisci(req.body?.email, 200);
-  const telefono = pulisci(req.body?.telefono, 40) || "—";
-  const note = pulisci(req.body?.note, 300) || "—";
+  const telefono = pulisci(req.body?.telefono, 40);
+  const note = pulisci(req.body?.note, 300);
   const consenso = req.body?.consenso === true;
+  const modalita = pulisci(req.body?.pagamento, 20).toLowerCase();
 
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "email mancante o non valida" });
+  }
+  if (!MODALITA.has(modalita)) {
+    return res.status(400).json({ errore: "manca la scelta di come pagare la quota" });
   }
   /* La spunta è obbligatoria anche qui e non solo nel modulo: il `required`
      dell'HTML è una cortesia verso chi compila, non una garanzia per chi
@@ -325,74 +350,105 @@ async function iscrivi(req, res, chiave) {
     minori.push(esito.persona);
   }
 
-  const parametri = new URLSearchParams();
-  parametri.set("mode", "payment");
-  parametri.set("locale", "it");
-  parametri.set("customer_email", email);
-  /* {CHECKOUT_SESSION_ID} lo sostituisce Stripe con l'identificativo vero al
-     momento del rimando: è quello che poi la pagina ci riporta indietro da
-     verificare. Le graffe le codifica URLSearchParams, e Stripe le rilegge
-     tali e quali — è la stessa cosa che succede chiamandolo da curl. */
-  parametri.set("success_url", `${SITE}/color-walk?stato=ok&sessione={CHECKOUT_SESSION_ID}`);
-  parametri.set("cancel_url", `${SITE}/color-walk?stato=annullato`);
-
-  /* Due voci al massimo, una per fascia, con la quantità a fare il conto:
-     su Stripe si legge «1 × maggiorenne 10 €» e «2 × dai 6 ai 17 anni 5 €»,
-     che è esattamente come è stata composta l'iscrizione. La stessa
-     divisione si ritrova nella ricevuta. */
-  parametri.set("line_items[0][quantity]", "1");
-  parametri.set("line_items[0][price_data][currency]", VALUTA);
-  parametri.set("line_items[0][price_data][unit_amount]", String(QUOTA_ADULTO_CENT));
-  parametri.set("line_items[0][price_data][product_data][name]", DESCRIZIONE_ADULTO);
-
-  if (minori.length) {
-    parametri.set("line_items[1][quantity]", String(minori.length));
-    parametri.set("line_items[1][price_data][currency]", VALUTA);
-    parametri.set("line_items[1][price_data][unit_amount]", String(QUOTA_MINORE_CENT));
-    parametri.set("line_items[1][price_data][product_data][name]", DESCRIZIONE_MINORE);
-  }
-
-  const quante = minori.length ? ` + ${minori.length} minori` : "";
-  parametri.set(
-    "payment_intent_data[description]",
-    `Color Walk 20 settembre — ${adulto.nome} ${adulto.cognome}${quante}`
-  );
-
-  /* Il marchio dell'evento. Oggi la Color Walk è l'unica cosa che si paga
-     su questo sito, ma /api/conferma-color-walk risponde a ogni avviso di
-     pagamento che Stripe manda: è questo a dirgli quali sono i suoi. */
-  parametri.set("metadata[evento]", EVENTO);
-  parametri.set("metadata[nome]", adulto.nome);
-  parametri.set("metadata[cognome]", adulto.cognome);
-  parametri.set("metadata[data_nascita]", adulto.dataNascita);
-  /* Il codice fiscale è la certezza in più su chi si assume la
-     responsabilità, ed è l'unico motivo per cui il modulo lo chiede. Viaggia
-     dove vanno tutti gli altri campi — nei metadata della sessione — e
-     finisce nella stessa riga del dashboard Stripe: non c'è un secondo posto
-     in cui dati di persone vere vadano a finire. */
-  parametri.set("metadata[codice_fiscale]", adulto.codiceFiscale);
-  parametri.set("metadata[telefono]", telefono);
-  parametri.set("metadata[note]", note);
-
-  /* I minori, una chiave per uno. Quattro campi separati da una barra
-     verticale: è la forma più corta che resta leggibile a occhio nel
-     dashboard di Stripe, dove qualcuno la guarderà davvero. */
-  parametri.set("metadata[n_minori]", String(minori.length));
-  minori.forEach((m, i) => {
-    parametri.set(
-      `metadata[minore_${i + 1}]`,
-      `${m.nome}|${m.cognome}|${m.dataNascita}|${m.codiceFiscale || "—"}`
-    );
-  });
-
-  /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
-     che serve se un domani qualcuno chiede conto di quei dati. */
-  parametri.set("metadata[consenso]", new Date().toISOString());
+  const totaleCent = QUOTA_ADULTO_CENT + minori.length * QUOTA_MINORE_CENT;
 
   try {
-    const sessione = await stripe(chiave, "checkout/sessions", parametri);
-    return res.status(200).json({ url: sessione.url });
+    /* Quante ne ha già aperte e non pagate questo indirizzo. Se la domanda
+       non si riesce a farla non si blocca nessuno: il tetto è una misura
+       contro l'abuso, non una condizione per iscriversi, e un guasto nella
+       ricerca non deve diventare una porta chiusa in faccia a chi si sta
+       iscrivendo davvero. */
+    let aperte = 0;
+    try {
+      const gia = await cercaFatture({ recipient_email: email, status: STATI_NON_PAGATE });
+      aperte = gia.filter((f) => !saldata(f)).length;
+    } catch (errore) {
+      console.error("controllo delle iscrizioni già aperte non riuscito:", errore.message);
+    }
+
+    if (aperte >= MAX_NON_PAGATE) {
+      return res.status(429).json({
+        errore:
+          `a questo indirizzo risultano già ${aperte} iscrizioni non ancora pagate. ` +
+          "Se è un errore, o se ti serve iscrivere altre persone, scrivi a color-walk@rivaltasulmincio.it",
+      });
+    }
+
+    /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
+       che serve se un domani qualcuno chiede conto di quei dati. */
+    const numero = numeroFattura();
+    const corpo = componiFattura({
+      numero,
+      adulto,
+      minori,
+      email,
+      modalita,
+      telefono,
+      note,
+      consenso: new Date().toISOString(),
+    });
+    const creata = await creaFattura(corpo);
+
+    const idFattura = creata?.id || String(creata?.href || "").split("/").pop();
+    if (!idFattura) throw new Error("PayPal ha creato la fattura ma non ha detto quale");
+
+    /* Fuori dalla bozza, senza che PayPal scriva a nessuno: una bozza non
+       accetta pagamenti, e senza questo passaggio né l'incasso online né il
+       contante potrebbero mai essere segnati. */
+    await spedisciFattura(idFattura);
+
+    if (modalita === "contanti") return contanti(res, { fattura: corpo, idFattura, numero, email, totaleCent });
+
+    const quante = minori.length ? ` + ${minori.length} minori` : "";
+    const ordine = await creaOrdine({
+      numero,
+      adulto,
+      minori,
+      descrizione: `Color Walk 20 settembre — ${adulto.nome} ${adulto.cognome}${quante}`,
+      /* L'identificativo dell'ordine non si mette qui: ce lo aggiunge PayPal
+         al momento di rimandare indietro il browser, come `?token=…`. È
+         quello che la pagina ci ripassa da verificare. */
+      ritorno: `${SITE}/color-walk?stato=ok`,
+      annulla: `${SITE}/color-walk?stato=annullato`,
+    });
+
+    return res.status(200).json({ url: ordine.url });
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
   }
+}
+
+/* ── Chi paga al ritrovo ──────────────────────────────────────────────────
+   Nessun pagamento da aprire: l'iscrizione è già registrata, e quello che
+   resta da fare è dirglielo. La mail parte da qui e non dal webhook, perché
+   nessun webhook scatterà mai: non ci sarà nessun avviso di pagamento
+   finché quei soldi non passano di mano davanti alla chiesa.
+
+   Se la mail non parte, l'iscrizione resta valida lo stesso — è già scritta
+   sulla fattura, che è il registro. Si risponde comunque «fatto», con
+   l'avviso che la conferma non è arrivata: dire «non è riuscita» a chi è
+   invece iscritto lo farebbe iscrivere una seconda volta. */
+async function contanti(res, { fattura, idFattura, numero, email, totaleCent }) {
+  /* La fattura passata qui è lo stesso oggetto mandato a PayPal un attimo
+     fa: le stesse voci, gli stessi importi. La mail si compone da quello e
+     non dai campi del modulo, così quello che la persona legge è quello che
+     è stato scritto nel registro — non una seconda copia che potrebbe
+     raccontare qualcos'altro. */
+  const mail = ricevuta({ fattura, pagato: false });
+
+  let spedita = true;
+  try {
+    await spedisci({ a: email, oggetto: mail.oggetto, html: mail.html, testo: mail.testo });
+  } catch (errore) {
+    spedita = false;
+    console.error(`iscrizione ${numero} (${idFattura}) registrata ma mail non spedita:`, errore.message);
+  }
+
+  return res.status(200).json({
+    contanti: true,
+    spedita,
+    nome: mail.nome,
+    persone: mail.persone,
+    totaleCent,
+  });
 }
