@@ -196,7 +196,26 @@ export async function paypal(percorso, { metodo = "GET", corpo, tollera = [], in
   const problemi = [dati?.name, ...(dati?.details || []).map((d) => d.issue)].filter(Boolean);
   if (tollera.some((t) => problemi.includes(t))) return { giaFatto: true, ...dati };
 
-  throw new Error(messaggio(dati, risposta.status));
+  /* Il rifiuto che non si legge da sé, e che ferma tutto: le credenziali sono
+     giuste, il gettone arriva, e la chiamata alle fatture torna comunque
+     «permessi insufficienti». Non è un errore di codice — è che l'app PayPal
+     non ha la funzione Invoicing, e senza quella qui non si registra nessuno,
+     perché il registro degli iscritti SONO le fatture.
+
+     Detto così si aggiusta leggendo il log; detto com'era, si apriva
+     un'indagine. La coda sul gettone in cache non è un dettaglio: è la prima
+     cosa che inganna dopo aver spuntato la casella, perché per nove ore
+     un'istanza già calda continua a usare quello vecchio, che il permesso
+     nuovo non ce l'ha. */
+  const nota =
+    problemi.includes("NOT_AUTHORIZED") && percorso.includes("/v2/invoicing/")
+      ? " — l'app PayPal non ha il permesso «Invoicing». PayPal Developer → Apps & Credentials," +
+        " scheda Live, l'app, Features → Invoicing (richiede un conto Business verificato, e in" +
+        " live può passare da una revisione). Se la spunta c'è già, rideployare: il gettone resta" +
+        " in cache per nove ore e non si porta dietro i permessi concessi dopo."
+      : "";
+
+  throw new Error(messaggio(dati, risposta.status) + nota);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
