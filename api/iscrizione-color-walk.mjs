@@ -46,6 +46,7 @@
 import {
   MAX_MINORI,
   MODALITA,
+  annullata,
   QUOTA_ADULTO_CENT,
   QUOTA_MINORE_CENT,
   componiFattura,
@@ -361,7 +362,12 @@ async function iscrivi(req, res) {
     let aperte = 0;
     try {
       const gia = await cercaFatture({ recipient_email: email, status: STATI_NON_PAGATE });
-      aperte = gia.filter((f) => !saldata(f)).length;
+      /* Annullate escluse due volte: nella domanda a PayPal, con l'elenco
+         degli stati, e di nuovo qui. La prima è un filtro che decide lui, la
+         seconda è l'unica di cui rispondiamo noi — e sbagliarla vuol dire
+         tenere fuori qualcuno che ha appena fatto pulizia e non capisce
+         perché il modulo continui a dirgli di no. */
+      aperte = gia.filter((f) => !saldata(f) && !annullata(f)).length;
     } catch (errore) {
       console.error("controllo delle iscrizioni già aperte non riuscito:", errore.message);
     }

@@ -233,6 +233,23 @@ await prova(
   }
 );
 
+/* Chi ha appena fatto pulizia deve poter rientrare. Le annullate le tiene
+   fuori già il filtro mandato a PayPal, ma quello lo applica lui: se un
+   giorno lo ignorasse, questo tetto si trasformerebbe in una porta sbarrata
+   proprio a chi ha sistemato le cose, e senza spiegazione. */
+await prova(
+  "tre annullate non contano: chi ha fatto pulizia rientra",
+  { ...BASE, pagamento: "contanti" },
+  (r) => r.codice === 200,
+  {
+    gia: [
+      { ...nonPagata, status: "CANCELLED" },
+      { ...nonPagata, id: "INV2-Y", status: "CANCELLED" },
+      { ...nonPagata, id: "INV2-Z", status: "CANCELLED" },
+    ],
+  }
+);
+
 console.log("\n── Chi la funzione non fa passare ─────────────────────────────");
 
 await prova("il campo trappola pieno → non si registra niente", { ...BASE, sito: "https://spam.example" }, (r, i) =>
