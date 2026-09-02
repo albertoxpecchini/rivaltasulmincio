@@ -146,8 +146,31 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    stesso smusso. Da schermo largo gli sta accanto la locandina, a destra e
    più grande che si può; da telefono la locandina sparisce e resta la sola
    colonna del modulo, larga 46rem come i testi delle altre pagine. */
+/* ═══ Tutta la pagina in mezzo ════════════════════════════════════════════════
+   Le altre pagine del sito sono di consultazione: testate a sinistra, così
+   l'occhio torna sempre allo stesso margine mentre si scorre una tabella dopo
+   l'altra. Questa non si consulta, si legge una volta e ci si iscrive — ed è
+   fatta di blocchi corti larghi meno della colonna, che appoggiati a sinistra
+   lasciavano mezza pagina vuota a destra.
+
+   Quindi tutto in mezzo: testate (è il predefinito di .sb-sechead, basta non
+   chiedere la variante --start), paragrafi, note e didascalie, che hanno tutti
+   una loro larghezza massima e non riempiono la colonna.
+
+   Due cose restano allineate a sinistra, di proposito: il testo DENTRO i
+   blocchi — un elenco di diciassette vie centrato non si segue, e un modulo
+   coi campi in mezzo non si compila — e il modulo stesso. Si centra il
+   contenitore, non le righe. */
+.sb-cr .sb-riv-p,
+.sb-cr .sb-riv-ul,
+.sb-cr .sb-riv-note,
+.sb-cr .sb-riv-cap { margin-left: auto; margin-right: auto; }
+/* La didascalia è una riga sola e corta: quella il centro se lo merita anche
+   nel testo, non solo nel blocco. */
+.sb-cr .sb-riv-cap { text-align: center; }
+
 .sb-cw-iscr { margin-top: 1.4rem; }
-.sb-cw-lastra { max-width: 46rem; }
+.sb-cw-lastra { max-width: 46rem; margin-left: auto; margin-right: auto; }
 .sb-cw-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
 
 /* La locandina di fianco: nascosta sotto i 60rem, dove una A4 su colonna
@@ -161,7 +184,12 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 @media (min-width: 60rem) {
   .sb-cw-iscr {
     display: grid;
-    grid-template-columns: minmax(0, 46rem) 1fr;
+    /* Due colonne di misura decisa e non una che si prende quello che resta:
+       la coppia modulo + locandina diventa un blocco centrato come tutto il
+       resto della pagina, invece di allargarsi fino ai bordi della colonna e
+       far sembrare storta ogni testata che le sta sopra. */
+    grid-template-columns: minmax(0, 46rem) minmax(0, 24rem);
+    justify-content: center;
     gap: clamp(1.6rem, 4vw, 3rem);
     align-items: start;
   }
@@ -650,7 +678,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   </div>
 
   <section class="sb-container sb-riv-sec" id="iscrizione">
-    <div class="sb-sechead sb-sechead--start">
+    <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
       <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. A fine camminata c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
       <p>Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>, ma ci si può iscrivere anche <strong>il giorno stesso</strong>, in piazza prima della partenza, con il <a href="/color-walk-modulo">modulo cartaceo</a> e in contanti. Il materiale basta per <strong>300 partecipanti</strong>. Se piove, la camminata è rinviata a <strong>sabato 26 settembre</strong>.</p>
@@ -844,7 +872,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
        qualcuno ad aspettare in un posto sbagliato, e la pagina dice quello
        che si sa — che è sempre meglio di un numero inventato. -->
   <section class="sb-container sb-riv-sec" id="percorso">
-    <div class="sb-sechead sb-sechead--start">
+    <div class="sb-sechead">
       <h2>Il percorso</h2>
       <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Si va a passo libero: non c'è cronometro e non c'è classifica.</p>
     </div>
@@ -885,7 +913,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
        paese è quelle sei. In fila e senza descrizioni — qui non è questo il
        discorso: per esteso stanno in /eventi. -->
   <section class="sb-container sb-riv-sec" id="contrade">
-    <div class="sb-sechead sb-sechead--start">
+    <div class="sb-sechead">
       <h2>Le sei contrade</h2>
       <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. Sono quelle del Palio.</p>
     </div>
@@ -896,7 +924,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   </section>
 
   <section class="sb-container sb-riv-sec" id="dietro">
-    <div class="sb-sechead sb-sechead--start">
+    <div class="sb-sechead">
       <h2>Chi c'è dietro</h2>
       <p>Chi organizza, chi dà il patrocinio e chi mette il cibo sono tre cose diverse: qui stanno separate, ognuna con quello che fa scritto accanto.</p>
     </div>
