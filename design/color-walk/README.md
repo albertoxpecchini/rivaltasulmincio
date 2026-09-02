@@ -14,16 +14,17 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
-> **La locandina pubblicata è la v2 del 2 settembre 2026, e NON viene da qui.** È stata
+> **Banner e locandina pubblicati sono la v2 del 2 settembre 2026, e NON vengono da qui.** È stata
 > disegnata a parte e consegnata già fatta (`a4 banner bambini.pdf` + il PNG a 2480 × 3508,
-> stesso artwork nei due formati): foto dei bambini in cima, QR verso `/color-walk`, quote
+> stesso artwork nei due formati; il banner come PNG 4800 × 1800): foto dei bambini, QR verso
+> `/color-walk` sulla locandina, quote
 > **10 € e 5 €**, aperitivo incluso, iscrizioni anche il giorno stesso, gadget sacca, maglia
 > bianca, rinvio al 26 settembre, i sei stemmi delle contrade, la formula del Comune per
 > esteso e gli otto marchi degli sponsor. In `assets/` ci sono il PDF tale e quale (15 MB,
 > pronto per la stampa) e il webp 1240 × 1754 per l'anteprima in pagina.
 >
-> Le tavole di Claude Design qui sotto sono **un'altra locandina**: quella astratta di
-> agosto, tenuta come storia. Il loro testo è stato aggiornato alle stesse decisioni, ma
+> Le tavole di Claude Design qui sotto sono **un'altra locandina e un altro banner**: quelli
+> astratti di agosto, tenuti come storia. Il loro testo è stato aggiornato alle stesse decisioni, ma
 > `npm run render:locandina` **sovrascriverebbe la v2 con quella** — non lanciarlo, a meno
 > di non volere davvero tornare indietro.
 
@@ -156,8 +157,15 @@ Se si tocca `locandina.dc.html`, riportare la stessa modifica in `locandina.rend
 toccano). Per rifare i font da capo: scaricare il CSS di Google Fonts e sostituire ogni
 `url(https://…woff2)` col woff2 in `data:font/woff2;base64,…`.
 
-Il **banner** non ha una scorciatoia: non porta testo che cambia spesso, si rifà sulla
-tela quando serve.
+Il **banner** non ha una scorciatoia da riga di comando, e dalla v2 non porta più «testo che
+non cambia»: ci sono dentro le quote, l'aperitivo incluso, il rinvio al 26 settembre e la
+fila dei loghi. Se una di quelle cose cambia, cambia anche lui — e va rifatto dove è stato
+disegnato, non qui.
+
+> I due tasti di `{{CW_HOME}}` **stanno sotto** la striscia e non più sopra. Ci
+> galleggiavano in basso al centro finché quel banner sotto era vuoto; dalla v2 lì corrono
+> le contrade, gli stemmi del Comune e della Polizia Locale e i marchi degli sponsor. Chi
+> rifà il banner tenga presente che la fascia bassa **si vede tutta**.
 
 ## Perché sta qui e non va online
 

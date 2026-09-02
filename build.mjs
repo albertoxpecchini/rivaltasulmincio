@@ -697,7 +697,7 @@ const renderBanner = () => {
     .find((p) => existsSync(p));
   if (!bannerTrovato) return "";
   return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
-      alt="Color Walk — domenica 20 settembre 2026: camminata a colori, non competitiva, per le vie di Rivalta sul Mincio. Ritrovo in Piazza Chiesa alle 15:45, partenza alle 16:00.">`;
+      alt="Color Walk — camminata a colori per tutti, domenica 20 settembre 2026 a Rivalta sul Mincio: ritrovo alle 15:45 in Piazza della Chiesa, partenza alle 16:00. Senza cronometro e senza classifica, lungo le vie del paese. Quote 10 € adulti e 5 € dai 6 ai 17 anni, aperitivo incluso nel prezzo, gadget sacca, iscrizioni anche il giorno stesso. Si consiglia una maglia bianca. In caso di pioggia si rinvia a sabato 26 settembre 2026.">`;
 };
 
 /* ── Il blocco «Color Walk come in home» ────────────────────────────────

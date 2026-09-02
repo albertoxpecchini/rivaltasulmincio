@@ -837,25 +837,16 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
 }
 .sb-riv-cwhome-azioni .sb-btn { width: 100%; }
 
+/* I tasti stanno SOTTO la striscia, non sopra. Prima ci galleggiavano in
+   basso al centro, su un vetro smerigliato: si poteva, perché quel banner
+   sotto era vuoto. Dalla versione del 2 settembre 2026 la striscia porta in
+   fondo la fila delle contrade, gli stemmi del Comune e della Polizia Locale
+   e i marchi degli sponsor — e i tasti gliela coprivano proprio. Un tasto si
+   sposta, un patrocinio dichiarato a metà no. */
 @media (min-width: 48rem) {
-  .sb-riv-cwhome .sb-panel-inner { display: grid; }
-  .sb-riv-cwhome .sb-riv-cwbanner { grid-area: 1 / 1; }
-  /* I tasti sovrapposti alla striscia stanno in basso al centro: la parte
-     alta e i lati dell'immagine — dove corrono i bambini — restano liberi. */
   .sb-riv-cwhome-azioni {
-    grid-area: 1 / 1;
     flex-direction: row;
-    align-self: end;
-    justify-self: center;
-    width: auto;
-    max-width: min(92%, 34rem);
-    margin: 0 0 clamp(0.9rem, 2.6vw, 1.6rem);
-    padding: clamp(0.6rem, 1.6vw, 0.9rem);
-    background: color-mix(in srgb, var(--sb-bg) 78%, transparent);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
-    backdrop-filter: blur(10px) saturate(140%);
-    box-shadow: inset 0 1px 0 var(--sb-glass-spec);
-    clip-path: var(--sb-shape-sm);
+    justify-content: center;
   }
   .sb-riv-cwhome-azioni .sb-btn { width: auto; }
 }
