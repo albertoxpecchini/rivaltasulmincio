@@ -14,18 +14,12 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
-> **⚠ Il BANNER è indietro di due dati (2 settembre 2026, pomeriggio).** Il ritrovo è
-> passato dalle 15:45 alle **15:30** — mezz'ora piena per controllare le iscrizioni prima di
-> far partire trecento persone — e il rinvio per pioggia da sabato 26 a **domenica 27
-> settembre**. Nel codice sono ovunque, e la **locandina è già stata rifatta** (quella in
-> `assets/` è la definitiva, con le date giuste). Il banner no: dice ancora 15:45 e sabato
-> 26, e su /color-walk quella striscia è l'intestazione della pagina — chi la guarda invece
-> di leggerla si porta via un orario sbagliato. È la cosa da rifare per prima.
-
-> **Banner e locandina pubblicati sono la v2 del 2 settembre 2026, e NON vengono da qui.** È stata
+> **Banner e locandina pubblicati sono le versioni definitive del 2 settembre 2026, e NON
+> vengono da qui.** È stata
 > disegnata a parte e consegnata già fatta (`a4 banner bambini.pdf` + il PNG a 2480 × 3508,
 > stesso artwork nei due formati; il banner come PNG 4800 × 1800): foto dei bambini, QR verso
-> `/color-walk` sulla locandina, quote
+> `/color-walk` sulla locandina, ritrovo **15:30** e partenza 16:00, rinvio per pioggia a
+> **domenica 27 settembre**, quote
 > **10 € e 5 €**, aperitivo incluso, iscrizioni anche il giorno stesso, gadget sacca, maglia
 > bianca, rinvio al 26 settembre, i sei stemmi delle contrade, la formula del Comune per
 > esteso e gli otto marchi degli sponsor. In `assets/` ci sono il PDF tale e quale (15 MB,
