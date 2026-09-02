@@ -68,7 +68,11 @@ bevande e una mano, e in fondo chi ha fatto il sito. Sotto la striscia la riga l
 parole: «Organizza l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo · **Con il
 patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest**».
 
+Patrocinio e collaborazione sono **autorizzati** (2 settembre 2026), e quella frase è la
+formula che il Comune ha chiesto: va copiata **parola per parola**, non riscritta a orecchio
+ogni volta che si fa un materiale nuovo.
+
 > Sono marchi di qualcun altro. Vanno presi dalla fonte ufficiale, non ridisegnati a occhio,
-> e stanno in pagina se chi li porta è d'accordo che ci stiano. Per il Comune e per la
-> Polizia Locale «d'accordo» vuol dire un patrocinio chiesto e concesso, non un file
-> ricevuto su WhatsApp: finché non è formale, la dicitura è una promessa scoperta.
+> e stanno in pagina finché l'accordo regge. Se un giorno cambia, cambiano insieme il logo e
+> la riga sotto: una striscia che dichiara un patrocinio che non c'è più è peggio di una
+> striscia vuota.

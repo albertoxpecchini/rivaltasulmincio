@@ -18,7 +18,10 @@ runtime.
 > tutte e quattro le tavole qui dentro — `locandina.dc.html`, `locandina.render.html` e le
 > due in `foto/` — è stato aggiornato alle decisioni della riunione: **quote 10 € e 5 €**,
 > niente riga di commissioni, **maglia bianca**, sacca e aperitivo compresi, **rinvio al 26
-> settembre** se piove, e ANSPI al posto dei tre nomi di persona. Ma `assets/color-walk-locandina.pdf`
+> settembre** se piove, ANSPI al posto dei tre nomi di persona, e la formula che il Comune
+> ha chiesto — **«Con il patrocinio del Comune di Rodigo e la collaborazione della Polizia
+> Locale Mantova Ovest»**, da copiare parola per parola. Mancano anche gli otto loghi nuovi.
+> Ma `assets/color-walk-locandina.pdf`
 > e `assets/foto/color-walk-locandina.webp` **non sono stati riesportati**, perché
 > `npm run render:locandina` renderebbe dalla tavola astratta e butterebbe via logo ANSPI,
 > QR code, stemmi delle contrade e stemma del Comune che stanno solo nella versione
