@@ -34,6 +34,89 @@
      non una voce a carico di chi si iscrive. Sul sito è 10 € o 5 €, e basta.
      ════════════════════════════════════════════════════════════════════════ -->
 
+<style>
+/* ═══ Al centro come /color-walk ══════════════════════════════════════════════
+   Il regolamento si legge una volta, per intero, prima di iscriversi: non è una
+   pagina da consultare a colpo d'occhio come /servizi o /dati, dove le testate
+   a sinistra servono a ritrovare il margine fra una tabella e l'altra. Qui i
+   blocchi sono corti e appoggiati a sinistra lasciavano mezza colonna vuota.
+
+   Si centra il contenitore, non le righe: un elenco di regole centrato non si
+   segue, e questi sono punti che qualcuno leggerà per sapere cosa firma. */
+.sb-riv-p,
+.sb-riv-ul,
+.sb-riv-note,
+.sb-riv-pager { margin-left: auto; margin-right: auto; }
+.sb-riv-pager { max-width: 46rem; }
+
+/* ═══ Stampato: una A4 sola ═══════════════════════════════════════════════════
+   Il regolamento va anche su carta, insieme al modulo cartaceo: chi firma al
+   banco deve poter avere davanti quello che accetta, e due fogli spillati si
+   perdono. Quindi tutto in una pagina, e per starci ci vogliono due cose.
+
+   Le due colonne. Un testo di regole a righe lunghe quanto una A4 si legge
+   male comunque, e in colonna stretta ci sta il doppio: non è solo una
+   compressione, è la forma giusta per questo testo.
+
+   Il corpo piccolo. Tutto il foglio è in rem, quindi basta abbassare la
+   radice per stringere ogni cosa insieme — margini, righe, caratteri —
+   mantenendo le proporzioni. È piccolo, ma è un regolamento: si legge da
+   fermi, non di corsa.
+
+   7.4px non è un numero tondo, è quello che ci fa stare: a 8 il testo sfora
+   sulla seconda pagina, a 6.6 riempie appena tre quarti del foglio. Con
+   questo il regolamento occupa il 93% dell'altezza utile — il resto è il
+   margine che serve, perché il motore di stampa di ogni browser conta i
+   pixel a modo suo e uno 0.99 diventa due fogli sulla stampante di qualcun
+   altro. Chi allunga il testo lo rimisuri.
+
+   E il bianco imposto su html, body e .sb-home: il tema del sito lo decide
+   chi guarda, e chi stampa da un browser in tema scuro si ritroverebbe un
+   foglio nero con sopra del testo nero. */
+@media print {
+  @page { size: A4; margin: 9mm; }
+
+  html { font-size: 7.4px; }
+  html, body, .sb-home, .sb-main {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .sb-home::before, .sb-home::after { display: none !important; }
+
+  /* Via tutto quello che serve a un sito e non a un foglio. Il blocco col
+     banner e i due tasti sparisce per primo: è un'immagine grande e due
+     collegamenti, e su carta non porta niente. */
+  .sb-nav, .sb-foot, .sb-ctl,
+  .sb-riv-cwhome, .sb-riv-toc, .sb-riv-pager { display: none !important; }
+  .sb-main { padding: 0 !important; }
+  .sb-container { max-width: none !important; padding: 0 !important; }
+
+  .sb-riv-pagehead { padding: 0 0 2mm !important; }
+  .sb-riv-pagehead h1 { font-size: 2.2rem; }
+  .sb-riv-lede { max-width: none; font-size: 0.95rem; }
+
+  .sb-cwr-corpo {
+    columns: 2;
+    column-gap: 7mm;
+    padding-top: 2mm;
+    border-top: 1px solid #000;
+  }
+  .sb-riv-sec { padding: 0 !important; }
+  .sb-sechead { max-width: none; margin: 0 0 0.4rem; text-align: left; }
+  .sb-sechead h2 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  /* Un titolo non resta solo in fondo a una colonna col suo testo nell'altra. */
+  .sb-sechead h2 { break-after: avoid; }
+  .sb-riv-p, .sb-riv-ul, .sb-riv-li { max-width: none; }
+  .sb-riv-p { margin-bottom: 0.5rem; }
+  .sb-riv-note { padding: 0.5rem 0.6rem; margin-bottom: 0.5rem; break-inside: avoid; }
+  .sb-riv-sec + .sb-riv-sec { margin-top: 0.7rem; }
+
+  * { color: #000 !important; background: transparent !important; box-shadow: none !important; }
+  .sb-riv-note { border: 1px solid #000 !important; }
+}
+</style>
+
+
 <!-- Il banner sopra a tutto: prima dell'occhiello e del titolo, dice a colpo
      d'occhio di che evento sono queste regole. Stesso blocco della home
      (banner in cornice + tasti), così l'evento si presenta uguale ovunque. -->
@@ -56,9 +139,11 @@
   </nav>
 </section>
 
+<div class="sb-cwr-corpo">
+
 <!-- ── 1. L'EVENTO ──────────────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="evento">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>1 — L'evento</h2>
   </div>
   <p class="sb-riv-p">La <strong>Color Walk</strong> è una camminata <strong>a colori e non competitiva</strong>: si va a passo libero, non c'è cronometraggio e non c'è classifica. Lungo il percorso ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
@@ -72,7 +157,7 @@
 
 <!-- ── 2. CHI PUÒ PARTECIPARE ───────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="chi">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>2 — Chi può partecipare</h2>
   </div>
   <p class="sb-riv-p">Può partecipare chiunque se la cava con una passeggiata: il ritmo lo decide chi cammina. Serve uno <strong>stato di salute compatibile con un'attività fisica leggera</strong>; chi ha dubbi ne parli prima con il proprio medico. Non essendo una gara, <strong>non è richiesto il certificato medico agonistico</strong>.</p>
@@ -88,7 +173,7 @@
 
 <!-- ── 3. ISCRIZIONE, QUOTA, PAGAMENTO ──────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="iscrizione">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>3 — Iscrizione, quota, pagamento</h2>
   </div>
   <p class="sb-riv-p">La quota è di <strong>10 € per chi ha 18 anni o più</strong> e di <strong>5 € per ogni ragazzo dai 6 ai 17 anni</strong>. Sotto i 6 anni non si paga e non ci si iscrive. Chi iscrive dei minori paga la somma delle quote in un pagamento solo.</p>
@@ -110,7 +195,7 @@
 
 <!-- ── 4. RINUNCIA, RIMBORSI, ANNULLAMENTO ──────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="rimborsi">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>4 — Rinuncia, rimborsi, annullamento</h2>
   </div>
   <p class="sb-riv-p">L'evento ha una data fissa: per questo <strong>non si applica il diritto di recesso</strong> (art. 59, comma 1, lett. n, del Codice del consumo, D.Lgs. 206/2005).</p>
@@ -126,7 +211,7 @@
 
 <!-- ── 5. POLVERI COLORATE E SICUREZZA ──────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="polveri">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>5 — Polveri colorate e sicurezza</h2>
   </div>
   <p class="sb-riv-p">Le polveri sono a <strong>base di amido di mais</strong>, atossiche e lavabili via da pelle e capelli con acqua e sapone. Restano comunque una polvere fine: possono <strong>irritare occhi, naso e gola</strong>.</p>
@@ -143,7 +228,7 @@
 
 <!-- ── 6. LUNGO IL PERCORSO ─────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="percorso">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>6 — Lungo il percorso</h2>
   </div>
   <ul class="sb-riv-ul">
@@ -160,7 +245,7 @@
 
 <!-- ── 7. RESPONSABILITÀ ────────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="responsabilita">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>7 — Responsabilità</h2>
   </div>
   <div class="sb-riv-note">
@@ -174,7 +259,7 @@
 
 <!-- ── 8. FOTO E VIDEO ──────────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="immagini">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>8 — Foto e video</h2>
   </div>
   <p class="sb-riv-p">Durante l'evento vengono scattate foto e girati video, per strada e in mezzo al gruppo. Iscrivendosi si <strong>autorizza l'uso gratuito di queste immagini</strong> per raccontare e promuovere la Color Walk e le attività di Rivalta sul Mincio: sito, social, stampa locale, edizioni future.</p>
@@ -186,7 +271,7 @@
 
 <!-- ── 9. DATI PERSONALI ────────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="dati">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>9 — Dati personali</h2>
   </div>
   <p class="sb-riv-p">Nome, cognome, data di nascita, codice fiscale, email e telefono di chi si iscrive, e nome, cognome e data di nascita dei minori iscritti insieme a lui, servono a <strong>gestire l'iscrizione, il pagamento e la dichiarazione di responsabilità</strong> del punto 7, e ad avere un elenco di chi partecipa. Il trattamento è necessario per dare seguito all'iscrizione e agli obblighi di legge collegati.</p>
@@ -200,7 +285,7 @@
 
 <!-- ── 10. ACCETTAZIONE ─────────────────────────────────────────────────── -->
 <section class="sb-container sb-riv-sec" id="accettazione">
-  <div class="sb-sechead sb-sechead--start">
+  <div class="sb-sechead">
     <h2>10 — Accettazione</h2>
   </div>
   <p class="sb-riv-p">Completando l'iscrizione — online o sul modulo cartaceo — si dichiara di aver <strong>letto e accettato questo regolamento in ogni sua parte</strong>, informativa sui dati compresa, per sé e per i minori che si iscrivono. Per quanto non previsto valgono le norme di legge applicabili; foro competente <strong>Mantova</strong>.</p>
@@ -211,3 +296,4 @@
     <a class="sb-link" href="/">Torna alla home <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </section>
+</div>

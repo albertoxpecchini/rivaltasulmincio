@@ -156,7 +156,17 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 /* ═══ Il foglio ═══════════════════════════════════════════════════════════════
    A schermo è una pagina del sito come le altre. In stampa diventa una A4:
    margini della stampante, nero su bianco, niente che si muova. */
-.sb-cwm { max-width: 52rem; }
+/* Il foglio in mezzo alla pagina, come /color-walk e il regolamento. Si
+   centra il FOGLIO, non quello che c'è dentro: un modulo coi campi in mezzo
+   non si compila, e una dichiarazione da firmare si legge allineata a
+   sinistra come qualunque altro testo lungo. */
+.sb-cwm { max-width: 52rem; margin-left: auto; margin-right: auto; }
+
+/* La parte che si vede solo a schermo — occhiello, titolo, spiegazione e il
+   tasto per stampare — è la sola cosa centrata anche nel testo: sono tre
+   righe che introducono, non un modulo da riempire. */
+.sb-cwm-solo-schermo { text-align: center; }
+.sb-cwm-solo-schermo .sb-riv-lede { margin-left: auto; margin-right: auto; }
 
 .sb-cwm-testa {
   display: flex;
