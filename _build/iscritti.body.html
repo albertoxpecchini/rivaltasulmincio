@@ -517,7 +517,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   /* Una data ISO com'è scritta in Italia. Se arriva vuota o storta si
      restituisce com'è: meglio una data strana che una scheda senza il campo. */
   function data(iso) {
-    if (!/^d{4}-d{2}-d{2}$/.test(String(iso || ""))) return iso || "";
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(iso || ""))) return iso || "";
     var p = iso.split("-");
     return p[2] + "/" + p[1] + "/" + p[0];
   }
