@@ -181,12 +181,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
    mantenendo le proporzioni. È piccolo, ma è un regolamento: si legge da
    fermi, non di corsa.
 
-   7.4px non è un numero tondo, è quello che ci fa stare: a 8 il testo sfora
-   sulla seconda pagina, a 6.6 riempie appena tre quarti del foglio. Con
-   questo il regolamento occupa il 93% dell'altezza utile — il resto è il
-   margine che serve, perché il motore di stampa di ogni browser conta i
-   pixel a modo suo e uno 0.99 diventa due fogli sulla stampante di qualcun
-   altro. Chi allunga il testo lo rimisuri.
+   6.9px non è un numero tondo, è quello che ci fa stare col margine giusto.
+   La misura fatta qui è in emulazione di stampa, e SOTTOSTIMA: il modulo
+   cartaceo dava 0.98 in prova e sulla stampante vera sfondava di una riga.
+   Da lì la regola: si punta all'85-90% dell'altezza utile e non si va oltre,
+   perché il motore di stampa di ogni browser conta i pixel a modo suo. Con
+   6.9 il regolamento sta all'86%. Chi allunga il testo lo rimisuri, e non si
+   fidi di uno 0.9x alto.
 
    E il bianco imposto su html, body e .sb-home: il tema del sito lo decide
    chi guarda, e chi stampa da un browser in tema scuro si ritroverebbe un
@@ -194,7 +195,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 @media print {
   @page { size: A4; margin: 9mm; }
 
-  html { font-size: 7.4px; }
+  html { font-size: 6.9px; }
   html, body, .sb-home, .sb-main {
     background: #fff !important;
     color: #000 !important;
@@ -274,7 +275,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <span class="sb-riv-note-t">Se piove</span>
     <p>In caso di pioggia la camminata è <strong>rinviata a domenica 27 settembre 2026</strong>, stessi orari e stesso percorso. Le iscrizioni già fatte restano valide, senza rifare niente. Ragioni di sicurezza, ordinanze o cause di forza maggiore possono farla <strong>rinviare a un'altra data o annullare</strong>: in quel caso vale il punto 4.</p>
   </div>
-  <p class="sb-riv-p">Organizza la Color Walk l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo (C.F. 93061070202), a cui è destinata per intero la quota di iscrizione. La camminata si svolge <strong>con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest</strong>. Gli altri enti e le attività coinvolte sono riportati in fondo alla <a href="/color-walk">pagina di iscrizione</a>. Recapito unico: <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>.</p>
+  <p class="sb-riv-p">Organizzano la Color Walk la <strong>Parrocchia Santi Vigilio e Donato</strong> di Rivalta sul Mincio e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo (C.F. 93061070202), a cui è destinata per intero la quota di iscrizione. La camminata si svolge <strong>con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest</strong>. Gli altri enti e le attività coinvolte sono riportati in fondo alla <a href="/color-walk">pagina di iscrizione</a>. Recapito unico: <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>.</p>
 </section>
 
 <section class="sb-container sb-riv-sec" id="chi">

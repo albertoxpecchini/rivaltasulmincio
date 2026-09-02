@@ -1,6 +1,6 @@
 # I loghi
 
-Undici file, e li cerca `build.mjs` (array `FASCE_LOGHI`) per il blocco «Chi c'è dietro» in
+Dodici file, e li cerca `build.mjs` (array `FASCE_LOGHI`) per il blocco «Chi c'è dietro» in
 fondo a [`/color-walk`](../../_build/color-walk.body.html).
 
 Il nome file **non è una proposta, è la chiave**: il logo compare da sé al primo build dopo
@@ -15,10 +15,11 @@ L'estensione la sceglie il build: cerca `.svg`, poi `.png`, `.webp`, `.jpg`, e s
 prima che trova. **Un SVG vince sempre su tutto**: se un giorno arriva `anspi.svg`, il PNG
 resta sul disco ma non lo guarda più nessuno.
 
-## Gli undici
+## I dodici
 
 | File | Chi | Misura | Peso |
 | :--- | :--- | :--- | ---: |
+| `parrocchia.svg` | Parrocchia Santi Vigilio e Donato di Rivalta — organizza | vettoriale | 88 kB (27 gzip) |
 | `anspi.png` | ANSPI — la rete nazionale a cui il circolo è affiliato | 300 × 155 | 9 kB |
 | `comune-rodigo.webp` | Comune di Rodigo (stemma) — patrocinio | 382 × 500 | 72 kB |
 | `polizia-locale.webp` | Polizia Locale Mantova Ovest — attraversamenti | 300 × 300 | 18 kB |
@@ -46,7 +47,11 @@ meno. Gli originali stanno in `originali/`: restano nel repo perché sono le uni
 abbiamo di marchi altrui, ma sono in [`.vercelignore`](../../.vercelignore) e in produzione
 non ci vanno.
 
-Se un logo va rifatto, si riparte da lì:
+Lo stemma della parrocchia fa eccezione: è arrivato in **SVG** e SVG resta. Pesa 88 kB di
+tracciati, ma è testo e viaggia gzippato a 27 kB — meno dello stemma del Comune — e resta
+nitido a qualsiasi misura. Non ha un originale in `originali/` perché è già la fonte.
+
+Se un logo raster va rifatto, si riparte da lì:
 
 ```
 sharp('assets/loghi/originali/nome.png')
@@ -67,8 +72,8 @@ Attenzione a due cose:
 - **La forma decide l'altezza.** Marchi di forme diverse alla stessa altezza si leggono
   sbagliati: il largo sembra il doppio degli altri e uno stemma una miniatura. Si pareggiano
   **a occhio** nel foglio di stile della pagina — `.sb-cw-logo--anspi` (2,1rem),
-  `--rodigo` (3,4rem), `--quadro` (3,2rem, per Polizia Locale, Farmacia Tona e Non Solo
-  Lady), `--ap`, e 2,4rem per tutti gli altri. Chi sostituisce un file con uno di forma
+  `--rodigo` (3,4rem), `--quadro` (3,2rem, per Parrocchia, Polizia Locale, Farmacia Tona e
+  Non Solo Lady), `--ap`, e 2,4rem per tutti gli altri. Chi sostituisce un file con uno di forma
   diversa deve ripassare di lì.
 
 Lo stemma del Comune pesa 72 kB per un disegno che in pagina è alto una cinquantina di
@@ -83,7 +88,7 @@ l'ente abbia pagato per starci. Perciò tre fasce separate da un filo, ognuna co
 frase **accanto ai marchi** e in un corpo che si legge — non un rigo in punta di piedi sotto
 a tutto:
 
-1. **Organizza** — ANSPI;
+1. **Organizzano** — Parrocchia Santi Vigilio e Donato e ANSPI;
 2. **Con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova
    Ovest** — stemma del Comune e stemma del Corpo;
 3. **Con il sostegno delle attività di Rivalta** — le sette del paese.

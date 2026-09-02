@@ -579,9 +579,11 @@ ${mini}
 const FASCE_LOGHI = [
   {
     testo:
-      "Organizza l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, " +
-      "circolo affiliato ad ANSPI, a cui va per intero la quota di iscrizione.",
+      "Organizzano la <strong>Parrocchia Santi Vigilio e Donato</strong> di Rivalta sul Mincio " +
+      "e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, circolo " +
+      "affiliato ad ANSPI, a cui va per intero la quota di iscrizione.",
     loghi: [
+      { file: "parrocchia", nome: "Parrocchia Santi Vigilio e Donato", desc: "Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
       { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
     ],
   },
