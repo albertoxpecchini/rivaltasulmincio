@@ -232,9 +232,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 .sb-cwm-vuoto--alto { min-height: 3.2rem; }
 
 /* ═══ La tabella dei minori ══════════════════════════════════════════════════
-   Quattro righe: di più su una A4 non ci stanno insieme a tutto il resto, e
-   una famiglia con cinque figli compila due fogli. Il numero di riga a
-   sinistra serve a chi ricopia l'elenco dopo. */
+   Cinque righe: è la misura chiesta da chi sta al banco, e ci stanno perché
+   il corpo in stampa è sceso a 12.6px. Chi ne porta di più compila un secondo
+   foglio. Il numero di riga a sinistra serve a chi ricopia l'elenco dopo. */
 .sb-cwm-tab { width: 100%; border-collapse: collapse; }
 .sb-cwm-tab th {
   padding: 0 0.5rem 0.3rem 0;
@@ -259,7 +259,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   vertical-align: bottom;
   padding-bottom: 0.35rem;
 }
-.sb-cwm-tab td + td { border-right: 1px solid transparent; }
+/* I filetti fra le colonne: separano nome, cognome e data quando si scrive a
+   penna, e senza si finisce col cognome che invade la casella accanto. Sul
+   BORDO SINISTRO delle celle dalla seconda in poi, così cadono fra una
+   colonna e l'altra e non sul margine destro del foglio. (Prima erano un
+   bordo destro trasparente, che in stampa la regola del nero rendeva visibile
+   per sbaglio: erano lì per caso, adesso ci sono apposta.) */
+.sb-cwm-tab td + td { border-left: 1px solid var(--sb-border); }
 
 /* ═══ Il conto ═══════════════════════════════════════════════════════════════
    Le due quote, e lo spazio per scrivere quante persone e quanto in tutto.
@@ -327,13 +333,19 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
    La seconda: la misura del testo. Tutto il foglio è in rem, quindi basta
    abbassare la radice per stringere ogni cosa insieme — margini, righe,
-   caratteri — mantenendo le proporzioni. A 14.4px il modulo entra in una
-   pagina con i suoi quattro posti per i minori; i valori qui sotto sono
-   quelli che ci fanno stare, non numeri tondi scelti a occhio. */
+   caratteri — mantenendo le proporzioni.
+
+   12.6px non è un numero tondo. Il modulo stava a 14.4 secondo la misura
+   fatta qui in emulazione di stampa — e sulla stampante vera sfondava di una
+   riga: il motore di stampa di ogni browser conta i pixel a modo suo, e uno
+   0.98 in prova diventa due fogli in casa di qualcun altro. Con 12.6 e le
+   cinque righe per i minori il foglio occupa l'86% dell'altezza utile, e
+   quel 14% è il margine che serve perché non succeda più. Chi allunga il
+   modulo lo rimisuri, e non si fidi di uno 0.9x. */
 @media print {
   @page { size: A4; margin: 11mm; }
 
-  html { font-size: 14.4px; }
+  html { font-size: 12.6px; }
   /* Il fondo del sito non sta su body: sta su .sb-home, il guscio che
      avvolge ogni pagina (e che si porta dietro anche i veli del fondale sui
      suoi pseudo-elementi). Sbiancare solo body lascerebbe il foglio grigio o
@@ -359,6 +371,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   }
   .sb-cwm-et, .sb-cwm-h span, .sb-cwm-tab th, .sb-cwm-tot-et, .sb-cwm-pie { color: #444 !important; }
   .sb-cwm-vuoto, .sb-cwm-tab td, .sb-cwm-conto, .sb-cwm-dich, .sb-cwm-tot-box { border-color: #000 !important; }
+  /* I filetti fra le colonne restano più chiari della riga su cui si scrive:
+     dividono, non sono una riga da riempire. */
+  .sb-cwm-tab td + td { border-left-color: #999 !important; }
   .sb-cwm-testa { border-bottom-color: #000 !important; }
 
   /* Il recupero dei millimetri, in ordine di quanto rendono. */
@@ -434,6 +449,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         <tr><td>2</td><td></td><td></td><td></td></tr>
         <tr><td>3</td><td></td><td></td><td></td></tr>
         <tr><td>4</td><td></td><td></td><td></td></tr>
+        <tr><td>5</td><td></td><td></td><td></td></tr>
       </tbody>
     </table>
   </div>
