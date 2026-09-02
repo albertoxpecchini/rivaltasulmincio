@@ -560,24 +560,29 @@ ${mini}
    Il giorno che il file entra in assets/loghi/ prende il suo posto da sé.
 
    L'estensione non è fissata: vince il primo formato trovato, in quest'ordine.
-   Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo. */
+   Un SVG resta nitido a qualsiasi misura ed è la scelta giusta per un logo.
+
+   ── L'ordine, che non è casuale ────────────────────────────────────────
+   Prima chi risponde dell'evento (ANSPI), poi chi lo permette — il Comune
+   che dà il patrocinio e la Polizia Locale che tiene gli attraversamenti —
+   poi chi mette cibo, bevande e una mano, e in fondo chi ha fatto il sito.
+   È l'ordine in cui vanno letti, e la stessa fila che va sulla locandina.
+
+   ── Perché quasi nessuno ha un `url` ───────────────────────────────────
+   Sono attività di paese e associazioni di volontariato: un sito non ce
+   l'hanno. Senza `url` la piastrella resta una piastrella e non finge un
+   collegamento che non porta da nessuna parte. */
 const LOGHI = [
   { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
   { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Comune di Rodigo — con il patrocinio del Comune", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
-  /* Chi mette il cibo, le bevande e una mano il 20 settembre. Sono attività
-     del paese e un'associazione di volontariato: nessuna ha un sito, e per
-     loro `url` non c'è — la piastrella resta una piastrella e non finge un
-     collegamento che non porta da nessuna parte. Fin qui i file dei marchi
-     non ci sono ancora: il build stampa il nome scritto e lo dice fra gli
-     avvisi a ogni compilazione, finché non arrivano.
-
-     Marchini e Storti mancano di proposito: non sono confermati, e un logo
-     stampato per sbaglio è più difficile da togliere che da aggiungere. */
+  { file: "polizia-locale", nome: "Polizia Locale Mantova Ovest", desc: "Corpo Intercomunale di Polizia Locale Mantova Ovest — collabora agli attraversamenti", classe: "sb-cw-logo--quadro" },
   { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
   { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
-  { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio" },
-  { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi" },
-  { file: "fior-di-loto", nome: "Fior di Loto", desc: "Profumeria «Fior di Loto» di Rivalta sul Mincio" },
+  { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923" },
+  { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi" },
+  { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
+  { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio" },
+  { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", classe: "sb-cw-logo--quadro" },
   { file: "ap", nome: ".ap", desc: "Alberto Pecchini", url: "https://albertopecchini.it", classe: "sb-cw-logo--ap" },
 ];
 
