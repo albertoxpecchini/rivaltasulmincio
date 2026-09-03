@@ -649,6 +649,21 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u");
   }
 
+  /* Perché nessuna delle fatture è finita in elenco. Le uniche due ragioni
+     possibili sono quelle che il server applica: annullata, o pagamento
+     online mai concluso — e le seconde le sa contare (`incompleti`), quindi
+     confrontando i due numeri si dice esattamente il caso in cui si è invece
+     di elencare tutte e due le ipotesi ogni volta. */
+  function perche(dati) {
+    if (!dati.incompleti) return dati.letti === 1 ? "è annullata" : "sono tutte annullate";
+    if (dati.incompleti >= dati.letti) {
+      return dati.letti === 1
+        ? "è un pagamento online cominciato e mai concluso"
+        : "sono pagamenti online cominciati e mai conclusi";
+    }
+    return "sono pagamenti online mai conclusi, o iscrizioni annullate";
+  }
+
   function disegna() {
     if (!dati) return;
     var q = normalizza(cerca.value.trim());
@@ -679,12 +694,16 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       var vuoto = document.createElement("p");
       vuoto.className = "sb-is-vuoto";
       /* «Nessun iscritto» e «non riesco a vedere gli iscritti» sulla pagina
-         sono la stessa immagine e due guai molto diversi. Se PayPal ha
-         restituito delle fatture e nessuna è finita in elenco, lo si dice. */
+         sono la stessa immagine e due guai molto diversi. Ma quando PayPal ha
+         delle fatture e l'elenco è vuoto non è mai il secondo: una fattura
+         esce dall'elenco per due soli motivi, tutti e due voluti e tutti e
+         due noti — è stata annullata, oppure è un pagamento online aperto e
+         mai concluso. Quello che serve dire è quale dei due, non un allarme:
+         all'inizio, e dopo ogni prova, è la situazione normale. */
       vuoto.textContent = dati.iscritti.length
         ? "Nessuno corrisponde a quello che hai scritto."
         : dati.letti
-          ? "PayPal ha restituito " + dati.letti + (dati.letti === 1 ? " fattura" : " fatture") + " per questo evento, ma nessuna risulta un'iscrizione da mostrare. Non è un elenco vuoto: è qualcosa che non torna."
+          ? "PayPal ha " + dati.letti + (dati.letti === 1 ? " fattura" : " fatture") + " per questo evento, ma nessuna è un'iscrizione da mostrare: " + perche(dati) + "."
           : "Ancora nessun iscritto. Il primo che compila il modulo compare qui.";
       elenco.appendChild(vuoto);
       return;
