@@ -1012,13 +1012,19 @@ dal telefono). Le funzioni leggono le chiavi da `process.env` — in produzione 
 locale da un file **`.env`** in radice, che `git` ignora perché sono segreti:
 
 ```bash
-cp .env.example .env      # poi riempire ISCRITTI_CHIAVE e STRIPE_SECRET_KEY
+cp .env.example .env      # poi riempire ISCRITTI_CHIAVE e le credenziali PayPal
 npm run dev
 ```
 
 Senza `.env`, `/iscritti` risponde «zona iscritti non configurata: manca `ISCRITTI_CHIAVE`» e non
 si arriva nemmeno a digitare la chiave. In `.env` la chiave la si inventa: dev'essere solo la stessa
 che si scrive nella porta della pagina. Una variabile già esportata nella shell vince sul file.
+
+Superata la porta serve anche il resto, o l'elenco risponde 502: `PAYPAL_CLIENT_ID` e
+`PAYPAL_CLIENT_SECRET` — quelle della **sandbox**, non del conto vero — e soprattutto
+`PAYPAL_AMBIENTE=prova`, perché senza quella riga vale `live` e si lavora sulle fatture vere da un
+computer di casa. In produzione la chiave manca solo se qualcuno l'ha tolta da Vercel: lì il 503 non
+è una configurazione da fare, è una serratura che è sparita.
 
 ---
 

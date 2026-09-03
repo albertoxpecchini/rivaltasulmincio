@@ -121,9 +121,9 @@ const anteprimaVercel = () => ({
 
 export default defineConfig(({ mode }) => {
   /* Le funzioni in api/ leggono le chiavi da `process.env` — in produzione ce
-     le mette Vercel. In locale, senza `ISCRITTI_CHIAVE` e `STRIPE_SECRET_KEY`,
-     `/api/iscritti-color-walk` risponde 503 «zona iscritti non configurata» e
-     la pagina /iscritti non si può nemmeno provare.
+     le mette Vercel. In locale, senza `ISCRITTI_CHIAVE` e le credenziali di
+     PayPal, `/api/iscritti-color-walk` risponde 503 «zona iscritti non
+     configurata» e la pagina /iscritti non si può nemmeno provare.
 
      Qui le peschiamo da un file `.env` in radice — `loadEnv` col prefisso ""
      prende tutte le variabili, non solo quelle `VITE_` — e le ribaltiamo in
