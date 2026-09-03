@@ -10,23 +10,24 @@
    com'è. Qui dentro non compare un solo colore hard-coded: solo var(--sb-*).
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Centratura ───────────────────────────────────────────────────────────
-   Tutto il testo del sito è centrato. La regola vera è una sola, su <body>:
-   text-align si eredita, quindi scende in ogni nodo che non se ne sia
-   dichiarato uno proprio.
+/* ── Giustificazione ──────────────────────────────────────────────────────
+   Tutta la prosa del sito è giustificata. Non esiste una classe unica per il
+   testo corrente — le pagine sono nate una alla volta e ogni contesto si è
+   portato dietro la sua — quindi il gruppo va elencato per esteso. Se nasce
+   una classe nuova che contiene un paragrafo, va aggiunta qui.
 
-   Quelli che se l'erano dichiarato vanno riportati a mano, perché una
-   dichiarazione esplicita batte sempre il valore ereditato. Sono la prosa —
-   che fino a ieri era giustificata e sta qui sotto — e le tabelle, che erano
-   a bandiera e si trovano più avanti nel foglio.
+   La colonna del testo sta al centro del contenitore (il blocco è in fondo al
+   foglio), ma le righe dentro la colonna restano giustificate: centrarle
+   lascerebbe ogni capoverso con due bordi frastagliati e niente su cui
+   l'occhio possa tornare a capo.
 
-   Con il testo centrato la sillabazione non serve più: serviva a chiudere i
-   fiumi bianchi che apriva la giustificazione, e su righe centrate spezzerebbe
-   le parole senza guadagnarci niente. Per lo stesso motivo è caduto il ritorno
-   a bandiera sotto i 480px: non c'è più una giustificazione da salvare. */
-body {
-  text-align: center;
-}
+   hyphens è obbligatorio, non decorativo: le colonne sono strette (46rem) e
+   l'italiano ha parole lunghe. Senza sillabazione la giustificazione apre
+   fiumi bianchi verticali che si vedono da lontano. Funziona perché head.html
+   dichiara <html lang="it"> — il browser sillaba nella lingua del documento.
+
+   Restano allineati a sinistra i dati (celle, intestazioni, numeri), i titoli
+   e tutto ciò che è centrato per scelta (.sb-sechead, .sb-cta). */
 .sb-riv-p,
 .sb-riv-li,
 .sb-riv-lede,
@@ -40,7 +41,31 @@ body {
 .sb-hero-copy p,
 .sb-card-desc,
 .sb-page-inner p {
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/* Sotto i 480px la colonna è troppo stretta perché la giustificazione stia in
+   piedi: fra una parola e l'altra si aprono voragini. Lì vince la leggibilità
+   e il testo torna a bandiera. */
+@media (max-width: 479.98px) {
+  .sb-riv-p,
+  .sb-riv-li,
+  .sb-riv-lede,
+  .sb-riv-note,
+  .sb-riv-cap,
+  .sb-riv-cit p,
+  .sb-riv-crono-fatto,
+  .sb-riv-flash p,
+  .sb-riv-cardpad p,
+  .sb-riv-news-note,
+  .sb-hero-copy p,
+  .sb-card-desc,
+  .sb-page-inner p {
+    text-align: left;
+  }
 }
 
 /* ── Sezioni ancorate ─────────────────────────────────────────────────────
@@ -400,7 +425,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
-  text-align: center;
+  text-align: left;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -433,13 +458,13 @@ body {
   font-weight: 400;
 }
 .sb-riv-table tbody th {
-  text-align: center;
+  text-align: left;
   padding: 0.65rem 0.9rem;
   vertical-align: top;
   font-weight: 500;
   border-bottom: 1px solid var(--sb-border);
 }
-.sb-riv-table .num { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sb-riv-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sb-riv-table .nowrap { white-space: nowrap; }
 /* Valore mancante: un trattino muto vale più di una cella vuota, perché dice
    "guardato e non c'è" invece di "forse ce lo siamo dimenticati". */
@@ -1809,11 +1834,15 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 }
 
 /* ── Le colonne strette, al centro del contenitore ────────────────────────
-   Le sezioni sono larghe 80rem, la prosa 46rem: finché il testo era a
-   bandiera la colonna stava a sinistra e si leggeva come una colonna. Con il
-   testo centrato dentro una colonna ferma a sinistra si otterrebbe il
-   peggio dei due — righe centrate su metà pagina — quindi la colonna si
-   sposta al centro con lei.
+   Il contenitore è largo 72rem, la prosa 46rem: se la colonna resta ferma a
+   sinistra tutto il bianco che avanza si accumula da una parte sola e la
+   pagina pende. Centrandola, il margine si divide in due e il testo si
+   sviluppa al centro — dentro, però, le righe restano giustificate (in cima
+   al foglio), perché è la colonna a essere centrata, non il testo.
+
+   La stessa larghezza va anche ai sottotitoli, che una loro non ce l'avevano:
+   senza, un h3 partirebbe dal bordo del contenitore e resterebbe scalzato
+   rispetto ai capoversi che introduce.
 
    Il blocco sta in fondo al foglio apposta: ognuna di queste classi dichiara
    più sopra un `margin` abbreviato, e solo arrivando dopo il `margin-inline`
@@ -1826,15 +1855,8 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 .sb-riv-flash p,
 .sb-riv-lede,
 .sb-riv-foto,
-.sb-riv-prossima-d {
+.sb-riv-prossima-d,
+.sb-riv-subhead {
   margin-inline: auto;
 }
-
-/* Con il testo centrato il pallino di un elenco resterebbe inchiodato al
-   bordo sinistro della riga, lontano dalle parole a cui appartiene: passa
-   dentro il flusso, così viaggia insieme al testo, e il rientro che gli
-   faceva posto non serve più. */
-.sb-riv-ul {
-  padding-left: 0;
-  list-style-position: inside;
-}
+.sb-riv-subhead { max-width: 46rem; }

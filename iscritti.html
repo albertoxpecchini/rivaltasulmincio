@@ -189,12 +189,13 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 }
 .sb-is-sec { padding: 0.4rem 0 0; }
 
-/* Il testo del sito è centrato: qui lo era anche prima nel resto della
-   pagina, restava fuori solo questo blocco perché era giustificato. Con la
-   giustificazione se ne va anche la sillabazione, che serviva a chiuderne i
-   fiumi bianchi. */
+/* Giustificato solo il blocco che fa almeno tre righe, e sempre con la
+   sillabazione: in italiano, in colonna stretta e senza, si aprono i fiumi
+   bianchi fra le parole. */
 .sb-is .sb-riv-lede {
-  text-align: center;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 /* I due stati della pagina si escludono: o la porta, o l'elenco. Il guardiano
@@ -431,7 +432,9 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-size: 0.8rem;
   line-height: 1.65;
   color: var(--sb-fg-muted);
-  text-align: center;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .sb-is-nota + .sb-is-nota { margin-top: 0.8rem; padding-top: 0; border-top: 0; }
 </style>
