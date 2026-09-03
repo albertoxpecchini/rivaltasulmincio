@@ -832,9 +832,10 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   line-height: 1.15;
 }
 .sb-sechead p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-/* Su una pagina di consultazione le testate stanno a sinistra: l'occhio
-   torna sempre allo stesso margine mentre scorre una tabella dopo l'altra. */
-.sb-sechead--start { margin-left: 0; text-align: left; max-width: 46rem; }
+/* Su una pagina di consultazione la testata tiene una colonna più larga delle
+   altre, perché sopra una tabella ci sta una frase più lunga. Per il resto è
+   una testata come tutte: sta al centro anche lei. */
+.sb-sechead--start { text-align: center; max-width: 46rem; }
 
 /* ── CTA ─────────────────────────────────────────────────────────────────── */
 .sb-cta { text-align: center; }
