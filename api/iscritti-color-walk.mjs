@@ -125,7 +125,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ errore: "metodo non consentito" });
   }
 
-  const segreto = process.env.ISCRITTI_CHIAVE;
+  /* La chiave che arriva dalla pagina passa da `pulisci`: niente a capo,
+     niente spazi ai bordi. Quella dell'ambiente va normalizzata allo stesso
+     modo, o un solo spazio invisibile rimasto attaccato incollando il valore
+     nel pannello di Vercel chiude la porta a tutti — e dal di fuori non c'è
+     modo di vederlo: la pagina direbbe «chiave non valida» a chi la chiave ce
+     l'ha giusta, e la chiave giusta non esisterebbe più.
+
+     Il taglio a 200 caratteri resta solo sul lato che arriva da fuori, dove
+     serve a non farsi mandare un chilo di roba da confrontare. Qui sarebbe
+     un'altra cosa: accorcerebbe la chiave vera senza dirlo a nessuno. */
+  const segreto = pulisci(process.env.ISCRITTI_CHIAVE, Infinity);
   if (!segreto) {
     return res.status(503).json({
       errore: "zona iscritti non configurata: manca ISCRITTI_CHIAVE fra le variabili d'ambiente",

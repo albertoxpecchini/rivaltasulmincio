@@ -226,6 +226,24 @@ await prova("ISCRITTI_CHIAVE non impostata → 503, non «entrano tutti»", {
   atteso: { codice: 503, nienteDati: true },
 });
 
+/* Lo spazio che resta attaccato incollando il valore nel pannello di Vercel
+   non si vede da nessuna parte, e chiuderebbe la porta a chi la chiave ce
+   l'ha giusta. */
+await prova("ISCRITTI_CHIAVE con uno spazio in coda → la chiave giusta apre lo stesso", {
+  chiave: CHIAVE,
+  env: { ISCRITTI_CHIAVE: CHIAVE + " " },
+  pagine: [[fattura(1)]],
+  atteso: { codice: 200, iscritti: 1 },
+});
+
+/* E una fatta di soli spazi è una serratura che non c'è, non una che si apre
+   scrivendo niente. */
+await prova("ISCRITTI_CHIAVE di soli spazi → 503, non una porta aperta col vuoto", {
+  chiave: "",
+  env: { ISCRITTI_CHIAVE: "   " },
+  atteso: { codice: 503, nienteDati: true },
+});
+
 await prova("PUT → 405", {
   chiave: CHIAVE,
   metodo: "PUT",
