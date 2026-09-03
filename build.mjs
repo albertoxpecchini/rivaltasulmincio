@@ -583,7 +583,7 @@ const FASCE_LOGHI = [
       "e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, circolo " +
       "affiliato ad ANSPI, a cui va per intero la quota di iscrizione.",
     loghi: [
-      { file: "parrocchia", nome: "Parrocchia Santi Vigilio e Donato", desc: "Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
+      { file: "parrocchia", nome: "Parrocchia Santi Vigilio e Donato", desc: "Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio", url: "https://sites.google.com/site/parrocchiadirivaltasm/", classe: "sb-cw-logo--quadro" },
       { file: "anspi", nome: "ANSPI", desc: "Associazione Nazionale San Paolo Italia — oratori e circoli", url: "https://www.anspi.it", classe: "sb-cw-logo--anspi" },
     ],
   },
@@ -598,7 +598,7 @@ const FASCE_LOGHI = [
       "<strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.",
     loghi: [
       { file: "comune-rodigo", nome: "Comune di Rodigo", desc: "Comune di Rodigo — con il patrocinio del Comune", url: "https://comune.rodigo.mn.it", classe: "sb-cw-logo--rodigo" },
-      { file: "polizia-locale", nome: "Polizia Locale Mantova Ovest", desc: "Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti", classe: "sb-cw-logo--quadro" },
+      { file: "polizia-locale", nome: "Polizia Locale Mantova Ovest", desc: "Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti", url: "https://www.comune.rodigo.mn.it/amministrazione/unita_organizzativa/polizia_locale/", classe: "sb-cw-logo--quadro" },
     ],
   },
   {
@@ -613,7 +613,7 @@ const FASCE_LOGHI = [
       { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
       { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
       { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923" },
-      { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi" },
+      { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi", url: "https://www.stortisalumi.it" },
       { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
       { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio" },
       { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", classe: "sb-cw-logo--quadro" },

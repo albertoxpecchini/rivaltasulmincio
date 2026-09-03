@@ -35,6 +35,38 @@ resta sul disco ma non lo guarda più nessuno.
 > «Marazzi» e «Non Solo Lady» sono **la stessa attività**: il parrucchiere di Marco Marazzi
 > in Piazza Chiesa 1b. Un logo solo, col nome dell'insegna.
 
+## Quali portano da qualche parte
+
+Sei tessere su dodici sono collegamenti, e le altre sei sono figure e basta. Non è una
+dimenticanza: `renderPiastrella` mette il marcatore `<a>` solo se il marchio ha un `url`, e un
+marchio senza sito non diventa un collegamento che non porta da nessuna parte.
+
+| Chi | Dove porta |
+| :--- | :--- |
+| Parrocchia Santi Vigilio e Donato | `sites.google.com/site/parrocchiadirivaltasm` |
+| ANSPI | `anspi.it` |
+| Comune di Rodigo | `comune.rodigo.mn.it` |
+| Polizia Locale Mantova Ovest | la pagina del Corpo sul sito del Comune di Rodigo |
+| Storti Salumi | `stortisalumi.it` |
+| Alberto Pecchini | `albertopecchini.it` |
+
+Gli altri sei — AVIS Rivalta, Pizzangolo, Marchini, Farmacia Tona, Fiordiloto e Non Solo
+Lady — sono stati cercati e provati uno per uno il **3 settembre 2026**, e un sito da
+linkare non ce l’hanno:
+
+- **Pizzangolo** un sito ce l’aveva, `menupizzangolo.altervista.org`, e oggi quell’indirizzo
+  risponde «Sito web archiviato»: linkarlo sarebbe peggio che non linkare niente.
+- **AVIS Rivalta** non ha una pagina sua: sul sito provinciale `avis.mantova.it` l’indirizzo
+  della sezione porta all’assemblea del 16 febbraio 2026, e la scheda su `avislombardia.it`
+  non c’è più. Il sito provinciale è un altro ente, e messo sotto quel logo direbbe una cosa
+  che non è.
+- **Marchini**, **Farmacia Tona**, **Fiordiloto** e **Non Solo Lady** stanno solo su Facebook.
+  Il sito non manda su Facebook da nessuna parte, e non comincia dalla striscia dei loghi.
+
+Una nota sulla parrocchia: la Diocesi di Mantova indica `parrocchiadirivaltasm.it`, che non
+risolve più. Quello che sta in piedi è il vecchio Google Sites, e finché regge è lì che si
+manda chi cerca gli orari delle messe.
+
 ## Gli originali, e perché non sono questi
 
 I marchi sono arrivati come PNG da uno a tre megabyte l'uno: **8,4 MB in tutto**, per
