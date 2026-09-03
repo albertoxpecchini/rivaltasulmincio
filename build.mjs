@@ -610,13 +610,13 @@ const FASCE_LOGHI = [
       "<strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di " +
       "fine camminata e quello che ci sta intorno — tutto compreso nella quota.",
     loghi: [
-      { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo" },
-      { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio" },
-      { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923" },
+      { file: "avis-rivalta", nome: "AVIS Rivalta", desc: "AVIS Rivalta sul Mincio — offre l'aperitivo", url: "https://www.facebook.com/avisrsm/" },
+      { file: "pizzangolo", nome: "Pizzangolo", desc: "Pizzangolo — pizzeria di Rivalta sul Mincio", url: "https://www.facebook.com/pizzangolotakeaway/" },
+      { file: "marchini", nome: "Panificio Marchini", desc: "Panificio Marchini dal 1923", url: "https://www.facebook.com/PanificioMarchini/" },
       { file: "storti", nome: "Storti Salumi", desc: "Storti Salumi", url: "https://www.stortisalumi.it" },
-      { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", classe: "sb-cw-logo--quadro" },
-      { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio" },
-      { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", classe: "sb-cw-logo--quadro" },
+      { file: "farmacia-tona", nome: "Farmacia Tona", desc: "Farmacia Tona di Rivalta sul Mincio", url: "https://www.facebook.com/farmaciatona/", classe: "sb-cw-logo--quadro" },
+      { file: "fior-di-loto", nome: "Fiordiloto", desc: "Fiordiloto profumeria di Rivalta sul Mincio", url: "https://www.facebook.com/profumeriaFDL/" },
+      { file: "non-solo-lady", nome: "Non Solo Lady", desc: "Non Solo Lady — parrucchiere di Marco Marazzi", url: "https://www.facebook.com/nonsololady/", classe: "sb-cw-logo--quadro" },
     ],
   },
   {

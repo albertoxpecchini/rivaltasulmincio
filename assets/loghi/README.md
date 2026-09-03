@@ -37,9 +37,11 @@ resta sul disco ma non lo guarda più nessuno.
 
 ## Quali portano da qualche parte
 
-Sei tessere su dodici sono collegamenti, e le altre sei sono figure e basta. Non è una
-dimenticanza: `renderPiastrella` mette il marcatore `<a>` solo se il marchio ha un `url`, e un
-marchio senza sito non diventa un collegamento che non porta da nessuna parte.
+Tutte e dodici le tessere sono collegamenti. Sei portano a un sito vero, sei alla pagina
+Facebook dell’attività — perché è l’unico posto in cui quelle sei stanno, e mandarci chi
+clicca vale più di una figura che non fa niente. Il codice non lo sa e non gliene importa:
+`renderPiastrella` mette il marcatore `<a>` se il marchio ha un `url` e lo lascia un `<div>` se non
+ce l’ha, e quel ramo resta lì per il giorno in cui un marchio nuovo arriva senza indirizzo.
 
 | Chi | Dove porta |
 | :--- | :--- |
@@ -49,23 +51,31 @@ marchio senza sito non diventa un collegamento che non porta da nessuna parte.
 | Polizia Locale Mantova Ovest | la pagina del Corpo sul sito del Comune di Rodigo |
 | Storti Salumi | `stortisalumi.it` |
 | Alberto Pecchini | `albertopecchini.it` |
+| AVIS Rivalta | `facebook.com/avisrsm` |
+| Pizzangolo | `facebook.com/pizzangolotakeaway` |
+| Panificio Marchini | `facebook.com/PanificioMarchini` |
+| Farmacia Tona | `facebook.com/farmaciatona` |
+| Fiordiloto | `facebook.com/profumeriaFDL` |
+| Non Solo Lady | `facebook.com/nonsololady` |
 
-Gli altri sei — AVIS Rivalta, Pizzangolo, Marchini, Farmacia Tona, Fiordiloto e Non Solo
-Lady — sono stati cercati e provati uno per uno il **3 settembre 2026**, e un sito da
-linkare non ce l’hanno:
+Sono le sole tessere di tutto il sito che mandano su un social: qui è una scelta, non una
+distrazione. Fuori da questa striscia il sito continua a non linkare Facebook.
 
-- **Pizzangolo** un sito ce l’aveva, `menupizzangolo.altervista.org`, e oggi quell’indirizzo
-  risponde «Sito web archiviato»: linkarlo sarebbe peggio che non linkare niente.
-- **AVIS Rivalta** non ha una pagina sua: sul sito provinciale `avis.mantova.it` l’indirizzo
-  della sezione porta all’assemblea del 16 febbraio 2026, e la scheda su `avislombardia.it`
-  non c’è più. Il sito provinciale è un altro ente, e messo sotto quel logo direbbe una cosa
-  che non è.
-- **Marchini**, **Farmacia Tona**, **Fiordiloto** e **Non Solo Lady** stanno solo su Facebook.
-  Il sito non manda su Facebook da nessuna parte, e non comincia dalla striscia dei loghi.
+**Tre indirizzi che sembrano giusti e non lo sono.** Provati il 3 settembre 2026, e da
+allora è meglio non ripescarli senza riprovare:
 
-Una nota sulla parrocchia: la Diocesi di Mantova indica `parrocchiadirivaltasm.it`, che non
-risolve più. Quello che sta in piedi è il vecchio Google Sites, e finché regge è lì che si
-manda chi cerca gli orari delle messe.
+- `menupizzangolo.altervista.org` — il vecchio sito di Pizzangolo, oggi risponde «Sito web
+  archiviato».
+- `panificiomarchini.it` — compare ancora nei motori di ricerca, ma il dominio non risolve
+  più.
+- `parrocchiadirivaltasm.it` — è quello che la Diocesi di Mantova indica per la parrocchia,
+  e neanche quello risolve. Quello che sta in piedi è il vecchio Google Sites, ed è lì che si
+  manda chi cerca gli orari delle messe.
+
+E l’AVIS di Rivalta una pagina sua sui siti AVIS non ce l’ha: su `avis.mantova.it`
+l’indirizzo della sezione rimanda all’assemblea del 16 febbraio 2026 e la scheda su
+`avislombardia.it` dà 404. Il sito provinciale è un altro ente e sotto quel logo direbbe una
+cosa che non è: meglio la pagina della sezione.
 
 ## Gli originali, e perché non sono questi
 
