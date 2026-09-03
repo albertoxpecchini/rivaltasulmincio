@@ -1020,11 +1020,22 @@ Senza `.env`, `/iscritti` risponde «zona iscritti non configurata: manca `ISCRI
 si arriva nemmeno a digitare la chiave. In `.env` la chiave la si inventa: dev'essere solo la stessa
 che si scrive nella porta della pagina. Una variabile già esportata nella shell vince sul file.
 
-Superata la porta serve anche il resto, o l'elenco risponde 502: `PAYPAL_CLIENT_ID` e
-`PAYPAL_CLIENT_SECRET` — quelle della **sandbox**, non del conto vero — e soprattutto
-`PAYPAL_AMBIENTE=prova`, perché senza quella riga vale `live` e si lavora sulle fatture vere da un
-computer di casa. In produzione la chiave manca solo se qualcuno l'ha tolta da Vercel: lì il 503 non
-è una configurazione da fare, è una serratura che è sparita.
+Superata la porta serve anche il resto, o l'elenco risponde 502 «PayPal non configurato»:
+`PAYPAL_CLIENT_ID` e `PAYPAL_CLIENT_SECRET` — quelle della **sandbox**, non del conto vero — e
+soprattutto `PAYPAL_AMBIENTE=prova`, perché senza quella riga vale `live` e si lavora sulle fatture
+vere da un computer di casa. In produzione la chiave manca solo se qualcuno l'ha tolta da Vercel: lì
+il 503 non è una configurazione da fare, è una serratura che è sparita.
+
+Le credenziali di prova stanno in **PayPal Developer → Apps & Credentials → scheda Sandbox**, sulla
+stessa app di sempre o su una creata lì per l'occasione; l'app di prova vuole la spunta
+**Features → Invoicing** esattamente come quella vera, perché il registro degli iscritti *sono* le
+fatture. Da lì il giro si chiude tutto in locale: si compila il modulo su `/color-walk`, nasce una
+fattura nella sandbox, e `/iscritti` la mostra — codice identico alla produzione, soldi finti.
+
+Una cosa sola resta fuori: la conferma del pagamento online. Arriva da un webhook, e PayPal a
+`localhost` non ci bussa. In locale quindi un'iscrizione **in contanti** compare subito nell'elenco
+come «da incassare» e il tasto «segna incassato» funziona per davvero; una pagata con PayPal, finché
+il webhook non la conferma, resta fra le «a metà».
 
 ---
 
