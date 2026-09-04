@@ -8,8 +8,7 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/color-runner", "destination": "/color-walk", "permanent": true },
-    { "source": "/color-runner-regolamento", "destination": "/color-walk-regolamento", "permanent": true },
-    { "source": "/color-runner-domande", "destination": "/color-walk-domande", "permanent": true }
+    { "source": "/color-runner-regolamento", "destination": "/color-walk-regolamento", "permanent": true }
   ],
   "functions": {
     "api/meteo.mjs": { "maxDuration": 10 },

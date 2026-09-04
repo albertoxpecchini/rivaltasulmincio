@@ -29,20 +29,70 @@
      — perché il tetto di 300 è di persone e non di pagamenti — la riga sotto
      la ricerca dice tutti e due, e il CSV esce con una riga per persona,
      perché è l'elenco su cui si spuntano le sacche.
+
+     ── Dove si usa davvero, e cosa ne consegue ────────────────────────────
+     Questa pagina si apre in due posti soltanto, e sono agli antipodi:
+
+       · in piedi in Piazza Chiesa, col telefono in una mano e la cassa
+         nell'altra, con venti persone in fila che aspettano la sacca;
+       · a tavolino, su un computer, per guardare come vanno le iscrizioni e
+         scaricare il CSV.
+
+     Da qui scendono tutte le scelte di questa pagina, e conviene averle
+     scritte perché la versione di prima ne rispettava una sola.
+
+     1. LA BARRA DEI COMANDI STA ATTACCATA IN ALTO. Cercare un cognome in un
+        elenco di trecento significa scrivere, guardare, scrivere ancora: se
+        il campo scorre via col resto della pagina, ogni correzione è una
+        risalita col pollice. Sticky, e con dentro anche i filtri.
+
+     2. LE SCHEDE NASCONO CHIUSE. Aperte sono otto righe l'una: venti
+        iscrizioni facevano centosessanta righe da scorrere per trovare un
+        nome. Chiusa, una scheda è il nome, quante persone vale, com'è
+        pagata e quanto: tutto quello che serve al banco delle sacche. Il
+        resto — codice fiscale, data di nascita, email, note — si apre con un
+        tocco quando serve davvero, che è quasi mai.
+
+     3. IL TASTO DEL CONTANTE RESTA FUORI. È l'unico gesto che si fa di
+        corsa, e non deve chiedere di aprire niente: sta nella scheda chiusa,
+        sotto il nome, largo quanto la scheda.
+
+     4. SUL COMPUTER L'ELENCO DIVENTA UNA GRIGLIA. La colonna unica da 36rem
+        era giusta per il telefono e sprecava due terzi di uno schermo largo:
+        adesso la colonna cresce e le schede si affiancano a due o a tre.
+
+     5. SI FILTRA E SI ORDINA. «Chi deve ancora pagare» è la domanda del
+        banco, e prima si poteva solo scorrere tutto cercando la parola
+        «attesa». L'ordine predefinito è per COGNOME, perché è così che si
+        cerca una persona in fila; «gli ultimi arrivati» resta a un tocco di
+        distanza, ed è l'ordine in cui l'API li manda.
+
+     6. SI STAMPA. Il foglio con le caselle da spuntare al ritiro delle sacce
+        è la cosa che al banco serve di più quando il telefono non prende: in
+        stampa le schede si aprono tutte, i comandi spariscono e davanti a
+        ogni persona — l'adulto e ognuno dei suoi minori — compare un
+        quadratino.
+
+     ── Trecento schede senza far ballare niente ───────────────────────────
+     Il nodo di ogni scheda si costruisce UNA volta sola, quando l'elenco
+     arriva. Cercare e filtrare non ricostruiscono niente: accendono e
+     spengono `hidden` su nodi che esistono già, e il testo su cui si cerca è
+     una stringa preparata una volta per scheda. Prima ogni tasto premuto
+     nella ricerca svuotava l'elenco e ricostruiva trecento schede da capo —
+     su un telefono si vedeva.
      ═══════════════════════════════════════════════════════════════════════ -->
 
 <style>
 /* ── Zona organizzatori ────────────────────────────────────────────────────
-   Una pagina che si usa in piedi, col telefono in mano e il banchetto delle
-   iscrizioni davanti: una colonna sola, larga quanto uno schermo di telefono
-   anche sul computer.
+   La regola che regge l'impaginazione: in questa pagina c'è UNA misura, e
+   tutto — la striscia dei conti, la barra dei comandi, l'elenco — comincia e
+   finisce sulla stessa riga verticale.
 
-   La regola che regge l'impaginazione è una sola: in questa pagina c'è UNA
-   misura. Il campo della chiave, la striscia dei conti, la fila dei tasti, la
-   ricerca e le schede cominciano e finiscono sulla stessa riga verticale.
-   Prima no — il modulo si fermava a 22rem, i conti a 36, i tasti dove
-   capitava per via della lunghezza delle scritte — e il bordo destro della
-   pagina veniva giù a scaletta. */
+   La misura però non è più una sola per tutti gli schermi. Sul telefono resta
+   la colonna da 36rem di prima; da 62rem in su cresce, perché l'elenco
+   diventa una griglia e una griglia di schede in una colonna stretta non è
+   una griglia. Il resto della pagina — testata, porta, nota finale — resta
+   sulla misura larga, così i margini restano allineati. */
 .sb-is {
   --is-col: 36rem;   /* la misura, una sola, per tutto */
   --is-h: 2.85rem;   /* altezza dei comandi: i 38px del sito crescono un filo,
@@ -59,19 +109,26 @@
 }
 html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
-.sb-is .sb-container {
-  max-width: var(--is-col);
-  /* Stessa formula di /color-walk: il margine si calcola sulla larghezza
-     vera dello schermo — minimo 1.4rem, poi il 6.5% dello schermo, con un
-     tetto a 2.2rem oltre il quale ci pensa il max-width della colonna. */
-  padding-inline: clamp(1.4rem, 6.5vw, 2.2rem);
-}
-.sb-is-sec { padding: 0.4rem 0 0; }
+@media (min-width: 62rem) { .sb-is { --is-col: 62rem; } }
+@media (min-width: 92rem) { .sb-is { --is-col: 88rem; } }
+
+/* Il contenitore è quello del sito — stessa larghezza, stesso respiro
+   laterale — e a fermarsi alla misura di questa pagina è la colonna DENTRO:
+   così /iscritti comincia sulla verticale del menu e della testata come tutte
+   le altre, invece di stare in mezzo allo schermo. Il tetto del contenitore
+   del sito (72rem) resta l'ultima parola: sopra le 92rem la colonna non
+   arriva alle 88rem dichiarate, si ferma lì. */
+.sb-is .sb-container > * { max-width: var(--is-col); }
+/* Il `padding` abbreviato azzererebbe anche i due lati, e con essi il respiro
+   laterale che .sb-container dà a tutte le sezioni del sito: qui si tocca
+   solo la verticale. */
+.sb-is-sec { padding-block: 0.4rem 0; }
 
 /* Giustificato solo il blocco che fa almeno tre righe, e sempre con la
    sillabazione: in italiano, in colonna stretta e senza, si aprono i fiumi
    bianchi fra le parole. */
 .sb-is .sb-riv-lede {
+  max-width: 46rem;
   text-align: justify;
   -webkit-hyphens: auto;
   hyphens: auto;
@@ -85,14 +142,18 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
    si porta dietro la sua riga [hidden], come fa rivalta.css dappertutto. */
 .sb-is-porta[hidden],
 .sb-is-zona[hidden],
-.sb-is-barra[hidden],
+.sb-is-comandi[hidden],
+.sb-is-card[hidden],
+.sb-is-corpo[hidden],
+.sb-is-min[hidden],
+.sb-is-incassa[hidden],
 .sb-is-conteggio[hidden] { display: none; }
 
 /* ── La porta ──────────────────────────────────────────────────────────────
-   Quando è chiusa, il modulo è tutto quello che c'è in pagina: allora è una
-   lastra vera, larga quanto la colonna, non un campo che galleggia a metà
-   riga con mezza pagina bianca a destra. */
-.sb-is-porta { margin: 0 0 1.2rem; }
+   Quando è chiusa, il modulo è tutto quello che c'è in pagina. Non prende
+   però la colonna larga del computer: un campo per una password lungo
+   ottanta caratteri è solo un campo che sembra sbagliato. */
+.sb-is-porta { max-width: 30rem; margin: 0 0 1.2rem; }
 .sb-is-porta-in { display: grid; gap: 0.65rem; padding: 1.15rem 1.2rem; }
 
 .sb-is-eti {
@@ -136,16 +197,12 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
    striscia. Dentro una lastra sola lo smusso torna a essere quello che è —
    l'angolo di una lastra — e i numeri li separano dei capelli grigi.
 
-   Erano tre finché si poteva solo pagare online. Il quarto è quello che si
-   raccoglie al banchetto la mattina del 20: chi tiene la cassa deve sapere
-   quanti soldi aspettarsi, e sommare a mente le schede non è un modo.
-
    Due per riga sul telefono, quattro in fila quando c'è spazio: quattro
    numeri affiancati su uno schermo stretto diventano quattro colonne di
    cifre spezzate a metà. */
 .sb-is-conti { margin: 0 0 0.7rem; }
 .sb-is-conti-in { display: grid; grid-template-columns: repeat(2, 1fr); }
-.sb-is-conto { text-align: center; padding: 0.9rem 0.5rem; }
+.sb-is-conto { padding: 0.9rem 0.5rem; }
 /* I fili di separazione seguono l'impaginazione, non l'ordine dei figli: a due
    colonne il filo verticale sta solo fra le coppie e quello orizzontale
    divide le due righe. Un `+ .sb-is-conto` secco disegnerebbe un filo a
@@ -175,15 +232,119 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   color: var(--sb-fg-muted);
 }
 
-/* ── La fila dei tasti ─────────────────────────────────────────────────────
-   A griglia e non a flex con `flex:1 1 auto`: così la larghezza dei tasti la
-   decide l'impaginazione e non la lunghezza delle scritte, e la fila finisce
-   esattamente dove finiscono i conti sopra e la ricerca sotto. Il primo tasto
-   prende lo spazio che avanza, gli altri due quello che gli serve. */
-.sb-is-barra { display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem; margin: 0 0 0.7rem; }
-.sb-is-cerca { margin: 0 0 0.7rem; }
+/* ── La barra dei comandi ──────────────────────────────────────────────────
+   Ricerca, filtri, ordine e tasti: tutto insieme, e attaccata in alto mentre
+   l'elenco scorre sotto. È la differenza fra cercare un cognome stando in
+   piedi e risalire la pagina a ogni lettera sbagliata.
+
+   `top` non è zero: sopra c'è la barra di navigazione del sito, alta 64px,
+   che è sticky pure lei. E il fondo è pieno e sfocato come quello della nav —
+   trasparente si vedrebbero le schede passarci dietro. */
+.sb-is-comandi {
+  position: sticky;
+  /* 64px è l'altezza della barra di navigazione del sito (.sb-nav-inner in
+     sb.css), che è sticky pure lei: sotto quella, non sotto lo zero. */
+  top: 64px;
+  z-index: 5;
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 0.7rem;
+  padding: 0.6rem 0;
+  /* Il fondo sfocato deve arrivare ai bordi della colonna e non fermarsi
+     dentro al suo margine: il padding del contenitore si annulla e si
+     restituisce al contenuto, o le schede si vedrebbero scorrere nei due
+     corridoi laterali rimasti trasparenti. */
+  margin-inline: calc(-1 * clamp(1.4rem, 6.5vw, 2.2rem));
+  padding-inline: clamp(1.4rem, 6.5vw, 2.2rem);
+  background: color-mix(in srgb, var(--sb-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border-bottom: 1px solid var(--sb-border);
+}
+
+/* Ricerca e ordine sulla stessa riga: il campo prende quello che avanza, la
+   tendina quello che le serve. Sotto i 30rem vanno in colonna, perché una
+   tendina e un campo affiancati su uno schermo stretto sono due bersagli
+   troppo piccoli. */
+.sb-is-trova { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; }
+@media (max-width: 30rem) { .sb-is-trova { grid-template-columns: 1fr; } }
+
+.sb-is-ordine {
+  min-height: var(--is-h);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--sb-fg);
+  background: var(--sb-surface-75);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: var(--is-r);
+  padding: 0 0.7rem;
+  cursor: pointer;
+}
+.sb-is-ordine:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
+
+/* I filtri: pastiglie vere, tonde, con dentro quante ne restano. Scorrono in
+   orizzontale se non ci stanno, invece di andare a capo e far crescere la
+   barra attaccata in alto — che rubando altezza si mangerebbe l'elenco. */
+.sb-is-filtri {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Il bordo del fuoco della pastiglia non deve finire tagliato dal taglio
+     dello scorrimento: un filo di respiro sopra e sotto. */
+  padding: 2px 0;
+  margin-bottom: -2px;
+}
+.sb-is-filtri::-webkit-scrollbar { display: none; }
+.sb-is-filtro {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.2rem;
+  padding: 0 0.8rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 999px;
+  background: var(--sb-surface-75);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--sb-fg-light);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.sb-is-filtro:hover { border-color: var(--sb-border-stronger); }
+.sb-is-filtro:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
+/* Il filtro acceso non prende un secondo colore: prende l'azzurro del sito,
+   che è l'unica tinta viva ammessa, e un fondo appena velato dello stesso. */
+.sb-is-filtro[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent);
+  background: color-mix(in srgb, var(--sb-brand) 10%, var(--sb-surface-75));
+  color: var(--sb-fg);
+}
+.sb-is-filtro b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--sb-fg-muted);
+}
+.sb-is-filtro[aria-pressed="true"] b { color: var(--sb-brand-text); }
+
+/* La fila dei tasti. A griglia e non a flex con `flex:1 1 auto`: così la
+   larghezza la decide l'impaginazione e non la lunghezza delle scritte, e la
+   fila finisce dove finisce tutto il resto. */
+.sb-is-barra { display: grid; grid-template-columns: 1fr auto auto auto; gap: 0.5rem; }
+/* Sotto i 30rem quattro tasti in fila diventano quattro francobolli: il primo
+   si prende tutta la prima riga e gli altri tre si dividono la seconda. */
+@media (max-width: 30rem) {
+  .sb-is-barra { grid-template-columns: repeat(3, 1fr); }
+  .sb-is-barra > :first-child { grid-column: 1 / -1; }
+}
 
 .sb-is-conteggio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
   margin: 0 0 0.7rem;
   font-size: 0.72rem;
   font-weight: 600;
@@ -195,62 +356,102 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   color: var(--sb-fg-lighter);
   font-variant-numeric: tabular-nums;
 }
+.sb-is-conteggio i { font-style: normal; color: var(--sb-fg-muted); }
 
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con otto colonne su uno schermo di telefono si
    legge scorrendo in orizzontale, ed è il modo più sicuro per non far leggere
-   niente a nessuno. */
-.sb-is-elenco { display: grid; gap: 0.6rem; }
-.sb-is-riga { padding: 0.85rem 1rem; }
-.sb-is-testa { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; }
-.sb-is-nome { margin: 0; font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
-/* La cifra non ha un colore suo. Il verde di prima era un secondo accento
-   acceso per dire una cosa che dicono già la posizione e il peso: è l'unico
-   numero in fondo alla riga del nome, in cifre a larghezza fissa, e scendendo
-   lungo l'elenco si leggono incolonnate senza bisogno di tingerle. */
+   niente a nessuno.
+
+   Sul computer le schede si affiancano. `align-items: start` perché una
+   scheda aperta non deve tirarsi dietro l'altezza di quelle chiuse che le
+   stanno di fianco. */
+.sb-is-elenco { display: grid; gap: 0.6rem; align-items: start; }
+/* La lastra del design system è alta quanto la sua cella (`height: 100%`), ed
+   è giusto per una griglia di card tutte uguali. Qui no: una scheda aperta
+   farebbe crescere anche le due chiuse che le stanno di fianco, lasciandole
+   mezze vuote. Ognuna è alta quanto quello che ha dentro. */
+.sb-is-card, .sb-is-card > .sb-panel-inner { height: auto; }
+@media (min-width: 62rem) { .sb-is-elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 92rem) { .sb-is-elenco { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.sb-is-riga { padding: 0.7rem 0.85rem; }
+
+/* La testata della scheda è tutta un bottone: il bersaglio è l'intera riga,
+   non una freccina da dodici pixel in fondo a destra. Si spoglia dei modi del
+   bottone — fondo, bordo, allineamento centrato — e resta un blocco premibile. */
+.sb-is-capo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.sb-is-capo:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 3px; border-radius: 4px; }
+.sb-is-capo-testo { flex: 1 1 auto; min-width: 0; }
+.sb-is-nome {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--sb-fg);
+  overflow-wrap: anywhere;
+}
+/* Una riga sola sotto il nome con tutto quello che serve al banco: quante
+   persone vale l'iscrizione, e com'è pagata. Prima erano due blocchi. */
+.sb-is-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--sb-fg-muted);
+}
+/* «Deve ancora pagare» non è un'emergenza da semaforo, ma è l'unica cosa di
+   questa pagina che cambia il comportamento di chi la legge: prende l'azzurro
+   del sito, che è l'unico colore acceso ammesso, e nient'altro. */
+.sb-is-meta em { font-style: normal; font-weight: 600; color: var(--sb-brand-text); }
+
+/* La cifra non ha un colore suo: è l'unico numero in fondo alla riga del
+   nome, in cifre a larghezza fissa, e scendendo lungo l'elenco si leggono
+   incolonnate senza bisogno di tingerle. */
 .sb-is-quota {
   flex: none;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--sb-fg);
 }
-
-/* ── Pagato, o da incassare ──────────────────────────────────────────────
-   Una parola sotto il nome, non una tinta: il design system del sito ha i
-   grigi e un azzurro solo, e «questa persona deve ancora pagare» non è
-   un'emergenza da semaforo — è un'informazione, e come tale si legge.
-
-   Chi deve ancora pagare porta anche il tasto per segnare l'incasso. Sta
-   dentro la sua scheda e non in una barra a parte perché il gesto è «questa
-   persona qui ha appena pagato», e il dito deve trovarlo dove sta guardando
-   l'occhio. */
-.sb-is-stato {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-top: 0.45rem;
-}
-.sb-is-tag {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.sb-is-frec {
+  flex: none;
   color: var(--sb-fg-muted);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.sb-is-tag--attesa { color: var(--sb-brand-text); }
+.sb-is-capo[aria-expanded="true"] .sb-is-frec { transform: rotate(180deg); }
+
+/* Il tasto del contante sta FUORI dalla testata premibile — un bottone dentro
+   un bottone non è HTML valido, e soprattutto non si potrebbe premere. Largo
+   quanto la scheda, perché è il gesto che si fa di corsa. */
 .sb-is-incassa {
-  height: 30px;
-  padding: 0 0.7rem;
-  font-size: 0.78rem;
+  width: 100%;
+  margin-top: 0.6rem;
+  min-height: 2.5rem;
+  font-size: 0.85rem;
 }
+
+.sb-is-corpo { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px solid var(--sb-border); }
 
 /* Etichetta e valore su due colonne fisse, non a flex: così i valori di tutte
    le righe di tutte le schede stanno su una sola verticale, e l'occhio che
    cerca un codice fiscale scende dritto invece di andarlo a ripescare riga
    per riga. */
-.sb-is-dati { margin: 0.6rem 0 0; display: grid; gap: 0.3rem; font-size: 0.88rem; color: var(--sb-fg-light); }
+.sb-is-dati { margin: 0; display: grid; gap: 0.3rem; font-size: 0.88rem; color: var(--sb-fg-light); }
 .sb-is-dato { display: grid; grid-template-columns: 5.4rem 1fr; gap: 0.6rem; align-items: baseline; }
 .sb-is-dato dt {
   color: var(--sb-fg-muted);
@@ -268,13 +469,42 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   .sb-is-dato { grid-template-columns: 1fr; gap: 0.05rem; }
 }
 
+/* I minori a carico: una riga per ciascuno, non un campo solo con tutti
+   dentro. Uno per riga si contano con l'occhio, e in stampa ognuno si prende
+   il suo quadratino da spuntare al ritiro della sacca. */
+.sb-is-min {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0.5rem 0 0;
+  border-top: 1px dashed var(--sb-border);
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--sb-fg-light);
+}
+.sb-is-min-t {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sb-fg-muted);
+}
+.sb-is-min li { display: flex; align-items: baseline; gap: 0.45rem; }
+.sb-is-min b { font-weight: 600; color: var(--sb-fg); }
+.sb-is-min span { color: var(--sb-fg-muted); font-size: 0.78rem; }
+
+/* Il quadratino da spuntare esiste solo sulla carta. A schermo non serve —
+   il telefono non ha una penna — e una casella che non si può spuntare
+   promette una funzione che non c'è. */
+.sb-is-spunta { display: none; }
+
 /* Il vuoto è un posto, non un'assenza: un riquadro tratteggiato largo quanto
    le schede che ci andranno. Prima era una frase in mezzo al niente, e
    sembrava che la pagina si fosse interrotta a metà. */
 .sb-is-vuoto {
+  grid-column: 1 / -1;
   margin: 0;
   padding: 1.7rem 1rem;
-  text-align: center;
   color: var(--sb-fg-muted);
   font-size: 0.92rem;
   border: 1px dashed var(--sb-border-strong);
@@ -305,6 +535,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 /* La nota chiude la pagina con un capello grigio, come le chiudono le altre
    del sito. */
 .sb-is-nota {
+  max-width: 46rem;
   margin: 1.6rem 0 0;
   padding-top: 1.1rem;
   border-top: 1px solid var(--sb-border);
@@ -316,6 +547,65 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   hyphens: auto;
 }
 .sb-is-nota + .sb-is-nota { margin-top: 0.8rem; padding-top: 0; border-top: 0; }
+
+/* Il movimento è uno solo — la freccia che gira — e si ferma nei due modi di
+   sempre: l'impostazione di sistema, a cui il tasto «muovi» può dire l'ultima
+   parola, e il tasto «ferma» della barra in basso. */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-is-frec { transition: none; }
+}
+html.rsm-still .sb-is-frec { transition: none; }
+
+/* ── Il foglio del banco ───────────────────────────────────────────────────
+   Al ritiro delle sacche serve un elenco di carta con le caselle da spuntare:
+   il telefono in piazza può non prendere, e comunque due persone che spuntano
+   sullo stesso telefono non esistono.
+
+   In stampa spariscono i comandi, le schede si aprono tutte — le apre il JS
+   prima di stampare, perché `hidden` è un attributo e nessun media query lo
+   toglie — e davanti a ogni persona compare un quadratino. Nero su bianco,
+   perché una stampante di casa deve produrre un foglio leggibile al primo
+   colpo. */
+@media print {
+  @page { size: A4; margin: 12mm; }
+
+  html { font-size: 11px; }
+  html, body, .sb-home, .sb-main {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .sb-home::before, .sb-home::after { display: none !important; }
+
+  .sb-nav, .sb-foot, .sb-ctl,
+  .sb-is-comandi, .sb-is-porta, .sb-is-incassa, .sb-is-frec, .sb-is-nota,
+  .sb-is-esito { display: none !important; }
+  .sb-main { padding: 0 !important; }
+  .sb-is .sb-container { max-width: none !important; padding: 0 !important; }
+  .sb-riv-pagehead { padding: 0 0 3mm !important; }
+  .sb-is .sb-riv-lede { display: none; }
+
+  .sb-is *, .sb-is { color: #000 !important; background: transparent !important; box-shadow: none !important; }
+  .sb-is-conti-in { grid-template-columns: repeat(4, 1fr); border: 1px solid #000; }
+  .sb-is-conto { border-color: #000 !important; }
+
+  /* Due colonne di schede sul foglio: una sola sprecherebbe mezza A4, tre
+     spezzerebbero i nomi lunghi. Nessuna scheda a cavallo di due fogli. */
+  .sb-is-elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3mm; }
+  .sb-is-card { break-inside: avoid; page-break-inside: avoid; }
+  .sb-is-riga { padding: 2mm 2.5mm; border: 1px solid #000; }
+  .sb-is-corpo { border-top-color: #000 !important; }
+
+  /* Il quadratino: davanti all'adulto e davanti a ognuno dei suoi minori,
+     perché al banco si spunta la persona, non il pagamento. */
+  .sb-is-spunta {
+    display: inline-block;
+    flex: none;
+    width: 3.5mm;
+    height: 3.5mm;
+    border: 1px solid #000;
+    border-radius: 0.6mm;
+  }
+}
 </style>
 
 <div class="sb-is">
@@ -342,20 +632,38 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     <div class="sb-is-zona" id="is-zona" hidden>
       <div class="sb-panel sb-is-conti">
         <div class="sb-panel-inner sb-is-conti-in">
-          <div class="sb-is-conto"><b id="is-n">0</b><span>persone su 300</span></div>
+          <div class="sb-is-conto"><b id="is-n">0</b><span id="is-n-et">persone</span></div>
           <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div>
           <div class="sb-is-conto"><b id="is-att">0 €</b><span>da incassare</span></div>
           <div class="sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div>
         </div>
       </div>
 
-      <div class="sb-is-barra">
-        <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
-        <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
-        <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
-      </div>
+      <!-- La barra dei comandi: attaccata in alto mentre l'elenco scorre. -->
+      <div class="sb-is-comandi" id="is-comandi">
+        <div class="sb-is-trova">
+          <input class="sb-is-campo" type="search" id="is-cerca" placeholder="Cerca nome, codice fiscale, email…" autocomplete="off" enterkeyhint="search" aria-label="Cerca fra gli iscritti">
+          <select class="sb-is-ordine" id="is-ordine" aria-label="Ordine dell'elenco">
+            <option value="cognome">A–Z per cognome</option>
+            <option value="recenti">Ultimi iscritti</option>
+            <option value="importo">Quota più alta</option>
+          </select>
+        </div>
 
-      <input class="sb-is-campo sb-is-cerca" type="search" id="is-cerca" placeholder="Cerca nome, codice fiscale, email…" autocomplete="off" enterkeyhint="search">
+        <div class="sb-is-filtri" role="group" aria-label="Filtra l'elenco">
+          <button type="button" class="sb-is-filtro" data-filtro="tutti" aria-pressed="true">Tutti <b data-conta="tutti">0</b></button>
+          <button type="button" class="sb-is-filtro" data-filtro="attesa" aria-pressed="false">Da incassare <b data-conta="attesa">0</b></button>
+          <button type="button" class="sb-is-filtro" data-filtro="pagati" aria-pressed="false">Pagati <b data-conta="pagati">0</b></button>
+          <button type="button" class="sb-is-filtro" data-filtro="minori" aria-pressed="false">Con minori <b data-conta="minori">0</b></button>
+        </div>
+
+        <div class="sb-is-barra">
+          <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
+          <button class="sb-btn sb-btn--secondary" type="button" id="is-stampa">Stampa</button>
+          <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
+          <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
+        </div>
+      </div>
 
       <p class="sb-is-conteggio" id="is-conteggio" hidden></p>
 
@@ -363,7 +671,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     </div>
 
     <p class="sb-is-nota">
-      Qui dentro ci sono dati di persone vere — codice fiscale e data di nascita compresi, e i nomi dei minori che qualcuno ha iscritto con sé. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo.
+      Qui dentro ci sono dati di persone vere — codice fiscale e data di nascita compresi, e i nomi dei minori che qualcuno ha iscritto con sé. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo, e se stampi il foglio del banco ricordati che è un elenco di dati personali su carta: si tiene addosso e si distrugge dopo.
     </p>
 
     <noscript>
@@ -383,11 +691,18 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   var elenco = document.getElementById("is-elenco");
   var esito = document.getElementById("is-esito");
   var cerca = document.getElementById("is-cerca");
+  var ordineSel = document.getElementById("is-ordine");
   var conteggio = document.getElementById("is-conteggio");
   var CHIAVE_MEM = "rsm-iscritti-chiave";
 
   var dati = null;
   var chiave = "";
+  /* Le schede già costruite: una per iscrizione, col suo nodo, il testo su cui
+     si cerca e le chiavi su cui si ordina. Si costruiscono una volta sola,
+     quando l'elenco arriva; da lì in poi cercare e filtrare non fanno altro
+     che accendere e spegnere `hidden`. */
+  var schede = [];
+  var filtro = "tutti";
 
   /* sessionStorage e non localStorage: la chiave vive quanto la scheda. E in
      navigazione privata qualche browser lo nega del tutto — non è un errore
@@ -411,21 +726,85 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     return d.toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
   }
 
+  function ora(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return "";
+    return d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  /* Una data ISO com'è scritta in Italia. Se arriva vuota o storta si
+     restituisce com'è: meglio una data strana che una scheda senza il campo. */
+  function data(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(iso || ""))) return iso || "";
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+
+  function normalizza(s) {
+    return String(s || "").toLowerCase()
+      .replace(/[àáâä]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i")
+      .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u");
+  }
+
+  /* Il quadratino da spuntare: esiste nel documento sempre, si vede solo in
+     stampa. Metterlo qui e non aggiungerlo al momento di stampare vuol dire
+     che il foglio è già pronto: `window.print()` non deve costruire niente. */
+  function spunta() {
+    var s = document.createElement("span");
+    s.className = "sb-is-spunta";
+    s.setAttribute("aria-hidden", "true");
+    return s;
+  }
+
+  function freccia() {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "sb-is-frec");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "m6 9 6 6 6-6");
+    svg.appendChild(path);
+    return svg;
+  }
+
   /* ── Una scheda per iscritto ────────────────────────────────────────────
      Tutto quello che arriva dal modulo è testo scritto da qualcun altro: si
      mette in pagina con textContent e mai con innerHTML. Non è paranoia — è
      l'unico modo per cui un nome con dentro un segno di minore resta un nome
      e non diventa markup. */
-  function riga(i) {
-    var panel = document.createElement("div");
-    panel.className = "sb-panel";
+  function scheda(i) {
+    var card = document.createElement("article");
+    /* `sb-panel--solid` è la scappatoia che sb.css tiene apposta per questi
+       casi, e qui serve davvero: .sb-panel-inner ha un backdrop-filter, e
+       trecento sfocature del fondo in una pagina sola sono trecento sfocature
+       che il compositore del telefono rifà a ogni frame di scorrimento. Su una
+       scheda piccola il vetro non si vede; il rallentamento sì. */
+    card.className = "sb-panel sb-panel--solid sb-is-card";
     var inner = document.createElement("div");
     inner.className = "sb-panel-inner sb-is-riga";
-    panel.appendChild(inner);
+    card.appendChild(inner);
 
-    var testa = document.createElement("div");
-    testa.className = "sb-is-testa";
-    var nome = document.createElement("h3");
+    var persone = 1 + (i.minori || []).length;
+
+    /* La testata: tutta premibile, apre e chiude il corpo. */
+    var capo = document.createElement("button");
+    capo.type = "button";
+    capo.className = "sb-is-capo";
+    capo.setAttribute("aria-expanded", "false");
+
+    capo.appendChild(spunta());
+
+    var testo = document.createElement("span");
+    testo.className = "sb-is-capo-testo";
+
+    var nome = document.createElement("span");
     nome.className = "sb-is-nome";
     /* Una fattura di cui non si riescono a leggere le voci non sparisce:
        compare così, col suo numero, perché chi organizza possa andarla a
@@ -434,39 +813,43 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     nome.textContent = i.illeggibile
       ? "Iscrizione non leggibile"
       : (i.nome + " " + i.cognome).trim() || "(senza nome)";
+    testo.appendChild(nome);
+
+    /* La riga sotto il nome: quante persone e com'è pagata. Tre casi e tre
+       parole diverse, perché il giorno della camminata la differenza fra «ha
+       pagato» e «deve pagarti dieci euro» è tutta la ragione per cui questa
+       pagina esiste. */
+    var meta = document.createElement("span");
+    meta.className = "sb-is-meta";
+    meta.appendChild(document.createTextNode(persone === 1 ? "1 persona · " : persone + " persone · "));
+    if (i.pagato) {
+      meta.appendChild(document.createTextNode(i.pagamento === "contanti" ? "contanti, incassati" : "PayPal, pagato"));
+    } else {
+      var em = document.createElement("em");
+      em.textContent = "contanti, da incassare";
+      meta.appendChild(em);
+    }
+    testo.appendChild(meta);
+    capo.appendChild(testo);
+
     var quota = document.createElement("span");
     quota.className = "sb-is-quota";
     quota.textContent = euro(i.importoCent);
-    testa.appendChild(nome);
-    testa.appendChild(quota);
-    inner.appendChild(testa);
+    capo.appendChild(quota);
+    capo.appendChild(freccia());
 
-    /* Com'è stata pagata, o come lo sarà. Tre casi e tre parole diverse,
-       perché il giorno della camminata la differenza fra «ha pagato» e «deve
-       pagarti dieci euro» è tutta la ragione per cui questa pagina esiste. */
-    var stato = document.createElement("div");
-    stato.className = "sb-is-stato";
-    var tag = document.createElement("span");
-    tag.className = "sb-is-tag" + (i.pagato ? "" : " sb-is-tag--attesa");
-    tag.textContent = i.pagato
-      ? i.pagamento === "contanti"
-        ? "Contanti · incassati"
-        : "PayPal · pagato"
-      : "Contanti · da incassare";
-    stato.appendChild(tag);
+    inner.appendChild(capo);
 
-    if (!i.pagato) {
-      var tasto = document.createElement("button");
-      tasto.type = "button";
-      tasto.className = "sb-btn sb-btn--secondary sb-is-incassa";
-      tasto.textContent = "Segna incassati " + euro(i.importoCent);
-      tasto.addEventListener("click", function () {
-        incassa(i, tasto, tag);
-      });
-      stato.appendChild(tasto);
-    }
+    /* Il corpo: quello che si guarda solo quando serve. */
+    var corpo = document.createElement("div");
+    corpo.className = "sb-is-corpo";
+    corpo.hidden = true;
 
-    inner.appendChild(stato);
+    capo.addEventListener("click", function () {
+      var aperto = capo.getAttribute("aria-expanded") === "true";
+      capo.setAttribute("aria-expanded", aperto ? "false" : "true");
+      corpo.hidden = aperto;
+    });
 
     var dl = document.createElement("dl");
     dl.className = "sb-is-dati";
@@ -499,33 +882,65 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
     voce("Iscritto il", quando(i.quandoISO));
+    voce("Fattura", i.illeggibile ? "" : i.numero, "sb-is-mono");
+    corpo.appendChild(dl);
 
-    /* I minori a carico, uno per riga sotto i dati di chi li ha iscritti.
-       Non sono una scheda loro: sono dentro questa, perché è così che sono
-       stati iscritti e perché chi consegna le sacche deve vedere in un colpo
-       che a questo nome corrispondono tre persone. */
-    (i.minori || []).forEach(function (m, k) {
-      var eta = m.dataNascita ? " · " + data(m.dataNascita) : "";
-      var cf = m.codiceFiscale ? " · " + m.codiceFiscale : "";
-      voce(k === 0 ? "Con sé" : "", (m.nome + " " + m.cognome).trim() + eta + cf);
-    });
+    /* I minori a carico, uno per riga. Non sono una scheda loro: sono dentro
+       questa, perché è così che sono stati iscritti e perché chi consegna le
+       sacche deve vedere in un colpo che a questo nome corrispondono tre
+       persone. Uno per riga anche perché in stampa ognuno si prende il suo
+       quadratino da spuntare. */
+    if ((i.minori || []).length) {
+      var ul = document.createElement("ul");
+      ul.className = "sb-is-min";
+      var t = document.createElement("li");
+      t.className = "sb-is-min-t";
+      t.textContent = "Cammina con sé";
+      ul.appendChild(t);
+      i.minori.forEach(function (m) {
+        var li = document.createElement("li");
+        li.appendChild(spunta());
+        var b = document.createElement("b");
+        b.textContent = (m.nome + " " + m.cognome).trim() || "(senza nome)";
+        li.appendChild(b);
+        var dettagli = [];
+        if (m.dataNascita) dettagli.push(data(m.dataNascita));
+        if (m.codiceFiscale) dettagli.push(m.codiceFiscale);
+        if (dettagli.length) {
+          var sp = document.createElement("span");
+          sp.textContent = dettagli.join(" · ");
+          li.appendChild(sp);
+        }
+        ul.appendChild(li);
+      });
+      corpo.appendChild(ul);
+    }
 
-    inner.appendChild(dl);
-    return panel;
-  }
+    inner.appendChild(corpo);
 
-  /* Una data ISO com'è scritta in Italia. Se arriva vuota o storta si
-     restituisce com'è: meglio una data strana che una scheda senza il campo. */
-  function data(iso) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(iso || ""))) return iso || "";
-    var p = iso.split("-");
-    return p[2] + "/" + p[1] + "/" + p[0];
-  }
+    /* Il tasto del contante: fuori dalla testata premibile, e visibile senza
+       aprire niente. È il gesto che si fa di corsa. */
+    if (!i.pagato) {
+      var tasto = document.createElement("button");
+      tasto.type = "button";
+      tasto.className = "sb-btn sb-btn--secondary sb-is-incassa";
+      tasto.textContent = "Segna incassati " + euro(i.importoCent);
+      tasto.addEventListener("click", function () { incassa(i, tasto); });
+      inner.insertBefore(tasto, corpo);
+    }
 
-  function normalizza(s) {
-    return String(s || "").toLowerCase()
-      .replace(/[àáâä]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i")
-      .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u");
+    /* Il testo su cui si cerca, preparato una volta sola. Cercare vuol dire
+       un indexOf su questa stringa: niente concatenazioni a ogni tasto. */
+    var minori = (i.minori || [])
+      .map(function (m) { return m.nome + " " + m.cognome + " " + (m.codiceFiscale || ""); })
+      .join(" ");
+
+    return {
+      dato: i,
+      nodo: card,
+      cerca: normalizza([i.nome, i.cognome, i.codiceFiscale, i.email, i.telefono, i.numero, minori].join(" ")),
+      perCognome: normalizza((i.cognome || "") + " " + (i.nome || "")),
+    };
   }
 
   /* Perché nessuna delle fatture è finita in elenco. Le uniche due ragioni
@@ -533,45 +948,111 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
      online mai concluso — e le seconde le sa contare (`incompleti`), quindi
      confrontando i due numeri si dice esattamente il caso in cui si è invece
      di elencare tutte e due le ipotesi ogni volta. */
-  function perche(dati) {
-    if (!dati.incompleti) return dati.letti === 1 ? "è annullata" : "sono tutte annullate";
-    if (dati.incompleti >= dati.letti) {
-      return dati.letti === 1
+  function perche(d) {
+    if (!d.incompleti) return d.letti === 1 ? "è annullata" : "sono tutte annullate";
+    if (d.incompleti >= d.letti) {
+      return d.letti === 1
         ? "è un pagamento online cominciato e mai concluso"
         : "sono pagamenti online cominciati e mai conclusi";
     }
     return "sono pagamenti online mai conclusi, o iscrizioni annullate";
   }
 
-  function disegna() {
+  /* ── Costruire, ordinare, filtrare ──────────────────────────────────────
+     Tre cose separate, e solo la prima tocca il DOM per davvero.
+
+     `costruisci` gira una volta per ogni caricamento dell'elenco e crea i
+     nodi. `ordina` li rimette in fila — appendChild su un nodo che è già nel
+     documento lo SPOSTA, non lo ricrea, quindi cambiare ordine costa quanto
+     spostare dei puntatori. `applica` decide solo chi si vede. */
+  function costruisci() {
+    schede = dati.iscritti.map(scheda);
+    ordina();
+    applica();
+  }
+
+  function ordina() {
+    var modo = ordineSel.value;
+    var fila = schede.slice();
+    if (modo === "cognome") {
+      fila.sort(function (a, b) { return a.perCognome < b.perCognome ? -1 : a.perCognome > b.perCognome ? 1 : 0; });
+    } else if (modo === "importo") {
+      fila.sort(function (a, b) { return b.dato.importoCent - a.dato.importoCent; });
+    }
+    /* «recenti» è l'ordine in cui l'API li manda — l'ultimo arrivato per
+       primo — e quindi è l'ordine di `schede` così com'è. */
+
+    var frammento = document.createDocumentFragment();
+    fila.forEach(function (s) { frammento.appendChild(s.nodo); });
+    elenco.appendChild(frammento);
+    /* appendChild su un nodo che è già nel documento lo sposta in fondo: dopo
+       un riordino le schede finiscono tutte dopo il riquadro del vuoto, che
+       torna quindi rimesso per ultimo. */
+    if (nodoVuoto) elenco.appendChild(nodoVuoto);
+  }
+
+  function passa(s, q) {
+    if (filtro === "attesa" && s.dato.pagato) return false;
+    if (filtro === "pagati" && !s.dato.pagato) return false;
+    if (filtro === "minori" && !(s.dato.minori || []).length) return false;
+    return !q || s.cerca.indexOf(q) > -1;
+  }
+
+  var nodoVuoto = null;
+
+  function applica() {
     if (!dati) return;
     var q = normalizza(cerca.value.trim());
-    var visti = dati.iscritti.filter(function (i) {
-      if (!q) return true;
-      /* Si cerca anche fra i minori: chi cerca «Bianchi» deve trovare
-         l'iscrizione anche quando Bianchi è il figlio e non chi ha pagato. */
-      var minori = (i.minori || []).map(function (m) { return m.nome + " " + m.cognome + " " + m.codiceFiscale; }).join(" ");
-      return normalizza([i.nome, i.cognome, i.codiceFiscale, i.email, i.telefono, minori].join(" ")).indexOf(q) > -1;
-    });
+    var visti = 0;
+    var persone = 0;
 
-    /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto
-       mentre si cerca: senza, chi filtra vede accorciarsi l'elenco e non sa
-       se sta guardando tre persone su dodici o tre in tutto. */
+    for (var k = 0; k < schede.length; k++) {
+      var ok = passa(schede[k], q);
+      /* Si scrive solo quando cambia: assegnare `hidden` a trecento nodi che
+         ce l'hanno già com'era è lavoro che il browser deve comunque
+         guardare. */
+      if (schede[k].nodo.hidden === ok) schede[k].nodo.hidden = !ok;
+      if (ok) {
+        visti++;
+        persone += 1 + (schede[k].dato.minori || []).length;
+      }
+    }
+
+    /* La riga che dice quanti se ne stanno vedendo. Serve soprattutto mentre
+       si cerca: senza, chi filtra vede accorciarsi l'elenco e non sa se sta
+       guardando tre persone su dodici o tre in tutto. */
     if (!dati.iscritti.length) {
       conteggio.hidden = true;
     } else {
       conteggio.hidden = false;
-      var persone = dati.persone != null ? dati.persone : dati.iscritti.length;
-      conteggio.textContent = q
-        ? visti.length + " di " + dati.iscritti.length + " iscrizioni"
-        : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscrizione · " : " iscrizioni · ") +
-          persone + (persone === 1 ? " persona" : " persone");
+      conteggio.textContent = "";
+      var filtrando = q || filtro !== "tutti";
+      var righe = filtrando
+        ? visti + " di " + dati.iscritti.length + (dati.iscritti.length === 1 ? " iscrizione" : " iscrizioni")
+        : dati.iscritti.length + (dati.iscritti.length === 1 ? " iscrizione" : " iscrizioni");
+      conteggio.appendChild(document.createTextNode(righe));
+      var sep = document.createElement("i");
+      sep.textContent = "·";
+      conteggio.appendChild(sep);
+      conteggio.appendChild(document.createTextNode(persone + (persone === 1 ? " persona" : " persone")));
+      if (dati.aggiornatoISO) {
+        var sep2 = document.createElement("i");
+        sep2.textContent = "· letto alle " + ora(dati.aggiornatoISO);
+        conteggio.appendChild(sep2);
+      }
     }
 
-    elenco.innerHTML = "";
-    if (!visti.length) {
-      var vuoto = document.createElement("p");
-      vuoto.className = "sb-is-vuoto";
+    /* Il riquadro del vuoto. Vive nel documento come tutto il resto: si
+       accende e si spegne, non si crea e distrugge. */
+    if (!nodoVuoto) {
+      nodoVuoto = document.createElement("p");
+      nodoVuoto.className = "sb-is-vuoto";
+      elenco.appendChild(nodoVuoto);
+    }
+    if (visti) {
+      nodoVuoto.hidden = true;
+    } else {
+      nodoVuoto.hidden = false;
       /* «Nessun iscritto» e «non riesco a vedere gli iscritti» sulla pagina
          sono la stessa immagine e due guai molto diversi. Ma quando PayPal ha
          delle fatture e l'elenco è vuoto non è mai il secondo: una fattura
@@ -579,15 +1060,27 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
          due noti — è stata annullata, oppure è un pagamento online aperto e
          mai concluso. Quello che serve dire è quale dei due, non un allarme:
          all'inizio, e dopo ogni prova, è la situazione normale. */
-      vuoto.textContent = dati.iscritti.length
-        ? "Nessuno corrisponde a quello che hai scritto."
+      nodoVuoto.textContent = dati.iscritti.length
+        ? "Nessuno corrisponde a quello che stai cercando."
         : dati.letti
           ? "PayPal ha " + dati.letti + (dati.letti === 1 ? " fattura" : " fatture") + " per questo evento, ma nessuna è un'iscrizione da mostrare: " + perche(dati) + "."
           : "Ancora nessun iscritto. Il primo che compila il modulo compare qui.";
-      elenco.appendChild(vuoto);
-      return;
     }
-    visti.forEach(function (i) { elenco.appendChild(riga(i)); });
+  }
+
+  /* I numeri dentro le pastiglie dei filtri: quante iscrizioni ci sono in
+     ognuno dei quattro insiemi, indipendentemente da cosa si sta cercando. */
+  function contaFiltri() {
+    var n = { tutti: 0, attesa: 0, pagati: 0, minori: 0 };
+    dati.iscritti.forEach(function (i) {
+      n.tutti++;
+      if (i.pagato) n.pagati++; else n.attesa++;
+      if ((i.minori || []).length) n.minori++;
+    });
+    Object.keys(n).forEach(function (k) {
+      var el = document.querySelector('[data-conta="' + k + '"]');
+      if (el) el.textContent = String(n[k]);
+    });
   }
 
   /* ── Il contante che arriva al banchetto ────────────────────────────────
@@ -603,7 +1096,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
      ricarica tutto invece di aggiustare la riga a mano: i totali in cima
      cambiano insieme a lei, e due numeri che non si muovono insieme sono il
      modo più veloce per non fidarsi più di una pagina. */
-  function incassa(i, tasto, tag) {
+  function incassa(i, tasto) {
     var quanto = euro(i.importoCent);
     var chi = (i.nome + " " + i.cognome).trim() || "questa iscrizione";
     if (!confirm("Segnare " + quanto + " incassati in contanti da " + chi + "?")) return;
@@ -619,9 +1112,6 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
         if (!res.ok || !res.d.incassata) throw new Error((res.d && res.d.errore) || "non è andata");
-        tag.textContent = "Contanti · incassati";
-        tag.className = "sb-is-tag";
-        tasto.remove();
         return carica();
       })
       .catch(function (err) {
@@ -643,8 +1133,12 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         }
         dati = res.d;
         /* Il numero grande è quello delle PERSONE, non delle iscrizioni: il
-           tetto di 300 è di partecipanti, e un pagamento può valerne tre. */
-        document.getElementById("is-n").textContent = String(dati.persone != null ? dati.persone : dati.iscritti.length);
+           tetto è di partecipanti, e un pagamento può valerne tre. Il tetto
+           lo dice il server (`tetto`), così la pagina non ha un 300 scritto
+           dentro che un giorno smetterà di essere vero. */
+        var persone = dati.persone != null ? dati.persone : dati.iscritti.length;
+        document.getElementById("is-n").textContent = String(persone);
+        document.getElementById("is-n-et").textContent = dati.tetto ? "persone su " + dati.tetto : "persone";
         document.getElementById("is-tot").textContent = euro(dati.incassatoCent);
         document.getElementById("is-att").textContent = euro(dati.daIncassareCent);
         document.getElementById("is-inc").textContent = String(dati.incompleti);
@@ -652,7 +1146,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
         porta.hidden = true;
         zona.hidden = false;
         mostra(null, "");
-        disegna();
+
+        elenco.textContent = "";
+        nodoVuoto = null;
+        contaFiltri();
+        costruisci();
       })
       .catch(function (err) {
         mostra("errore", String(err.message || err));
@@ -681,19 +1179,91 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   });
 
   document.getElementById("is-aggiorna").addEventListener("click", carica);
-  cerca.addEventListener("input", disegna);
+
+  /* La ricerca aspetta un attimo prima di filtrare. Non è per il costo del
+     filtro — quello è un indexOf su trecento stringhe già pronte — ma perché
+     chi scrive «bianchi» col pollice fa sette passaggi, e sette
+     riordinamenti dell'elenco sotto le dita fanno ballare la pagina. */
+  var attesaCerca = 0;
+  cerca.addEventListener("input", function () {
+    window.clearTimeout(attesaCerca);
+    attesaCerca = window.setTimeout(applica, 120);
+  });
+  /* Invio nella ricerca non manda niente da nessuna parte: filtra subito e
+     chiude la tastiera, che è quello che serve per vedere i risultati. */
+  cerca.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter") return;
+    ev.preventDefault();
+    window.clearTimeout(attesaCerca);
+    applica();
+    cerca.blur();
+  });
+
+  ordineSel.addEventListener("change", function () { ordina(); applica(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".sb-is-filtro"), function (b) {
+    b.addEventListener("click", function () {
+      filtro = b.getAttribute("data-filtro");
+      Array.prototype.forEach.call(document.querySelectorAll(".sb-is-filtro"), function (altro) {
+        altro.setAttribute("aria-pressed", altro === b ? "true" : "false");
+      });
+      applica();
+    });
+  });
+
+  /* Da tastiera, sul computer: «/» porta nella ricerca ed Esc la svuota. Due
+     scorciatoie sole, quelle che si usano davvero guardando un elenco. */
+  document.addEventListener("keydown", function (ev) {
+    if (zona.hidden) return;
+    var attivo = document.activeElement;
+    var dentroUnCampo = !!attivo && /^(INPUT|TEXTAREA|SELECT)$/.test(attivo.tagName);
+    if (ev.key === "/" && !dentroUnCampo) {
+      ev.preventDefault();
+      cerca.focus();
+      cerca.select();
+    } else if (ev.key === "Escape" && attivo === cerca) {
+      cerca.value = "";
+      applica();
+    }
+  });
 
   document.getElementById("is-esci").addEventListener("click", function () {
     scorda();
     chiave = "";
     dati = null;
-    elenco.innerHTML = "";
+    schede = [];
+    nodoVuoto = null;
+    elenco.textContent = "";
     cerca.value = "";
     conteggio.hidden = true;
     zona.hidden = true;
     porta.hidden = false;
     campoChiave.value = "";
     mostra(null, "");
+  });
+
+  /* ── Il foglio del banco ────────────────────────────────────────────────
+     Si stampa quello che si sta guardando, filtri compresi: se sul telefono
+     si è filtrato «da incassare», il foglio che esce è quello di chi deve
+     ancora pagare. Le schede si aprono tutte prima di stampare — `hidden` è
+     un attributo, e nessuna regola CSS lo toglie — e si richiudono dopo, o
+     chi torna alla pagina la ritrova tutta spalancata. */
+  document.getElementById("is-stampa").addEventListener("click", function () {
+    if (!dati || !dati.iscritti.length) return mostra("errore", "Non c'è ancora niente da stampare.");
+    var chiusi = [];
+    Array.prototype.forEach.call(elenco.querySelectorAll(".sb-is-capo"), function (capo) {
+      if (capo.getAttribute("aria-expanded") === "true") return;
+      chiusi.push(capo);
+      capo.setAttribute("aria-expanded", "true");
+      var corpo = capo.parentNode.querySelector(".sb-is-corpo");
+      if (corpo) corpo.hidden = false;
+    });
+    window.print();
+    chiusi.forEach(function (capo) {
+      capo.setAttribute("aria-expanded", "false");
+      var corpo = capo.parentNode.querySelector(".sb-is-corpo");
+      if (corpo) corpo.hidden = true;
+    });
   });
 
   /* ── Il CSV ─────────────────────────────────────────────────────────────

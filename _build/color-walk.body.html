@@ -5,17 +5,16 @@
 
 
 <!-- ════════════════════════════════════════════════════════════════════════
-     La pagina dell'iscrizione alla Color Walk, vestita con il design
-     system del sito e non con un vestito suo. Vale la pena scrivere perché,
-     perché prima non era così.
+     La pagina dell'iscrizione alla Color Walk, vestita con il design system
+     del sito e non con un vestito suo.
 
      ── Una pagina del sito, non un volantino ──────────────────────────────
      Il colore dell'evento sta in un posto solo: il fondale. Ed è fatto come
      quello di tutte le altre pagine — veli radiali fissi che derivano piano,
      la griglia tecnica sopra — con le polveri colorate al posto dei due
-     azzurri. Da lì in su è il sito: intestazione .sb-riv-pagehead come
-     /eventi e /natura, sezioni .sb-riv-sec, lastra .sb-panel, tasti .sb-btn,
-     campi coi bordi e i raggi del design system, azzurro brand sul fuoco.
+     azzurri. Da lì in su è il sito: sezioni .sb-riv-sec, lastra .sb-panel,
+     tasti .sb-btn, campi coi bordi e i raggi del design system, azzurro brand
+     sul fuoco.
 
      La regola che tiene tutto insieme è quella di sb.css: grigi ovunque più
      UNA tinta viva. Qui la tinta viva è l'evento, e sta nel fondo. I comandi
@@ -26,27 +25,23 @@
 
      ── Resta una pagina da telefono ───────────────────────────────────────
      Il link gira nel gruppo del paese e si apre col pollice stando in piedi
-     da qualche parte. Due misure non vengono dal design system ma dal dito,
-     e sono dichiarate come tali dove stanno scritte: i campi alti 44px e le
+     da qualche parte. Due misure non vengono dal design system ma dal dito, e
+     sono dichiarate come tali dove stanno scritte: i campi alti 44px e le
      voci della tendina 2.9rem. Sotto quelle, un dito ne prende due insieme.
 
      E niente sotto i 16 pixel nei campi, col font dichiarato a pezzi separati
      e mai con la scorciatoia «font:» — la nota per esteso sta sulla regola dei
      campi: è il posto dove l'errore si rifà.
 
-     Il modulo si sposta da solo: ogni campo che prende il fuoco sale sotto la
-     barra di navigazione, invio porta al successivo, e il codice fiscale passa
-     avanti da sé quando i sedici caratteri tornano. Chi compila non deve mai
-     cercare dove è finito il campo dopo — e vale anche per i campi dei minori,
-     che nell'ordine entrano ed escono insieme alle loro righe.
-
      ── Il modulo: un'iscrizione è un gruppo ───────────────────────────────
      Non si iscrive una persona, si iscrive chi cammina insieme. La regola
      decisa da chi organizza è che ognuno è tutore di sé stesso, e che il
      maggiorenne che si iscrive è tutore dei minori a suo carico che iscrive
      con sé. Da lì scende tutto quello che questo modulo fa: chiede la data
-     di nascita e pretende diciotto anni, e i minori li aggiunge sotto,
-     dentro l'iscrizione di chi li porta, non in un modulo loro.
+     di nascita e pretende diciotto anni compiuti il giorno della camminata, e
+     i minori li aggiunge sotto, dentro l'iscrizione di chi li porta, non in un
+     modulo loro. Se ne possono mettere otto: è il MAX_MINORI di
+     api/_paypal.mjs, non un numero deciso qui.
 
      Il pagamento è vero e la carta viene addebitata della somma delle quote:
      10 € il maggiorenne, 5 € ognuno dai 6 ai 17 anni. Sotto i 6 anni non ci
@@ -54,7 +49,7 @@
      il codice, QUOTA_ADULTO_CENT e QUOTA_MINORE_CENT in api/_paypal.mjs, e
      il conto qui in pagina le ripete a parole per chi legge.
 
-     ── Due modi di pagare ──────────────────────────────────────────────
+     ── Due modi di pagare ─────────────────────────────────────────────────
      Subito online, oppure in contanti al ritrovo — davanti alla chiesa alle
      15:30, prima della partenza. La scelta cambia solo quello che succede
      dopo l'invio del modulo: chi paga online viene mandato su PayPal, chi
@@ -69,21 +64,69 @@
 
      L'elenco degli iscritti è la lista delle fatture PayPal: ogni iscrizione
      ne è una, e i dati del modulo ci stanno dentro come voci — una per
-     persona — più un memo riservato. Nelle mail gli importi non sono
-     ricopiati: la ricevuta mostra le voci della fattura, una per una.
+     persona — più un memo riservato.
 
-     Il codice fiscale non serve più a una polizza — non c'è polizza. Serve a
+     Il codice fiscale non serve a una polizza — non c'è polizza. Serve a
      dare una certezza in più su chi si sta assumendo delle responsabilità, e
      per questo non si controlla solo che sia ben formato: si controlla che
-     la data che porta dentro sia quella dichiarata nel campo sopra. È il
-     confronto che rende il campo utile davvero.
+     la data che porta dentro sia quella dichiarata nel campo sopra.
 
      L'esito dell'iscrizione non lo dice solo questa pagina. A pagamento
      concluso PayPal avvisa /api/conferma-color-walk, che incassa e manda la
      ricevuta a chi ha pagato e — a chi si è visto rifiutare il pagamento —
      la mail che dice che non è andata. Vale anche se il browser qui non ci
-     torna mai: la certezza sta lì, non nel ritorno dalla pagina di
-     pagamento.
+     torna mai: la certezza sta lì, non nel ritorno dalla pagina di pagamento.
+
+     ════════════════════════════════════════════════════════════════════════
+     COME È FATTO IL MECCANISMO, E PERCHÉ COSÌ
+     ════════════════════════════════════════════════════════════════════════
+     Questa è la pagina che porta i soldi e i dati: se rallenta, se salta o se
+     muore in silenzio, quello che si perde è un'iscrizione vera. Lo script in
+     fondo è riscritto attorno a cinque regole, e ognuna nasce da un modo
+     preciso in cui la versione di prima poteva andare storta.
+
+     1. UN SOLO DISEGNO PER FRAME. Prima ogni tasto premuto rifaceva tutto
+        subito: ricostruiva l'elenco dei campi, ricalcolava lo stato di ognuno,
+        riscriveva le etichette, il conto e la scritta del tasto — dentro il
+        gestore di `input`, cioè mentre il dito è ancora sul tasto. Adesso chi
+        cambia qualcosa non disegna: chiama `programma()`, che segna che c'è
+        da ridisegnare e aspetta il frame. Dieci tasti premuti in fretta fanno
+        un disegno, non dieci.
+
+     2. SI SCRIVE NEL DOCUMENTO SOLO QUELLO CHE È CAMBIATO. `testo()` e
+        `attr()` confrontano prima di assegnare. Riscrivere la stessa stringa
+        in un nodo è lavoro che il browser deve comunque prendere in
+        considerazione, e su un modulo che si ridisegna a ogni lettera si
+        sente.
+
+     3. LA PAGINA NON SCAPPA SOTTO LE DITA. Lo scorrimento automatico verso il
+        campo che prende il fuoco resta — su un telefono la tastiera si mangia
+        metà schermo — ma adesso si fa solo SE SERVE: se il campo è già in una
+        fascia comoda non si muove niente. E c'è un timer solo, che si annulla
+        e si rifà: prima ogni fuoco ne accendeva uno, e tabulando in fretta
+        partivano cinque scorrimenti dolci uno sopra l'altro.
+
+     4. NESSUNA RICHIESTA RESTA APPESA PER SEMPRE. Le due chiamate all'API
+        hanno una scadenza e un AbortController: se la rete si pianta, il tasto
+        torna premibile e chi legge sa che deve riprovare, invece di restare a
+        guardare «Un momento…» finché non chiude la pagina.
+
+     5. SE QUALCOSA ESPLODE, LA PAGINA LO DICE. Tutto l'avvio sta dentro un
+        try. Se una riga fallisce — un browser vecchio, un'estensione, un caso
+        che non abbiamo previsto — il modulo si nasconde e al suo posto compare
+        il messaggio con le due strade che non hanno bisogno di JavaScript: il
+        modulo cartaceo e l'indirizzo email. Un tasto che non risponde e non
+        spiega è il modo peggiore di rompersi, ed è già successo una volta su
+        questa pagina.
+
+     E poi una cosa che prima non c'era: LA BOZZA. Quello che si scrive resta
+     in sessionStorage finché il modulo non è mandato. Serve a un caso solo ma
+     frequente: il telefono che scarica la scheda mentre si guarda altro, o il
+     ritorno da PayPal dopo aver annullato il pagamento — prima si tornava a un
+     modulo vuoto da riscrivere da capo, codice fiscale compreso. La bozza vive
+     nella scheda del browser e in nessun altro posto, si cancella da sé quando
+     l'iscrizione è fatta, e la pagina lo dice a chi la usa nella nota sopra al
+     tasto.
      ════════════════════════════════════════════════════════════════════════ -->
 <style>
 /* ═══ La tavolozza ═══════════════════════════════════════════════════════════
@@ -102,13 +145,15 @@
   --cr-rosso: #e02b5a;
   position: relative;
 }
+html.dark .sb-cr { --cr-rosso: #ff6b8f; }
 
 /* ═══ Il fondale ═════════════════════════════════════════════════════════════
    Uno solo, fisso, per tutta la pagina: è la regola del sito e vale anche qui.
    Il meccanismo è quello di .sb-home — veli radiali che derivano piano su due
    tempi che non tornano mai in fase — e sopra ci resta la griglia tecnica del
    sito, che non si tocca. Anche i keyframes sono i suoi, sb-drift-a e
-   sb-drift-b: non ne servono di nuovi.
+   sb-drift-b: non ne servono di nuovi, e sono due animazioni di `transform`,
+   cioè le uniche che un telefono fa senza ridipingere niente.
 
    Cambia il colore e nient'altro: al posto dei due azzurri, quattro polveri.
    I veli del sito si spengono su questa pagina, o sarebbero sei. */
@@ -144,17 +189,6 @@
 html.dark .sb-cw-vernice::before,
 html.dark .sb-cw-vernice::after { opacity: 0.5; }
 
-/* ═══ L'intestazione ═════════════════════════════════════════════════════════
-   Non c'è: occhiello, titolo, data e «cos'è» li dice il manifesto, che è
-   un'immagine (.sb-riv-cwbanner in assets/rivalta.css, senza niente intorno).
-   Il colore dell'evento resta al fondale (.sb-cw-vernice). Della vecchia
-   testata resta un h1 fuori campo, .sb-riv-vh. */
-
-/* ═══ La lastra del modulo, e la locandina di fianco ════════════════════════
-   Il modulo è .sb-panel/.sb-panel-inner, la lastra del sito: stesso rim,
-   stesso smusso. Da schermo largo gli sta accanto la locandina, a destra e
-   più grande che si può; da telefono la locandina sparisce e resta la sola
-   colonna del modulo, larga 46rem come i testi delle altre pagine. */
 /* ═══ Come le altre pagine: tutto a sinistra ══════════════════════════════════
    Questa pagina era l'eccezione — testate, paragrafi, note e didascalie coi
    margini automatici, per non lasciare mezza colonna vuota a destra. Adesso
@@ -193,7 +227,13 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 /* ═══ L'avanzamento ══════════════════════════════════════════════════════════
    Compilare un modulo è una scala, e una scala si sale meglio se si vede
    quanti gradini restano. Si riempie per scaleX — trasformazione, non
-   larghezza: nessun ricalcolo di layout a ogni tasto premuto. */
+   larghezza: nessun ricalcolo di layout a ogni tasto premuto.
+
+   Sta in pagina da subito, anche a zero. Prima compariva al primo campo
+   compilato, e comparendo spingeva giù tutto il modulo: un salto di
+   ventidue pixel esattamente nel momento in cui qualcuno stava scrivendo il
+   proprio nome. Un contatore che parte da zero è una cosa che si capisce; una
+   pagina che si sposta da sola no. */
 .sb-cw-avanz { margin: 0 0 1.4rem; }
 .sb-cw-avanz-riga {
   display: flex;
@@ -221,6 +261,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   background: var(--sb-brand);
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.sb-cw-avanz[hidden] { display: none; }
 
 /* ═══ I campi ════════════════════════════════════════════════════════════════
    Una colonna, sempre, anche sul computer: due campi affiancati costringono
@@ -232,6 +273,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    essere fatti della stessa cosa. Niente colore per campo: dove si sta
    scrivendo lo dice il bordo azzurro, che è l'unico acceso in pagina. */
 .sb-cw-form { display: grid; gap: 1.05rem; }
+.sb-cw-form[hidden] { display: none; }
 
 .sb-cw-campo { display: grid; gap: 0.35rem; }
 .sb-cw-campo > label {
@@ -275,7 +317,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 /* Il codice fiscale spaziato: sedici caratteri tutti attaccati non si
    rileggono, ed è il campo che più di tutti si ricontrolla. Il maiuscolo lo
    mette anche il CSS oltre al JS, così si vede già mentre il dito digita. */
-#cr-cf { text-transform: uppercase; letter-spacing: 0.06em; }
+#cr-cf, .sb-cw-min input[data-id="m-cf"] { text-transform: uppercase; letter-spacing: 0.06em; }
 .sb-cw-box input::placeholder,
 .sb-cw-box textarea::placeholder { color: var(--sb-fg-muted); }
 .sb-cw-box input:focus,
@@ -393,6 +435,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .sb-cw-min-via:hover { border-color: var(--cr-rosso); color: var(--cr-rosso); }
+.sb-cw-min-via:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 
 /* Nome e cognome del minore stanno affiancati da 30rem in su: sono due campi
    corti, li si compila di fila, e in colonna il riquadro diventerebbe una
@@ -415,6 +458,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 .sb-cw-piu:hover { border-color: var(--sb-brand); background: var(--sb-surface-100); }
+.sb-cw-piu:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 .sb-cw-piu[disabled] { opacity: 0.5; cursor: default; color: var(--sb-fg-muted); }
 .sb-cw-piu[disabled]:hover { border-color: var(--sb-border-strong); background: transparent; }
 
@@ -481,6 +525,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   border-color: color-mix(in srgb, var(--cr-rosso) 45%, transparent);
   color: var(--sb-fg);
 }
+.sb-cw-esito a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ═══ La scelta del pagamento ════════════════════════════════════════════════
    Due caselle grandi, una accanto all'altra, con la stessa grammatica del
@@ -553,6 +598,9 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 .sb-cw-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
 .sb-cw-consenso strong { font-weight: 600; color: var(--sb-fg); }
 .sb-cw-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+/* Quando manca la spunta e si è provato a mandare, il riquadro lo dice come lo
+   dicono i campi: col rosso, che qui è un segnale e non un accento. */
+.sb-cw-consenso[data-stato="ko"] { border-color: var(--cr-rosso); }
 
 /* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
    sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
@@ -582,12 +630,15 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    pagina che riguarda tutto. È la differenza fra dichiarare un patrocinio e
    nasconderlo.
 
-   Su schermo stretto le due parti si impilano, perché una colonna sola non
-   ha un «di fianco», e restano appoggiate al margine sinistro come tutto il
-   resto del sito.
+   Su schermo stretto le due parti si impilano e si centrano, perché una
+   colonna sola non ha un «di fianco».
 
    Le piastrelle restano bianche in tutti e due i temi: un logo a colori su
-   fondo scuro perde i suoi, e questi non sono nostri da ritoccare. */
+   fondo scuro perde i suoi, e questi non sono nostri da ritoccare.
+
+   ATTENZIONE: il markup di queste fasce non sta qui, lo genera renderLoghi()
+   in build.mjs. I nomi delle classi sono un contratto fra i due file: chi ne
+   rinomina una qui deve rinominarla anche là, o le fasce restano senza stile. */
 /* Lo stacco dal paragrafo della testata: senza, la prima fascia gli sta
    appiccicata sotto e sembra una sua continuazione invece che un blocco a sé. */
 .sb-cw-enti { display: grid; gap: 1.5rem; margin-top: clamp(1.8rem, 4vw, 2.6rem); }
@@ -596,15 +647,15 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 1rem 1.6rem;
 }
 .sb-cw-ente + .sb-cw-ente { padding-top: 1.5rem; border-top: 1px solid var(--sb-border); }
 
 /* La fascia con sette marchi: la frase non ci sta accanto senza schiacciarli,
    e allora sale sopra e si allarga. */
-.sb-cw-ente--sopra { flex-direction: column; align-items: flex-start; }
-.sb-cw-ente--sopra .sb-cw-ente-t { max-width: 46rem; }
+.sb-cw-ente--sopra { flex-direction: column; }
+.sb-cw-ente--sopra .sb-cw-ente-t { max-width: 46rem; text-align: center; }
 
 .sb-cw-ente-t {
   margin: 0;
@@ -616,20 +667,21 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 .sb-cw-ente-t strong { font-weight: 600; color: var(--sb-fg); }
 
 /* L'ultima riga è di servizio e non è un'attestazione: sta più piccola e più
-   spenta, com'è giusto che sia. */
-/* La riga del sito non è un'attestazione e non ha una controparte da
+   spenta, com'è giusto che sia. La riga del sito non ha una controparte da
    affiancare: sta in colonna e in mezzo, marchio sopra e testo sotto. */
-.sb-cw-ente--minuta { flex-direction: column; align-items: flex-start; }
-.sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); }
+.sb-cw-ente--minuta { flex-direction: column; }
+.sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); text-align: center; }
 .sb-cw-ente-luogo { display: block; }
 
 /* Da schermo largo le fasce diventano due colonne di misura fissa, così le
    frasi cominciano tutte sulla stessa riga verticale invece di ballare a
-   seconda di quanti marchi ha ognuna. */
+   seconda di quanti marchi ha ognuna. Il blocco delle due colonne resta
+   centrato nella pagina: è la colonna interna a essere allineata, non il
+   blocco a essere spostato a sinistra. */
 @media (min-width: 46rem) {
   /* Colonne di misura decisa tutte e due: con `1fr` la seconda si prendeva
-     quello che restava e la griglia arrivava ai bordi della colonna. Adesso
-     la coppia è un blocco, appoggiato al margine sinistro. */
+     quello che restava, la griglia arrivava ai bordi e `justify-content` non
+     aveva più niente da centrare. Adesso la coppia è un blocco, e sta in mezzo. */
   .sb-cw-ente:not(.sb-cw-ente--sopra):not(.sb-cw-ente--attorno):not(.sb-cw-ente--minuta) {
     display: grid;
     grid-template-columns: 15rem minmax(0, 26rem);
@@ -638,9 +690,9 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   }
   .sb-cw-ente:not(.sb-cw-ente--sopra):not(.sb-cw-ente--attorno):not(.sb-cw-ente--minuta) .sb-cw-loghi { justify-content: flex-end; }
 
-  /* La fascia degli enti: uno stemma per lato, la frase in mezzo ai due. Le
-     colonne laterali hanno la stessa misura, così i due stemmi si guardano
-     alla stessa distanza dalla riga che li nomina. */
+  /* La fascia degli enti: uno stemma per lato, la frase in mezzo. Le due
+     colonne laterali hanno la stessa misura, o la riga di testo si sposterebbe
+     dal centro della pagina. */
   .sb-cw-ente--attorno {
     display: grid;
     grid-template-columns: 8rem minmax(0, 28rem) 8rem;
@@ -650,17 +702,19 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
   }
   .sb-cw-ente--attorno .sb-cw-loghi:first-child { justify-content: flex-end; }
   .sb-cw-ente--attorno .sb-cw-loghi:last-child { justify-content: flex-start; }
+  .sb-cw-ente--attorno .sb-cw-ente-t { text-align: center; }
 }
 
 @media (max-width: 46rem) {
-  .sb-cw-ente { flex-direction: column; align-items: flex-start; }
+  .sb-cw-ente { flex-direction: column; }
+  .sb-cw-ente-t { text-align: center; }
 }
 
 .sb-cw-loghi {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 1rem;
 }
 .sb-cw-logo {
@@ -708,20 +762,41 @@ a.sb-cw-logo:hover { transform: translateY(-2px); border-color: var(--sb-border-
 .sb-cw-logo--ap .sb-cw-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
 
 /* ═══ Meno movimento ═════════════════════════════════════════════════════════
-   In pagina si muove una cosa sola: la deriva dei due veli del fondale, la
-   stessa del resto del sito. Si ferma nei due modi di sempre — l'impostazione
-   di sistema, a cui il tasto «muovi» può dire l'ultima parola, e il tasto
-   «ferma» della barra in basso. Il fondale non sparisce: resta a colori,
-   immobile. Tutto il resto che si muoveva qui dentro non c'è più. */
+   In pagina si muove una cosa sola, la deriva dei due veli del fondale: la
+   stessa del resto del sito, e sono due animazioni di transform, che il
+   compositore fa senza ridipingere niente.
+
+   Si ferma nei due modi di sempre — l'impostazione di sistema, a cui il tasto
+   «muovi» può dire l'ultima parola, e il tasto «ferma» della barra in basso.
+   Il fondale non sparisce: resta a colori, immobile.
+
+   Quando il movimento è spento si spengono anche le transizioni dei campi e
+   della barra dell'avanzamento: sono micro-movimenti, ma sono movimenti, e chi
+   ha chiesto di non vederne non ne ha chiesti «pochi». */
 @media (prefers-reduced-motion: reduce) {
   html:not(.rsm-motion) .sb-cw-vernice::before,
   html:not(.rsm-motion) .sb-cw-vernice::after { animation: none !important; }
+  html:not(.rsm-motion) .sb-cw-avanz-fill,
+  html:not(.rsm-motion) .sb-cw-segno,
+  html:not(.rsm-motion) .sb-cw-box input,
+  html:not(.rsm-motion) .sb-cw-box textarea { transition: none !important; }
 }
 html.rsm-still .sb-cw-vernice::before,
 html.rsm-still .sb-cw-vernice::after { animation: none; }
+html.rsm-still .sb-cw-avanz-fill,
+html.rsm-still .sb-cw-segno { transition: none; }
 
+/* ═══ Stampata ═══════════════════════════════════════════════════════════════
+   Non è una pagina da stampare — per quello c'è /color-walk-modulo — ma
+   qualcuno stamperà il percorso, e allora che esca leggibile: fondo bianco,
+   niente fondale, e via il modulo, che su carta è un modulo che non si può
+   compilare. */
 @media print {
   .sb-cw-vernice { display: none; }
+  html, body, .sb-home, .sb-main { background: #fff !important; color: #000 !important; }
+  .sb-home::before, .sb-home::after { display: none !important; }
+  .sb-cw-iscr, .sb-riv-cwbanner { display: none !important; }
+  * { color: #000 !important; box-shadow: none !important; }
 }
 </style>
 
@@ -742,7 +817,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. A fine camminata c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. Le età si contano al giorno della camminata. A fine giro c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
       <p>Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>, ma ci si può iscrivere anche <strong>di persona</strong>, al banchetto in piazza: <strong>martedì 15 settembre</strong> e poi il giorno stesso, con il <a href="/color-walk-modulo">modulo cartaceo</a> e in contanti. Il materiale basta per <strong>300 partecipanti</strong>. Se piove, la camminata è rinviata a <strong>domenica 27 settembre</strong>.</p>
       <p style="margin-top:0.8rem"><a href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener" style="font-size:0.9rem;font-weight:500">Scarica la locandina in PDF →</a></p>
     </div>
@@ -764,9 +839,9 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
     <div class="sb-cw-lastra"><div class="sb-panel"><div class="sb-panel-inner">
 
-      <div id="cr-esito" class="sb-cw-esito" role="status"></div>
+      <div id="cr-esito" class="sb-cw-esito" role="status" aria-live="polite"></div>
 
-      <div class="sb-cw-avanz" id="cr-avanz" hidden>
+      <div class="sb-cw-avanz" id="cr-avanz">
         <div class="sb-cw-avanz-riga">
           <span>Quanto manca</span>
           <span class="sb-cw-avanz-n"><span id="cr-fatti">0</span> di <span id="cr-totale">6</span></span>
@@ -799,7 +874,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
             <input type="date" id="cr-nascita" name="nascita" required autocomplete="bday" enterkeyhint="next" min="1900-01-01" max="2008-09-20" aria-describedby="cr-nascita-aiuto">
             <span class="sb-cw-segno" aria-hidden="true"></span>
           </div>
-          <p class="sb-cw-aiuto" id="cr-nascita-aiuto">Per iscriversi bisogna essere maggiorenni: i minori li iscrive un adulto insieme a sé, qui sotto.</p>
+          <p class="sb-cw-aiuto" id="cr-nascita-aiuto">Per iscriversi bisogna avere 18 anni compiuti il 20 settembre: i minori li iscrive un adulto insieme a sé, qui sotto.</p>
         </div>
 
         <div class="sb-cw-campo" data-campo="cf">
@@ -836,7 +911,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
              finché non la si chiede. -->
         <div class="sb-cw-gruppo" id="cr-gruppo">
           <p class="sb-cw-gruppo-t">Chi cammina con te <span class="sb-cw-facolt">facoltativo</span></p>
-          <p class="sb-cw-gruppo-p">I minori dai 6 ai 17 anni che iscrivi insieme a te e accompagni per tutto il percorso — 5 € ciascuno. Sotto i 6 anni non serve iscriverli.</p>
+          <p class="sb-cw-gruppo-p">I minori dai 6 ai 17 anni che iscrivi insieme a te e accompagni per tutto il percorso — 5 € ciascuno, fino a otto per iscrizione. Sotto i 6 anni non serve iscriverli.</p>
           <div id="cr-minori"></div>
           <button type="button" class="sb-cw-piu" id="cr-piu">+ Aggiungi un minore</button>
         </div>
@@ -885,7 +960,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <input type="text" id="cr-sito" name="sito" tabindex="-1" autocomplete="off">
         </div>
 
-        <div class="sb-cw-consenso">
+        <div class="sb-cw-consenso" id="cr-consenso-box">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
           <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
         </div>
@@ -893,7 +968,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
              quando serve, cioè un attimo prima di pagare. -->
         <div class="sb-cw-nota">
-          La quota è di <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> per ogni ragazzo dai 6 ai 17 anni, e va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor: non c'è niente da pagare a parte. Se paghi online il pagamento si fa sulle pagine di PayPal — anche con la carta, senza bisogno di un conto PayPal — e il sito non vede e non conserva i dati della carta; se scegli i contanti, ti iscrivi adesso e porti la quota al banchetto il giorno stesso. In tutti e due i casi arriva una mail all'indirizzo che scrivi qui sopra: la ricevuta se hai già pagato, il promemoria di quanto portare se paghi al ritrovo. <strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
+          La quota è di <strong>10 €</strong> per chi ha 18 anni o più e <strong>5 €</strong> per ogni ragazzo dai 6 ai 17 anni, e va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor: non c'è niente da pagare a parte. Se paghi online il pagamento si fa sulle pagine di PayPal — anche con la carta, senza bisogno di un conto PayPal — e il sito non vede e non conserva i dati della carta; se scegli i contanti, ti iscrivi adesso e porti la quota al banchetto il giorno stesso. In tutti e due i casi arriva una mail all'indirizzo che scrivi qui sopra: la ricevuta se hai già pagato, il promemoria di quanto portare se paghi al ritrovo. <strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. Quello che scrivi qui resta <strong>in questa scheda del browser</strong> finché non mandi il modulo, così se la pagina si ricarica non devi riscrivere tutto: si cancella da sé a iscrizione fatta, e chiudendo la scheda. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.
         </div>
 
         <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 10 €</span></button>
@@ -942,7 +1017,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
           <div class="sb-cw-campo" data-campo="m-cf">
             <label data-per="m-cf">Codice fiscale <span class="sb-cw-facolt">facoltativo</span></label>
             <div class="sb-cw-box">
-              <input type="text" data-id="m-cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" style="text-transform:uppercase; letter-spacing:0.06em">
+              <input type="text" data-id="m-cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next">
               <span class="sb-cw-segno" aria-hidden="true"></span>
             </div>
             <p class="sb-cw-aiuto" data-aiuto="m-cf">Se ce l'hai sottomano. Chi risponde di lui sei tu, e il tuo lo abbiamo già.</p>
@@ -1037,13 +1112,63 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
 <script>
 (function () {
+  "use strict";
+
   var form = document.getElementById("cr-form");
   if (!form) return;
 
   var esito = document.getElementById("cr-esito");
   var bottone = document.getElementById("cr-submit");
+  var avanz = document.getElementById("cr-avanz");
 
-  /* Le due quote e il tetto dei minori: gli stessi numeri di api/_paypal.mjs,
+  function mostra(tipo, messaggio) {
+    esito.className = "sb-cw-esito sb-cw-esito--" + tipo;
+    esito.textContent = messaggio;
+  }
+
+  /* ══ La rete di sicurezza ═══════════════════════════════════════════════
+     Tutto l'avvio sta dentro un try. Se una riga fallisce — un browser che
+     non conosciamo, un'estensione che si mette in mezzo, un caso che non
+     abbiamo previsto — il modulo si toglie di mezzo e al suo posto compare
+     questo messaggio, con le due strade che non hanno bisogno di JavaScript.
+
+     Un tasto che non risponde e non spiega è il modo peggiore di rompersi, e
+     su questa pagina è già successo: una variabile chiamata come la funzione
+     `ordine()` l'aveva sovrascritta, e «Vai al pagamento» ha smesso di
+     rispondere senza che si vedesse niente di storto. È da lì che nasce il
+     controllo sui nomi doppi in build.mjs — che legge lo <script> per intero,
+     commenti compresi, e quindi qui dentro quella riga non si può nemmeno
+     citare per esteso. */
+  function salvagente(guaio) {
+    try {
+      form.hidden = true;
+      if (avanz) avanz.hidden = true;
+      esito.className = "sb-cw-esito sb-cw-esito--errore";
+      esito.textContent =
+        "Questo modulo non è riuscito ad aprirsi sul tuo browser, e non è colpa tua. " +
+        "Puoi iscriverti lo stesso in due modi: stampa il modulo cartaceo e portalo al banchetto in Piazza Chiesa — martedì 15 settembre dalle 16:00 alle 18:00, o domenica 20 prima della partenza — oppure scrivi a color-walk@rivaltasulmincio.it e ti iscriviamo noi.";
+      if (window.console && window.console.error) window.console.error("modulo Color Walk:", guaio);
+    } catch (e) {}
+  }
+
+  /* Una cosa sola è indispensabile davvero, ed è `fetch`: senza, il modulo
+     si compila e poi non ha modo di mandare niente. Meglio dirlo prima che
+     qualcuno scriva sedici caratteri di codice fiscale per poi scoprirlo. Il
+     resto delle API si può aggirare, e lo si aggira. */
+  if (typeof window.fetch !== "function") {
+    salvagente(new Error("questo browser non sa mandare il modulo (manca fetch)"));
+  } else {
+    try {
+      avvia();
+    } catch (guaio) {
+      salvagente(guaio);
+    }
+  }
+
+  function avvia() {
+
+  /* ══ I numeri che non si decidono qui ═══════════════════════════════════
+     Le due quote e il tetto dei minori sono gli stessi di api/_paypal.mjs,
      che è chi decide davvero. Qui servono a far vedere il conto mentre si
      compila — il conto vero lo fanno le voci della fattura, che scrive la
      funzione, non questa pagina. */
@@ -1051,63 +1176,59 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   var QUOTA_MINORE = 5;
   var MAX_MINORI = 8;
   var GIORNO_EVENTO = "2026-09-20";
-
-  function mostra(tipo, testo) {
-    esito.className = "sb-cw-esito sb-cw-esito--" + tipo;
-    esito.textContent = testo;
-  }
-
-  /* ── Il ritorno dal pagamento ───────────────────────────────────────────
-     Al ritorno non ci si fida dell'indirizzo: `?stato=ok` lo scrive chiunque
-     nella barra del browser. Chi ha pagato davvero torna anche con
-     l'identificativo dell'ordine, che PayPal aggiunge da sé come `token`, ed
-     è quello che l'API fa ricontrollare a PayPal prima che qui si dica
-     «ricevuto». */
-  var query = new URLSearchParams(location.search);
-  var stato = query.get("stato");
-  var idOrdine = query.get("token");
-
-  /* Iscrizioni chiuse: la stessa data che taglia in /api/iscrizione-color-walk
-     (23:59 del 18 settembre, ora italiana). Qui serve solo a nascondere il
-     modulo e spiegare perché — il «no» che conta lo dà comunque la funzione. Il
-     ritorno dal pagamento (`stato=ok` con l'ordine) non è toccato: chi paga
-     all'ultimo minuto torna qui dopo la mezzanotte e deve vedere la conferma. */
+  /* Le iscrizioni chiudono alle 23:59 del 18 settembre, ora italiana: la
+     stessa riga che taglia in /api/iscrizione-color-walk. Qui serve solo a
+     nascondere il modulo e spiegare perché — il «no» che conta lo dà comunque
+     la funzione, che di questa pagina non si fida. */
   var CHIUSURA_MS = Date.parse("2026-09-18T23:59:59+02:00");
   var chiuse = Date.now() > CHIUSURA_MS;
 
   var SUL_POSTO = "Il giorno stesso ci si iscrive in piazza prima della partenza, col modulo cartaceo e in contanti.";
 
-  function chiudiModulo(testo) {
-    form.style.display = "none";
-    var avanz = document.getElementById("cr-avanz");
-    if (avanz) avanz.hidden = true;
-    mostra("neutro", testo);
+  /* ══ Scrivere nel documento solo quando cambia ══════════════════════════
+     Il modulo si ridisegna tutto a ogni passata, ed è la scelta che tiene il
+     codice semplice: nessuno deve ricordarsi quale pezzo aggiornare quando
+     tocca qualcosa. Il prezzo si paga qui, in queste due funzioni: prima di
+     assegnare si guarda se serve. Riscrivere la stessa stringa in un nodo è
+     lavoro che il browser deve comunque prendere in considerazione, e su
+     trenta campi ridisegnati a ogni lettera si sente. */
+  function testo(el, v) {
+    if (el && el.textContent !== v) el.textContent = v;
+  }
+  function attr(el, nome, v) {
+    if (!el) return;
+    if (v === null || v === false) {
+      if (el.hasAttribute(nome)) el.removeAttribute(nome);
+    } else if (el.getAttribute(nome) !== v) {
+      el.setAttribute(nome, v);
+    }
   }
 
-  if (stato === "ok" && idOrdine) {
-    form.style.display = "none";
-    mostra("neutro", "Un momento, controllo il pagamento…");
+  /* ══ Un disegno per frame ═══════════════════════════════════════════════
+     Chi cambia qualcosa non disegna: chiama `programma()`. Dieci tasti
+     premuti in fretta fanno una passata, non dieci — e la passata cade dove
+     il browser stava comunque per dipingere, non in mezzo a un tasto premuto. */
+  var frame = 0;
+  var chiediFrame = window.requestAnimationFrame
+    ? function (f) { return window.requestAnimationFrame(f); }
+    : function (f) { return window.setTimeout(f, 16); };
 
-    fetch("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(idOrdine))
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (!d || !d.pagato) throw new Error("non risulta pagata");
-        var quanti = d.persone > 1 ? " Siete iscritti in " + d.persone + "." : "";
-        mostra("ok", "Iscrizione e pagamento ricevuti" + (d.nome ? ", " + d.nome : "") + ", grazie!" + quanti + " La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
-      })
-      .catch(function () {
-        mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
-        if (!chiuse) form.style.display = "";
-      });
-  } else if (chiuse) {
-    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
-  } else if (stato === "ok" && !idOrdine) {
-    mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
-  } else if (stato === "annullato") {
-    mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. Puoi riprovare quando vuoi con il modulo qui sotto — e se preferisci, scegliendo di pagare in contanti al ritrovo.");
+  function programma() {
+    if (frame) return;
+    frame = chiediFrame(function () {
+      frame = 0;
+      try {
+        disegna();
+      } catch (guaio) {
+        /* Un frame perso non è una pagina persa: si annota e si va avanti.
+           Se fosse un guasto vero si ripresenta al frame dopo, e intanto il
+           modulo resta compilabile. */
+        if (window.console && window.console.error) window.console.error("disegno:", guaio);
+      }
+    });
   }
 
-  /* ── Il codice fiscale ──────────────────────────────────────────────────
+  /* ══ Il codice fiscale ══════════════════════════════════════════════════
      Il controllo vero, quello del carattere di controllo, non solo la forma:
      un codice fiscale sbagliato di una lettera passa qualsiasi espressione
      regolare e nessuno se ne accorge più.
@@ -1169,10 +1290,11 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     return anno === Number(pezzi[0]) % 100 && mese === Number(pezzi[1]) && giorno === Number(pezzi[2]);
   }
 
-  /* ── Le età ─────────────────────────────────────────────────────────────
+  /* ══ Le età ═════════════════════════════════════════════════════════════
      Contate al giorno della camminata e non a oggi: chi compie 18 anni il 19
      settembre si iscrive da sé, chi li compie il 21 è ancora un minore a
-     carico di qualcuno. È la stessa regola che applica la funzione. */
+     carico di qualcuno. È la stessa regola che applica la funzione, ed è
+     quella scritta al punto 2 del regolamento. */
   var DATA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
   function dataValida(iso) {
@@ -1191,7 +1313,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  /* ── I campi ────────────────────────────────────────────────────────────
+  /* ══ I campi ════════════════════════════════════════════════════════════
      Un campo è un oggetto con dentro i suoi tre pezzi di DOM e due funzioni:
      `prova` dice se il valore va bene, `errore` cosa c'è che non va. Il
      messaggio di errore prende il posto dell'aiuto e poi glielo restituisce:
@@ -1222,13 +1344,17 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
      veloce per far chiudere la pagina. Il verde invece arriva subito. */
   function dipingi(c) {
     var s = statoDi(c);
-    if (s === "ok" && valore(c) !== "") c.campo.setAttribute("data-stato", "ok");
-    else if (s === "ko" && c.toccato) c.campo.setAttribute("data-stato", "ko");
-    else c.campo.removeAttribute("data-stato");
+    var stato = null;
+    if (s === "ok" && valore(c) !== "") stato = "ok";
+    else if (s === "ko" && c.toccato) stato = "ko";
+
+    attr(c.campo, "data-stato", stato);
+    attr(c.el, "aria-invalid", stato === "ko" ? "true" : null);
 
     if (c.aiuto) {
-      var inErrore = c.campo.getAttribute("data-stato") === "ko";
-      c.aiuto.textContent = inErrore ? (typeof c.errore === "function" ? c.errore(valore(c)) : c.errore) : c.testo;
+      testo(c.aiuto, stato === "ko"
+        ? (typeof c.errore === "function" ? c.errore(valore(c)) : c.errore)
+        : c.testo);
     }
   }
 
@@ -1269,7 +1395,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     specAdulto("nascita", true, function (v) { return dataValida(v) && etaAllEvento(v) >= 18 && etaAllEvento(v) < 120; },
       function (v) {
         if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
-        if (etaAllEvento(v) < 18) return "Per iscriversi bisogna essere maggiorenni. Se stai iscrivendo un minore, mettilo fra chi cammina con te, sotto i tuoi dati.";
+        if (etaAllEvento(v) < 18) return "Per iscriversi bisogna essere maggiorenni il giorno della camminata. Se stai iscrivendo un minore, mettilo fra chi cammina con te, sotto i tuoi dati.";
         return "Questa data di nascita non è plausibile: controllala.";
       }),
     specAdulto("cf", true, cfAdulto.prova, cfAdulto.errore, { maiuscolo: true }),
@@ -1279,13 +1405,24 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
   var CAMPO_NOTE = specAdulto("note", false, function () { return true; }, "");
 
+  /* I campi anche per nome, per chi deve leggerne il valore senza sapere in
+     che posizione stanno nell'elenco. */
+  var PER_ID = {};
+  for (var q = 0; q < CAMPI.length; q++) PER_ID[CAMPI[q].id] = CAMPI[q];
+  PER_ID.note = CAMPO_NOTE;
+
+  var trappola = document.getElementById("cr-sito");
+
   var consenso = document.getElementById("cr-consenso");
-  var avanz = document.getElementById("cr-avanz");
+  var consensoBox = document.getElementById("cr-consenso-box");
   var fill = document.getElementById("cr-fill");
   var fatti = document.getElementById("cr-fatti");
   var totaleN = document.getElementById("cr-totale");
+  var contoVoci = document.getElementById("cr-conto-voci");
+  var contoSomma = document.getElementById("cr-conto-somma");
+  var etichettaVai = bottone.querySelector("span");
 
-  /* ── Chi cammina con te ─────────────────────────────────────────────────
+  /* ══ Chi cammina con te ═════════════════════════════════════════════════
      Ogni minore è una riga clonata dal <template>, con i suoi quattro campi
      che entrano ed escono dall'ordine del modulo insieme a lei. Gli id si
      completano col numero della riga, perché una label deve puntare a un id
@@ -1298,13 +1435,24 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
 
   /* L'ordine in cui si cammina fra i campi con il tasto invio, e in cui si
      cerca il primo sbagliato all'invio: quello del documento. Le note stanno
-     in fondo perché in fondo stanno nel modulo. */
+     in fondo perché in fondo stanno nel modulo.
+
+     Si tiene in cache. Prima si ricostruiva a ogni tasto premuto — un
+     `slice()` più un `concat()` per riga più un `push()` — e in un modulo con
+     otto minori voleva dire nove array nuovi per ogni lettera scritta.
+     Adesso lo si butta via solo quando una riga nasce o muore, che è l'unico
+     momento in cui può cambiare davvero. */
+  var fila = null;
+
   function ordine() {
-    var tutti = CAMPI.slice();
-    righe.forEach(function (r) { tutti = tutti.concat(r.campi); });
-    tutti.push(CAMPO_NOTE);
-    return tutti;
+    if (fila) return fila;
+    fila = CAMPI.slice();
+    for (var i = 0; i < righe.length; i++) fila = fila.concat(righe[i].campi);
+    fila.push(CAMPO_NOTE);
+    return fila;
   }
+
+  function rimescola() { fila = null; }
 
   function prossimo(c) {
     var tutti = ordine();
@@ -1315,45 +1463,52 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
   function vaiA(c) {
     if (!c) return;
     c.el.focus();
-    portaSu(c.campo);
+    avvicina(c.el);
   }
 
   function collega(c) {
-    c.el.addEventListener("focus", function () { portaSuDopo(c.campo); });
+    c.el.addEventListener("focus", function () { avvicina(c.el); });
 
     c.el.addEventListener("input", function () {
       /* Il codice fiscale si scrive in maiuscolo mentre lo si digita, senza
-         far saltare il cursore a fine campo a chi sta correggendo in mezzo. */
+         far saltare il cursore a fine campo a chi sta correggendo in mezzo.
+         Questa è l'unica scrittura nel documento che resta dentro il gestore
+         di `input`, e ci resta per forza: differirla di un frame farebbe
+         vedere la lettera minuscola per un attimo prima di correggersi. */
       if (c.maiuscolo) {
         var pos = c.el.selectionStart;
         var su = c.el.value.toUpperCase();
-        if (su !== c.el.value) { c.el.value = su; c.el.setSelectionRange(pos, pos); }
+        if (su !== c.el.value) {
+          c.el.value = su;
+          try { c.el.setSelectionRange(pos, pos); } catch (e) {}
+        }
       }
-      dipingi(c);
-      conta();
+      programma();
+      segnaBozza();
 
       /* Sedici caratteri e il codice torna: in questo campo non c'è più niente
          da scrivere, e restarci dentro è solo un tocco in più da fare. Se non
          torna si resta qui, con l'errore sotto: il passaggio automatico non
-         deve mai portare via da un campo sbagliato. */
+         deve mai portare via da un campo sbagliato.
+
+         Un timer solo per tutta la pagina, annullato e rifatto: prima ogni
+         lettera del sedicesimo carattere ne accendeva uno nuovo. */
       if (c.maiuscolo && valore(c).length === 16 && statoDi(c) === "ok") {
-        window.setTimeout(function () {
+        window.clearTimeout(timerAvanti);
+        timerAvanti = window.setTimeout(function () {
           if (document.activeElement === c.el) vaiA(prossimo(c));
         }, 220);
       }
     });
 
     /* Cambiare la data di nascita cambia il verdetto sul codice fiscale, che
-       sta in un altro campo: si ridipinge anche quello, o resta verde una
-       coppia che non torna più. */
-    if (c.id === "nascita") {
-      c.el.addEventListener("change", function () { dipingi(c); dipingiCf(c); conta(); });
-    }
+       sta in un altro campo. Non serve dirlo a nessuno: la passata di disegno
+       ridipinge tutti i campi, quindi anche quello. */
+    c.el.addEventListener("change", function () { programma(); segnaBozza(); });
 
     c.el.addEventListener("blur", function () {
       c.toccato = true;
-      dipingi(c);
-      conta();
+      programma();
     });
 
     /* Invio porta al campo dopo invece di mandare il modulo a metà. Sull'ultimo
@@ -1363,30 +1518,24 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       ev.preventDefault();
       var p = prossimo(c);
       if (p) vaiA(p);
-      else { c.el.blur(); portaSu(bottone); }
+      else { c.el.blur(); avvicina(bottone); }
     });
   }
 
-  /* Il codice fiscale che sta nella stessa riga della data appena cambiata:
-     quello di chi si iscrive se la data è la sua, quello del minore se la
-     data è di un minore. */
-  function dipingiCf(campoData) {
-    if (campoData === CAMPI[2]) { dipingi(CAMPI[3]); return; }
-    righe.forEach(function (r) {
-      if (r.campi.indexOf(campoData) > -1) r.campi.forEach(function (x) { if (x.maiuscolo) dipingi(x); });
-    });
-  }
+  var timerAvanti = 0;
 
   function numeraRighe() {
-    righe.forEach(function (r, i) { r.etichetta.textContent = "Minore " + (i + 1); });
+    for (var i = 0; i < righe.length; i++) {
+      testo(righe[i].etichetta, "Minore " + (i + 1));
+    }
     tastoPiu.disabled = righe.length >= MAX_MINORI;
-    tastoPiu.textContent = righe.length >= MAX_MINORI
+    testo(tastoPiu, righe.length >= MAX_MINORI
       ? "Massimo " + MAX_MINORI + " per iscrizione"
-      : (righe.length ? "+ Aggiungi un altro minore" : "+ Aggiungi un minore");
+      : (righe.length ? "+ Aggiungi un altro minore" : "+ Aggiungi un minore"));
   }
 
-  function aggiungiMinore(colFuoco) {
-    if (righe.length >= MAX_MINORI) return;
+  function aggiungiMinore(colFuoco, valori) {
+    if (righe.length >= MAX_MINORI) return null;
 
     var frammento = modello.content.cloneNode(true);
     var nodo = frammento.querySelector("[data-minore]");
@@ -1395,7 +1544,9 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     /* Gli id: uno per campo e per riga. Le label li ritrovano da `data-per`,
        gli aiuti da `data-aiuto` — così il modello resta leggibile e qui non
        si costruiscono stringhe a caso. */
-    nodo.querySelectorAll("[data-id]").forEach(function (el) {
+    var campiDom = nodo.querySelectorAll("[data-id]");
+    for (var i = 0; i < campiDom.length; i++) {
+      var el = campiDom[i];
       var chiave = el.getAttribute("data-id");
       el.id = "cr-" + chiave + "-" + n;
       var label = nodo.querySelector('[data-per="' + chiave + '"]');
@@ -1405,7 +1556,7 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
         aiuto.id = "cr-" + chiave + "-" + n + "-aiuto";
         el.setAttribute("aria-describedby", aiuto.id);
       }
-    });
+    }
 
     function campoRiga(chiave, obbl, prova, errore, extra) {
       var s = {
@@ -1441,101 +1592,175 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
       ]
     };
 
-    riga.campi.forEach(collega);
-    riga.campi[2].el.addEventListener("change", function () { dipingi(riga.campi[3]); conta(); });
+    for (var j = 0; j < riga.campi.length; j++) collega(riga.campi[j]);
 
     nodo.querySelector("[data-togli]").addEventListener("click", function () {
-      righe.splice(righe.indexOf(riga), 1);
-      nodo.remove();
+      var dove = righe.indexOf(riga);
+      if (dove > -1) righe.splice(dove, 1);
+      nodo.parentNode && nodo.parentNode.removeChild(nodo);
+      rimescola();
       numeraRighe();
-      conta();
+      programma();
+      segnaBozza();
     });
 
     contenitore.appendChild(nodo);
     righe.push(riga);
+    rimescola();
+
+    /* I valori di una bozza ripresa: si scrivono senza passare dagli eventi,
+       perché un `input` finto per trentadue campi vorrebbe dire trentadue
+       passate di disegno per una cosa che se ne merita una. */
+    if (valori) {
+      riga.campi[0].el.value = valori.nome || "";
+      riga.campi[1].el.value = valori.cognome || "";
+      riga.campi[2].el.value = valori.nascita || "";
+      riga.campi[3].el.value = valori.cf || "";
+    }
+
     numeraRighe();
-    conta();
+    programma();
     if (colFuoco) vaiA(riga.campi[0]);
+    return riga;
   }
 
-  tastoPiu.addEventListener("click", function () { aggiungiMinore(true); });
-
-  /* ── Il conto ───────────────────────────────────────────────────────────
-     Quello che si sta per pagare, ricalcolato a ogni riga aggiunta o tolta.
-     Si contano tutte le righe presenti, anche quelle ancora da compilare: chi
-     ne ha appena aperta una deve vedere subito quanto gli costa, non dopo
-     aver scritto il nome. */
-  var contoVoci = document.getElementById("cr-conto-voci");
-  var contoSomma = document.getElementById("cr-conto-somma");
+  tastoPiu.addEventListener("click", function () {
+    /* Il <template> lo hanno tutti i browser che hanno fetch, quindi qui non
+       dovrebbe succedere niente. Ma questo tasto sta in mezzo a un modulo già
+       compilato a metà: se proprio dovesse fallire, che fallisca lui e non
+       l'iscrizione di chi ha già scritto tutto il resto. */
+    try {
+      aggiungiMinore(true);
+      segnaBozza();
+    } catch (guaio) {
+      mostra("errore", "Non è stato possibile aggiungere la riga. Puoi mandare l'iscrizione per te e scrivere a color-walk@rivaltasulmincio.it per aggiungere chi cammina con te.");
+      if (window.console && window.console.error) window.console.error("minore:", guaio);
+    }
+  });
 
   /* Come ha scelto di pagare. Il valore che conta è quello che arriva alla
      funzione: qui serve solo a cambiare la scritta del tasto. */
   var sceltePag = form.querySelectorAll('input[name="pagamento"]');
+
   function comePaga() {
     for (var i = 0; i < sceltePag.length; i++) if (sceltePag[i].checked) return sceltePag[i].value;
     return "paypal";
   }
-  Array.prototype.forEach.call(sceltePag, function (r) {
-    r.addEventListener("change", conto);
-  });
 
-  function conto() {
-    var n = righe.length;
-    var somma = QUOTA_ADULTO + n * QUOTA_MINORE;
-    contoVoci.textContent = n === 0
+  for (var s = 0; s < sceltePag.length; s++) {
+    sceltePag[s].addEventListener("change", function () { programma(); segnaBozza(); });
+  }
+
+  consenso.addEventListener("change", function () { programma(); segnaBozza(); });
+
+  /* ══ La passata di disegno ══════════════════════════════════════════════
+     Tutto quello che si vede cambiare mentre si compila, in un posto solo e
+     una volta per frame: gli stati dei campi, l'avanzamento, il conto e la
+     scritta del tasto. Nessun'altra parte del codice tocca questi nodi. */
+  function disegna() {
+    var tutti = ordine();
+    var obbligatori = 1; // la spunta della dichiarazione conta come un passo
+    var pronti = 0;
+
+    for (var i = 0; i < tutti.length; i++) {
+      var c = tutti[i];
+      dipingi(c);
+      if (!c.obbl) continue;
+      obbligatori++;
+      if (statoDi(c) === "ok" && valore(c) !== "") pronti++;
+    }
+    if (consenso.checked) pronti++;
+    attr(consensoBox, "data-stato", provatoAMandare && !consenso.checked ? "ko" : null);
+
+    testo(fatti, String(pronti));
+    testo(totaleN, String(obbligatori));
+    fill.style.setProperty("--p", pronti / obbligatori);
+
+    var quanti = righe.length;
+    var somma = QUOTA_ADULTO + quanti * QUOTA_MINORE;
+    testo(contoVoci, quanti === 0
       ? "1 maggiorenne · " + QUOTA_ADULTO + " €"
-      : "1 maggiorenne " + QUOTA_ADULTO + " € · " + n + (n === 1 ? " ragazzo " : " ragazzi ") + QUOTA_MINORE + " € ciascuno";
-    contoSomma.textContent = somma + " €";
+      : "1 maggiorenne " + QUOTA_ADULTO + " € · " + quanti + (quanti === 1 ? " ragazzo " : " ragazzi ") + QUOTA_MINORE + " € ciascuno");
+    testo(contoSomma, somma + " €");
+
     /* Il tasto dice cosa sta per succedere, e sono due cose diverse: o si
        viene mandati a pagare, o si chiude qui e si paga alla partenza. Un
        tasto che dicesse «vai al pagamento» a chi ha scelto i contanti
-       prometterebbe una schermata che non arriva. */
-    bottone.querySelector("span").textContent =
-      comePaga() === "contanti"
+       prometterebbe una schermata che non arriva. Mentre la richiesta è in
+       volo la scritta è un'altra e non si tocca. */
+    if (!inviando) {
+      testo(etichettaVai, comePaga() === "contanti"
         ? "Iscriviti — " + somma + " € da pagare al ritrovo"
-        : "Vai al pagamento — " + somma + " €";
-    return somma;
+        : "Vai al pagamento — " + somma + " €");
+    }
   }
 
-  function conta() {
-    var tutti = ordine();
-    var obbligatori = 1; // la spunta della dichiarazione conta come un passo
-    var n = 0;
-    tutti.forEach(function (c) {
-      if (!c.obbl) return;
-      obbligatori++;
-      if (statoDi(c) === "ok" && valore(c) !== "") n++;
-    });
-    if (consenso.checked) n++;
-    fatti.textContent = String(n);
-    totaleN.textContent = String(obbligatori);
-    fill.style.setProperty("--p", n / obbligatori);
-    avanz.hidden = n === 0;
-    conto();
-    return n;
+  function totaleCent() {
+    return (QUOTA_ADULTO + righe.length * QUOTA_MINORE) * 100;
   }
 
-  /* ── Il modulo che si sposta da solo ────────────────────────────────────
+  /* ══ La pagina non scappa sotto le dita ═════════════════════════════════
      Sul telefono il campo su cui si scrive deve stare in alto: sotto c'è la
      tastiera, che si mangia metà schermo, e un campo a metà pagina finisce
-     dietro di lei. Al fuoco la pagina scorre finché quel campo non è appena
-     sotto la barra di navigazione — sempre nello stesso punto, così compilare
-     diventa un gesto solo ripetuto, e non una caccia al campo successivo fra
-     una comparsa di tastiera e l'altra.
+     dietro di lei.
 
-     Sul computer non serve e non si fa: lì il modulo si vede tutto insieme, e
-     una pagina che scorre da sé a ogni clic è una pagina che scappa. */
-  var daTelefono = window.matchMedia("(max-width: 720px)");
-  var deSpento = document.documentElement;
-  var dolce = deSpento.classList.contains("rsm-motion") ||
-    (!deSpento.classList.contains("rsm-still") &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+     Ma scorrere SEMPRE è peggio del male che cura. La versione di prima
+     portava in cima ogni campo che prendeva il fuoco, anche quando era già
+     bello in vista, e ogni fuoco accendeva il suo timer: tabulando in fretta
+     partivano cinque scorrimenti dolci uno sopra l'altro, che si annullavano
+     a vicenda lasciando la pagina in un punto a caso.
 
-  function portaSu(el) {
+     Adesso: un timer solo, annullato e rifatto, e lo scorrimento si fa solo se
+     il campo NON è già in una fascia comoda. `visualViewport`, dove c'è, è
+     l'altezza vera di quello che si vede con la tastiera alzata — che è
+     l'unica misura che conta per decidere se un campo è coperto. */
+  /* matchMedia dietro un cancello, e non è pignoleria: serve a decidere se
+     scorrere e se addolcire lo scorrimento, cioè due comodità. Chiamarlo
+     nudo vuol dire che un browser che non ce l'ha — o che lo ha e inciampa su
+     una query — porta giù TUTTO il modulo, e chi lo apre si trova a dover
+     stampare un foglio per iscriversi a una camminata. Dove manca, la risposta
+     è «no» e non succede niente: nessuno scorrimento automatico, che è
+     esattamente come si comportava il web prima che esistesse.
+
+     Non è un caso di scuola: è saltato fuori provando questa pagina in un DOM
+     senza matchMedia, e il modulo era morto in blocco. */
+  function media(query) {
+    try {
+      if (typeof window.matchMedia !== "function") return { matches: false };
+      return window.matchMedia(query) || { matches: false };
+    } catch (e) {
+      return { matches: false };
+    }
+  }
+
+  var daTelefono = media("(max-width: 720px)");
+  var radice = document.documentElement;
+  var dolce = radice.classList.contains("rsm-motion") ||
+    (!radice.classList.contains("rsm-still") && !media("(prefers-reduced-motion: reduce)").matches);
+  var timerScorri = 0;
+
+  function avvicina(el) {
+    if (!el || !daTelefono.matches) return;
+    /* Il ritardo lascia finire l'apertura della tastiera: iOS scorre per conto
+       suo quando la alza, e due scorrimenti insieme si annullano a vicenda. */
+    window.clearTimeout(timerScorri);
+    timerScorri = window.setTimeout(function () { scorriSe(el); }, 260);
+  }
+
+  function scorriSe(el) {
     if (!daTelefono.matches) return;
     var nav = document.querySelector(".sb-nav");
     var alto = nav ? nav.getBoundingClientRect().height : 0;
-    var y = window.pageYOffset + el.getBoundingClientRect().top - alto - 14;
+    var vista = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    var r = el.getBoundingClientRect();
+
+    /* Già comodo: sotto la barra di navigazione e tutto dentro quello che si
+       vede. Non si tocca niente — ed è il caso in cui si finisce nove volte
+       su dieci quando si passa da un campo al successivo. */
+    if (r.top >= alto + 8 && r.bottom <= vista - 24) return;
+
+    var y = (window.pageYOffset || radice.scrollTop || 0) + r.top - alto - 14;
+    if (y < 0) y = 0;
     try {
       window.scrollTo({ top: y, behavior: dolce ? "smooth" : "auto" });
     } catch (e) {
@@ -1543,81 +1768,261 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
     }
   }
 
-  /* Il ritardo lascia finire l'apertura della tastiera: iOS scorre per conto
-     suo quando la alza, e due scorrimenti insieme si annullano a vicenda. */
-  function portaSuDopo(el) { window.setTimeout(function () { portaSu(el); }, 260); }
+  /* ══ La bozza ═══════════════════════════════════════════════════════════
+     Quello che si scrive resta in sessionStorage finché il modulo non è
+     mandato. Serve a due casi, e tutti e due capitano davvero: il telefono
+     che scarica la scheda mentre si guarda altro, e il ritorno da PayPal dopo
+     aver annullato il pagamento — dove prima si trovava un modulo vuoto da
+     riscrivere da capo, codice fiscale compreso.
 
-  CAMPI.forEach(collega);
-  collega(CAMPO_NOTE);
-  consenso.addEventListener("change", conta);
+     sessionStorage e non localStorage: vive quanto la scheda del browser, e
+     chiudendola se ne va da sé. Non esce da questo dispositivo, non passa da
+     nessun server, e si cancella appena l'iscrizione è registrata. In
+     navigazione privata qualche browser lo nega del tutto: non è un errore da
+     mostrare a nessuno, semplicemente non c'è la rete di salvataggio.
 
-  /* ── L'invio ────────────────────────────────────────────────────────────
+     Sei ore di scadenza: oltre, quello che c'era scritto è di un'altra
+     sessione e riproporlo confonderebbe più di quanto aiuti. */
+  var BOZZA = "rsm-cw-bozza";
+  var BOZZA_MS = 6 * 60 * 60 * 1000;
+  var timerBozza = 0;
+
+  function segnaBozza() {
+    window.clearTimeout(timerBozza);
+    timerBozza = window.setTimeout(salvaBozza, 500);
+  }
+
+  function salvaBozza() {
+    try {
+      var d = {
+        q: Date.now(),
+        a: {},
+        p: comePaga(),
+        c: consenso.checked,
+        m: []
+      };
+      var vuoto = true;
+      for (var i = 0; i < CAMPI.length; i++) {
+        d.a[CAMPI[i].id] = CAMPI[i].el.value;
+        if (CAMPI[i].el.value) vuoto = false;
+      }
+      d.a.note = CAMPO_NOTE.el.value;
+      if (d.a.note) vuoto = false;
+      for (var j = 0; j < righe.length; j++) {
+        d.m.push({
+          nome: righe[j].campi[0].el.value,
+          cognome: righe[j].campi[1].el.value,
+          nascita: righe[j].campi[2].el.value,
+          cf: righe[j].campi[3].el.value
+        });
+        vuoto = false;
+      }
+      /* Un modulo intonso non lascia tracce: se non c'è niente scritto, non
+         c'è niente da salvare, e la bozza vecchia si toglie di mezzo. */
+      if (vuoto && !d.c) return scordaBozza();
+      sessionStorage.setItem(BOZZA, JSON.stringify(d));
+    } catch (e) {}
+  }
+
+  function scordaBozza() {
+    try { sessionStorage.removeItem(BOZZA); } catch (e) {}
+  }
+
+  function riprendiBozza() {
+    var d = null;
+    try {
+      var grezzo = sessionStorage.getItem(BOZZA);
+      if (!grezzo) return false;
+      d = JSON.parse(grezzo);
+    } catch (e) { return false; }
+    if (!d || !d.a || !d.q || Date.now() - d.q > BOZZA_MS) {
+      scordaBozza();
+      return false;
+    }
+
+    for (var i = 0; i < CAMPI.length; i++) {
+      if (typeof d.a[CAMPI[i].id] === "string") CAMPI[i].el.value = d.a[CAMPI[i].id];
+    }
+    if (typeof d.a.note === "string") CAMPO_NOTE.el.value = d.a.note;
+    for (var k = 0; k < sceltePag.length; k++) sceltePag[k].checked = sceltePag[k].value === d.p;
+    consenso.checked = !!d.c;
+    var minori = d.m || [];
+    for (var j = 0; j < minori.length && j < MAX_MINORI; j++) aggiungiMinore(false, minori[j]);
+    return true;
+  }
+
+  /* Chi chiude la pagina di colpo non passa dal timer dei 500 millisecondi:
+     `pagehide` è l'ultimo momento in cui si può ancora scrivere, e su iOS è
+     l'unico che scatta davvero quando la scheda viene messa da parte. */
+  window.addEventListener("pagehide", function () {
+    window.clearTimeout(timerBozza);
+    if (!inviato) salvaBozza();
+  });
+
+  /* ══ Le chiamate alla funzione ══════════════════════════════════════════
+     Con una scadenza, sempre. Senza, una rete che si pianta lascia il tasto
+     su «Un momento…» per sempre: chi legge non sa se aspettare o riprovare, e
+     l'unica via d'uscita è chiudere la pagina — cioè perdere l'iscrizione.
+
+     `AbortController` non c'è su tutto: dove manca si rinuncia a interrompere
+     davvero la richiesta, ma la scadenza scatta lo stesso e la pagina torna
+     usabile. */
+  function chiedi(indirizzo, opzioni, secondi) {
+    opzioni = opzioni || {};
+    var scaduta = false;
+    var controllo = null;
+    try {
+      controllo = new AbortController();
+      opzioni.signal = controllo.signal;
+    } catch (e) {}
+
+    var timer = window.setTimeout(function () {
+      scaduta = true;
+      if (controllo) { try { controllo.abort(); } catch (e) {} }
+    }, (secondi || 25) * 1000);
+
+    return fetch(indirizzo, opzioni).then(
+      function (r) {
+        window.clearTimeout(timer);
+        return r.json()
+          .catch(function () { return {}; })
+          .then(function (d) { return { ok: r.ok, stato: r.status, d: d }; });
+      },
+      function (err) {
+        window.clearTimeout(timer);
+        var guaio = new Error(scaduta
+          ? "la richiesta ci ha messo troppo"
+          : (err && err.message) || "connessione interrotta");
+        guaio.scaduta = scaduta;
+        throw guaio;
+      }
+    );
+  }
+
+  function chiudiModulo(testoEsito) {
+    form.hidden = true;
+    if (avanz) avanz.hidden = true;
+    mostra("neutro", testoEsito);
+  }
+
+  /* ══ Il ritorno dal pagamento ═══════════════════════════════════════════
+     Al ritorno non ci si fida dell'indirizzo: `?stato=ok` lo scrive chiunque
+     nella barra del browser. Chi ha pagato davvero torna anche con
+     l'identificativo dell'ordine, che PayPal aggiunge da sé come `token`, ed
+     è quello che l'API fa ricontrollare a PayPal prima che qui si dica
+     «ricevuto». */
+  /* I due parametri del ritorno da PayPal. Anche qui dietro un cancello: se
+     URLSearchParams non c'è o l'indirizzo è storto, si legge «nessun
+     parametro» e la pagina mostra il modulo normale — che è la cosa giusta da
+     fare — invece di non mostrare niente. */
+  function parametro(nome) {
+    try {
+      return new URLSearchParams(location.search).get(nome);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  var stato = parametro("stato");
+  var idOrdine = parametro("token");
+  var tornatoDaPagamento = stato === "ok" && !!idOrdine;
+
+  var inviando = false;
+  var inviato = false;
+  var provatoAMandare = false;
+
+  /* ══ L'invio ════════════════════════════════════════════════════════════
      Il primo campo sbagliato si porta il fuoco: chi ha sbagliato non deve
      cercare dove. Il controllo qui è una cortesia verso chi compila — quello
      che conta è in /api/iscrizione-color-walk, che non si fida di questa
      pagina né di chi la apre. */
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
+    try {
+      manda();
+    } catch (guaio) {
+      mostra("errore", "Qualcosa si è rotto mentre mandavamo l'iscrizione. Riprova, e se succede ancora scrivi a color-walk@rivaltasulmincio.it: ti iscriviamo noi.");
+      inviando = false;
+      bottone.disabled = false;
+      programma();
+      if (window.console && window.console.error) window.console.error("invio:", guaio);
+    }
+  });
+
+  function manda() {
+    if (inviando) return; // due tocchi sullo stesso tasto non sono due iscrizioni
 
     if (chiuse) {
-      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 del 18 settembre. " + SUL_POSTO);
+      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 di venerdì 18 settembre. " + SUL_POSTO);
+      scordaBozza();
       return;
     }
 
+    provatoAMandare = true;
+
+    var tutti = ordine();
     var primo = null;
-    ordine().forEach(function (c) {
-      c.toccato = true;
-      dipingi(c);
-      if (!primo && statoDi(c) !== "ok") primo = c;
-    });
-    conta();
+    for (var i = 0; i < tutti.length; i++) {
+      tutti[i].toccato = true;
+      if (!primo && statoDi(tutti[i]) !== "ok") primo = tutti[i];
+    }
+    programma();
 
     if (primo) {
-      var testo = typeof primo.errore === "function" ? primo.errore(valore(primo)) : primo.errore;
-      mostra("errore", "Manca qualcosa: " + (valore(primo) === "" ? "controlla i campi segnati in rosso" : testo || "controlla i campi segnati in rosso"));
+      var quale = typeof primo.errore === "function" ? primo.errore(valore(primo)) : primo.errore;
+      mostra("errore", "Manca qualcosa: " + (valore(primo) === ""
+        ? "controlla i campi segnati in rosso"
+        : quale || "controlla i campi segnati in rosso"));
       vaiA(primo);
       return;
     }
     if (!consenso.checked) {
       mostra("errore", "Senza la dichiarazione di responsabilità non possiamo registrare l'iscrizione.");
       consenso.focus();
+      avvicina(consensoBox);
       return;
     }
 
+    inviando = true;
     bottone.disabled = true;
-    bottone.querySelector("span").textContent = "Un momento…";
+    testo(etichettaVai, "Un momento…");
 
-    fetch("/api/iscrizione-color-walk", {
+    var minori = [];
+    for (var j = 0; j < righe.length; j++) {
+      minori.push({
+        nome: righe[j].campi[0].el.value,
+        cognome: righe[j].campi[1].el.value,
+        dataNascita: righe[j].campi[2].el.value,
+        codiceFiscale: righe[j].campi[3].el.value.toUpperCase().replace(/\s/g, "")
+      });
+    }
+
+    chiedi("/api/iscrizione-color-walk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nome: form.nome.value,
-        cognome: form.cognome.value,
+        nome: PER_ID.nome.el.value,
+        cognome: PER_ID.cognome.el.value,
         dataNascita: nascitaEl.value,
-        codiceFiscale: form.cf.value.toUpperCase().replace(/\s/g, ""),
-        email: form.email.value,
-        telefono: form.telefono.value,
-        note: form.note.value,
+        codiceFiscale: PER_ID.cf.el.value.toUpperCase().replace(/\s/g, ""),
+        email: PER_ID.email.el.value,
+        telefono: PER_ID.telefono.el.value,
+        note: CAMPO_NOTE.el.value,
         consenso: consenso.checked,
         pagamento: comePaga(),
-        sito: form.sito.value,
-        minori: righe.map(function (r) {
-          return {
-            nome: r.campi[0].el.value,
-            cognome: r.campi[1].el.value,
-            dataNascita: r.campi[2].el.value,
-            codiceFiscale: r.campi[3].el.value.toUpperCase().replace(/\s/g, "")
-          };
-        })
+        sito: trappola ? trappola.value : "",
+        minori: minori
       })
-    })
-      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, stato: r.status, d: d }; }); })
+    }, 25)
       .then(function (res) {
         /* Iscrizioni chiuse fra il caricamento della pagina e l'invio: la
            funzione risponde 403 con `chiuse`, e qui si toglie il modulo invece
            di dire «riprova tra poco», che manderebbe a sbattere di nuovo. */
         if (res.d && res.d.chiuse) {
-          chiudiModulo(res.d.errore.charAt(0).toUpperCase() + res.d.errore.slice(1) + ".");
+          inviando = false;
+          inviato = true;
+          scordaBozza();
+          chiudiModulo(maiuscola(res.d.errore) + ".");
           return;
         }
 
@@ -1626,10 +2031,13 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
            modulo sparisce — ricompilarlo lo iscriverebbe due volte — e resta
            scritto quanto deve portare. */
         if (res.ok && res.d && res.d.contanti) {
-          var quanti = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
-          var quanto = (res.d.totaleCent / 100).toFixed(2).replace(".", ",") + " €";
+          inviando = false;
+          inviato = true;
+          scordaBozza();
+          var insieme = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
+          var quanto = ((res.d.totaleCent != null ? res.d.totaleCent : totaleCent()) / 100).toFixed(2).replace(".", ",") + " €";
           chiudiModulo(
-            "Iscrizione registrata" + (res.d.nome ? ", " + res.d.nome : "") + "!" + quanti +
+            "Iscrizione registrata" + (res.d.nome ? ", " + res.d.nome : "") + "!" + insieme +
             " La quota di " + quanto + " si paga al ritrovo, in contanti: domenica 20 settembre alle 15:30 in Piazza Chiesa, al banchetto delle iscrizioni, prima della partenza. Porta la cifra giusta se puoi." +
             (res.d.spedita
               ? " Ti abbiamo mandato una mail con il riepilogo."
@@ -1649,22 +2057,86 @@ html.rsm-still .sb-cw-vernice::after { animation: none; }
            PayPal che non risponde, la connessione che cade a metà. Lì
            riprovare è esattamente la cosa da fare. */
         if (res.d && res.d.errore && res.stato >= 400 && res.stato < 500) {
-          mostra("errore", res.d.errore.charAt(0).toUpperCase() + res.d.errore.slice(1) + ".");
+          mostra("errore", maiuscola(res.d.errore) + ".");
+          inviando = false;
           bottone.disabled = false;
-          conto();
+          programma();
           return;
         }
-        if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
+        if (!res.ok || !res.d || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
+
+        /* Si va su PayPal. La bozza NON si cancella: chi annulla il pagamento
+           torna qui con ?stato=annullato e deve ritrovare quello che aveva
+           scritto, non un modulo vuoto. Si cancella al ritorno, quando il
+           pagamento risulta davvero incassato. */
+        inviato = true;
         location.href = res.d.url;
       })
       .catch(function (err) {
-        mostra("errore", "Non è stato possibile registrare l'iscrizione (" + err.message + "). Riprova tra poco.");
+        mostra("errore", err && err.scaduta
+          ? "La richiesta ci ha messo troppo e l'abbiamo interrotta. Non è stato addebitato niente: controlla la connessione e riprova."
+          : "Non è stato possibile registrare l'iscrizione (" + ((err && err.message) || "errore") + "). Riprova tra poco.");
+        inviando = false;
         bottone.disabled = false;
-        conto();
+        programma();
       });
-  });
+  }
+
+  function maiuscola(s) {
+    s = String(s || "");
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  /* ══ L'avvio ════════════════════════════════════════════════════════════
+     Si collegano i campi, si riprende l'eventuale bozza e si decide cosa
+     mostrare. L'ordine conta: la bozza si riprende DOPO aver collegato i
+     campi (le righe dei minori nascono già collegate) e PRIMA della prima
+     passata di disegno, così quello che si vede al primo frame è già lo stato
+     giusto e non c'è un lampo di modulo vuoto. */
+  for (var k = 0; k < CAMPI.length; k++) collega(CAMPI[k]);
+  collega(CAMPO_NOTE);
+
+  if (tornatoDaPagamento) {
+    form.hidden = true;
+    if (avanz) avanz.hidden = true;
+    mostra("neutro", "Un momento, controllo il pagamento…");
+
+    chiedi("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(idOrdine), null, 20)
+      .then(function (res) {
+        if (!res.ok || !res.d || !res.d.pagato) throw new Error("non risulta pagata");
+        scordaBozza();
+        var insieme = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
+        mostra("ok", "Iscrizione e pagamento ricevuti" + (res.d.nome ? ", " + res.d.nome : "") + ", grazie!" + insieme +
+          " La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
+      })
+      .catch(function () {
+        mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
+        if (!chiuse) {
+          form.hidden = false;
+          if (avanz) avanz.hidden = false;
+          riprendiBozza();
+          numeraRighe();
+          programma();
+        }
+      });
+  } else if (chiuse) {
+    scordaBozza();
+    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 di venerdì 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
+  } else {
+    var ripresa = riprendiBozza();
+    if (stato === "ok" && !idOrdine) {
+      mostra("neutro", "In questo link non c'è nessun pagamento da confermare. Se ti sei già iscritto trovi la ricevuta nella tua email, altrimenti compila il modulo qui sotto.");
+    } else if (stato === "annullato") {
+      mostra("neutro", "Pagamento annullato: non è stato addebitato niente e l'iscrizione non è registrata. " +
+        (ripresa
+          ? "Quello che avevi scritto è ancora qui sotto: puoi rimandarlo così com'è, e se preferisci scegliendo di pagare in contanti al ritrovo."
+          : "Puoi riprovare quando vuoi con il modulo qui sotto — e se preferisci, scegliendo di pagare in contanti al ritrovo."));
+    }
+  }
 
   numeraRighe();
-  conta();
+  programma();
+
+  } // fine di avvia()
 })();
 </script>

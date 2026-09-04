@@ -153,18 +153,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <main class="sb-main" id="main">
 <style>
-/* ═══ Al centro come /color-walk ══════════════════════════════════════════════
-   Il regolamento si legge una volta, per intero, prima di iscriversi: non è una
-   pagina da consultare a colpo d'occhio come /servizi o /dati, dove le testate
-   a sinistra servono a ritrovare il margine fra una tabella e l'altra. Qui i
-   blocchi sono corti e appoggiati a sinistra lasciavano mezza colonna vuota.
-
-   Si centra il contenitore, non le righe: un elenco di regole centrato non si
-   segue, e questi sono punti che qualcuno leggerà per sapere cosa firma. */
-.sb-riv-p,
-.sb-riv-ul,
-.sb-riv-note,
-.sb-riv-pager { margin-left: auto; margin-right: auto; }
+/* ═══ A sinistra come tutto il resto ══════════════════════════════════════════
+   Questi sono punti che qualcuno legge per sapere cosa firma: partono tutti
+   dallo stesso margine, come su /servizi o /dati, e cadono sulla verticale
+   delle testate che li introducono. La navigazione in fondo tiene la misura
+   della prosa per non sporgere dalla colonna. */
 .sb-riv-pager { max-width: 46rem; }
 
 /* ═══ Stampato: una A4 sola ═══════════════════════════════════════════════════
@@ -178,16 +171,22 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
    Il corpo piccolo. Tutto il foglio è in rem, quindi basta abbassare la
    radice per stringere ogni cosa insieme — margini, righe, caratteri —
-   mantenendo le proporzioni. È piccolo, ma è un regolamento: si legge da
-   fermi, non di corsa.
+   mantenendo le proporzioni.
 
-   6.9px non è un numero tondo, è quello che ci fa stare col margine giusto.
-   La misura fatta qui è in emulazione di stampa, e SOTTOSTIMA: il modulo
-   cartaceo dava 0.98 in prova e sulla stampante vera sfondava di una riga.
-   Da lì la regola: si punta all'85-90% dell'altezza utile e non si va oltre,
-   perché il motore di stampa di ogni browser conta i pixel a modo suo. Con
-   6.9 il regolamento sta all'86%. Chi allunga il testo lo rimisuri, e non si
-   fidi di uno 0.9x alto.
+   6.2px non è un numero tondo, ed è sceso dal 6.9 di prima. La ragione è
+   aritmetica, e si rifà in tre righe. La colonna su carta ha una larghezza
+   fissa, quindi l'altezza che il testo occupa cresce col QUADRATO del corpo.
+   Il testo del 4 settembre è passato da 13.057 a 16.307 caratteri — un quarto
+   in più — e a 6.9px avrebbe occupato 0.86 × 1.25 = 1.07 dell'altezza utile,
+   cioè due fogli. (6.2/6.9)² = 0.807, e 1.07 × 0.807 = 0.87: si torna
+   nell'85-90% di prima, che è la banda giusta.
+
+   La misura fatta in emulazione di stampa SOTTOSTIMA sempre: il modulo
+   cartaceo dava 0.98 in prova e sulla stampante vera sfondava di una riga. Da
+   lì la regola: si punta all'85-90% dell'altezza utile e non si va oltre,
+   perché il motore di stampa di ogni browser conta i pixel a modo suo. Chi
+   allunga il testo rifaccia il conto qui sopra, e non si fidi di uno 0.9x
+   alto.
 
    E il bianco imposto su html, body e .sb-home: il tema del sito lo decide
    chi guarda, e chi stampa da un browser in tema scuro si ritroverebbe un
@@ -195,7 +194,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 @media print {
   @page { size: A4; margin: 9mm; }
 
-  html { font-size: 6.9px; }
+  html { font-size: 6.2px; }
   html, body, .sb-home, .sb-main {
     background: #fff !important;
     color: #000 !important;
@@ -249,7 +248,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 <section class="sb-container sb-riv-pagehead">
   <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
   <h1>Regolamento</h1>
-  <p class="sb-riv-lede">Le regole della camminata a colori: chi può partecipare, cosa comprende l'iscrizione, cosa succede se rinunci o se piove, come ci si comporta lungo il percorso e come vengono trattati i tuoi dati. Iscrivendosi lo si accetta per intero.</p>
+  <p class="sb-riv-lede">Le regole della camminata a colori: chi può partecipare, quanto costa e cosa comprende, come ci si iscrive, cosa succede se rinunci o se piove, come ci si comporta lungo il percorso e come vengono trattati i tuoi dati. Iscrivendosi lo si accetta per intero, per sé e per i minori che si iscrivono con sé.</p>
   <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
     <a href="#evento">L'evento</a>
     <a href="#chi">Chi partecipa</a>
@@ -260,6 +259,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#responsabilita">Responsabilità</a>
     <a href="#immagini">Foto e video</a>
     <a href="#dati">Dati personali</a>
+    <a href="#accettazione">Accettazione</a>
   </nav>
 </section>
 
@@ -270,12 +270,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>1 — L'evento</h2>
   </div>
   <p class="sb-riv-p">La <strong>Color Walk</strong> è una camminata <strong>a colori e non competitiva</strong>: si va a passo libero, non c'è cronometraggio e non c'è classifica. Lungo il percorso ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
-  <p class="sb-riv-p">Si tiene <strong>domenica 20 settembre 2026</strong>, per le vie di <strong>Rivalta sul Mincio</strong> (frazione del Comune di Rodigo, MN). Ritrovo <strong>alle 15:30 in Piazza Chiesa</strong>, davanti alla chiesa, e <strong>partenza alle 16:00</strong> per il giro del paese. Il tracciato è pubblicato sulla <a href="/color-walk#percorso">pagina della camminata</a>; la posizione esatta delle sette postazioni e la lunghezza del giro vengono <strong>comunicate agli iscritti via email</strong> nei giorni prima.</p>
+  <p class="sb-riv-p">Si tiene <strong>domenica 20 settembre 2026</strong>, per le vie di <strong>Rivalta sul Mincio</strong>, frazione del Comune di Rodigo (MN). Ritrovo <strong>alle 15:30 in Piazza Chiesa</strong>, davanti alla chiesa; <strong>partenza alle 16:00</strong>; arrivo nella stessa piazza, dove si chiude con l'aperitivo.</p>
+  <p class="sb-riv-p">Le vie che si percorrono, in ordine, sono pubblicate sulla <a href="/color-walk#percorso">pagina della camminata</a>. La <strong>posizione esatta delle sette postazioni</strong>, la <strong>lunghezza del giro</strong> e l'<strong>ora di chiusura</strong> della giornata non sono ancora fissate: vengono <strong>comunicate agli iscritti via email</strong> nei giorni prima. Sono le uniche cose che questo regolamento non dice, e non le dice perché non le sa — non perché cambino a piacere.</p>
   <div class="sb-riv-note">
     <span class="sb-riv-note-t">Se piove</span>
-    <p>In caso di pioggia la camminata è <strong>rinviata a domenica 27 settembre 2026</strong>, stessi orari e stesso percorso. Le iscrizioni già fatte restano valide, senza rifare niente. Ragioni di sicurezza, ordinanze o cause di forza maggiore possono farla <strong>rinviare a un'altra data o annullare</strong>: in quel caso vale il punto 4.</p>
+    <p>In caso di pioggia la camminata è <strong>rinviata a domenica 27 settembre 2026</strong>, stessi orari e stesso percorso. Le iscrizioni già fatte <strong>restano valide</strong>, senza rifare niente. Ragioni di sicurezza, ordinanze o cause di forza maggiore possono farla <strong>rinviare a un'altra data o annullare</strong>: in quel caso vale il punto 4.</p>
   </div>
-  <p class="sb-riv-p">Organizzano la Color Walk la <strong>Parrocchia Santi Vigilio e Donato</strong> di Rivalta sul Mincio e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo (C.F. 93061070202), a cui è destinata per intero la quota di iscrizione. La camminata si svolge <strong>con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest</strong>. Gli altri enti e le attività coinvolte sono riportati in fondo alla <a href="/color-walk">pagina di iscrizione</a>. Recapito unico: <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>.</p>
+  <p class="sb-riv-p">Organizzano la Color Walk la <strong>Parrocchia Santi Vigilio e Donato</strong> di Rivalta sul Mincio e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo (C.F. 93061070202), a cui è destinata <strong>per intero</strong> la quota di iscrizione e che è l'ente responsabile dell'evento e dei dati degli iscritti. La camminata si svolge <strong>con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest</strong>. Gli altri enti e le attività coinvolte sono riportati in fondo alla <a href="/color-walk">pagina di iscrizione</a>. Recapito unico per qualsiasi cosa riguardi la camminata: <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>.</p>
 </section>
 
 <section class="sb-container sb-riv-sec" id="chi">
@@ -284,12 +285,16 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-p">Può partecipare chiunque se la cava con una passeggiata: il ritmo lo decide chi cammina. Serve uno <strong>stato di salute compatibile con un'attività fisica leggera</strong>; chi ha dubbi ne parli prima con il proprio medico. Non essendo una gara, <strong>non è richiesto il certificato medico agonistico</strong>.</p>
   <p class="sb-riv-p">La regola che tiene insieme tutto il resto è questa: <strong>ognuno è responsabile di sé stesso</strong>, e <strong>il maggiorenne che si iscrive è responsabile dei minori a suo carico che iscrive insieme a sé</strong> e che accompagna per tutto il percorso.</p>
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Le età si contano al 20 settembre 2026</span>
+    <p>Non a oggi, e non alla data in cui ci si iscrive: al <strong>giorno della camminata</strong>. Chi compie 18 anni il 19 settembre si iscrive da sé; chi li compie il 21 è ancora un minore a carico di qualcuno. Se la camminata è rinviata per pioggia le fasce <strong>non cambiano</strong>: si resta in quella in cui si era iscritti.</p>
+  </div>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li"><strong>Per iscriversi bisogna essere maggiorenni.</strong> Un minore non si iscrive da solo: lo iscrive un adulto, dentro la propria iscrizione, con i suoi dati.</li>
-    <li class="sb-riv-li"><strong>Bambini e ragazzi dai 6 ai 17 anni:</strong> partecipano iscritti da un adulto, che li accompagna. <strong>Sotto i 6 anni non serve iscriversi</strong> e non si paga niente.</li>
+    <li class="sb-riv-li"><strong>Dai 6 ai 17 anni:</strong> si partecipa iscritti da un adulto, che accompagna per tutto il percorso. <strong>Sotto i 6 anni non serve iscriversi</strong> e non si paga niente: si viene e basta, sempre insieme a un adulto che ne risponde.</li>
     <li class="sb-riv-li"><strong>Gravidanza:</strong> non è motivo di esclusione. La valutazione la fa la diretta interessata, tenendo conto di quello che dice il punto 5 sulle polveri.</li>
-    <li class="sb-riv-li"><strong>Foto e video:</strong> chi non vuole comparire nelle fotografie non partecipa — vedi il punto 8, che va letto prima di iscriversi.</li>
-    <li class="sb-riv-li"><strong>Tessere:</strong> non è richiesta nessuna tessera per partecipare. Chi ha una tessera o una copertura personale propria se la gestisce da sé: non cambia niente di quello che c'è scritto qui.</li>
+    <li class="sb-riv-li"><strong>Foto e video:</strong> chi non vuole comparire nelle fotografie non partecipa — vedi il punto 8, che va letto <em>prima</em> di iscriversi.</li>
+    <li class="sb-riv-li"><strong>Tessere:</strong> non è richiesta nessuna tessera per partecipare. Chi ha una tessera o una copertura personale propria se la gestisce da sé: non cambia niente di quello che c'è scritto qui, e in particolare non cambia il punto 7.</li>
   </ul>
 </section>
 
@@ -297,37 +302,39 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <div class="sb-sechead">
     <h2>3 — Iscrizione, quota, pagamento</h2>
   </div>
-  <p class="sb-riv-p">La quota è di <strong>10 € per chi ha 18 anni o più</strong> e di <strong>5 € per ogni ragazzo dai 6 ai 17 anni</strong>. Sotto i 6 anni non si paga e non ci si iscrive. Chi iscrive dei minori paga la somma delle quote in un pagamento solo.</p>
-  <p class="sb-riv-p">La quota comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong>, l'<strong>aperitivo</strong> di fine camminata e tutto il cibo e le bevande messi a disposizione dagli sponsor e dai partner. <strong>Non c'è niente da pagare a parte</strong>, e in particolare l'aperitivo non è un servizio aggiuntivo: è compreso, e non si prenota.</p>
+  <p class="sb-riv-p">La quota è di <strong>10 € per chi ha 18 anni o più</strong> e di <strong>5 € per ogni ragazzo dai 6 ai 17 anni</strong>. Sotto i 6 anni non si paga e non ci si iscrive. Chi iscrive dei minori paga la somma delle quote <strong>in un pagamento solo</strong>; in una singola iscrizione si possono mettere <strong>fino a otto minori</strong>. Chi ne accompagna di più fa una seconda iscrizione, o compila un secondo modulo cartaceo.</p>
+  <p class="sb-riv-p">La quota comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong>, l'<strong>aperitivo</strong> di fine camminata e tutto il cibo e le bevande messi a disposizione dagli sponsor e dai partner. <strong>Non c'è niente da pagare a parte</strong>, e in particolare l'aperitivo non è un servizio aggiuntivo: è compreso, vale per tutti, e non si prenota. Sulla quota non si aggiunge nessuna commissione: le trattenute del circuito di pagamento sono un costo dell'organizzazione.</p>
 
   <p class="sb-riv-p">Ci si iscrive in tre modi.</p>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li"><strong>Online, pagando subito</strong>, dalla <a href="/color-walk">pagina della Color Walk</a>, fino alle <strong>23:59 di venerdì 18 settembre 2026</strong>. Il pagamento si fa <strong>sulle pagine di PayPal</strong> — anche con la carta, senza bisogno di avere un conto PayPal — e il sito non vede e non conserva i dati della carta. A pagamento riuscito arriva un'<strong>email con la ricevuta</strong>; se il pagamento non va a buon fine arriva comunque un'email che lo dice. L'iscrizione è valida <strong>solo a pagamento registrato</strong>.</li>
     <li class="sb-riv-li"><strong>Online, pagando al ritrovo</strong>, dalla stessa pagina e con la stessa scadenza, scegliendo di saldare <strong>in contanti</strong> il giorno della camminata. L'iscrizione è registrata e <strong>il posto è tenuto</strong> da subito; arriva un'email che dice quanto portare. La quota si paga al <strong>banchetto delle iscrizioni</strong>, in Piazza Chiesa, <strong>prima della partenza</strong>: chi non si presenta a saldare non ritira la sacca e non risulta iscritto.</li>
-    <li class="sb-riv-li"><strong>Di persona, al banchetto in Piazza Chiesa</strong>, compilando il <a href="/color-walk-modulo">modulo cartaceo</a> e pagando <strong>in contanti</strong>. Il banchetto è aperto <strong>martedì 15 settembre 2026 dalle 16:00 alle 18:00</strong>, davanti alla chiesa, e di nuovo <strong>il giorno stesso</strong> prima della partenza. Chi si iscrive il 15 ritira la sacca domenica, al ritrovo. Il modulo si può stampare e portare già compilato: si fa prima.</li>
+    <li class="sb-riv-li"><strong>Di persona, al banchetto in Piazza Chiesa</strong>, compilando il <a href="/color-walk-modulo">modulo cartaceo</a> e pagando <strong>in contanti</strong>. Il banchetto è aperto <strong>martedì 15 settembre 2026 dalle 16:00 alle 18:00</strong>, davanti alla chiesa, e di nuovo <strong>domenica 20 dalle 15:30</strong>, prima della partenza. Chi si iscrive il 15 ritira la sacca domenica, al ritrovo. Il modulo si può stampare e portare già compilato: si fa prima, e al banco resta solo da firmare e pagare.</li>
   </ul>
 
   <div class="sb-riv-note">
     <span class="sb-riv-note-t">I posti sono 300</span>
-    <p>Il materiale a disposizione basta per <strong>300 partecipanti</strong>: le iscrizioni si chiudono a quel numero, online e sul posto. Chi arriva dopo può camminare lo stesso insieme al gruppo, ma senza sacca, senza polveri e senza risultare iscritto.</p>
+    <p>Il materiale a disposizione basta per <strong>300 partecipanti</strong>, minori compresi: le iscrizioni si chiudono a quel numero, online e sul posto. Le vie sono pubbliche e nessuno può impedire di camminarci, ma <strong>chi non è iscritto non è un partecipante</strong>: non ha dato la dichiarazione del punto 7, non riceve sacca né polveri e non rientra in niente di quello che l'organizzazione mette a disposizione.</p>
   </div>
 
-  <p class="sb-riv-p">Nel modulo si chiedono <strong>nome, cognome, data di nascita, codice fiscale ed email</strong> di chi si iscrive, il telefono se lo si vuole lasciare, e <strong>nome, cognome e data di nascita</strong> dei minori che si portano con sé. Il codice fiscale serve a <strong>dare certezza su chi si assume la responsabilità</strong> dichiarata al punto 7: non serve a nessuna polizza, perché una polizza non c'è.</p>
+  <p class="sb-riv-p">Nel modulo si chiedono <strong>nome, cognome, data di nascita, codice fiscale ed email</strong> di chi si iscrive; il <strong>telefono</strong> e una <strong>nota</strong> sono facoltativi. Dei minori si chiedono <strong>nome, cognome e data di nascita</strong>, e online anche il <strong>codice fiscale</strong>, che è facoltativo. Il codice fiscale di chi si iscrive serve a <strong>dare certezza su chi si assume la responsabilità</strong> dichiarata al punto 7: non serve a nessuna polizza, perché una polizza non c'è. Il modulo online lo controlla davvero, compresa la data di nascita che il codice porta dentro, e respinge quello che non torna.</p>
+
+  <p class="sb-riv-p">Per evitare che il tetto dei 300 venga occupato da iscrizioni mai saldate, dallo <strong>stesso indirizzo email</strong> si possono tenere aperte al massimo <strong>tre iscrizioni non ancora pagate</strong>. Chi ne ha di più salda quelle che ha o scrive al recapito del punto 1.</p>
 </section>
 
 <section class="sb-container sb-riv-sec" id="rimborsi">
   <div class="sb-sechead">
     <h2>4 — Rinuncia, rimborsi, annullamento</h2>
   </div>
-  <p class="sb-riv-p">L'evento ha una data fissa: per questo <strong>non si applica il diritto di recesso</strong> (art. 59, comma 1, lett. n, del Codice del consumo, D.Lgs. 206/2005).</p>
+  <p class="sb-riv-p">L'evento ha una data fissa: per questo <strong>non si applica il diritto di recesso</strong> (art. 59, comma 1, lettera n, del Codice del consumo, D.Lgs. 206/2005).</p>
   <ul class="sb-riv-ul">
-    <li class="sb-riv-li"><strong>Rinuncia del partecipante:</strong> la quota <strong>non si rimborsa</strong> — copre materiali già acquistati e impegnati.</li>
-    <li class="sb-riv-li"><strong>Cessione a un'altra persona:</strong> possibile <strong>fino a 7 giorni prima</strong> dell'evento, scrivendo agli organizzatori i dati del nuovo partecipante. Nessun costo aggiuntivo, purché la quota della fascia d'età sia la stessa.</li>
-    <li class="sb-riv-li"><strong>Rinvio per pioggia al 27 settembre:</strong> l'iscrizione <strong>resta valida</strong> senza fare niente. Chi non può esserci alla nuova data chiede il rimborso della quota <strong>entro il 25 settembre 2026</strong>.</li>
-    <li class="sb-riv-li"><strong>Evento rinviato ad altra data:</strong> l'iscrizione resta valida. Chi non può esserci chiede il rimborso della quota <strong>entro 14 giorni</strong> dalla comunicazione della nuova data, e comunque prima che si tenga.</li>
-    <li class="sb-riv-li"><strong>Evento annullato</strong> dagli organizzatori e non recuperato: viene restituita <strong>l'intera quota versata</strong>.</li>
+    <li class="sb-riv-li"><strong>Rinuncia del partecipante:</strong> la quota già versata <strong>non si rimborsa</strong> — copre materiali già acquistati e impegnati. Chi si è iscritto scegliendo di pagare al ritrovo e poi non viene <strong>non deve niente</strong>: basta avvisare, così il posto torna libero.</li>
+    <li class="sb-riv-li"><strong>Cessione a un'altra persona:</strong> possibile <strong>fino alle 23:59 di venerdì 18 settembre 2026</strong>, scrivendo agli organizzatori i dati del nuovo partecipante. Nessun costo aggiuntivo, purché la quota della fascia d'età sia la stessa.</li>
+    <li class="sb-riv-li"><strong>Rinvio per pioggia al 27 settembre:</strong> l'iscrizione <strong>resta valida</strong> senza fare niente. Chi non può esserci alla nuova data chiede il rimborso della quota versata <strong>entro venerdì 25 settembre 2026</strong>.</li>
+    <li class="sb-riv-li"><strong>Evento rinviato ad altra data:</strong> l'iscrizione resta valida. Chi non può esserci chiede il rimborso della quota versata <strong>entro 14 giorni</strong> dalla comunicazione della nuova data, e comunque prima che si tenga.</li>
+    <li class="sb-riv-li"><strong>Evento annullato</strong> dagli organizzatori e non recuperato: viene restituita <strong>l'intera quota versata</strong>, senza doverla chiedere.</li>
   </ul>
-  <p class="sb-riv-p">I rimborsi previsti qui sopra vengono disposti sullo stesso metodo di pagamento usato per l'iscrizione, entro 30 giorni. Le iscrizioni pagate in contanti sul posto si rimborsano in contanti.</p>
+  <p class="sb-riv-p">I rimborsi previsti qui sopra si chiedono al recapito del punto 1 e vengono disposti <strong>entro 30 giorni</strong> sullo stesso canale con cui si è pagato: chi ha pagato online se li vede tornare su PayPal o sulla carta usata, chi ha pagato in contanti li riceve in contanti. Chi si era iscritto scegliendo i contanti e non ha ancora pagato non ha niente da farsi restituire.</p>
 </section>
 
 <section class="sb-container sb-riv-sec" id="polveri">
@@ -358,7 +365,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <li class="sb-riv-li"><strong>Animali domestici:</strong> ammessi a discrezione del proprietario, che risponde del proprio animale, del suo comportamento e di quello che eventualmente combina. Tenerli al guinzaglio e lontani dalle stazioni di colore.</li>
     <li class="sb-riv-li"><strong>No</strong> a biciclette e monopattini: il gruppo cammina, e un mezzo che va più veloce in mezzo a chi cammina è un pericolo.</li>
     <li class="sb-riv-li">I <strong>rifiuti</strong> si lasciano solo negli appositi punti di raccolta. La polvere è biodegradabile ma il paese va lasciato com'era.</li>
-    <li class="sb-riv-li">Chi tiene comportamenti <strong>pericolosi, molesti o offensivi</strong> può essere allontanato dall'evento senza rimborso.</li>
+    <li class="sb-riv-li">Chi tiene comportamenti <strong>pericolosi, molesti o offensivi</strong> può essere allontanato dall'evento <strong>senza rimborso</strong>.</li>
   </ul>
 </section>
 
@@ -370,7 +377,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <span class="sb-riv-note-t">Non è prevista un'assicurazione per i partecipanti</span>
     <p>L'organizzazione <strong>non ha stipulato alcuna copertura assicurativa</strong> a favore di chi partecipa, né per gli infortuni né per altro. Chi cammina lo fa <strong>sotto la propria responsabilità</strong>. Chi possiede una tessera, una polizza infortuni o un'altra copertura personale resta coperto da quella, secondo le condizioni che ha sottoscritto: è una situazione che riguarda il singolo e di cui l'organizzazione non risponde.</p>
   </div>
-  <p class="sb-riv-p">Iscrivendosi si dichiara di <strong>avere almeno 18 anni</strong>, di essere in condizioni fisiche idonee a un'attività fisica leggera, di aver letto questo regolamento e di <strong>partecipare assumendosene la responsabilità</strong>. Chi iscrive dei minori dichiara di <strong>esserne responsabile</strong>, di accompagnarli per tutto il percorso e di accettare questo regolamento anche per loro. La dichiarazione si dà spuntando la casella nel modulo online, oppure firmando il modulo cartaceo sul posto: le due valgono allo stesso modo.</p>
+  <p class="sb-riv-p">Iscrivendosi si dichiara di <strong>avere almeno 18 anni</strong>, di essere in condizioni fisiche idonee a un'attività fisica leggera, di aver letto questo regolamento e di <strong>partecipare assumendosene la responsabilità</strong>. Chi iscrive dei minori dichiara di <strong>esserne responsabile</strong>, di accompagnarli per tutto il percorso e di accettare questo regolamento anche per loro. La dichiarazione si dà <strong>spuntando la casella nel modulo online</strong>, oppure <strong>firmando il modulo cartaceo</strong> al banchetto: le due valgono allo stesso modo, e senza una delle due non c'è iscrizione.</p>
   <p class="sb-riv-p">L'organizzazione non risponde di danni a persone o cose derivanti dal <strong>mancato rispetto del regolamento</strong> o da comportamenti imprudenti, né di <strong>furti o smarrimenti</strong> di oggetti personali.</p>
   <p class="sb-riv-p">Cause di <strong>forza maggiore</strong> — meteo, ordinanze, ragioni di ordine pubblico o sanitarie — possono modificare percorso e orari o interrompere l'evento anche a manifestazione iniziata. In tal caso non spetta alcun rimborso oltre a quanto previsto al punto 4 per l'annullamento o il rinvio.</p>
 </section>
@@ -379,7 +386,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <div class="sb-sechead">
     <h2>8 — Foto e video</h2>
   </div>
-  <p class="sb-riv-p">Durante l'evento vengono scattate foto e girati video, per strada e in mezzo al gruppo. Iscrivendosi si <strong>autorizza l'uso gratuito di queste immagini</strong> per raccontare e promuovere la Color Walk e le attività di Rivalta sul Mincio: sito, social, stampa locale, edizioni future.</p>
+  <p class="sb-riv-p">Durante l'evento vengono scattate foto e girati video, per strada e in mezzo al gruppo. Iscrivendosi si <strong>autorizza l'uso gratuito di queste immagini</strong>, senza limiti di tempo, per raccontare e promuovere la Color Walk e le attività di Rivalta sul Mincio: sito, social, stampa locale, edizioni future. L'autorizzazione non copre usi commerciali estranei all'evento e alle attività di chi lo organizza.</p>
   <div class="sb-riv-note">
     <span class="sb-riv-note-t">Chi non vuole comparire nelle fotografie non partecipa</span>
     <p>È una camminata in mezzo alla gente, su strade pubbliche, con le macchine fotografiche accese per tutto il percorso: <strong>tenere qualcuno fuori da ogni inquadratura non è una cosa che si può promettere</strong>. Chi non è d'accordo con l'uso della propria immagine è pregato di non iscriversi, e chi iscrive dei minori dà questa autorizzazione anche per loro.</p>
@@ -390,11 +397,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <div class="sb-sechead">
     <h2>9 — Dati personali</h2>
   </div>
-  <p class="sb-riv-p">Nome, cognome, data di nascita, codice fiscale, email e telefono di chi si iscrive, e nome, cognome e data di nascita dei minori iscritti insieme a lui, servono a <strong>gestire l'iscrizione, il pagamento e la dichiarazione di responsabilità</strong> del punto 7, e ad avere un elenco di chi partecipa. Il trattamento è necessario per dare seguito all'iscrizione e agli obblighi di legge collegati.</p>
+  <p class="sb-riv-p">I dati raccolti sono quelli elencati al punto 3: nome, cognome, data di nascita, codice fiscale, email, e — se lasciati — telefono e nota di chi si iscrive; nome, cognome, data di nascita e l'eventuale codice fiscale dei minori iscritti insieme a lui. Servono a <strong>gestire l'iscrizione, il pagamento e la dichiarazione di responsabilità</strong> del punto 7, ad avere l'elenco di chi partecipa e a mandare le comunicazioni sulla camminata. Il trattamento è necessario per dare seguito all'iscrizione e agli obblighi di legge collegati; non c'è profilazione e non c'è nessuna decisione automatizzata.</p>
   <ul class="sb-riv-ul">
-    <li class="sb-riv-li">I dati restano all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo e a <strong>PayPal</strong>, che gestisce l'incasso delle iscrizioni online e su cui è tenuto l'elenco delle iscrizioni. <strong>Non</strong> vengono ceduti ad altri e <strong>non</strong> servono a mandare pubblicità.</li>
+    <li class="sb-riv-li">Oltre all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong>, i dati passano solo da chi fa funzionare l'iscrizione: <strong>PayPal</strong>, che incassa i pagamenti online e su cui è tenuto il registro delle iscrizioni — una per ciascuna, contanti compresi; <strong>Resend</strong>, che spedisce le email di conferma; <strong>Vercel</strong>, che ospita il sito e fa girare il modulo. <strong>Non</strong> vengono ceduti ad altri, <strong>non</strong> vengono venduti e <strong>non</strong> servono a mandare pubblicità.</li>
+    <li class="sb-riv-li">I moduli cartacei firmati restano <strong>su carta</strong>, in custodia dell'associazione, e seguono le stesse regole di tutto il resto.</li>
     <li class="sb-riv-li">Si conservano per il tempo necessario agli adempimenti <strong>contabili e fiscali</strong> e alla gestione di eventuali contestazioni, poi si cancellano.</li>
-    <li class="sb-riv-li">In ogni momento puoi chiedere di <strong>vedere, correggere o cancellare</strong> i tuoi dati e quelli dei minori che hai iscritto, o opporti al trattamento, scrivendo all'indirizzo qui sotto.</li>
+    <li class="sb-riv-li">In ogni momento puoi chiedere di <strong>vedere, correggere o cancellare</strong> i tuoi dati e quelli dei minori che hai iscritto, di limitarne o di opporti al trattamento, o di riceverli in copia, scrivendo all'indirizzo qui sotto. Se la risposta non ti soddisfa puoi rivolgerti al <strong>Garante per la protezione dei dati personali</strong>.</li>
   </ul>
   <p class="sb-riv-p">Titolare del trattamento: <strong>Associazione San Filippo Neri ANSPI APS-ETS</strong>, Rodigo (MN), C.F. 93061070202, nella persona del legale rappresentante <strong>Andrea Grandi</strong> — <a href="mailto:color-walk@rivaltasulmincio.it">color-walk@rivaltasulmincio.it</a>. Il pagamento online è affidato a PayPal, che tratta i dati del pagamento come autonomo titolare secondo la propria informativa.</p>
 </section>
@@ -404,11 +412,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>10 — Accettazione</h2>
   </div>
   <p class="sb-riv-p">Completando l'iscrizione — online o sul modulo cartaceo — si dichiara di aver <strong>letto e accettato questo regolamento in ogni sua parte</strong>, informativa sui dati compresa, per sé e per i minori che si iscrivono. Per quanto non previsto valgono le norme di legge applicabili; foro competente <strong>Mantova</strong>.</p>
-  <p class="sb-riv-p">Eventuali modifiche fino al giorno dell'evento vengono pubblicate su questa pagina e comunicate via email agli iscritti. <strong>Regolamento aggiornato il 2 settembre 2026</strong>, dopo le decisioni della riunione organizzativa; la versione precedente è del 26 agosto.</p>
+  <p class="sb-riv-p">Eventuali modifiche fino al giorno dell'evento vengono pubblicate su questa pagina e comunicate via email agli iscritti. <strong>Regolamento aggiornato il 4 settembre 2026</strong>: rispetto alla versione del 2 settembre sono stati precisati il conteggio delle età al giorno della camminata, il tetto di otto minori per iscrizione, la scadenza per la cessione (prima «sette giorni prima», che cadeva prima ancora dell'apertura del banchetto del 15), il canale dei rimborsi, i dati raccolti e i destinatari a cui passano.</p>
 
   <div class="sb-riv-pager">
     <a class="sb-link" href="/color-walk">← Iscrizione alla Color Walk</a>
-    <a class="sb-link" href="/">Torna alla home <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="sb-link" href="/color-walk-modulo">Modulo da stampare <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </section>
 </div>

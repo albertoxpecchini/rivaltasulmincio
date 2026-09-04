@@ -156,17 +156,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 /* ═══ Il foglio ═══════════════════════════════════════════════════════════════
    A schermo è una pagina del sito come le altre. In stampa diventa una A4:
    margini della stampante, nero su bianco, niente che si muova. */
-/* Il foglio in mezzo alla pagina, come /color-walk e il regolamento. Si
-   centra il FOGLIO, non quello che c'è dentro: un modulo coi campi in mezzo
-   non si compila, e una dichiarazione da firmare si legge allineata a
-   sinistra come qualunque altro testo lungo. */
-.sb-cwm { max-width: 52rem; margin-left: auto; margin-right: auto; }
+/* Il foglio parte dal margine sinistro, come ogni altra colonna del sito: un
+   modulo coi campi in mezzo non si compila, e una dichiarazione da firmare si
+   legge allineata a sinistra come qualunque altro testo lungo.
 
-/* La parte che si vede solo a schermo — occhiello, titolo, spiegazione e il
-   tasto per stampare — è la sola cosa centrata anche nel testo: sono tre
-   righe che introducono, non un modulo da riempire. */
-.sb-cwm-solo-schermo { text-align: center; }
-.sb-cwm-solo-schermo .sb-riv-lede { margin-left: auto; margin-right: auto; }
+   In stampa il margine lo mette la stampante e questa misura non conta. */
+.sb-cwm { max-width: 52rem; }
 
 .sb-cwm-testa {
   display: flex;
@@ -177,9 +172,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   padding-bottom: 0.9rem;
   border-bottom: 2px solid var(--sb-fg);
 }
+.sb-cwm-testa > div:first-child { flex: 1 1 20rem; min-width: 0; }
 .sb-cwm-t { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--sb-fg); }
 .sb-cwm-st { margin: 0.25rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--sb-fg-light); }
-.sb-cwm-quando { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); text-align: right; }
+.sb-cwm-quando { flex: 1 1 auto; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); text-align: right; }
 .sb-cwm-quando strong { color: var(--sb-fg); }
 
 /* ═══ I blocchi ══════════════════════════════════════════════════════════════
@@ -231,10 +227,57 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 }
 .sb-cwm-vuoto--alto { min-height: 3.2rem; }
 
+/* ═══ Il campo già stampato ══════════════════════════════════════════════════
+   Luogo, mese e anno sono sempre gli stessi: si stampano. Resta il buco del
+   giorno, con la sua riga sotto — più scura di quella del riquadro, o non si
+   capisce che è lì che va scritto qualcosa. Il testo si appoggia in fondo al
+   campo, come la grafia si appoggia sulla riga degli altri. */
+.sb-cwm-prest {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0 0.35rem;
+  margin: 0;
+  min-height: 3.2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--sb-border-strong);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--sb-fg);
+}
+.sb-cwm-giorno {
+  display: inline-block;
+  min-width: 2.4rem;
+  border-bottom: 1px solid var(--sb-fg);
+}
+
+/* Il numero progressivo del modulo, in alto a destra sopra la data: chi sta
+   al banco lo scrive appena consegna il foglio, ed è così che i cartacei si
+   sommano agli iscritti online dentro il tetto dei 300. */
+.sb-cwm-num {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  margin: 0 0 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-cwm-num i {
+  display: inline-block;
+  min-width: 3.4rem;
+  border-bottom: 1px solid var(--sb-fg);
+}
+
 /* ═══ La tabella dei minori ══════════════════════════════════════════════════
    Cinque righe: è la misura chiesta da chi sta al banco, e ci stanno perché
-   il corpo in stampa è sceso a 12.6px. Chi ne porta di più compila un secondo
-   foglio. Il numero di riga a sinistra serve a chi ricopia l'elenco dopo. */
+   il corpo in stampa è piccolo. Il regolamento ne ammette fino a otto per
+   iscrizione: chi ne porta più di cinque compila un secondo foglio, ed è
+   scritto nel sottotitolo del blocco. Il numero di riga a sinistra serve a chi
+   ricopia l'elenco dopo. */
 .sb-cwm-tab { width: 100%; border-collapse: collapse; }
 .sb-cwm-tab th {
   padding: 0 0.5rem 0.3rem 0;
@@ -335,17 +378,32 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
    abbassare la radice per stringere ogni cosa insieme — margini, righe,
    caratteri — mantenendo le proporzioni.
 
-   12.6px non è un numero tondo. Il modulo stava a 14.4 secondo la misura
-   fatta qui in emulazione di stampa — e sulla stampante vera sfondava di una
-   riga: il motore di stampa di ogni browser conta i pixel a modo suo, e uno
-   0.98 in prova diventa due fogli in casa di qualcun altro. Con 12.6 e le
-   cinque righe per i minori il foglio occupa l'86% dell'altezza utile, e
-   quel 14% è il margine che serve perché non succeda più. Chi allunga il
-   modulo lo rimisuri, e non si fidi di uno 0.9x. */
+   11.8px non è un numero tondo, ed è sceso dal 12.6 di prima. Il conto si
+   rifà, e va fatto tenendo separate le due materie di cui è fatto il foglio,
+   perché non si comportano allo stesso modo quando si abbassa la radice:
+
+     · le righe da compilare, le caselle e i margini sono misure fisse in rem,
+       e scalano LINEARMENTE col corpo;
+     · i blocchi di testo che vanno a capo — la dichiarazione, le quote, il
+       piede — hanno un'altezza fatta di righe per interlinea, e le righe
+       aumentano quando il carattere cala: scalano col QUADRATO.
+
+   Trattare tutto come quadratico sarebbe ottimista sulla parte fissa, che qui
+   è i due terzi abbondanti del foglio. Il testo stampato è passato da 2.542 a
+   3.330 caratteri (+31%) con le aggiunte del 4 settembre, e a 12.6px il foglio
+   sarebbe salito a 0.95 dell'altezza utile: a un soffio dal secondo foglio.
+   A 11.8px torna a 0.87.
+
+   Il 12.6 di prima era nato allo stesso modo: il modulo stava a 14.4 secondo
+   la misura fatta in emulazione di stampa — e sulla stampante vera sfondava
+   di una riga, perché il motore di stampa di ogni browser conta i pixel a modo
+   suo e uno 0.98 in prova diventa due fogli in casa di qualcun altro. Da lì la
+   banda in cui si sta: 85-90% dell'altezza utile, mai oltre. Chi allunga il
+   modulo rifaccia questo conto, e non si fidi di uno 0.9x alto. */
 @media print {
   @page { size: A4; margin: 11mm; }
 
-  html { font-size: 12.6px; }
+  html { font-size: 11.8px; }
   /* Il fondo del sito non sta su body: sta su .sb-home, il guscio che
      avvolge ogni pagina (e che si porta dietro anche i veli del fondale sui
      suoi pseudo-elementi). Sbiancare solo body lascerebbe il foglio grigio o
@@ -371,6 +429,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   }
   .sb-cwm-et, .sb-cwm-h span, .sb-cwm-tab th, .sb-cwm-tot-et, .sb-cwm-pie { color: #444 !important; }
   .sb-cwm-vuoto, .sb-cwm-tab td, .sb-cwm-conto, .sb-cwm-dich, .sb-cwm-tot-box { border-color: #000 !important; }
+  .sb-cwm-prest, .sb-cwm-giorno, .sb-cwm-num i { border-color: #000 !important; }
+  .sb-cwm-num { color: #444 !important; }
   /* I filetti fra le colonne restano più chiari della riga su cui si scrive:
      dividono, non sono una riga da riempire. */
   .sb-cwm-tab td + td { border-left-color: #999 !important; }
@@ -381,6 +441,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   .sb-cwm-riga { gap: 0.7rem 1.2rem; }
   .sb-cwm-vuoto { min-height: 1.95rem; }
   .sb-cwm-vuoto--alto { min-height: 2.7rem; }
+  .sb-cwm-prest { min-height: 2.7rem; }
   .sb-cwm-tab td { height: 1.95rem; }
   .sb-cwm-dich { padding: 0.7rem 0.9rem; line-height: 1.5; }
   .sb-cwm-dich p { margin-bottom: 0.45rem; }
@@ -403,7 +464,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem">
     <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
     <h1 style="margin:0.35rem 0 0">Modulo da stampare</h1>
-    <p class="sb-riv-lede">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 16:00 alle 18:00</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: si fa prima, e al banco resta solo da firmare e pagare. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 del 18 settembre.</p>
+    <p class="sb-riv-lede">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 16:00 alle 18:00</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
     <p style="font-size:0.9rem;margin-top:0.9rem"><button type="button" class="sb-btn sb-btn--primary" onclick="window.print()">Stampa il modulo</button></p>
   </div>
 
@@ -413,6 +474,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p class="sb-cwm-st">Camminata a colori non competitiva per le vie di Rivalta sul Mincio<br>Associazione San Filippo Neri ANSPI APS-ETS — Rodigo (MN), C.F. 93061070202</p>
     </div>
     <div class="sb-cwm-quando">
+      <p class="sb-cwm-num">Modulo n. <i></i></p>
       <strong>Domenica 20 settembre 2026</strong><br>
       Ritrovo 15:30 · Partenza 16:00<br>
       Piazza Chiesa, Rivalta sul Mincio<br>
@@ -422,7 +484,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <!-- ── 1. CHI SI ISCRIVE ──────────────────────────────────────────────── -->
   <div class="sb-cwm-blocco">
-    <p class="sb-cwm-h">1 · Chi si iscrive <span>dev'essere maggiorenne — quota 10 €</span></p>
+    <p class="sb-cwm-h">1 · Chi si iscrive <span>almeno 18 anni compiuti il 20 settembre 2026 — quota 10 €</span></p>
     <div class="sb-cwm-riga sb-cwm-r2">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Nome</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Cognome</span><div class="sb-cwm-vuoto"></div></div>
@@ -439,7 +501,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <!-- ── 2. I MINORI ────────────────────────────────────────────────────── -->
   <div class="sb-cwm-blocco">
-    <p class="sb-cwm-h">2 · Chi cammina con te <span>minori dai 6 ai 17 anni a tuo carico — quota 5 € ciascuno · sotto i 6 anni non serve iscriversi</span></p>
+    <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni compiuti il 20 settembre 2026, a tuo carico — quota 5 € ciascuno · sotto i 6 anni non serve iscriversi e non si paga · oltre il quinto, un secondo modulo</span></p>
     <table class="sb-cwm-tab">
       <thead>
         <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th></tr>
@@ -461,7 +523,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p class="sb-cwm-quote">
         Maggiorenni · <strong>10 €</strong> ciascuno · n. ______<br>
         Dai 6 ai 17 anni · <strong>5 €</strong> ciascuno · n. ______<br>
-        La quota comprende la sacca, il sacchetto di polveri colorate e l'aperitivo di fine camminata.
+        La quota comprende la sacca, il sacchetto di polveri colorate e l'aperitivo di fine camminata: non c'è niente da pagare a parte. Chi si iscrive il 15 ritira la sacca domenica 20, al ritrovo.
       </p>
       <div class="sb-cwm-tot">
         <span class="sb-cwm-tot-et">Totale versato</span>
@@ -478,18 +540,19 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p>Dichiara di essere <strong>responsabile dei minori indicati al punto 2</strong>, di accompagnarli per tutto il percorso e di assumere questa dichiarazione anche per loro.</p>
       <p>Dichiara di essere a conoscenza che <strong>non è prevista alcuna copertura assicurativa</strong> a favore dei partecipanti, e che eventuali tessere o polizze personali restano a carico del singolo.</p>
       <p>Dichiara di aver letto e di accettare il <strong>regolamento della Color Walk</strong>, pubblicato su <strong>rivaltasulmincio.it/color-walk-regolamento</strong>, e l'informativa sul trattamento dei dati che contiene — compreso il punto 8, per cui <strong>chi non vuole comparire nelle fotografie non partecipa</strong> — anche per i minori iscritti.</p>
-      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati raccolti servono a gestire l'iscrizione, il pagamento e questa dichiarazione, e non vengono ceduti ad altri.</p>
+      <p>Dichiara di sapere che la quota versata <strong>non si rimborsa</strong> in caso di rinuncia, e che <strong>se piove la camminata è rinviata a domenica 27 settembre 2026</strong> con questa iscrizione ancora valida (punto 4 del regolamento).</p>
+      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati servono a gestire l'iscrizione, il pagamento e questa dichiarazione. Questo foglio <strong>resta su carta</strong>, in custodia dell'associazione, e <strong>non viene ceduto ad altri</strong>. In ogni momento si può chiedere di vedere, correggere o cancellare i propri dati scrivendo a quell'indirizzo.</p>
     </div>
 
     <div class="sb-cwm-riga sb-cwm-r3 sb-cwm-firma">
-      <div class="sb-cwm-campo"><span class="sb-cwm-et">Luogo e data</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Luogo e data</span><p class="sb-cwm-prest">Rivalta sul Mincio, <span class="sb-cwm-giorno"></span> settembre 2026</p></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Ricevuto da (organizzazione)</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Firma di chi si iscrive</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
     </div>
   </div>
 
   <p class="sb-cwm-pie">
-    Color Walk — domenica 20 settembre 2026, Rivalta sul Mincio (Rodigo, MN). Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest. Iscrizioni fino a esaurimento dei 300 posti disponibili. Informazioni e regolamento completo: rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
+    Color Walk — domenica 20 settembre 2026, Rivalta sul Mincio (Rodigo, MN). Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest. Il banchetto delle iscrizioni è in Piazza Chiesa martedì 15 settembre dalle 16:00 alle 18:00 e domenica 20 dalle 15:30, prima della partenza; si paga in contanti. Iscrizioni fino a esaurimento dei 300 posti disponibili, minori compresi. Informazioni e regolamento completo: rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
   </p>
 
   <div class="sb-riv-pager">
