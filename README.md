@@ -303,7 +303,6 @@ rivaltasulmincio/
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
 ├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
-├── notizie.mjs                 # cerca-notizie della rassegna: Google News → notizie.json (non va online)
 ├── serve.mjs                   # anteprima locale con cleanUrls (non va online)
 ├── prova-conferma.mjs          # `npm test`: 15 casi sulle mail, con PayPal finto (non va online)
 ├── prova-invio.mjs             # manda una mail vera a sé stessi, per guardarla (non va online)
@@ -704,7 +703,8 @@ Scelte editoriali da mantenere nelle prossime modifiche:
 ## 📰 Aggiornare la rassegna stampa
 
 La sezione «Rivalta sui giornali» in home si aggiorna da **[`_build/notizie.json`](_build/notizie.json)**, poi `node build.mjs`.
-Le schede sono ordinate da sole per data decrescente.
+Le schede sono ordinate da sole per data decrescente. Le voci si scrivono a mano, una per
+una: non c'è nessuna automazione che le peschi.
 
 ```json
 {
@@ -724,22 +724,6 @@ tutelano davvero. Il campo `nota` va scritto da noi e contiene solo fatti verifi
 non una parafrasi del pezzo.
 
 Le voci vanno verificate prima di pubblicarle: titolo e data si controllano aprendo l'articolo.
-
-### Il cerca-notizie automatico
-
-**[`notizie.mjs`](notizie.mjs)** (`node notizie.mjs`, zero dipendenze) interroga la ricerca di
-Google News per «rivalta sul mincio», scarta quello che è già in `notizie.json` — per `guid` e per
-titolo — e aggiunge il resto in testa al file come voci **da rivedere**: `nota` vuota, `daRivedere:
-true`, e come `url` il link Google News (una pagina-ponte verso la testata). Guarda indietro 60 giorni
-e si ferma a 12 voci per giro (`RASSEGNA_GIORNI`, `RASSEGNA_MAX`); `--dry-run` elenca e basta.
-
-Il workflow **[`.github/workflows/notizie.yml`](.github/workflows/notizie.yml)** lo lancia una volta
-al giorno: se ha trovato qualcosa, rigenera la home e apre una **pull request in bozza** con l'elenco
-dei titoli. Prima di unirla, per ogni voce in `notizie.json`: apri l'articolo, metti l'`url` diretto
-della testata, scrivi la `nota`, togli `daRivedere` e `guid` — o cancella la voce se non serve.
-`build.mjs` non blocca il build ma avverte finché restano voci `daRivedere`, e la loro `nota` vuota
-non viene resa. (Serve, una volta, spuntare in *Settings › Actions › General* «Allow GitHub Actions
-to create and approve pull requests».)
 
 ---
 

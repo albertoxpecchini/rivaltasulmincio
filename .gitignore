@@ -7,10 +7,6 @@ node_modules/
 .env
 .env.local
 
-# Il corpo della pull request che notizie.mjs prepara per il workflow della
-# rassegna: file di lavoro, si rigenera a ogni giro.
-notizie-nuove.md
-
 # Il PDF del documento di lavoro per la Color Walk: si rigenera dalla pagina
 # color-walk-domande.html stampandola, non serve versionarlo.
 color-walk-domande.pdf
