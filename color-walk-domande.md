@@ -78,7 +78,7 @@ conferma, elenco iscritti, locandina e PDF.
 | **Quota** | 10 € a persona + 1 € di commissioni | 10 € maggiorenni · 5 € dai 6 ai 17 · gratis sotto i 6 |
 | **Chi si iscrive** | una persona per volta, minori iscritti da un genitore | un maggiorenne, che aggiunge i minori a suo carico nella stessa iscrizione |
 | **Maltempo** | «si svolge con qualsiasi condizione meteo» | se piove si rinvia a domenica 27 settembre, iscrizione valida |
-| **Iscrizione sul posto** | «ci si iscrive solo online» | online fino al 18 pagando subito o scegliendo di pagare in contanti al ritrovo, oppure al banchetto in piazza — martedì 15 dalle 16:00 alle 18:00 e il giorno stesso — col modulo cartaceo e in contanti |
+| **Iscrizione sul posto** | «ci si iscrive solo online» | online fino al 18 pagando subito o scegliendo di pagare in contanti al ritrovo, oppure al banchetto in piazza — martedì 15 dalle 17:30 e il giorno stesso — col modulo cartaceo e in contanti |
 | **Animali, passeggini, pattini** | vietati | ammessi, sotto la responsabilità di chi li porta |
 | **Gravidanza** | fra i motivi per non partecipare | nessuna esclusione: resta l'avvertenza sulle polveri, la valutazione è personale |
 | **Foto** | si poteva chiedere di non comparire | chi non vuole comparire nelle fotografie non partecipa |
@@ -232,11 +232,15 @@ appunti non hanno chiuso.
    pagamenti, ma i cartacei li conta solo chi sta al banco — e adesso i primi
    cartacei arrivano il 15, cinque giorni prima della camminata.
 7. **La giornata di iscrizioni del 15**: decisa il 3 settembre — **martedì 15
-   settembre, dalle 16:00 alle 18:00, davanti alla chiesa** — perché in tanti
-   l'iscrizione online non la fanno. È già su `/color-walk`, nel regolamento, sul
-   modulo e in `/eventi`. Restano da dire tre cose: **chi ci sta** al banchetto,
-   **dove si tengono** i moduli firmati e i contanti nei cinque giorni fino al 20,
-   e **chi tiene il conto** di quei cartacei insieme agli iscritti online.
+   settembre, dalle 17:30, davanti alla chiesa** — perché in tanti l'iscrizione
+   online non la fanno. L'orario è passato dalle 16:00-18:00 alle **17:30** il
+   4 settembre: è l'ora in cui **Rebecca riesce ad andare**. È già su
+   `/color-walk`, nel regolamento, sul modulo e in `/eventi`. Restano da dire
+   quattro cose: **fino a che ora** sta aperto il banchetto (adesso il sito dice
+   solo «dalle 17:30», perché la chiusura non è decisa), **chi ci sta** al
+   banchetto, **dove si tengono** i moduli firmati e i contanti nei cinque
+   giorni fino al 20, e **chi tiene il conto** di quei cartacei insieme agli
+   iscritti online.
 8. **Il banco delle iscrizioni** in piazza: chi ci sta il 15 e chi il 20, con
    quale cassa per i contanti, quante copie del modulo cartaceo stampate.
 
