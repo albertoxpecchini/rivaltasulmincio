@@ -16,18 +16,18 @@
    portato dietro la sua — quindi il gruppo va elencato per esteso. Se nasce
    una classe nuova che contiene un paragrafo, va aggiunta qui.
 
-   La colonna del testo sta al centro del contenitore (il blocco è in fondo al
-   foglio), ma le righe dentro la colonna restano giustificate: centrarle
-   lascerebbe ogni capoverso con due bordi frastagliati e niente su cui
-   l'occhio possa tornare a capo.
+   Le colonne partono tutte dal margine sinistro del contenitore e nessuna si
+   centra: il testo del sito è a sinistra e giustificato, mai in mezzo. Le
+   righe centrate lascerebbero ogni capoverso con due bordi frastagliati e
+   niente su cui l'occhio possa tornare a capo.
 
    hyphens è obbligatorio, non decorativo: le colonne sono strette (46rem) e
    l'italiano ha parole lunghe. Senza sillabazione la giustificazione apre
    fiumi bianchi verticali che si vedono da lontano. Funziona perché head.html
    dichiara <html lang="it"> — il browser sillaba nella lingua del documento.
 
-   Restano allineati a sinistra i dati (celle, intestazioni, numeri), i titoli
-   e tutto ciò che è centrato per scelta (.sb-sechead, .sb-cta). */
+   Restano a bandiera i dati (celle, intestazioni, numeri), i titoli e le
+   testate di sezione: a sinistra come tutto il resto, mai centrati. */
 .sb-riv-p,
 .sb-riv-li,
 .sb-riv-lede,
@@ -851,7 +851,7 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
 @media (min-width: 48rem) {
   .sb-riv-cwhome-azioni {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .sb-riv-cwhome-azioni .sb-btn { width: auto; }
 }
@@ -1833,30 +1833,9 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   font-size: 0.82rem;
 }
 
-/* ── Le colonne strette, al centro del contenitore ────────────────────────
-   Il contenitore è largo 72rem, la prosa 46rem: se la colonna resta ferma a
-   sinistra tutto il bianco che avanza si accumula da una parte sola e la
-   pagina pende. Centrandola, il margine si divide in due e il testo si
-   sviluppa al centro — dentro, però, le righe restano giustificate (in cima
-   al foglio), perché è la colonna a essere centrata, non il testo.
-
-   La stessa larghezza va anche ai sottotitoli, che una loro non ce l'avevano:
-   senza, un h3 partirebbe dal bordo del contenitore e resterebbe scalzato
-   rispetto ai capoversi che introduce.
-
-   Il blocco sta in fondo al foglio apposta: ognuna di queste classi dichiara
-   più sopra un `margin` abbreviato, e solo arrivando dopo il `margin-inline`
-   riesce a cambiarne i due lati orizzontali lasciando stare gli altri due. */
-.sb-riv-p,
-.sb-riv-ul,
-.sb-riv-crono,
-.sb-riv-note,
-.sb-riv-cit,
-.sb-riv-flash p,
-.sb-riv-lede,
-.sb-riv-foto,
-.sb-riv-prossima-d,
-.sb-riv-subhead {
-  margin-inline: auto;
-}
+/* ── Il sottotitolo largo quanto la prosa ─────────────────────────────────
+   Una larghezza non ce l'aveva: senza, un h3 partiva dal bordo del contenitore
+   e restava scalzato rispetto ai capoversi che introduce. Non è un margine
+   automatico — le colonne del sito partono tutte dal margine sinistro e
+   nessuna si centra: è solo la stessa misura del testo che gli sta sotto. */
 .sb-riv-subhead { max-width: 46rem; }

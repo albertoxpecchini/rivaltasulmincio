@@ -829,8 +829,15 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   100% { box-shadow: 0 0 0 0 hsla(197, 100%, 49%, 0); }
 }
 
-/* ── Testata di sezione ──────────────────────────────────────────────────── */
-.sb-sechead { max-width: 40rem; margin: 0 auto; text-align: center; }
+/* ── Testata di sezione ────────────────────────────────────────────────────
+   La testata sta a sinistra, ferma sul margine della colonna del testo: si
+   scorre una sezione dopo l'altra e l'occhio torna sempre allo stesso punto,
+   e il titolo cade sulla verticale dei capoversi che introduce. Larga 46rem
+   come la prosa, perché sopra una tabella ci sta una frase lunga.
+
+   Non è più centrata, e non c'è più una variante che la sposti: sul sito non
+   si centra niente, né le righe né le colonne. */
+.sb-sechead { max-width: 46rem; margin: 0; text-align: left; }
 .sb-sechead h2, .sb-sechead h3 {
   margin: 0 0 0.7rem;
   font-size: clamp(1.5rem, 3vw, 2.1rem);
@@ -839,14 +846,16 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   line-height: 1.15;
 }
 .sb-sechead p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-/* Su una pagina di consultazione la testata sta nella colonna del testo — al
-   centro come lei, e larga come lei (46rem invece di 40) perché sopra una
-   tabella ci sta una frase più lunga. Le righe però restano a bandiera: è un
-   titolo con sotto una riga di spiegazione, non una testata da locandina. */
+/* Una testata può dire due cose, e allora sono due capoversi: senza questo
+   stacco il secondo si salda al primo e i due diventano un muro unico. */
+.sb-sechead p + p { margin-top: 0.7rem; }
+/* --start non aggiunge più niente: è quello che fa già .sb-sechead. Resta
+   definita perché la chiedono un centinaio di testate nelle pagine, e
+   toglierla da tutte per non cambiare una riga di resa non vale il diff. */
 .sb-sechead--start { text-align: left; max-width: 46rem; }
 
 /* ── CTA ─────────────────────────────────────────────────────────────────── */
-.sb-cta { text-align: center; }
+.sb-cta { text-align: left; }
 .sb-cta h2 {
   margin: 0 0 0.8rem;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -855,8 +864,8 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   line-height: 1.1;
 }
 .sb-cta h2 .sb-brandline { display: block; color: var(--sb-brand-text); }
-.sb-cta p { margin: 0 auto 1.8rem; max-width: 34rem; font-size: 1rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-.sb-cta-actions { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+.sb-cta p { margin: 0 0 1.8rem; max-width: 34rem; font-size: 1rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-cta-actions { display: flex; justify-content: flex-start; gap: 0.5rem; flex-wrap: wrap; }
 
 /* ── Footer condiviso (.sb-foot) ──────────────────────────────────────────
    Lo stesso footer di albertopecchini.it: porta con sé la classe .sb-home per
