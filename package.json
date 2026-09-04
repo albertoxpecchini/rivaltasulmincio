@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "node build.mjs",
     "test": "node prova-conferma.mjs && node prova-iscrizione.mjs && node prova-iscritti.mjs",
-    "render:locandina": "node design/color-walk/render-locandina.mjs"
+    "render:locandina": "node design/color-walk/render-locandina.mjs",
+    "render:banner-mail": "node design/color-walk/render-banner-mail.mjs"
   },
   "devDependencies": {
     "sharp": "^0.34.5",

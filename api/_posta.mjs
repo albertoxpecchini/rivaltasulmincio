@@ -277,6 +277,12 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 
         <tr>
+        <td style="padding:0;">
+          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="95" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
+        </td>
+        </tr>
+
+        <tr>
         <td class="e-pad" style="padding:40px 40px 0;">
           <div class="e-brand" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#0a6285;">
 <!--se:pagato-->
@@ -533,6 +539,12 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 
         <tr>
+        <td style="padding:0;">
+          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="95" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
+        </td>
+        </tr>
+
+        <tr>
         <td class="e-pad" style="padding:40px 40px 0;">
           <div class="e-brand" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#0a6285;">
             Iscrizione non completata
@@ -565,8 +577,8 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
                 Non ti abbiamo preso niente: sul conto non arriva nessun addebito.
               </p>
               <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                Se nell'estratto conto vedi comparire e sparire gli 11&nbsp;€, è la
-                trattenuta che la banca fa al primo tentativo e scioglie da sé in
+                Se nell'estratto conto vedi comparire e sparire la cifra dell'iscrizione,
+                è la trattenuta che la banca fa al primo tentativo e scioglie da sé in
                 qualche giorno: non è un pagamento e non va chiesta indietro.
               </p>
 

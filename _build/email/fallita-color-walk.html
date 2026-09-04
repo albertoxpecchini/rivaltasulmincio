@@ -92,6 +92,24 @@
              d'allarme: non è un guasto e non è colpa di nessuno, è
              un'iscrizione rimasta a metà. Il sito non ha un rosso, e non se
              lo inventa qui. -->
+        <!--sezione:banner-->
+        <!-- La testata. È un'immagine e basta: tutto quello che dice — data,
+             ritrovo, quote — la mail lo ripete a parole più sotto, quindi a chi
+             ha le immagini bloccate non manca niente. Larghezza doppia (1200)
+             per gli schermi densi, ma misurata a 600 negli attributi, perché
+             Outlook si fida di quelli e non del CSS.
+
+             Aprendo QUESTO file nel browser il riquadro resta vuoto, ed è
+             giusto così: l'indirizzo lo scrive il build e l'immagine sta sul
+             sito. Per vederla davvero — dopo aver pubblicato — si manda una
+             mail vera con `node prova-invio.mjs`. -->
+        <tr>
+        <td style="padding:0;">
+          <img src="{{BANNER_MAIL}}" width="600" height="95" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
+        </td>
+        </tr>
+        <!--/sezione-->
+
         <tr>
         <td class="e-pad" style="padding:40px 40px 0;">
           <div class="e-brand" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#0a6285;">
@@ -128,8 +146,8 @@
                 Non ti abbiamo preso niente: sul conto non arriva nessun addebito.
               </p>
               <p class="e-fg-lr" style="margin:10px 0 0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
-                Se nell'estratto conto vedi comparire e sparire gli 11&nbsp;€, è la
-                trattenuta che la banca fa al primo tentativo e scioglie da sé in
+                Se nell'estratto conto vedi comparire e sparire la cifra dell'iscrizione,
+                è la trattenuta che la banca fa al primo tentativo e scioglie da sé in
                 qualche giorno: non è un pagamento e non va chiesta indietro.
               </p>
 

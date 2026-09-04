@@ -71,17 +71,6 @@ const renderNews = () => {
   const items = JSON.parse(readFileSync("_build/notizie.json", "utf8"))
     .sort((a, b) => (a.data < b.data ? 1 : -1));
 
-  /* Le voci che l'automazione (notizie.mjs) ha appena pescato arrivano con
-     `nota` vuota e `daRivedere: true`: vanno rifinite a mano — nota scritta da
-     noi e link diretto alla testata — prima di dare per buona la pull request.
-     Qui non bloccano il build, ma si fanno sentire. */
-  const daRivedere = items.filter((n) => n.daRivedere);
-  if (daRivedere.length) {
-    console.log(`⚠ Rassegna: ${daRivedere.length} voci ancora da rivedere in _build/notizie.json`);
-    for (const n of daRivedere) console.log(`  · ${n.titolo} — ${n.testata}`);
-    console.log(`  Scrivere la nota, mettere il link diretto all'articolo e togliere "daRivedere".`);
-  }
-
   return items
     .map(
       (n) => `        <a class="sb-card sb-riv-news-card" href="${escape(n.url)}" target="_blank" rel="noreferrer noopener">
@@ -1208,6 +1197,16 @@ console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} 
    si rifà il build, non il contrario. Il build successivo lo riscrive.       */
 const evento = JSON.parse(readFileSync("_build/email/evento.json", "utf8"));
 
+/* La testata delle due mail: la fascia alta del banner, ritagliata e in JPEG
+   da design/color-walk/render-banner-mail.mjs. Non è il banner del sito —
+   quello è largo 2400 e dentro una lastra da 600 diventa pettine — ed è un
+   file a parte anche perché il webp, in Outlook, non si apre.
+
+   Nella mail ci va per indirizzo assoluto, non allegata: chi ha le immagini
+   bloccate legge il testo alternativo e non perde niente, perché tutto quello
+   che il banner dice la mail lo dice anche a parole, più sotto. */
+const BANNER_MAIL = "assets/foto/color-walk-banner-mail.jpg";
+
 /* Una sezione entra nella mail solo se TUTTI i campi che le servono sono
    compilati. È la regola che impedisce a «ritrovo alle {{RITROVO_ORA}}» di
    arrivare nella posta di una persona vera: mezza indicazione di ritrovo è
@@ -1222,6 +1221,9 @@ const sezioni = {
   portare: ["portare", "fornito"].every(pieno),
   rimborsi: ["dataLimite", "rimborsi"].every(pieno),
   contatto: pieno("organizzatori"),
+  /* Questa non dipende da evento.json ma da un file: se il ritaglio non c'è,
+     la mail parte senza testata invece che con un rettangolo rotto. */
+  banner: existsSync(BANNER_MAIL),
 };
 /* Se non si sa né dove né cosa portare, la ricevuta non può tacere del tutto
    sul 20 settembre: al posto delle due sezioni ne compare una che dice che i
@@ -1233,6 +1235,7 @@ sezioni["dettagli-in-arrivo"] = !sezioni.quando && !sezioni.portare;
 sezioni["ancora-da-dire"] = sezioni.quando && !(sezioni.percorso && sezioni.portare);
 
 const campiMail = {
+  BANNER_MAIL: `${SITE}/${BANNER_MAIL}`,
   RITROVO_ORA: evento.ritrovoOra,
   RITROVO_LUOGO: evento.ritrovoLuogo,
   PARTENZA: evento.partenza,
@@ -1351,7 +1354,12 @@ console.log(
 /* Le due qui sotto non si compilano: le decide il build guardando le altre,
    e una delle due c'è sempre. Non sono cose che manchino. */
 const dedotte = ["dettagli-in-arrivo", "ancora-da-dire"];
-const saltate = Object.entries(sezioni).filter(([k, v]) => !v && !dedotte.includes(k));
+/* E «banner» non manca per una decisione che non è stata presa: manca un
+   file. Se ne parla da sé più sotto, dove si parla degli altri pezzi
+   grafici che non si trovano. */
+const saltate = Object.entries(sezioni).filter(
+  ([k, v]) => !v && !dedotte.includes(k) && k !== "banner"
+);
 if (saltate.length) {
   const vuoti = Object.keys(campiMail).filter(
     (k) => String(campiMail[k] ?? "").trim() === ""
@@ -1362,6 +1370,13 @@ if (saltate.length) {
     console.log(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
   }
   console.log(`  Si compilano lì e si rifà il build: le sezioni tornano da sé.`);
+}
+
+if (!sezioni.banner) {
+  console.log(`
+⚠ testata delle mail: manca ${BANNER_MAIL}.`);
+  console.log(`  Si ricava dal banner con «npm run render:banner-mail».`);
+  console.log(`  Finché non c'è, le due mail partono senza immagine in cima.`);
 }
 
 if (loghiMancanti.length) {
