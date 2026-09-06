@@ -19,29 +19,53 @@ chi è già iscritto e per non fermare chi si sta iscrivendo adesso.
 
 ## Dove siamo — 6 settembre 2026
 
-**Fase 1 fatta**, sul ramo `due-adulti`. Il sito sa leggere una fattura con
-più maggiorenni; nessuno ne ha ancora scritta una, e per chi guarda non è
-cambiato niente. È il punto sicuro descritto qui sotto.
+**Fase 1, Fase 2 e Fase 3 fatte**, sul ramo `due-adulti`, in tre commit.
+Manca solo il passaggio su `main`: fino a lì non si è mosso niente per
+nessuno, e chi si sta iscrivendo adesso vede il sito di ieri.
 
-Le prove sono passate da **70 a 77**, 0 fallite: cinque casi nuovi in
-`prova-iscritti.mjs` e due in `prova-conferma.mjs`. Fra questi ci sono i due
-che proteggono chi è già iscritto — un'iscrizione con un adulto solo si legge
-identica, e `adulti` è un elenco vuoto invece che assente anche sulla riga
-della fattura illeggibile.
+Il sito legge e scrive un'iscrizione con più maggiorenni. La lettera `B` è il
+maggiorenne accompagnato, `A` resta chi compila; fattura, ordine, ricevuta,
+elenco degli organizzatori, CSV e ritorno dal pagamento contano tutti in
+persone. Il modulo ha un secondo `<template>` e una seconda macchina delle
+righe, copiata da quella dei minori come diceva il programma. Regolamento,
+modulo cartaceo e occhiello dicono la stessa cosa del modulo.
 
-Il codice della pagina di chi organizza gira nel browser e nessuna prova lo
-raggiunge: il CSV e l'elenco «Cammina con sé» sono stati verificati a parte,
-prendendo il frammento vero dal file e facendolo girare su un dato finto. Il
-secondo maggiorenne esce con **Responsabile vuoto**, e la colonna degli
-importi somma ancora l'incasso vero e non il doppio.
+Le prove sono passate da **70 a 92**, 0 fallite: `prova-iscrizione` 44,
+`prova-conferma` 17, `prova-iscritti` 31. Quelle che contano di più sono le
+tre che proteggono chi è già iscritto — un'iscrizione con un adulto solo si
+legge e si scrive identica, `adulti` è un elenco vuoto invece che assente
+anche sulla riga della fattura illeggibile, e la bozza senza la chiave nuova
+si riprende senza inciampare.
 
-**Non ancora fatto:** la Fase 2 (il modulo e l'endpoint che scrivono), la Fase
-3 (i testi) e il passaggio del ramo su `main`. Fino a lì non si è mosso niente
-per nessuno.
+**Quello che le prove non toccano** è il codice che gira nel browser. Il CSV,
+l'elenco «Cammina con sé», l'ordine dei campi, il conto in parole, il totale,
+la bozza e il corpo mandato alla funzione sono stati verificati a parte,
+prendendo il frammento vero dal file e facendolo girare su un dato finto. È
+così che è saltato fuori un `\s` diventato `s` nella pulizia del codice
+fiscale: senza quella prova sarebbe arrivato in rete.
 
-**Le due decisioni prese:** D1 → **quattro** maggiorenni, capofila compreso.
+**Resta la prova vera del passo 2.5**, che nessuno può fare al posto di una
+persona: un'iscrizione con due adulti scegliendo **contanti**, per vedere la
+mail vera, la scheda vera e il CSV vero. Non muove un euro, e la fattura si
+annulla dal pannello di PayPal.
+
+**Le decisioni prese:** D1 → **quattro** maggiorenni, capofila compreso.
 D4 → **una casella sola** con due dichiarazioni, e la frase su chi dichiara di
 avere il consenso degli adulti che iscrive. D2, D3 e D5 come proposti qui.
+
+**Tre scelte fatte per strada**, diverse da come le immaginava il programma:
+
+- il conto delle persone nella ricevuta usa `quanti` e non `tutti.length`,
+  perché con la formula del programma una fattura senza maggiorenni sarebbe
+  passata da «1 persona» a «0» — un caso storto che non c'era ragione di
+  cambiare adesso;
+- la data di nascita del maggiorenne accompagnato tiene il `min="1900-01-01"`
+  del capofila invece di non averne nessuno: è la stessa persona, e la stessa
+  validazione;
+- i due contenitori delle righe sono diventati griglie con un `gap`. Senza,
+  due riquadri consecutivi si toccavano bordo a bordo — succedeva già ai
+  minori, e non me la sono sentita di aggiungere il secondo contenitore
+  lasciando il difetto a tutti e due.
 
 ---
 
@@ -52,8 +76,8 @@ avere il consenso degli adulti che iscrive. D2, D3 e D5 come proposti qui.
 2. [La strategia: prima leggere, poi scrivere](#la-strategia-prima-leggere-poi-scrivere)
 3. [Fase 0 — il ramo e la base](#fase-0--il-ramo-e-la-base)
 4. [Fase 1 — la lettura](#fase-1--la-lettura--fatta) — fatta
-5. [Fase 2 — la scrittura](#fase-2--la-scrittura)
-6. [Fase 3 — i testi](#fase-3--i-testi)
+5. [Fase 2 — la scrittura](#fase-2--la-scrittura--fatta) — fatta
+6. [Fase 3 — i testi](#fase-3--i-testi--fatta) — fatta
 7. [Le sei trappole](#le-sei-trappole)
 8. [La prova finale](#la-prova-finale)
 9. [Come si torna indietro](#come-si-torna-indietro)
@@ -300,7 +324,7 @@ punto del programma in cui si è al sicuro.
 
 ---
 
-## Fase 2 — la scrittura
+## Fase 2 — la scrittura — fatta
 
 ### 2.1 — `api/_paypal.mjs`: la fattura e l'ordine
 
@@ -451,7 +475,7 @@ dall'elenco da sé.
 
 ---
 
-## Fase 3 — i testi
+## Fase 3 — i testi — fatta
 
 Non è la rifinitura: se il sito dice una cosa e il modulo ne fa un'altra, la
 dichiarazione di responsabilità vale meno. Va **insieme** alla Fase 2, non dopo.
