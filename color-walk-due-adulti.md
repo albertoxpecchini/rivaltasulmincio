@@ -19,7 +19,7 @@ chi è già iscritto e per non fermare chi si sta iscrivendo adesso.
 
 ## Dove siamo — 6 settembre 2026
 
-**Fase 1, Fase 2 e Fase 3 fatte**, sul ramo `due-adulti`, in tre commit.
+**Fase 1, Fase 2 e Fase 3 fatte**, sul ramo `due-adulti`, in sei commit.
 Manca solo il passaggio su `main`: fino a lì non si è mosso niente per
 nessuno, e chi si sta iscrivendo adesso vede il sito di ieri.
 
@@ -28,7 +28,8 @@ maggiorenne accompagnato, `A` resta chi compila; fattura, ordine, ricevuta,
 elenco degli organizzatori, CSV e ritorno dal pagamento contano tutti in
 persone. Il modulo ha un secondo `<template>` e una seconda macchina delle
 righe, copiata da quella dei minori come diceva il programma. Regolamento,
-modulo cartaceo e occhiello dicono la stessa cosa del modulo.
+modulo cartaceo, le due pagine che portano l'occhiello, la ricevuta e la
+pagina di chi organizza dicono tutti la stessa cosa del modulo.
 
 Le prove sono passate da **70 a 92**, 0 fallite: `prova-iscrizione` 44,
 `prova-conferma` 17, `prova-iscritti` 31. Quelle che contano di più sono le
@@ -37,6 +38,27 @@ legge e si scrive identica, `adulti` è un elenco vuoto invece che assente
 anche sulla riga della fattura illeggibile, e la bozza senza la chiave nuova
 si riprende senza inciampare.
 
+**La Fase 3 è stata rifatta da capo** il 6 settembre, leggendo i testi per
+intero invece dei soli punti elencati qui sotto. La prima passata ne aveva
+saltati quattro, e non erano dettagli: il punto 8 faceva autorizzare l'uso
+dell'immagine di un adulto a un altro adulto; il punto 9 non elencava i dati
+dei maggiorenni accompagnati, cioè un'informativa incompleta; il punto 10
+faceva accettare il regolamento al posto loro; e nessun punto diceva il fatto
+nuovo più semplice di tutti — **un'iscrizione è una mail sola**, e chi viene
+iscritto da un altro non riceve niente. La ricevuta adesso lo dice, ma solo
+quando i maggiorenni sono più d'uno.
+
+Fuori dal regolamento: l'occhiello viveva in **due** pagine e su `/comunita`
+era rimasto quello vecchio; la pagina di chi organizza avvisava che dentro ci
+sono «i nomi dei minori», e adesso ci sono anche codici fiscali di maggiorenni
+che il modulo non l'hanno compilato loro.
+
+**E una cosa che non c'entra con i maggiorenni**, trovata nella stessa lettura
+e committata a parte: `_build/email/evento.json` era rimasto alla scadenza che
+il regolamento ha corretto il 4 settembre. Ogni ricevuta già spedita dice
+«Scrivici entro il **13 settembre**» e ripete i «sette giorni prima», mentre il
+regolamento dice le 23:59 di venerdì 18. Cinque giorni di differenza su una
+cosa che riguarda chi ha già pagato. Adesso combaciano.
 **Quello che le prove non toccano** è il codice che gira nel browser. Il CSV,
 l'elenco «Cammina con sé», l'ordine dei campi, il conto in parole, il totale,
 la bozza e il corpo mandato alla funzione sono stati verificati a parte,
