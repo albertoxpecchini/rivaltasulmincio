@@ -191,7 +191,7 @@ async function elenco(res) {
       continue;
     }
 
-    let { adulto, minori } = personeDa(f);
+    let { adulto, adulti, minori } = personeDa(f);
 
     /* Le voci sono la fattura: senza, non si sa chi è iscritto. La ricerca
        dovrebbe restituirle — gliele chiediamo — ma se per qualsiasi ragione
@@ -205,7 +205,7 @@ async function elenco(res) {
     if (!adulto && riletture < MAX_RILETTURE) {
       riletture++;
       const piena = await leggiFattura(f.id).catch(() => null);
-      if (piena) ({ adulto, minori } = personeDa(piena));
+      if (piena) ({ adulto, adulti, minori } = personeDa(piena));
     }
 
     /* E se ancora non si legge, la riga compare lo stesso. Una fattura che
@@ -227,6 +227,10 @@ async function elenco(res) {
         telefono: memo.telefono,
         note: memo.note,
         consenso: memo.consenso,
+        /* Vuoti tutti e due, e non assenti: la pagina ci passa sopra con
+           un ciclo, e un elenco che non c'è la fermerebbe sulla riga che
+           esiste apposta per dire che qualcosa non va. */
+        adulti: [],
         minori: [],
         quandoISO: quandoDi(f),
         importoCent: Math.round(Number(f?.amount?.value || 0) * 100),
@@ -247,6 +251,15 @@ async function elenco(res) {
       telefono: memo.telefono,
       note: memo.note,
       consenso: memo.consenso,
+      /* Gli altri maggiorenni dell'iscrizione. Escono con gli stessi quattro
+         campi dei minori — l'importo resta fuori di qui come per loro, perché
+         la scheda ne mostra uno solo, quello dell'iscrizione intera. */
+      adulti: adulti.map(({ nome, cognome, dataNascita, codiceFiscale }) => ({
+        nome,
+        cognome,
+        dataNascita,
+        codiceFiscale,
+      })),
       minori: minori.map(({ nome, cognome, dataNascita, codiceFiscale }) => ({
         nome,
         cognome,
@@ -254,7 +267,7 @@ async function elenco(res) {
         codiceFiscale,
       })),
       quandoISO: quandoDi(f),
-      importoCent: importoDi(f, [adulto, ...minori]),
+      importoCent: importoDi(f, [adulto, ...adulti, ...minori]),
       pagato: pagata,
       pagamento: comePagata(f),
     });
@@ -278,7 +291,7 @@ async function elenco(res) {
     /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
        il modulo, e quante persone cammineranno. È il secondo a doversi
        fermare sotto il tetto. */
-    persone: iscritti.reduce((n, i) => n + 1 + i.minori.length, 0),
+    persone: iscritti.reduce((n, i) => n + 1 + (i.adulti || []).length + i.minori.length, 0),
     tetto: TETTO_PARTECIPANTI,
     /* Quello che è già sul conto, e quello che si raccoglie al banchetto la
        mattina del 20: due cifre separate perché sono due cose separate, e

@@ -123,14 +123,25 @@ export function riempi(modello, valori) {
    raccontasse numeri diversi da quelli che l'organizzatore vede in elenco
    sarebbe peggio di una ricevuta che non parte. */
 export function ricevuta({ fattura, pagato, quando }) {
-  const { adulto, minori } = personeDa(fattura);
+  const { adulto, adulti, minori } = personeDa(fattura);
   const nome = adulto?.nome || "";
 
-  const centAdulto = adulto?.importoCent ?? QUOTA_ADULTO_CENT;
+  /* Il capofila e chi cammina con lui stanno sulla stessa riga della
+     ricevuta, perché pagano la stessa quota e la differenza fra loro non
+     riguarda chi legge la mail. `quanti` non scende mai sotto uno: una
+     fattura senza maggiorenni è una fattura rotta, e la ricevuta di prima
+     diceva «1» lo stesso — meglio dire una cosa storta che una cifra a zero
+     a chi ha appena pagato. */
+  const maggiorenni = [adulto, ...adulti].filter(Boolean);
+  const quanti = maggiorenni.length || 1;
+
+  const centAdulto = maggiorenni.length
+    ? maggiorenni.reduce((s, a) => s + a.importoCent, 0)
+    : QUOTA_ADULTO_CENT;
   const centRagazzi = minori.reduce((s, m) => s + m.importoCent, 0);
   const totale = centAdulto + centRagazzi;
 
-  const voceAdulti = "Iscrizione — 1 maggiorenne";
+  const voceAdulti = `Iscrizione — ${quanti} ${quanti === 1 ? "maggiorenne" : "maggiorenni"}`;
   const voceRagazzi = `Iscrizione — ${minori.length} ${minori.length === 1 ? "ragazzo" : "ragazzi"} dai 6 ai 17 anni`;
 
   const importoAdulti = importoItaliano(centAdulto);
@@ -138,7 +149,7 @@ export function ricevuta({ fattura, pagato, quando }) {
   const importo = importoItaliano(totale);
   const data = dataItaliana(quando);
 
-  const partecipanti = [adulto, ...minori]
+  const partecipanti = [adulto, ...adulti, ...minori]
     .filter(Boolean)
     .map((p) => `${p.nome} ${p.cognome}`.trim())
     .filter(Boolean)
@@ -188,7 +199,7 @@ export function ricevuta({ fattura, pagato, quando }) {
     html,
     testo,
     nome,
-    persone: 1 + minori.length,
+    persone: quanti + minori.length,
     totaleCent: totale,
   };
 }

@@ -78,6 +78,30 @@ const inContanti = (n, { detail, ...extra } = {}) =>
 
 /* Chi ha aperto il pagamento online e non è arrivato in fondo. */
 const abbandonata = (n) => fattura(n, { status: "UNPAID" });
+/* Due maggiorenni e un minore in una sola iscrizione: la `B` è il secondo
+   adulto, che risponde di sé e non ha minori a carico. 25 € in tutto. */
+const conDueAdulti = (n) =>
+  fattura(n, {
+    amount: { currency_code: "EUR", value: "25.00" },
+    items: [
+      {
+        description: `A|Nome${n}|Cognome${n}|1985-12-10|RSSMRA85T10A562S`,
+        quantity: "1",
+        unit_amount: { currency_code: "EUR", value: "10.00" },
+      },
+      {
+        description: `B|Seconda${n}|Cognome${n}|1987-05-22|RSSMRA87E62A562F`,
+        quantity: "1",
+        unit_amount: { currency_code: "EUR", value: "10.00" },
+      },
+      {
+        description: `M|Figlio${n}|Cognome${n}|2015-04-02|—`,
+        quantity: "1",
+        unit_amount: { currency_code: "EUR", value: "5.00" },
+      },
+    ],
+  });
+
 
 /* Le pagine che il finto PayPal restituirà, in ordine. `scritte` raccoglie le
    POST: è lì che si guarda se il tasto «incassato» ha davvero scritto. */
@@ -438,6 +462,76 @@ await prova("senza dire quale iscrizione → 400", {
   } else {
     fallite++;
     console.log(`  NO   scheda incompleta: ${JSON.stringify(i)} — persone: ${res.corpo?.persone}`);
+  }
+}
+
+console.log("\n── Due maggiorenni in una sola iscrizione ─────────────────────");
+
+await prova("una fattura con due maggiorenni vale tre persone", {
+  chiave: CHIAVE,
+  pagine: [[conDueAdulti(8)]],
+  atteso: { codice: 200, iscritti: 1, illeggibili: 0, persone: 3 },
+});
+
+/* Il controllo che protegge chi si è iscritto prima di questa modifica: una
+   fattura con la sola `A` deve leggersi esattamente come si leggeva ieri. */
+await prova("un'iscrizione con un adulto solo si conta come prima", {
+  chiave: CHIAVE,
+  pagine: [[fattura(9)]],
+  atteso: { codice: 200, iscritti: 1, persone: 2 },
+});
+
+await prova("due iscrizioni miste: tre persone più due", {
+  chiave: CHIAVE,
+  pagine: [[conDueAdulti(10), fattura(11)]],
+  atteso: { codice: 200, iscritti: 2, persone: 5 },
+});
+
+/* E adesso dentro la scheda, che è dove il secondo adulto può sparire senza
+   che nessuno dei conti qui sopra se ne accorga: se finisse fra i minori, le
+   persone sarebbero tre lo stesso. */
+{
+  scritte = [];
+  global.fetch = stubFetch([[conDueAdulti(12)]]);
+  const res = finestra();
+  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
+  const i = res.corpo?.iscritti?.[0] || {};
+
+  const capofila = i.nome === "Nome12" && i.cognome === "Cognome12" && i.codiceFiscale === "RSSMRA85T10A562S";
+  const secondo =
+    i.adulti?.length === 1 &&
+    i.adulti[0].nome === "Seconda12" &&
+    i.adulti[0].dataNascita === "1987-05-22" &&
+    i.adulti[0].codiceFiscale === "RSSMRA87E62A562F";
+  const ragazzo = i.minori?.length === 1 && i.minori[0].nome === "Figlio12";
+  const soldi = i.importoCent === 2500;
+
+  if (capofila && secondo && ragazzo && soldi) {
+    passate++;
+    console.log("  ok   il secondo adulto sta fra gli adulti e non fra i minori, e l'importo è 25 €");
+  } else {
+    fallite++;
+    console.log(`  NO   scheda con due adulti sbagliata: ${JSON.stringify(i)}`);
+  }
+}
+
+/* La stessa scheda per chi ha un adulto solo: `adulti` c'è ed è vuoto. Se
+   mancasse, la pagina troverebbe un `undefined` dove si aspetta un elenco —
+   e la riga della fattura illeggibile è quella che ci casca per prima. */
+{
+  scritte = [];
+  global.fetch = stubFetch([[fattura(13), inContanti(14, { items: [] })]]);
+  const res = finestra();
+  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
+  const schede = res.corpo?.iscritti || [];
+  const vuoti = schede.length === 2 && schede.every((s) => Array.isArray(s.adulti) && s.adulti.length === 0);
+
+  if (vuoti) {
+    passate++;
+    console.log("  ok   con un adulto solo, e anche se la fattura è illeggibile, «adulti» è un elenco vuoto");
+  } else {
+    fallite++;
+    console.log(`  NO   «adulti» non è un elenco vuoto: ${JSON.stringify(schede.map((s) => s.adulti))}`);
   }
 }
 

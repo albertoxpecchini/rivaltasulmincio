@@ -257,12 +257,12 @@ async function verifica(req, res) {
     const ordine = incassato?.giaFatto ? await leggiOrdine(id) : incassato;
 
     const voci = ordine?.purchase_units?.[0]?.items || [];
-    const { adulto, minori } = personeDa({ items: voci });
+    const { adulto, adulti, minori } = personeDa({ items: voci });
 
     return res.status(200).json({
       pagato: ordine?.status === "COMPLETED",
       nome: adulto?.nome || "",
-      persone: adulto ? 1 + minori.length : 0,
+      persone: adulto ? 1 + adulti.length + minori.length : 0,
     });
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });

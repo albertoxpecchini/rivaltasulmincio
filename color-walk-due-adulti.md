@@ -17,12 +17,41 @@ chi è già iscritto e per non fermare chi si sta iscrivendo adesso.
 
 ---
 
+## Dove siamo — 6 settembre 2026
+
+**Fase 1 fatta**, sul ramo `due-adulti`. Il sito sa leggere una fattura con
+più maggiorenni; nessuno ne ha ancora scritta una, e per chi guarda non è
+cambiato niente. È il punto sicuro descritto qui sotto.
+
+Le prove sono passate da **70 a 77**, 0 fallite: cinque casi nuovi in
+`prova-iscritti.mjs` e due in `prova-conferma.mjs`. Fra questi ci sono i due
+che proteggono chi è già iscritto — un'iscrizione con un adulto solo si legge
+identica, e `adulti` è un elenco vuoto invece che assente anche sulla riga
+della fattura illeggibile.
+
+Il codice della pagina di chi organizza gira nel browser e nessuna prova lo
+raggiunge: il CSV e l'elenco «Cammina con sé» sono stati verificati a parte,
+prendendo il frammento vero dal file e facendolo girare su un dato finto. Il
+secondo maggiorenne esce con **Responsabile vuoto**, e la colonna degli
+importi somma ancora l'incasso vero e non il doppio.
+
+**Non ancora fatto:** la Fase 2 (il modulo e l'endpoint che scrivono), la Fase
+3 (i testi) e il passaggio del ramo su `main`. Fino a lì non si è mosso niente
+per nessuno.
+
+**Le due decisioni prese:** D1 → **quattro** maggiorenni, capofila compreso.
+D4 → **una casella sola** con due dichiarazioni, e la frase su chi dichiara di
+avere il consenso degli adulti che iscrive. D2, D3 e D5 come proposti qui.
+
+---
+
 ## Indice
 
+0. [Dove siamo](#dove-siamo--6-settembre-2026)
 1. [Le cinque decisioni](#le-cinque-decisioni)
 2. [La strategia: prima leggere, poi scrivere](#la-strategia-prima-leggere-poi-scrivere)
 3. [Fase 0 — il ramo e la base](#fase-0--il-ramo-e-la-base)
-4. [Fase 1 — la lettura](#fase-1--la-lettura)
+4. [Fase 1 — la lettura](#fase-1--la-lettura--fatta) — fatta
 5. [Fase 2 — la scrittura](#fase-2--la-scrittura)
 6. [Fase 3 — i testi](#fase-3--i-testi)
 7. [Le sei trappole](#le-sei-trappole)
@@ -118,7 +147,7 @@ vero.
 
 ---
 
-## Fase 1 — la lettura
+## Fase 1 — la lettura — fatta
 
 Si pubblica alla fine di questa fase e **non cambia niente di visibile**.
 

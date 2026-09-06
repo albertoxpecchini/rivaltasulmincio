@@ -791,7 +791,7 @@ html.rsm-still .sb-is-frec { transition: none; }
     inner.className = "sb-panel-inner sb-is-riga";
     card.appendChild(inner);
 
-    var persone = 1 + (i.minori || []).length;
+    var persone = 1 + (i.adulti || []).length + (i.minori || []).length;
 
     /* La testata: tutta premibile, apre e chiude il corpo. */
     var capo = document.createElement("button");
@@ -885,32 +885,39 @@ html.rsm-still .sb-is-frec { transition: none; }
     voce("Fattura", i.illeggibile ? "" : i.numero, "sb-is-mono");
     corpo.appendChild(dl);
 
-    /* I minori a carico, uno per riga. Non sono una scheda loro: sono dentro
+    /* Chi cammina con chi ha compilato: gli altri maggiorenni prima, i
+       minori a carico dopo, uno per riga. Non sono schede loro: sono dentro
        questa, perché è così che sono stati iscritti e perché chi consegna le
        sacche deve vedere in un colpo che a questo nome corrispondono tre
        persone. Uno per riga anche perché in stampa ognuno si prende il suo
-       quadratino da spuntare. */
-    if ((i.minori || []).length) {
+       quadratino da spuntare: al banco si spunta la persona, non il modulo.
+
+       La fascia si scrive accanto a ognuno adesso che la fila ne può portare
+       due: senza, un maggiorenne e un ragazzo di sedici anni sono due nomi
+       identici, e chi consegna dovrebbe fare il conto sulla data di nascita.
+       Sono le stesse due parole del CSV, così le due viste dicono uguale. */
+    var compagni = (i.adulti || []).map(function (a) { return { p: a, fascia: "maggiorenne" }; })
+      .concat((i.minori || []).map(function (m) { return { p: m, fascia: "6-17 anni" }; }));
+
+    if (compagni.length) {
       var ul = document.createElement("ul");
       ul.className = "sb-is-min";
       var t = document.createElement("li");
       t.className = "sb-is-min-t";
       t.textContent = "Cammina con sé";
       ul.appendChild(t);
-      i.minori.forEach(function (m) {
+      compagni.forEach(function (c) {
         var li = document.createElement("li");
         li.appendChild(spunta());
         var b = document.createElement("b");
-        b.textContent = (m.nome + " " + m.cognome).trim() || "(senza nome)";
+        b.textContent = (c.p.nome + " " + c.p.cognome).trim() || "(senza nome)";
         li.appendChild(b);
-        var dettagli = [];
-        if (m.dataNascita) dettagli.push(data(m.dataNascita));
-        if (m.codiceFiscale) dettagli.push(m.codiceFiscale);
-        if (dettagli.length) {
-          var sp = document.createElement("span");
-          sp.textContent = dettagli.join(" · ");
-          li.appendChild(sp);
-        }
+        var dettagli = [c.fascia];
+        if (c.p.dataNascita) dettagli.push(data(c.p.dataNascita));
+        if (c.p.codiceFiscale) dettagli.push(c.p.codiceFiscale);
+        var sp = document.createElement("span");
+        sp.textContent = dettagli.join(" · ");
+        li.appendChild(sp);
         ul.appendChild(li);
       });
       corpo.appendChild(ul);
@@ -931,14 +938,14 @@ html.rsm-still .sb-is-frec { transition: none; }
 
     /* Il testo su cui si cerca, preparato una volta sola. Cercare vuol dire
        un indexOf su questa stringa: niente concatenazioni a ogni tasto. */
-    var minori = (i.minori || [])
-      .map(function (m) { return m.nome + " " + m.cognome + " " + (m.codiceFiscale || ""); })
+    var accompagnati = (i.adulti || []).concat(i.minori || [])
+      .map(function (p) { return p.nome + " " + p.cognome + " " + (p.codiceFiscale || ""); })
       .join(" ");
 
     return {
       dato: i,
       nodo: card,
-      cerca: normalizza([i.nome, i.cognome, i.codiceFiscale, i.email, i.telefono, i.numero, minori].join(" ")),
+      cerca: normalizza([i.nome, i.cognome, i.codiceFiscale, i.email, i.telefono, i.numero, accompagnati].join(" ")),
       perCognome: normalizza((i.cognome || "") + " " + (i.nome || "")),
     };
   }
@@ -1014,7 +1021,7 @@ html.rsm-still .sb-is-frec { transition: none; }
       if (schede[k].nodo.hidden === ok) schede[k].nodo.hidden = !ok;
       if (ok) {
         visti++;
-        persone += 1 + (schede[k].dato.minori || []).length;
+        persone += 1 + (schede[k].dato.adulti || []).length + (schede[k].dato.minori || []).length;
       }
     }
 
@@ -1292,6 +1299,17 @@ html.rsm-still .sb-is-frec { transition: none; }
         i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
         i.pagato ? "pagato" : "da incassare", i.numero || i.id
       ]));
+      /* Gli altri maggiorenni escono con la colonna Responsabile vuota, ed
+         è esattamente il modello che si sta rappresentando: rispondono di sé.
+         Il minore invece porta scritto accanto chi ne risponde. */
+      (i.adulti || []).forEach(function (a) {
+        righe.push(rigaCsv([
+          "maggiorenne", a.nome, a.cognome, data(a.dataNascita), a.codiceFiscale, "", "",
+          "", "",
+          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          i.pagato ? "pagato" : "da incassare", i.numero || i.id
+        ]));
+      });
       (i.minori || []).forEach(function (m) {
         righe.push(rigaCsv([
           "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",

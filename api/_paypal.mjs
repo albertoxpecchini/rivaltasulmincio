@@ -70,6 +70,11 @@ export const EVENTO = "color-walk-2026-09-20";
    chi ne ha di più compila il modulo due volte. */
 export const MAX_MINORI = 8;
 
+/* E quanti maggiorenni, capofila compreso: quattro vuol dire lui più tre.
+   Ci sta la coppia, ci stanno i nonni, e chi ne ha di più compila il modulo
+   due volte — la stessa misura dei minori, per la stessa ragione. */
+export const MAX_ADULTI = 4;
+
 export const VALUTA = "EUR";
 
 /* Le due quote. Stanno qui e non nella funzione dell'iscrizione perché non
@@ -282,8 +287,16 @@ export const numeroFattura = () =>
 const FASCIA_ADULTO = "maggiorenne";
 const FASCIA_MINORE = "dai 6 ai 17 anni";
 
+/* I ruoli sono tre e le fasce due: `A` è chi compila il modulo, `B` ogni
+   altro maggiorenne che cammina con lui, `M` i minori. `A` e `B` si
+   chiamano tutti e due «maggiorenne» perché quello è il nome che si legge
+   nel pannello di PayPal e sulla ricevuta, e lì la differenza non serve a
+   nessuno. La differenza sta nella lettera, e la lettera la legge il codice:
+   chi ha in carico i minori, e chi risponde soltanto di sé. */
+const FASCIA = { A: FASCIA_ADULTO, B: FASCIA_ADULTO, M: FASCIA_MINORE };
+
 const voce = (persona, ruolo, quotaCent) => ({
-  name: `${persona.nome} ${persona.cognome} — ${ruolo === "A" ? FASCIA_ADULTO : FASCIA_MINORE}`.slice(0, 200),
+  name: `${persona.nome} ${persona.cognome} — ${FASCIA[ruolo] || FASCIA_MINORE}`.slice(0, 200),
   description: [ruolo, persona.nome, persona.cognome, persona.dataNascita, persona.codiceFiscale || "—"]
     .join("|")
     .slice(0, 1000),
@@ -344,14 +357,21 @@ export function componiFattura({ numero, adulto, minori, email, modalita, telefo
 /* ── E all'incontrario ────────────────────────────────────────────────────
    Le persone rilette dalle voci della fattura. Una voce illeggibile si
    scarta e le altre restano: una descrizione storta non deve far sparire
-   un'intera famiglia dall'elenco di chi sta consegnando le sacche. */
+   un'intera famiglia dall'elenco di chi sta consegnando le sacche.
+
+   Torna tre cose. `adulto` è il capofila — chi ha compilato il modulo, chi
+   ha in carico i minori, e resta il nome che aveva prima perché i punti del
+   sito che lo leggono continuino a funzionare senza sapere niente di questa
+   modifica. `adulti` sono i maggiorenni che camminano con lui e rispondono
+   di sé, ed è un elenco anche quando è vuoto. `minori` come sempre. */
 export function personeDa(fattura) {
   let adulto = null;
+  const adulti = [];
   const minori = [];
 
   for (const v of fattura?.items || []) {
     const [ruolo, nome = "", cognome = "", dataNascita = "", codiceFiscale = ""] = String(v.description || "").split("|");
-    if (ruolo !== "A" && ruolo !== "M") continue;
+    if (ruolo !== "A" && ruolo !== "B" && ruolo !== "M") continue;
     if (!nome.trim() && !cognome.trim()) continue;
 
     /* Le maiuscole si rimettono anche in lettura, non solo in scrittura: le
@@ -366,11 +386,19 @@ export function personeDa(fattura) {
       importoCent: centesimi(v.unit_amount?.value) * (Number(v.quantity) || 1),
     };
 
-    if (ruolo === "A" && !adulto) adulto = persona;
-    else minori.push(persona);
+    /* Chi non è un minore è un maggiorenne, e il primo che passa è il
+       capofila: di solito è la `A`, che la fattura scrive per prima, ma se
+       una fattura arrivasse senza il capofila è meglio promuovere il primo
+       adulto che lasciare l'iscrizione senza nessuno. Quello che non si fa
+       mai è il contrario di prima — raccattare in mezzo ai minori tutto
+       quello che non si è riconosciuto: è così che un secondo maggiorenne
+       diventerebbe un ragazzino di dieci anni. */
+    if (ruolo === "M") minori.push(persona);
+    else if (!adulto) adulto = persona;
+    else adulti.push(persona);
   }
 
-  return { adulto, minori };
+  return { adulto, adulti, minori };
 }
 
 /* ── Pagata o no ──────────────────────────────────────────────────────────

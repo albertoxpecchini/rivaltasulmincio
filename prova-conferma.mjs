@@ -30,7 +30,7 @@ let chiamate;
    campi separati dalla barra verticale — perché è da lì che la ricevuta
    rilegge nomi e importi invece di ricopiarli. */
 const voce = (ruolo, nome, cognome, nascita, cf, euro) => ({
-  name: `${nome} ${cognome} — ${ruolo === "A" ? "maggiorenne" : "dai 6 ai 17 anni"}`,
+  name: `${nome} ${cognome} — ${ruolo === "M" ? "dai 6 ai 17 anni" : "maggiorenne"}`,
   description: [ruolo, nome, cognome, nascita, cf].join("|"),
   quantity: "1",
   unit_amount: { currency_code: "EUR", value: euro },
@@ -67,6 +67,21 @@ const fatturaSola = (extra = {}) =>
     ...extra,
   });
 
+
+/* Due maggiorenni e due minori: 30 €. Il secondo adulto è una `B`, e la
+   ricevuta lo deve mettere sulla riga dei maggiorenni insieme a chi ha
+   compilato — non fra i ragazzi, e non in una riga sua. */
+const fatturaDueAdulti = (extra = {}) =>
+  fattura({
+    amount: { currency_code: "EUR", value: "30.00" },
+    items: [
+      voce("A", "Rebecca", "Rossi", "1985-03-11", "RSSRCC85C51F205X", "10.00"),
+      voce("B", "Marco", "Rossi", "1983-07-19", "RSSMRC83L19F205K", "10.00"),
+      voce("M", "Luca", "Rossi", "2015-04-02", "—", "5.00"),
+      voce("M", "Anna", "Rossi", "2018-11-20", "—", "5.00"),
+    ],
+    ...extra,
+  });
 const INCASSO = {
   id: "3AB12345CD678901E",
   status: "COMPLETED",
@@ -243,6 +258,41 @@ await prova("da sola → niente riga dei ragazzi", {
     nonContiene: ["dai 6 ai 17 anni", "{{", "<!--se:"],
   },
 });
+/* Due maggiorenni sulla stessa riga, e il totale che li comprende tutti e
+   due. «1 maggiorenne» era scritto a mano nella ricevuta: se ricomparisse
+   qui, vorrebbe dire che qualcuno ha rimesso la cifra fissa. */
+await prova("due maggiorenni → una riga sola che ne dice due, e 30 €", {
+  evento: ev("PAYMENT.CAPTURE.COMPLETED"),
+  stub: { fatture: [fatturaDueAdulti()] },
+  atteso: {
+    codice: 200,
+    mail: 1,
+    contiene: ["Rebecca Rossi", "Marco Rossi", "Luca Rossi", "Anna Rossi", "2 maggiorenni", "2 ragazzi dai 6 ai 17 anni", "20,00", "30,00"],
+    nonContiene: ["1 maggiorenne", "{{", "<!--se:"],
+  },
+});
+
+await prova("due maggiorenni e nessun minore → niente riga dei ragazzi, 20 €", {
+  evento: ev("PAYMENT.CAPTURE.COMPLETED"),
+  stub: {
+    fatture: [
+      fatturaDueAdulti({
+        amount: { currency_code: "EUR", value: "20.00" },
+        items: [
+          voce("A", "Rebecca", "Rossi", "1985-03-11", "RSSRCC85C51F205X", "10.00"),
+          voce("B", "Marco", "Rossi", "1983-07-19", "RSSMRC83L19F205K", "10.00"),
+        ],
+      }),
+    ],
+  },
+  atteso: {
+    codice: 200,
+    mail: 1,
+    contiene: ["Rebecca Rossi", "Marco Rossi", "2 maggiorenni", "20,00"],
+    nonContiene: ["dai 6 ai 17 anni", "1 maggiorenne", "{{", "<!--se:"],
+  },
+});
+
 
 /* Il segno di «già fatto» non è un registro a parte: è lo stato della
    fattura. Una già saldata non fa ripartire niente. */
