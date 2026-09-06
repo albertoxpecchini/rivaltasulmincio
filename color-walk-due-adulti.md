@@ -17,11 +17,47 @@ chi è già iscritto e per non fermare chi si sta iscrivendo adesso.
 
 ---
 
+## In rete dal 6 settembre 2026, 14:37
+
+**Pubblicato.** I sette commit del ramo `due-adulti` sono su `main` in
+avanzamento diretto, la storia è rimasta lineare, e il deploy è vivo: da questo
+momento chi apre `/color-walk` può iscrivere fino a quattro maggiorenni in una
+sola iscrizione.
+
+La prova finale, prima di unire, è passata in tutte e otto le voci: 92 prove
+verdi e 0 fallite; un'iscrizione con un adulto solo identica a prima in
+scrittura, lettura ed elenco; 20 € con due adulti e 30 € con due adulti e due
+minori; il ritorno da PayPal che conta giusto da 1 a 12 persone; il build senza
+errori nuovi; e i testi coerenti fra loro in 30 controlli.
+
+Dopo la pubblicazione, controllato in rete: `/color-walk`, `/color-walk-modulo`
+e `/iscritti` rispondono 200 e portano il codice nuovo; il regolamento
+pubblicato dice quattro maggiorenni, il 18 settembre per la cessione e la data
+di aggiornamento giusta; `/api/iscritti-color-walk` risponde 401 senza chiave.
+E soprattutto **la funzione dell'iscrizione si carica**: un colpo sul campo
+trappola torna 400 col messaggio giusto, che è la prova che `MAX_ADULTI` si
+importa davvero — se non si importasse, ogni iscrizione darebbe 500 e le pagine
+non lo direbbero.
+
+**Resta la prova vera del passo 2.5**, che nessuno può fare al posto di una
+persona e che adesso si fa sul sito vivo: un'iscrizione con due adulti
+scegliendo **contanti**. Nasce una fattura vera, parte una mail vera, non si
+muove un euro. Si guarda che la mail dica «2 maggiorenni · 20 €» e porti tutti
+e due i nomi, che la pagina iscritti mostri una scheda con due adulti e il
+conto persone giusto, e che il CSV abbia due righe `maggiorenne` con la seconda
+a **Responsabile vuoto**. Poi si annulla quella fattura dal pannello di PayPal:
+annullata, sparisce dall'elenco da sé.
+
+**Se qualcosa va storto**, il modo di tornare indietro è quello scritto in
+fondo: si torna indietro solo la parte che scrive, e le iscrizioni con due
+adulti eventualmente già registrate continuano a leggersi, perché la parte che
+legge resta.
+
+---
+
 ## Dove siamo — 6 settembre 2026
 
-**Fase 1, Fase 2 e Fase 3 fatte**, sul ramo `due-adulti`, in sei commit.
-Manca solo il passaggio su `main`: fino a lì non si è mosso niente per
-nessuno, e chi si sta iscrivendo adesso vede il sito di ieri.
+**Fase 1, Fase 2 e Fase 3 fatte**, in sette commit, e adesso su `main`.
 
 Il sito legge e scrive un'iscrizione con più maggiorenni. La lettera `B` è il
 maggiorenne accompagnato, `A` resta chi compila; fattura, ordine, ricevuta,
@@ -93,6 +129,7 @@ avere il consenso degli adulti che iscrive. D2, D3 e D5 come proposti qui.
 
 ## Indice
 
+0. [In rete](#in-rete-dal-6-settembre-2026-1437)
 0. [Dove siamo](#dove-siamo--6-settembre-2026)
 1. [Le cinque decisioni](#le-cinque-decisioni)
 2. [La strategia: prima leggere, poi scrivere](#la-strategia-prima-leggere-poi-scrivere)
