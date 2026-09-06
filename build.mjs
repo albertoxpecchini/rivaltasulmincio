@@ -1300,6 +1300,10 @@ const compilaMail = (nome) => {
     "{{IMPORTO_RAGAZZI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
+    /* Il numero del foglio, quando l'iscrizione è stata ricopiata da un modulo
+       cartaceo. Sta dentro un blocco condizionale che per tutti gli altri non
+       viene nemmeno stampato. */
+    "{{MODULO}}",
   ];
   const orfani = [...new Set(restati)].filter((x) => !attesi.includes(x));
   if (orfani.length) throw new Error(`${nome}: segnaposto senza dato — ${orfani.join(" ")}`);
@@ -1314,7 +1318,13 @@ const stringa = (t) =>
 
 const FUNZIONE = "api/_posta.mjs";
 const sorgente = readFileSync(FUNZIONE, "utf8");
-const marcatori = /(\/\* build:modelli:inizio \*\/\n)[\s\S]*?(\/\* build:modelli:fine \*\/)/;
+/* Il `\r?` non è pignoleria. Questo file è misto per costruzione: il corpo lo
+   scrive una persona e su Windows arriva con le righe alla Windows, la parte
+   fra i marcatori la scrive il build e le fa alla Unix. Chiunque passi il file
+   in un normalizzatore — o anche solo un `git switch` con autocrlf — sposta il
+   ritorno a capo del marcatore, e senza questa domanda il build smette di
+   trovarlo e si ferma. Si è fermato davvero, ed è così che si è scoperto. */
+const marcatori = /(\/\* build:modelli:inizio \*\/\r?\n)[\s\S]*?(\/\* build:modelli:fine \*\/)/;
 if (!marcatori.test(sorgente)) {
   throw new Error(`${FUNZIONE}: mancano i marcatori build:modelli:inizio … build:modelli:fine`);
 }
