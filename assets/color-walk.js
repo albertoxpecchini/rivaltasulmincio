@@ -1,10 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Il movimento delle due pagine della Color Walk.
+   Il movimento delle tre pagine della Color Walk.
 
-   Lo scarica solo chi ha la vernice addosso — /color-walk e
-   /color-walk-regolamento — perché è build.mjs a metterlo in fondo alla
-   pagina quando il frammento contiene `class="sb-cr"`. Sulle altre dodici
-   pagine questo file non esiste.
+   Lo scarica solo chi ha la vernice addosso — /color-walk,
+   /color-walk-regolamento e /color-walk-modulo — perché è build.mjs a
+   metterlo in fondo alla pagina quando il frammento contiene `class="sb-cr"`.
+   Sulle altre undici pagine questo file non esiste.
+
+   Le tre pagine ne usano quantità diverse, ed è normale: il modulo cartaceo
+   si serve del solo punto 1, e per il resto qui sotto non trova niente da
+   fare. Meglio un file solo che tre file quasi uguali.
 
    Quattro cose, tutte facoltative: ognuna guarda se il suo pezzo di pagina
    c'è e, se non c'è, si toglie di mezzo senza dire niente.

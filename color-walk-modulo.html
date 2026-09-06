@@ -227,6 +227,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 }
 .sb-cwm-vuoto--alto { min-height: 3.2rem; }
 
+/* La freccia che torna indietro va a sinistra, e al passaggio deve
+   scostarsi a sinistra: .sb-link in sb.css sposta la sua icona di due
+   pixel a destra, che su una freccia all'indietro è il verso sbagliato. */
+.sb-cwm-indietro:hover svg { transform: translateX(-2px); }
+
 /* ═══ Il campo già stampato ══════════════════════════════════════════════════
    Luogo, mese e anno sono sempre gli stessi: si stampano. Resta il buco del
    giorno, con la sua riga sotto — più scura di quella del riquadro, o non si
@@ -501,16 +506,20 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 }
 </style>
 
+<div class="sb-cr sb-cr--basso">
+
+<div class="sb-cw-vernice" aria-hidden="true"><div class="sb-cw-polvere"></div></div>
+
 <section class="sb-container sb-cwm">
 
   <!-- A schermo si spiega cos'è questo foglio; in stampa la spiegazione non
        serve, chi ce l'ha in mano lo sa già. -->
-  <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem">
-    <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
-    <h1 style="margin:0.35rem 0 0">Modulo da stampare</h1>
-    <p class="sb-riv-lede">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 17:30</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
-    <p class="sb-cwm-stampa-p">Il <strong>numero del modulo</strong> non si scrive più a mano: si sceglie da che numero partire e quanti fogli stampare, e escono già numerati uno dietro l'altro. È il numero con cui poi il foglio si riporta in elenco, e uno scritto storto è un foglio che qualcuno riporta due volte.</p>
-    <div class="sb-cwm-stampa">
+  <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem" data-cw-fila="80">
+    <span class="sb-riv-eyebrow sb-cw-su">Color Walk · domenica 20 settembre 2026</span>
+    <h1 class="sb-cw-su" style="margin:0.35rem 0 0">Modulo da stampare</h1>
+    <p class="sb-riv-lede sb-cw-su">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 17:30</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
+    <p class="sb-cwm-stampa-p sb-cw-su">Il <strong>numero del modulo</strong> non si scrive più a mano: si sceglie da che numero partire e quanti fogli stampare, e escono già numerati uno dietro l'altro. È il numero con cui poi il foglio si riporta in elenco, e uno scritto storto è un foglio che qualcuno riporta due volte.</p>
+    <div class="sb-cwm-stampa sb-cw-su">
       <label for="cwm-primo">Primo numero</label>
       <input id="cwm-primo" type="number" min="1" max="999" step="1" value="1" inputmode="numeric">
       <label for="cwm-quanti">Quanti fogli</label>
@@ -611,11 +620,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link" href="/color-walk">← Iscrizione online</a>
+    <a class="sb-link sb-cwm-indietro" href="/color-walk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Iscrizione online</a>
     <a class="sb-link" href="/color-walk-regolamento">Regolamento <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 
 </section>
+
+</div>
 <script>
 /* ═══ Un blocco di fogli già numerati ═══════════════════════════════════════
    Il numero in cima al foglio è quello con cui l'iscrizione si riporta in
@@ -834,5 +845,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      da sé e il tasto non compare. -->
 <script src="assets/ricerca-dati.js"></script>
 <script src="assets/ricerca.js"></script>
+<script src="assets/color-walk.js"></script>
 </body>
 </html>

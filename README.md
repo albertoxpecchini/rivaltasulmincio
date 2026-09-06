@@ -45,7 +45,7 @@ tema chiaro/scuro nativo.
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
 | **Design system** | **3.220 righe CSS** | `sb.css` (1.016) · `rivalta.css` (2.018) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.823 righe**, 8 file | `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `color-walk.js` (245) · `meteo.js` (214) · `mappa.js` (200) · `rivalta.js` (115) · `gusto.js` (90) |
+| **JavaScript nel browser** | **1.827 righe**, 8 file | `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `rivalta.js` (115) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
@@ -273,7 +273,7 @@ rivaltasulmincio/
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
 │   ├── color-walk.js           #   il movimento della camminata: blocchi che entrano, filo del
-│   │                           #   percorso, barra di lettura — solo sulle due pagine .sb-cr
+│   │                           #   percorso, barra di lettura — solo sulle tre pagine .sb-cr
 │   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro — fa anche da marchio in testata
 │   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/

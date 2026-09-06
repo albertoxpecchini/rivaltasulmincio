@@ -22,6 +22,21 @@
      sitemap, non entra nella ricerca del sito, non entra nel menu — le nove
      porte d'ingresso restano nove.
 
+     ── A schermo è la terza pagina della camminata ────────────────────────
+     Da settembre porta la pelle delle altre due — le tinte delle polveri, il
+     fondale, la polvere che sale — tenuta bassa come sul regolamento: si
+     arriva qui da /color-walk e dal regolamento, e non si deve avere
+     l'impressione di essere finiti su un altro sito. La pelle sta in
+     assets/rivalta.css sotto «La pelle della Color Walk», e la classe .sb-cr
+     è anche quella che fa scaricare assets/color-walk.js a questa pagina.
+
+     Si muove solo il blocco che si vede a schermo e non si stampa. Il foglio
+     sotto no, ed è di proposito: è un documento, e un modulo di carta che
+     scivola dentro sarebbe rumore. È anche il pezzo che lo script delle
+     copie toglie prima di stampare, quindi non c'è nessun modo di mandare
+     alla stampante una riga che l'osservatore non ha ancora scoperto — e in
+     ogni caso @media print in rivalta.css annulla lo stato nascosto.
+
      ── Fatto per la stampante, non per lo schermo ─────────────────────────
      Tutto quello che serve a un sito e non a un foglio — barra di
      navigazione, piede, barra dei comandi, fondali — sparisce in @media
@@ -139,6 +154,11 @@
   border-bottom: 1px solid var(--sb-border-strong);
 }
 .sb-cwm-vuoto--alto { min-height: 3.2rem; }
+
+/* La freccia che torna indietro va a sinistra, e al passaggio deve
+   scostarsi a sinistra: .sb-link in sb.css sposta la sua icona di due
+   pixel a destra, che su una freccia all'indietro è il verso sbagliato. */
+.sb-cwm-indietro:hover svg { transform: translateX(-2px); }
 
 /* ═══ Il campo già stampato ══════════════════════════════════════════════════
    Luogo, mese e anno sono sempre gli stessi: si stampano. Resta il buco del
@@ -414,16 +434,24 @@
 }
 </style>
 
+<div class="sb-cr sb-cr--basso">
+
+<!-- Il fondale della camminata, tenuto basso come sul regolamento: questo è
+     un foglio da stampare, non un manifesto. A schermo dice che si è ancora
+     dentro la Color Walk; in stampa sparisce, come tutto il resto del sito.
+     Decorazione pura, aria-hidden. -->
+<div class="sb-cw-vernice" aria-hidden="true"><div class="sb-cw-polvere"></div></div>
+
 <section class="sb-container sb-cwm">
 
   <!-- A schermo si spiega cos'è questo foglio; in stampa la spiegazione non
        serve, chi ce l'ha in mano lo sa già. -->
-  <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem">
-    <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
-    <h1 style="margin:0.35rem 0 0">Modulo da stampare</h1>
-    <p class="sb-riv-lede">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 17:30</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
-    <p class="sb-cwm-stampa-p">Il <strong>numero del modulo</strong> non si scrive più a mano: si sceglie da che numero partire e quanti fogli stampare, e escono già numerati uno dietro l'altro. È il numero con cui poi il foglio si riporta in elenco, e uno scritto storto è un foglio che qualcuno riporta due volte.</p>
-    <div class="sb-cwm-stampa">
+  <div class="sb-cwm-solo-schermo" style="margin-bottom:1.6rem" data-cw-fila="80">
+    <span class="sb-riv-eyebrow sb-cw-su">Color Walk · domenica 20 settembre 2026</span>
+    <h1 class="sb-cw-su" style="margin:0.35rem 0 0">Modulo da stampare</h1>
+    <p class="sb-riv-lede sb-cw-su">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 17:30</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
+    <p class="sb-cwm-stampa-p sb-cw-su">Il <strong>numero del modulo</strong> non si scrive più a mano: si sceglie da che numero partire e quanti fogli stampare, e escono già numerati uno dietro l'altro. È il numero con cui poi il foglio si riporta in elenco, e uno scritto storto è un foglio che qualcuno riporta due volte.</p>
+    <div class="sb-cwm-stampa sb-cw-su">
       <label for="cwm-primo">Primo numero</label>
       <input id="cwm-primo" type="number" min="1" max="999" step="1" value="1" inputmode="numeric">
       <label for="cwm-quanti">Quanti fogli</label>
@@ -524,11 +552,13 @@
   </p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link" href="/color-walk">← Iscrizione online</a>
+    <a class="sb-link sb-cwm-indietro" href="/color-walk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Iscrizione online</a>
     <a class="sb-link" href="/color-walk-regolamento">Regolamento <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 
 </section>
+
+</div>
 <script>
 /* ═══ Un blocco di fogli già numerati ═══════════════════════════════════════
    Il numero in cima al foglio è quello con cui l'iscrizione si riporta in
