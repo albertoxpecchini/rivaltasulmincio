@@ -36,12 +36,18 @@
      ── Il modulo: un'iscrizione è un gruppo ───────────────────────────────
      Non si iscrive una persona, si iscrive chi cammina insieme. La regola
      decisa da chi organizza è che ognuno è tutore di sé stesso, e che il
-     maggiorenne che si iscrive è tutore dei minori a suo carico che iscrive
-     con sé. Da lì scende tutto quello che questo modulo fa: chiede la data
-     di nascita e pretende diciotto anni compiuti il giorno della camminata, e
-     i minori li aggiunge sotto, dentro l'iscrizione di chi li porta, non in un
-     modulo loro. Se ne possono mettere otto: è il MAX_MINORI di
-     api/_paypal.mjs, non un numero deciso qui.
+     maggiorenne che compila è tutore dei minori a suo carico che iscrive con
+     sé. Da lì scende tutto quello che questo modulo fa: chiede la data di
+     nascita e pretende diciotto anni compiuti il giorno della camminata, e
+     chi cammina con chi compila lo aggiunge sotto, dentro la sua iscrizione,
+     non in un modulo suo.
+
+     Le due file sono separate perché sono due cose diverse. Gli altri
+     maggiorenni rispondono di sé — e per questo di ognuno si chiede il codice
+     fiscale, come a chi compila; i minori sono a carico di chi li iscrive, e
+     il loro codice fiscale resta facoltativo. Se ne possono mettere quattro e
+     otto: sono MAX_ADULTI e MAX_MINORI di api/_paypal.mjs, non numeri decisi
+     qui.
 
      Il pagamento è vero e la carta viene addebitata della somma delle quote:
      10 € il maggiorenne, 5 € ognuno dai 6 ai 17 anni. Sotto i 6 anni non ci
@@ -921,7 +927,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. Le età si contano al giorno della camminata. A fine giro c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
+      <p>Dati e pagamento in un passaggio solo. Ci vuole un minuto. Si iscrive un maggiorenne, che può aggiungere <strong>altri maggiorenni</strong> — ognuno responsabile di sé — e i <strong>minori a suo carico</strong>: <strong>10 €</strong> chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. Le età si contano al giorno della camminata. A fine giro c'è l'aperitivo in Piazza Chiesa, compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
       <p>Le iscrizioni online si chiudono alle <strong>23:59 di venerdì 18 settembre</strong>, ma ci si può iscrivere anche <strong>di persona</strong>, al banchetto in piazza: <strong>martedì 15 settembre</strong> e poi il giorno stesso, con il <a href="/color-walk-modulo">modulo cartaceo</a> e in contanti. Il materiale basta per <strong>300 partecipanti</strong>. Se piove, la camminata è rinviata a <strong>domenica 27 settembre</strong>.</p>
       <p style="margin-top:0.8rem"><a href="assets/color-walk-locandina.pdf" download="color-walk-locandina.pdf" target="_blank" rel="noopener" style="font-size:0.9rem;font-weight:500">Scarica la locandina in PDF →</a></p>
     </div>
