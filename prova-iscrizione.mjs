@@ -205,7 +205,9 @@ await prova(
       /2 maggiorenni/.test(testo) &&
       /Marco Rossi/.test(testo) &&
       /25,00/.test(testo) &&
-      !testo.includes("{{")
+      /girala a chi cammina con te/.test(testo) &&
+      !testo.includes("{{") &&
+      !testo.includes("<!--se:")
     );
   }
 );
@@ -221,6 +223,7 @@ await prova(
       r.codice === 200 &&
       /non è ancora pagata/i.test(testo) &&
       /15,00/.test(testo) &&
+      !/girala/.test(testo) &&
       /contanti/i.test(testo) &&
       !testo.includes("{{") &&
       !testo.includes("<!--se:") &&

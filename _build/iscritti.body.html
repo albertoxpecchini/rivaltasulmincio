@@ -23,8 +23,10 @@
      sbaglio.
 
      ── Un pagamento non è una persona ─────────────────────────────────────
-     Chi si iscrive è maggiorenne e può portare con sé i minori a suo carico.
-     Un pagamento vale quindi da una a nove persone, e i due numeri restano
+     Chi si iscrive è maggiorenne e può portare con sé altri maggiorenni — che
+     rispondono di sé — e i minori a suo carico. Un pagamento vale quindi da
+     una a dodici persone: quattro maggiorenni al massimo, chi compila
+     compreso, più otto minori. I due numeri restano
      distinti dappertutto: il numero grande in cima è quello dei PARTECIPANTI
      — perché il tetto di 300 è di persone e non di pagamenti — la riga sotto
      la ricerca dice tutti e due, e il CSV esce con una riga per persona,
@@ -70,8 +72,8 @@
      6. SI STAMPA. Il foglio con le caselle da spuntare al ritiro delle sacce
         è la cosa che al banco serve di più quando il telefono non prende: in
         stampa le schede si aprono tutte, i comandi spariscono e davanti a
-        ogni persona — l'adulto e ognuno dei suoi minori — compare un
-        quadratino.
+        ogni persona — chi ha compilato, ogni maggiorenne che cammina con
+        lui e ognuno dei suoi minori — compare un quadratino.
 
      ── Trecento schede senza far ballare niente ───────────────────────────
      Il nodo di ogni scheda si costruisce UNA volta sola, quando l'elenco
@@ -595,8 +597,9 @@ html.rsm-still .sb-is-frec { transition: none; }
   .sb-is-riga { padding: 2mm 2.5mm; border: 1px solid #000; }
   .sb-is-corpo { border-top-color: #000 !important; }
 
-  /* Il quadratino: davanti all'adulto e davanti a ognuno dei suoi minori,
-     perché al banco si spunta la persona, non il pagamento. */
+  /* Il quadratino: davanti a ogni persona dell'iscrizione, maggiorenni
+     accompagnati compresi, perché al banco si spunta la persona e non il
+     pagamento. */
   .sb-is-spunta {
     display: inline-block;
     flex: none;
@@ -671,7 +674,7 @@ html.rsm-still .sb-is-frec { transition: none; }
     </div>
 
     <p class="sb-is-nota">
-      Qui dentro ci sono dati di persone vere — codice fiscale e data di nascita compresi, e i nomi dei minori che qualcuno ha iscritto con sé. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo, e se stampi il foglio del banco ricordati che è un elenco di dati personali su carta: si tiene addosso e si distrugge dopo.
+      Qui dentro ci sono dati di persone vere — codice fiscale e data di nascita compresi — di chi si è iscritto, dei maggiorenni che ha iscritto insieme a sé e dei minori a suo carico. La chiave resta in questa scheda del browser e se ne va quando la chiudi. Il CSV si costruisce nel telefono, non passa da nessun server. Non lasciare l'elenco aperto su uno schermo che non è tuo, e se stampi il foglio del banco ricordati che è un elenco di dati personali su carta: si tiene addosso e si distrugge dopo.
     </p>
 
     <noscript>

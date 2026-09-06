@@ -244,7 +244,7 @@ await prova("gruppo → la ricevuta elenca tutti e divide le due fasce", {
     codice: 200,
     mail: 1,
     contiene: ["Rebecca Rossi", "Luca Rossi", "Anna Rossi", "1 maggiorenne", "2 ragazzi dai 6 ai 17 anni", "20,00", "10,00"],
-    nonContiene: ["{{", "<!--se:", "commissioni", "Commissioni", "da pagare al ritrovo", "Da pagare"],
+    nonContiene: ["girala", "{{", "<!--se:", "commissioni", "Commissioni", "da pagare al ritrovo", "Da pagare"],
   },
 });
 
@@ -255,7 +255,7 @@ await prova("da sola → niente riga dei ragazzi", {
     codice: 200,
     mail: 1,
     contiene: ["Rebecca Rossi", "1 maggiorenne"],
-    nonContiene: ["dai 6 ai 17 anni", "{{", "<!--se:"],
+    nonContiene: ["girala", "dai 6 ai 17 anni", "{{", "<!--se:"],
   },
 });
 /* Due maggiorenni sulla stessa riga, e il totale che li comprende tutti e
@@ -267,7 +267,7 @@ await prova("due maggiorenni → una riga sola che ne dice due, e 30 €", {
   atteso: {
     codice: 200,
     mail: 1,
-    contiene: ["Rebecca Rossi", "Marco Rossi", "Luca Rossi", "Anna Rossi", "2 maggiorenni", "2 ragazzi dai 6 ai 17 anni", "20,00", "30,00"],
+    contiene: ["Rebecca Rossi", "Marco Rossi", "Luca Rossi", "Anna Rossi", "2 maggiorenni", "2 ragazzi dai 6 ai 17 anni", "20,00", "30,00", "girala a chi cammina con te"],
     nonContiene: ["1 maggiorenne", "{{", "<!--se:"],
   },
 });
@@ -288,7 +288,7 @@ await prova("due maggiorenni e nessun minore → niente riga dei ragazzi, 20 €
   atteso: {
     codice: 200,
     mail: 1,
-    contiene: ["Rebecca Rossi", "Marco Rossi", "2 maggiorenni", "20,00"],
+    contiene: ["Rebecca Rossi", "Marco Rossi", "2 maggiorenni", "20,00", "girala a chi cammina con te"],
     nonContiene: ["dai 6 ai 17 anni", "1 maggiorenne", "{{", "<!--se:"],
   },
 });

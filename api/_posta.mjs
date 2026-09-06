@@ -156,7 +156,16 @@ export function ricevuta({ fattura, pagato, quando }) {
     .join(" · ");
 
   const html = riempi(
-    condiziona(MODELLO_RICEVUTA, { ragazzi: minori.length > 0, pagato, daPagare: !pagato }),
+    condiziona(MODELLO_RICEVUTA, {
+      ragazzi: minori.length > 0,
+      /* Un'iscrizione è un indirizzo solo. Quando i maggiorenni sono più
+         d'uno, gli altri non ricevono niente — né questa mail né le
+         comunicazioni dei giorni prima — e l'unico che può passargliele è
+         chi sta leggendo qui. */
+      piuAdulti: quanti > 1,
+      pagato,
+      daPagare: !pagato,
+    }),
     {
       NOME: nome,
       DATA: data,
@@ -186,6 +195,10 @@ export function ricevuta({ fattura, pagato, quando }) {
         `Porta ${importo} in contanti e cercaci al banchetto delle iscrizioni: si paga lì, prima di partire. ` +
         `Se possibile porta la cifra giusta, il resto al banchetto è sempre poco.\n\n`) +
     `Chi è iscritto: ${partecipanti}\n\n` +
+    (quanti > 1
+      ? "Questa mail vale per tutti: girala a chi cammina con te. Arriva a un indirizzo solo — il tuo — " +
+        "e nei giorni prima della camminata è qui che scriviamo dove sono le postazioni e quanto è lungo il giro.\n\n"
+      : "") +
     `La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS ` +
     `di Rodigo, che organizza la camminata.\n\n` +
     `Questa mail è la tua ${pagato ? "conferma" : "iscrizione"}: tienila, non serve stamparla.\n` +
@@ -386,6 +399,9 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
                   <span class="e-fg-m" style="color:#8f8f8f;">Chi è iscritto:</span> <span class="e-fg-l" style="color:#525252;">{{PARTECIPANTI}}</span><br>
+<!--se:piuAdulti-->
+                  <span class="e-fg-l" style="color:#525252;">Questa mail vale per tutti: <strong class="e-fg" style="color:#171717; font-weight:600;">girala a chi cammina con te</strong>, perché arriva a un indirizzo solo — il tuo — e nei giorni prima della camminata è qui che scriviamo dove sono le postazioni e quanto è lungo il giro.</span><br>
+<!--/se-->
 <!--se:pagato-->
                   Pagato con PayPal il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — il pagamento lo gestisce PayPal, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
 <!--/se-->

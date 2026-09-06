@@ -54,7 +54,13 @@
      {{IMPORTO_RAGAZZI}}) — li riempie la funzione al momento di spedire,
      con quello che la persona ha scritto nel modulo e con quello che PayPal
      conferma del pagamento. Non si toccano. Un'iscrizione può valere più
-     persone: un maggiorenne più i minori che porta con sé.
+     persone: fino a quattro maggiorenni — chi compila e chi cammina con lui,
+     tutti sulla stessa riga del riepilogo — più i minori a carico di chi
+     compila. La riga dei nomi li porta tutti, uno per uno.
+
+     Un segnaposto scritto qui dentro verrebbe riempito davvero: i commenti
+     restano nella mail spedita, e chi scioglie i segnaposto non guarda se
+     sta dentro un commento o dentro la pagina. Qui si nominano a parole.
 
      ── Una mail sola per due esiti ──────────────────────────────────────
      Questa mail la riceve sia chi ha pagato online sia chi ha scelto di
@@ -264,11 +270,20 @@
 
               <!-- Chi è iscritto, per nome. È la riga che serve davvero a
                    un genitore: la conferma che i figli sono dentro, e non
-                   solo che qualcuno ha pagato. -->
+                   solo che qualcuno ha pagato.
+
+                   E quando i maggiorenni sono più d'uno, una riga che dice di
+                   girare la mail. Un'iscrizione è un indirizzo solo: chi è
+                   stato iscritto da un altro non riceve né questa ricevuta né
+                   le comunicazioni dei giorni prima, e senza questa riga
+                   nessuno gli dice che esistono. -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                 <td class="e-fg-lr" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:13px; line-height:1.7; color:#6f6f6f;">
                   <span class="e-fg-m" style="color:#8f8f8f;">Chi è iscritto:</span> <span class="e-fg-l" style="color:#525252;">{{PARTECIPANTI}}</span><br>
+<!--se:piuAdulti-->
+                  <span class="e-fg-l" style="color:#525252;">Questa mail vale per tutti: <strong class="e-fg" style="color:#171717; font-weight:600;">girala a chi cammina con te</strong>, perché arriva a un indirizzo solo — il tuo — e nei giorni prima della camminata è qui che scriviamo dove sono le postazioni e quanto è lungo il giro.</span><br>
+<!--/se-->
 <!--se:pagato-->
                   Pagato con PayPal il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — il pagamento lo gestisce PayPal, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
 <!--/se-->
