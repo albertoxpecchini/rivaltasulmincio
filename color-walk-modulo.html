@@ -271,6 +271,44 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   min-width: 3.4rem;
   border-bottom: 1px solid var(--sb-fg);
 }
+/* Quando il numero è stampato la riga sotto non serve più: è un numero, non
+   un posto dove scriverlo. */
+.sb-cwm-num i.pieno {
+  border-bottom: none;
+  font-size: 0.95rem;
+  font-style: normal;
+  color: var(--sb-fg);
+}
+
+/* ═══ I comandi di stampa, che sul foglio non ci sono ════════════════════════
+   Stanno dentro il blocco che @media print fa sparire. Servono a stampare un
+   blocco di fogli già numerati invece di uno solo da numerare a penna venti
+   volte di fila. */
+.sb-cwm-stampa-p { margin: 0.9rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); max-width: 46rem; }
+.sb-cwm-stampa {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+  margin-top: 0.7rem;
+}
+.sb-cwm-stampa label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-cwm-stampa input {
+  width: 5rem;
+  padding: 0.45rem 0.55rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--sb-fg);
+  background: var(--sb-surface-75);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 8px;
+}
 
 /* ═══ La tabella dei minori ══════════════════════════════════════════════════
    Cinque righe: è la misura chiesta da chi sta al banco, e ci stanno perché
@@ -288,6 +326,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   text-transform: uppercase;
   color: var(--sb-fg-muted);
 }
+/* «facoltativo» dentro un'intestazione di colonna: minuscolo e grigio, come
+   la stessa parola nei titoli dei blocchi. */
+.sb-cwm-tab th span { font-weight: 400; letter-spacing: 0; text-transform: none; }
 .sb-cwm-tab td {
   padding: 0;
   border-bottom: 1px solid var(--sb-border-strong);
@@ -443,6 +484,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   .sb-cwm-vuoto--alto { min-height: 2.7rem; }
   .sb-cwm-prest { min-height: 2.7rem; }
   .sb-cwm-tab td { height: 1.95rem; }
+
+  /* Ogni copia comincia su un foglio suo. */
+  .sb-cwm-copia { page-break-before: always; break-before: page; }
   .sb-cwm-dich { padding: 0.7rem 0.9rem; line-height: 1.5; }
   .sb-cwm-dich p { margin-bottom: 0.45rem; }
   .sb-cwm-conto { padding: 0.7rem 0.9rem; }
@@ -465,7 +509,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
     <h1 style="margin:0.35rem 0 0">Modulo da stampare</h1>
     <p class="sb-riv-lede">Il modulo per iscriversi <strong>di persona</strong>, al banchetto in Piazza Chiesa: <strong>martedì 15 settembre dalle 17:30</strong>, davanti alla chiesa, e <strong>domenica 20</strong> prima della partenza. Si paga in contanti al banco. Stampalo e portalo già compilato: <strong>luogo, mese e anno sono già scritti</strong>, resta da mettere il giorno. Al banco si firma e si paga, e basta. Chi si iscrive il <strong>15</strong> ritira la sacca <strong>domenica 20 al ritrovo</strong>. Chi preferisce iscriversi da casa lo fa <a href="/color-walk#iscrizione">online</a>, fino alle 23:59 di venerdì 18 settembre.</p>
-    <p style="font-size:0.9rem;margin-top:0.9rem"><button type="button" class="sb-btn sb-btn--primary" onclick="window.print()">Stampa il modulo</button></p>
+    <p class="sb-cwm-stampa-p">Il <strong>numero del modulo</strong> non si scrive più a mano: si sceglie da che numero partire e quanti fogli stampare, e escono già numerati uno dietro l'altro. È il numero con cui poi il foglio si riporta in elenco, e uno scritto storto è un foglio che qualcuno riporta due volte.</p>
+    <div class="sb-cwm-stampa">
+      <label for="cwm-primo">Primo numero</label>
+      <input id="cwm-primo" type="number" min="1" max="999" step="1" value="1" inputmode="numeric">
+      <label for="cwm-quanti">Quanti fogli</label>
+      <input id="cwm-quanti" type="number" min="1" max="50" step="1" value="1" inputmode="numeric">
+      <button type="button" class="sb-btn sb-btn--primary" id="cwm-stampa">Stampa</button>
+    </div>
   </div>
 
   <div class="sb-cwm-testa">
@@ -497,6 +548,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Email</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Telefono (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
     </div>
+    <div class="sb-cwm-riga" style="margin-top:0.9rem">
+      <div class="sb-cwm-campo"><span class="sb-cwm-et">Note (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
+    </div>
   </div>
 
   <!-- ── 2. I MINORI ────────────────────────────────────────────────────── -->
@@ -504,14 +558,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni compiuti il 20 settembre 2026, a tuo carico — quota 5 € ciascuno · sotto i 6 anni non serve iscriversi e non si paga · oltre il quinto, un secondo modulo</span></p>
     <table class="sb-cwm-tab">
       <thead>
-        <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th></tr>
+        <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th><th scope="col">Codice fiscale <span>facoltativo</span></th></tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td></td><td></td><td></td></tr>
-        <tr><td>2</td><td></td><td></td><td></td></tr>
-        <tr><td>3</td><td></td><td></td><td></td></tr>
-        <tr><td>4</td><td></td><td></td><td></td></tr>
-        <tr><td>5</td><td></td><td></td><td></td></tr>
+        <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>5</td><td></td><td></td><td></td><td></td></tr>
       </tbody>
     </table>
   </div>
@@ -541,7 +595,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p>Dichiara di essere a conoscenza che <strong>non è prevista alcuna copertura assicurativa</strong> a favore dei partecipanti, e che eventuali tessere o polizze personali restano a carico del singolo.</p>
       <p>Dichiara di aver letto e di accettare il <strong>regolamento della Color Walk</strong>, pubblicato su <strong>rivaltasulmincio.it/color-walk-regolamento</strong>, e l'informativa sul trattamento dei dati che contiene — compreso il punto 8, per cui <strong>chi non vuole comparire nelle fotografie non partecipa</strong> — anche per i minori iscritti.</p>
       <p>Dichiara di sapere che la quota versata <strong>non si rimborsa</strong> in caso di rinuncia, e che <strong>se piove la camminata è rinviata a domenica 27 settembre 2026</strong> con questa iscrizione ancora valida (punto 4 del regolamento).</p>
-      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati servono a gestire l'iscrizione, il pagamento e questa dichiarazione. Questo foglio <strong>resta su carta</strong>, in custodia dell'associazione, e <strong>non viene ceduto ad altri</strong>. In ogni momento si può chiedere di vedere, correggere o cancellare i propri dati scrivendo a quell'indirizzo.</p>
+      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati servono a gestire l'iscrizione, il pagamento e questa dichiarazione. Questo foglio <strong>resta su carta</strong>, firmato, in custodia dell'associazione; i dati che porta vengono <strong>riportati nell'elenco degli iscritti</strong> insieme a quelli di chi si è iscritto online, così il conto dei partecipanti è uno solo. <strong>Non vengono ceduti ad altri</strong>: passano solo da chi fa funzionare l'iscrizione, come dice il punto 9 del regolamento. In ogni momento si può chiedere di vedere, correggere o cancellare i propri dati scrivendo a quell'indirizzo.</p>
     </div>
 
     <div class="sb-cwm-riga sb-cwm-r3 sb-cwm-firma">
@@ -550,6 +604,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Firma di chi si iscrive</span><div class="sb-cwm-vuoto sb-cwm-vuoto--alto"></div></div>
     </div>
   </div>
+
 
   <p class="sb-cwm-pie">
     Color Walk — domenica 20 settembre 2026, Rivalta sul Mincio (Rodigo, MN). Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest. Il banchetto delle iscrizioni è in Piazza Chiesa martedì 15 settembre dalle 17:30 e domenica 20 dalle 15:30, prima della partenza; si paga in contanti. Iscrizioni fino a esaurimento dei 300 posti disponibili, minori compresi. Informazioni e regolamento completo: rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
@@ -561,6 +616,89 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
 </section>
+<script>
+/* ═══ Un blocco di fogli già numerati ═══════════════════════════════════════
+   Il numero in cima al foglio è quello con cui l'iscrizione si riporta in
+   elenco: è la difesa contro il doppione, e una difesa scritta a penna venti
+   volte di fila è una difesa che prima o poi si legge male. Qui si sceglie da
+   che numero partire e quanti fogli servono, e la stampa li sforna già
+   numerati uno dietro l'altro.
+
+   Le copie nascono al momento di stampare e spariscono subito dopo: restare
+   nel documento vorrebbe dire una pagina lunga venti moduli per chi la
+   guarda a schermo. Se il browser non dice quando ha finito di stampare, un
+   timer le toglie lo stesso — meglio toglierle un attimo presto che
+   lasciarle lì per sempre.
+
+   Senza JavaScript non si rompe niente: il tasto è un tasto normale, il
+   `<i>` in cima resta una riga vuota, e il foglio si numera a penna come
+   prima. */
+(function () {
+  var sezione = document.querySelector(".sb-cwm");
+  var tasto = document.getElementById("cwm-stampa");
+  if (!sezione || !tasto) return;
+
+  var primo = document.getElementById("cwm-primo");
+  var quanti = document.getElementById("cwm-quanti");
+  var copie = [];
+
+  function numera(nodo, n) {
+    var i = nodo.querySelector(".sb-cwm-num i");
+    if (!i) return;
+    i.textContent = n === null ? "" : String(n);
+    i.className = n === null ? "" : "pieno";
+  }
+
+  function togliLeCopie() {
+    for (var k = 0; k < copie.length; k++) {
+      if (copie[k].parentNode) copie[k].parentNode.removeChild(copie[k]);
+    }
+    copie = [];
+  }
+
+  function dentro(campo, minimo, massimo, sePiuNiente) {
+    var n = parseInt(campo.value, 10);
+    if (isNaN(n)) return sePiuNiente;
+    return Math.min(Math.max(n, minimo), massimo);
+  }
+
+  tasto.addEventListener("click", function () {
+    togliLeCopie();
+
+    var da = dentro(primo, 1, 999, null);
+    var fogli = dentro(quanti, 1, 50, 1);
+
+    numera(sezione, da);
+
+    var dopo = sezione;
+    for (var k = 1; k < fogli; k++) {
+      var copia = sezione.cloneNode(true);
+
+      /* Nelle copie non ci vanno né i comandi di stampa né gli id: i comandi
+         perché sono di questa pagina e non del foglio, gli id perché due
+         elementi con lo stesso id non servono a nessuno. */
+      var schermo = copia.querySelector(".sb-cwm-solo-schermo");
+      if (schermo && schermo.parentNode) schermo.parentNode.removeChild(schermo);
+      var conId = copia.querySelectorAll("[id]");
+      for (var j = 0; j < conId.length; j++) conId[j].removeAttribute("id");
+
+      copia.className += " sb-cwm-copia";
+      numera(copia, da === null ? null : da + k);
+
+      dopo.parentNode.insertBefore(copia, dopo.nextSibling);
+      copie.push(copia);
+      dopo = copia;
+    }
+
+    window.print();
+  });
+
+  /* Due reti, perché `afterprint` non scatta dappertutto: quella giusta, e
+     un timer che dopo qualche secondo toglie le copie comunque. */
+  window.addEventListener("afterprint", togliLeCopie);
+  tasto.addEventListener("click", function () { window.setTimeout(togliLeCopie, 8000); });
+})();
+</script>
   </main>
 </div>
 

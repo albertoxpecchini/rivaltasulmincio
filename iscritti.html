@@ -581,6 +581,96 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   border-radius: var(--is-r);
 }
 
+
+/* ═══ Il modulo cartaceo che si ricopia ═══════════════════════════════════
+   Sta chiuso finché non serve: l'elenco è la cosa per cui questa pagina
+   esiste, e un modulo di dodici campi sempre aperto in cima la
+   trasformerebbe in un'altra pagina. Si apre col tasto nella barra.
+
+   I campi sono gli stessi della porta — stesso .sb-is-campo — perché sono la
+   stessa cosa: roba che si scrive a mano su una pagina che sta su un tavolo,
+   con le dita, di fretta, mentre qualcuno aspetta. */
+.sb-is-cart { margin: 0 0 1.2rem; }
+.sb-is-cart-in { display: grid; gap: 0.9rem; padding: 1.15rem 1.2rem; }
+.sb-is-cart-t {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--sb-fg);
+}
+.sb-is-cart-t span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--sb-fg-muted);
+}
+.sb-is-cart-p { margin: -0.5rem 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--sb-fg-muted); }
+.sb-is-cart-griglia { display: grid; gap: 0.7rem; }
+@media (min-width: 34rem) {
+  .sb-is-cart-griglia { grid-template-columns: 1fr 1fr; }
+  .sb-is-cart-griglia .sb-is-cart-largo { grid-column: 1 / -1; }
+}
+.sb-is-cart-c { display: grid; gap: 0.3rem; min-width: 0; }
+.sb-is-cart-c label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--sb-fg-light);
+}
+.sb-is-cart-c label i { font-style: normal; color: var(--sb-fg-muted); }
+
+/* Una riga di minore: lo stesso riquadro delle schede, in piccolo. */
+.sb-is-cart-min {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.8rem 0.85rem;
+  border: 1px solid var(--sb-border);
+  border-left: 3px solid color-mix(in srgb, var(--sb-brand) 55%, transparent);
+  border-radius: 8px;
+  background: var(--sb-surface-100);
+}
+.sb-is-cart-min-testa { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.sb-is-cart-min-n {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+/* Il «togli» è un comando minore dentro un riquadro: un bottone pieno qui
+   peserebbe come quello che manda il foglio in elenco. */
+.sb-is-cart-via {
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 6px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: var(--sb-fg-lighter);
+  cursor: pointer;
+}
+.sb-is-cart-via:hover { border-color: var(--cr-rosso, #b3261e); color: var(--cr-rosso, #b3261e); }
+#is-cart-minori { display: grid; gap: 0.7rem; }
+#is-cart-minori:empty { display: none; }
+
+/* L'etichetta di chi viene dalla carta, sulla scheda in elenco. */
+.sb-is-cart-bollo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sb-fg-light);
+  background: var(--sb-surface-100);
+}
+
 .sb-is-esito {
   display: none;
   margin: 0 0 0.9rem;
@@ -600,6 +690,16 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   background: var(--sb-surface-100);
   border: 1px solid var(--sb-border);
   color: var(--sb-fg-light);
+}
+/* Il terzo stato: è andata. Serve a chi ricopia i fogli uno dietro l'altro e
+   ha bisogno di sapere che l'ultimo è dentro prima di prendere il prossimo —
+   e il colore del marchio, non un verde qualunque, perché su questa pagina il
+   verde non vuol dire niente e il marchio sì. */
+.sb-is-esito--ok {
+  display: block;
+  background: color-mix(in srgb, var(--sb-brand) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sb-brand) 38%, transparent);
+  color: var(--sb-fg);
 }
 
 /* La nota chiude la pagina con un capello grigio, come le chiudono le altre
@@ -684,7 +784,7 @@ html.rsm-still .sb-is-frec { transition: none; }
   <section class="sb-container sb-riv-pagehead">
     <span class="sb-riv-eyebrow">Zona organizzatori</span>
     <h1>Iscritti alla Color Walk</h1>
-    <p class="sb-riv-lede">Chi è iscritto al 20 settembre, letto dalle fatture PayPal. C'è chi ha già pagato online e chi paga in contanti al ritrovo: lo dice ogni scheda, e il contante si segna incassato da qui. Un'iscrizione può valere più persone: chi si è iscritto più i minori che ha portato con sé. Serve la chiave: questa pagina non tiene niente di suo.</p>
+    <p class="sb-riv-lede">Chi è iscritto al 20 settembre, letto dalle fatture PayPal. C'è chi ha già pagato online e chi paga in contanti al ritrovo: lo dice ogni scheda, e il contante si segna incassato da qui. Un'iscrizione può valere più persone: chi si è iscritto, gli altri maggiorenni che ha iscritto con sé e i minori a suo carico. Da qui si <strong>riportano anche i moduli cartacei</strong> del banchetto, uno per volta, così il conto è uno solo. Serve la chiave: questa pagina non tiene niente di suo.</p>
   </section>
 
   <section class="sb-container sb-is-sec">
@@ -726,15 +826,111 @@ html.rsm-still .sb-is-frec { transition: none; }
           <button type="button" class="sb-is-filtro" data-filtro="attesa" aria-pressed="false">Da incassare <b data-conta="attesa">0</b></button>
           <button type="button" class="sb-is-filtro" data-filtro="pagati" aria-pressed="false">Pagati <b data-conta="pagati">0</b></button>
           <button type="button" class="sb-is-filtro" data-filtro="minori" aria-pressed="false">Con minori <b data-conta="minori">0</b></button>
+          <button type="button" class="sb-is-filtro" data-filtro="cartacei" aria-pressed="false">Cartacei <b data-conta="cartacei">0</b></button>
         </div>
 
         <div class="sb-is-barra">
           <button class="sb-btn sb-btn--primary" type="button" id="is-csv">Scarica CSV</button>
+          <button class="sb-btn sb-btn--secondary" type="button" id="is-cart-apri" aria-expanded="false" aria-controls="is-cart">+ Modulo cartaceo</button>
           <button class="sb-btn sb-btn--secondary" type="button" id="is-stampa">Stampa</button>
           <button class="sb-btn sb-btn--secondary" type="button" id="is-aggiorna">Aggiorna</button>
           <button class="sb-btn sb-btn--secondary" type="button" id="is-esci">Esci</button>
         </div>
       </div>
+
+      <!-- ── Ricopiare un modulo cartaceo ────────────────────────────────
+           Chi si iscrive al banchetto lascia un foglio firmato e paga in
+           contanti lì. Se quel foglio non entra qui dentro, il tetto dei 300
+           si conta su metà degli iscritti e la mattina del 20, al banco delle
+           sacche, ci sono nomi che l'elenco non conosce.
+
+           Si ricopia a mano, un foglio per volta, ed è giusto così: sono
+           dodici campi scritti a penna e nessuno li legge meglio di una
+           persona. Quello che la macchina fa è impedire i due errori che a
+           mano si fanno — riportare due volte lo stesso foglio, e far entrare
+           dati che il sito non avrebbe accettato. -->
+      <form class="sb-panel sb-is-cart" id="is-cart" hidden>
+        <div class="sb-panel-inner sb-is-cart-in">
+          <p class="sb-is-cart-t">Riporta un modulo cartaceo <span>quello che sta in cima al foglio è il numero che conta</span></p>
+          <p class="sb-is-cart-p">Entra in elenco come <strong>già pagata in contanti</strong>, con l'etichetta del foglio da cui viene. Lo stesso numero riportato due volte non crea due iscrizioni. Se sul foglio c'è un indirizzo email, parte la ricevuta; se non c'è, non parte niente.</p>
+
+          <div class="sb-is-cart-griglia">
+            <div class="sb-is-cart-c">
+              <label for="is-cart-modulo">Modulo n.</label>
+              <input class="sb-is-campo" type="text" id="is-cart-modulo" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="42">
+            </div>
+            <div class="sb-is-cart-c"></div>
+
+            <div class="sb-is-cart-c">
+              <label for="is-cart-nome">Nome</label>
+              <input class="sb-is-campo" type="text" id="is-cart-nome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label for="is-cart-cognome">Cognome</label>
+              <input class="sb-is-campo" type="text" id="is-cart-cognome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+
+            <div class="sb-is-cart-c">
+              <label for="is-cart-nascita">Data di nascita</label>
+              <input class="sb-is-campo" type="date" id="is-cart-nascita" min="1900-01-01" max="2008-09-20">
+            </div>
+            <div class="sb-is-cart-c">
+              <label for="is-cart-cf">Codice fiscale</label>
+              <input class="sb-is-campo" type="text" id="is-cart-cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" placeholder="RSSMRA85M01F205Z">
+            </div>
+
+            <div class="sb-is-cart-c">
+              <label for="is-cart-email">Email <i>— se sul foglio c'è</i></label>
+              <input class="sb-is-campo" type="email" id="is-cart-email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="200">
+            </div>
+            <div class="sb-is-cart-c">
+              <label for="is-cart-telefono">Telefono <i>— se sul foglio c'è</i></label>
+              <input class="sb-is-campo" type="tel" id="is-cart-telefono" autocomplete="off" maxlength="40">
+            </div>
+
+            <div class="sb-is-cart-c sb-is-cart-largo">
+              <label for="is-cart-note">Note <i>— quello che c'è scritto a margine</i></label>
+              <input class="sb-is-campo" type="text" id="is-cart-note" autocomplete="off" maxlength="300">
+            </div>
+          </div>
+
+          <div id="is-cart-minori"></div>
+          <button type="button" class="sb-btn sb-btn--secondary" id="is-cart-piu">+ Aggiungi un minore del foglio</button>
+
+          <div class="sb-is-barra">
+            <button class="sb-btn sb-btn--primary" type="submit" id="is-cart-manda">Riporta in elenco</button>
+            <button class="sb-btn sb-btn--secondary" type="button" id="is-cart-chiudi">Chiudi</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- La riga di un minore ricopiato dal foglio. -->
+      <template id="is-cart-modello">
+        <div class="sb-is-cart-min" data-min>
+          <div class="sb-is-cart-min-testa">
+            <span class="sb-is-cart-min-n" data-eti>Minore</span>
+            <button type="button" class="sb-is-cart-via" data-togli>Togli</button>
+          </div>
+          <div class="sb-is-cart-griglia">
+            <div class="sb-is-cart-c">
+              <label data-per="nome">Nome</label>
+              <input class="sb-is-campo" type="text" data-id="nome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="cognome">Cognome</label>
+              <input class="sb-is-campo" type="text" data-id="cognome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="nascita">Data di nascita</label>
+              <input class="sb-is-campo" type="date" data-id="nascita" min="2008-09-21" max="2020-09-20">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="cf">Codice fiscale <i>— facoltativo</i></label>
+              <input class="sb-is-campo" type="text" data-id="cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </template>
 
       <p class="sb-is-conteggio" id="is-conteggio" hidden></p>
 
@@ -900,6 +1096,18 @@ html.rsm-still .sb-is-frec { transition: none; }
       em.textContent = "contanti, da incassare";
       meta.appendChild(em);
     }
+    /* L'etichetta di chi viene dalla carta. Sta sulla testata, dove si vede
+       senza aprire la scheda: al banco delle sacche la differenza fra un
+       iscritto online e uno del banchetto non conta niente, ma quando si
+       controlla che i fogli del giorno siano tutti dentro conta tutto. */
+    if (i.modulo) {
+      var bollo = document.createElement("span");
+      bollo.className = "sb-is-cart-bollo";
+      bollo.textContent = "Cartaceo n. " + i.modulo;
+      meta.appendChild(document.createTextNode(" "));
+      meta.appendChild(bollo);
+    }
+
     testo.appendChild(meta);
     capo.appendChild(testo);
 
@@ -953,6 +1161,7 @@ html.rsm-still .sb-is-frec { transition: none; }
     voce("Telefono", i.telefono, null, "tel:");
     voce("Note", i.note);
     voce("Iscritto il", quando(i.quandoISO));
+    voce("Modulo cartaceo", i.modulo ? "n. " + i.modulo : "");
     voce("Fattura", i.illeggibile ? "" : i.numero, "sb-is-mono");
     corpo.appendChild(dl);
 
@@ -1073,6 +1282,7 @@ html.rsm-still .sb-is-frec { transition: none; }
     if (filtro === "attesa" && s.dato.pagato) return false;
     if (filtro === "pagati" && !s.dato.pagato) return false;
     if (filtro === "minori" && !(s.dato.minori || []).length) return false;
+    if (filtro === "cartacei" && !s.dato.modulo) return false;
     return !q || s.cerca.indexOf(q) > -1;
   }
 
@@ -1149,11 +1359,12 @@ html.rsm-still .sb-is-frec { transition: none; }
   /* I numeri dentro le pastiglie dei filtri: quante iscrizioni ci sono in
      ognuno dei quattro insiemi, indipendentemente da cosa si sta cercando. */
   function contaFiltri() {
-    var n = { tutti: 0, attesa: 0, pagati: 0, minori: 0 };
+    var n = { tutti: 0, attesa: 0, pagati: 0, minori: 0, cartacei: 0 };
     dati.iscritti.forEach(function (i) {
       n.tutti++;
       if (i.pagato) n.pagati++; else n.attesa++;
       if ((i.minori || []).length) n.minori++;
+      if (i.modulo) n.cartacei++;
     });
     Object.keys(n).forEach(function (k) {
       var el = document.querySelector('[data-conta="' + k + '"]');
@@ -1199,6 +1410,159 @@ html.rsm-still .sb-is-frec { transition: none; }
       });
   }
 
+
+  /* ══ Ricopiare un modulo cartaceo ═══════════════════════════════════════
+     Dodici campi scritti a penna che diventano un'iscrizione. Qui la pagina
+     non controlla niente di quello che conta: età, codice fiscale e date li
+     guarda la funzione, con lo stesso metro del modulo online. Sarebbe una
+     seconda opinione, e due opinioni sulla stessa cosa sono il modo di
+     scoprire un giorno che non coincidono.
+
+     Quello che la pagina fa è chiedere conferma con la frase per esteso —
+     nome, quante persone, quanti euro — perché è l'ultimo momento in cui una
+     riga letta male si può ancora fermare. Dopo, quei soldi sono registrati.
+
+     Le due quote sono qui solo per scrivere quella frase: quelle vere stanno
+     in api/_paypal.mjs, e sono quelle che finiscono sulla fattura. */
+  var QUOTA_ADULTO = 10;
+  var QUOTA_MINORE = 5;
+
+  var cart = document.getElementById("is-cart");
+  var cartApri = document.getElementById("is-cart-apri");
+  var cartChiudi = document.getElementById("is-cart-chiudi");
+  var cartManda = document.getElementById("is-cart-manda");
+  var cartPiu = document.getElementById("is-cart-piu");
+  var cartMinori = document.getElementById("is-cart-minori");
+  var cartModello = document.getElementById("is-cart-modello");
+  var righeCart = [];
+
+  function campoCart(id) { return document.getElementById("is-cart-" + id); }
+
+  function apriCart(aperto) {
+    cart.hidden = !aperto;
+    cartApri.setAttribute("aria-expanded", aperto ? "true" : "false");
+    cartApri.textContent = aperto ? "Chiudi il modulo" : "+ Modulo cartaceo";
+    if (aperto) campoCart("modulo").focus();
+  }
+
+  function numeraCart() {
+    for (var i = 0; i < righeCart.length; i++) righeCart[i].eti.textContent = "Minore " + (i + 1);
+    cartPiu.disabled = righeCart.length >= 8;
+    cartPiu.textContent = righeCart.length >= 8 ? "Otto è il massimo per foglio" : "+ Aggiungi un minore del foglio";
+  }
+
+  function aggiungiMinoreCart() {
+    if (righeCart.length >= 8) return;
+    var nodo = cartModello.content.cloneNode(true).querySelector("[data-min]");
+    var n = righeCart.length + 1 + "-" + Date.now().toString(36);
+    var campi = nodo.querySelectorAll("[data-id]");
+    for (var i = 0; i < campi.length; i++) {
+      var chiave = campi[i].getAttribute("data-id");
+      campi[i].id = "is-cart-m-" + chiave + "-" + n;
+      var eti = nodo.querySelector('[data-per="' + chiave + '"]');
+      if (eti) eti.setAttribute("for", campi[i].id);
+    }
+    var riga = { nodo: nodo, eti: nodo.querySelector("[data-eti]"), campi: campi };
+    nodo.querySelector("[data-togli]").addEventListener("click", function () {
+      var dove = righeCart.indexOf(riga);
+      if (dove > -1) righeCart.splice(dove, 1);
+      nodo.parentNode && nodo.parentNode.removeChild(nodo);
+      numeraCart();
+    });
+    cartMinori.appendChild(nodo);
+    righeCart.push(riga);
+    numeraCart();
+    riga.campi[0].focus();
+  }
+
+  function valoreCart(riga, chiave) {
+    var el = riga.nodo.querySelector('[data-id="' + chiave + '"]');
+    return el ? el.value.trim() : "";
+  }
+
+  function svuotaCart() {
+    ["modulo", "nome", "cognome", "nascita", "cf", "email", "telefono", "note"].forEach(function (k) {
+      campoCart(k).value = "";
+    });
+    righeCart.slice().forEach(function (r) { r.nodo.parentNode && r.nodo.parentNode.removeChild(r.nodo); });
+    righeCart = [];
+    numeraCart();
+  }
+
+  function foglio() {
+    var minori = [];
+    for (var i = 0; i < righeCart.length; i++) {
+      minori.push({
+        nome: valoreCart(righeCart[i], "nome"),
+        cognome: valoreCart(righeCart[i], "cognome"),
+        dataNascita: valoreCart(righeCart[i], "nascita"),
+        codiceFiscale: valoreCart(righeCart[i], "cf").toUpperCase().replace(/\s/g, ""),
+      });
+    }
+    return {
+      modulo: campoCart("modulo").value.trim(),
+      nome: campoCart("nome").value.trim(),
+      cognome: campoCart("cognome").value.trim(),
+      dataNascita: campoCart("nascita").value.trim(),
+      codiceFiscale: campoCart("cf").value.toUpperCase().replace(/\s/g, "").trim(),
+      email: campoCart("email").value.trim(),
+      telefono: campoCart("telefono").value.trim(),
+      note: campoCart("note").value.trim(),
+      minori: minori,
+    };
+  }
+
+  function mandaCartaceo() {
+    var f = foglio();
+    var quanti = 1 + f.minori.length;
+    var somma = QUOTA_ADULTO + f.minori.length * QUOTA_MINORE;
+    var chi = (f.nome + " " + f.cognome).trim() || "questa persona";
+
+    /* La frase per esteso, e non «confermi?»: chi la legge deve poter
+       riconoscere il foglio che ha in mano senza rigirarlo. */
+    var domanda =
+      "Riportare in elenco il modulo n. " + (f.modulo || "(senza numero)") + "?\n\n" +
+      chi + (f.minori.length ? " con " + f.minori.length + (f.minori.length === 1 ? " minore" : " minori") : ", da solo") +
+      "\n" + quanti + (quanti === 1 ? " persona" : " persone") + " · " + somma + " € già pagati in contanti" +
+      (f.email ? "\n\nLa ricevuta parte a " + f.email : "\n\nNessuna email sul foglio: non parte nessuna ricevuta.");
+    if (!confirm(domanda)) return;
+
+    cartManda.disabled = true;
+    cartManda.textContent = "Un momento…";
+
+    fetch("/api/iscritti-color-walk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-chiave": chiave },
+      body: JSON.stringify({ cartaceo: f }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.d.riportato) throw new Error((res.d && res.d.errore) || "non è andata");
+        if (res.d.gia) {
+          mostra("errore", res.d.messaggio || "Quel modulo era già in elenco: non è stato riportato due volte.");
+        } else {
+          var coda = res.d.spedita === true ? " La ricevuta è partita." : res.d.spedita === false ? " La ricevuta NON è partita: l'iscrizione però c'è." : "";
+          mostra("ok", "Modulo n. " + res.d.modulo + " riportato: " + res.d.nome + ", " + res.d.persone +
+            (res.d.persone === 1 ? " persona" : " persone") + ", " + euro(res.d.totaleCent) + " già incassati." + coda);
+          svuotaCart();
+          campoCart("modulo").focus();
+        }
+        cartManda.disabled = false;
+        cartManda.textContent = "Riporta in elenco";
+        return carica();
+      })
+      .catch(function (err) {
+        mostra("errore", "Non è stato possibile riportare il modulo (" + err.message + "). Niente è stato scritto: correggi e riprova.");
+        cartManda.disabled = false;
+        cartManda.textContent = "Riporta in elenco";
+      });
+  }
+
+  cartApri.addEventListener("click", function () { apriCart(cart.hidden); });
+  cartChiudi.addEventListener("click", function () { apriCart(false); });
+  cartPiu.addEventListener("click", aggiungiMinoreCart);
+  cart.addEventListener("submit", function (e) { e.preventDefault(); mandaCartaceo(); });
+  numeraCart();
   function carica() {
     mostra("attesa", "Leggo le iscrizioni…");
     return fetch("/api/iscritti-color-walk", { headers: { "x-chiave": chiave } })
@@ -1360,15 +1724,20 @@ html.rsm-still .sb-is-frec { transition: none; }
      chi lo ha iscritto e ne risponde, e l'importo sta solo sulla riga di chi
      ha pagato — sommando la colonna deve venire fuori l'incasso vero, non il
      triplo. */
+  /* Da dove viene un'iscrizione, in una parola sola per il foglio di calcolo.
+     Il numero del modulo ci sta dentro perché è quello che permette di andare
+     a ripescare il foglio di carta dal raccoglitore. */
+  function origine(i) { return i.modulo ? "cartaceo n. " + i.modulo : "online"; }
+
   function csv() {
-    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento", "Stato", "Fattura"])];
+    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento", "Stato", "Origine", "Fattura"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
         "maggiorenne", i.nome, i.cognome, data(i.dataNascita), i.codiceFiscale, i.email, i.telefono, "", i.note,
         quando(i.quandoISO),
         (i.importoCent / 100).toFixed(2).replace(".", ","),
         i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
-        i.pagato ? "pagato" : "da incassare", i.numero || i.id
+        i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
       ]));
       /* Gli altri maggiorenni escono con la colonna Responsabile vuota, ed
          è esattamente il modello che si sta rappresentando: rispondono di sé.
@@ -1378,7 +1747,7 @@ html.rsm-still .sb-is-frec { transition: none; }
           "maggiorenne", a.nome, a.cognome, data(a.dataNascita), a.codiceFiscale, "", "",
           "", "",
           quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
-          i.pagato ? "pagato" : "da incassare", i.numero || i.id
+          i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
         ]));
       });
       (i.minori || []).forEach(function (m) {
@@ -1386,7 +1755,7 @@ html.rsm-still .sb-is-frec { transition: none; }
           "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",
           (i.nome + " " + i.cognome).trim(), "",
           quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
-          i.pagato ? "pagato" : "da incassare", i.numero || i.id
+          i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
         ]));
       });
     });

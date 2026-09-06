@@ -275,6 +275,29 @@ const centesimi = (valore) => Math.round(Number(valore || 0) * 100);
 export const numeroFattura = () =>
   `CW-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36).padStart(4, "0")}`.slice(0, 25);
 
+
+/* ── Il modulo cartaceo riportato a mano ──────────────────────────────────
+   Chi si iscrive al banchetto compila un foglio, e quel foglio porta in cima
+   un numero progressivo scritto da chi sta al banco. Quando poi lo si ricopia
+   in elenco, quel numero diventa il numero della fattura.
+
+   Fa due mestieri in uno. Rende riconoscibile per sempre un'iscrizione
+   arrivata dalla carta — si legge nel pannello di PayPal, in elenco e nel CSV,
+   senza bisogno di un campo in più da nessuna parte, e soprattutto senza
+   toccare il memo. E impedisce di riportare due volte lo stesso foglio: la
+   seconda volta il numero è già preso, e chi ricopia se lo sente dire invece
+   di far pagare due volte la stessa persona.
+
+   Il prefisso non può nascere da `numeroFattura`, che dopo `CW-` mette sempre
+   un tempo in base 36 e non le lettere `CART-`. */
+export const numeroCartaceo = (modulo) =>
+  `CW-CART-${String(modulo || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 12)}`;
+
+export const daCartaceo = (numero) => String(numero || "").startsWith("CW-CART-");
+
+/* Il numero del foglio, riletto dal numero della fattura. Stringa vuota se
+   quella fattura dalla carta non ci è mai passata. */
+export const moduloDi = (numero) => (daCartaceo(numero) ? String(numero).slice("CW-CART-".length) : "");
 /* ── Le voci: una per persona ─────────────────────────────────────────────
    Non «1 × maggiorenne, 3 × ragazzi» ma una riga per ciascuno, col suo nome
    e la sua data di nascita. Costa qualche riga in più sulla fattura e in

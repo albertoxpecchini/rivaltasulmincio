@@ -66,7 +66,15 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import {
   EVENTO,
+  MAX_MINORI,
+  QUOTA_ADULTO_CENT,
+  QUOTA_MINORE_CENT,
   annullata,
+  componiFattura,
+  creaFattura,
+  moduloDi,
+  numeroCartaceo,
+  spedisciFattura,
   tutteLeFatture,
   leggiFattura,
   comePagata,
@@ -77,6 +85,10 @@ import {
   saldata,
   trovaFattura,
 } from "./_paypal.mjs";
+/* La stessa validazione del modulo online, non una copia: chi entra dal
+   banchetto e chi entra dal sito devono passare dallo stesso metro. */
+import { EMAIL_RE, leggiPersona } from "./_persone.mjs";
+import { ORGANIZZATORI, ricevuta, spedisci } from "./_posta.mjs";
 
 /* Il materiale che ANSPI ha a disposizione basta per trecento persone: è il
    tetto dell'evento, e la pagina /iscritti lo mostra accanto al conto di
@@ -152,7 +164,13 @@ export default async function handler(req, res) {
     /* `await` e non solo `return`: senza, un errore là dentro nascerebbe
        dopo che questa funzione è già finita, e il catch qui sotto non lo
        vedrebbe passare. */
-    if (req.method === "POST") return await incassa(req, res);
+    /* Due cose si scrivono da questa porta, e si distinguono dal corpo:
+       riportare un modulo cartaceo, o segnare incassato il contante di
+       un'iscrizione che c'è già. Chi manda un `cartaceo` sta facendo la
+       prima. */
+    if (req.method === "POST") {
+      return req.body?.cartaceo ? await riporta(req, res) : await incassa(req, res);
+    }
     return await elenco(res);
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
@@ -218,6 +236,7 @@ async function elenco(res) {
       iscritti.push({
         id: f.id,
         numero: f?.detail?.invoice_number || "",
+        modulo: moduloDi(f?.detail?.invoice_number),
         illeggibile: true,
         nome: "",
         cognome: "",
@@ -243,6 +262,11 @@ async function elenco(res) {
     iscritti.push({
       id: f.id,
       numero: f?.detail?.invoice_number || "",
+      /* Da dove viene questa iscrizione. Non c'è un campo che lo dica: lo dice
+         il numero della fattura, che per i moduli cartacei porta il numero del
+         foglio. Costa niente e non tocca il memo, che è la cosa che non si
+         può toccare senza perdere le note di chi si è già iscritto. */
+      modulo: moduloDi(f?.detail?.invoice_number),
       nome: adulto.nome,
       cognome: adulto.cognome,
       codiceFiscale: adulto.codiceFiscale,
@@ -288,6 +312,9 @@ async function elenco(res) {
        organizza sono la stessa immagine e due guai molto diversi. */
     letti: fatture.length,
     illeggibili,
+    /* Quante iscrizioni sono state ricopiate da un modulo cartaceo. Serve a
+       chi al banco vuole sapere se ha finito di riportare i fogli del giorno. */
+    cartacei: iscritti.filter((i) => i.modulo).length,
     /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
        il modulo, e quante persone cammineranno. È il secondo a doversi
        fermare sotto il tetto. */
@@ -312,6 +339,149 @@ async function elenco(res) {
    Si accetta l'identificativo della fattura o il suo numero: dal telefono si
    preme un bottone e passa l'identificativo, ma il numero è quello che si
    legge in elenco, ed è più facile da ridire a voce se qualcosa va storto. */
+
+/* ── Un modulo cartaceo riportato a mano ──────────────────────────────────
+   Chi si iscrive al banchetto lascia un foglio firmato e paga in contanti lì.
+   Quel foglio poi va ricopiato in elenco, o il tetto dei 300 si conta su metà
+   degli iscritti e il giorno della camminata al banco delle sacche ci sono
+   nomi che l'elenco non conosce.
+
+   È una procedura a mano, e le tre cose che la tengono sicura sono queste.
+
+   La PORTA è la stessa dell'elenco: questa funzione non si raggiunge senza la
+   chiave degli organizzatori, che è già stata controllata dal chiamante.
+
+   Il NUMERO DEL FOGLIO diventa il numero della fattura. Riportare due volte
+   lo stesso foglio non crea due iscrizioni: la seconda volta si torna indietro
+   dicendo che c'era già. La difesa è doppia — si guarda prima di scrivere, e
+   PayPal rifiuta comunque un numero di fattura ripetuto — perché fra il
+   guardare e lo scrivere passa una chiamata di rete, e due persone al banco
+   possono ricopiare lo stesso foglio nello stesso momento.
+
+   Le PERSONE passano dallo stesso `leggiPersona` del modulo online. Un codice
+   fiscale che il sito rifiuterebbe non entra da questa porta solo perché è
+   stato scritto a penna. */
+async function riporta(req, res) {
+  const c = req.body?.cartaceo || {};
+
+  const modulo = pulisci(c.modulo, 12).replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+  if (!modulo) {
+    return res.status(400).json({ errore: "manca il numero del modulo: è quello scritto in cima al foglio" });
+  }
+  const numero = numeroCartaceo(modulo);
+
+  /* Prima difesa: c'è già? */
+  const gia = await trovaFattura(numero).catch(() => null);
+  if (gia) {
+    return res.status(200).json({
+      riportato: true,
+      gia: true,
+      modulo,
+      numero,
+      id: gia.id,
+      messaggio: `Il modulo n. ${modulo} era già in elenco: non è stato riportato due volte.`,
+    });
+  }
+
+  const letto = leggiPersona(c, {
+    minimo: 18,
+    massimo: 120,
+    chi: "Chi si iscrive",
+    cfObbligatorio: true,
+    capofila: true,
+  });
+  if (letto.errore) return res.status(400).json({ errore: letto.errore });
+  const adulto = letto.persona;
+
+  /* L'email è facoltativa: sul foglio può non esserci, e un'iscrizione vera
+     non si butta via per un campo lasciato in bianco. Quando manca, la fattura
+     la si intesta all'associazione — che è chi quel foglio lo custodisce
+     davvero — e nessuna ricevuta parte, perché non c'è dove mandarla. */
+  const email = pulisci(c.email, 200);
+  if (email && !EMAIL_RE.test(email)) {
+    return res.status(400).json({ errore: "l'email scritta sul foglio non si legge come un indirizzo: correggila o lasciala vuota" });
+  }
+
+  const grezzi = Array.isArray(c.minori) ? c.minori : [];
+  if (grezzi.length > MAX_MINORI) {
+    return res.status(400).json({ errore: `su un foglio ci stanno al massimo ${MAX_MINORI} minori` });
+  }
+  const minori = [];
+  for (let i = 0; i < grezzi.length; i++) {
+    const esito = leggiPersona(grezzi[i], { minimo: 6, massimo: 17, chi: `Minore ${i + 1}`, cfObbligatorio: false });
+    if (esito.errore) return res.status(400).json({ errore: esito.errore });
+    minori.push(esito.persona);
+  }
+
+  const totaleCent = QUOTA_ADULTO_CENT + minori.length * QUOTA_MINORE_CENT;
+
+  /* L'ora che si registra è quella in cui il foglio è stato ricopiato, non
+     quella della firma: è l'unica delle due che questa funzione sa per certo.
+     Il consenso vero è la firma sul foglio, e il numero del modulo è quello
+     che dice dove andarla a cercare. */
+  const corpo = componiFattura({
+    numero,
+    adulto,
+    adulti: [],
+    minori,
+    email: email || ORGANIZZATORI,
+    modalita: "contanti",
+    telefono: pulisci(c.telefono, 40),
+    note: pulisci(c.note, 300),
+    consenso: new Date().toISOString(),
+  });
+
+  const creata = await creaFattura(corpo);
+  const idFattura = creata?.id || String(creata?.href || "").split("/").pop();
+  if (!idFattura) {
+    /* Seconda difesa: PayPal ha rifiutato il numero ripetuto e `creaFattura`
+       lo tollera senza dare un id. Vuol dire che qualcun altro ha riportato
+       questo foglio fra il controllo di prima e adesso. */
+    return res.status(200).json({
+      riportato: true,
+      gia: true,
+      modulo,
+      numero,
+      messaggio: `Il modulo n. ${modulo} risulta già riportato: non è stato scritto due volte.`,
+    });
+  }
+
+  await spedisciFattura(idFattura);
+
+  /* Al banco i soldi sono già stati presi: il foglio ha «Totale versato»
+     compilato e la firma sotto. Si segna pagato subito, così non finisce nel
+     conto di quello che resta da incassare la mattina del 20. */
+  await registraPagamento(idFattura, {
+    metodo: "CASH",
+    nota: `Contanti al banchetto — modulo cartaceo n. ${modulo}`,
+  });
+
+  /* La ricevuta parte solo se sul foglio un indirizzo c'era. Chi non l'ha
+     lasciato ha già il suo foglio in mano, ed è quella la sua ricevuta. */
+  let spedita = null;
+  if (email) {
+    const mail = ricevuta({ fattura: corpo, pagato: true, cartaceo: modulo });
+    try {
+      await spedisci({ a: email, oggetto: mail.oggetto, html: mail.html, testo: mail.testo });
+      spedita = true;
+    } catch (errore) {
+      spedita = false;
+      console.error(`modulo cartaceo ${modulo} riportato ma mail non spedita:`, errore.message);
+    }
+  }
+
+  return res.status(200).json({
+    riportato: true,
+    gia: false,
+    modulo,
+    numero,
+    id: idFattura,
+    nome: `${adulto.nome} ${adulto.cognome}`,
+    persone: 1 + minori.length,
+    totaleCent,
+    spedita,
+  });
+}
 async function incassa(req, res) {
   const id = pulisci(req.body?.fattura, 40);
   const numero = pulisci(req.body?.numero, 40);

@@ -122,7 +122,12 @@ export function riempi(modello, valori) {
    dalla fattura, che è il posto dove sono scritti. Una ricevuta che
    raccontasse numeri diversi da quelli che l'organizzatore vede in elenco
    sarebbe peggio di una ricevuta che non parte. */
-export function ricevuta({ fattura, pagato, quando }) {
+/* `cartaceo` è il terzo caso, e non un terzo modello: la mail è la stessa, e
+   cambia una frase sola — quella che dice come sono arrivati i soldi. Chi si
+   è iscritto al banchetto ha pagato in contanti lì, quindi «pagato» è vero e
+   tutto il resto della mail è già giusto; quello che non è vero è che il
+   pagamento lo abbia gestito PayPal. */
+export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
   const { adulto, adulti, minori } = personeDa(fattura);
   const nome = adulto?.nome || "";
 
@@ -158,6 +163,11 @@ export function ricevuta({ fattura, pagato, quando }) {
   const html = riempi(
     condiziona(MODELLO_RICEVUTA, {
       ragazzi: minori.length > 0,
+      /* Le due strade dentro «pagato». Non si annidano — chi scioglie i
+         marcatori non saprebbe dove finisce quello di dentro — quindi sono
+         due condizioni sorelle che si escludono da sé. */
+      online: pagato && !cartaceo,
+      cartaceo: Boolean(cartaceo),
       /* Un'iscrizione è un indirizzo solo. Quando i maggiorenni sono più
          d'uno, gli altri non ricevono niente — né questa mail né le
          comunicazioni dei giorni prima — e l'unico che può passargliele è
@@ -175,6 +185,7 @@ export function ricevuta({ fattura, pagato, quando }) {
       VOCE_RAGAZZI: voceRagazzi,
       IMPORTO_RAGAZZI: importoRagazzi,
       IMPORTO: importo,
+      MODULO: cartaceo,
     }
   );
 
@@ -189,7 +200,11 @@ export function ricevuta({ fattura, pagato, quando }) {
         "LA QUOTA NON È ANCORA PAGATA: hai scelto di pagarla in contanti al ritrovo, prima della partenza.\n\n") +
     `${voceAdulti}: ${importoAdulti}\n` +
     (minori.length ? `${voceRagazzi}: ${importoRagazzi}\n` : "") +
-    (pagato
+    (cartaceo
+      ? `Totale, già pagato in contanti al banchetto il ${data}: ${importo}\n\n` +
+        `Iscrizione presa con il modulo cartaceo n. ${cartaceo}, che resta firmato all'associazione. ` +
+        `Al ritrovo non c'è più niente da versare.\n\n`
+      : pagato
       ? `Totale, pagato con PayPal il ${data}: ${importo}\n\n`
       : `Da pagare al ritrovo, in contanti: ${importo}\n\n` +
         `Porta ${importo} in contanti e cercaci al banchetto delle iscrizioni: si paga lì, prima di partire. ` +
@@ -402,8 +417,11 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 <!--se:piuAdulti-->
                   <span class="e-fg-l" style="color:#525252;">Questa mail vale per tutti: <strong class="e-fg" style="color:#171717; font-weight:600;">girala a chi cammina con te</strong>, perché arriva a un indirizzo solo — il tuo — e nei giorni prima della camminata è qui che scriviamo dove sono le postazioni e quanto è lungo il giro.</span><br>
 <!--/se-->
-<!--se:pagato-->
+<!--se:online-->
                   Pagato con PayPal il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span> — il pagamento lo gestisce PayPal, il sito non vede né conserva i dati della carta. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
+<!--/se-->
+<!--se:cartaceo-->
+                  Iscritto al banchetto in Piazza Chiesa con il <strong class="e-fg" style="color:#171717; font-weight:600;">modulo cartaceo n. {{MODULO}}</strong>, e <strong class="e-fg" style="color:#171717; font-weight:600;">quota già pagata in contanti</strong>: al ritrovo non c'è più niente da versare. Questa mail arriva perché sul foglio hai lasciato il tuo indirizzo, e il foglio firmato resta all'associazione. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.
 <!--/se-->
 <!--se:daPagare-->
                   Iscrizione registrata il <span class="e-fg-l" style="color:#525252;">{{DATA}}</span>. <strong class="e-fg" style="color:#171717; font-weight:600;">Porta {{IMPORTO}} in contanti</strong> e cercaci al banchetto delle iscrizioni: si paga lì, prima di partire. Se possibile porta la cifra giusta, il resto al banchetto è sempre poco. La quota va per intero all'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, che organizza la camminata.

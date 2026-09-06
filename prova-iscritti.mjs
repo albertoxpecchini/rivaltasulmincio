@@ -106,6 +106,10 @@ const conDueAdulti = (n) =>
 /* Le pagine che il finto PayPal restituirà, in ordine. `scritte` raccoglie le
    POST: è lì che si guarda se il tasto «incassato» ha davvero scritto. */
 let scritte;
+/* Il corpo dell'ultima fattura creata e l'ultima mail mandata: è lì che si
+   guarda se un modulo cartaceo è stato riportato per davvero e come. */
+let creata;
+let mandata;
 
 function stubFetch(pagine, { rotto = false } = {}) {
   let i = 0;
@@ -134,6 +138,26 @@ function stubFetch(pagine, { rotto = false } = {}) {
     if (u.includes("/payments") && o.method === "POST") {
       scritte.push({ url: u, corpo: JSON.parse(o.body) });
       return risposta(200, {});
+    }
+
+    /* Le tre chiamate che fa il riporto di un modulo cartaceo: crea la
+       fattura, la tira fuori dalla bozza, e manda la mail. Si registrano
+       tutte e tre in `scritte`, perché quello che si vuole provare è proprio
+       cosa è stato mandato a PayPal e a chi. */
+    if (u.endsWith("/v2/invoicing/invoices") && o.method === "POST") {
+      const corpo = JSON.parse(o.body);
+      scritte.push({ url: u, corpo });
+      creata = corpo;
+      return risposta(200, { id: "INV2-NUOVA" });
+    }
+    if (u.includes("/send") && o.method === "POST") {
+      scritte.push({ url: u, corpo: {} });
+      return risposta(200, {});
+    }
+    if (u.includes("resend")) {
+      mandata = JSON.parse(o.body);
+      scritte.push({ url: u, corpo: mandata });
+      return risposta(200, { id: "email_1" });
     }
 
     if (u.includes("/v2/invoicing/invoices/")) {
@@ -171,6 +195,8 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   }
 
   scritte = [];
+  creata = null;
+  mandata = null;
   global.fetch = stubFetch(pagine, { rotto });
 
   const req = {
@@ -533,6 +559,156 @@ await prova("due iscrizioni miste: tre persone più due", {
     fallite++;
     console.log(`  NO   «adulti» non è un elenco vuoto: ${JSON.stringify(schede.map((s) => s.adulti))}`);
   }
+}
+
+console.log("\n── I moduli cartacei riportati a mano ─────────────────────────");
+
+process.env.RESEND_API_KEY = "re_finta";
+
+/* Un foglio compilato al banchetto: una maggiorenne, un minore, 15 €. */
+const FOGLIO = {
+  modulo: "42",
+  nome: "Rebecca",
+  cognome: "Rossi",
+  dataNascita: "1985-03-11",
+  codiceFiscale: "RSSRCC85C51F205X",
+  email: "rebecca@example.com",
+  telefono: "3331234567",
+  minori: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }],
+};
+
+async function riporta(foglio, { chiave = CHIAVE, pagine = [[]] } = {}) {
+  process.env.PAYPAL_CLIENT_ID = "finto";
+  process.env.PAYPAL_CLIENT_SECRET = "finto";
+  process.env.ISCRITTI_CHIAVE = CHIAVE;
+  scritte = [];
+  creata = null;
+  mandata = null;
+  global.fetch = stubFetch(pagine);
+  const res = finestra();
+  await handler({ method: "POST", query: { chiave }, headers: {}, body: { cartaceo: foglio } }, res);
+  return res;
+}
+
+function verifica(nome, ok, extra) {
+  if (ok) { passate++; console.log(`  ok   ${nome}`); }
+  else { fallite++; console.log(`  NO   ${nome}\n       ${extra}`); }
+}
+
+{
+  const res = await riporta(FOGLIO);
+  const voci = (creata?.items || []).map((v) => v.description);
+  const ok =
+    res.codice === 200 &&
+    res.corpo?.riportato === true &&
+    res.corpo?.gia === false &&
+    res.corpo?.persone === 2 &&
+    res.corpo?.totaleCent === 1500 &&
+    creata?.detail?.invoice_number === "CW-CART-42" &&
+    creata?.detail?.reference === EVENTO &&
+    voci.length === 2 &&
+    voci[0] === "A|Rebecca|Rossi|1985-03-11|RSSRCC85C51F205X" &&
+    voci[1] === "M|Luca|Rossi|2015-04-02|—";
+  verifica("un foglio riportato diventa una fattura col numero del modulo", ok,
+    `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
+}
+
+{
+  const res = await riporta(FOGLIO);
+  const pagamento = scritte.find((s) => s.url.includes("/payments"));
+  verifica("e risulta subito pagata in contanti, non da incassare",
+    res.codice === 200 && pagamento?.corpo?.method === "CASH" && /modulo cartaceo n. 42/.test(pagamento?.corpo?.note || ""),
+    JSON.stringify(pagamento));
+}
+
+{
+  const res = await riporta(FOGLIO);
+  const testo = (mandata?.html || "") + "\n" + (mandata?.text || "");
+  verifica("la ricevuta parte, dice il numero del foglio e che è già pagata",
+    res.corpo?.spedita === true &&
+    /modulo cartaceo n. 42/.test(testo) &&
+    /gi[àa] pagat/i.test(testo) &&
+    !/Pagato con PayPal/.test(testo) &&
+    !testo.includes("{{") && !testo.includes("<!--se:"),
+    `spedita ${res.corpo?.spedita} — ${testo.slice(0, 200)}`);
+}
+
+{
+  const res = await riporta({ ...FOGLIO, email: "" });
+  verifica("senza email sul foglio non parte nessuna mail, e l'iscrizione entra lo stesso",
+    res.codice === 200 && res.corpo?.gia === false && res.corpo?.spedita === null && mandata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Il doppione è la cosa che questa procedura deve rendere impossibile: al
+   banco si ricopia di fretta, e riportare due volte lo stesso foglio vuol dire
+   una persona contata due volte contro il tetto dei 300. */
+{
+  const gia = fattura(99, { detail: { invoice_number: "CW-CART-42" } });
+  const res = await riporta(FOGLIO, { pagine: [[gia]] });
+  verifica("lo stesso foglio riportato due volte non crea una seconda iscrizione",
+    res.codice === 200 && res.corpo?.gia === true && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)} — creata ${JSON.stringify(creata)}`);
+}
+
+{
+  const res = await riporta({ ...FOGLIO, modulo: "" });
+  verifica("senza il numero del modulo non si riporta niente",
+    res.codice === 400 && /numero del modulo/.test(res.corpo?.errore || "") && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* La porta: la chiave vale anche per questa azione, non solo per l'elenco. */
+{
+  const res = await riporta(FOGLIO, { chiave: "prova-a-indovinare" });
+  verifica("senza la chiave giusta non si scrive niente",
+    res.codice === 401 && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Lo stesso metro del modulo online: se il sito lo rifiuterebbe, non entra
+   nemmeno da qui perché è stato scritto a penna. */
+{
+  const res = await riporta({ ...FOGLIO, dataNascita: "2015-03-11" });
+  verifica("un minorenne messo fra chi si iscrive: no", res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+{
+  const res = await riporta({ ...FOGLIO, codiceFiscale: "RSSRCC85C52F205X" });
+  verifica("un codice fiscale che non torna con la data: no",
+    res.codice === 400 && /codice fiscale/.test(res.corpo?.errore || "") && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+{
+  const res = await riporta({ ...FOGLIO, codiceFiscale: "" });
+  verifica("senza codice fiscale: no, come sul sito", res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+{
+  const res = await riporta({ ...FOGLIO, email: "non-una-email" });
+  verifica("un'email storta: no, e si dice che si può lasciarla vuota",
+    res.codice === 400 && /vuota/.test(res.corpo?.errore || "") && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+{
+  const res = await riporta({ ...FOGLIO, minori: Array.from({ length: 9 }, () => ({ nome: "Bea", cognome: "Rossi", dataNascita: "2015-04-02" })) });
+  verifica("più di otto minori su un foglio solo: no", res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+{
+  const res = await riporta({ ...FOGLIO, minori: "Luca" });
+  verifica("«minori» che arriva storto non butta giù niente",
+    res.codice === 200 && (creata?.items || []).length === 1, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* E in elenco: la scheda deve dire da che foglio viene. */
+{
+  scritte = [];
+  creata = null;
+  global.fetch = stubFetch([[fattura(1), fattura(2, { detail: { invoice_number: "CW-CART-7" } })]]);
+  const res = finestra();
+  await handler({ method: "GET", query: { chiave: CHIAVE }, headers: {} }, res);
+  const schede = res.corpo?.iscritti || [];
+  const cartacea = schede.find((s) => s.numero === "CW-CART-7");
+  const online = schede.find((s) => s.numero !== "CW-CART-7");
+  verifica("in elenco la scheda dice il numero del foglio, e le altre no",
+    cartacea?.modulo === "7" && online?.modulo === "" && res.corpo?.cartacei === 1,
+    JSON.stringify({ cartacea: cartacea?.modulo, online: online?.modulo, cartacei: res.corpo?.cartacei }));
 }
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);
