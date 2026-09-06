@@ -196,6 +196,13 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
    blocco parte dal margine sinistro come su /storia o /servizi. La fila delle
    contrade si appoggia a sinistra da sé, com'è di suo. */
 
+/* La scorciatoia sotto la locandina. Il modulo adesso sta in fondo alla
+   pagina, dopo il percorso e le contrade: chi arriva già deciso — dal
+   link che gira nel gruppo del paese — non deve scorrere tre schermate
+   per trovarlo. È un link e non un tasto di proposito: chi è arrivato
+   per leggere non deve sentirsi spinto oltre la lettura. */
+.sb-cw-salta { margin: 0.9rem 0 0; font-size: 0.9rem; font-weight: 500; }
+
 .sb-cw-iscr { margin-top: 1.4rem; }
 .sb-cw-lastra { max-width: 46rem; }
 .sb-cw-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
@@ -812,8 +819,83 @@ html.rsm-still .sb-cw-segno { transition: none; }
   <div class="sb-container">
     <h1 class="sb-riv-vh">Color Walk — camminata a colori, domenica 20 settembre 2026, Rivalta sul Mincio</h1>
     {{BANNER}}
+    <p class="sb-cw-salta"><a href="#iscrizione">Vai all'iscrizione &darr;</a></p>
   </div>
 
+  <!-- ── Il percorso ─────────────────────────────────────────────────────
+       Le vie nell'ordine in cui si passano, decise da chi organizza. Le
+       sette postazioni di colore invece NON stanno qui: si sa che sono
+       sette, non ancora dove. Scriverne una a caso vorrebbe dire mandare
+       qualcuno ad aspettare in un posto sbagliato, e la pagina dice quello
+       che si sa — che è sempre meglio di un numero inventato. -->
+  <section class="sb-container sb-riv-sec" id="percorso">
+    <div class="sb-sechead">
+      <h2>Il percorso</h2>
+      <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Si va a passo libero: non c'è cronometro e non c'è classifica.</p>
+    </div>
+
+    <ol class="sb-riv-ul">
+      <li class="sb-riv-li"><strong>Piazza della Chiesa</strong> — partenza</li>
+      <li class="sb-riv-li">Via Zibramonda, gli stradelli</li>
+      <li class="sb-riv-li">Via Zibramonda</li>
+      <li class="sb-riv-li">Attraversamento di Via Settefrati</li>
+      <li class="sb-riv-li">Via Don A. Bodini</li>
+      <li class="sb-riv-li">Via 25 Aprile</li>
+      <li class="sb-riv-li">Attraversamento di Via Garibaldi</li>
+      <li class="sb-riv-li">Via della Resistenza</li>
+      <li class="sb-riv-li">Via Papa Giovanni II</li>
+      <li class="sb-riv-li">Via Panicella</li>
+      <li class="sb-riv-li">Via Bedini</li>
+      <li class="sb-riv-li">Via Monteverdi</li>
+      <li class="sb-riv-li">Via Rossini</li>
+      <li class="sb-riv-li">Attraversamento di Via Francesca</li>
+      <li class="sb-riv-li">Via Arrivabene</li>
+      <li class="sb-riv-li">Via Gramsci — il percorso <strong>non scende verso il Mincio</strong></li>
+      <li class="sb-riv-li"><strong>Piazzale della Chiesa</strong> — arrivo, e aperitivo</li>
+    </ol>
+
+    <div class="sb-riv-note">
+      <span class="sb-riv-note-t">Le sette postazioni di colore</span>
+      <p>Lungo il giro ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Dove stanno esattamente lo diciamo agli iscritti <strong>per email nei giorni prima</strong>, insieme alla lunghezza del percorso.</p>
+    </div>
+
+    <div class="sb-riv-note">
+      <span class="sb-riv-note-t">Gli attraversamenti</span>
+      <p>Via Settefrati, Via Garibaldi e Via Francesca si attraversano con la strada <strong>chiusa temporaneamente</strong>, il tempo di far passare la camminata, con il supporto della <strong>Polizia Locale</strong>. Per il resto si cammina su strade urbane aperte: si tiene la destra, si seguono le indicazioni dei volontari e si dà sempre precedenza ai mezzi di soccorso.</p>
+    </div>
+  </section>
+
+  <!-- Gli stemmi delle contrade sulla pagina della camminata: li ha chiesti
+       chi organizza, e ci stanno perché la camminata gira per il paese e il
+       paese è quelle sei. In fila e senza descrizioni — qui non è questo il
+       discorso: per esteso stanno in /eventi. -->
+  <section class="sb-container sb-riv-sec" id="contrade">
+    <div class="sb-sechead">
+      <h2>Le sei contrade</h2>
+      <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. Sono quelle del Palio.</p>
+    </div>
+
+    {{CONTRADE_FILA}}
+
+    <div class="sb-riv-note">
+      <span class="sb-riv-note-t">Porta i colori della tua contrada</span>
+      <p>Se sei di una contrada, <strong>portane i colori</strong>: basta un dettaglio — un fazzoletto, un cappello, una fascia. Sulla <strong>maglia bianca</strong> consigliata per le polveri ci sta benissimo, e camminare con la propria squadra è un pezzo del divertimento. È un invito, non un obbligo: non c'è nessuna gara fra contrade, e chi non ne ha una parte esattamente come gli altri.</p>
+    </div>
+
+    <p class="sb-riv-cap">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-link" href="/eventi#contrade">le contrade in /eventi</a>.</p>
+  </section>
+
+  <!-- ── L'iscrizione ────────────────────────────────────────────────────
+       Sta qui e non in cima, ed è una scelta di chi organizza: prima si
+       legge cos'è la camminata — il percorso, le contrade — e ci si
+       iscrive dopo, sapendo a cosa. Chi arriva già deciso non perde
+       niente: /color-walk#iscrizione porta dritto qui, ed è quello che
+       manda il tasto «Iscriviti» delle altre pagine.
+
+       Chi torna da PayPal invece atterra in cima, sulla locandina, e
+       l'esito del pagamento gli resterebbe due schermate più giù: se
+       ne occupa lo script, che porta da sé la pagina quaggiù quando
+       nell'indirizzo c'è un esito da mostrare. -->
   <section class="sb-container sb-riv-sec" id="iscrizione">
     <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
@@ -1038,69 +1120,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
       </aside>
 
     </div>
-  </section>
-
-  <!-- ── Il percorso ─────────────────────────────────────────────────────
-       Le vie nell'ordine in cui si passano, decise da chi organizza. Le
-       sette postazioni di colore invece NON stanno qui: si sa che sono
-       sette, non ancora dove. Scriverne una a caso vorrebbe dire mandare
-       qualcuno ad aspettare in un posto sbagliato, e la pagina dice quello
-       che si sa — che è sempre meglio di un numero inventato. -->
-  <section class="sb-container sb-riv-sec" id="percorso">
-    <div class="sb-sechead">
-      <h2>Il percorso</h2>
-      <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Si va a passo libero: non c'è cronometro e non c'è classifica.</p>
-    </div>
-
-    <ol class="sb-riv-ul">
-      <li class="sb-riv-li"><strong>Piazza della Chiesa</strong> — partenza</li>
-      <li class="sb-riv-li">Via Zibramonda, gli stradelli</li>
-      <li class="sb-riv-li">Via Zibramonda</li>
-      <li class="sb-riv-li">Attraversamento di Via Settefrati</li>
-      <li class="sb-riv-li">Via Don A. Bodini</li>
-      <li class="sb-riv-li">Via 25 Aprile</li>
-      <li class="sb-riv-li">Attraversamento di Via Garibaldi</li>
-      <li class="sb-riv-li">Via della Resistenza</li>
-      <li class="sb-riv-li">Via Papa Giovanni II</li>
-      <li class="sb-riv-li">Via Panicella</li>
-      <li class="sb-riv-li">Via Bedini</li>
-      <li class="sb-riv-li">Via Monteverdi</li>
-      <li class="sb-riv-li">Via Rossini</li>
-      <li class="sb-riv-li">Attraversamento di Via Francesca</li>
-      <li class="sb-riv-li">Via Arrivabene</li>
-      <li class="sb-riv-li">Via Gramsci — il percorso <strong>non scende verso il Mincio</strong></li>
-      <li class="sb-riv-li"><strong>Piazzale della Chiesa</strong> — arrivo, e aperitivo</li>
-    </ol>
-
-    <div class="sb-riv-note">
-      <span class="sb-riv-note-t">Le sette postazioni di colore</span>
-      <p>Lungo il giro ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Dove stanno esattamente lo diciamo agli iscritti <strong>per email nei giorni prima</strong>, insieme alla lunghezza del percorso.</p>
-    </div>
-
-    <div class="sb-riv-note">
-      <span class="sb-riv-note-t">Gli attraversamenti</span>
-      <p>Via Settefrati, Via Garibaldi e Via Francesca si attraversano con la strada <strong>chiusa temporaneamente</strong>, il tempo di far passare la camminata, con il supporto della <strong>Polizia Locale</strong>. Per il resto si cammina su strade urbane aperte: si tiene la destra, si seguono le indicazioni dei volontari e si dà sempre precedenza ai mezzi di soccorso.</p>
-    </div>
-  </section>
-
-  <!-- Gli stemmi delle contrade sulla pagina della camminata: li ha chiesti
-       chi organizza, e ci stanno perché la camminata gira per il paese e il
-       paese è quelle sei. In fila e senza descrizioni — qui non è questo il
-       discorso: per esteso stanno in /eventi. -->
-  <section class="sb-container sb-riv-sec" id="contrade">
-    <div class="sb-sechead">
-      <h2>Le sei contrade</h2>
-      <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. Sono quelle del Palio.</p>
-    </div>
-
-    {{CONTRADE_FILA}}
-
-    <div class="sb-riv-note">
-      <span class="sb-riv-note-t">Porta i colori della tua contrada</span>
-      <p>Se sei di una contrada, <strong>portane i colori</strong>: basta un dettaglio — un fazzoletto, un cappello, una fascia. Sulla <strong>maglia bianca</strong> consigliata per le polveri ci sta benissimo, e camminare con la propria squadra è un pezzo del divertimento. È un invito, non un obbligo: non c'è nessuna gara fra contrade, e chi non ne ha una parte esattamente come gli altri.</p>
-    </div>
-
-    <p class="sb-riv-cap">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-link" href="/eventi#contrade">le contrade in /eventi</a>.</p>
   </section>
 
   <section class="sb-container sb-riv-sec" id="dietro">
@@ -1931,6 +1950,27 @@ html.rsm-still .sb-cw-segno { transition: none; }
   var stato = parametro("stato");
   var idOrdine = parametro("token");
   var tornatoDaPagamento = stato === "ok" && !!idOrdine;
+
+  /* Il modulo non è più in cima alla pagina: prima si legge cos'è la
+     camminata. Chi torna da PayPal, però, atterra sulla locandina, e
+     «Iscrizione e pagamento ricevuti» gli resterebbe due schermate più
+     giù — cioè invisibile, proprio nel momento in cui ha appena pagato e
+     vuole sapere se è andata. Quindi se nell'indirizzo c'è un esito, la
+     pagina si porta da sé sulla sezione dell'iscrizione, dove l'esito
+     comparirà un istante dopo.
+
+     Senza scorrimento dolce: non è un movimento da guardare, è il posto
+     in cui la pagina doveva già essere. */
+  if (stato) {
+    var sezioneIscrizione = document.getElementById("iscrizione");
+    if (sezioneIscrizione) {
+      try {
+        sezioneIscrizione.scrollIntoView({ behavior: "auto", block: "start" });
+      } catch (e) {
+        sezioneIscrizione.scrollIntoView();
+      }
+    }
+  }
 
   var inviando = false;
   var inviato = false;
