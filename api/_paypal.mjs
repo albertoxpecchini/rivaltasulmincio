@@ -326,7 +326,7 @@ export function leggiMemo(memo) {
 /* Il corpo della fattura, pronto da mandare a PayPal. Gli importi non si
    sommano qui: li somma PayPal dalle voci, ed è meglio così — un totale
    calcolato due volte è un totale che prima o poi non combacia. */
-export function componiFattura({ numero, adulto, minori, email, modalita, telefono, note, consenso }) {
+export function componiFattura({ numero, adulto, adulti = [], minori, email, modalita, telefono, note, consenso }) {
   const oggi = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(new Date());
 
   return {
@@ -346,8 +346,13 @@ export function componiFattura({ numero, adulto, minori, email, modalita, telefo
         },
       },
     ],
+    /* L'ordine delle voci è l'ordine in cui si rileggono: prima il
+       capofila, poi i maggiorenni che camminano con lui, poi i minori. Non è
+       un vezzo — `personeDa` prende come capofila il primo maggiorenne che
+       incontra, e questa è la riga che glielo garantisce. */
     items: [
       voce(adulto, "A", QUOTA_ADULTO_CENT),
+      ...adulti.map((a) => voce(a, "B", QUOTA_ADULTO_CENT)),
       ...minori.map((m) => voce(m, "M", QUOTA_MINORE_CENT)),
     ],
     configuration: { allow_tip: false, tax_inclusive: false },
@@ -562,8 +567,12 @@ export async function cercaFatture(filtro = {}) {
    `user_action: PAY_NOW` toglie di mezzo la schermata di riepilogo di
    PayPal: il riepilogo l'ha già fatto il nostro modulo, e farlo due volte
    perde per strada chi si è già deciso. */
-export async function creaOrdine({ numero, adulto, minori, descrizione, ritorno, annulla }) {
-  const totaleCent = QUOTA_ADULTO_CENT + minori.length * QUOTA_MINORE_CENT;
+export async function creaOrdine({ numero, adulto, adulti = [], minori, descrizione, ritorno, annulla }) {
+  /* L'unico totale del sistema che non lo somma PayPal dalle voci: qui serve
+     prima, per dire all'ordine quanto vale. Deve combaciare con le voci qui
+     sotto o PayPal rifiuta l'ordine — ed è meglio così, perché è un rifiuto
+     che si vede subito invece di un conto sbagliato che passa. */
+  const totaleCent = QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
   const importo = { currency_code: VALUTA, value: euro(totaleCent) };
 
   const ordine = await paypal("/v2/checkout/orders", {
@@ -576,7 +585,11 @@ export async function creaOrdine({ numero, adulto, minori, descrizione, ritorno,
           custom_id: EVENTO,
           description: descrizione.slice(0, 127),
           amount: { ...importo, breakdown: { item_total: importo } },
-          items: [voce(adulto, "A", QUOTA_ADULTO_CENT), ...minori.map((m) => voce(m, "M", QUOTA_MINORE_CENT))],
+          items: [
+            voce(adulto, "A", QUOTA_ADULTO_CENT),
+            ...adulti.map((a) => voce(a, "B", QUOTA_ADULTO_CENT)),
+            ...minori.map((m) => voce(m, "M", QUOTA_MINORE_CENT)),
+          ],
         },
       ],
       payment_source: {

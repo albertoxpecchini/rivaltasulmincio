@@ -324,7 +324,7 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 /* Il codice fiscale spaziato: sedici caratteri tutti attaccati non si
    rileggono, ed è il campo che più di tutti si ricontrolla. Il maiuscolo lo
    mette anche il CSS oltre al JS, così si vede già mentre il dito digita. */
-#cr-cf, .sb-cw-min input[data-id="m-cf"] { text-transform: uppercase; letter-spacing: 0.06em; }
+#cr-cf, .sb-cw-min input[data-id="m-cf"], .sb-cw-min input[data-id="a-cf"] { text-transform: uppercase; letter-spacing: 0.06em; }
 .sb-cw-box input::placeholder,
 .sb-cw-box textarea::placeholder { color: var(--sb-fg-muted); }
 .sb-cw-box input:focus,
@@ -406,6 +406,28 @@ html.dark .sb-cw-vernice::after { opacity: 0.5; }
 }
 .sb-cw-gruppo-p { margin: -0.5rem 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
 
+/* Il gruppo porta due file di persone e non più una. I due sottotitoli le
+   tengono separate, perché «10 € ciascuno» e «5 € ciascuno» non possono
+   finire nella stessa frase senza che qualcuno paghi la cifra sbagliata. */
+.sb-cw-gruppo-s {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+
+/* I contenitori delle righe. Vuoti non occupano niente — un modulo appena
+   aperto avrebbe altrimenti due buchi dove non c'è ancora nessuno — e pieni
+   tengono le righe distanziate invece di farle toccare bordo a bordo. */
+#cr-adulti, #cr-minori { display: grid; gap: 0.8rem; }
+#cr-adulti:empty, #cr-minori:empty { display: none; }
+
+/* Il riquadro di una persona in più. Si chiama «min» perché all'inizio i
+   minori erano gli unici che si potevano aggiungere; adesso lo porta anche
+   la riga di un maggiorenne, ed è giusto che sia lo stesso riquadro: da
+   compilare sono la stessa cosa. */
 .sb-cw-min {
   display: grid;
   gap: 0.85rem;
@@ -987,12 +1009,21 @@ html.rsm-still .sb-cw-segno { transition: none; }
         </div>
 
         <!-- ── Chi cammina con te ────────────────────────────────────────
-             I minori a carico. Non è un secondo modulo: sono dentro questa
-             iscrizione, perché è chi compila sopra a rispondere di loro. La
-             riga si clona dal <template> qui sotto — nel documento non c'è
-             finché non la si chiede. -->
+             Gli altri maggiorenni e i minori a carico. Non è un secondo
+             modulo: stanno dentro questa iscrizione — dei minori risponde chi
+             compila qui sopra, ogni altro maggiorenne risponde di sé, ed è la
+             differenza che tiene separate le due file. Le righe si clonano
+             dai due <template> più in basso: nel documento non ci sono finché
+             non le si chiede. -->
         <div class="sb-cw-gruppo" id="cr-gruppo">
           <p class="sb-cw-gruppo-t">Chi cammina con te <span class="sb-cw-facolt">facoltativo</span></p>
+
+          <p class="sb-cw-gruppo-s">Altri maggiorenni</p>
+          <p class="sb-cw-gruppo-p">Chi ha 18 anni o più e cammina con te — 10 € ciascuno, fino a quattro per iscrizione contando anche te. Ognuno partecipa <strong>sotto la propria responsabilità</strong>, e iscrivendoli dichiari di <strong>averne il consenso</strong>. Serve il codice fiscale di ognuno.</p>
+          <div id="cr-adulti"></div>
+          <button type="button" class="sb-cw-piu" id="cr-piu-adulto">+ Aggiungi un maggiorenne</button>
+
+          <p class="sb-cw-gruppo-s">Minori a tuo carico</p>
           <p class="sb-cw-gruppo-p">I minori dai 6 ai 17 anni che iscrivi insieme a te e accompagni per tutto il percorso — 5 € ciascuno, fino a otto per iscrizione. Sotto i 6 anni non serve iscriverli.</p>
           <div id="cr-minori"></div>
           <button type="button" class="sb-cw-piu" id="cr-piu">+ Aggiungi un minore</button>
@@ -1042,9 +1073,15 @@ html.rsm-still .sb-cw-segno { transition: none; }
           <input type="text" id="cr-sito" name="sito" tabindex="-1" autocomplete="off">
         </div>
 
+        <!-- La dichiarazione. La casella è una, ma le dichiarazioni sono
+             due: chi compila risponde di sé e dei minori che iscrive, ogni
+             altro maggiorenne risponde di sé. E il limite si dice per
+             intero, invece di lasciarlo capire: al banchetto ognuno firma il
+             proprio, qui uno spunta per tutti, e la frase sul consenso è
+             quello che tiene in piedi la differenza. -->
         <div class="sb-cw-consenso" id="cr-consenso-box">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
-          <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
+          <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Se iscrivo <strong>altri maggiorenni</strong>, dichiaro di <strong>averne il consenso</strong> e che ognuno di loro partecipa <strong>sotto la propria responsabilità</strong>. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
         </div>
 
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
@@ -1056,10 +1093,67 @@ html.rsm-still .sb-cw-segno { transition: none; }
         <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 10 €</span></button>
       </form>
 
-      <!-- La riga di un minore. Sta in un <template>: non è nel documento
-           finché non se ne chiede una, e i suoi campi non finiscono nel
-           modulo per sbaglio. Gli id li completa il JS con il numero della
-           riga, perché una label deve puntare a un id unico. -->
+      <!-- Le righe di chi cammina con chi compila. Stanno in due <template>:
+           non sono nel documento finché non se ne chiede una, e i loro campi
+           non finiscono nel modulo per sbaglio. Gli id li completa il JS col
+           numero della riga, perché una label deve puntare a un id unico.
+
+           Sono due modelli gemelli e non uno parametrico. Cambiano in quattro
+           cose: gli id partono per «a-» invece che per «m-», la data non
+           scende sotto i 18 anni al 20 settembre invece di stare fra i 6 e i
+           17, il codice fiscale è obbligatorio invece che facoltativo, e i
+           testi dicono che questa persona risponde di sé invece che di
+           esserne responsabili. -->
+
+      <!-- Un maggiorenne che cammina con chi compila e risponde di sé. -->
+      <template id="cr-modello-adulto">
+        <div class="sb-cw-min" data-adulto>
+          <div class="sb-cw-min-testa">
+            <span class="sb-cw-min-n" data-etichetta>Adulto</span>
+            <button type="button" class="sb-cw-min-via" data-togli>Togli</button>
+          </div>
+
+          <div class="sb-cw-min-due">
+            <div class="sb-cw-campo" data-campo="a-nome">
+              <label data-per="a-nome">Nome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="a-nome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="a-nome"></p>
+            </div>
+
+            <div class="sb-cw-campo" data-campo="a-cognome">
+              <label data-per="a-cognome">Cognome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="a-cognome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="a-cognome"></p>
+            </div>
+          </div>
+
+          <div class="sb-cw-campo" data-campo="a-nascita">
+            <label data-per="a-nascita">Data di nascita</label>
+            <div class="sb-cw-box">
+              <input type="date" data-id="a-nascita" required min="1900-01-01" max="2008-09-20">
+              <span class="sb-cw-segno" aria-hidden="true"></span>
+            </div>
+            <p class="sb-cw-aiuto" data-aiuto="a-nascita">Deve avere 18 anni compiuti il 20 settembre. Se non li ha, va messo fra i minori qui sotto.</p>
+          </div>
+
+          <div class="sb-cw-campo" data-campo="a-cf">
+            <label data-per="a-cf">Codice fiscale</label>
+            <div class="sb-cw-box">
+              <input type="text" data-id="a-cf" maxlength="16" required spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" placeholder="RSSMRA85M01F205Z">
+              <span class="sb-cw-segno" aria-hidden="true"></span>
+            </div>
+            <p class="sb-cw-aiuto" data-aiuto="a-cf">Serve anche il suo: risponde di sé, e chi si assume una responsabilità va identificato.</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Un minore a carico di chi compila. -->
       <template id="cr-modello-minore">
         <div class="sb-cw-min" data-minore>
           <div class="sb-cw-min-testa">
@@ -1199,6 +1293,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
   var QUOTA_ADULTO = 10;
   var QUOTA_MINORE = 5;
   var MAX_MINORI = 8;
+  var MAX_ADULTI = 4; // capofila compreso: gli accompagnati sono tre
   var GIORNO_EVENTO = "2026-09-20";
   /* Le iscrizioni chiudono alle 23:59 del 18 settembre, ora italiana: la
      stessa riga che taglia in /api/iscrizione-color-walk. Qui serve solo a
@@ -1457,6 +1552,13 @@ html.rsm-still .sb-cw-segno { transition: none; }
   var righe = [];
   var seme = 0;
 
+  /* Le righe dei maggiorenni che camminano con chi compila. Stanno qui,
+     accanto a quelle dei minori, perché è qui sotto che `ordine()` le legge
+     tutte e due: dichiararle lontano vorrebbe dire una di quelle due righe
+     che si scoprono rotte solo quando qualcuno preme Invio. */
+  var righeA = [];
+  var semeA = 0;
+
   /* L'ordine in cui si cammina fra i campi con il tasto invio, e in cui si
      cerca il primo sbagliato all'invio: quello del documento. Le note stanno
      in fondo perché in fondo stanno nel modulo.
@@ -1471,7 +1573,8 @@ html.rsm-still .sb-cw-segno { transition: none; }
   function ordine() {
     if (fila) return fila;
     fila = CAMPI.slice();
-    for (var i = 0; i < righe.length; i++) fila = fila.concat(righe[i].campi);
+    for (var i = 0; i < righeA.length; i++) fila = fila.concat(righeA[i].campi);
+    for (var k = 0; k < righe.length; k++) fila = fila.concat(righe[k].campi);
     fila.push(CAMPO_NOTE);
     return fila;
   }
@@ -1662,6 +1765,130 @@ html.rsm-still .sb-cw-segno { transition: none; }
     }
   });
 
+  /* ══ E i maggiorenni che camminano con te ═══════════════════════════════
+     La stessa macchina di qui sopra, copiata e adattata invece che resa
+     parametrica. Dentro `aggiungiMinore` ci sono il giro del fuoco, la
+     validazione per riga, la numerazione, il togli e il legame con la bozza:
+     trasformarla in una funzione buona per due mentre la gente si sta
+     iscrivendo vuol dire mettere a rischio la cosa che funziona per far
+     posto a quella che non c'è ancora. Si unificheranno dopo il 20, con
+     calma, se ne varrà la pena.
+
+     Le differenze sono quattro: gli id partono per «a-», la data vuole 18
+     anni compiuti il 20 settembre, il codice fiscale è obbligatorio, e il
+     tetto è MAX_ADULTI meno il capofila. */
+  var modelloA = document.getElementById("cr-modello-adulto");
+  var contenitoreA = document.getElementById("cr-adulti");
+  var tastoPiuA = document.getElementById("cr-piu-adulto");
+
+  function numeraRigheA() {
+    /* Si parte da 2 perché l'adulto 1 è chi sta compilando: è il numero che
+       la funzione usa nei suoi «no», e chi legge «Adulto 3: il codice
+       fiscale non torna» deve poter trovare quella riga guardando. */
+    for (var i = 0; i < righeA.length; i++) {
+      testo(righeA[i].etichetta, "Adulto " + (i + 2));
+    }
+    var pieno = righeA.length >= MAX_ADULTI - 1;
+    tastoPiuA.disabled = pieno;
+    testo(tastoPiuA, pieno
+      ? "Massimo " + MAX_ADULTI + " maggiorenni per iscrizione"
+      : (righeA.length ? "+ Aggiungi un altro maggiorenne" : "+ Aggiungi un maggiorenne"));
+  }
+
+  function aggiungiAdulto(colFuoco, valori) {
+    if (righeA.length >= MAX_ADULTI - 1) return null;
+
+    var frammento = modelloA.content.cloneNode(true);
+    var nodo = frammento.querySelector("[data-adulto]");
+    var n = ++semeA;
+
+    var campiDom = nodo.querySelectorAll("[data-id]");
+    for (var i = 0; i < campiDom.length; i++) {
+      var el = campiDom[i];
+      var chiave = el.getAttribute("data-id");
+      el.id = "cr-" + chiave + "-" + n;
+      var label = nodo.querySelector('[data-per="' + chiave + '"]');
+      if (label) label.setAttribute("for", el.id);
+      var aiuto = nodo.querySelector('[data-aiuto="' + chiave + '"]');
+      if (aiuto) {
+        aiuto.id = "cr-" + chiave + "-" + n + "-aiuto";
+        el.setAttribute("aria-describedby", aiuto.id);
+      }
+    }
+
+    function campoRiga(chiave, obbl, prova, errore, extra) {
+      var s = {
+        id: chiave,
+        obbl: obbl,
+        prova: prova,
+        errore: errore,
+        el: nodo.querySelector('[data-id="' + chiave + '"]'),
+        campo: nodo.querySelector('[data-campo="' + chiave + '"]'),
+        aiuto: nodo.querySelector('[data-aiuto="' + chiave + '"]')
+      };
+      if (extra) for (var k in extra) s[k] = extra[k];
+      return campoDa(s);
+    }
+
+    var dataEl = nodo.querySelector('[data-id="a-nascita"]');
+    var cfSuo = cfConData(function () { return dataEl.value.trim(); });
+
+    var riga = {
+      nodo: nodo,
+      etichetta: nodo.querySelector("[data-etichetta]"),
+      campi: [
+        campoRiga("a-nome", true, function (v) { return v.length >= 2; }, "Scrivi il nome."),
+        campoRiga("a-cognome", true, function (v) { return v.length >= 2; }, "Scrivi il cognome."),
+        campoRiga("a-nascita", true,
+          function (v) { return dataValida(v) && etaAllEvento(v) >= 18 && etaAllEvento(v) < 120; },
+          function (v) {
+            if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
+            if (etaAllEvento(v) < 18) return "Il 20 settembre non ha ancora 18 anni: va messo fra i minori che cammini con te, qui sotto.";
+            return "Questa data di nascita non è plausibile: controllala.";
+          }),
+        campoRiga("a-cf", true, cfSuo.prova, cfSuo.errore, { maiuscolo: true })
+      ]
+    };
+
+    for (var j = 0; j < riga.campi.length; j++) collega(riga.campi[j]);
+
+    nodo.querySelector("[data-togli]").addEventListener("click", function () {
+      var dove = righeA.indexOf(riga);
+      if (dove > -1) righeA.splice(dove, 1);
+      nodo.parentNode && nodo.parentNode.removeChild(nodo);
+      rimescola();
+      numeraRigheA();
+      programma();
+      segnaBozza();
+    });
+
+    contenitoreA.appendChild(nodo);
+    righeA.push(riga);
+    rimescola();
+
+    if (valori) {
+      riga.campi[0].el.value = valori.nome || "";
+      riga.campi[1].el.value = valori.cognome || "";
+      riga.campi[2].el.value = valori.nascita || "";
+      riga.campi[3].el.value = valori.cf || "";
+    }
+
+    numeraRigheA();
+    programma();
+    if (colFuoco) vaiA(riga.campi[0]);
+    return riga;
+  }
+
+  tastoPiuA.addEventListener("click", function () {
+    try {
+      aggiungiAdulto(true);
+      segnaBozza();
+    } catch (guaio) {
+      mostra("errore", "Non è stato possibile aggiungere la riga. Puoi mandare l'iscrizione per te e scrivere a color-walk@rivaltasulmincio.it per aggiungere chi cammina con te.");
+      if (window.console && window.console.error) window.console.error("adulto:", guaio);
+    }
+  });
+
   /* Come ha scelto di pagare. Il valore che conta è quello che arriva alla
      funzione: qui serve solo a cambiare la scritta del tasto. */
   var sceltePag = form.querySelectorAll('input[name="pagamento"]');
@@ -1700,11 +1927,23 @@ html.rsm-still .sb-cw-segno { transition: none; }
     testo(totaleN, String(obbligatori));
     fill.style.setProperty("--p", pronti / obbligatori);
 
+    var quantiA = 1 + righeA.length;
     var quanti = righe.length;
-    var somma = QUOTA_ADULTO + quanti * QUOTA_MINORE;
-    testo(contoVoci, quanti === 0
-      ? "1 maggiorenne · " + QUOTA_ADULTO + " €"
-      : "1 maggiorenne " + QUOTA_ADULTO + " € · " + quanti + (quanti === 1 ? " ragazzo " : " ragazzi ") + QUOTA_MINORE + " € ciascuno");
+    var somma = quantiA * QUOTA_ADULTO + quanti * QUOTA_MINORE;
+
+    /* Il conto scritto in parole: una voce per fascia, e la fascia che non
+       c'è non si scrive, perché «0 ragazzi» non è un'informazione. Il punto
+       in mezzo separa le due fasce — prima separava anche il nome dal
+       prezzo, e con due fasce vere quel doppio mestiere non regge. */
+    var vociConto = [quantiA === 1
+      ? "1 maggiorenne " + QUOTA_ADULTO + " €"
+      : quantiA + " maggiorenni " + QUOTA_ADULTO + " € ciascuno"];
+    if (quanti) {
+      vociConto.push(quanti === 1
+        ? "1 ragazzo " + QUOTA_MINORE + " €"
+        : quanti + " ragazzi " + QUOTA_MINORE + " € ciascuno");
+    }
+    testo(contoVoci, vociConto.join(" · "));
     testo(contoSomma, somma + " €");
 
     /* Il tasto dice cosa sta per succedere, e sono due cose diverse: o si
@@ -1720,7 +1959,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
   }
 
   function totaleCent() {
-    return (QUOTA_ADULTO + righe.length * QUOTA_MINORE) * 100;
+    return ((1 + righeA.length) * QUOTA_ADULTO + righe.length * QUOTA_MINORE) * 100;
   }
 
   /* ══ La pagina non scappa sotto le dita ═════════════════════════════════
@@ -1823,6 +2062,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
         a: {},
         p: comePaga(),
         c: consenso.checked,
+        b: [],
         m: []
       };
       var vuoto = true;
@@ -1832,6 +2072,15 @@ html.rsm-still .sb-cw-segno { transition: none; }
       }
       d.a.note = CAMPO_NOTE.el.value;
       if (d.a.note) vuoto = false;
+      for (var h = 0; h < righeA.length; h++) {
+        d.b.push({
+          nome: righeA[h].campi[0].el.value,
+          cognome: righeA[h].campi[1].el.value,
+          nascita: righeA[h].campi[2].el.value,
+          cf: righeA[h].campi[3].el.value
+        });
+        vuoto = false;
+      }
       for (var j = 0; j < righe.length; j++) {
         d.m.push({
           nome: righe[j].campi[0].el.value,
@@ -1870,6 +2119,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
     if (typeof d.a.note === "string") CAMPO_NOTE.el.value = d.a.note;
     for (var k = 0; k < sceltePag.length; k++) sceltePag[k].checked = sceltePag[k].value === d.p;
     consenso.checked = !!d.c;
+    /* La chiave dei maggiorenni è nata dopo le altre: nel momento in cui
+       questa versione va in rete c'è gente col modulo mezzo compilato in una
+       scheda aperta, e quella bozza `b` non ce l'ha. Deve mancare senza
+       fare rumore, o riprendere il modulo diventa perderlo. */
+    var altriAdulti = d.b || [];
+    for (var h = 0; h < altriAdulti.length && h < MAX_ADULTI - 1; h++) aggiungiAdulto(false, altriAdulti[h]);
     var minori = d.m || [];
     for (var j = 0; j < minori.length && j < MAX_MINORI; j++) aggiungiMinore(false, minori[j]);
     return true;
@@ -2032,6 +2287,16 @@ html.rsm-still .sb-cw-segno { transition: none; }
     bottone.disabled = true;
     testo(etichettaVai, "Un momento…");
 
+    var adulti = [];
+    for (var h = 0; h < righeA.length; h++) {
+      adulti.push({
+        nome: righeA[h].campi[0].el.value,
+        cognome: righeA[h].campi[1].el.value,
+        dataNascita: righeA[h].campi[2].el.value,
+        codiceFiscale: righeA[h].campi[3].el.value.toUpperCase().replace(/\s/g, "")
+      });
+    }
+
     var minori = [];
     for (var j = 0; j < righe.length; j++) {
       minori.push({
@@ -2056,6 +2321,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
         consenso: consenso.checked,
         pagamento: comePaga(),
         sito: trappola ? trappola.value : "",
+        adulti: adulti,
         minori: minori
       })
     }, 25)

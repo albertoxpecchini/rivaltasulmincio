@@ -181,6 +181,34 @@ await prova(
     i.fattura.detail.memo.startsWith("contanti|")
 );
 
+
+/* Il contante è l'unica strada dove il totale viaggia a mano fino alla
+   risposta invece di essere sommato da PayPal dalle voci: se il conto degli
+   adulti si perde per strada, si perde proprio qui. E la mail deve dire due
+   maggiorenni, perché è quella che chi organizza si vedrà mostrare al
+   banchetto la mattina del 20. */
+await prova(
+  "contanti con due maggiorenni e un minore → 25 € da portare, tre persone",
+  {
+    ...BASE,
+    pagamento: "contanti",
+    adulti: [{ nome: "Marco", cognome: "Rossi", dataNascita: "1983-07-19", codiceFiscale: "RSSMRC83L19F205K" }],
+    minori: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }],
+  },
+  (r, i) => {
+    const testo = (i.mail?.html || "") + "\n" + (i.mail?.text || "");
+    return (
+      r.codice === 200 &&
+      r.corpo.contanti === true &&
+      r.corpo.totaleCent === 2500 &&
+      r.corpo.persone === 3 &&
+      /2 maggiorenni/.test(testo) &&
+      /Marco Rossi/.test(testo) &&
+      /25,00/.test(testo) &&
+      !testo.includes("{{")
+    );
+  }
+);
 /* La mail di chi paga al ritrovo deve dire, senza girarci intorno, che quei
    soldi NON sono stati pagati. È il punto di tutta questa modalità: chi la
    riceve deve arrivare con i contanti in mano. */
@@ -332,6 +360,132 @@ await prova(
   "minore che li compie il giorno dopo: no",
   { ...BASE, minori: [{ nome: "Bea", cognome: "Rossi", dataNascita: "2020-09-21" }] },
   (r) => r.codice === 400 && /gratis/.test(r.corpo.errore)
+);
+
+console.log("\n── Due maggiorenni in una sola iscrizione ─────────────────────");
+
+/* Codici fiscali che combaciano davvero con la data: è quello che la
+   funzione controlla, e una prova con un codice qualunque proverebbe solo
+   che il controllo non c'è. */
+const MARCO = { nome: "Marco", cognome: "Rossi", dataNascita: "1983-07-19", codiceFiscale: "RSSMRC83L19F205K" };
+const GIULIA = { nome: "Giulia", cognome: "Verdi", dataNascita: "1990-03-11", codiceFiscale: "VRDGLI90C51F205Z" };
+const PIERO = { nome: "Piero", cognome: "Bianchi", dataNascita: "1975-11-05", codiceFiscale: "BNCPRI75S05F205Q" };
+const ELENA = { nome: "Elena", cognome: "Neri", dataNascita: "1992-08-30", codiceFiscale: "NRELNE92M70F205W" };
+
+await prova(
+  "due maggiorenni → 20 €, due voci, la seconda con la B",
+  { ...BASE, adulti: [MARCO] },
+  (r, i) =>
+    r.codice === 200 &&
+    voci(i).length === 2 &&
+    voci(i)[0] === "A|Maria|Rossi|1985-12-10|RSSMRA85T10A562S" &&
+    voci(i)[1] === "B|Marco|Rossi|1983-07-19|RSSMRC83L19F205K" &&
+    importi(i).join(",") === "10.00,10.00" &&
+    i.ordine.purchase_units[0].amount.value === "20.00"
+);
+
+await prova(
+  "due maggiorenni e due minori → 30 €, quattro voci nell'ordine giusto",
+  {
+    ...BASE,
+    adulti: [MARCO],
+    minori: [
+      { nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" },
+      { nome: "Anna", cognome: "Rossi", dataNascita: "2018-11-20" },
+    ],
+  },
+  (r, i) =>
+    r.codice === 200 &&
+    voci(i).length === 4 &&
+    voci(i).map((v) => v[0]).join("") === "ABMM" &&
+    importi(i).join(",") === "10.00,10.00,5.00,5.00" &&
+    i.ordine.purchase_units[0].amount.value === "30.00"
+);
+
+/* Il tetto: quattro maggiorenni passano, cinque no. Il capofila è dentro il
+   conto, quindi gli accompagnati sono tre. */
+await prova(
+  "quattro maggiorenni: passano",
+  { ...BASE, adulti: [MARCO, GIULIA, PIERO] },
+  (r, i) => r.codice === 200 && voci(i).length === 4 && i.ordine.purchase_units[0].amount.value === "40.00"
+);
+
+await prova(
+  "cinque maggiorenni: no, e nessuna fattura",
+  { ...BASE, adulti: [MARCO, GIULIA, PIERO, ELENA] },
+  (r, i) => r.codice === 400 && /massimo 4 maggiorenni/.test(r.corpo.errore) && i.fattura === null
+);
+
+console.log("\n── I «no» sul secondo maggiorenne ─────────────────────────────");
+
+await prova(
+  "senza codice fiscale: no — a lui è obbligatorio come al capofila",
+  { ...BASE, adulti: [{ nome: "Marco", cognome: "Rossi", dataNascita: "1983-07-19" }] },
+  (r, i) => r.codice === 400 && /codice fiscale/.test(r.corpo.errore) && i.fattura === null
+);
+
+await prova(
+  "codice fiscale che non torna con la sua data: no",
+  { ...BASE, adulti: [{ ...MARCO, dataNascita: "1983-07-20" }] },
+  (r) => r.codice === 400 && /non corrisponde alla data/.test(r.corpo.errore)
+);
+
+/* Il messaggio dev'essere quello scritto per lui: quello del capofila gli
+   direbbe che «i minori li iscrive un adulto», che è vero e non gli serve. */
+await prova(
+  "un minorenne mandato fra gli adulti: no, e gli si dice dove va messo",
+  { ...BASE, adulti: [{ nome: "Ivo", cognome: "Rossi", dataNascita: "2009-04-02", codiceFiscale: "MNRLCU09D02F205T" }] },
+  (r) => r.codice === 400 && /Adulto 2/.test(r.corpo.errore) && /fra i minori/.test(r.corpo.errore)
+);
+
+await prova(
+  "lo stesso codice fiscale del capofila: no, o paga 10 € per una persona sola",
+  { ...BASE, adulti: [{ nome: "Maria", cognome: "Rossi", dataNascita: "1985-12-10", codiceFiscale: "RSSMRA85T10A562S" }] },
+  (r) => r.codice === 400 && /già in questa iscrizione/.test(r.corpo.errore)
+);
+
+await prova(
+  "lo stesso codice fiscale due volte fra gli accompagnati: no",
+  { ...BASE, adulti: [MARCO, { ...MARCO, nome: "Marc" }] },
+  (r) => r.codice === 400 && /Adulto 3/.test(r.corpo.errore) && /già in questa iscrizione/.test(r.corpo.errore)
+);
+
+console.log("\n── Quando «adulti» arriva storto ──────────────────────────────");
+
+/* La pagina la può scavalcare chiunque: quello che arriva non è per forza un
+   elenco. Nessuno di questi casi deve buttare giù la funzione. */
+await prova(
+  "«adulti» è una stringa: si ignora, e chi compila si iscrive lo stesso",
+  { ...BASE, adulti: "Marco" },
+  (r, i) => r.codice === 200 && voci(i).length === 1
+);
+
+await prova(
+  "«adulti» è null: si ignora",
+  { ...BASE, adulti: null },
+  (r, i) => r.codice === 200 && voci(i).length === 1
+);
+
+await prova(
+  "«adulti» è un elenco di niente: un no pulito, non un guasto",
+  { ...BASE, adulti: [null] },
+  (r, i) => r.codice === 400 && /Adulto 2/.test(r.corpo.errore) && i.fattura === null
+);
+
+await prova(
+  "«adulti» pieno di spazzatura: un no pulito",
+  { ...BASE, adulti: [{ nome: 42, cognome: [], dataNascita: {}, codiceFiscale: true }] },
+  (r, i) => r.codice === 400 && i.fattura === null
+);
+
+await prova(
+  "«adulti» vuoto: identico a un'iscrizione da sola",
+  { ...BASE, adulti: [] },
+  (r, i) =>
+    r.codice === 200 &&
+    voci(i).length === 1 &&
+    voci(i)[0] === "A|Maria|Rossi|1985-12-10|RSSMRA85T10A562S" &&
+    i.ordine.purchase_units[0].amount.value === "10.00"
 );
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);

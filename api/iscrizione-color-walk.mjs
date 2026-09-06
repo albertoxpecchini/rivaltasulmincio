@@ -44,6 +44,7 @@
    dell'organizzazione, non una voce a carico di chi si iscrive.
    ═══════════════════════════════════════════════════════════════════════════ */
 import {
+  MAX_ADULTI,
   MAX_MINORI,
   MODALITA,
   annullata,
@@ -182,7 +183,7 @@ function etaAllEvento(iso) {
    `minimo`/`massimo` sono la fascia d'età ammessa per il posto che occupa:
    18-120 per chi si iscrive, 6-17 per chi porta con sé. L'errore torna
    come stringa in italiano, pronto da mostrare. */
-function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio }) {
+function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, capofila = false }) {
   /* La maiuscola si mette qui, all'ingresso, così è già a posto sulla
      fattura, nella mail e in elenco — e non in tre posti diversi che prima o
      poi non si assomigliano più. */
@@ -196,11 +197,16 @@ function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio }) {
 
   const eta = etaAllEvento(dataNascita);
   if (eta < minimo) {
+    /* Tre casi e non due. A chi sta compilando si spiega come funziona; a un
+       maggiorenne che non lo è si dice dove va messo, perché il posto giusto
+       nello stesso modulo c'è già e nessuno deve ricominciare da capo. */
+    if (minimo !== 18) {
+      return { errore: `${chi}: sotto i 6 anni non serve iscriversi, si partecipa gratis` };
+    }
     return {
-      errore:
-        minimo === 18
-          ? "per iscriversi bisogna essere maggiorenni: i minori li iscrive un adulto insieme a sé"
-          : `${chi}: sotto i 6 anni non serve iscriversi, si partecipa gratis`,
+      errore: capofila
+        ? "per iscriversi bisogna essere maggiorenni: i minori li iscrive un adulto insieme a sé"
+        : `${chi}: il giorno della camminata non ha ancora 18 anni — va messo fra i minori che cammini con te`,
     };
   }
   if (eta > massimo) {
@@ -309,6 +315,7 @@ async function iscrivi(req, res) {
     massimo: 120,
     chi: "Chi si iscrive",
     cfObbligatorio: true,
+    capofila: true,
   });
   if (letto.errore) return res.status(400).json({ errore: letto.errore });
   const adulto = letto.persona;
@@ -333,6 +340,42 @@ async function iscrivi(req, res) {
     return res.status(400).json({ errore: "manca la dichiarazione di responsabilità" });
   }
 
+  /* Gli altri maggiorenni. Il codice fiscale è obbligatorio come per chi
+     compila, e per la stessa ragione: ognuno di loro si assume una
+     responsabilità — la propria — e chi se ne assume una va identificato.
+     La differenza col capofila non sta nei dati, sta nella lettera che
+     prenderanno sulla fattura. */
+  const grezziA = Array.isArray(req.body?.adulti) ? req.body.adulti : [];
+  if (grezziA.length > MAX_ADULTI - 1) {
+    return res.status(400).json({
+      errore: `si possono iscrivere al massimo ${MAX_ADULTI} maggiorenni per volta: per gli altri, compila di nuovo il modulo`,
+    });
+  }
+
+  const adulti = [];
+  /* I codici già visti in questa iscrizione. Due volte la stessa persona
+     succede a chi compila di fretta, e costa dieci euro veri: il codice
+     fiscale è l'unico campo che lo dice con certezza, perché due omonimi
+     veri hanno codici diversi. */
+  const codiciVisti = [adulto.codiceFiscale];
+  for (let i = 0; i < grezziA.length; i++) {
+    const chi = `Adulto ${i + 2}`;
+    const esito = leggiPersona(grezziA[i], {
+      minimo: 18,
+      massimo: 120,
+      chi,
+      cfObbligatorio: true,
+    });
+    if (esito.errore) return res.status(400).json({ errore: esito.errore });
+    if (codiciVisti.includes(esito.persona.codiceFiscale)) {
+      return res.status(400).json({
+        errore: `${chi}: questo codice fiscale è già in questa iscrizione — ogni persona si iscrive una volta sola`,
+      });
+    }
+    codiciVisti.push(esito.persona.codiceFiscale);
+    adulti.push(esito.persona);
+  }
+
   /* I minori a carico. Il codice fiscale qui è facoltativo — chi si assume la
      responsabilità è l'adulto, già identificato — ma se c'è viene controllato
      con lo stesso metro, data di nascita compresa. */
@@ -355,7 +398,8 @@ async function iscrivi(req, res) {
     minori.push(esito.persona);
   }
 
-  const totaleCent = QUOTA_ADULTO_CENT + minori.length * QUOTA_MINORE_CENT;
+  const totaleCent =
+    QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
 
   try {
     /* Quante ne ha già aperte e non pagate questo indirizzo. Se la domanda
@@ -390,6 +434,7 @@ async function iscrivi(req, res) {
     const corpo = componiFattura({
       numero,
       adulto,
+      adulti,
       minori,
       email,
       modalita,
@@ -409,10 +454,20 @@ async function iscrivi(req, res) {
 
     if (modalita === "contanti") return contanti(res, { fattura: corpo, idFattura, numero, email, totaleCent });
 
-    const quante = minori.length ? ` + ${minori.length} minori` : "";
+    /* Quello che chi paga legge sulla pagina di PayPal, accanto alla cifra.
+       Singolare e plurale scritti giusti: è corto, lo legge una persona, e
+       «1 minori» in mezzo a un pagamento fa sembrare storto tutto il resto. */
+    const insieme = [
+      adulti.length ? `${adulti.length} ${adulti.length === 1 ? "adulto" : "adulti"}` : "",
+      minori.length ? `${minori.length} ${minori.length === 1 ? "minore" : "minori"}` : "",
+    ]
+      .filter(Boolean)
+      .join(" + ");
+    const quante = insieme ? ` + ${insieme}` : "";
     const ordine = await creaOrdine({
       numero,
       adulto,
+      adulti,
       minori,
       descrizione: `Color Walk 20 settembre — ${adulto.nome} ${adulto.cognome}${quante}`,
       /* L'identificativo dell'ordine non si mette qui: ce lo aggiunge PayPal
