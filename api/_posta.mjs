@@ -459,7 +459,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
             Se non puoi più venire
           </h2>
           <p class="e-fg-l" style="margin:0; font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.7; color:#525252;">
-            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">13 settembre</strong>. La quota non si rimborsa, ma fino a sette giorni prima l'iscrizione si può passare a un'altra persona della stessa fascia d'età, senza costi. Se piove, la camminata è rinviata a domenica 27 settembre e l'iscrizione resta valida senza fare niente: chi a quella data non può esserci ci scrive entro il 25 settembre e la quota viene restituita.
+            Scrivici entro il <strong class="e-fg" style="color:#171717; font-weight:600;">18 settembre</strong>. La quota non si rimborsa, ma fino alle 23:59 di venerdì 18 settembre l'iscrizione si può passare a un'altra persona della stessa fascia d'età, senza costi. Se piove, la camminata è rinviata a domenica 27 settembre e l'iscrizione resta valida senza fare niente: chi a quella data non può esserci ci scrive entro il 25 settembre e la quota viene restituita.
           </p>
         </td>
         </tr>
