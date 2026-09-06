@@ -43,11 +43,11 @@ tema chiaro/scuro nativo.
 | Dominio | Valore | Dettaglio |
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
-| **Sorgenti in `_build/`** | 15 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **2.998 righe CSS** | `sb.css` (998) · `rivalta.css` (1.814) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.578 righe**, 7 file | `rivalta.js` (115) · `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `meteo.js` (214) · `mappa.js` (200) · `gusto.js` (90) |
+| **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
+| **Design system** | **3.220 righe CSS** | `sb.css` (1.016) · `rivalta.css` (2.018) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **1.823 righe**, 8 file | `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `color-walk.js` (245) · `meteo.js` (214) · `mappa.js` (200) · `rivalta.js` (115) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
-| **Build** | **1.282 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
 | **Cose da mangiare** | **18** | 9 voglie, 18 piatti e 15 locali in `_build/gusto.json` |
 | **Luoghi censiti** | **152** | 65 luoghi + 87 attività in `_build/luoghi.json`, 123 con coordinate OSM |
@@ -264,6 +264,7 @@ rivaltasulmincio/
 ├── assets/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
 │   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, testata, ricerca)
+│   │                           #   e la pelle della Color Walk: tinte, fondale, polvere, ingressi
 │   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma relativa
 │   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
 │   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
@@ -271,6 +272,8 @@ rivaltasulmincio/
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
+│   ├── color-walk.js           #   il movimento della camminata: blocchi che entrano, filo del
+│   │                           #   percorso, barra di lettura — solo sulle due pagine .sb-cr
 │   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro — fa anche da marchio in testata
 │   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
 │   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/

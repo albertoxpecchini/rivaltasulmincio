@@ -884,6 +884,183 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
   gap: 0.5rem;
 }
 
+
+/* ── La pelle della Color Walk ────────────────────────────────────────────
+   Le due pagine della camminata — l'iscrizione e il regolamento — non sono
+   più una vestita e una spoglia: hanno la stessa pelle, e la pelle sta qui
+   perché è di tutte e due. Nei due frammenti restano solo i pezzi che una
+   pagina ha e l'altra no.
+
+   Quello che c'è qui dentro è di tre tipi: le tinte delle polveri, il
+   fondale che ne è fatto, e il modo in cui i blocchi entrano in pagina.
+
+   La regola del colore non cambia — grigi ovunque più UNA tinta viva, che
+   sui comandi resta l'azzurro brand. Le sei polveri stanno nel fondale e nel
+   filo del percorso, cioè in due decorazioni; su un tasto, su un fuoco o su
+   una barra non arrivano mai. Il rosso non è una settima tinta: è il colore
+   di un errore, e un errore che non è rosso non si legge come un errore. */
+.sb-cr {
+  --cr-magenta: #ff2d87;
+  --cr-giallo: #ffc61a;
+  --cr-ciano: #0fb2ef;
+  --cr-viola: #8a5cf6;
+  --cr-verde: #3ec98b;
+  --cr-rosso: #e02b5a;
+  /* Quanto è acceso il fondale. Vale 1 sulla pagina dell'iscrizione, dove la
+     camminata si presenta, e meno sul regolamento, dove si legge: le stesse
+     polveri, tenute basse, sono un promemoria di dove si è finiti e non una
+     festa sopra un testo da capire. */
+  --cr-velo: 1;
+  position: relative;
+}
+html.dark .sb-cr { --cr-rosso: #ff6b8f; }
+.sb-cr--basso { --cr-velo: 0.4; }
+
+/* I due veli azzurri del sito si spengono dove c'è la vernice, o sarebbero
+   sei aloni sovrapposti. */
+.sb-home:has(.sb-cr)::before,
+.sb-home:has(.sb-cr)::after { content: none; }
+
+/* ── Il fondale ───────────────────────────────────────────────────────────
+   Uno solo, fisso, per tutta la pagina: è la regola del sito e vale anche
+   qui. Il meccanismo è quello di .sb-home — veli radiali che derivano piano
+   su due tempi che non tornano mai in fase, sb-drift-a e sb-drift-b, che
+   sono i suoi keyframes e non ne servono di nuovi. Sopra ci resta la griglia
+   tecnica del sito, che non si tocca.
+
+   Cambia il colore e nient'altro: al posto dei due azzurri, quattro polveri.
+   Sono tutte animazioni di `transform` e di `opacity`, cioè le due sole cose
+   che un telefono muove senza ridipingere niente. */
+.sb-cw-vernice {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* layout e paint, non «strict»: la misura viene dalle quattro ancore, non
+     dal contenuto, e su un fixed con inset:0 il contenimento della dimensione
+     è la sola parte che qualche browser potrebbe leggere storta. */
+  contain: layout paint;
+}
+.sb-cw-vernice::before,
+.sb-cw-vernice::after { content: ""; position: absolute; inset: 0; }
+.sb-cw-vernice::before {
+  background:
+    radial-gradient(58rem 32rem at 16% -8%, color-mix(in srgb, var(--cr-magenta) 20%, transparent), transparent 62%),
+    radial-gradient(42rem 26rem at 6% 68%, color-mix(in srgb, var(--cr-giallo) 15%, transparent), transparent 64%);
+  opacity: var(--cr-velo);
+  animation: sb-drift-a 74s ease-in-out infinite alternate;
+}
+.sb-cw-vernice::after {
+  background:
+    radial-gradient(52rem 30rem at 86% 2%, color-mix(in srgb, var(--cr-ciano) 18%, transparent), transparent 60%),
+    radial-gradient(46rem 28rem at 94% 82%, color-mix(in srgb, var(--cr-viola) 15%, transparent), transparent 62%);
+  opacity: var(--cr-velo);
+  animation: sb-drift-b 91s ease-in-out infinite alternate;
+}
+/* Al buio le stesse tinte diventano lampade: si abbassano, come fa il sito
+   con i suoi azzurri. */
+html.dark .sb-cw-vernice::before,
+html.dark .sb-cw-vernice::after { opacity: calc(var(--cr-velo) * 0.5); }
+
+/* ── La polvere che sale ──────────────────────────────────────────────────
+   Il terzo strato, ed è quello che fa la differenza fra un fondo colorato e
+   l'aria di una camminata a colori: granelli minuti nelle quattro tinte, che
+   salgono piano e all'infinito.
+
+   Non è una simulazione e non costa niente. È una piastrella di 160px con
+   dentro quattro puntini, ripetuta, su un elemento più alto della finestra;
+   l'animazione la sposta in su esattamente di una piastrella e riparte, così
+   il giro non ha un salto. Una `transform` sola, nessun ridisegno.
+
+   La maschera la sfuma sopra e sotto: senza, si vedrebbero due righe nette
+   dove i granelli cominciano e dove finiscono. */
+.sb-cw-polvere {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -50%;
+  height: 200%;
+  opacity: calc(var(--cr-velo) * 0.42);
+  background-image:
+    radial-gradient(circle at 12% 18%, var(--cr-magenta) 0 1.5px, transparent 1.9px),
+    radial-gradient(circle at 63% 41%, var(--cr-ciano) 0 1.3px, transparent 1.7px),
+    radial-gradient(circle at 85% 77%, var(--cr-giallo) 0 1.6px, transparent 2px),
+    radial-gradient(circle at 34% 88%, var(--cr-viola) 0 1.2px, transparent 1.6px),
+    radial-gradient(circle at 71% 9%, var(--cr-verde) 0 1.2px, transparent 1.6px);
+  /* Cinque piastrelle di misure diverse, tutte divisori di 480: la piastrella
+     più grande si ripete due volte in un giro, la più piccola sei. Sovrapposte
+     non tornano mai in fase, e i granelli smettono di leggersi come un
+     reticolo di pois — che è quello che sembravano con una misura sola per
+     tutti e cinque. Il numero 480 non è a caso: è il salto dell'animazione, e
+     ogni strato deve entrarci un numero intero di volte o il giro fa uno
+     scatto quando riparte. */
+  background-size: 240px 240px, 160px 160px, 120px 120px, 96px 96px, 80px 80px;
+  -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 74%, transparent);
+  mask-image: linear-gradient(transparent, #000 18%, #000 74%, transparent);
+  animation: sb-cw-sale 62s linear infinite;
+}
+@keyframes sb-cw-sale {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -480px, 0); }
+}
+
+/* ── Come entrano i blocchi ───────────────────────────────────────────────
+   Questa è l'eccezione dichiarata alla regola del sito. Sul resto di
+   rivaltasulmincio.it scorrere una pagina non è un evento da annunciare e i
+   reveal allo scroll sono stati tolti apposta; sulla Color Walk ci sono, ed
+   è una scelta di chi fa la pagina: è il manifesto di una festa, non una
+   scheda anagrafica, e deve piacere prima di essere utile.
+
+   Le due cautele che la tengono onesta:
+
+   · lo stato nascosto lo scrive `html.cw-anim`, e quella classe la mette il
+     JavaScript soltanto quando il movimento è permesso. Senza script, con
+     l'impostazione di sistema su «meno movimento» o col tasto «ferma» della
+     barra in basso, la classe non c'è: il CSS qui sotto non si applica, e
+     tutto è già visibile al primo frame. Non esiste nessun modo di aprire
+     questa pagina e trovarci del contenuto invisibile.
+   · si muovono `opacity` e `transform`, di 16 pixel e per mezzo secondo. Il
+     blocco compare mentre l'occhio ci arriva, non fa un ingresso. */
+html.cw-anim .sb-cw-su {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+}
+html.cw-anim .sb-cw-su.sb-cw-dentro {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms);
+}
+
+/* ── Meno movimento, e la carta ───────────────────────────────────────────
+   Le derive si fermano nei due modi di sempre — l'impostazione di sistema, a
+   cui il tasto «muovi» può dire l'ultima parola, e il tasto «ferma» della
+   barra in basso. Il fondale non sparisce: resta a colori, immobile. */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-cw-vernice::before,
+  html:not(.rsm-motion) .sb-cw-vernice::after,
+  html:not(.rsm-motion) .sb-cw-polvere { animation: none !important; }
+}
+html.rsm-still .sb-cw-vernice::before,
+html.rsm-still .sb-cw-vernice::after,
+html.rsm-still .sb-cw-polvere { animation: none; }
+
+/* Su carta il fondale sparisce, e soprattutto sparisce lo stato «non ancora
+   entrato»: una pagina si stampa senza scorrerla, quindi l'osservatore non ha
+   mai visto passare quasi nessun blocco e senza queste due righe il foglio
+   uscirebbe con dentro dei buchi bianchi grandi come sezioni intere. Non è un
+   dettaglio estetico: il regolamento della Color Walk si stampa e si firma al
+   banchetto. */
+@media print {
+  .sb-cw-vernice { display: none !important; }
+  .sb-cw-su,
+  .sb-cw-tappa {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────── */
 .sb-riv-pager {
   display: flex;

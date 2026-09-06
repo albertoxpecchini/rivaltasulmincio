@@ -550,10 +550,19 @@ ${mini}
    l'ente abbia pagato per starci. Le attività del paese mettono cibo,
    bevande e una mano.
 
-   Perciò tre fasce separate da un filo, ognuna con la sua frase scritta
-   ACCANTO ai marchi e in un corpo che si legge — non un rigo in punta di
+   Perciò quattro fasce separate da un filo, ognuna con la sua frase scritta
+   SOPRA i suoi marchi e in un corpo che si legge — non un rigo in punta di
    piedi sotto a tutto. La formula del patrocinio è quella che il Comune ha
    chiesto e va copiata parola per parola: sta scritta in un posto solo, qui.
+
+   La frase sta sopra e non più di fianco, e le fasce partono tutte dal
+   margine sinistro. Prima erano l'ultimo blocco centrato rimasto sul sito, e
+   avevano tre disposizioni diverse a seconda di quanti marchi aveva ognuna:
+   i due stemmi ai lati della frase, la frase in cima quando i marchi erano
+   sette, la frase di fianco negli altri casi. Tre modi di dire la stessa
+   cosa, e nessuno dei tre come il resto del sito. Adesso ce n'è uno: la
+   frase, e sotto i marchi che descrive — che è anche l'ordine in cui serve
+   leggerli. Da qui sono spariti i flag `sopra` e `attorno`.
 
    Stessa regola delle fotografie per i file: il logo compare solo se il file
    esiste davvero. Finché non c'è, al suo posto sta il nome scritto — che in
@@ -577,11 +586,6 @@ const FASCE_LOGHI = [
     ],
   },
   {
-    /* I due stemmi non stanno in fila da una parte: si aprono ai lati della
-       frase, il Comune a sinistra e il Corpo a destra. Sono i due enti che
-       permettono la camminata, e messi così la riga che li nomina sta in
-       mezzo ai loro simboli invece che di fianco a un mucchietto. */
-    attorno: true,
     testo:
       "<strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della " +
       "<strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.",
@@ -591,10 +595,6 @@ const FASCE_LOGHI = [
     ],
   },
   {
-    /* Sette marchi: la frase non ci sta accanto senza schiacciarli, e va
-       sopra. È l'unica fascia in cui il testo sta in cima invece che di
-       fianco, e il motivo è la quantità. */
-    sopra: true,
     testo:
       "<strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di " +
       "fine camminata e quello che ci sta intorno — tutto compreso nella quota.",
@@ -640,28 +640,19 @@ const gruppoLoghi = (loghi) =>
 ${loghi.map(renderPiastrella).join("\n")}
       </div>`;
 
+/* Una disposizione sola: la frase, e sotto i marchi che descrive. L'ordine
+   nel documento è quello in cui si legge — anche a fogli di stile spenti,
+   anche a voce. .sb-cw-su fa entrare la fascia scorrendo, quando il
+   movimento è permesso: la classe è quella della pelle della Color Walk in
+   rivalta.css, e senza html.cw-anim non fa niente. */
 const renderLoghi = () =>
-  `<div class="sb-cw-enti">
+  `<div class="sb-cw-enti" data-cw-fila="90">
 ${FASCE_LOGHI.map((f) => {
-  const frase = `      <p class="sb-cw-ente-t">${f.testo}</p>`;
-  const classe =
-    "sb-cw-ente" +
-    (f.sopra ? " sb-cw-ente--sopra" : "") +
-    (f.attorno ? " sb-cw-ente--attorno" : "") +
-    (f.minuta ? " sb-cw-ente--minuta" : "");
-
-  /* Tre disposizioni, e l'ordine nel documento è sempre quello in cui si
-     legge — anche a fogli di stile spenti, anche a voce. */
-  let dentro;
-  if (f.attorno) {
-    // Il primo marchio a sinistra, la frase in mezzo, gli altri a destra.
-    dentro = `${gruppoLoghi(f.loghi.slice(0, 1))}\n${frase}\n${gruppoLoghi(f.loghi.slice(1))}`;
-  } else if (f.sopra) {
-    dentro = `${frase}\n${gruppoLoghi(f.loghi)}`;
-  } else {
-    dentro = `${gruppoLoghi(f.loghi)}\n${frase}`;
-  }
-  return `    <div class="${classe}">\n${dentro}\n    </div>`;
+  const classe = "sb-cw-ente sb-cw-su" + (f.minuta ? " sb-cw-ente--minuta" : "");
+  return `    <div class="${classe}">
+      <p class="sb-cw-ente-t">${f.testo}</p>
+${gruppoLoghi(f.loghi)}
+    </div>`;
 }).join("\n")}
   </div>`;
 
@@ -1053,10 +1044,18 @@ for (const file of bodies) {
      altra pagina userebbe, quindi le scarica solo quella. */
   const conGusto = src.includes("{{VOGLIE}}");
 
+  /* E il movimento delle due pagine della Color Walk. Non c'è un elenco di
+     nomi da tenere aggiornato: se il frammento si mette addosso la vernice
+     dell'evento — la classe .sb-cr, che porta le tinte delle polveri e il
+     fondale — allora è una pagina della camminata e quelle animazioni le
+     servono. Le altre dodici non lo scaricano. */
+  const conColorWalk = src.includes('class="sb-cr');
+
   const scriptExtra =
     (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
     (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
-    (conGusto ? `<script src="assets/gusto.js"></script>\n` : "");
+    (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
+    (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:

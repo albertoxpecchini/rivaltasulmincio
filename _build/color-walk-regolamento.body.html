@@ -4,10 +4,31 @@
 <!--freq: yearly-->
 
 <!-- ════════════════════════════════════════════════════════════════════════
-     Il regolamento della Color Walk. È una pagina del sito come le altre —
-     .sb-riv-pagehead, .sb-riv-sec, .sb-riv-p — non ha stile suo e non tira su
-     il fondale a colori di /color-walk: qui si legge, non ci si iscrive.
+     Il regolamento della Color Walk. È una pagina del sito — .sb-riv-pagehead,
+     .sb-riv-sec, .sb-riv-p — e da settembre porta anche la pelle della
+     camminata: le tinte delle polveri, il fondale, la polvere che sale, i
+     punti che entrano scorrendo. Chi arriva qui dal modulo non deve avere
+     l'impressione di essere finito su un altro sito.
 
+     Il fondale però sta basso (.sb-cr--basso, --cr-velo a 0.4): qui non ci si
+     iscrive, si legge, e una festa di colori sopra un testo da capire è un
+     ostacolo. Tre cose sono di questa pagina sola e stanno nel <style> qui
+     sotto: la barra di lettura appiccicata sotto la nav, il numero di ogni
+     punto diventato una tessera accanto al titolo, e le pillole dell'indice
+     che si accendono su quella che si sta leggendo.
+
+     ── Quello che è cambiato, e quello che no ────────────────────────────
+     È cambiata la forma: la testata viene prima del manifesto invece che
+     dopo (la prima cosa di una pagina di regole non può essere un'immagine
+     grande), il numero del punto è uscito dal titolo, l'indice sa dove sei,
+     e la freccia «←» del piede è diventata un disegno invece di un carattere.
+
+     NON è cambiata una virgola del testo dei dieci punti. Sono le regole che
+     qualcuno accetta spuntando una casella: si riscrivono quando cambiano le
+     regole, non quando si rifà la pagina. L'unico ritocco è nell'occhiello,
+     che dice la data per esteso.
+
+     ── Come si tiene ──────────────────────────────────────────────────────
      Vive di testo, e il testo va tenuto corto: frasi brevi, un fatto per
      riga, niente formule. Le date e le cifre sono decise, non {{segnaposto}}:
      chi organizza le cambia qui e rifà il build. I dettagli operativi che
@@ -28,15 +49,13 @@
      ── Due cose che questo testo NON dice, e prima diceva ─────────────────
      Non c'è nessuna copertura assicurativa per i partecipanti: è la
      decisione di chi organizza, e la pagina non deve lasciar intendere il
-     contrario in nessun punto — promettere una polizza che non esiste è il
-     modo peggiore di sbagliare. E non c'è nessuna riga di commissioni: le
-     trattenute del circuito di pagamento sono un costo dell'organizzazione,
-     non una voce a carico di chi si iscrive. Sul sito è 10 € o 5 €, e basta.
+     contrario in nessun punto. E sulla quota non si aggiunge nessuna
+     commissione: le trattenute del circuito di pagamento sono un costo
+     dell'organizzazione e non si nominano.
 
-     ── Le regole che questo file deve rispettare da sé ────────────────────
-     Un regolamento che si contraddice non vale niente, e le contraddizioni
-     nascono quando lo stesso fatto è scritto in due punti. Qui ogni fatto ha
-     UN posto e gli altri punti ci rimandano:
+     ── Dove stanno i numeri ───────────────────────────────────────────────
+     Ogni cifra e ogni data hanno un punto solo in cui sono scritte, e gli
+     altri punti le nominano senza ripeterle:
 
        · le date e gli orari      → punto 1
        · le quote e cosa comprende → punto 3
@@ -51,15 +70,123 @@
      MAX_MINORI) e in
      api/iscrizione-color-walk.mjs (CHIUSURA_ISO, GIORNO_EVENTO,
      MAX_NON_PAGATE): se cambiano lì devono cambiare qui, e viceversa.
+
+     ── E la stampa, che è la ragione per cui questa pagina esiste due volte ─
+     Il foglio A4 con dentro tutto il regolamento in due colonne si regge su
+     un conto aritmetico che sta scritto per esteso nel blocco @media print.
+     Chi allunga il testo lo rifaccia prima di pubblicare: due fogli spillati
+     al banchetto si perdono, e chi firma deve avere davanti quello che
+     accetta.
      ════════════════════════════════════════════════════════════════════════ -->
 
 <style>
-/* ═══ A sinistra come tutto il resto ══════════════════════════════════════════
-   Questi sono punti che qualcuno legge per sapere cosa firma: partono tutti
-   dallo stesso margine, come su /servizi o /dati, e cadono sulla verticale
-   delle testate che li introducono. La navigazione in fondo tiene la misura
-   della prosa per non sporgere dalla colonna. */
+/* ═══ Il regolamento, vestito come la camminata ══════════════════════════════
+   Era una pagina del sito come le altre, senza niente di suo. Adesso porta la
+   stessa pelle di /color-walk — le tinte delle polveri, il fondale, la
+   polvere che sale, i blocchi che entrano — perché è la seconda metà della
+   stessa cosa: chi arriva qui dal modulo non deve avere l'impressione di
+   essere finito su un altro sito.
+
+   Il fondale però sta basso: --cr-velo a 0.4, che è quello che fa la classe
+   .sb-cr--basso in rivalta.css. Qui non ci si iscrive, si legge — dieci punti
+   che qualcuno legge per sapere cosa firma — e una festa di colori sopra un
+   testo da capire è un ostacolo, non un invito.
+
+   La pelle condivisa sta in assets/rivalta.css sotto «La pelle della Color
+   Walk». Qui restano tre cose che ha solo questa pagina: la barra di lettura,
+   il numero di ogni punto, e le pillole dell'indice che sanno dove sei.
+
+   Tutto parte dal margine sinistro, come su /servizi o /dati: sono punti che
+   cadono sulla verticale delle testate che li introducono. La navigazione in
+   fondo tiene la misura della prosa per non sporgere dalla colonna. */
 .sb-riv-pager { max-width: 46rem; }
+
+/* ═══ La barra di lettura ════════════════════════════════════════════════════
+   Un filo azzurro sotto la barra di navigazione, che si riempie scendendo.
+   Dieci punti sono lunghi, e sapere di essere al terzo o al nono cambia il
+   modo in cui si legge: è la differenza fra «quanto manca» e «non lo so».
+
+   Si misura sul corpo del regolamento e non su tutto il documento — la
+   testata sopra e il piede sotto non sono regolamento — e la quota la scrive
+   assets/color-walk.js in --cw-letto. Senza script vale 0 e resta un filo
+   grigio da 3px sotto la nav: non è un pezzo di pagina che manca, è una
+   decorazione che non si accende.
+
+   Sta appiccicata a 64px, che è l'altezza della nav: sotto di lei e mai
+   sopra. Il margine negativo le restituisce i suoi tre pixel, così il primo
+   punto non scende di tre pixel rispetto a prima. */
+.sb-cwr-prog {
+  position: sticky;
+  top: 64px;
+  z-index: 40;
+  height: 3px;
+  margin-bottom: -3px;
+  background: color-mix(in srgb, var(--sb-border) 70%, transparent);
+  pointer-events: none;
+}
+.sb-cwr-prog span {
+  display: block;
+  height: 100%;
+  background: var(--sb-brand);
+  transform: scaleX(var(--cw-letto, 0));
+  transform-origin: left center;
+}
+
+/* ═══ Il numero del punto ════════════════════════════════════════════════════
+   Era dentro il titolo, scritto «1 — L'evento», e faceva due mestieri con un
+   carattere solo: la numerazione e il trattino di separazione. Adesso è una
+   tessera tagliata come le pillole del sito, con dentro la cifra, e il titolo
+   resta il titolo.
+
+   È aria-hidden: chi ascolta la pagina sente «L'evento» e non «uno L'evento».
+   La numerazione la porta comunque l'indice, e i rimandi da un punto all'altro
+   dicono «il punto 7» per esteso. */
+.sb-sechead h2 { display: flex; align-items: center; gap: 0.7rem; }
+.sb-cwr-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-brand) 10%, var(--sb-surface-100));
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--sb-brand-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══ L'indice che sa dove sei ═══════════════════════════════════════════════
+   Le pillole in cima si accendono su quella che si sta leggendo. Il mestiere
+   è lo stesso del filo azzurro sotto le voci della nav — dire «sei qui» senza
+   aggiungere un secondo colore — e il segno è aria-current, che serve anche a
+   chi la pagina la ascolta invece di guardarla. Lo scrive
+   assets/color-walk.js; senza, le pillole restano quelle di sempre. */
+.sb-riv-toc a[aria-current="true"] {
+  color: var(--sb-fg);
+  border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent);
+  background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-brand) 12%, var(--sb-glass-bg));
+}
+
+/* I due fatti della testata: quanti punti sono e da quando valgono. Stanno in
+   pillola come i fatti di /color-walk, con la stessa icona disegnata dentro
+   la pagina invece che scritta con un carattere. */
+.sb-cwr-fatti { margin-top: 1.3rem; }
+.sb-cwr-fatti .sb-chip { gap: 0.5rem; white-space: normal; }
+.sb-cwr-fatti .sb-chip svg { flex: none; }
+
+/* La freccia che torna indietro va a sinistra, e al passaggio deve scostarsi
+   a sinistra: .sb-link in sb.css sposta la sua icona di due pixel a destra,
+   che su una freccia all'indietro è il verso sbagliato. */
+.sb-cwr-indietro:hover svg { transform: translateX(-2px); }
+
+/* Il blocco del manifesto scende sotto la testata: prima stava sopra a tutto
+   e la prima cosa della pagina del regolamento era un'immagine grande. Adesso
+   si legge di che regolamento si tratta, e poi si vede l'evento. */
+.sb-cwr-manifesto { margin-top: clamp(1.4rem, 3vw, 2rem); }
 
 /* ═══ Stampato: una A4 sola ═══════════════════════════════════════════════════
    Il regolamento va anche su carta, insieme al modulo cartaceo: chi firma al
@@ -89,6 +216,11 @@
    allunga il testo rifaccia il conto qui sopra, e non si fidi di uno 0.9x
    alto.
 
+   La riscrittura di settembre non ha aggiunto testo: ha spostato la
+   numerazione dal titolo a una tessera accanto, e su carta la tessera torna
+   una cifra scritta senza cornice — un quadratino da 2rem in mezzo a un
+   titolo da 1.05rem, moltiplicato per dieci, sarebbe stato spazio regalato.
+
    E il bianco imposto su html, body e .sb-home: il tema del sito lo decide
    chi guarda, e chi stampa da un browser in tema scuro si ritroverebbe un
    foglio nero con sopra del testo nero. */
@@ -106,7 +238,8 @@
      banner e i due tasti sparisce per primo: è un'immagine grande e due
      collegamenti, e su carta non porta niente. */
   .sb-nav, .sb-foot, .sb-ctl,
-  .sb-riv-cwhome, .sb-riv-toc, .sb-riv-pager { display: none !important; }
+  .sb-riv-cwhome, .sb-cwr-manifesto, .sb-riv-toc, .sb-riv-pager,
+  .sb-cwr-fatti, .sb-cwr-prog { display: none !important; }
   .sb-main { padding: 0 !important; }
   .sb-container { max-width: none !important; padding: 0 !important; }
 
@@ -122,9 +255,21 @@
   }
   .sb-riv-sec { padding: 0 !important; }
   .sb-sechead { max-width: none; margin: 0 0 0.4rem; text-align: left; }
-  .sb-sechead h2 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .sb-sechead h2 { font-size: 1.05rem; margin-bottom: 0.3rem; gap: 0.35rem; }
   /* Un titolo non resta solo in fondo a una colonna col suo testo nell'altra. */
   .sb-sechead h2 { break-after: avoid; }
+  /* La tessera del numero torna una cifra scritta: su carta la cornice è
+     inchiostro speso per niente, e dieci cornici da 2rem sono una riga. */
+  .sb-cwr-n {
+    display: inline;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    border: 0;
+    background: none;
+    font-size: 1em;
+  }
+  .sb-cwr-n::after { content: " —"; }
   .sb-riv-p, .sb-riv-ul, .sb-riv-li { max-width: none; }
   .sb-riv-p { margin-bottom: 0.5rem; }
   .sb-riv-note { padding: 0.5rem 0.6rem; margin-bottom: 0.5rem; break-inside: avoid; }
@@ -136,16 +281,30 @@
 </style>
 
 
-<!-- Il banner sopra a tutto: prima dell'occhiello e del titolo, dice a colpo
-     d'occhio di che evento sono queste regole. Stesso blocco della home
-     (banner in cornice + tasti), così l'evento si presenta uguale ovunque. -->
-<div class="sb-container">{{CW_HOME}}</div>
 
-<section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Color Walk · 20 settembre</span>
-  <h1>Regolamento</h1>
-  <p class="sb-riv-lede">Le regole della camminata a colori: chi può partecipare, quanto costa e cosa comprende, come ci si iscrive, cosa succede se rinunci o se piove, come ci si comporta lungo il percorso e come vengono trattati i tuoi dati. Iscrivendosi lo si accetta per intero, per sé e per i minori che si iscrivono con sé.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+<div class="sb-cr sb-cr--basso">
+
+<!-- Il fondale della camminata, tenuto basso: qui si legge. La polvere che
+     sale è il figlio, i due veli li disegna il CSS sui suoi pseudo-elementi.
+     Decorazione pura, aria-hidden. -->
+<div class="sb-cw-vernice" aria-hidden="true"><div class="sb-cw-polvere"></div></div>
+
+<section class="sb-container sb-riv-pagehead" data-cw-fila="80">
+  <span class="sb-riv-eyebrow sb-cw-su">Color Walk · domenica 20 settembre 2026</span>
+  <h1 class="sb-cw-su">Regolamento</h1>
+  <p class="sb-riv-lede sb-cw-su">Le regole della camminata a colori: chi può partecipare, quanto costa e cosa comprende, come ci si iscrive, cosa succede se rinunci o se piove, come ci si comporta lungo il percorso e come vengono trattati i tuoi dati. Iscrivendosi lo si accetta per intero, per sé e per i minori che si iscrivono con sé.</p>
+  <div class="sb-chiprow sb-cwr-fatti sb-cw-su">
+    <span class="sb-chip">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6"/></svg>
+      <span><b>10 punti</b>, dall'evento ai dati</span>
+    </span>
+    <span class="sb-chip">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span>Aggiornato il <b>6 settembre 2026</b></span>
+    </span>
+  </div>
+
+  <nav class="sb-riv-toc sb-cw-su" aria-label="Sezioni di questa pagina">
     <a href="#evento">L'evento</a>
     <a href="#chi">Chi partecipa</a>
     <a href="#iscrizione">Iscrizione e quota</a>
@@ -159,15 +318,27 @@
   </nav>
 </section>
 
+<!-- Il manifesto dell'evento con il tasto per iscriversi: stesso blocco
+     della home, così la camminata si presenta uguale ovunque. Stava sopra
+     a tutto, e la prima cosa della pagina del regolamento era un'immagine
+     grande; adesso si legge di che regolamento si tratta, e poi si vede
+     l'evento. -->
+<div class="sb-container sb-cwr-manifesto sb-cw-su">{{CW_HOME}}</div>
+
 <div class="sb-cwr-corpo">
+
+<!-- La barra di lettura. Sta appiccicata sotto la nav per tutto il corpo del
+     regolamento e si riempie scendendo; la quota la scrive
+     assets/color-walk.js. Senza script resta un filo grigio. -->
+<div class="sb-cwr-prog" data-cw-prog aria-hidden="true"><span></span></div>
 
 <!-- ── 1. L'EVENTO ──────────────────────────────────────────────────────────
      Qui e solo qui stanno date, orari e luogo. Gli altri punti li nominano,
      non li ripetono: due date scritte in due posti è il modo in cui un
      regolamento comincia a contraddirsi. -->
-<section class="sb-container sb-riv-sec" id="evento">
+<section class="sb-container sb-riv-sec sb-cw-su" id="evento">
   <div class="sb-sechead">
-    <h2>1 — L'evento</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">1</span>L'evento</h2>
   </div>
   <p class="sb-riv-p">La <strong>Color Walk</strong> è una camminata <strong>a colori e non competitiva</strong>: si va a passo libero, non c'è cronometraggio e non c'è classifica. Lungo il percorso ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Quest'anno prende il posto dei tornei del Palio delle Contrade.</p>
   <p class="sb-riv-p">Si tiene <strong>domenica 20 settembre 2026</strong>, per le vie di <strong>Rivalta sul Mincio</strong>, frazione del Comune di Rodigo (MN). Ritrovo <strong>alle 15:30 in Piazza Chiesa</strong>, davanti alla chiesa; <strong>partenza alle 16:00</strong>; arrivo nella stessa piazza, dove si chiude con l'aperitivo.</p>
@@ -180,9 +351,9 @@
 </section>
 
 <!-- ── 2. CHI PUÒ PARTECIPARE ───────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="chi">
+<section class="sb-container sb-riv-sec sb-cw-su" id="chi">
   <div class="sb-sechead">
-    <h2>2 — Chi può partecipare</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">2</span>Chi può partecipare</h2>
   </div>
   <p class="sb-riv-p">Può partecipare chiunque se la cava con una passeggiata: il ritmo lo decide chi cammina. Serve uno <strong>stato di salute compatibile con un'attività fisica leggera</strong>; chi ha dubbi ne parli prima con il proprio medico. Non essendo una gara, <strong>non è richiesto il certificato medico agonistico</strong>.</p>
   <p class="sb-riv-p">La regola che tiene insieme tutto il resto è questa: <strong>ognuno è responsabile di sé stesso</strong>, e <strong>il maggiorenne che si iscrive è responsabile dei minori a suo carico che iscrive insieme a sé</strong> e che accompagna per tutto il percorso.</p>
@@ -206,9 +377,9 @@
      Il punto più letto e il più facile da far sbagliare. Le tre strade sono
      tre, e ognuna dice per intero: entro quando, dove si paga, cosa si
      riceve. Chi ne aggiunge una quarta la scriva con lo stesso schema. -->
-<section class="sb-container sb-riv-sec" id="iscrizione">
+<section class="sb-container sb-riv-sec sb-cw-su" id="iscrizione">
   <div class="sb-sechead">
-    <h2>3 — Iscrizione, quota, pagamento</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">3</span>Iscrizione, quota, pagamento</h2>
   </div>
   <p class="sb-riv-p">La quota è di <strong>10 € per chi ha 18 anni o più</strong> e di <strong>5 € per ogni ragazzo dai 6 ai 17 anni</strong>. Sotto i 6 anni non si paga e non ci si iscrive. Chi iscrive altre persone paga la somma delle quote <strong>in un pagamento solo</strong>; in una singola iscrizione si possono mettere <strong>fino a quattro maggiorenni</strong>, compreso chi compila, e <strong>fino a otto minori</strong>. Chi ne accompagna di più fa una seconda iscrizione, o compila un secondo modulo cartaceo.</p>
   <p class="sb-riv-p">La quota comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong>, l'<strong>aperitivo</strong> di fine camminata e tutto il cibo e le bevande messi a disposizione dagli sponsor e dai partner. <strong>Non c'è niente da pagare a parte</strong>, e in particolare l'aperitivo non è un servizio aggiuntivo: è compreso, vale per tutti, e non si prenota. Sulla quota non si aggiunge nessuna commissione: le trattenute del circuito di pagamento sono un costo dell'organizzazione.</p>
@@ -235,9 +406,9 @@
      una finestra che si chiude prima che si possa entrare non è una regola,
      è un errore. La cessione si è agganciata al 18 settembre proprio per
      questo — a «sette giorni prima» chi si iscriveva il 15 non arrivava. -->
-<section class="sb-container sb-riv-sec" id="rimborsi">
+<section class="sb-container sb-riv-sec sb-cw-su" id="rimborsi">
   <div class="sb-sechead">
-    <h2>4 — Rinuncia, rimborsi, annullamento</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">4</span>Rinuncia, rimborsi, annullamento</h2>
   </div>
   <p class="sb-riv-p">L'evento ha una data fissa: per questo <strong>non si applica il diritto di recesso</strong> (art. 59, comma 1, lettera n, del Codice del consumo, D.Lgs. 206/2005).</p>
   <ul class="sb-riv-ul">
@@ -251,9 +422,9 @@
 </section>
 
 <!-- ── 5. POLVERI COLORATE E SICUREZZA ──────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="polveri">
+<section class="sb-container sb-riv-sec sb-cw-su" id="polveri">
   <div class="sb-sechead">
-    <h2>5 — Polveri colorate e sicurezza</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">5</span>Polveri colorate e sicurezza</h2>
   </div>
   <p class="sb-riv-p">Le polveri sono a <strong>base di amido di mais</strong>, atossiche e lavabili via da pelle e capelli con acqua e sapone. Restano comunque una polvere fine: possono <strong>irritare occhi, naso e gola</strong>.</p>
   <div class="sb-riv-note">
@@ -269,9 +440,9 @@
 </section>
 
 <!-- ── 6. LUNGO IL PERCORSO ─────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="percorso">
+<section class="sb-container sb-riv-sec sb-cw-su" id="percorso">
   <div class="sb-sechead">
-    <h2>6 — Lungo il percorso</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">6</span>Lungo il percorso</h2>
   </div>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li">Il percorso è su <strong>strade urbane</strong>. Gli <strong>attraversamenti</strong> di Via Settefrati, Via Garibaldi e Via Francesca avvengono con la strada <strong>chiusa temporaneamente</strong>, il tempo del passaggio, con il supporto della <strong>Polizia Locale</strong>. Sul resto del giro si tiene la destra, si seguono le indicazioni dei volontari e si dà sempre <strong>precedenza ai mezzi di soccorso</strong>.</li>
@@ -286,9 +457,9 @@
 </section>
 
 <!-- ── 7. RESPONSABILITÀ ────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="responsabilita">
+<section class="sb-container sb-riv-sec sb-cw-su" id="responsabilita">
   <div class="sb-sechead">
-    <h2>7 — Responsabilità</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">7</span>Responsabilità</h2>
   </div>
   <div class="sb-riv-note">
     <span class="sb-riv-note-t">Non è prevista un'assicurazione per i partecipanti</span>
@@ -301,9 +472,9 @@
 </section>
 
 <!-- ── 8. FOTO E VIDEO ──────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="immagini">
+<section class="sb-container sb-riv-sec sb-cw-su" id="immagini">
   <div class="sb-sechead">
-    <h2>8 — Foto e video</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">8</span>Foto e video</h2>
   </div>
   <p class="sb-riv-p">Durante l'evento vengono scattate foto e girati video, per strada e in mezzo al gruppo. Iscrivendosi si <strong>autorizza l'uso gratuito di queste immagini</strong>, senza limiti di tempo, per raccontare e promuovere la Color Walk e le attività di Rivalta sul Mincio: sito, social, stampa locale, edizioni future. L'autorizzazione non copre usi commerciali estranei all'evento e alle attività di chi lo organizza.</p>
   <div class="sb-riv-note">
@@ -318,9 +489,9 @@
      compresi), Resend spedisce le mail, Vercel serve il sito e fa girare le
      funzioni. Nominarne uno solo dei tre sarebbe scrivere un'informativa
      incompleta, e un'informativa incompleta è peggio di nessuna. -->
-<section class="sb-container sb-riv-sec" id="dati">
+<section class="sb-container sb-riv-sec sb-cw-su" id="dati">
   <div class="sb-sechead">
-    <h2>9 — Dati personali</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">9</span>Dati personali</h2>
   </div>
   <p class="sb-riv-p">I dati raccolti sono quelli elencati al punto 3: nome, cognome, data di nascita, codice fiscale, email, e — se lasciati — telefono e nota di chi si iscrive; nome, cognome, data di nascita e codice fiscale degli altri maggiorenni iscritti insieme a lui; nome, cognome, data di nascita e l'eventuale codice fiscale dei minori a suo carico. Servono a <strong>gestire l'iscrizione, il pagamento e la dichiarazione di responsabilità</strong> del punto 7, ad avere l'elenco di chi partecipa e a mandare le comunicazioni sulla camminata. Il trattamento è necessario per dare seguito all'iscrizione e agli obblighi di legge collegati; non c'è profilazione e non c'è nessuna decisione automatizzata.</p>
   <ul class="sb-riv-ul">
@@ -333,16 +504,18 @@
 </section>
 
 <!-- ── 10. ACCETTAZIONE ─────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="accettazione">
+<section class="sb-container sb-riv-sec sb-cw-su" id="accettazione">
   <div class="sb-sechead">
-    <h2>10 — Accettazione</h2>
+    <h2><span class="sb-cwr-n" aria-hidden="true">10</span>Accettazione</h2>
   </div>
   <p class="sb-riv-p">Completando l'iscrizione — online o sul modulo cartaceo — si dichiara di aver <strong>letto e accettato questo regolamento in ogni sua parte</strong>, informativa sui dati compresa, per sé e per i minori che si iscrivono. Per gli altri maggiorenni iscritti nella stessa iscrizione vale il punto 7: <strong>lo accettano loro</strong>, e chi compila dichiara di averne il consenso e di averglielo fatto leggere. Per quanto non previsto valgono le norme di legge applicabili; foro competente <strong>Mantova</strong>.</p>
   <p class="sb-riv-p">Eventuali modifiche fino al giorno dell'evento vengono pubblicate su questa pagina e comunicate via email agli iscritti. <strong>Regolamento aggiornato il 6 settembre 2026</strong>. Due cose. I <strong>moduli cartacei</strong> del banchetto vengono riportati nell'elenco degli iscritti insieme a quelli online — la firma resta sulla carta, i dati entrano nel conto unico dei partecipanti — e il codice fiscale dei minori si chiede anche sul foglio, sempre facoltativo (punti 3 e 9). E, rispetto alla versione del 4 settembre, una singola iscrizione può portare <strong>fino a quattro maggiorenni</strong> invece di uno solo, con il codice fiscale obbligatorio per ognuno e la responsabilità divisa fra loro — punti 2, 3 e 7. Da lì scendono le altre precisazioni: la mail resta una sola e arriva a chi compila (punto 2), l'uso dell'immagine lo autorizza ognuno per sé (punto 8), i dati raccolti comprendono i loro e ognuno può chiedere i propri di suo (punto 9), e il regolamento lo accettano loro (punto 10). Il <strong>4 settembre</strong>, rispetto alla versione del 2, erano stati precisati il conteggio delle età al giorno della camminata, il tetto di otto minori per iscrizione, la scadenza per la cessione (prima «sette giorni prima», che cadeva prima ancora dell'apertura del banchetto del 15), il canale dei rimborsi, i dati raccolti e i destinatari a cui passano.</p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link" href="/color-walk">← Iscrizione alla Color Walk</a>
+    <a class="sb-link sb-cwr-indietro" href="/color-walk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Iscrizione alla Color Walk</a>
     <a class="sb-link" href="/color-walk-modulo">Modulo da stampare <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </section>
+</div>
+
 </div>
