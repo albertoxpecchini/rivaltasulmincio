@@ -220,12 +220,20 @@
         pillEl.classList.remove("sb-on");
         return;
       }
-      // offsetLeft/offsetWidth e non getBoundingClientRect(): servono le
-      // coordinate dentro .sb-nav-links (che è position:relative), non quelle
-      // rispetto alla finestra. Una nav sticky le vedrebbe cambiare a ogni
-      // scroll.
-      pillEl.style.setProperty("--sb-pill-x", el.offsetLeft + "px");
-      pillEl.style.setProperty("--sb-pill-w", el.offsetWidth + "px");
+      // Servono le coordinate DENTRO .sb-nav-links, non quelle rispetto alla
+      // finestra: una nav sticky le vedrebbe cambiare a ogni scroll. Si
+      // prendono come differenza fra i due rettangoli — che scorrono
+      // insieme, quindi la differenza sta ferma.
+      //
+      // Prima era offsetLeft, ed era giusto finché le voci erano figlie
+      // dirette della fila. Da quando ognuna sta dentro al suo gruppo con la
+      // tendina — e quel gruppo è position:relative, o la tendina non
+      // saprebbe a cosa agganciarsi — offsetLeft è misurato dal gruppo e la
+      // pillola andrebbe a riposare sulla prima voce, sempre.
+      var r = el.getBoundingClientRect();
+      var box = links.getBoundingClientRect();
+      pillEl.style.setProperty("--sb-pill-x", r.left - box.left + "px");
+      pillEl.style.setProperty("--sb-pill-w", r.width + "px");
       pillEl.classList.add("sb-on");
     }
 
@@ -234,7 +242,12 @@
     // si invertisse, qui non ci sarebbe ancora nulla da trovare e la pillola
     // resterebbe semplicemente nascosta finché non si passa con il mouse.
     function home() {
-      return links.querySelector('.sb-nav-link[aria-current="page"]');
+      // Il tasto del gruppo non ha un href, quindi non può dire
+      // aria-current="page": la pagina aperta sta DENTRO la sua tendina, e
+      // rivalta.js glielo segna con data-attiva. Si accettano tutti e due,
+      // così la pillola resta a posto anche se un giorno tornasse una voce
+      // singola senza tendina.
+      return links.querySelector('.sb-nav-link[aria-current="page"], .sb-nav-link[data-attiva]');
     }
     function rest() {
       moveTo(home());
@@ -252,7 +265,7 @@
     links.addEventListener("mouseleave", rest);
 
     // Le etichette cambiano posizione quando cambia la larghezza della
-    // finestra, e sotto i 1080px la fila non è nemmeno visibile.
+    // finestra, e sotto i 1024px la fila non è nemmeno visibile.
     window.addEventListener("resize", rest, { passive: true });
 
     // I caratteri arrivano da Google Fonts: misurare prima che siano

@@ -16,15 +16,20 @@
 
   /* ── "Sei qui" ───────────────────────────────────────────────────────────
      L'evidenza della voce attiva la mette il JS confrontando gli href con la
-     pagina aperta, invece di scriverla a mano in nove file: una voce
+     pagina aperta, invece di scriverla a mano in quattordici file: una voce
      rinominata in un posto solo non può più restare fuori sincrono. Senza JS
-     si perde il filo verde sotto la voce, non la navigazione.
+     si perde il filo azzurro sotto la voce, non la navigazione.
 
      Confrontare le due stringhe così come sono non funziona: gli indirizzi
      pubblici non hanno estensione (/paese) ma il file su disco sì, e chi
      arriva da un vecchio link vede /paese.html finché il redirect non è
      scattato. Si riducono entrambi al nome della pagina — la home al posto
-     vuoto — e poi si confrontano. */
+     vuoto — e poi si confrontano.
+
+     Da quando in barra ci sono cinque tendine invece di tredici link, la
+     voce da segnare non è più quella premuta: è il TASTO del gruppo che la
+     contiene. Il tasto non ha un href da confrontare, quindi lo si trova
+     risalendo dal link che ha vinto. */
   var pagina = function (u) {
     return (u || "")
       .split("#")[0]
@@ -34,10 +39,17 @@
       .replace(/^index$/, "");
   };
   var here = pagina(location.pathname);
-  document.querySelectorAll(".sb-nav-link, .sb-menu-nav a").forEach(function (a) {
-    if (pagina(a.getAttribute("href")) === here) {
-      a.setAttribute("aria-current", "page");
-    }
+  document.querySelectorAll(".sb-riv-tendina a, .sb-menu-nav a").forEach(function (a) {
+    var href = a.getAttribute("href") || "";
+    // Un indirizzo con l'ancora dentro (/#fatto-da) punta a un pezzo di
+    // pagina, non a una pagina: sulla home segnerebbe "sei qui" a una voce
+    // che porta da un'altra parte.
+    if (href.indexOf("#") >= 0) return;
+    if (pagina(href) !== here) return;
+    a.setAttribute("aria-current", "page");
+    var gruppo = a.closest(".sb-riv-nav-item");
+    var tasto = gruppo && gruppo.querySelector(".sb-riv-nav-trigger");
+    if (tasto) tasto.setAttribute("data-attiva", "");
   });
 
   /* ── Bordo della nav ─────────────────────────────────────────────────────
@@ -182,6 +194,73 @@
       window.scrollTo({ top: 0, behavior: fermo ? "auto" : "smooth" });
       var marchio = document.querySelector(".sb-nav-brand");
       if (marchio) marchio.focus({ preventScroll: true });
+    });
+  }
+
+
+  /* ── Le tendine della barra ───────────────────────────────────────────────
+     Aprirle è compito del CSS: :hover e :focus-within bastano, e bastano
+     anche senza JavaScript — chi arriva con gli script spenti trova le
+     tendine funzionanti, che è il motivo per cui non sono fatte in JS.
+
+     Qui si aggiunge quello che il CSS non sa fare:
+       · il clic, per chi ha un dito e non un puntatore;
+       · Esc, che chiude e riporta il fuoco sul tasto;
+       · il clic fuori, che chiude tutto;
+       · aria-expanded tenuto in fase con quello che si vede davvero, anche
+         quando ad aprire è stato il passaggio del mouse. */
+  var gruppi = [].slice.call(document.querySelectorAll(".sb-riv-nav-item"));
+  if (gruppi.length) {
+    var chiudiTutte = function (tranne) {
+      gruppi.forEach(function (g) {
+        if (g === tranne) return;
+        g.classList.remove("sb-open");
+        var t = g.querySelector(".sb-riv-nav-trigger");
+        if (t) t.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    gruppi.forEach(function (g) {
+      var tasto = g.querySelector("[data-tendina]");
+      if (!tasto) return;
+      var segna = function (aperta) {
+        tasto.setAttribute("aria-expanded", aperta ? "true" : "false");
+      };
+
+      tasto.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var era = g.classList.contains("sb-open");
+        chiudiTutte(g);
+        g.classList.toggle("sb-open", !era);
+        segna(!era);
+      });
+
+      // Il mouse e il fuoco aprono da soli (è CSS): qui si scrive solo che è
+      // successo, o un lettore di schermo annuncerebbe «chiusa» una tendina
+      // aperta sotto agli occhi di tutti.
+      g.addEventListener("mouseenter", function () { segna(true); });
+      g.addEventListener("mouseleave", function () {
+        if (!g.classList.contains("sb-open")) segna(false);
+      });
+      g.addEventListener("focusin", function () { segna(true); });
+      g.addEventListener("focusout", function (e) {
+        if (g.contains(e.relatedTarget)) return;
+        if (!g.classList.contains("sb-open")) segna(false);
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (e.target.closest && e.target.closest(".sb-riv-nav-item")) return;
+      chiudiTutte();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var aperta = document.querySelector(".sb-riv-nav-item.sb-open");
+      if (!aperta) return;
+      chiudiTutte();
+      var t = aperta.querySelector(".sb-riv-nav-trigger");
+      if (t) t.focus();
     });
   }
 

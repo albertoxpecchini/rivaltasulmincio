@@ -2167,51 +2167,132 @@ a.sb-riv-menu-agg { text-decoration: none; }
    LA BARRA IN TESTA · IL MURO DEI COMMIT · IL BANNER DEGLI AGGIORNAMENTI
    ═════════════════════════════════════════════════════════════════════════ */
 
-/* ── La barra centrata, in quattro gruppi ─────────────────────────────────
-   Undici voci in fila erano una parete di parole in cui l'occhio non trovava
-   un appiglio. Adesso sono quattro gruppi separati da un filo — il paese, la
-   vita del paese, il territorio, il sito — e stanno al centro, con il marchio
-   a sinistra e gli strumenti a destra.
+/* ── La barra: cinque voci, cinque tendine ───────────────────────────────
+   Tredici indirizzi in fila erano una parete di parole. In barra adesso ci
+   sono cinque parole — il paese · servizi · territorio · eventi · il sito —
+   e ognuna apre la sua tendina, dove ogni pagina si porta dietro una riga
+   che dice cosa ci si trova.
 
-   La griglia a tre colonne serve proprio a questo: con margin-left:auto sul
-   gruppo di destra le voci sarebbero centrate rispetto a quello che avanza,
-   non rispetto alla barra. Le due colonne 1fr ai lati si equivalgono sempre,
-   quindi il centro è il centro vero anche se il marchio è più largo dei tasti.
+   Le tendine sono CSS: :hover e :focus-within le aprono, quindi funzionano
+   anche con gli script spenti. rivalta.js aggiunge il clic (per chi ha un
+   dito), Esc, il clic fuori e aria-expanded tenuto in fase.
 
-   È l'unica cosa centrata del sito, e resta un'eccezione voluta: la testata
-   non è testo da leggere, è una plancia di comando. Il contenuto continua a
-   partire tutto dal margine sinistro. */
-@media (min-width: 1180px) {
+   La griglia a tre colonne è quello che le centra davvero: con
+   margin-left:auto sul gruppo di destra sarebbero centrate rispetto a quello
+   che avanza, non rispetto alla barra. Le due colonne 1fr ai lati si
+   equivalgono sempre, quindi il centro è il centro anche se il marchio è più
+   largo dei tasti.
+
+   È l'unica cosa centrata del sito, ed è un'eccezione voluta: la testata non
+   è testo da leggere, è una plancia di comando. Il contenuto continua a
+   partire tutto dal margine sinistro.
+
+   Con cinque voci al posto di tredici la fila ci sta molto prima: si passa al
+   menu sotto i 1024px invece che sotto i 1080. */
+@media (min-width: 1024px) {
   .sb-nav-inner {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
   }
   .sb-nav-brand { justify-self: start; }
   .sb-nav-right { margin-left: 0; justify-self: end; }
+  .sb-nav-links { display: flex; }
+  .sb-burger[data-menu-toggle] { display: none; }
+  .sb-menu-sheet.sb-open { display: none; }
 }
-
-/* I gruppi non hanno posizione: la pillola misura offsetLeft dentro
-   .sb-nav-links, e un contenitore posizionato in mezzo le sposterebbe
-   l'origine sotto ai piedi. */
-.sb-riv-navgroup { display: inline-flex; align-items: center; gap: 0.15rem; }
-.sb-riv-navsep {
-  flex: none;
-  width: 1px;
-  height: 16px;
-  margin: 0 0.55rem;
-  background: var(--sb-border-strong);
-}
-
-/* Con i fili in mezzo la fila è più larga: il punto in cui non ci sta più si
-   sposta da 1080 a 1180, e sotto comanda il menu — che nel frattempo è
-   diventato più leggibile della fila, non un ripiego. */
-@media (max-width: 1179.98px) {
+@media (max-width: 1023.98px) {
   .sb-nav-links { display: none; }
   .sb-burger[data-menu-toggle] { display: inline-flex; }
   .sb-menu-sheet.sb-open { display: block; }
 }
 
-/* Le stesse quattro sottosezioni, scritte, nel menu del telefono. */
+/* Il gruppo è position:relative perché la tendina si aggancia a lui. È anche
+   il motivo per cui la pillola in glass.js non misura più con offsetLeft:
+   quello sarebbe diventato la distanza dal gruppo, cioè zero per tutti. */
+.sb-riv-nav-item { position: relative; }
+
+/* Il tasto si veste da voce di nav (.sb-nav-link fa già colore, spaziatura e
+   filo azzurro sotto): qui restano solo le cose che un <button> non eredita
+   da solo. */
+.sb-riv-nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: inherit;
+  cursor: pointer;
+}
+.sb-riv-nav-caret { flex: none; opacity: 0.5; transition: transform 0.18s ease, opacity 0.15s ease; }
+.sb-riv-nav-item:hover .sb-riv-nav-caret,
+.sb-riv-nav-item:focus-within .sb-riv-nav-caret,
+.sb-riv-nav-item.sb-open .sb-riv-nav-caret { opacity: 1; transform: rotate(180deg); }
+
+/* La voce del gruppo che contiene la pagina aperta si accende come si
+   accendeva la voce singola: stesso colore, stesso filo. L'attributo lo
+   scrive rivalta.js risalendo dal link che ha vinto il confronto. */
+.sb-nav-link[data-attiva] { color: var(--sb-fg); }
+.sb-nav-link[data-attiva]::after { transform: scaleX(1); }
+
+/* ── La tendina ──────────────────────────────────────────────────────────
+   Il distacco dal tasto è padding e non `top`: uno stacco vero lascerebbe sei
+   pixel di vuoto in cui il mouse esce dal gruppo e la tendina si chiude
+   proprio mentre ci si stava andando. Così la zona sensibile resta unita e
+   il pannello scende lo stesso. */
+.sb-riv-tendina {
+  position: absolute;
+  top: 100%;
+  left: -0.5rem;
+  z-index: 60;
+  width: max-content;
+  min-width: 15rem;
+  max-width: 20rem;
+  padding-top: 7px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0s linear 0.16s;
+}
+/* L'ultima sta a destra, o uscirebbe dal bordo della finestra. */
+.sb-riv-tendina--fine { left: auto; right: -0.5rem; }
+
+.sb-riv-nav-item:hover > .sb-riv-tendina,
+.sb-riv-nav-item:focus-within > .sb-riv-tendina,
+.sb-riv-nav-item.sb-open > .sb-riv-tendina {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+html.rsm-still .sb-riv-tendina { transition: none; }
+
+/* Il vetro del sito è semitrasparente perché deve lasciar vedere quello che
+   ha dietro. Un menu no: dietro c'è il testo della pagina, e leggere una
+   voce sopra a una riga di prosa è fatica gratis. Qui la lastra si fa quasi
+   piena — resta il bordo e resta la sfocatura, sparisce la trasparenza. */
+.sb-riv-tendina .sb-panel-inner {
+  background: color-mix(in srgb, var(--sb-bg) 95%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+          backdrop-filter: blur(16px) saturate(150%);
+}
+.sb-riv-tendina-pad { display: grid; gap: 1px; padding: 0.45rem; }
+.sb-riv-tendina a {
+  display: grid;
+  gap: 1px;
+  padding: 0.5rem 0.6rem;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: background 0.13s ease;
+}
+.sb-riv-tendina a:hover,
+.sb-riv-tendina a:focus-visible { background: var(--sb-overlay); }
+.sb-riv-tendina a[aria-current="page"] { background: var(--sb-overlay); }
+.sb-riv-tendina-t { font-size: 0.9rem; font-weight: 500; color: var(--sb-fg); }
+.sb-riv-tendina-d { font-size: 0.78rem; line-height: 1.45; color: var(--sb-fg-muted); }
+
+/* Le stesse cinque sottosezioni, scritte, nel menu su schermo stretto. */
 .sb-riv-menu-tit {
   margin: 1rem 0 0.2rem;
   padding: 0 0.7rem;

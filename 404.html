@@ -55,38 +55,76 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <img class="sb-riv-brand-glyph" src="/assets/favicon.svg" alt="" width="24" height="24" decoding="async">
           <span class="sb-nav-brand-name">Rivalta<span class="sb-riv-brand-tail"> sul Mincio</span></span>
         </a>
-        <div class="sb-nav-links">
-          <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
-               perché nell'ordine di pittura deve finirci sotto, ed è
-               aria-hidden perché non dice niente che l'attributo
-               aria-current sulla voce non dica già meglio.
+        <!-- ── Cinque voci, cinque tendine ────────────────────────────────
+             Tredici indirizzi non stanno in una barra: o si accavallano o si
+             leggono uno per uno come una lista della spesa. Qui in barra ci
+             sono cinque parole, e ognuna apre la sua tendina con dentro le
+             pagine e una riga che dice cosa ci si trova.
 
-               I gruppi sono <span> senza posizione: la pillola misura
-               offsetLeft dentro .sb-nav-links, e un contenitore posizionato in
-               mezzo le sposterebbe l'origine. Restano statici apposta. -->
+             Le tendine si aprono al passaggio del mouse e al focus da
+             tastiera — è CSS, quindi funzionano anche senza JavaScript. Il
+             clic (rivalta.js) serve a chi ha un dito invece di un puntatore,
+             e tiene aria-expanded in fase con quello che si vede.
+
+             Il fondo che scivola da una voce all'altra sta PRIMA dei tasti
+             perché nell'ordine di pittura deve finirci sotto. -->
+        <div class="sb-nav-links">
           <span class="sb-nav-pill" aria-hidden="true"></span>
-          <span class="sb-riv-navgroup">
-            <a class="sb-nav-link" href="/paese">Il paese</a>
-            <a class="sb-nav-link" href="/storia">Storia</a>
-          </span>
-          <span class="sb-riv-navsep" aria-hidden="true"></span>
-          <span class="sb-riv-navgroup">
-            <a class="sb-nav-link" href="/servizi">Servizi</a>
-            <a class="sb-nav-link" href="/attivita">Attività</a>
-            <a class="sb-nav-link" href="/mangiare">Mangiare</a>
-            <a class="sb-nav-link" href="/comunita">Comunità</a>
-            <a class="sb-nav-link" href="/eventi">Eventi</a>
-          </span>
-          <span class="sb-riv-navsep" aria-hidden="true"></span>
-          <span class="sb-riv-navgroup">
-            <a class="sb-nav-link" href="/muoversi">Muoversi</a>
-            <a class="sb-nav-link" href="/natura">Natura</a>
-            <a class="sb-nav-link" href="/mappa">Mappa</a>
-          </span>
-          <span class="sb-riv-navsep" aria-hidden="true"></span>
-          <span class="sb-riv-navgroup">
-            <a class="sb-nav-link" href="/dati">Dati</a>
-          </span>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-paese">Il paese<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-paese">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/paese"><span class="sb-riv-tendina-t">Il paese</span><span class="sb-riv-tendina-d">Anagrafica, demografia, monumenti, Messe</span></a>
+                <a href="/storia"><span class="sb-riv-tendina-t">Storia</span><span class="sb-riv-tendina-d">Da Ripalta matildica ai mestieri del fiume</span></a>
+                <a href="/comunita"><span class="sb-riv-tendina-t">Comunità</span><span class="sb-riv-tendina-d">Scuole, museo, associazioni, sport</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-servizi">Servizi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-servizi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/servizi"><span class="sb-riv-tendina-t">Servizi</span><span class="sb-riv-tendina-d">Comune, farmacia, rifiuti, fibra e 5G</span></a>
+                <a href="/attivita"><span class="sb-riv-tendina-t">Attività</span><span class="sb-riv-tendina-d">Negozi, uffici, bar e ristoranti</span></a>
+                <a href="/mangiare"><span class="sb-riv-tendina-t">Mangiare</span><span class="sb-riv-tendina-d">Si parte dal piatto, non dal locale</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-territorio">Territorio<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-territorio">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/muoversi"><span class="sb-riv-tendina-t">Muoversi</span><span class="sb-riv-tendina-d">Strade, parcheggi, autobus, ciclabili</span></a>
+                <a href="/natura"><span class="sb-riv-tendina-t">Natura</span><span class="sb-riv-tendina-d">Valli del Mincio, parchi, corsi d'acqua</span></a>
+                <a href="/mappa"><span class="sb-riv-tendina-t">Mappa</span><span class="sb-riv-tendina-d">I luoghi censiti, uno per uno</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-eventi">Eventi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-eventi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/eventi"><span class="sb-riv-tendina-t">Eventi</span><span class="sb-riv-tendina-d">Sagre, feste e ricorrenze del paese</span></a>
+                <a href="/color-walk"><span class="sb-riv-tendina-t">Color Walk</span><span class="sb-riv-tendina-d">La camminata di domenica 20 settembre</span></a>
+                <a href="/color-walk-regolamento"><span class="sb-riv-tendina-t">Regolamento</span><span class="sb-riv-tendina-d">Quote, percorso, come ci si iscrive</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-sito">Il sito<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina sb-riv-tendina--fine" id="tend-sito">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/aggiornamenti"><span class="sb-riv-tendina-t">Aggiornamenti</span><span class="sb-riv-tendina-d">Cosa è cambiato, in ordine di data</span></a>
+                <a href="/dati"><span class="sb-riv-tendina-t">Dati e fonti</span><span class="sb-riv-tendina-d">Da dove viene ogni numero del sito</span></a>
+                <a href="/#fatto-da"><span class="sb-riv-tendina-t">Chi l'ha fatto</span><span class="sb-riv-tendina-d">Una persona sola, e il codice in chiaro</span></a>
+              </div></div>
+            </div>
+          </div>
         </div>
         <div class="sb-nav-right">
           <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
@@ -123,19 +161,23 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <p class="sb-riv-menu-tit">Il paese</p>
           <a href="/paese">Il paese</a>
           <a href="/storia">Storia</a>
-          <p class="sb-riv-menu-tit">Vivere</p>
+          <a href="/comunita">Comunità</a>
+          <p class="sb-riv-menu-tit">Servizi</p>
           <a href="/servizi">Servizi</a>
           <a href="/attivita">Attività</a>
           <a href="/mangiare">Mangiare</a>
-          <a href="/comunita">Comunità</a>
-          <a href="/eventi">Eventi</a>
           <p class="sb-riv-menu-tit">Territorio</p>
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
           <a href="/mappa">Mappa</a>
+          <p class="sb-riv-menu-tit">Eventi</p>
+          <a href="/eventi">Eventi</a>
+          <a href="/color-walk">Color Walk</a>
+          <a href="/color-walk-regolamento">Regolamento</a>
           <p class="sb-riv-menu-tit">Il sito</p>
-          <a href="/dati">Dati e fonti</a>
           <a href="/aggiornamenti">Aggiornamenti</a>
+          <a href="/dati">Dati e fonti</a>
+          <a href="/#fatto-da">Chi l'ha fatto</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>

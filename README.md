@@ -101,16 +101,34 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
 
-Le voci sono **centrate e divise in quattro gruppi** separati da un filo — il paese · la vita del
-paese · il territorio · il sito — e le stesse quattro sottosezioni, scritte, reggono il menu su
-schermo stretto. La testata è **l'unica cosa centrata del sito**, ed è un'eccezione voluta: non è
-testo da leggere, è una plancia di comando. Il contenuto parte tutto dal margine sinistro.
+In barra ci sono **cinque parole**, e ognuna apre la sua **tendina**: *Il paese · Servizi ·
+Territorio · Eventi · Il sito*. Dentro, ogni pagina si porta dietro una riga che dice cosa ci si
+trova — quindici destinazioni raggiungibili senza che la barra ne mostri più di cinque. Le stesse
+cinque sottosezioni, scritte, reggono il menu su schermo stretto.
 
-Con i fili in mezzo la fila è più larga, quindi il punto in cui si passa al menu si è spostato da
-1080 a **1180px** (CSS in `rivalta.css`, e la stessa soglia in `rivalta.js` per la chiusura del
-menu al ridimensionamento). I gruppi sono `<span>` **senza posizione**: la pillola della nav misura
-`offsetLeft` dentro `.sb-nav-links`, e un contenitore posizionato in mezzo le sposterebbe
-l'origine sotto ai piedi.
+Le voci sono **centrate** (griglia `1fr auto 1fr` su `.sb-nav-inner`: con un `margin-left:auto`
+sarebbero centrate rispetto a quello che avanza, non rispetto alla barra). È **l'unica cosa
+centrata del sito**, ed è un'eccezione voluta: la testata non è testo da leggere, è una plancia di
+comando. Il contenuto parte tutto dal margine sinistro.
+
+**Le tendine sono CSS** — `:hover` e `:focus-within` — quindi funzionano anche a script spenti;
+`rivalta.js` aggiunge il clic (per chi ha un dito e non un puntatore), `Esc`, il clic fuori e
+`aria-expanded` tenuto in fase con quello che si vede. Lo stacco fra tasto e pannello è **padding e
+non `top`**: un vuoto vero sarebbe una fessura in cui il mouse esce dal gruppo e la tendina si
+chiude proprio mentre ci si stava andando.
+
+Due conseguenze che vale la pena sapere prima di rimetterci le mani:
+
+- il gruppo è `position: relative` (la tendina si aggancia a lui), quindi la pillola della nav in
+  `glass.js` **non misura più con `offsetLeft`** — che sarebbe diventato la distanza dal gruppo,
+  cioè zero per tutte — ma con la differenza fra i due `getBoundingClientRect()`, che scorrono
+  insieme e quindi stanno fermi;
+- il tasto del gruppo non ha un `href`, quindi non può dire `aria-current="page"`: la pagina aperta
+  sta dentro la sua tendina, e `rivalta.js` gliela segna risalendo dal link che ha vinto il
+  confronto, con `data-attiva`. Il filo azzurro e la pillola leggono tutti e due.
+
+Con cinque voci al posto di tredici la fila ci sta molto prima: si passa al menu **sotto i 1024px**
+(prima 1080), e la stessa soglia sta in `rivalta.js` per la chiusura del menu al ridimensionamento.
 
 | Indirizzo | Frammento | Priorità | Cosa c'è |
 | :--- | :--- | :---: | :--- |
