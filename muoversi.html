@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -184,7 +188,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">8 <small>km</small></span><span class="sb-riv-stat-l">di strade di servizio</span></div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Viabilità principale</h3>
+  <h3 class="sb-riv-subhead" id="viabilita-principale">Viabilità principale</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -199,7 +203,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Elenco completo delle vie mappate</h3>
+  <h3 class="sb-riv-subhead" id="elenco-completo-delle-vie-mappate">Elenco completo delle vie mappate</h3>
   <p class="sb-riv-p">Ordinate per distanza dal centro. <strong>SU</strong> = senso unico.</p>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
@@ -286,7 +290,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Piazze e vicoli</h3>
+  <h3 class="sb-riv-subhead" id="piazze-e-vicoli">Piazze e vicoli</h3>
   <div class="sb-riv-grid">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
       <h4>Le cinque piazze</h4>
@@ -344,7 +348,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Dossi, attraversamenti, autovelox</h2>
   </div>
 
-  <h3 class="sb-riv-subhead">Dossi e rallentatori — 14 in totale</h3>
+  <h3 class="sb-riv-subhead" id="dossi-e-rallentatori-14-in-totale">Dossi e rallentatori — 14 in totale</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -359,7 +363,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">La maggior parte dei rallentatori è concentrata lungo l'asse <strong>Via Francesca</strong>, in corrispondenza degli attraversamenti pedonali.</p>
 
-  <h3 class="sb-riv-subhead">Autovelox e controlli di velocità</h3>
+  <h3 class="sb-riv-subhead" id="autovelox-e-controlli-di-velocita">Autovelox e controlli di velocità</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -374,7 +378,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">In OSM esistono anche 2 relazioni di tipo <code>enforcement</code>, una esplicitamente etichettata «autovelox».</p>
 
-  <h3 class="sb-riv-subhead">Attraversamenti pedonali e segnaletica</h3>
+  <h3 class="sb-riv-subhead" id="attraversamenti-pedonali-e-segnaletica">Attraversamenti pedonali e segnaletica</h3>
   <div class="sb-riv-note">
     <span class="sb-riv-note-t">Accessibilità</span>
     <p class="sb-riv-p"><strong>14 attraversamenti</strong>, di cui 11 rialzati. Uno, in Via Francesca, ha marcatura a zebre esplicita. <strong>Nessuno è dotato di pavimentazione tattile</strong>: è il dato da tenere presente per chi si muove con disabilità visiva.</p>
@@ -384,7 +388,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <li class="sb-riv-li"><strong>Nessun impianto semaforico</strong> e <strong>nessuna rotatoria</strong> mappata all'interno del paese.</li>
   </ul>
 
-  <h3 class="sb-riv-subhead">Barriere</h3>
+  <h3 class="sb-riv-subhead" id="barriere">Barriere</h3>
   <p class="sb-riv-p">Cinquanta barriere sul territorio, prevalentemente accessi a fondi agricoli e argini: <strong>34 cancelli</strong>, <strong>10 dissuasori</strong> (bollard), <strong>3 cancelli a battente</strong>, <strong>2 catene</strong>, <strong>1 sbarra</strong>.</p>
 </section>
 
@@ -593,6 +597,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -633,6 +639,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

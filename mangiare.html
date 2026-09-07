@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -218,7 +222,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <article class="sb-panel sb-riv-mang-piatto" id="luccio-alla-rivaltese" data-voglie="pesce mantovana scoperta">
         <div class="sb-panel-inner sb-riv-mang-pad">
         <span class="sb-riv-mang-occhiello">Il piatto che porta il nome del paese</span>
-        <h3>Luccio alla Rivaltese</h3>
+        <h3 id="luccio-alla-rivaltese-2">Luccio alla Rivaltese</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Luccio del Mincio lessato dieci-dodici minuti, spinato e squamato. Poi la ricetta si divide in due. <strong>In salsa</strong>: una salsa di cipolla, capperi, pelati, peperoni, acciughe, rosmarino, noce moscata e aceto, cotta una mezz'ora; il pesce si serve tiepido con la polenta abbrustolita. <strong>In bianco</strong>: niente salsa, solo pepe nero, olio extravergine, noce moscata, Grana Padano grattugiato e succo di limone.</p>
         <p class="sb-riv-p sb-riv-mang-perche">Non è un piatto mantovano che a Rivalta si fa anche: è un piatto <strong>di</strong> Rivalta. Il 3 aprile 2013 la Regione Lombardia ha iscritto tutte e due le versioni nell'Elenco dei Prodotti Agroalimentari Tradizionali indicando come territorio Rivalta sul Mincio, ed è oggi anche De.Co. comunale. È il filo che lega la cucina di adesso all'economia di pesca che ha tenuto in piedi il paese per secoli.</p>
         <p class="sb-riv-mang-quando"><span>Quando</span>Il luccio in bianco è tradizionalmente il piatto della vigilia di Pasqua. A inizio luglio è il centro della Festa del Pesce e del Luccio alla Rivaltese, la festa principale del paese: nel 2026 è la 41ª edizione.</p>
@@ -242,7 +246,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="fritto-di-pesce-di-lago" data-voglie="pesce mantovana">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Fritto di pesce di lago</h3>
+        <h3 id="fritto-di-pesce-di-lago-2">Fritto di pesce di lago</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il pesce dei laghi e del fiume passato in pastella e fritto: il modo in cui a Mantova si è sempre mangiato quello che si pescava sotto casa.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -257,7 +261,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="pesce-di-mare" data-voglie="pesce speciale">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Pesce di mare</h3>
+        <h3 id="pesce-di-mare-2">Pesce di mare</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Crudi, primi e griglie di mare: a Rivalta si mangia anche pesce che dal Mincio non è mai passato.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -290,7 +294,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="pesce-di-fiume" data-voglie="pesce scoperta">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Pesce di fiume</h3>
+        <h3 id="pesce-di-fiume-2">Pesce di fiume</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il pescato del Mincio portato in tavola dove il Mincio passa: è il pesce di cui il paese ha vissuto per secoli, e oggi si trova solo dove qualcuno lo cucina ancora.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -306,7 +310,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <article class="sb-panel sb-riv-mang-piatto" id="tortelli-di-zucca" data-voglie="mantovana">
         <div class="sb-panel-inner sb-riv-mang-pad">
         <span class="sb-riv-mang-occhiello">Il primo piatto di Mantova</span>
-        <h3>Tortelli di zucca</h3>
+        <h3 id="tortelli-di-zucca-2">Tortelli di zucca</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Pasta all'uovo ripiena di zucca e amaretti, servita al burro fuso e salvia. È il piatto della vigilia di Natale, e di tutto il resto dell'anno.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -334,7 +338,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <article class="sb-panel sb-riv-mang-piatto" id="riso-alla-pilota" data-voglie="mantovana scoperta">
         <div class="sb-panel-inner sb-riv-mang-pad">
         <span class="sb-riv-mang-occhiello">Da provare almeno una volta</span>
-        <h3>Riso alla pilota</h3>
+        <h3 id="riso-alla-pilota-2">Riso alla pilota</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Riso cotto per assorbimento — l'acqua è misurata, non si scola niente — e condito con il pistùm, la carne di maiale macinata. Prende il nome dai <strong>piloti</strong>, gli operai che pilavano il riso nelle risaie della bassa.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -349,7 +353,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="risotti" data-voglie="mantovana">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Risotti</h3>
+        <h3 id="risotti-2">Risotti</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il riso è di casa: le risaie cominciano qui accanto, e il risotto è il piatto su cui ogni cucina del posto mette la propria firma.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -377,7 +381,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <article class="sb-panel sb-riv-mang-piatto" id="stracotto-d-asino" data-voglie="mantovana carne scoperta">
         <div class="sb-panel-inner sb-riv-mang-pad">
         <span class="sb-riv-mang-occhiello">Da provare almeno una volta</span>
-        <h3>Maccheroni con lo stracotto d'asino</h3>
+        <h3 id="maccheroni-con-lo-stracotto-d-asino">Maccheroni con lo stracotto d'asino</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Carne d'asino cotta per ore nel vino finché non si sfalda, e con quel sugo si condiscono i maccheroni all'uovo. È uno dei piatti più mantovani che ci siano, e uno di quelli che fuori di qui non si trovano quasi mai.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -399,7 +403,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <article class="sb-panel sb-riv-mang-piatto" id="capunsei" data-voglie="mantovana scoperta">
         <div class="sb-panel-inner sb-riv-mang-pad">
         <span class="sb-riv-mang-occhiello">Da provare almeno una volta</span>
-        <h3>Capunsei</h3>
+        <h3 id="capunsei-2">Capunsei</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Gnocchetti di pane raffermo grattugiato, grana, brodo e noce moscata — niente patate, niente farina — tirati a mano nella forma di un fusello e serviti con burro e salvia. Vengono dalle colline moreniche, appena a nord di qui.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -414,7 +418,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="agnolini-e-tortellini" data-voglie="mantovana">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Agnolini e tortellini</h3>
+        <h3 id="agnolini-e-tortellini-2">Agnolini e tortellini</h3>
         <p class="sb-riv-p sb-riv-mang-cose">La pasta ripiena delle feste: l'agnolino mantovano, e il tortellino che a Natale non manca su nessuna tavola.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -435,7 +439,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="carne-alla-griglia" data-voglie="carne">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Carne alla griglia e arrosti</h3>
+        <h3 id="carne-alla-griglia-e-arrosti">Carne alla griglia e arrosti</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il fuoco vivo, il taglio grosso, la polenta accanto: quello che si mangia quando la voglia è di carne e basta.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -456,7 +460,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="salumi-e-formaggi" data-voglie="carne mantovana aperitivo">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Salumi e formaggi del posto</h3>
+        <h3 id="salumi-e-formaggi-del-posto">Salumi e formaggi del posto</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il tagliere: salame mantovano, cotechino, i formaggi delle latterie qui attorno. Fa da antipasto, o da tutta la sera.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -483,7 +487,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="pizza" data-voglie="pizza">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Pizza</h3>
+        <h3 id="pizza-2">Pizza</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Quattro posti la fanno, e in quattro modi diversi: in osteria, sul fiume, da portare via, o senza glutine.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -522,7 +526,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="gelato" data-voglie="dolci veloce">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Gelato artigianale</h3>
+        <h3 id="gelato-artigianale">Gelato artigianale</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il cono da mangiare seduti fuori, che d'estate lungo la Francesca è già mezzo motivo per fermarsi.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -537,7 +541,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="dolci-della-casa" data-voglie="dolci">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Dolci della casa</h3>
+        <h3 id="dolci-della-casa-2">Dolci della casa</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Il dolce fatto in cucina la mattina stessa: quello che cambia col giorno e che sul menu, di solito, è scritto a mano.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -564,7 +568,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="aperitivo" data-voglie="aperitivo">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Un aperitivo</h3>
+        <h3 id="un-aperitivo">Un aperitivo</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Non sempre si esce per mangiare. Cinque posti dove ci si siede e basta: due sul fiume, tre fra il centro e la Francesca.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -609,7 +613,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="pranzo-veloce" data-voglie="veloce">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Qualcosa al volo</h3>
+        <h3 id="qualcosa-al-volo">Qualcosa al volo</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Mezz'ora e via: una pizza da portare via, un gelato, o la spesa dal panificio e dagli alimentari del paese.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -637,7 +641,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </article>
       <article class="sb-panel sb-riv-mang-piatto" id="cena-speciale" data-voglie="speciale">
         <div class="sb-panel-inner sb-riv-mang-pad">
-        <h3>Una cena speciale</h3>
+        <h3 id="una-cena-speciale">Una cena speciale</h3>
         <p class="sb-riv-p sb-riv-mang-cose">Quando la sera conta: una cascina restaurata sull'acqua, una corte dentro il Parco, o una carta dei vini da leggere con calma.</p>
         <h4 class="sb-riv-mang-dovet">Dove mangiarlo</h4>
         <ul class="sb-riv-mang-dove">
@@ -771,6 +775,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -811,6 +817,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

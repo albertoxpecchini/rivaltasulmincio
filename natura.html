@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -201,7 +205,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     
   </div>
 
-  <h3 class="sb-riv-subhead">Aree gioco per bambini</h3>
+  <h3 class="sb-riv-subhead" id="aree-gioco-per-bambini">Aree gioco per bambini</h3>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li">Zona <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Aree%20gioco%20di%20Via%20Madonnina%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Aree gioco di Via Madonnina — apri su OpenStreetMap">Via Madonnina<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> — 2 playground, accesso libero.</li>
     <li class="sb-riv-li"><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179656&amp;mlon=10.680701#map=18/45.179656/10.680701" target="_blank" rel="noreferrer noopener" title="Campino Oratorio — apri su OpenStreetMap">Campino Oratorio<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> — Vicolo Gilberto Pagliari, accesso libero.</li>
@@ -214,7 +218,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Fontanelle e arredo urbano</h2>
   </div>
 
-  <h3 class="sb-riv-subhead">Fontanelle d'acqua potabile — 5</h3>
+  <h3 class="sb-riv-subhead" id="fontanelle-d-acqua-potabile-5">Fontanelle d'acqua potabile — 5</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -230,11 +234,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Fontane ornamentali — 3</h3>
+  <h3 class="sb-riv-subhead" id="fontane-ornamentali-3">Fontane ornamentali — 3</h3>
   <p class="sb-riv-p"><strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179918&amp;mlon=10.679948#map=18/45.179918/10.679948" target="_blank" rel="noreferrer noopener" title="Fontana della Madonna — apri su OpenStreetMap">Fontana della Madonna<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong> in Piazza Chiesa, illuminata; altre due in zona Via Madonnina.</p>
   
 
-  <h3 class="sb-riv-subhead">Altro arredo urbano</h3>
+  <h3 class="sb-riv-subhead" id="altro-arredo-urbano">Altro arredo urbano</h3>
   <div class="sb-riv-stats" style="margin-top:0.4rem">
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">28</span><span class="sb-riv-stat-l">panchine</span></div></div></div>
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">3</span><span class="sb-riv-stat-l">meridiane a muro — elemento caratteristico del paese</span></div></div></div>
@@ -426,7 +430,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Operatori e proposte</h3>
+  <h3 class="sb-riv-subhead" id="operatori-e-proposte">Operatori e proposte</h3>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li"><strong>Navigazione Mincio</strong> — agenzia di escursioni in barca, <a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Navigazione%20Mincio%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Navigazione Mincio — apri su OpenStreetMap">Via Porto 61<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+390376681121">0376 681121</a>. <strong>Tutti i giorni 8–19.</strong></li>
     <li class="sb-riv-li"><strong>Consorzio «I Barcaioli del Mincio»</strong> — barche tipiche e chiatte fino a 100 passeggeri su tre imbarcazioni, due a propulsione mista (scoppio + elettrico). Trasporto fino a 60 biciclette. Imbarco anche a Grazie di Curtatone e Mantova (Ponte dei Mulini). Barcaioli professionisti autorizzati al trasporto pubblico non di linea (L. 21/1992, L.R. 20/1995); la sede del consorzio è al <strong>Porticciolo di Grazie</strong>, a Grazie di Curtatone — <a href="tel:+393513049398">351 304 9398</a>, <a href="mailto:barcaioli@fiumemincio.it">barcaioli@fiumemincio.it</a>, <a href="https://www.fiumemincio.it/" target="_blank" rel="noreferrer noopener">fiumemincio.it</a>.</li>
@@ -524,6 +528,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -564,6 +570,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

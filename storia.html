@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -201,7 +205,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Perché proprio qui</h3>
+  <h3 class="sb-riv-subhead" id="perche-proprio-qui">Perché proprio qui</h3>
   <p class="sb-riv-p">Rivalta sta lungo il Mincio, dove il fiume si adagia in un'ampia ansa a nord-ovest di Mantova, poco sotto la strada che porta a Brescia. Oggi è una frazione di Rodigo, a cinque chilometri dal capoluogo comunale, e negli ultimi secoli è stata soprattutto un villaggio di pescatori. Ma non è sempre stata questa cosa qui.</p>
   <p class="sb-riv-p">Il nome dice già tutto: <strong>la riva più alta del fiume</strong>. Un terrazzo asciutto in mezzo a una pianura che asciutta non era, e da cui si vede — e si controlla — l'acqua che passa. Sin dall'antichità i fiumi sono stati i posti dove conveniva abitare: alla vita dei campi aggiungevano la pesca e i commerci, e le vie d'acqua erano molto più sicure delle piste che si infilavano nelle selve della pianura padana. In cambio si accettava di essere esondati ogni tanto.</p>
   <p class="sb-riv-p">Mantova ne è l'esempio più vicino: fondata dagli Etruschi, prende il nome dalla divinità <em>Mantus</em>; passa sotto i Celti Cenomani verso il 200 a.C., ha un suo ruolo nelle guerre fra Romani e Galli e nel 41 a.C. diventa colonia dei veterani di Cesare — e la nuova distribuzione delle terre colpisce i modesti possedimenti di Virgilio, nato ad Andes, poco fuori città.</p>
@@ -213,7 +217,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <figcaption>Il dio Mincio<span class="sb-riv-foto-by">Sala dei Fiumi, Palazzo Ducale di Mantova</span></figcaption>
   </figure>
 
-  <h3 class="sb-riv-subhead">Quello che è rimasto sottoterra</h3>
+  <h3 class="sb-riv-subhead" id="quello-che-e-rimasto-sottoterra">Quello che è rimasto sottoterra</h3>
   <p class="sb-riv-p">Nell'antichità ci si spostava tenendo d'occhio ciò che non cambia: fiumi, laghi, catene montuose. Lungo quegli itinerari — molti dei quali si percorrono ancora oggi — non viaggiavano solo persone e merci, ma idee, tecniche e tradizioni. È per questo che qui intorno si trovano oggetti nati a migliaia di chilometri di distanza: <strong>ambra</strong> delle coste baltiche, recipienti simili a quelli delle popolazioni del Danubio, vasellame di produzione attica.</p>
   <p class="sb-riv-p">Nelle torbiere presso il paese sono emersi numerosi manufatti neolitici, tombe galliche e romane, resti di costruzioni che ogni tanto un'aratura profonda riporta a galla. Il ritrovamento più significativo è del <strong>1905</strong>: una <strong>necropoli etrusca a Colle Fiorito</strong>, a circa due chilometri da Rivalta lungo la strada per Goito.</p>
 
@@ -232,7 +236,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </figure>
   </div>
 
-  <h3 class="sb-riv-subhead">Il Mincio come strada</h3>
+  <h3 class="sb-riv-subhead" id="il-mincio-come-strada">Il Mincio come strada</h3>
   <p class="sb-riv-p">Il Mincio è parte a pieno titolo del sistema viario dell'antica Lombardia orientale: collega il Po (<em>Padus</em>) al lago di Garda (<em>lacus Benacus</em>) e permette di raggiungere la via Postumia e la via Gallica. Ai tempi dei primi Romani, però, non sfociava nel Po vicino a Governolo come fa adesso: si univa al Tartaro attraverso immense paludi. Secondo la tradizione fu il senatore <strong>Quinto Curio Ostiglio</strong> che, per ordine del Senato, ne fece cambiare il corso e prosciugò le paludi per costruirvi la <strong>via Ostiglia</strong>, nel 189 a.C.</p>
 </section>
 
@@ -245,10 +249,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p">L'antica <strong>Ripalta</strong>, posta sopra il terrazzo fluviale, viene scelta come luogo strategico per il controllo del Mincio. Le strutture murarie, stando alle fonti locali, risalivano le rive del fiume fino a <strong>Sette Frati</strong>, dove sorgeva un ospedale in cui si curavano gli ammalati di malaria. Nel <strong>1159</strong> Federico I dichiarò di non riconoscere alcun feudo ecclesiastico che non fosse approvato per sanzione imperiale — sanzione che poi si negava sempre: l'ospitale fu perciò laicizzato, e nel 1170 lo si vedeva ancora in Corte Sette Frati.</p>
   <p class="sb-riv-p">Si racconta anche di un lungo sotterraneo che dal <strong>porto di Rivalta</strong>, dove era ormeggiata la flotta della contessa Matilde, arrivava fino ai confini del territorio: a Corte Vedusino e a Corte Pilone.</p>
 
-  <h3 class="sb-riv-subhead">Dove finiva Rivalta</h3>
+  <h3 class="sb-riv-subhead" id="dove-finiva-rivalta">Dove finiva Rivalta</h3>
   <p class="sb-riv-p">Il «quartiere» rivaltese confinava verso Rodigo con <strong>Corte Catenaccio</strong>, verso Goito con la <strong>Corte Sette Frati</strong> e il fiumicello <strong>Goldone</strong>, in direzione di Mantova con il fiumicello <strong>Osone</strong>, dove — presso il ponte Reverso — esisteva una chiesetta.</p>
 
-  <h3 class="sb-riv-subhead">E intanto nasce Rodigo</h3>
+  <h3 class="sb-riv-subhead" id="e-intanto-nasce-rodigo">E intanto nasce Rodigo</h3>
   <p class="sb-riv-p">Rodigo, oggi sede comunale, ha origine come colonia attorno all'anno Mille e un'etimologia incerta. Don Giacomo Capitanio, parroco di fine Ottocento e autore della <em>Cronistoria</em> del paese, la fa derivare dal nome del fondatore <strong>Roto</strong>: forse un cortigiano, forse un compratore di boschi, forse un <em>arimanno</em> — un «tirannello» legato ai Marchesi di Canossa di Mantova.</p>
 
   <blockquote class="sb-riv-cit">
@@ -290,10 +294,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </figure>
   </div>
 
-  <h3 class="sb-riv-subhead">Prosciugare, arginare, dissodare</h3>
+  <h3 class="sb-riv-subhead" id="prosciugare-arginare-dissodare">Prosciugare, arginare, dissodare</h3>
   <p class="sb-riv-p">Con i Canossa il Mantovano conosce una spinta forte alla bonifica. I monaci benedettini dell'abbazia di Goito, mentre diffondevano la fede, insegnavano ai coloni <em>«a rasciugar paludi, stagni e lagune; arginare acque, abbattere foreste, ridurre a coltura sodaglie e vegri»</em>. La sera, finito il lavoro, ci si ritirava tutti insieme nei grandi cascinali di campagna, per difendersi dalle fiere e dagli assassini.</p>
 
-  <h3 class="sb-riv-subhead">L'assedio del 1091</h3>
+  <h3 class="sb-riv-subhead" id="l-assedio-del-1091">L'assedio del 1091</h3>
   <p class="sb-riv-p">Nella sua terza discesa in Italia <strong>Enrico IV</strong> pose l'assedio a Mantova. Durò undici mesi e finì con il tradimento della città; nel frattempo caddero anche Rivalta e la torre di Governolo. Il racconto è di Donizone, il monaco che scrisse la vita di Matilde mentre lei era ancora viva.</p>
 
   <blockquote class="sb-riv-cit">
@@ -367,7 +371,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p">Il lavoro era distribuito in modo abbastanza omogeneo fra uomini e donne, e occupava gran parte della popolazione attiva: <strong>gli uomini</strong> alla pesca o alla raccolta di canna e carice, <strong>le donne</strong> alla costruzione delle reti e delle <em>arelle</em>, i graticci di canne legate. Erano braccianti e operaie, in un ambiente durissimo: si pativa il freddo e l'umidità, e ci si ammalava di tetano, malaria e leptospirosi.</p>
   <p class="sb-riv-p">Per i pescatori la vita era altrettanto dura, ma aveva qualcosa di epico. Molti lo erano da generazioni: nel <strong>1746</strong>, fra i pescatori di Rivalta, figurano già dei <strong>Marsili</strong> e dei <strong>Draghi</strong>. Gli ultimi sono scesi sul fiume ogni giorno fino a oltre ottant'anni.</p>
 
-  <h3 class="sb-riv-subhead">Un paese in numeri, fino a pochi decenni fa</h3>
+  <h3 class="sb-riv-subhead" id="un-paese-in-numeri-fino-a-pochi-decenni-fa">Un paese in numeri, fino a pochi decenni fa</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -382,7 +386,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">Ordini di grandezza riferiti dalle fonti locali, non un censimento.</p>
 
-  <h3 class="sb-riv-subhead">Quello che c'era attorno</h3>
+  <h3 class="sb-riv-subhead" id="quello-che-c-era-attorno">Quello che c'era attorno</h3>
   <p class="sb-riv-p">È documentato uno <strong>sciopero di operaie</strong> — oltre un centinaio di donne — sul finire del secolo. Nello stesso periodo a Rivalta c'erano diverse trattorie, numerose botteghe artigiane (comprese quelle dei <em>calafati</em>, i <em>galafàs</em>, che costruivano le barche) e <strong>due teatri</strong>. Ci fu la fermata del treno, poi il tram, infine le corriere. Ci fu una <strong>filanda</strong>, poi trasformata in laboratorio per la produzione di arelle e da tempo chiusa.</p>
   <p class="sb-riv-p">Ci furono, e ci sono ancora, <strong>cave di sabbia e ghiaia</strong>: nel dopoguerra il trasporto passava ancora dal fiume. Erano in funzione due vaporetti, <strong>Angelo</strong> e <strong>Italia</strong>, che facevano da rimorchiatori: ognuno trascinava sei grosse chiatte cariche di ghiaia, su due file di tre. Si caricava al <em>Geròt</em>, alla <em>Feradina</em> — una ferrata, cioè i binari che partivano dalle cave e arrivavano dritti all'attracco — e a Rivalta, dove c'era un approdo simile.</p>
 
@@ -605,6 +609,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -645,6 +651,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

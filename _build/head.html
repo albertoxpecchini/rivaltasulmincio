@@ -83,10 +83,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_SHORT}}</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_SHORT}}</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -112,13 +115,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_LONG}}</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_LONG}}</time></a>
         </div>
       </div>
     </div>

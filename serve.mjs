@@ -96,6 +96,17 @@ createServer(async (req, res) => {
   }
 
   if (!(await isFile(file))) {
+    // Come fa Vercel: un indirizzo che non esiste riceve la pagina 404 del
+    // sito, non una riga di testo. Altrimenti l'unica pagina che non si può
+    // raggiungere navigando resterebbe anche l'unica mai vista prima di
+    // pubblicarla.
+    const pagina404 = join(ROOT, "404.html");
+    if (await isFile(pagina404)) {
+      res.writeHead(404, { "content-type": TYPES[".html"], "cache-control": "no-store" });
+      res.end(await readFile(pagina404));
+      console.log(`404 ${url} → 404.html`);
+      return;
+    }
     res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
     res.end(`404 ${url}`);
     console.log(`404 ${url}`);

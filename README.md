@@ -96,7 +96,7 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 
 ---
 
-## 🧭 Le dodici pagine
+## 🧭 Le quattordici pagine
 
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
@@ -115,6 +115,8 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | `/eventi` | `eventi.body.html` | 0.9 | Festa del Pesce, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca |
 | `/mappa` | `mappa.body.html` | 0.9 | Mappa interattiva dei 268 punti d'interesse, filtri per categoria, registro dei luoghi |
 | `/dati` | `dati.body.html` | 0.4 | Fonti, metodo di misura, dataset JSON scaricabile, come rigenerarlo via Overpass |
+| `/aggiornamenti` | `aggiornamenti.body.html` | 0.4 | **Cosa è cambiato**: il registro, scritto a mano, delle modifiche che contano per chi legge |
+| `/404` | `404.body.html` | — | La pagina di errore: ricerca, le sei sezioni principali, e perché ci si finisce. `noindex`, fuori dalla sitemap |
 
 ---
 
@@ -265,7 +267,10 @@ rivaltasulmincio/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
 │   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, testata, ricerca)
 │   │                           #   e la pelle della Color Walk: tinte, fondale, polvere, ingressi
-│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma relativa
+│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma
+│   │                           #   relativa, il § che copia il link a un titolo, «torna in cima»
+│   ├── orari.js                #   «aperto adesso / chiuso»: legge gli orari OSM scritti in pagina e
+│   │                           #   li confronta con l'ora di chi guarda — solo dove ci sono orari
 │   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
 │   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
@@ -297,6 +302,8 @@ rivaltasulmincio/
 │   ├── <pagina>.body.html      #   il contenuto di ogni pagina (15 frammenti)
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
 │   ├── luoghi.json             #   il registro dei 152 luoghi: coordinate, foto, schede
+│   ├── orari.json              #   gli orari di apertura in sintassi OSM, resi da {{aperto:}}
+│   ├── aggiornamenti.json      #   il registro di /aggiornamenti, scritto a mano
 │   ├── gusto.json              #   il registro del gusto: voglie, piatti e chi li fa (/mangiare)
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 │   └── email/                  #   le due mail della Color Walk, sorgente
@@ -756,9 +763,9 @@ Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **123 voci
 punto. Le altre sono aree, percorsi o cose diffuse — il fiume, le capezzagne, le meridiane — che un
 punto non ce l'hanno, e il cui collegamento ricade sulla ricerca per nome di OpenStreetMap.
 
-### I tre segnaposto
+### I quattro segnaposto
 
-Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
+Nei frammenti non si scrivono link a mano. `build.mjs` risolve quattro segnaposto:
 
 | Si scrive | Diventa |
 | :--- | :--- |
@@ -766,6 +773,7 @@ Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
 | `{{luogo:corte-mincio-porto\|Via Porto}}` | lo stesso, con un'etichetta diversa dal nome |
 | `{{geo:45.18234,10.67681}}` | coordinate sciolte (dossi, autovelox, nodi STOP) |
 | `{{foto:chiesa-santi-vigilio-donato}}` | la fotografia, **se il file esiste** |
+| `{{aperto:pizzeria-osteria-la-stella}}` | gli orari scritti in italiano, e il pallino «aperto adesso» che li precede |
 
 Uno slug che non esiste **fa fallire il build**, come già succede a un frammento senza titolo: un
 collegamento rotto scoperto in produzione costa più di un build che si ferma.
@@ -936,6 +944,26 @@ del menu su schermo stretto e in fondo a ogni pagina, con tre forme dallo stesso
 («26 ago»). Con JavaScript `rivalta.js` la accorcia in forma relativa — «oggi», «ieri», «3 giorni
 fa» — e sposta la data per esteso nel `title`. Fuori da un repo git il build ripiega su oggi.
 
+Quella data dice **se** il sito è vivo, non **cosa** è successo: per questo porta a
+`/aggiornamenti`, che è un'altra cosa — il registro scritto a mano in
+[`_build/aggiornamenti.json`](_build/aggiornamenti.json) di quello che è cambiato **per chi
+legge**: un orario, una strada chiusa, una pagina nuova. Una voce è
+`{ data, voce, titolo, testo, dove, chiave }` — `dove` è il link alla pagina toccata, `chiave: true`
+accende il pallino azzurro nella cronologia. I commit di servizio lì dentro non entrano: è tutto
+il senso della pagina.
+
+### Gli orari, e «aperto adesso»
+
+[`_build/orari.json`](_build/orari.json) tiene gli orari in **sintassi OpenStreetMap**
+(`Tu-Su 19:00-22:30`), una voce per punto: `{ oh, fonte, luogo }`. Da quella stessa stringa
+escono due cose che non possono divergere — la riga leggibile che `build.mjs` scrive in pagina
+(«ma–do 19:00–22:30») e il pallino che [`assets/orari.js`](assets/orari.js) calcola nel browser
+sull'ora di chi guarda, aggiornandolo ogni minuto.
+
+La regola del file: **non si scrive un orario dedotto**. Se la fonte non lo dice, la voce non
+esiste e in pagina non compare niente — un orario sbagliato manda qualcuno davanti a una porta
+chiusa. Una stringa che il parser non capisce non accende niente: restano gli orari scritti.
+
 ---
 
 ## 🚀 Deploy (Vercel)
@@ -1033,7 +1061,10 @@ Skiplink al contenuto (`Salta al contenuto`) · landmark semantici (`header` / `
 `aria-hidden` perché non dice niente che `aria-current` non dica già meglio · barra di controllo
 raggiungibile da tastiera (esce al `focus`) · **`prefers-reduced-motion` onorato**: senza una scelta
 esplicita comanda il sistema, e allora non si attacca nemmeno un ascoltatore e l'onda del tema non
-parte.
+parte · ogni sotto-titolo ha un'ancora vera scritta dal build (`h3` con `id`), quindi un
+collegamento a una sezione funziona anche a JavaScript spento — il § accanto è solo la
+scorciatoia per copiarlo · «aperto adesso» è un'aggiunta, mai una sostituzione: senza
+JavaScript restano gli orari scritti.
 
 ---
 

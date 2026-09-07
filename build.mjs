@@ -170,7 +170,140 @@ const shortcodes = (html) =>
         `${lat}, ${lon}`
       )
     )
+    .replace(/\{\{aperto:([a-z0-9-]+)\}\}/g, (_, id) => renderAperto(id))
     .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug));
+
+/* ── Gli aggiornamenti ────────────────────────────────────────────────────
+   Il registro dei commit non è un elenco di novità: dice «via un import
+   rimasto orfano» e «il build non si ferma più su un ritorno a capo», che a
+   chi cerca l'orario del mercato non servono a niente.
+
+   _build/aggiornamenti.json è la lista scritta a mano di quello che è
+   cambiato PER CHI LEGGE: un orario nuovo, una strada chiusa, una pagina che
+   prima non c'era. Una voce si aggiunge lì e compare in /aggiornamenti; se
+   una modifica non cambia niente per chi apre il sito, in quel file non ci
+   entra — è tutto il senso della pagina. */
+const AGGIORNAMENTI = JSON.parse(readFileSync("_build/aggiornamenti.json", "utf8"));
+
+const dataBreve = (iso) => {
+  const [a, m, g] = iso.split("-").map(Number);
+  return `${g} ${MESI_BREVI[m - 1]} ${a}`;
+};
+
+const renderAggiornamenti = () => {
+  const voci = [...AGGIORNAMENTI].sort((x, y) => (x.data < y.data ? 1 : x.data > y.data ? -1 : 0));
+  return (
+    `<ol class="sb-riv-crono">\n` +
+    voci
+      .map((v) => {
+        const chiave = v.chiave ? " sb-riv-crono-riga--chiave" : "";
+        const dove = v.dove
+          ? `\n        <a class="sb-link" href="${escape(v.dove)}">Vai a vedere</a>`
+          : "";
+        const voce = v.voce ? ` <span class="sb-riv-na">· ${escape(v.voce)}</span>` : "";
+        return (
+          `      <li class="sb-riv-crono-riga${chiave}">\n` +
+          `        <time class="sb-riv-crono-anno" datetime="${escape(v.data)}">${dataBreve(v.data)}</time>\n` +
+          `        <div class="sb-riv-crono-fatto">\n` +
+          `          <strong>${escape(v.titolo)}</strong>${voce}\n` +
+          `          <p>${escape(v.testo)}</p>${dove}\n` +
+          `        </div>\n` +
+          `      </li>`
+        );
+      })
+      .join("\n") +
+    `\n    </ol>`
+  );
+};
+
+/* ── Gli orari di apertura ────────────────────────────────────────────────
+   _build/orari.json tiene gli orari in sintassi OpenStreetMap — «Tu-Su
+   19:00-22:30» — e da lì escono due cose che devono per forza dire lo stesso:
+   la riga leggibile scritta qui dentro la pagina, e il «aperto ora / chiuso»
+   che assets/orari.js calcola nel browser sull'ora di chi guarda.
+
+   Perché la stessa stringa e non due campi: un orario scritto due volte
+   diverge al primo cambiamento, e la versione sbagliata è sempre quella che
+   qualcuno legge prima di uscire di casa.
+
+   Senza JavaScript resta la riga degli orari, che è esattamente quello che
+   c'era prima del pallino: si perde il comodo, non l'informazione. */
+const orari = JSON.parse(readFileSync("_build/orari.json", "utf8"));
+
+const GG = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+const GG_IT = ["lu", "ma", "me", "gio", "ve", "sa", "do"];
+
+/* «Tu-Su» e «Sa,Su» diventano l'insieme dei giorni che nominano. */
+const giorniDi = (spec) => {
+  const dentro = new Set();
+  for (const pezzo of spec.split(",")) {
+    const [a, b] = pezzo.trim().split("-");
+    const i = GG.indexOf(a);
+    if (i < 0) throw new Error(`orari: giorno sconosciuto «${a}» in «${spec}»`);
+    if (b === undefined) { dentro.add(i); continue; }
+    const j = GG.indexOf(b);
+    if (j < 0) throw new Error(`orari: giorno sconosciuto «${b}» in «${spec}»`);
+    // Un intervallo può scavalcare la domenica (Sa-Tu): si gira in tondo.
+    for (let k = i; ; k = (k + 1) % 7) { dentro.add(k); if (k === j) break; }
+  }
+  return [...dentro].sort((a, b) => a - b);
+};
+
+/* E tornano indietro in italiano, richiusi in intervalli: 0..6 → «lu–ve»,
+   tutti e sette → «tutti i giorni». */
+const GG_IT_LUNGHI = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"];
+
+const giorniIt = (indici) => {
+  if (indici.length === 7) return "tutti i giorni";
+  // Un giorno solo si scrive per esteso: «venerdì 08:00–13:00» si legge, «ve
+  // 08:00–13:00» si decifra. Le abbreviazioni servono quando i giorni sono
+  // tanti e la riga deve stare in una cella di tabella.
+  if (indici.length === 1) return GG_IT_LUNGHI[indici[0]];
+  const blocchi = [];
+  for (const i of indici) {
+    const ultimo = blocchi[blocchi.length - 1];
+    if (ultimo && ultimo[1] === i - 1) ultimo[1] = i;
+    else blocchi.push([i, i]);
+  }
+  const pezzi = blocchi.map(([a, b]) =>
+    a === b ? GG_IT[a] : b === a + 1 ? `${GG_IT[a]} e ${GG_IT[b]}` : `${GG_IT[a]}–${GG_IT[b]}`
+  );
+  return pezzi.length > 1 ? `${pezzi.slice(0, -1).join(", ")} e ${pezzi[pezzi.length - 1]}` : pezzi[0];
+};
+
+const leggibile = (oh) => {
+  if (oh.trim() === "24/7") return "sempre aperto";
+  return oh
+    .split(";")
+    .map((regola) => {
+      const m = /^\s*([A-Za-z,\-\s]+?)\s+([\d:,\-\s]+)\s*$/.exec(regola);
+      if (!m) throw new Error(`orari: regola non riconosciuta «${regola.trim()}»`);
+      const ore = m[2]
+        .split(",")
+        .map((f) => {
+          const t = /^\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s*$/.exec(f);
+          if (!t) throw new Error(`orari: fascia non riconosciuta «${f.trim()}»`);
+          return `${t[1]}–${t[2]}`;
+        })
+        .join(" e ");
+      return `${giorniIt(giorniDi(m[1].trim()))} ${ore}`;
+    })
+    .join(" · ");
+};
+
+/* Il pallino nasce nascosto: lo accende assets/orari.js dopo aver calcolato
+   se in questo momento è aperto. Un «Aperto ora» scritto dal build sarebbe
+   vero solo nell'istante della build. */
+const renderAperto = (id) => {
+  const o = orari[id];
+  if (!o) throw new Error(`{{aperto:${id}}} — voce assente da _build/orari.json`);
+  return (
+    `<span class="sb-riv-ap" data-oh="${escape(o.oh)}">` +
+    `<span class="sb-riv-ap-stato" hidden></span>` +
+    `<span class="sb-riv-ap-ore" title="Orari — fonte: ${escape(o.fonte)}">${escape(leggibile(o.oh))}</span>` +
+    `</span>`
+  );
+};
 
 /* ── La mappa ─────────────────────────────────────────────────────────────
    I punti non si caricano a runtime: il dataset è già qui al momento del
@@ -973,6 +1106,55 @@ const sezioniDi = (html) => {
   return out;
 };
 
+/* ── Un'ancora per ogni titolo ────────────────────────────────────────────
+   Le pagine qui sono lunghe: /paese e /attivita si leggono a schermate, e
+   mandare a qualcuno «guarda gli orari delle Messe» ha voluto dire finora
+   mandargli l'intera pagina e fidarsi che scorresse fino in fondo.
+
+   Le sezioni un'ancora ce l'hanno già (#messe, #monumenti), i sotto-titoli
+   no. Qui ogni <h3> senza id ne riceve uno preso dal suo stesso testo, e
+   assets/rivalta.js ci appende il § che copia il collegamento.
+
+   L'id si scrive nel build e non nel browser di chi legge: un'ancora che
+   esiste solo se il JavaScript è arrivato è un'ancora che si rompe proprio
+   nel caso che conta — il link mandato a qualcun altro.
+
+   Gli <h2> restano scoperti apposta: stanno dentro una <section> che l'id ce
+   l'ha già, e due bersagli a un dito di distanza sarebbero due indirizzi per
+   lo stesso posto. Il § dell'h2 punta alla sezione che lo contiene. */
+const slugTitolo = (s) =>
+  senzaTag(s)
+    .toLowerCase()
+    .replace(/[àáâä]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i")
+    .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u").replace(/[ç]/g, "c")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+/* Un titolo lungo non fa un indirizzo lungo: si taglia a sessanta caratteri,
+   ma sull'ultimo trattino intero — «…strade-e-parco-chiusi», non
+   «…strade-e-parco-chiusi-da», che sembra una parola mangiata a metà. */
+const accorcia = (t) => (t.length <= 60 ? t : t.slice(0, 60).replace(/-[^-]*$/, ""));
+
+
+const ancore = (html) => {
+  const presi = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
+  return html.replace(/<h3\b([^>]*)>([\s\S]*?)<\/h3>/g, (tutto, attr, testo) => {
+    if (/\bid=/.test(attr)) return tutto;
+    // I titoli della rassegna stampa restano scoperti: ogni scheda è già
+    // tutta un collegamento all'articolo della testata, e un'ancora accanto
+    // sarebbe un secondo collegamento che porta da un'altra parte.
+    if (attr.includes("sb-riv-news-title")) return tutto;
+    const base = accorcia(slugTitolo(testo));
+    if (!base) return tutto;
+    // Due «Etimologia» nella stessa pagina non possono avere lo stesso id:
+    // il secondo diventa etimologia-2, e il collegamento resta univoco.
+    let id = base;
+    for (let n = 2; presi.has(id); n++) id = `${base}-${n}`;
+    presi.add(id);
+    return `<h3${attr} id="${id}">${testo}</h3>`;
+  });
+};
+
 /* Qualche parola in più a livello di pagina: l'occhiello (.sb-riv-lede) o il
    primo paragrafo. Non si mostra, si cerca soltanto. */
 const parolePagina = (html) => {
@@ -1020,6 +1202,7 @@ for (const file of bodies) {
       .replace(/^<!--[\s\S]*?-->\s*/gm, "")
       .trim()
       .replace("{{NEWS}}", renderNews)
+      .replace("{{AGGIORNAMENTI}}", renderAggiornamenti)
       .replace("{{MAPPA}}", renderMappa)
       .replace("{{VOGLIE}}", renderVoglie)
       .replace("{{LUOGHI}}", renderLuoghi)
@@ -1060,11 +1243,17 @@ for (const file of bodies) {
      servono. Le altre dodici non lo scaricano. */
   const conColorWalk = src.includes('class="sb-cr');
 
+  /* E il conto dell'«aperto adesso»: lo scarica solo la pagina che almeno
+     un orario ce l'ha davvero. Si guarda il corpo già montato, non il
+     frammento: il segnaposto {{aperto:}} a quel punto è diventato markup. */
+  const conOrari = body.includes("sb-riv-ap");
+
   const scriptExtra =
     (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
     (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
     (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
-    (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "");
+    (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "") +
+    (conOrari ? `<script src="assets/orari.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:
@@ -1099,7 +1288,7 @@ for (const file of bodies) {
       .replace("{{OG_IMAGE}}", ogImg)
       .replace("{{ROBOTS}}", robots)
       .replace("{{HEAD}}", headExtra) +
-    `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
+    `  <main class="sb-main" id="main">\n${ancore(body)}\n  </main>\n` +
     foot.replace("{{SCRIPTS}}", scriptExtra);
 
   /* La data dell'ultimo commit sta in testata e in fondo a ogni pagina, con
@@ -1109,6 +1298,18 @@ for (const file of bodies) {
     .replace(/\{\{UPDATED_ISO\}\}/g, AGG_ISO)
     .replace(/\{\{UPDATED_LONG\}\}/g, AGG_LUNGO)
     .replace(/\{\{UPDATED_SHORT\}\}/g, AGG_BREVE);
+
+  /* La pagina 404 viene servita a QUALSIASI indirizzo sbagliato, e quindi
+     anche a /qualcosa/di/profondo: da lì «assets/sb.css» punterebbe a
+     /qualcosa/di/assets/sb.css e la pagina arriverebbe nuda, senza foglio di
+     stile e senza ricerca — l'unica pagina del sito che ha bisogno di essere
+     leggibile proprio quando qualcosa è andato storto. Solo per lei i
+     percorsi degli asset diventano assoluti.
+
+     Gli indirizzi interni (href="/paese") sono già assoluti e non c'entrano.
+     Vercel la serve da sé: un file 404.html nella radice è la pagina di
+     errore del sito, senza niente da configurare. */
+  if (page === "404") out = out.split('="assets/').join('="/assets/');
 
   writeFileSync(`${page}.html`, out);
 

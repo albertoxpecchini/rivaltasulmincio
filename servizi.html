@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -171,7 +175,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Amministrazione e servizi pubblici</h2>
   </div>
 
-  <h3 class="sb-riv-subhead">Comune di Rodigo</h3>
+  <h3 class="sb-riv-subhead" id="comune-di-rodigo">Comune di Rodigo</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -189,7 +193,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap"><strong>Esito elezioni comunali 2023</strong> (dati riportati dalla stampa locale): Gianni Grassi ~1.017 voti (≈39–40%), Maurizio Bulgarelli 657 (25%), Gianni Chizzoni 485 (19,8%), Alberto Ariotti 404 (≈15%).</p>
 
-  <h3 class="sb-riv-subhead">Sportelli a Rivalta</h3>
+  <h3 class="sb-riv-subhead" id="sportelli-a-rivalta">Sportelli a Rivalta</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -204,7 +208,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Sicurezza ed emergenza</h3>
+  <h3 class="sb-riv-subhead" id="sicurezza-ed-emergenza">Sicurezza ed emergenza</h3>
   <div class="sb-riv-grid">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
       <h4>Defibrillatore (DAE) pubblico</h4>
@@ -275,7 +279,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p>Servizio gestito da <strong>Mantova Ambiente (Gruppo Tea)</strong>. Numero verde <a href="tel:800473165">800 473165</a> — lun–ven 8–18, sab 9–13 · App «Dove lo butto?» · <a href="https://www.mantovaambiente.it" target="_blank" rel="noreferrer noopener">mantovaambiente.it</a></p>
   </div>
 
-  <h3 class="sb-riv-subhead">Calendario porta a porta</h3>
+  <h3 class="sb-riv-subhead" id="calendario-porta-a-porta">Calendario porta a porta</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -310,7 +314,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p class="sb-riv-p">Usa i sacchi e i contenitori forniti dal Comune, pieni e ben chiusi. Esposizione <strong>la sera prima</strong> del giorno di raccolta. <strong>Vietato portare l'indifferenziato al centro di raccolta.</strong></p>
   </div>
 
-  <h3 class="sb-riv-subhead">Centri di raccolta</h3>
+  <h3 class="sb-riv-subhead" id="centri-di-raccolta">Centri di raccolta</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -334,14 +338,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">Chiusi nelle festività. Ingresso consentito fino a <strong>10 minuti prima</strong> della chiusura.</p>
 
-  <h3 class="sb-riv-subhead">Servizi a richiesta</h3>
+  <h3 class="sb-riv-subhead" id="servizi-a-richiesta">Servizi a richiesta</h3>
   <ul class="sb-riv-ul">
     <li class="sb-riv-li"><strong>Ingombranti</strong> — al centro di raccolta oppure ritiro domiciliare gratuito il 1° venerdì del mese, su prenotazione al numero verde. Max 5 colli, da esporre davanti casa la sera prima. I piccoli elettrodomestici <strong>non</strong> sono ingombranti.</li>
     <li class="sb-riv-li"><strong>Pannolini e pannoloni</strong> — cassonetti chiusi a chiave per famiglie con bambini, anziani o disabili. Chiavi presso l'Ufficio Anagrafe: Rodigo <a href="tel:+390376684211">0376 684211</a> o <strong>Rivalta <a href="tel:+390376653352">0376 653352</a></strong>. Il porta a porta pannolini del martedì e venerdì <strong>non è più attivo</strong>: in alternativa vanno nell'indifferenziato.</li>
     <li class="sb-riv-li"><strong>Sacchi per la plastica e contenitori</strong> — richiedibili agli sportelli anagrafe di Rodigo e Rivalta.</li>
   </ul>
 
-  <h3 class="sb-riv-subhead">Contenitori sul territorio</h3>
+  <h3 class="sb-riv-subhead" id="contenitori-sul-territorio">Contenitori sul territorio</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -368,7 +372,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Connettività: Wi-Fi, fibra, 5G</h2>
   </div>
 
-  <h3 class="sb-riv-subhead">Infrastruttura rilevata sul posto</h3>
+  <h3 class="sb-riv-subhead" id="infrastruttura-rilevata-sul-posto">Infrastruttura rilevata sul posto</h3>
   <div class="sb-riv-grid sb-riv-grid--3">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
       <h4>Torre di telecomunicazioni</h4>
@@ -384,11 +388,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Wi-Fi pubblico</h3>
+  <h3 class="sb-riv-subhead" id="wi-fi-pubblico">Wi-Fi pubblico</h3>
   <p class="sb-riv-p"><strong>A Rivalta non risulta attivo un hotspot Wi-Fi pubblico.</strong> Sono anzi esplicitamente segnalati come privi di accesso internet le fermate bus di Via Francesca (42, 140, 143), il mercato di Piazza Basile, il Palazzetto dello Sport, la Farmacia Tona e la Profumeria Fior di Loto.</p>
   <p class="sb-riv-p">La connettività in centro poggia quindi sulla rete mobile, che la torre da 80 m a pochi passi dall'incrocio principale serve senza difficoltà.</p>
 
-  <h3 class="sb-riv-subhead">Come verificare copertura fibra e 5G, indirizzo per indirizzo</h3>
+  <h3 class="sb-riv-subhead" id="come-verificare-copertura-fibra-e-5g-indirizzo-per-indirizzo">Come verificare copertura fibra e 5G, indirizzo per indirizzo</h3>
   <p class="sb-riv-p">Non esiste una fonte pubblica affidabile «già pronta» a livello di frazione. Gli strumenti giusti sono questi.</p>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
@@ -493,6 +497,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -533,6 +539,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

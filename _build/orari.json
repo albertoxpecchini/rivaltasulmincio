@@ -1,0 +1,28 @@
+{
+  "_nota": "Gli orari di apertura, in sintassi OpenStreetMap (opening_hours). Da qui escono due cose: la riga leggibile scritta nella pagina dal build, e il «aperto ora / chiuso» che assets/orari.js calcola nel browser. Si aggiunge una voce sola e il pallino compare da sé. Campi: oh = l'orario, fonte = da dove viene, luogo = lo slug in luoghi.json quando ce l'ha. Regola: qui NON si scrive un orario dedotto. Se la fonte non lo dice, la voce non esiste — un orario sbagliato manda qualcuno davanti a una porta chiusa.",
+
+  "pizzeria-osteria-la-stella": {
+    "oh": "Tu-Su 19:00-22:30",
+    "fonte": "OpenStreetMap",
+    "luogo": "pizzeria-osteria-la-stella"
+  },
+  "ristorante-corte-catenaccio": {
+    "oh": "Mo 12:00-15:00; Tu-Fr 12:00-15:00,19:00-24:00; Sa 19:00-24:00; Su 12:00-15:00,19:00-24:00",
+    "fonte": "OpenStreetMap",
+    "luogo": "ristorante-corte-catenaccio"
+  },
+  "rivalta-green-village-ristorante": {
+    "oh": "Mo-Su 12:00-15:00,19:00-22:00",
+    "fonte": "Rivalta Green Village",
+    "luogo": "rivalta-green-village"
+  },
+  "rivalta-green-village-bar": {
+    "oh": "Mo-Fr 09:30-24:00; Sa,Su 08:30-24:00",
+    "fonte": "Rivalta Green Village",
+    "luogo": "rivalta-green-village"
+  },
+  "mercato-settimanale": {
+    "oh": "Fr 08:00-13:00",
+    "fonte": "Comune di Rodigo — OpenStreetMap"
+  }
+}

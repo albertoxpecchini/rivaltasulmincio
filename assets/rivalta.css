@@ -70,9 +70,17 @@
 
 /* ── Sezioni ancorate ─────────────────────────────────────────────────────
    scroll-margin-top perché la nav è sticky a 64px: senza, arrivando da un
-   link d'indice il titolo finisce sotto la barra. */
-.sb-riv-sec {
+   link d'indice il titolo finisce sotto la barra.
+
+   Vale anche per i sotto-titoli: da quando ogni <h3> ha la sua ancora, un
+   collegamento può puntare direttamente lì, e senza questo margine il
+   titolo aperto finirebbe nascosto dietro la testata. */
+.sb-riv-sec,
+h2[id],
+h3[id] {
   scroll-margin-top: 84px;
+}
+.sb-riv-sec {
   padding-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 .sb-riv-sec:first-of-type { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
@@ -2016,3 +2024,141 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
    automatico — le colonne del sito partono tutte dal margine sinistro e
    nessuna si centra: è solo la stessa misura del testo che gli sta sotto. */
 .sb-riv-subhead { max-width: 46rem; }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   APERTO ADESSO · ANCORE SUI TITOLI · TORNA IN CIMA
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ── Aperto adesso ────────────────────────────────────────────────────────
+   Il pallino e le due parole stanno PRIMA degli orari, non dopo: la domanda
+   è «adesso posso andarci?», e la risposta non deve stare in fondo a una
+   riga di giorni abbreviati.
+
+   Niente rosso per «chiuso». Il rosso su questo sito vuol dire una cosa sola
+   — l'avviso urgente in home — e un locale chiuso di lunedì non è un
+   allarme: è grigio, come tutto ciò che è semplicemente spento. */
+.sb-riv-ap { display: inline; }
+.sb-riv-ap-stato {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.34rem;
+  margin-right: 0.35rem;
+  font-weight: 600;
+  color: var(--sb-fg-muted);
+  white-space: nowrap;
+}
+.sb-riv-ap-stato::before {
+  content: "";
+  align-self: center;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+}
+.sb-riv-ap-stato--aperto { color: var(--sb-brand-text, var(--sb-fg)); }
+.sb-riv-ap-stato--aperto::before { background: var(--sb-brand); opacity: 1; }
+.sb-riv-ap-ore { color: var(--sb-fg-light); }
+/* Il punto fra lo stato e gli orari esiste solo quando lo stato c'è: senza
+   JavaScript la riga comincia dagli orari, e comincerebbe con un punto. */
+.sb-riv-ap--vivo .sb-riv-ap-ore::before { content: "· "; color: var(--sb-fg-muted); }
+
+/* ── Il § accanto ai titoli ───────────────────────────────────────────────
+   Sta lì sempre, appena visibile, e si accende quando ci passi sopra: un
+   segno che compare solo al passaggio del mouse non esiste per chi il mouse
+   non ce l'ha. Da tastiera si vede appena riceve il fuoco.
+
+   Il «copiato» è un'etichetta che nasce e muore: non sposta niente in
+   pagina, perché è in posizione assoluta accanto al segno. */
+.sb-riv-anchor {
+  position: relative;
+  margin-left: 0.45rem;
+  padding: 0 0.15rem;
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--sb-fg-muted);
+  text-decoration: none;
+  opacity: 0.28;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+h2:hover > .sb-riv-anchor,
+h3:hover > .sb-riv-anchor,
+.sb-riv-anchor:hover,
+.sb-riv-anchor:focus-visible { opacity: 1; color: var(--sb-brand-text, var(--sb-fg)); }
+.sb-riv-anchor:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; border-radius: 3px; }
+.sb-riv-anchor--fatto::after {
+  content: "copiato";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.4rem;
+  padding: 0.12rem 0.4rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 4px;
+  background: var(--sb-surface-100);
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--sb-fg-light);
+  white-space: nowrap;
+}
+
+/* ── Torna in cima ────────────────────────────────────────────────────────
+   A destra in basso, dalla parte opposta alla barra delle preferenze, e
+   fuori dal flusso: non entra in pagina, ci sta sopra. Finché non serve non
+   c'è — nessun clic possibile, nessun lettore di schermo che lo annuncia. */
+.sb-riv-top-wrap {
+  position: fixed;
+  right: clamp(0.9rem, 2.5vw, 1.6rem);
+  bottom: clamp(0.9rem, 2.5vw, 1.6rem);
+  z-index: 60;
+  pointer-events: none;
+}
+.sb-riv-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), var(--sb-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  box-shadow: inset 0 1px 0 var(--sb-glass-spec), var(--sb-glass-shadow);
+  color: var(--sb-fg-light);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.sb-riv-top--visibile { opacity: 1; transform: none; pointer-events: auto; }
+.sb-riv-top:hover { color: var(--sb-fg); border-color: var(--sb-border-stronger); }
+.sb-riv-top:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 3px; }
+html.rsm-still .sb-riv-top { transition: none; }
+
+/* La data in testata adesso è un collegamento: si comporta come il testo che
+   era prima, e si accende al passaggio come tutto il resto della nav. */
+a.sb-riv-updated { text-decoration: none; transition: color 0.15s ease; }
+a.sb-riv-updated:hover { color: var(--sb-fg); }
+a.sb-riv-menu-agg { text-decoration: none; }
+
+/* Sulla carta non finisce niente di tutto questo: il § non si clicca, il
+   tasto non porta da nessuna parte, e «aperto ora» sarebbe vero solo il
+   giorno della stampa. Degli orari resta la riga scritta. */
+@media print {
+  .sb-riv-anchor,
+  .sb-riv-top-wrap,
+  .sb-riv-ap-stato { display: none !important; }
+}
+
+/* La cronologia fa anche da registro in /aggiornamenti: lì ogni voce ha un
+   titolo, una riga di spiegazione e un collegamento, invece di un fatto
+   solo. Sono le tre misure che servono a farli respirare. */
+.sb-riv-crono-fatto p { margin: 0.3rem 0 0; }
+.sb-riv-crono-fatto .sb-link { margin-top: 0.4rem; font-size: 0.85rem; }
+.sb-riv-crono-fatto .sb-riv-na { font-size: 0.82rem; }

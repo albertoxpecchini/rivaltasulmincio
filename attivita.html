@@ -84,10 +84,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
@@ -113,13 +116,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -194,7 +198,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Tabaccheria, edicola, servizi</h3>
+  <h3 class="sb-riv-subhead" id="tabaccheria-edicola-servizi">Tabaccheria, edicola, servizi</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -208,7 +212,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Altri negozi e servizi</h3>
+  <h3 class="sb-riv-subhead" id="altri-negozi-e-servizi">Altri negozi e servizi</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -282,7 +286,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Mercato settimanale</h2>
   </div>
   <div class="sb-riv-note" style="margin-top:1.2rem">
-    <p class="sb-riv-p"><strong>Piazza Emanuele Basile</strong> — <strong>ogni venerdì, 08:00–13:00</strong>. Area accessibile in carrozzina.</p>
+    <p class="sb-riv-p"><strong>Piazza Emanuele Basile</strong> — <span class="sb-riv-ap" data-oh="Fr 08:00-13:00"><span class="sb-riv-ap-stato" hidden></span><span class="sb-riv-ap-ore" title="Orari — fonte: Comune di Rodigo — OpenStreetMap">venerdì 08:00–13:00</span></span>. Area accessibile in carrozzina.</p>
   </div>
 </section>
 
@@ -303,7 +307,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <tr><td><strong>Bottega Atipica</strong></td><td>bar</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179958&amp;mlon=10.679393#map=18/45.179958/10.679393" target="_blank" rel="noreferrer noopener" title="Bottega Atipica — apri su OpenStreetMap">Via Antonio Gramsci 1<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="sb-riv-na">—</td></tr>
           <tr><td><strong>Bar e Ostello Il Faro</strong></td><td>bar</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.179724&amp;mlon=10.681308#map=18/45.179724/10.681308" target="_blank" rel="noreferrer noopener" title="Bar e Ostello Il Faro — apri su OpenStreetMap">Via Porto 23<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>il bar dell'ostello, in riva al Mincio — fino al 2025 «Ostello del Mincio»</td></tr>
           <tr><td><strong>Bar Platano</strong></td><td>bar</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.169046&amp;mlon=10.676359#map=18/45.169046/10.676359" target="_blank" rel="noreferrer noopener" title="Bar Platano — apri su OpenStreetMap">Strada Francesca Est 162<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+393409450130">340 945 0130</a></td><td>all'altezza del distributore, fuori dall'abitato</td></tr>
-          <tr><td><strong>Pizzeria–Osteria «La Stella»</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180064&amp;mlon=10.677442#map=18/45.180064/10.677442" target="_blank" rel="noreferrer noopener" title="Pizzeria - Osteria «La Stella» — apri su OpenStreetMap">Via Filippo Turati 6<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+3903761410132">0376 1410132</a></td><td>tortelli di zucca e maccheroncini al torchio con stracotto d'asino, il piatto della casa — pizza, italiana, regionale — <strong>ma–do 19:00–22:30</strong> — Visa/Mastercard — lastella.mantova@gmail.com</td></tr>
+          <tr><td><strong>Pizzeria–Osteria «La Stella»</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.180064&amp;mlon=10.677442#map=18/45.180064/10.677442" target="_blank" rel="noreferrer noopener" title="Pizzeria - Osteria «La Stella» — apri su OpenStreetMap">Via Filippo Turati 6<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+3903761410132">0376 1410132</a></td><td>tortelli di zucca e maccheroncini al torchio con stracotto d'asino, il piatto della casa — pizza, italiana, regionale — <span class="sb-riv-ap" data-oh="Tu-Su 19:00-22:30"><span class="sb-riv-ap-stato" hidden></span><span class="sb-riv-ap-ore" title="Orari — fonte: OpenStreetMap">ma–do 19:00–22:30</span></span> — Visa/Mastercard — lastella.mantova@gmail.com</td></tr>
           <tr><td><strong>Opificio Alimentare</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17833&amp;mlon=10.676854#map=18/45.17833/10.676854" target="_blank" rel="noreferrer noopener" title="Opificio Alimentare — apri su OpenStreetMap">Via Francesca 42<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>cucina regionale</td></tr>
           <tr><td><strong>Corte Mincio Osteria con Pizzeria</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/search?query=Corte%20Mincio%20Osteria%20con%20Pizzeria%2C%20Rivalta%20sul%20Mincio" target="_blank" rel="noreferrer noopener" title="Corte Mincio Osteria con Pizzeria — apri su OpenStreetMap">Via Porto 43<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>osteria e pizzeria sul fiume — riso alla pilota, tortelli di zucca, pasta e fagioli alla mantovana</td></tr>
           <tr><td><strong>Pizzangolo</strong></td><td>pizzeria</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178681&amp;mlon=10.680926#map=18/45.178681/10.680926" target="_blank" rel="noreferrer noopener" title="Pizzangolo — apri su OpenStreetMap">Via Giovanni Arrivabene 1<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+390376681165">0376 681165</a></td><td class="sb-riv-na">—</td></tr>
@@ -312,8 +316,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <tr><td><strong>Gelateria Mon Amour</strong></td><td>gelateria</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.178542&amp;mlon=10.679422#map=18/45.178542/10.679422" target="_blank" rel="noreferrer noopener" title="Gelateria Mon Amour — apri su OpenStreetMap">Via Tezzone 13<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td class="sb-riv-na">—</td></tr>
           <tr><td><strong>Gelateria 2.0</strong></td><td>gelateria</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.169366&amp;mlon=10.677386#map=18/45.169366/10.677386" target="_blank" rel="noreferrer noopener" title="Gelateria 2.0 — apri su OpenStreetMap">Via Francesca Est 128<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>posti a sedere esterni</td></tr>
           <tr><td><strong>Tesoro Living Resort</strong></td><td>hotel e ristorazione</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.188857&amp;mlon=10.675505#map=18/45.188857/10.675505" target="_blank" rel="noreferrer noopener" title="Tesoro Living Resort — apri su OpenStreetMap">Via Sette Frati 96<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>struttura ricettiva con più punti ristoro</td></tr>
-          <tr><td><strong>Ristorante Pizzeria «Corte Catenaccio»</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.189188&amp;mlon=10.656124#map=18/45.189188/10.656124" target="_blank" rel="noreferrer noopener" title="Ristorante Pizzeria «Corte Catenaccio» — apri su OpenStreetMap">Strada Francesca Est 109b<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+390376681003">0376 681003</a></td><td>100 coperti — gluten free, vegano, vegetariano — <a href="http://www.cortecatenaccio.it/" target="_blank" rel="noreferrer noopener">cortecatenaccio.it</a> — <strong>me–ve e do 12–15 / 19–24, sa 19–24, lu 12–15, ma 12–15 / 19–24</strong></td></tr>
-          <tr><td><strong>Rivalta Green Village</strong></td><td>bar e ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17569&amp;mlon=10.660887#map=18/45.17569/10.660887" target="_blank" rel="noreferrer noopener" title="Rivalta Green Village — apri su OpenStreetMap">Strada Vedusino 5<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+393510220302">351 022 0302</a></td><td>ristorante e pizzeria <strong>tutti i giorni 12–15 e 19–22</strong> — bar <strong>lu–ve 9:30–24, sa–do 8:30–24</strong> — dentro un polo sportivo e ricettivo</td></tr>
+          <tr><td><strong>Ristorante Pizzeria «Corte Catenaccio»</strong></td><td>ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.189188&amp;mlon=10.656124#map=18/45.189188/10.656124" target="_blank" rel="noreferrer noopener" title="Ristorante Pizzeria «Corte Catenaccio» — apri su OpenStreetMap">Strada Francesca Est 109b<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+390376681003">0376 681003</a></td><td>100 coperti — gluten free, vegano, vegetariano — <a href="http://www.cortecatenaccio.it/" target="_blank" rel="noreferrer noopener">cortecatenaccio.it</a> — <span class="sb-riv-ap" data-oh="Mo 12:00-15:00; Tu-Fr 12:00-15:00,19:00-24:00; Sa 19:00-24:00; Su 12:00-15:00,19:00-24:00"><span class="sb-riv-ap-stato" hidden></span><span class="sb-riv-ap-ore" title="Orari — fonte: OpenStreetMap">lunedì 12:00–15:00 · ma–ve 12:00–15:00 e 19:00–24:00 · sabato 19:00–24:00 · domenica 12:00–15:00 e 19:00–24:00</span></span></td></tr>
+          <tr><td><strong>Rivalta Green Village</strong></td><td>bar e ristorante</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.17569&amp;mlon=10.660887#map=18/45.17569/10.660887" target="_blank" rel="noreferrer noopener" title="Rivalta Green Village — apri su OpenStreetMap">Strada Vedusino 5<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> — <a href="tel:+393510220302">351 022 0302</a></td><td>ristorante e pizzeria <span class="sb-riv-ap" data-oh="Mo-Su 12:00-15:00,19:00-22:00"><span class="sb-riv-ap-stato" hidden></span><span class="sb-riv-ap-ore" title="Orari — fonte: Rivalta Green Village">tutti i giorni 12:00–15:00 e 19:00–22:00</span></span> — bar <span class="sb-riv-ap" data-oh="Mo-Fr 09:30-24:00; Sa,Su 08:30-24:00"><span class="sb-riv-ap-stato" hidden></span><span class="sb-riv-ap-ore" title="Orari — fonte: Rivalta Green Village">lu–ve 09:30–24:00 · sa e do 08:30–24:00</span></span> — dentro un polo sportivo e ricettivo</td></tr>
           <tr><td><strong>Agriturismo Germano Reale</strong></td><td>agriturismo</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.194537&amp;mlon=10.6839938#map=18/45.194537/10.6839938" target="_blank" rel="noreferrer noopener" title="Agriturismo Germano Reale — apri su OpenStreetMap">Strada Camignana 6<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>a Camignana, ~1,7 km dal centro</td></tr>
           <tr><td><strong>Azienda Agrituristica Corte Panicella</strong></td><td>agriturismo</td><td><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.1627768&amp;mlon=10.6660732#map=18/45.1627768/10.6660732" target="_blank" rel="noreferrer noopener" title="Azienda Agrituristica Corte Panicella — apri su OpenStreetMap">Strada Pilone 6/A<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></td><td>al Pilone, ~2,1 km dal centro</td></tr>
         </tbody>
@@ -389,11 +393,11 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <h2>Economia e aziende</h2>
   </div>
 
-  <h3 class="sb-riv-subhead">Struttura economica</h3>
+  <h3 class="sb-riv-subhead" id="struttura-economica">Struttura economica</h3>
   <p class="sb-riv-p">L'economia locale poggia su <strong>agricoltura</strong> — cerealicoltura e coltivazione del melone — e <strong>allevamenti di suini e bovini</strong> da latte e da carne. Il turismo fluviale è la seconda gamba: navigazione, canoa, cicloturismo, ricettività.</p>
   <p class="sb-riv-p"><strong>Storicamente</strong> la popolazione viveva interamente del fiume: la <strong>pesca</strong> era il pilastro, seguita dalla raccolta del <strong>carice</strong> (per impagliare le sedie) e delle <strong>canne palustri</strong> (per fare le arelle). Il trasporto fluviale di ghiaia e sabbia verso Mantova è proseguito fino al dopoguerra.</p>
 
-  <h3 class="sb-riv-subhead">Allevamenti mappati</h3>
+  <h3 class="sb-riv-subhead" id="allevamenti-mappati">Allevamenti mappati</h3>
   <div class="sb-riv-stats" style="margin-top:0.4rem">
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">9</span><span class="sb-riv-stat-l">allevamenti di suini</span></div></div></div>
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">5</span><span class="sb-riv-stat-l">allevamenti di tacchini</span></div></div></div>
@@ -402,7 +406,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">Le distanze dal centro vanno da ~868 m (bovini) a ~1,9 km. Sono un fattore rilevante per l'inquinamento olfattivo: il Comune mette a disposizione una <strong>«Scheda di rilevazione disturbo olfattivo»</strong>.</p>
 
-  <h3 class="sb-riv-subhead">Aziende e attività produttive mappate</h3>
+  <h3 class="sb-riv-subhead" id="aziende-e-attivita-produttive-mappate">Aziende e attività produttive mappate</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -434,7 +438,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap"><strong>Zone produttive</strong>: ~6,5 ha industriale, ~3,8 ha commerciale, ~0,4 ha retail, concentrate prevalentemente lungo <strong>Via Enzo Ferrari</strong> e la <strong>Strada Francesca Est</strong>.</p>
 
-  <h3 class="sb-riv-subhead">Registri ufficiali delle imprese</h3>
+  <h3 class="sb-riv-subhead" id="registri-ufficiali-delle-imprese">Registri ufficiali delle imprese</h3>
   <p class="sb-riv-p">Per visure, codici ATECO e dati camerali delle imprese con sede a Rivalta, le fonti istituzionali sono queste:</p>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
@@ -534,6 +538,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by" href="/dati">Fonti</a>
+        <span class="sb-foot-sep" aria-hidden="true">·</span>
+        <a class="sb-foot-by" href="/aggiornamenti">Aggiornamenti</a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -575,6 +581,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </button>
   </div>
 </div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+</div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->
 <div class="sb-theme-wipe" aria-hidden="true"></div>
@@ -591,5 +606,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      da sé e il tasto non compare. -->
 <script src="assets/ricerca-dati.js"></script>
 <script src="assets/ricerca.js"></script>
+<script src="assets/orari.js"></script>
 </body>
 </html>
