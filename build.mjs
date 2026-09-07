@@ -216,6 +216,142 @@ const renderAggiornamenti = () => {
   );
 };
 
+/* ── Il muro dei commit ───────────────────────────────────────────────────
+   Il numero scritto coi quadratini, portato qui dalla sezione «Open source»
+   di albertopecchini.it — che a sua volta l'ha preso da supabase.com. Là il
+   fondale è un finto grafo delle contribuzioni dove le celle accese compongono
+   un numero; qui il numero è quello vero di questo repository: quanti commit
+   ci sono voluti per fare il sito.
+
+   Là è un componente React che monta 1.100 rettangoli nel browser di chi
+   legge. Qui non serve: il conteggio non cambia fra un build e l'altro, quindi
+   il muro esce già disegnato dal build ed è HTML statico come tutto il resto —
+   zero JavaScript, e funziona identico a script spenti.
+
+   Il carattere è cinque colonne per sette righe a cifra, un pixel di spazio
+   fra una e l'altra: la misura minima in cui una cifra resta una cifra —
+   sotto le cinque colonne lo zero e l'otto diventano lo stesso disegno.
+
+   Il ritardo dell'accensione sta sulla COLONNA, non sulla cella: sono 648
+   celle e uno `style` per ciascuna sarebbero 648 attributi per un'onda che si
+   vede uguale. Il fondo si apre da sinistra a destra, e le celle del numero
+   partono un po' dopo — così il numero emerge dal rumore invece di nascerci
+   dentro già acceso. */
+const COMMITS = (() => {
+  try {
+    return Number(execSync("git rev-list --count HEAD", { encoding: "utf8" }).trim()) || 0;
+  } catch {
+    return 0;
+  }
+})();
+
+const CIFRE = {
+  "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"],
+  "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+  "2": ["01110", "10001", "00001", "00110", "01000", "10000", "11111"],
+  "3": ["01110", "10001", "00001", "00110", "00001", "10001", "01110"],
+  "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"],
+  "5": ["11111", "10000", "11110", "00001", "00001", "10001", "01110"],
+  "6": ["01110", "10001", "10000", "11110", "10001", "10001", "01110"],
+  "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+  "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
+  "9": ["01110", "10001", "10001", "01111", "00001", "10001", "01110"],
+};
+
+const maschera = (testo) => {
+  const accese = new Set();
+  let x = 0;
+  for (const ch of testo) {
+    const g = CIFRE[ch];
+    if (g) {
+      for (let r = 0; r < g.length; r++) {
+        for (let c = 0; c < g[r].length; c++) if (g[r][c] === "1") accese.add(`${x + c},${r}`);
+      }
+    }
+    x += 6; // 5 di cifra + 1 di spazio
+  }
+  return accese;
+};
+
+const renderMuro = () => {
+  const CELLA = 3;
+  const VUOTO = 0.5;
+  const COL = 32;
+  const RIGHE = 16;
+  const testo = String(COMMITS);
+  const acc = maschera(testo);
+  const x0 = Math.floor((COL - (testo.length * 6 - 1)) / 2);
+  const y0 = Math.floor((RIGHE - 7) / 2);
+
+  /* Rumore ripetibile: xorshift con seme fisso. Un fondale che cambia disegno
+     a ogni build è un fondale che si fa notare nei diff senza motivo. */
+  let seme = 0x9e3779b9;
+  const caso = () => {
+    seme ^= seme << 13;
+    seme ^= seme >>> 17;
+    seme ^= seme << 5;
+    return (seme >>> 0) / 0xffffffff;
+  };
+
+  const colonne = [];
+  for (let c = 0; c < COL; c++) {
+    const celle = [];
+    for (let r = 0; r < RIGHE; r++) {
+      const v = caso();
+      const on = acc.has(`${c - x0},${r - y0}`);
+      const lv = v < 0.45 ? 0 : v < 0.65 ? 1 : v < 0.8 ? 2 : v < 0.92 ? 3 : 4;
+      /* Misura e raggio non stanno qui: li mette il foglio di stile con le
+         proprietà geometriche SVG (width/height/rx valgono anche in CSS).
+         Cinquecento celle per tre attributi identici erano quindici
+         chilobyte di pagina per dire cinque volte la stessa cosa. Anche il
+         livello è finito nella classe, per lo stesso motivo. */
+      const n = (v) => String(Math.round(v * 10) / 10);
+      celle.push(
+        `<rect class="${on ? "on l" : "l"}${lv}" x="${n(c * (CELLA + VUOTO))}" y="${n(r * (CELLA + VUOTO))}"/>`
+      );
+    }
+    colonne.push(`<g style="--d:${(c * 0.02).toFixed(2)}s">${celle.join("")}</g>`);
+  }
+
+  const w = (COL * (CELLA + VUOTO) - VUOTO).toFixed(1);
+  const h = (RIGHE * (CELLA + VUOTO) - VUOTO).toFixed(1);
+  return (
+    `<svg class="sb-riv-cwall" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">` +
+    colonne.join("") +
+    `</svg>`
+  );
+};
+
+/* ── Il banner degli aggiornamenti in home ────────────────────────────────
+   Le ultime due voci del registro, in fondo alla home e sopra il footer. In
+   fondo alla pagina c'è di suo il momento in cui uno si chiede «e poi?»: è lì
+   che una riga di novità serve, non in mezzo alle altre. */
+const renderAggBanner = () => {
+  const voci = [...AGGIORNAMENTI]
+    .sort((x, y) => (x.data < y.data ? 1 : x.data > y.data ? -1 : 0))
+    .slice(0, 2);
+  if (!voci.length) return "";
+  return (
+    `<section class="sb-container sb-riv-aggban" aria-labelledby="aggban-tit">\n` +
+    `      <div class="sb-panel"><div class="sb-panel-inner sb-riv-aggban-pad">\n` +
+    `        <div class="sb-riv-aggban-testa">\n` +
+    `          <span class="sb-riv-aggban-occhiello" id="aggban-tit"><span class="sb-chip-dot" aria-hidden="true"></span>Cosa è cambiato</span>\n` +
+    `          <a class="sb-link" href="/aggiornamenti">Tutti gli aggiornamenti</a>\n` +
+    `        </div>\n` +
+    `        <ul class="sb-riv-aggban-lista">\n` +
+    voci
+      .map(
+        (v) =>
+          `          <li><time datetime="${escape(v.data)}">${dataBreve(v.data)}</time>` +
+          `<a href="${escape(v.dove || "/aggiornamenti")}">${escape(v.titolo)}</a></li>`
+      )
+      .join("\n") +
+    `\n        </ul>\n` +
+    `      </div></div>\n` +
+    `    </section>`
+  );
+};
+
 /* ── Gli orari di apertura ────────────────────────────────────────────────
    _build/orari.json tiene gli orari in sintassi OpenStreetMap — «Tu-Su
    19:00-22:30» — e da lì escono due cose che devono per forza dire lo stesso:
@@ -1203,6 +1339,9 @@ for (const file of bodies) {
       .trim()
       .replace("{{NEWS}}", renderNews)
       .replace("{{AGGIORNAMENTI}}", renderAggiornamenti)
+      .replace("{{AGG_BANNER}}", renderAggBanner)
+      .replace("{{MURO_COMMIT}}", renderMuro)
+      .replaceAll("{{COMMITS}}", String(COMMITS))
       .replace("{{MAPPA}}", renderMappa)
       .replace("{{VOGLIE}}", renderVoglie)
       .replace("{{LUOGHI}}", renderLuoghi)

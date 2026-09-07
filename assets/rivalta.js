@@ -84,7 +84,7 @@
     // Tornando al layout largo il foglio non deve restare "aperto" e riaprirsi
     // da solo la volta dopo che si stringe la finestra.
     window.addEventListener("resize", function () {
-      if (window.innerWidth >= 1280) setOpen(false);
+      if (window.innerWidth >= 1180) setOpen(false);
     });
   }
 

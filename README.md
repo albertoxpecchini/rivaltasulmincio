@@ -101,6 +101,17 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
 
+Le voci sono **centrate e divise in quattro gruppi** separati da un filo — il paese · la vita del
+paese · il territorio · il sito — e le stesse quattro sottosezioni, scritte, reggono il menu su
+schermo stretto. La testata è **l'unica cosa centrata del sito**, ed è un'eccezione voluta: non è
+testo da leggere, è una plancia di comando. Il contenuto parte tutto dal margine sinistro.
+
+Con i fili in mezzo la fila è più larga, quindi il punto in cui si passa al menu si è spostato da
+1080 a **1180px** (CSS in `rivalta.css`, e la stessa soglia in `rivalta.js` per la chiusura del
+menu al ridimensionamento). I gruppi sono `<span>` **senza posizione**: la pillola della nav misura
+`offsetLeft` dentro `.sb-nav-links`, e un contenitore posizionato in mezzo le sposterebbe
+l'origine sotto ai piedi.
+
 | Indirizzo | Frammento | Priorità | Cosa c'è |
 | :--- | :--- | :---: | :--- |
 | `/` | `index.body.html` | 1.0 | Il paese in sintesi + **«Rivalta sui giornali»** (rassegna stampa) |
@@ -117,6 +128,26 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | `/dati` | `dati.body.html` | 0.4 | Fonti, metodo di misura, dataset JSON scaricabile, come rigenerarlo via Overpass |
 | `/aggiornamenti` | `aggiornamenti.body.html` | 0.4 | **Cosa è cambiato**: il registro, scritto a mano, delle modifiche che contano per chi legge |
 | `/404` | `404.body.html` | — | La pagina di errore: ricerca, le sei sezioni principali, e perché ci si finisce. `noindex`, fuori dalla sitemap |
+
+---
+
+## 🧱 Il muro dei commit
+
+In fondo alla home, sezione **«Costruito qui, alla luce del sole»**: il numero dei commit di questo
+repository scritto coi quadratini, dietro alla scheda di chi ha fatto il sito. È portato da
+albertopecchini.it, che a sua volta lo ha preso dalla sezione «Open source» di supabase.com.
+
+Là è un componente React che monta 1.100 rettangoli nel browser di chi legge; qui il conteggio non
+cambia fra un build e l'altro, quindi **il muro esce già disegnato da `build.mjs`** ed è HTML
+statico come tutto il resto — zero JavaScript, identico a script spenti. Il numero lo conta
+`git rev-list --count HEAD`: non è scritto a mano da nessuna parte, e non può mentire.
+
+Il carattere è 5 colonne × 7 righe a cifra (sotto le cinque colonne lo zero e l'otto diventano lo
+stesso disegno), la griglia è 32 × 16 celle con rumore ripetibile (xorshift a seme fisso: stesso
+disegno a ogni build, niente diff inutili). Misura, raggio e livello delle celle stanno nel CSS e
+nella classe, non in cinquecento attributi ripetuti; il ritardo dell'accensione sta sulla
+**colonna** e non sulla cella — l'onda da sinistra a destra si vede uguale, la pagina pesa molto
+meno.
 
 ---
 
@@ -774,6 +805,8 @@ Nei frammenti non si scrivono link a mano. `build.mjs` risolve quattro segnapost
 | `{{geo:45.18234,10.67681}}` | coordinate sciolte (dossi, autovelox, nodi STOP) |
 | `{{foto:chiesa-santi-vigilio-donato}}` | la fotografia, **se il file esiste** |
 | `{{aperto:pizzeria-osteria-la-stella}}` | gli orari scritti in italiano, e il pallino «aperto adesso» che li precede |
+| `{{MURO_COMMIT}}` · `{{COMMITS}}` | il muro dei commit disegnato dal build, e il numero in chiaro |
+| `{{AGG_BANNER}}` | le ultime due voci del registro, in fondo alla home |
 
 Uno slug che non esiste **fa fallire il build**, come già succede a un frammento senza titolo: un
 collegamento rotto scoperto in produzione costa più di un build che si ferma.
@@ -950,7 +983,10 @@ Quella data dice **se** il sito è vivo, non **cosa** è successo: per questo po
 legge**: un orario, una strada chiusa, una pagina nuova. Una voce è
 `{ data, voce, titolo, testo, dove, chiave }` — `dove` è il link alla pagina toccata, `chiave: true`
 accende il pallino azzurro nella cronologia. I commit di servizio lì dentro non entrano: è tutto
-il senso della pagina.
+il senso della pagina. In home ne compaiono le **ultime due**, in un banner sopra il footer
+(`{{AGG_BANNER}}`): è lì che uno si chiede «e poi?». Dal footer invece i collegamenti sono stati
+tolti — «Fonti» era un doppione della colonna Territorio, e gli aggiornamenti hanno già la data in
+testata e il banner in home.
 
 ### Gli orari, e «aperto adesso»
 

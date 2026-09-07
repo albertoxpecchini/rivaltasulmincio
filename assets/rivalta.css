@@ -2162,3 +2162,245 @@ a.sb-riv-menu-agg { text-decoration: none; }
 .sb-riv-crono-fatto p { margin: 0.3rem 0 0; }
 .sb-riv-crono-fatto .sb-link { margin-top: 0.4rem; font-size: 0.85rem; }
 .sb-riv-crono-fatto .sb-riv-na { font-size: 0.82rem; }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   LA BARRA IN TESTA · IL MURO DEI COMMIT · IL BANNER DEGLI AGGIORNAMENTI
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ── La barra centrata, in quattro gruppi ─────────────────────────────────
+   Undici voci in fila erano una parete di parole in cui l'occhio non trovava
+   un appiglio. Adesso sono quattro gruppi separati da un filo — il paese, la
+   vita del paese, il territorio, il sito — e stanno al centro, con il marchio
+   a sinistra e gli strumenti a destra.
+
+   La griglia a tre colonne serve proprio a questo: con margin-left:auto sul
+   gruppo di destra le voci sarebbero centrate rispetto a quello che avanza,
+   non rispetto alla barra. Le due colonne 1fr ai lati si equivalgono sempre,
+   quindi il centro è il centro vero anche se il marchio è più largo dei tasti.
+
+   È l'unica cosa centrata del sito, e resta un'eccezione voluta: la testata
+   non è testo da leggere, è una plancia di comando. Il contenuto continua a
+   partire tutto dal margine sinistro. */
+@media (min-width: 1180px) {
+  .sb-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+  .sb-nav-brand { justify-self: start; }
+  .sb-nav-right { margin-left: 0; justify-self: end; }
+}
+
+/* I gruppi non hanno posizione: la pillola misura offsetLeft dentro
+   .sb-nav-links, e un contenitore posizionato in mezzo le sposterebbe
+   l'origine sotto ai piedi. */
+.sb-riv-navgroup { display: inline-flex; align-items: center; gap: 0.15rem; }
+.sb-riv-navsep {
+  flex: none;
+  width: 1px;
+  height: 16px;
+  margin: 0 0.55rem;
+  background: var(--sb-border-strong);
+}
+
+/* Con i fili in mezzo la fila è più larga: il punto in cui non ci sta più si
+   sposta da 1080 a 1180, e sotto comanda il menu — che nel frattempo è
+   diventato più leggibile della fila, non un ripiego. */
+@media (max-width: 1179.98px) {
+  .sb-nav-links { display: none; }
+  .sb-burger[data-menu-toggle] { display: inline-flex; }
+  .sb-menu-sheet.sb-open { display: block; }
+}
+
+/* Le stesse quattro sottosezioni, scritte, nel menu del telefono. */
+.sb-riv-menu-tit {
+  margin: 1rem 0 0.2rem;
+  padding: 0 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-menu-tit:first-child { margin-top: 0.3rem; }
+
+/* ── Torna in cima: il guscio non è una pagina ────────────────────────────
+   .sb-home porta con sé i token del tema, ma anche min-height: 100vh e uno
+   sfondo pieno: su un contenitore fisso di 42 pixel voleva dire una colonna
+   opaca alta quanto lo schermo, appoggiata sul bordo destro. La barra di
+   controllo azzera le stesse due cose per lo stesso motivo. */
+.sb-home.sb-riv-top-wrap {
+  min-height: 0;
+  background: none;
+  padding: 0;
+  z-index: 2147483400;
+}
+
+/* ── Il muro dei commit ───────────────────────────────────────────────────
+   Fondale della metà destra, sotto al pannello: una lastra di vetro si legge
+   come lastra solo se dietro ha qualcosa da sfocare, e fin qui dietro c'era
+   il fondo della pagina e basta.
+
+   La maschera radiale è quello che tiene insieme la cosa: senza, la griglia
+   finirebbe di netto contro il bordo della colonna e si leggerebbe come un
+   riquadro appiccicato lì. Sfumando, diventa un fondale. */
+.sb-riv-open { position: relative; }
+.sb-riv-open > * { position: relative; z-index: 1; }
+.sb-riv-open-testo { max-width: 46rem; }
+
+.sb-riv-cwall-wrap {
+  z-index: 0;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  margin-top: 2rem;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 70% 55%, #000 25%, transparent 100%);
+          mask-image: radial-gradient(ellipse 70% 80% at 70% 55%, #000 25%, transparent 100%);
+}
+@media (min-width: 1024px) {
+  .sb-riv-cwall-wrap {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48%;
+    margin: 0;
+  }
+}
+.sb-riv-cwall { display: block; width: 100%; height: 100%; }
+
+/* Misura e raggio delle celle stanno qui e non su cinquecento attributi
+   ripetuti: in SVG width, height e rx sono anche proprietà CSS. */
+.sb-riv-cwall rect { width: 3px; height: 3px; rx: 1px; }
+
+/* I cinque livelli del rumore di fondo, volutamente fiochi: il fondo deve
+   restare fondo, e il salto di luce fra lui e il numero è tutto quello che fa
+   leggere il numero. */
+.sb-riv-cwall .l0 { fill: var(--sb-overlay); }
+.sb-riv-cwall .l1 { fill: color-mix(in srgb, var(--sb-brand) 7%, transparent); }
+.sb-riv-cwall .l2 { fill: color-mix(in srgb, var(--sb-brand) 10%, transparent); }
+.sb-riv-cwall .l3 { fill: color-mix(in srgb, var(--sb-brand) 13%, transparent); }
+.sb-riv-cwall .l4 { fill: color-mix(in srgb, var(--sb-brand) 16%, transparent); }
+
+/* Le celle del numero: cinque livelli anche loro, ma stretti e in alto. Il
+   numero non è una macchia di tinta piatta — è fatto di quadratini che si
+   somigliano, come quelli veri di un grafo delle contribuzioni. */
+.sb-riv-cwall .on.l0 { fill: color-mix(in srgb, var(--sb-brand) 80%, transparent); }
+.sb-riv-cwall .on.l1 { fill: color-mix(in srgb, var(--sb-brand) 95%, transparent); }
+.sb-riv-cwall .on.l2 { fill: var(--sb-brand); }
+.sb-riv-cwall .on.l3 { fill: color-mix(in srgb, var(--sb-brand) 85%, transparent); }
+.sb-riv-cwall .on.l4 { fill: color-mix(in srgb, var(--sb-brand) 90%, transparent); }
+
+/* L'accensione: il muro si apre da sinistra a destra, una colonna dopo
+   l'altra. Il ritardo sta sul gruppo-colonna e non sulla singola cella —
+   l'onda si vede uguale e la pagina pesa cinquecento attributi in meno. */
+.sb-riv-cwall g {
+  opacity: 1;
+  animation: sb-riv-cwall-in 0.5s ease both;
+  animation-delay: var(--d, 0s);
+}
+@keyframes sb-riv-cwall-in { from { opacity: 0; } to { opacity: 1; } }
+html.rsm-still .sb-riv-cwall g { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-riv-cwall g { animation: none; }
+}
+
+/* ── La scheda di chi l'ha fatto ──────────────────────────────────────── */
+.sb-riv-open-card { margin-top: 1.8rem; max-width: 34rem; }
+.sb-riv-open-pad { padding: 1.3rem; }
+.sb-riv-open-id { display: flex; align-items: center; gap: 0.9rem; }
+/* Il file ap.png ha il bianco cotto dentro: la piastrella resta bianca nei due
+   temi, come già fa .sb-riv-mark in testata. Stessa eccezione, stesso motivo. */
+.sb-riv-open-ap {
+  flex: none;
+  border-radius: 8px;
+  background: #fff;
+  padding: 5px;
+  border: 1px solid var(--sb-border);
+}
+.sb-riv-open-nome {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--sb-fg);
+  text-decoration: none;
+}
+.sb-riv-open-nome:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sb-riv-open-ruolo { display: block; font-size: 0.82rem; color: var(--sb-fg-muted); }
+.sb-riv-open-bio {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-open-bio strong { color: var(--sb-fg); font-weight: 600; }
+.sb-riv-open-repo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  padding: 0.55rem 0.7rem;
+  clip-path: var(--sb-shape-sm);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-surface-100);
+  color: var(--sb-fg-light);
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+.sb-riv-open-repo:hover { color: var(--sb-fg); border-color: var(--sb-border-stronger); }
+.sb-riv-open-repo code { font-size: 0.82rem; }
+.sb-riv-open-badge {
+  margin-left: auto;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  color: var(--sb-fg-muted);
+}
+
+/* ── Il banner degli aggiornamenti, in fondo alla home ────────────────────
+   Due righe sopra il footer: in fondo alla pagina c'è di suo il momento in cui
+   uno si chiede «e poi?». Non è una sezione — è una riga, e si vede. */
+.sb-riv-aggban { margin-top: clamp(2.5rem, 5vw, 4rem); margin-bottom: clamp(1rem, 2vw, 2rem); }
+.sb-riv-aggban-pad { padding: 1rem 1.2rem; }
+.sb-riv-aggban-testa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+.sb-riv-aggban-occhiello {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-aggban-testa .sb-link { font-size: 0.82rem; }
+.sb-riv-aggban-lista { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.35rem; }
+.sb-riv-aggban-lista li {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+@media (min-width: 560px) { .sb-riv-aggban-lista li { grid-template-columns: 6rem 1fr; } }
+.sb-riv-aggban-lista time {
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-aggban-lista a { color: var(--sb-fg-lighter); text-decoration: none; }
+.sb-riv-aggban-lista a:hover { color: var(--sb-fg); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── La firma in fondo ───────────────────────────────────────────────── */
+.sb-riv-foot-fatto strong { color: var(--sb-fg-light); font-weight: 600; }
+
+@media print {
+  .sb-riv-cwall-wrap,
+  .sb-riv-aggban { display: none !important; }
+}

@@ -58,19 +58,34 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
                perché nell'ordine di pittura deve finirci sotto, ed è
                aria-hidden perché non dice niente che l'attributo
-               aria-current sulla voce non dica già meglio. -->
+               aria-current sulla voce non dica già meglio.
+
+               I gruppi sono <span> senza posizione: la pillola misura
+               offsetLeft dentro .sb-nav-links, e un contenitore posizionato in
+               mezzo le sposterebbe l'origine. Restano statici apposta. -->
           <span class="sb-nav-pill" aria-hidden="true"></span>
-          <a class="sb-nav-link" href="/paese">Il paese</a>
-          <a class="sb-nav-link" href="/storia">Storia</a>
-          <a class="sb-nav-link" href="/servizi">Servizi</a>
-          <a class="sb-nav-link" href="/attivita">Attività</a>
-          <a class="sb-nav-link" href="/mangiare">Mangiare</a>
-          <a class="sb-nav-link" href="/comunita">Comunità</a>
-          <a class="sb-nav-link" href="/muoversi">Muoversi</a>
-          <a class="sb-nav-link" href="/natura">Natura</a>
-          <a class="sb-nav-link" href="/eventi">Eventi</a>
-          <a class="sb-nav-link" href="/mappa">Mappa</a>
-          <a class="sb-nav-link" href="/dati">Dati</a>
+          <span class="sb-riv-navgroup">
+            <a class="sb-nav-link" href="/paese">Il paese</a>
+            <a class="sb-nav-link" href="/storia">Storia</a>
+          </span>
+          <span class="sb-riv-navsep" aria-hidden="true"></span>
+          <span class="sb-riv-navgroup">
+            <a class="sb-nav-link" href="/servizi">Servizi</a>
+            <a class="sb-nav-link" href="/attivita">Attività</a>
+            <a class="sb-nav-link" href="/mangiare">Mangiare</a>
+            <a class="sb-nav-link" href="/comunita">Comunità</a>
+            <a class="sb-nav-link" href="/eventi">Eventi</a>
+          </span>
+          <span class="sb-riv-navsep" aria-hidden="true"></span>
+          <span class="sb-riv-navgroup">
+            <a class="sb-nav-link" href="/muoversi">Muoversi</a>
+            <a class="sb-nav-link" href="/natura">Natura</a>
+            <a class="sb-nav-link" href="/mappa">Mappa</a>
+          </span>
+          <span class="sb-riv-navsep" aria-hidden="true"></span>
+          <span class="sb-riv-navgroup">
+            <a class="sb-nav-link" href="/dati">Dati</a>
+          </span>
         </div>
         <div class="sb-nav-right">
           <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
@@ -91,7 +106,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_SHORT}}</time>
           </a>
 
-          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Sito ideato, scritto e costruito da Alberto Pecchini" title="Tutto questo sito — testi, dati, codice — è costruito da Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
           </a>
 
@@ -104,16 +119,20 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <div class="sb-menu-sheet" id="menu-sheet">
       <div class="sb-container">
         <nav class="sb-menu-nav" aria-label="Navigazione del sito">
+          <p class="sb-riv-menu-tit">Il paese</p>
           <a href="/paese">Il paese</a>
           <a href="/storia">Storia</a>
+          <p class="sb-riv-menu-tit">Vivere</p>
           <a href="/servizi">Servizi</a>
           <a href="/attivita">Attività</a>
           <a href="/mangiare">Mangiare</a>
           <a href="/comunita">Comunità</a>
+          <a href="/eventi">Eventi</a>
+          <p class="sb-riv-menu-tit">Territorio</p>
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
-          <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
+          <p class="sb-riv-menu-tit">Il sito</p>
           <a href="/dati">Dati e fonti</a>
           <a href="/aggiornamenti">Aggiornamenti</a>
         </nav>
