@@ -41,9 +41,9 @@ const SRC = join(repo, "assets", "foto", "color-walk-banner.webp");
 const OUT = join(repo, "assets", "foto", "color-walk-banner-mail.jpg");
 
 /* L'altezza del ritaglio, in pixel del banner a grandezza naturale. Sotto
-   questa riga cominciano le quote, che alla larghezza di una mail non si
-   leggono più. */
-const FASCIA = 380;
+   questa riga comincia il corpo minuto di chi organizza, che alla larghezza
+   di una mail non si legge più — e che la mail dice già a parole. */
+const FASCIA = 660;
 const LARGHEZZA = 1200; // 600 della lastra, per due: schermi a densità doppia
 
 if (!existsSync(SRC)) throw new Error(`Sorgente mancante: ${SRC}`);

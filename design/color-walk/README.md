@@ -14,21 +14,36 @@ runtime.
 | `screenshots/banner.png` | Istantanea del banner (JPEG 924 × 540), comoda per un colpo d'occhio senza aprire il runtime | — |
 | `foto/` | Il **banner e la locandina con la foto** (bambini che lanciano colori), sfumata nel foglio. Sorgenti vive che sostituiscono `banner.dc.html` e `locandina.dc.html` (vedi sotto) | banner 2400 × 900 · A4 1240 × 1754 |
 
-> **Banner e locandina pubblicati sono le versioni definitive del 2 settembre 2026, e NON
-> vengono da qui.** È stata
-> disegnata a parte e consegnata già fatta (`a4 banner bambini.pdf` + il PNG a 2480 × 3508,
-> stesso artwork nei due formati; il banner come PNG 4800 × 1800): foto dei bambini, QR verso
-> `/color-walk` sulla locandina, ritrovo **15:30** e partenza 16:00, rinvio per pioggia a
-> **domenica 27 settembre**, quote
-> **10 € e 5 €**, aperitivo incluso, iscrizioni anche il giorno stesso, gadget sacca, maglia
-> bianca, rinvio al 26 settembre, i sei stemmi delle contrade, la formula del Comune per
-> esteso e gli otto marchi degli sponsor. In `assets/` ci sono il PDF tale e quale (15 MB,
-> pronto per la stampa) e il webp 1240 × 1754 per l'anteprima in pagina.
+> **Banner e locandina pubblicati sono le versioni del 6 settembre 2026, e NON vengono da
+> qui.** Sono disegnate a parte e consegnate già fatte, e sono due artwork diversi fra loro,
+> non lo stesso in due formati:
+>
+> | Consegnato | Diventa | Misura |
+> | :--- | :--- | :--- |
+> | `Color Runner Banner v6-selection.png` (4800 × 1800) | `assets/foto/color-walk-banner.webp` | 2400 × 900 |
+> | `Color Runner Locandina Cielo-selection.png` (3720 × 5262) | `assets/foto/color-walk-locandina.webp` | 1240 × 1754 |
+> | `A4 GLASS.pdf` (A4, una pagina) | `assets/color-walk-locandina.pdf` | tale e quale, 3,6 MB |
+>
+> Il **banner** non ha più la foto: è astratto, cerchi d'arcobaleno su cielo chiaro, con a
+> destra una scheda sola che tiene data, ora, luogo, le due quote e la riga dell'aperitivo, e
+> in basso a sinistra la riga di chi organizza. La **locandina** ha in cima un disegno di
+> gente coperta di colori che corre per il paese, il QR verso `/color-walk`, le quote, i tre
+> riquadri (iscrizioni il giorno stesso, sacca, maglia bianca), il rinvio per pioggia, i sei
+> stemmi delle contrade, il patrocinio del Comune e gli otto marchi degli sponsor.
+>
+> Le due riduzioni si fanno con `sharp` (webp qualità 82) e il PDF si copia tale e quale. Il
+> `width`/`height` dichiarati in `build.mjs` sono quelli della riduzione: chi consegna un
+> artwork con proporzioni diverse deve cambiarli lì, o l'immagine si stira.
+>
+> **Dopo aver sostituito il banner si rifà la testata delle mail**, che è un ritaglio del
+> banner e non un file a sé: `npm run render:banner-mail`. La misura del ritaglio dipende
+> dall'impaginazione ed è già cambiata una volta — la nota sta in
+> `render-banner-mail.mjs`.
 >
 > Le tavole di Claude Design qui sotto sono **un'altra locandina e un altro banner**: quelli
 > astratti di agosto, tenuti come storia. Il loro testo è stato aggiornato alle stesse decisioni, ma
-> `npm run render:locandina` **sovrascriverebbe la v2 con quella** — non lanciarlo, a meno
-> di non volere davvero tornare indietro.
+> `npm run render:locandina` **sovrascriverebbe la locandina pubblicata con quella** — non
+> lanciarlo, a meno di non volere davvero tornare indietro.
 
 > **Le copie qui dentro sono indietro (1° settembre 2026).** Banner e locandina pubblicati
 > in `assets/` sono stati riesportati da Claude Design con roba che in questi `.dc.html` e

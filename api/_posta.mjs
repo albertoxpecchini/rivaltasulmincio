@@ -317,7 +317,7 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
 
         <tr>
         <td style="padding:0;">
-          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="95" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
+          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="165" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
         </td>
         </tr>
 
@@ -585,7 +585,7 @@ export const MODELLO_FALLITA = `<!DOCTYPE html>
 
         <tr>
         <td style="padding:0;">
-          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="95" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
+          <img src="https://www.rivaltasulmincio.it/assets/foto/color-walk-banner-mail.jpg" width="600" height="165" alt="Color Walk — camminata a colori, domenica 20 settembre 2026 a Rivalta sul Mincio" style="display:block; width:100%; max-width:600px; height:auto; border:0; border-radius:12px 12px 0 0;">
         </td>
         </tr>
 
