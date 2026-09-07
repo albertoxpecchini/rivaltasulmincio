@@ -133,6 +133,10 @@
    Un bordo sotto e basta. `min-height` e non `height`: se una griglia va a
    capo su carta stretta, la riga si allunga invece di schiacciarsi. */
 .sb-cwm-riga { display: grid; gap: 0.9rem 1.2rem; }
+/* Una riga di campi sotto un'altra. Era uno style inline ripetuto tre
+   volte; è una classe da quando la stampa ha avuto bisogno di stringerla,
+   e uno style inline non si supera senza !important. */
+.sb-cwm-riga--dopo { margin-top: 0.9rem; }
 .sb-cwm-r2 { grid-template-columns: 1fr 1fr; }
 .sb-cwm-r3 { grid-template-columns: 1.2fr 1fr 1.4fr; }
 @media (max-width: 34rem) {
@@ -373,7 +377,28 @@
    di una riga, perché il motore di stampa di ogni browser conta i pixel a modo
    suo e uno 0.98 in prova diventa due fogli in casa di qualcun altro. Da lì la
    banda in cui si sta: 85-90% dell'altezza utile, mai oltre. Chi allunga il
-   modulo rifaccia questo conto, e non si fidi di uno 0.9x alto. */
+   modulo rifaccia questo conto, e non si fidi di uno 0.9x alto.
+
+   ── 6 settembre: il foglio sfondava di due righe ────────────────────────
+   I testi dei più maggiorenni hanno portato lo stampato a 5.088 caratteri,
+   e il foglio è finito oltre il suo. Non si è abbassata la radice — a 11.8px
+   le etichette sono già a 8px e questo è un modulo che si compila a penna,
+   in piazza, spesso da chi ha bisogno degli occhiali. Si è tagliato invece
+   in due posti, e nessuno dei due toglie un fatto:
+
+     · le PAROLE, dove erano ripetute — la dichiarazione da 1.805 a 1.477
+       caratteri, il piede da 625 a 437, senza perdere né il titolare del
+       trattamento, né l'assenza di assicurazione, né il punto 8, né il
+       rinvio per pioggia, né il foglio per ogni maggiorenne;
+     · lo SPAZIO INTORNO — interlinea della dichiarazione, margini fra i
+       blocchi, imbottiture dei riquadri. Non lo spazio in cui si scrive:
+       righe vuote a 1.95rem, celle a 1.95rem, firme a 2.7rem, intoccate.
+
+   Il conto rifatto per intero — testata, quattro blocchi, piede, sommati con
+   le misure di questo @media print — dà 243mm sui 275 utili di una A4 col
+   margine di 11mm: 88.5%, dentro la banda, con 31mm di foglio sotto. Due
+   terzi di quei 243 sono righe da riempire e caselle, che non si comprimono:
+   chi allunga il testo ha meno spazio di quanto sembri. */
 @media print {
   @page { size: A4; margin: 11mm; }
 
@@ -410,9 +435,15 @@
   .sb-cwm-tab td + td { border-left-color: #999 !important; }
   .sb-cwm-testa { border-bottom-color: #000 !important; }
 
-  /* Il recupero dei millimetri, in ordine di quanto rendono. */
-  .sb-cwm-blocco { margin-top: 1rem; }
+  /* Il recupero dei millimetri, in ordine di quanto rendono. Nessuna di
+     queste tocca lo spazio in cui si scrive a penna: le righe vuote, le
+     celle della tabella e le caselle della firma restano quelle. Si
+     stringe quello che le sta intorno. */
+  .sb-cwm-blocco { margin-top: 0.75rem; }
+  .sb-cwm-h { margin-bottom: 0.5rem; }
+  .sb-cwm-testa { padding-bottom: 0.7rem; }
   .sb-cwm-riga { gap: 0.7rem 1.2rem; }
+  .sb-cwm-riga--dopo { margin-top: 0.7rem; }
   .sb-cwm-vuoto { min-height: 1.95rem; }
   .sb-cwm-vuoto--alto { min-height: 2.7rem; }
   .sb-cwm-prest { min-height: 2.7rem; }
@@ -420,12 +451,12 @@
 
   /* Ogni copia comincia su un foglio suo. */
   .sb-cwm-copia { page-break-before: always; break-before: page; }
-  .sb-cwm-dich { padding: 0.7rem 0.9rem; line-height: 1.5; }
-  .sb-cwm-dich p { margin-bottom: 0.45rem; }
-  .sb-cwm-conto { padding: 0.7rem 0.9rem; }
-  .sb-cwm-quote { line-height: 1.75; }
-  .sb-cwm-firma { margin-top: 1rem; }
-  .sb-cwm-pie { margin-top: 0.9rem; padding-top: 0.5rem; }
+  .sb-cwm-dich { padding: 0.55rem 0.9rem; line-height: 1.38; }
+  .sb-cwm-dich p { margin-bottom: 0.28rem; }
+  .sb-cwm-conto { padding: 0.55rem 0.9rem; }
+  .sb-cwm-quote { line-height: 1.6; }
+  .sb-cwm-firma { margin-top: 0.8rem; }
+  .sb-cwm-pie { margin-top: 0.7rem; padding-top: 0.5rem; }
 
   /* Un blocco non si spezza fra due fogli: se un giorno il testo cresce e la
      pagina diventa due, che almeno la dichiarazione resti tutta intera con
@@ -481,15 +512,15 @@
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Nome</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Cognome</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-r2 sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Data di nascita</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Codice fiscale</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-r2 sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Email</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Telefono (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Note (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
     </div>
   </div>

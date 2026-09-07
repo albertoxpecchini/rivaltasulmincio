@@ -205,6 +205,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
    Un bordo sotto e basta. `min-height` e non `height`: se una griglia va a
    capo su carta stretta, la riga si allunga invece di schiacciarsi. */
 .sb-cwm-riga { display: grid; gap: 0.9rem 1.2rem; }
+/* Una riga di campi sotto un'altra. Era uno style inline ripetuto tre
+   volte; è una classe da quando la stampa ha avuto bisogno di stringerla,
+   e uno style inline non si supera senza !important. */
+.sb-cwm-riga--dopo { margin-top: 0.9rem; }
 .sb-cwm-r2 { grid-template-columns: 1fr 1fr; }
 .sb-cwm-r3 { grid-template-columns: 1.2fr 1fr 1.4fr; }
 @media (max-width: 34rem) {
@@ -445,7 +449,28 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
    di una riga, perché il motore di stampa di ogni browser conta i pixel a modo
    suo e uno 0.98 in prova diventa due fogli in casa di qualcun altro. Da lì la
    banda in cui si sta: 85-90% dell'altezza utile, mai oltre. Chi allunga il
-   modulo rifaccia questo conto, e non si fidi di uno 0.9x alto. */
+   modulo rifaccia questo conto, e non si fidi di uno 0.9x alto.
+
+   ── 6 settembre: il foglio sfondava di due righe ────────────────────────
+   I testi dei più maggiorenni hanno portato lo stampato a 5.088 caratteri,
+   e il foglio è finito oltre il suo. Non si è abbassata la radice — a 11.8px
+   le etichette sono già a 8px e questo è un modulo che si compila a penna,
+   in piazza, spesso da chi ha bisogno degli occhiali. Si è tagliato invece
+   in due posti, e nessuno dei due toglie un fatto:
+
+     · le PAROLE, dove erano ripetute — la dichiarazione da 1.805 a 1.477
+       caratteri, il piede da 625 a 437, senza perdere né il titolare del
+       trattamento, né l'assenza di assicurazione, né il punto 8, né il
+       rinvio per pioggia, né il foglio per ogni maggiorenne;
+     · lo SPAZIO INTORNO — interlinea della dichiarazione, margini fra i
+       blocchi, imbottiture dei riquadri. Non lo spazio in cui si scrive:
+       righe vuote a 1.95rem, celle a 1.95rem, firme a 2.7rem, intoccate.
+
+   Il conto rifatto per intero — testata, quattro blocchi, piede, sommati con
+   le misure di questo @media print — dà 243mm sui 275 utili di una A4 col
+   margine di 11mm: 88.5%, dentro la banda, con 31mm di foglio sotto. Due
+   terzi di quei 243 sono righe da riempire e caselle, che non si comprimono:
+   chi allunga il testo ha meno spazio di quanto sembri. */
 @media print {
   @page { size: A4; margin: 11mm; }
 
@@ -482,9 +507,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   .sb-cwm-tab td + td { border-left-color: #999 !important; }
   .sb-cwm-testa { border-bottom-color: #000 !important; }
 
-  /* Il recupero dei millimetri, in ordine di quanto rendono. */
-  .sb-cwm-blocco { margin-top: 1rem; }
+  /* Il recupero dei millimetri, in ordine di quanto rendono. Nessuna di
+     queste tocca lo spazio in cui si scrive a penna: le righe vuote, le
+     celle della tabella e le caselle della firma restano quelle. Si
+     stringe quello che le sta intorno. */
+  .sb-cwm-blocco { margin-top: 0.75rem; }
+  .sb-cwm-h { margin-bottom: 0.5rem; }
+  .sb-cwm-testa { padding-bottom: 0.7rem; }
   .sb-cwm-riga { gap: 0.7rem 1.2rem; }
+  .sb-cwm-riga--dopo { margin-top: 0.7rem; }
   .sb-cwm-vuoto { min-height: 1.95rem; }
   .sb-cwm-vuoto--alto { min-height: 2.7rem; }
   .sb-cwm-prest { min-height: 2.7rem; }
@@ -492,12 +523,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   /* Ogni copia comincia su un foglio suo. */
   .sb-cwm-copia { page-break-before: always; break-before: page; }
-  .sb-cwm-dich { padding: 0.7rem 0.9rem; line-height: 1.5; }
-  .sb-cwm-dich p { margin-bottom: 0.45rem; }
-  .sb-cwm-conto { padding: 0.7rem 0.9rem; }
-  .sb-cwm-quote { line-height: 1.75; }
-  .sb-cwm-firma { margin-top: 1rem; }
-  .sb-cwm-pie { margin-top: 0.9rem; padding-top: 0.5rem; }
+  .sb-cwm-dich { padding: 0.55rem 0.9rem; line-height: 1.38; }
+  .sb-cwm-dich p { margin-bottom: 0.28rem; }
+  .sb-cwm-conto { padding: 0.55rem 0.9rem; }
+  .sb-cwm-quote { line-height: 1.6; }
+  .sb-cwm-firma { margin-top: 0.8rem; }
+  .sb-cwm-pie { margin-top: 0.7rem; padding-top: 0.5rem; }
 
   /* Un blocco non si spezza fra due fogli: se un giorno il testo cresce e la
      pagina diventa due, che almeno la dichiarazione resti tutta intera con
@@ -544,27 +575,27 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <!-- ── 1. CHI SI ISCRIVE ──────────────────────────────────────────────── -->
   <div class="sb-cwm-blocco">
-    <p class="sb-cwm-h">1 · Chi si iscrive <span>almeno 18 anni compiuti il 20 settembre 2026 — quota 10 € · un foglio per ogni maggiorenne, che compila e firma il suo</span></p>
+    <p class="sb-cwm-h">1 · Chi si iscrive <span>almeno 18 anni il 20 settembre — 10 € · un foglio per ogni maggiorenne, che compila e firma il suo</span></p>
     <div class="sb-cwm-riga sb-cwm-r2">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Nome</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Cognome</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-r2 sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Data di nascita</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Codice fiscale</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga sb-cwm-r2" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-r2 sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Email</span><div class="sb-cwm-vuoto"></div></div>
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Telefono (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
     </div>
-    <div class="sb-cwm-riga" style="margin-top:0.9rem">
+    <div class="sb-cwm-riga sb-cwm-riga--dopo">
       <div class="sb-cwm-campo"><span class="sb-cwm-et">Note (facoltativo)</span><div class="sb-cwm-vuoto"></div></div>
     </div>
   </div>
 
   <!-- ── 2. I MINORI ────────────────────────────────────────────────────── -->
   <div class="sb-cwm-blocco">
-    <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni compiuti il 20 settembre 2026, a tuo carico — quota 5 € ciascuno · sotto i 6 anni non serve iscriversi e non si paga · oltre il quinto, un secondo modulo</span></p>
+    <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni il 20 settembre, a tuo carico — 5 € ciascuno · sotto i 6 anni non ci si iscrive · oltre il quinto, un secondo modulo</span></p>
     <table class="sb-cwm-tab">
       <thead>
         <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th><th scope="col">Codice fiscale <span>facoltativo</span></th></tr>
@@ -586,7 +617,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p class="sb-cwm-quote">
         Maggiorenne · <strong>10 €</strong> — chi firma qui sotto<br>
         Dai 6 ai 17 anni · <strong>5 €</strong> ciascuno · n. ______<br>
-        La quota comprende la sacca, il sacchetto di polveri colorate e l'aperitivo di fine camminata: non c'è niente da pagare a parte. Chi si iscrive il 15 ritira la sacca domenica 20, al ritrovo.
+        Comprende sacca, polveri colorate e aperitivo: non c'è altro da pagare. Chi si iscrive il 15 ritira la sacca domenica 20, al ritrovo.
       </p>
       <div class="sb-cwm-tot">
         <span class="sb-cwm-tot-et">Totale versato</span>
@@ -599,12 +630,12 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <div class="sb-cwm-blocco">
     <p class="sb-cwm-h">4 · Dichiarazione di responsabilità <span>da leggere prima di firmare</span></p>
     <div class="sb-cwm-dich">
-      <p>Il sottoscritto dichiara di avere <strong>almeno 18 anni</strong>, di essere in condizioni fisiche idonee a un'attività fisica leggera e di <strong>partecipare alla Color Walk sotto la propria responsabilità</strong>.</p>
-      <p>Dichiara di essere <strong>responsabile dei minori indicati al punto 2</strong>, di accompagnarli per tutto il percorso e di assumere questa dichiarazione anche per loro. <strong>Non dichiara per altri maggiorenni</strong>: ognuno di loro compila e firma il proprio foglio, e risponde di sé.</p>
-      <p>Dichiara di essere a conoscenza che <strong>non è prevista alcuna copertura assicurativa</strong> a favore dei partecipanti, e che eventuali tessere o polizze personali restano a carico del singolo.</p>
-      <p>Dichiara di aver letto e di accettare il <strong>regolamento della Color Walk</strong>, pubblicato su <strong>rivaltasulmincio.it/color-walk-regolamento</strong>, e l'informativa sul trattamento dei dati che contiene — compreso il punto 8, per cui <strong>chi non vuole comparire nelle fotografie non partecipa</strong> — anche per i minori iscritti.</p>
-      <p>Dichiara di sapere che la quota versata <strong>non si rimborsa</strong> in caso di rinuncia, e che <strong>se piove la camminata è rinviata a domenica 27 settembre 2026</strong> con questa iscrizione ancora valida (punto 4 del regolamento).</p>
-      <p>Titolare del trattamento dei dati: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati servono a gestire l'iscrizione, il pagamento e questa dichiarazione. Questo foglio <strong>resta su carta</strong>, firmato, in custodia dell'associazione; i dati che porta vengono <strong>riportati nell'elenco degli iscritti</strong> insieme a quelli di chi si è iscritto online, così il conto dei partecipanti è uno solo. <strong>Non vengono ceduti ad altri</strong>: passano solo da chi fa funzionare l'iscrizione, come dice il punto 9 del regolamento. In ogni momento si può chiedere di vedere, correggere o cancellare i propri dati scrivendo a quell'indirizzo.</p>
+      <p>Il sottoscritto dichiara di avere <strong>almeno 18 anni</strong>, di essere in condizioni fisiche idonee a un'attività leggera e di <strong>partecipare sotto la propria responsabilità</strong>.</p>
+      <p>Dichiara di essere <strong>responsabile dei minori indicati al punto 2</strong>, di accompagnarli per tutto il percorso e di firmare anche per loro. <strong>Non dichiara per altri maggiorenni</strong>: ognuno compila e firma il proprio foglio.</p>
+      <p>Dichiara di sapere che <strong>non è prevista alcuna copertura assicurativa</strong> per i partecipanti, e che tessere o polizze personali restano a carico del singolo.</p>
+      <p>Dichiara di aver letto e di accettare, anche per i minori iscritti, il <strong>regolamento</strong> su <strong>rivaltasulmincio.it/color-walk-regolamento</strong> e l'informativa sui dati che contiene, compreso il punto 8: <strong>chi non vuole comparire nelle fotografie non partecipa</strong>.</p>
+      <p>Dichiara di sapere che la quota <strong>non si rimborsa</strong> in caso di rinuncia e che <strong>se piove si rinvia a domenica 27 settembre 2026</strong>, con questa iscrizione ancora valida (punto 4 del regolamento).</p>
+      <p>Titolare del trattamento: Associazione San Filippo Neri ANSPI APS-ETS, Rodigo (MN), C.F. 93061070202 — color-walk@rivaltasulmincio.it. I dati servono a gestire iscrizione, pagamento e questa dichiarazione. Questo foglio firmato <strong>resta su carta</strong>, in custodia dell'associazione; i dati che porta vengono <strong>riportati nell'elenco degli iscritti</strong> insieme a quelli di chi si è iscritto online. <strong>Non vengono ceduti ad altri</strong> (punto 9 del regolamento). Per vedere, correggere o cancellare i propri dati si scrive a quell'indirizzo.</p>
     </div>
 
     <div class="sb-cwm-riga sb-cwm-r3 sb-cwm-firma">
@@ -616,7 +647,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
 
   <p class="sb-cwm-pie">
-    Color Walk — domenica 20 settembre 2026, Rivalta sul Mincio (Rodigo, MN). Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest. Il banchetto delle iscrizioni è in Piazza Chiesa martedì 15 settembre dalle 17:30 e domenica 20 dalle 15:30, prima della partenza; si paga in contanti. Iscrizioni fino a esaurimento dei 300 posti disponibili, minori compresi. Informazioni e regolamento completo: rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
+    Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo e la collaborazione della Polizia Locale Mantova Ovest. Banchetto in Piazza Chiesa martedì 15 dalle 17:30 e domenica 20 dalle 15:30; si paga in contanti. Fino a esaurimento dei 300 posti, minori compresi. rivaltasulmincio.it/color-walk · color-walk@rivaltasulmincio.it
   </p>
 
   <div class="sb-riv-pager">
