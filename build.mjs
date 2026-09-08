@@ -347,13 +347,50 @@ const renderFoto = (slug) => {
     </figure>`;
 };
 
+/* ── Il libro da cui vengono le fotografie d'archivio ─────────────────────
+   {{libro}} stampa la scheda del volume: la copertina in tre dimensioni, il
+   titolo, l'editore e il ringraziamento a chi l'ha donato.
+
+   Sta qui e non nei frammenti per la stessa ragione per cui ci sta la nav.
+   La regola è «ogni fotografia d'archivio dice da dove viene», e quella
+   scheda va quindi ripetuta sotto ogni gruppo di immagini prese dal libro:
+   tenerne quattro copie a mano vuol dire che prima o poi tre sono giuste e
+   una no — e sarà quella col nome di chi ha fatto il dono scritto storto.
+
+   Il volume è disegnato con due facce di CSS, copertina e dorso, e non è
+   un'animazione: sta fermo, come sta fermo un libro su un tavolo. La
+   copertina è la scansione vera; il dorso è la stessa scansione stirata sul
+   suo primo centimetro, così i colori del taglio continuano quelli del
+   piatto invece di essere una tinta inventata. */
+const COPERTINA = "assets/foto/archivio/eventi-e-ricordi-copertina.jpg";
+
+const renderLibro = () => `<aside class="sb-riv-fonte">
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-fonte-in">
+      <div class="sb-riv-libro">
+        <div class="sb-riv-libro-corpo">
+          <img class="sb-riv-libro-piatto" src="${COPERTINA}" alt="La copertina del libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi»: il paese visto dall'alto, sopra la fotografia di un canneto che brucia sul fiume e una barca verde tirata a riva." width="820" height="1156" loading="lazy" decoding="async">
+          <span class="sb-riv-libro-dorso" aria-hidden="true"></span>
+        </div>
+        <span class="sb-riv-libro-ombra" aria-hidden="true"></span>
+      </div>
+      <div class="sb-riv-fonte-testo">
+        <span class="sb-riv-fonte-occhiello">Da dove vengono queste fotografie</span>
+        <p class="sb-riv-fonte-titolo"><strong>Rivalta sul Mincio 2001&#8202;–&#8202;2013 — Eventi e Ricordi</strong><br><span class="sb-riv-na">Nuova Universo Gutenberg Edizioni</span></p>
+        <p class="sb-riv-p">Dodici anni di paese raccolti in un volume: le feste, i lavori, le sere che poi si raccontano. Le fotografie qui sopra sono riprodotte da lì.</p>
+        <p class="sb-riv-fonte-grazie">Il libro è arrivato al sito in dono da <strong>Annasofia Sanfelici</strong>. Grazie.</p>
+      </div>
+    </div></div>
+  </aside>`;
+
 /* ── Gli shortcode ────────────────────────────────────────────────────────
-   Tre segnaposto, tutti risolti qui e nessuno scritto a mano nelle pagine:
+   Cinque segnaposto, tutti risolti qui e nessuno scritto a mano nelle pagine:
 
      {{luogo:corte-mincio-porto}}        nome del luogo, premibile
      {{luogo:corte-mincio-porto|Via Porto}}  etichetta diversa dal nome
      {{geo:45.1799,10.6807|Piazza Chiesa}}   coordinate sciolte
+     {{aperto:bar-platano}}                  aperto adesso, o chiuso
      {{foto:chiesa-santi-vigilio-donato}}    la fotografia, se esiste
+     {{libro}}                               la scheda del libro d'archivio
 
    Uno slug che non esiste fa fallire il build, come già succede a un
    frammento senza titolo: un collegamento rotto scoperto in produzione costa
@@ -373,7 +410,8 @@ const shortcodes = (html) =>
       )
     )
     .replace(/\{\{aperto:([a-z0-9-]+)\}\}/g, (_, id) => renderAperto(id))
-    .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug));
+    .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug))
+    .replace(/\{\{libro\}\}/g, () => renderLibro());
 
 /* ── Gli aggiornamenti ────────────────────────────────────────────────────
    Il registro dei commit non è un elenco di novità: dice «via un import

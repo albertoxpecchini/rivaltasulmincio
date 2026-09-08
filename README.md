@@ -47,7 +47,7 @@ tema chiaro/scuro nativo.
 | **Design system** | **4.566 righe CSS** | `rivalta.css` (2.829) · `sb.css` (1.053) · `stagioni.css` (498) · `controlbar.css` (186) |
 | **JavaScript nel browser** | **2.571 righe**, 11 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `visite.js` (221) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
 | **JavaScript su server** | **383 righe**, 2 file | `api/meteo.mjs` (221) e `api/visite.mjs` (162): la stazione meteo e il contatore delle bandiere, le sole due cose sempre accese che non girino nel browser di chi legge |
-| **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Build** | **2.054 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`, più 253 bandiere SVG in `assets/vendor/bandiere/` (174 kB). Il solo servizio esterno è [Abacus](#-il-contatore-delle-bandiere), che tiene il conto delle visite |
 | **Cose da mangiare** | **18** | 9 voglie, 18 piatti e 15 locali in `_build/gusto.json` |
 | **Luoghi censiti** | **152** | 65 luoghi + 87 attività in `_build/luoghi.json`, 123 con coordinate OSM |
@@ -1134,9 +1134,24 @@ fotografie d'archivio del paese), e la `<figure>` si scrive a mano nel frammento
 didascalia e la sua provenienza accanto.
 
 Una fotografia d'archivio senza la provenienza è un'immagine trovata: dove viene da un libro, il
-libro si mostra — la scheda `.sb-riv-fonte` in fondo a `/paese#monumenti` ne è l'esempio, con il
-volume disegnato in tre dimensioni da due facce di CSS (copertina e dorso, ferme: un oggetto che
-gira mentre si legge una didascalia ruba l'attenzione al motivo per cui esiste).
+libro si mostra. La scheda la stampa il segnaposto **`{{libro}}`**, che si mette sotto ogni gruppo
+di immagini prese dal volume — la si vede tre volte in `/paese` — e il libro è disegnato in tre
+dimensioni con due facce di CSS, copertina e dorso, ferme: un oggetto che gira mentre si legge una
+didascalia ruba l'attenzione al motivo per cui esiste. Il segnaposto sta in `build.mjs` e non nei
+frammenti per la stessa ragione per cui ci sta la nav: quattro copie a mano vuol dire che prima o
+poi tre sono giuste e una no, e sarà quella col nome di chi ha fatto il dono scritto storto.
+
+La didascalia però **non cita data e pagina**. «10 ottobre 2008 — pag. 95» in coda a una
+fotografia è apparato: chi legge sta guardando il suo paese, non consultando una fonte, e da dove
+viene lo dice già la scheda qui sotto. Una data che serve davvero a capire cosa si vede si scrive
+nella prosa che introduce le immagini; il numero di pagina resta nell'indice interno di
+[`assets/foto/README.md`](assets/foto/README.md), che non va online.
+
+Il giro completo — ritaglio, nomi, didascalie, testi alternativi, figure nel frammento, scheda del
+libro, registro, build e push — sta scritto in
+[`.claude/commands/librocontitransfer.md`](.claude/commands/librocontitransfer.md), che è il
+comando `/librocontitransfer`: chi manda le scansioni dice solo **dove vanno** e **quando** sono
+state scattate, il resto lo fa il comando.
 
 > **Le vetrine delle attività vogliono un permesso.** Fotografare dalla strada pubblica è una cosa,
 > pubblicare la foto su un sito che presenta quell'attività è un'altra: serve l'ok del titolare, e
