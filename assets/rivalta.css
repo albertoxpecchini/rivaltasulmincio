@@ -1166,6 +1166,12 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 .sb-riv-foto-grid {
   display: grid;
   grid-template-columns: 1fr;
+  /* Ogni figura alta quanto è: senza, la griglia le stira tutte all'altezza
+     della più alta, e la lastra — che dentro la figura chiede height:100% —
+     si allunga sotto la fotografia lasciando una fascia vuota, con la
+     didascalia sbalzata fuori dal riquadro. Si vede solo quando le
+     fotografie ci sono davvero. */
+  align-items: start;
   gap: 0.9rem;
   margin: 1.4rem 0 1.6rem;
   max-width: none;
@@ -1179,6 +1185,144 @@ html.rsm-still .sb-cw-polvere { animation: none; }
    per ordine — sono due classi contro una. */
 @media (min-width: 640px) {
   .sb-riv-foto-grid--due { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ── Il libro, e la scheda della fonte ────────────────────────────────────
+   Un volume in tre dimensioni, fermo. Non ruota al passaggio del mouse e non
+   si apre: è lì per dire da dove vengono le fotografie che sta accanto, e un
+   oggetto che si mette a girare mentre si legge una didascalia ruba
+   l'attenzione al motivo per cui esiste.
+
+   La geometria è quella vera, non un'ombra obliqua che finge lo spessore.
+   Il corpo è una scatola in `preserve-3d` alta quanto la copertina, larga
+   quanto la copertina e spessa --sp:
+
+   · il piatto — la scansione della copertina — sta sul piano z = +sp/2;
+   · il dorso è ruotato di -90° attorno al proprio bordo sinistro e poi
+     riportato indietro di sp/2, così finisce sul piano x = 0 e occupa
+     esattamente z da -sp/2 a +sp/2. I due pezzi si incontrano sullo spigolo,
+     senza fessure e senza sovrapposizioni.
+
+   La scena è girata di 20° attorno all'asse verticale: con la rotazione
+   POSITIVA è il fianco sinistro a venire avanti, ed è quello il fianco dove
+   sta il dorso. Girata dall'altra parte si vedrebbe il taglio delle pagine,
+   che di un libro è la faccia che non racconta niente.
+
+   Il dorso non è una tinta scelta a mano: è la copertina stessa, allargata a
+   tutta la larghezza del piatto e ancorata a sinistra, così sul dorso si
+   vede la continuazione dei colori del primo centimetro di copertina. Sopra
+   ci passa una velatura scura, perché una costa in ombra è ciò che dà alla
+   scatola il suo volume. */
+.sb-riv-fonte { margin: 1.6rem 0 0; }
+.sb-riv-fonte-in {
+  /* .sb-panel-inner è già una colonna flex: qui la direzione va detta, o il
+     libro finisce sopra al testo invece che accanto. */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1.2rem, 4vw, 2.4rem);
+  padding: clamp(1.2rem, 2.6vw, 1.8rem);
+}
+.sb-riv-fonte-testo { flex: 1 1 18rem; min-width: 0; }
+.sb-riv-fonte-occhiello {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-fonte-titolo {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-fonte-titolo strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-fonte-titolo .sb-riv-na { font-size: 0.85rem; }
+/* Il ringraziamento è piccolo di proposito: chi ha donato il libro non ha
+   chiesto un'insegna, e una riga in fondo è il modo in cui si dice grazie
+   senza mettere in imbarazzo nessuno. */
+.sb-riv-fonte-grazie {
+  margin: 0.9rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-fonte-grazie strong { font-weight: 600; color: var(--sb-fg-light); }
+
+.sb-riv-libro {
+  --sp: 13px; /* lo spessore del volume */
+  position: relative;
+  flex: none;
+  width: clamp(122px, 20vw, 168px);
+  perspective: 1500px;
+  perspective-origin: 60% 45%;
+}
+.sb-riv-libro-corpo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 820 / 1156;
+  transform-style: preserve-3d;
+  transform: rotateY(20deg) rotateX(2deg);
+}
+.sb-riv-libro-piatto,
+.sb-riv-libro-dorso {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+.sb-riv-libro-piatto {
+  width: 100%;
+  transform: translateZ(calc(var(--sp) / 2));
+  /* Il filo attorno al piatto è il taglio della carta, non un bordo
+     decorativo: senza, la copertina chiara sfuma nel fondo chiaro della
+     lastra e il libro perde lo spigolo. */
+  box-shadow: 0 0 0 1px var(--sb-glass-slab);
+}
+.sb-riv-libro-dorso {
+  width: var(--sp);
+  transform-origin: left center;
+  transform: translateZ(calc(var(--sp) / -2)) rotateY(-90deg);
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.22) 60%, rgba(0, 0, 0, 0.35)),
+    url("foto/archivio/eventi-e-ricordi-copertina.jpg");
+  background-size: 100% 100%, auto 100%;
+  background-position: 0 0, left center;
+}
+/* L'ombra per terra. Sta fuori dalla scatola e non è ruotata: un'ombra è la
+   proiezione del libro sul piano d'appoggio, non una sua faccia, e ruotarla
+   con lui la farebbe entrare nel tavolo. */
+.sb-riv-libro-ombra {
+  position: absolute;
+  left: 2%;
+  right: -6%;
+  bottom: -10px;
+  height: 22px;
+  background: radial-gradient(50% 50% at 50% 50%, var(--sb-glass-slab), transparent 72%);
+  filter: blur(5px);
+}
+
+/* Sotto i 560px la riga diventa una colonna: il libro sopra, il testo sotto.
+   Un volume alto centosessanta pixel accanto a una colonna di testo larga
+   centoventi non è una composizione, è un incidente. */
+@media (max-width: 559px) {
+  .sb-riv-fonte-in { flex-direction: column; align-items: flex-start; }
+  .sb-riv-libro { width: 132px; }
+}
+
+/* Chi ha chiesto meno movimento non c'entra — qui non si muove niente — ma
+   in stampa la scatola in prospettiva viene male e non serve a nessuno: resta
+   la copertina, dritta. */
+@media print {
+  .sb-riv-libro { perspective: none; }
+  .sb-riv-libro-corpo { transform: none; }
+  .sb-riv-libro-dorso,
+  .sb-riv-libro-ombra { display: none; }
+  .sb-riv-libro-piatto { transform: none; }
 }
 
 /* ── Le sei contrade ──────────────────────────────────────────────────────
@@ -2537,10 +2681,149 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
 .sb-riv-aggban-lista a { color: var(--sb-fg-lighter); text-decoration: none; }
 .sb-riv-aggban-lista a:hover { color: var(--sb-fg); text-decoration: underline; text-underline-offset: 3px; }
 
+/* ── Il contatore delle bandiere ──────────────────────────────────────────
+   In fondo a ogni pagina: quante visite, da quanti paesi, e la lista.
+
+   Un flag counter classico è una tabellina fitta di bandierine su fondo
+   grigio. Qui la forma è quella — due, tre colonne di paesi, il numero a
+   destra — ma il vestito è del sito: la stessa lastra di vetro delle card,
+   la stessa occhiellatura maiuscola delle colonne del footer, e l'unica
+   tinta viva ammessa è l'azzurro del brand.
+
+   Le bandiere sono l'eccezione, e sono un'eccezione voluta: un contatore di
+   bandiere senza bandiere non è un contatore di bandiere. Restano piccole
+   (21 × 14) e sono l'unico colore della zona, quindi non entrano in
+   concorrenza con niente.
+
+   La barra non è una colonna a sé: è il fondo della riga che si riempie da
+   sinistra. Un istogramma dietro le parole non chiede spazio in verticale, e
+   in un footer lo spazio in verticale è tutto quello che non c'è. */
+.sb-riv-visite { margin-top: clamp(2rem, 4vw, 3rem); }
+.sb-riv-visite-in { padding: clamp(1.1rem, 2.4vw, 1.5rem); }
+.sb-riv-visite-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1.2rem;
+}
+.sb-riv-visite-tit {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-visite-conto {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-visite-conto strong {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--sb-fg);
+}
+
+/* Quante colonne ci stanno, non quante ne abbiamo deciso: sotto i 20rem una
+   riga «Repubblica Democratica del Congo 1» non ci sta comunque. */
+.sb-riv-visite-lista {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: 0.1rem 1.6rem;
+}
+.sb-riv-visite-riga {
+  position: relative;
+  display: grid;
+  grid-template-columns: 21px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.34rem 0.5rem;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: var(--sb-fg-lighter);
+}
+.sb-riv-visite-barra {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: var(--sb-shape-sm);
+}
+.sb-riv-visite-barra i {
+  display: block;
+  height: 100%;
+  background: color-mix(in srgb, var(--sb-brand) 11%, transparent);
+}
+/* Tutto quello che si legge sta sopra la barra. Senza questo, il fondo
+   dipinto dopo nell'ordine del documento coprirebbe bandiera e numero. */
+.sb-riv-visite-bandiera,
+.sb-riv-visite-nome,
+.sb-riv-visite-num { position: relative; }
+
+.sb-riv-visite-bandiera {
+  display: block;
+  width: 21px;
+  height: 14px;
+  object-fit: cover;
+  /* Il filo attorno serve alle bandiere che finiscono in bianco — Giappone,
+     Polonia, Svizzera al contrario: senza, sul fondo chiaro si vedrebbe metà
+     bandiera e metà niente. */
+  box-shadow: 0 0 0 1px var(--sb-glass-slab);
+}
+.sb-riv-visite-mondo {
+  width: 16px;
+  height: 16px;
+  margin: 0 2px;
+  box-shadow: none;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-visite-nome {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-riv-visite-num {
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sb-fg-muted);
+}
+/* La riga di chi sta guardando. Non un colore in più: il testo che si fa più
+   scuro, e la pillola azzurra che è già la tinta del sito. */
+.sb-riv-visite-riga[data-io] { color: var(--sb-fg); }
+.sb-riv-visite-riga[data-io] .sb-riv-visite-num { color: var(--sb-fg-light); }
+.sb-riv-visite-qui {
+  flex: none;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+  background: color-mix(in srgb, var(--sb-brand) 14%, transparent);
+  clip-path: var(--sb-shape-sm);
+}
+.sb-riv-visite-nota {
+  margin: 0.9rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-visite-nota a { color: var(--sb-fg-lighter); text-decoration: none; }
+.sb-riv-visite-nota a:hover { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 3px; }
+
 /* ── La firma in fondo ───────────────────────────────────────────────── */
 .sb-riv-foot-fatto strong { color: var(--sb-fg-light); font-weight: 600; }
 
 @media print {
   .sb-riv-cwall-wrap,
+  .sb-riv-visite,
   .sb-riv-aggban { display: none !important; }
 }
