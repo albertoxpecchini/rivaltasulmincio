@@ -44,8 +44,8 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **3.220 righe CSS** | `sb.css` (1.016) · `rivalta.css` (2.018) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.827 righe**, 8 file | `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `rivalta.js` (115) · `gusto.js` (90) |
+| **Design system** | **4.209 righe CSS** | `rivalta.css` (2.487) · `sb.css` (1.016) · `stagioni.css` (520) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **2.350 righe**, 10 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
@@ -96,10 +96,39 @@ il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/he
 
 ---
 
-## 🧭 Le dodici pagine
+## 🧭 Le quattordici pagine
 
 Un solo dominio, un indirizzo per pagina, la home alla radice. La nav è la stessa ovunque perché
 esiste in copia unica in [`_build/head.html`](_build/head.html).
+
+In barra ci sono **cinque parole**, e ognuna apre la sua **tendina**: *Il paese · Servizi ·
+Territorio · Eventi · Il sito*. Dentro, ogni pagina si porta dietro una riga che dice cosa ci si
+trova — quindici destinazioni raggiungibili senza che la barra ne mostri più di cinque. Le stesse
+cinque sottosezioni, scritte, reggono il menu su schermo stretto.
+
+Le voci sono **centrate** (griglia `1fr auto 1fr` su `.sb-nav-inner`: con un `margin-left:auto`
+sarebbero centrate rispetto a quello che avanza, non rispetto alla barra). È **l'unica cosa
+centrata del sito**, ed è un'eccezione voluta: la testata non è testo da leggere, è una plancia di
+comando. Il contenuto parte tutto dal margine sinistro.
+
+**Le tendine sono CSS** — `:hover` e `:focus-within` — quindi funzionano anche a script spenti;
+`rivalta.js` aggiunge il clic (per chi ha un dito e non un puntatore), `Esc`, il clic fuori e
+`aria-expanded` tenuto in fase con quello che si vede. Lo stacco fra tasto e pannello è **padding e
+non `top`**: un vuoto vero sarebbe una fessura in cui il mouse esce dal gruppo e la tendina si
+chiude proprio mentre ci si stava andando.
+
+Due conseguenze che vale la pena sapere prima di rimetterci le mani:
+
+- il gruppo è `position: relative` (la tendina si aggancia a lui), quindi la pillola della nav in
+  `glass.js` **non misura più con `offsetLeft`** — che sarebbe diventato la distanza dal gruppo,
+  cioè zero per tutte — ma con la differenza fra i due `getBoundingClientRect()`, che scorrono
+  insieme e quindi stanno fermi;
+- il tasto del gruppo non ha un `href`, quindi non può dire `aria-current="page"`: la pagina aperta
+  sta dentro la sua tendina, e `rivalta.js` gliela segna risalendo dal link che ha vinto il
+  confronto, con `data-attiva`. Il filo azzurro e la pillola leggono tutti e due.
+
+Con cinque voci al posto di tredici la fila ci sta molto prima: si passa al menu **sotto i 1024px**
+(prima 1080), e la stessa soglia sta in `rivalta.js` per la chiusura del menu al ridimensionamento.
 
 | Indirizzo | Frammento | Priorità | Cosa c'è |
 | :--- | :--- | :---: | :--- |
@@ -115,6 +144,28 @@ esiste in copia unica in [`_build/head.html`](_build/head.html).
 | `/eventi` | `eventi.body.html` | 0.9 | Festa del Pesce, Sagra dei Patroni, Brusa la Vècia, Pulimincio, Cena Tedesca |
 | `/mappa` | `mappa.body.html` | 0.9 | Mappa interattiva dei 268 punti d'interesse, filtri per categoria, registro dei luoghi |
 | `/dati` | `dati.body.html` | 0.4 | Fonti, metodo di misura, dataset JSON scaricabile, come rigenerarlo via Overpass |
+| `/aggiornamenti` | `aggiornamenti.body.html` | 0.4 | **Cosa è cambiato**: il registro, scritto a mano, delle modifiche che contano per chi legge |
+| `/404` | `404.body.html` | — | La pagina di errore: ricerca, le sei sezioni principali, e perché ci si finisce. `noindex`, fuori dalla sitemap |
+
+---
+
+## 🧱 Il muro dei commit
+
+In fondo alla home, sezione **«Costruito qui, alla luce del sole»**: il numero dei commit di questo
+repository scritto coi quadratini, dietro alla scheda di chi ha fatto il sito. È portato da
+albertopecchini.it, che a sua volta lo ha preso dalla sezione «Open source» di supabase.com.
+
+Là è un componente React che monta 1.100 rettangoli nel browser di chi legge; qui il conteggio non
+cambia fra un build e l'altro, quindi **il muro esce già disegnato da `build.mjs`** ed è HTML
+statico come tutto il resto — zero JavaScript, identico a script spenti. Il numero lo conta
+`git rev-list --count HEAD`: non è scritto a mano da nessuna parte, e non può mentire.
+
+Il carattere è 5 colonne × 7 righe a cifra (sotto le cinque colonne lo zero e l'otto diventano lo
+stesso disegno), la griglia è 32 × 16 celle con rumore ripetibile (xorshift a seme fisso: stesso
+disegno a ogni build, niente diff inutili). Misura, raggio e livello delle celle stanno nel CSS e
+nella classe, non in cinquecento attributi ripetuti; il ritardo dell'accensione sta sulla
+**colonna** e non sulla cella — l'onda da sinistra a destra si vede uguale, la pagina pesa molto
+meno.
 
 ---
 
@@ -226,6 +277,102 @@ ripiego nel CSS.
 
 ---
 
+## 🍇 Il vestito del mese
+
+Un mese, un simbolo. Il sito si veste della stagione: l'unica tinta del design system vira sul
+colore del mese, un tralcio attraversa la testata, qualcosa scende piano sul fondale.
+**Settembre è l'uva.**
+
+### I colori non sono scelti a occhio
+
+Questa è la parte che tiene in piedi tutto il resto. **Rivalta non ha vigne**: la sua terra fa
+cereali e meloni, e sta scritto in [`/attivita`](attivita.html). Nessuna denominazione di vino tocca
+Rodigo. Ma il Mincio che passa davanti al paese scende dall'**anfiteatro morenico del Garda**, e
+lassù — una ventina di chilometri più a monte — il vino c'è da molto prima che ci fosse un
+disciplinare a descriverlo.
+
+Le sei tinte di settembre sono **le parole con cui l'articolo 6 di quei disciplinari descrive quei
+vini**, prese alla lettera:
+
+| Variabile | La parola del disciplinare | Da dove | Chiaro · scuro |
+| :--- | :--- | :--- | :--- |
+| `--stag-rubino` | «rosso rubino più o meno intenso» | Lambrusco Mantovano DOC · rosso | `#9b1b30` · `#c94055` |
+| `--stag-granato` | «…o granato» | Lambrusco Mantovano DOC · rosso | `#6b2029` · `#a03648` |
+| `--stag-cerasuolo` | «tendente al cerasuolo con l'invecchiamento» | Garda Colli Mantovani DOC · rosso | `#b8323f` · `#d75c6c` |
+| `--stag-rosato` | «rosato brillante» | Garda Colli Mantovani DOC · chiaretto | `#e2879b` · `#f0a8b7` |
+| `--stag-paglierino` | «giallo paglierino» | Garda Colli Mantovani DOC · bianco | `#d8bd60` · `#e3c977` |
+| `--stag-viola` | «sentore di viola o ribes» | Lambrusco Mantovano DOC · odore | `#6d4a8c` · `#ab8ccb` |
+
+Le due denominazioni di collina — **Garda Colli Mantovani DOC** e **Alto Mincio IGT** — stanno sugli
+stessi sei comuni: Castiglione delle Stiviere, Cavriana, Monzambano, Ponti sul Mincio, Solferino,
+Volta Mantovana. **Due di quei paesi stanno sul Mincio come Rivalta**, solo più a monte. Quella di
+pianura è il **Lambrusco Mantovano DOC**, in due sottozone oltre l'Oglio e oltre il Po.
+
+Tutto questo non resta nel README: sta **in fondo a ogni pagina di stagione**, in una nota con i sei
+pastelli, la parola di ciascuno, la denominazione da cui viene e le fonti. Il tema è una citazione,
+e si può controllare.
+
+> Fonti: [Garda Colli Mantovani DOC — disciplinare, art. 6](https://www.agraria.org/vini/garda-colli-mantovani-doc.htm) ·
+> [Lambrusco Mantovano DOC — disciplinare, art. 6](https://www.agraria.org/vini/lambrusco-mantovano-doc.htm) ·
+> [Strada dei Vini e dei Sapori Mantovani](https://www.mantovastrada.it/)
+
+### Cosa cambia, e cosa no
+
+Cambia l'accento, non il sito: impaginato, caratteri, misure, margine sinistro, prosa giustificata,
+smusso e vetro restano identici. I grigi si scaldano di due o tre punti per canale — non si vede su
+una superficie sola, si sente sulla pagina intera. Il testo d'accento sta a **9,8:1** sul chiaro e
+**8,5:1** sullo scuro, sopra a dove stava l'azzurro.
+
+La tela è in [`design/stagioni/`](design/stagioni/) — cinque artboard di Claude Design che
+documentano quello che è andato online, non uno schizzo preparatorio.
+
+### Si cambia una riga sola
+
+In cima a [`build.mjs`](build.mjs):
+
+```js
+const STAGIONI = { uva: { nome: "settembre · vendemmia", tinte: […], zone: […], fonti: […] } };
+const STAGIONE = "uva";   // null spoglia il sito
+```
+
+Da lì il build scrive `data-stagione="uva"` su `<html>`, compone il tralcio e la nota, scioglie i due
+segnaposto e appende `stagioni.js`. A ottobre si aggiunge la voce nuova a `STAGIONI`, si sposta il
+puntatore e si scrive il blocco `html[data-stagione="…"]` in
+[`assets/stagioni.css`](assets/stagioni.css). `STAGIONE = null` toglie tutto e non lascia in giro né
+classi né script.
+
+### I pezzi, e perché sono fatti così
+
+- **Colore, tralcio e nota sono CSS e HTML** ([`assets/stagioni.css`](assets/stagioni.css), 520
+  righe, tutte appese a `html[data-stagione]`): arrivano anche senza JavaScript. Il foglio è
+  caricato da tutte le pagine ed è **inerte** finché quell'attributo non c'è.
+- **Il tralcio è SVG in pagina, non un'immagine ripetuta**, perché ogni pendaglio deve dondolare per
+  conto suo: un festone in cui tutto oscilla nello stesso istante non è un festone, è una texture
+  che trema. Tredici campate da 200 px si saldano fra loro (ogni arco parte e finisce a `y=4`), i
+  disegni stanno una volta in `<defs>` e si ripetono con `<use>`, e lo sfasamento del dondolio è
+  `calc(var(--i) * -0.41s)`. Una foglia su tre ha già girato all'oro, un grappolo su due è più chiaro.
+- **I due aloni del fondale non sono un terzo strato**: `.sb-home::before` e `::after` esistono già
+  in `sb.css` ed erano l'ultima superficie azzurra grande abbastanza da contraddire il resto. Si
+  ritingono quelli — stessa geometria, stesse due derive in controfase, stessa opacità.
+- **Solo quello che scende ha bisogno di JS** ([`assets/stagioni.js`](assets/stagioni.js), 199
+  righe). Quattro specie — foglia, grappolino, acino, viticcio — e **non cadono uguale**: la foglia
+  è larga e leggera, ondeggia molto e si volta mostrando il rovescio; l'acino è tondo e pieno,
+  scende quasi diritto e più svelto, e non si volta perché da qualunque parte lo guardi è lo stesso.
+  Tre gusci annidati (cade · ondeggia · gira) perché tre movimenti non stanno in una trasformazione
+  sola. Tre piani di profondità per la parallasse. Le tinte non si mescolano fra specie: un acino
+  verde a settembre non esiste.
+- **Il movimento segue le regole di sempre**: con `prefers-reduced-motion` o col tasto «ferma il
+  movimento» (`html.rsm-still`) non scende niente — restano sei cose posate dove sono, e il tralcio
+  non cala. Se l'impostazione cambia a pagina aperta, un osservatore sulla classe di `<html>` rifà
+  lo strato.
+- **Sotto i 700px il tralcio non compare** (in testa ruberebbe la prima riga) e le particelle
+  scendono da 14 a 8: ognuna sono quattro nodi animati, e quello quasi sempre è un telefono.
+- **Le tre pagine della Color Walk restano fuori.** Una vernice ce l'hanno già — `.sb-cr`, le tinte
+  delle polveri — e due stagioni addosso sono una di troppo. Non c'è un elenco di nomi da tenere
+  aggiornato: è lo stesso riconoscimento che decide se caricare `color-walk.js`.
+
+---
+
 ## 🎛️ La barra di controllo
 
 In basso a sinistra, fuori dal bordo, con la sola linguetta a vista: esce quando il puntatore le si
@@ -265,10 +412,17 @@ rivaltasulmincio/
 │   ├── sb.css                  #   design system .sb- (token + primitive da albertopecchini.it)
 │   ├── rivalta.css             #   classi di pagina .sb-riv-* (tabelle, stat, note, indici, testata, ricerca)
 │   │                           #   e la pelle della Color Walk: tinte, fondale, polvere, ingressi
-│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma relativa
+│   ├── rivalta.js              #   bordo nav allo scroll, menu, voce attiva, «aggiornato» in forma
+│   │                           #   relativa, il § che copia il link a un titolo, «torna in cima»
+│   ├── orari.js                #   «aperto adesso / chiuso»: legge gli orari OSM scritti in pagina e
+│   │                           #   li confronta con l'ora di chi guarda — solo dove ci sono orari
 │   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
 │   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
+│   ├── stagioni.css            #   il vestito del mese: accento, tralcio, nota, foglie — inerte
+│   │                           #   finché build.mjs non scrive data-stagione su <html>
+│   ├── stagioni.js             #   quattro specie che scendono sul fondale, ognuna con la sua
+│   │                           #   fisica — solo sulle pagine di stagione
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
@@ -283,7 +437,8 @@ rivaltasulmincio/
 │   ├── iscrizione-color-walk.mjs   #   registra l'iscrizione: apre il pagamento, oppure
 │   │                           #   la segna da pagare al ritrovo. E verifica il ritorno
 │   ├── conferma-color-walk.mjs     #   il webhook PayPal: incassa e manda ricevuta o avviso
-│   ├── iscritti-color-walk.mjs     #   l'elenco per chi organizza, e il tasto «incassato»
+│   ├── iscritti-color-walk.mjs     #   l'elenco per chi organizza: il tasto «incassato»,
+│   │                           #   annullare un doppione, rimandare una ricevuta
 │   ├── _paypal.mjs             #   la porta verso PayPal, e il formato di un'iscrizione
 │   └── _posta.mjs              #   le mail: come si compongono e da dove escono
 │                               #   (in coda ha un blocco GENERATO da build.mjs: i modelli)
@@ -297,12 +452,18 @@ rivaltasulmincio/
 │   ├── <pagina>.body.html      #   il contenuto di ogni pagina (15 frammenti)
 │   ├── notizie.json            #   la rassegna stampa, resa al posto di {{NEWS}}
 │   ├── luoghi.json             #   il registro dei 152 luoghi: coordinate, foto, schede
+│   ├── orari.json              #   gli orari di apertura in sintassi OSM, resi da {{aperto:}}
+│   ├── aggiornamenti.json      #   il registro di /aggiornamenti, scritto a mano
 │   ├── gusto.json              #   il registro del gusto: voglie, piatti e chi li fa (/mangiare)
 │   ├── tipi.json               #   tipi OSM → etichetta italiana e gruppo di filtro
 │   └── email/                  #   le due mail della Color Walk, sorgente
 │       ├── ricevuta-color-walk.html   #     a chi ha pagato E a chi paga al ritrovo
 │       ├── fallita-color-walk.html    #     a chi si è fermato a metà
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
+├── design/                     # le tele di Claude Design da cui nascono le cose disegnate
+│   ├── color-walk/             #   banner e locandina della camminata (.dc.html → .png/.pdf)
+│   └── stagioni/               #   il vestito del mese: pagina chiara e scura, palette dai
+│                               #   disciplinari, geografia dei vini, disegno e movimento
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
 ├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
@@ -527,6 +688,32 @@ PayPal. È il webhook che incassa e manda le mail.
 sola porta chiusa a chiave del sito, e in più il **tasto «incassato»**: il gesto del banchetto, con
 il telefono in una mano e i soldi nell'altra. Segna la fattura saldata, metodo contanti. Si potrebbe
 fare anche dall'app PayPal — ma sui gradini della chiesa il bottone vince.
+
+In fondo a ogni scheda aperta ci sono altri due tasti, che si premono di rado e con la testa:
+**«Rimanda la ricevuta»** — la stessa mail, ricomposta dalla fattura vera e mandata all'indirizzo
+scritto sopra o a uno corretto al volo, per il caso in cui non sia mai arrivata — e **«Annulla
+l'iscrizione»**, per togliere un doppione. Un'iscrizione già pagata da lì non si annulla: dietro ci
+sono dieci euro veri, e un rimborso è una decisione da prendere davanti al movimento su PayPal.
+
+##### Lo stesso modulo mandato due volte
+
+Il 6 settembre una persona ha mandato **tre volte lo stesso modulo in un minuto**, perché non le
+tornava indietro niente: si è ritrovata tre volte in elenco e senza nemmeno una mail. Il guasto era
+uno solo — la funzione ci metteva più dei venti secondi che aveva, e veniva spenta a metà: la
+fattura era già scritta, la ricevuta non ancora partita, e al browser arrivava un errore che diceva
+«riprova tra poco». Da lì sono nate cinque cose, e nessuna delle cinque da sola sarebbe bastata.
+
+| | |
+|---|---|
+| **la sigla del tentativo** | la pagina si inventa una sigla quando si comincia a compilare e la rimanda uguale a ogni invio; il numero della fattura scende da lì, e il secondo invio trova il numero **già preso**. È PayPal a garantire l'unicità, nell'istante in cui scrive: un controllo nostro dovrebbe prima cercare, e la ricerca delle fatture arriva con qualche secondo di ritardo — proprio nel minuto in cui uno preme tre volte |
+| **l'impronta di quello che si manda** | seconda metà della sigla. Chi annulla il pagamento, torna indietro e *aggiunge un figlio* non sta rimandando lo stesso modulo: cambia l'impronta, e nasce una fattura nuova come dev'essere |
+| **quindici secondi fra un invio e l'altro** | in `localStorage`, che una ricaricata se la porta. Il tasto spento non basta: chi non vede tornare niente ricarica, e una pagina ricaricata ha il tasto acceso |
+| **il riquadro che dice cosa sta succedendo** | finché la funzione non risponde, e un banner verde quando risponde. Il tasto che diceva «Un momento…» in fondo a un modulo lungo non lo vedeva nessuno |
+| **sessanta secondi invece di venti** | in `vercel.json`. Quattro chiamate a PayPal in fila hanno sei secondi ciascuna: il conto non stava dentro il tetto, e il tetto non si vedeva da nessuna parte |
+
+E una sesta, che non si vede: il `catch` di `iscrivi` adesso **scrive nei log**. Prima il guasto
+usciva di lì dentro un 502 e non lasciava traccia da nessuna parte — un errore che il browser vede e
+il server non scrive è un errore che non si aggiusta.
 
 Il `GET` di verifica esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo
 basterebbe aprire `/color-walk?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato
@@ -756,9 +943,9 @@ Le coordinate sono state prese dall'estratto OSM, non scritte a mano: **123 voci
 punto. Le altre sono aree, percorsi o cose diffuse — il fiume, le capezzagne, le meridiane — che un
 punto non ce l'hanno, e il cui collegamento ricade sulla ricerca per nome di OpenStreetMap.
 
-### I tre segnaposto
+### I quattro segnaposto
 
-Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
+Nei frammenti non si scrivono link a mano. `build.mjs` risolve quattro segnaposto:
 
 | Si scrive | Diventa |
 | :--- | :--- |
@@ -766,6 +953,9 @@ Nei frammenti non si scrivono link a mano. `build.mjs` risolve tre segnaposto:
 | `{{luogo:corte-mincio-porto\|Via Porto}}` | lo stesso, con un'etichetta diversa dal nome |
 | `{{geo:45.18234,10.67681}}` | coordinate sciolte (dossi, autovelox, nodi STOP) |
 | `{{foto:chiesa-santi-vigilio-donato}}` | la fotografia, **se il file esiste** |
+| `{{aperto:pizzeria-osteria-la-stella}}` | gli orari scritti in italiano, e il pallino «aperto adesso» che li precede |
+| `{{MURO_COMMIT}}` · `{{COMMITS}}` | il muro dei commit disegnato dal build, e il numero in chiaro |
+| `{{AGG_BANNER}}` | le ultime due voci del registro, in fondo alla home |
 
 Uno slug che non esiste **fa fallire il build**, come già succede a un frammento senza titolo: un
 collegamento rotto scoperto in produzione costa più di un build che si ferma.
@@ -936,6 +1126,29 @@ del menu su schermo stretto e in fondo a ogni pagina, con tre forme dallo stesso
 («26 ago»). Con JavaScript `rivalta.js` la accorcia in forma relativa — «oggi», «ieri», «3 giorni
 fa» — e sposta la data per esteso nel `title`. Fuori da un repo git il build ripiega su oggi.
 
+Quella data dice **se** il sito è vivo, non **cosa** è successo: per questo porta a
+`/aggiornamenti`, che è un'altra cosa — il registro scritto a mano in
+[`_build/aggiornamenti.json`](_build/aggiornamenti.json) di quello che è cambiato **per chi
+legge**: un orario, una strada chiusa, una pagina nuova. Una voce è
+`{ data, voce, titolo, testo, dove, chiave }` — `dove` è il link alla pagina toccata, `chiave: true`
+accende il pallino azzurro nella cronologia. I commit di servizio lì dentro non entrano: è tutto
+il senso della pagina. In home ne compaiono le **ultime due**, in un banner sopra il footer
+(`{{AGG_BANNER}}`): è lì che uno si chiede «e poi?». Dal footer invece i collegamenti sono stati
+tolti — «Fonti» era un doppione della colonna Territorio, e gli aggiornamenti hanno già la data in
+testata e il banner in home.
+
+### Gli orari, e «aperto adesso»
+
+[`_build/orari.json`](_build/orari.json) tiene gli orari in **sintassi OpenStreetMap**
+(`Tu-Su 19:00-22:30`), una voce per punto: `{ oh, fonte, luogo }`. Da quella stessa stringa
+escono due cose che non possono divergere — la riga leggibile che `build.mjs` scrive in pagina
+(«ma–do 19:00–22:30») e il pallino che [`assets/orari.js`](assets/orari.js) calcola nel browser
+sull'ora di chi guarda, aggiornandolo ogni minuto.
+
+La regola del file: **non si scrive un orario dedotto**. Se la fonte non lo dice, la voce non
+esiste e in pagina non compare niente — un orario sbagliato manda qualcuno davanti a una porta
+chiusa. Una stringa che il parser non capisce non accende niente: restano gli orari scritti.
+
 ---
 
 ## 🚀 Deploy (Vercel)
@@ -1033,7 +1246,10 @@ Skiplink al contenuto (`Salta al contenuto`) · landmark semantici (`header` / `
 `aria-hidden` perché non dice niente che `aria-current` non dica già meglio · barra di controllo
 raggiungibile da tastiera (esce al `focus`) · **`prefers-reduced-motion` onorato**: senza una scelta
 esplicita comanda il sistema, e allora non si attacca nemmeno un ascoltatore e l'onda del tema non
-parte.
+parte · ogni sotto-titolo ha un'ancora vera scritta dal build (`h3` con `id`), quindi un
+collegamento a una sezione funziona anche a JavaScript spento — il § accanto è solo la
+scorciatoia per copiarlo · «aperto adesso» è un'aggiunta, mai una sostituzione: senza
+JavaScript restano gli orari scritti.
 
 ---
 
@@ -1049,6 +1265,17 @@ blocchi di token in cima a [`assets/sb.css`](assets/sb.css); tutto il resto del 
 ![#e8e8e8](https://img.shields.io/badge/Bordo-%23E8E8E8-E8E8E8?style=flat-square&labelColor=555)
 
 Carattere del sito: **Titillium Web** (+ Roboto Mono per il codice).
+
+Da settembre l'accento non è più fisso: il [vestito del mese](#-il-vestito-del-mese) lo sostituisce
+con la tinta di stagione, riscrivendo gli stessi token in [`assets/stagioni.css`](assets/stagioni.css).
+Settembre è l'uva, e i suoi sei colori sono parole di disciplinare.
+
+![#9b1b30](https://img.shields.io/badge/rosso_rubino-%239B1B30-9B1B30?style=flat-square)
+![#6b2029](https://img.shields.io/badge/granato-%236B2029-6B2029?style=flat-square)
+![#b8323f](https://img.shields.io/badge/cerasuolo-%23B8323F-B8323F?style=flat-square)
+![#e2879b](https://img.shields.io/badge/rosato_brillante-%23E2879B-E2879B?style=flat-square&labelColor=555)
+![#d8bd60](https://img.shields.io/badge/giallo_paglierino-%23D8BD60-D8BD60?style=flat-square&labelColor=555)
+![#6d4a8c](https://img.shields.io/badge/viola_o_ribes-%236D4A8C-6D4A8C?style=flat-square)
 
 ---
 

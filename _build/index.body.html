@@ -68,8 +68,8 @@
             <span class="sb-chip"><span class="sb-chip-dot" aria-hidden="true"></span>Comune di Rodigo — 31 agosto 2026</span>
           </div>
           <div class="sb-riv-flash-actions">
-            <a class="sb-link" href="https://www.comune.rodigo.mn.it/novita/prima-segnalazione-danni-subiti-a-seguito-degli-eventi-meteorici-del-28-08-2026/" target="_blank" rel="noreferrer noopener">Avviso e modulo sul sito del Comune <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
-            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">La cronaca su Gazzetta di Mantova <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+            <a class="sb-link" href="https://www.comune.rodigo.mn.it/novita/prima-segnalazione-danni-subiti-a-seguito-degli-eventi-meteorici-del-28-08-2026/" target="_blank" rel="noreferrer noopener">Avviso e modulo sul sito del Comune</a>
+            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">La cronaca su Gazzetta di Mantova</a>
           </div>
         </div></div>
       </div>
@@ -277,3 +277,56 @@
         </div>
       </div>
     </section>
+    <!-- ── CHI L'HA FATTO ───────────────────────────────────────────────────
+         Due colonne affiancate, non un fondale sotto al testo. Il muro dei
+         commit stava dietro alla prosa, sfumato da una maschera ovale: metà
+         del numero finiva sotto alle righe e l'altra metà si spegneva nel
+         nulla, così il conteggio si leggeva storto e a pezzi.
+
+         Adesso il muro ha una lastra sua nella seconda colonna, si vede
+         intero e il numero sta dritto in mezzo alla griglia. Su schermo
+         stretto la colonna scende sotto il testo, che è dove va su un
+         telefono. Il numero non è scritto a mano — lo conta il build dal
+         repository. -->
+    <section class="sb-section sb-container" id="fatto-da" aria-labelledby="fatto-da-tit">
+      <div class="sb-riv-open">
+        <div class="sb-riv-open-testo">
+          <div class="sb-sechead sb-sechead--start">
+            <span class="sb-riv-secnum">Chi l'ha fatto</span>
+            <h2 id="fatto-da-tit">Costruito qui, alla luce del sole</h2>
+          </div>
+          <p class="sb-riv-p">Questo sito lo ha fatto <strong>una persona sola</strong>: i testi, i dati controllati uno per uno sulle fonti, il codice, e il programma che monta le pagine. Non c'è un CMS dietro, non c'è un'agenzia, non c'è un modello comprato — c'è un repository pubblico, e dentro c'è tutto.</p>
+          <p class="sb-riv-p"><strong>{{COMMITS}} commit</strong> dal 9 maggio 2026 a oggi. Si legge, si scarica, si riusa: quello che qui è servito a raccontare un paese può servire a raccontarne un altro.</p>
+          <div class="sb-hero-actions" style="margin-top:1.6rem">
+            <a class="sb-btn sb-btn--primary" href="mailto:pzkko@yahoo.com?subject=Dal%20sito%20di%20Rivalta%20sul%20Mincio"><span>Scrivimi</span></a>
+            <a class="sb-btn sb-btn--secondary" href="https://github.com/albertoxpecchini/rivaltasulmincio" target="_blank" rel="noreferrer noopener"><span>Il codice su GitHub</span></a>
+          </div>
+
+          <div class="sb-panel sb-riv-open-card"><div class="sb-panel-inner sb-riv-open-pad">
+            <div class="sb-riv-open-id">
+              <img class="sb-riv-open-ap" src="assets/loghi/ap.png" alt="" width="44" height="44" decoding="async" loading="lazy">
+              <div>
+                <a class="sb-riv-open-nome" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Alberto Pecchini</a>
+                <span class="sb-riv-open-ruolo">Perito geometra e sviluppatore web — Mantova</span>
+              </div>
+            </div>
+            <p class="sb-riv-open-bio"><strong>Sono aperto alle collaborazioni.</strong> Per un sito, per una mano su un progetto, o anche solo per segnalare un dato sbagliato di queste pagine: si scrive a <a href="mailto:pzkko@yahoo.com">pzkko@yahoo.com</a> e si risponde.</p>
+            <a class="sb-riv-open-repo" href="https://github.com/albertoxpecchini/rivaltasulmincio" target="_blank" rel="noreferrer noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6a2 2 0 0 1 2-2h3.5l2 2.5H18a2 2 0 0 1 2 2V20a0 0 0 0 1 0 0H4Z"/></svg>
+              <code>albertoxpecchini/rivaltasulmincio</code>
+              <span class="sb-riv-open-badge">questo sito</span>
+            </a>
+          </div></div>
+        </div>
+
+        <figure class="sb-riv-cwall-wrap">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-cwall-pad">
+            <span class="sb-riv-cwall-occhiello"><span class="sb-chip-dot" aria-hidden="true"></span>Commit</span>
+            {{MURO_COMMIT}}
+            <figcaption class="sb-riv-cwall-cap">Il numero è quello vero di <code>albertoxpecchini/rivaltasulmincio</code>: lo conta il build dal repository, non è scritto a mano.</figcaption>
+          </div></div>
+        </figure>
+      </div>
+    </section>
+
+    {{AGG_BANNER}}

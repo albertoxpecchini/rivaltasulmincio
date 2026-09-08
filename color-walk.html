@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+<!-- Il vestito del mese. Inerte finché build.mjs non scrive data-stagione
+     su <html>: senza quell'attributo il foglio non tocca niente. -->
+<link rel="stylesheet" href="assets/stagioni.css">
 
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
@@ -55,23 +58,76 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <img class="sb-riv-brand-glyph" src="assets/favicon.svg" alt="" width="24" height="24" decoding="async">
           <span class="sb-nav-brand-name">Rivalta<span class="sb-riv-brand-tail"> sul Mincio</span></span>
         </a>
+        <!-- ── Cinque voci, cinque tendine ────────────────────────────────
+             Tredici indirizzi non stanno in una barra: o si accavallano o si
+             leggono uno per uno come una lista della spesa. Qui in barra ci
+             sono cinque parole, e ognuna apre la sua tendina con dentro le
+             pagine e una riga che dice cosa ci si trova.
+
+             Le tendine si aprono al passaggio del mouse e al focus da
+             tastiera — è CSS, quindi funzionano anche senza JavaScript. Il
+             clic (rivalta.js) serve a chi ha un dito invece di un puntatore,
+             e tiene aria-expanded in fase con quello che si vede.
+
+             Il fondo che scivola da una voce all'altra sta PRIMA dei tasti
+             perché nell'ordine di pittura deve finirci sotto. -->
         <div class="sb-nav-links">
-          <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
-               perché nell'ordine di pittura deve finirci sotto, ed è
-               aria-hidden perché non dice niente che l'attributo
-               aria-current sulla voce non dica già meglio. -->
           <span class="sb-nav-pill" aria-hidden="true"></span>
-          <a class="sb-nav-link" href="/paese">Il paese</a>
-          <a class="sb-nav-link" href="/storia">Storia</a>
-          <a class="sb-nav-link" href="/servizi">Servizi</a>
-          <a class="sb-nav-link" href="/attivita">Attività</a>
-          <a class="sb-nav-link" href="/mangiare">Mangiare</a>
-          <a class="sb-nav-link" href="/comunita">Comunità</a>
-          <a class="sb-nav-link" href="/muoversi">Muoversi</a>
-          <a class="sb-nav-link" href="/natura">Natura</a>
-          <a class="sb-nav-link" href="/eventi">Eventi</a>
-          <a class="sb-nav-link" href="/mappa">Mappa</a>
-          <a class="sb-nav-link" href="/dati">Dati</a>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-paese">Il paese<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-paese">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/paese"><span class="sb-riv-tendina-t">Il paese</span><span class="sb-riv-tendina-d">Anagrafica, demografia, monumenti, Messe</span></a>
+                <a href="/storia"><span class="sb-riv-tendina-t">Storia</span><span class="sb-riv-tendina-d">Da Ripalta matildica ai mestieri del fiume</span></a>
+                <a href="/comunita"><span class="sb-riv-tendina-t">Comunità</span><span class="sb-riv-tendina-d">Scuole, museo, associazioni, sport</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-servizi">Servizi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-servizi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/servizi"><span class="sb-riv-tendina-t">Servizi</span><span class="sb-riv-tendina-d">Comune, farmacia, rifiuti, fibra e 5G</span></a>
+                <a href="/attivita"><span class="sb-riv-tendina-t">Attività</span><span class="sb-riv-tendina-d">Negozi, uffici, bar e ristoranti</span></a>
+                <a href="/mangiare"><span class="sb-riv-tendina-t">Mangiare</span><span class="sb-riv-tendina-d">Si parte dal piatto, non dal locale</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-territorio">Territorio<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-territorio">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/muoversi"><span class="sb-riv-tendina-t">Muoversi</span><span class="sb-riv-tendina-d">Strade, parcheggi, autobus, ciclabili</span></a>
+                <a href="/natura"><span class="sb-riv-tendina-t">Natura</span><span class="sb-riv-tendina-d">Valli del Mincio, parchi, corsi d'acqua</span></a>
+                <a href="/mappa"><span class="sb-riv-tendina-t">Mappa</span><span class="sb-riv-tendina-d">I luoghi censiti, uno per uno</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-eventi">Eventi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-eventi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/eventi"><span class="sb-riv-tendina-t">Eventi</span><span class="sb-riv-tendina-d">Sagre, feste e ricorrenze del paese</span></a>
+                <a href="/color-walk"><span class="sb-riv-tendina-t">Color Walk</span><span class="sb-riv-tendina-d">La camminata di domenica 20 settembre</span></a>
+                <a href="/color-walk-regolamento"><span class="sb-riv-tendina-t">Regolamento</span><span class="sb-riv-tendina-d">Quote, percorso, come ci si iscrive</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-sito">Il sito<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina sb-riv-tendina--fine" id="tend-sito">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/aggiornamenti"><span class="sb-riv-tendina-t">Aggiornamenti</span><span class="sb-riv-tendina-d">Cosa è cambiato, in ordine di data</span></a>
+                <a href="/dati"><span class="sb-riv-tendina-t">Dati e fonti</span><span class="sb-riv-tendina-d">Da dove viene ogni numero del sito</span></a>
+                <a href="/#fatto-da"><span class="sb-riv-tendina-t">Chi l'ha fatto</span><span class="sb-riv-tendina-d">Una persona sola, e il codice in chiaro</span></a>
+              </div></div>
+            </div>
+          </div>
         </div>
         <div class="sb-nav-right">
           <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
@@ -84,12 +140,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
-          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Sito ideato, scritto e costruito da Alberto Pecchini" title="Tutto questo sito — testi, dati, codice — è costruito da Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
           </a>
 
@@ -99,27 +158,39 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </div>
       </div>
     </nav>
+    <!-- Il festone di stagione, appeso sotto la testata. Lo mette build.mjs
+         solo sulle pagine di stagione: sulle tre della Color Walk, che una
+         vernice ce l'hanno già, il segnaposto diventa vuoto. -->
     <div class="sb-menu-sheet" id="menu-sheet">
       <div class="sb-container">
         <nav class="sb-menu-nav" aria-label="Navigazione del sito">
+          <p class="sb-riv-menu-tit">Il paese</p>
           <a href="/paese">Il paese</a>
           <a href="/storia">Storia</a>
+          <a href="/comunita">Comunità</a>
+          <p class="sb-riv-menu-tit">Servizi</p>
           <a href="/servizi">Servizi</a>
           <a href="/attivita">Attività</a>
           <a href="/mangiare">Mangiare</a>
-          <a href="/comunita">Comunità</a>
+          <p class="sb-riv-menu-tit">Territorio</p>
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
-          <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
+          <p class="sb-riv-menu-tit">Eventi</p>
+          <a href="/eventi">Eventi</a>
+          <a href="/color-walk">Color Walk</a>
+          <a href="/color-walk-regolamento">Regolamento</a>
+          <p class="sb-riv-menu-tit">Il sito</p>
+          <a href="/aggiornamenti">Aggiornamenti</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/#fatto-da">Chi l'ha fatto</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -851,6 +922,34 @@ html.cw-anim .sb-cw-campo[data-stato="ok"] .sb-cw-segno-ok path {
   animation: sb-cw-apre 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .sb-cw-esito--neutro { display: block; background: var(--sb-surface-100); color: var(--sb-fg-light); }
+/* Il riquadro mentre si aspetta la funzione. Non è né un sì né un no, ed è
+   l'unico dei quattro che si muove: quel punto che pulsa in testa alla riga è
+   tutto quello che dice a chi guarda «sta ancora succedendo qualcosa» — che è
+   precisamente la cosa che non si sapeva, e per cui si premeva di nuovo.
+
+   Il movimento sparisce dove è stato chiesto di non vederne, insieme agli
+   altri, e allora resta il punto fermo: il riquadro si legge lo stesso. */
+.sb-cw-esito--attesa {
+  display: block;
+  background: var(--sb-surface-100);
+  border-color: var(--sb-border);
+  color: var(--sb-fg);
+}
+.sb-cw-esito--attesa::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background: var(--sb-brand);
+  vertical-align: 0.05em;
+  animation: sb-cw-batte 1.1s ease-in-out infinite;
+}
+@keyframes sb-cw-batte {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+}
 .sb-cw-esito--errore {
   display: block;
   background: color-mix(in srgb, var(--cr-rosso) 12%, transparent);
@@ -1049,6 +1148,7 @@ a.sb-cw-logo:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--sb
 @media (prefers-reduced-motion: reduce) {
   html:not(.rsm-motion) .sb-cw-min,
   html:not(.rsm-motion) .sb-cw-esito,
+  html:not(.rsm-motion) .sb-cw-esito--attesa::before,
   html:not(.rsm-motion) .sb-cw-conto-s,
   html:not(.rsm-motion) .sb-cw-segno-ok path,
   html:not(.rsm-motion) .sb-cw-tinte { animation: none !important; }
@@ -1059,6 +1159,7 @@ a.sb-cw-logo:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--sb
 }
 html.rsm-still .sb-cw-min,
 html.rsm-still .sb-cw-esito,
+html.rsm-still .sb-cw-esito--attesa::before,
 html.rsm-still .sb-cw-conto-s,
 html.rsm-still .sb-cw-tinte { animation: none; }
 html.rsm-still .sb-cw-avanz-fill,
@@ -1640,7 +1741,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
       <p>Se sei di una contrada, <strong>portane i colori</strong>: basta un dettaglio — un fazzoletto, un cappello, una fascia. Sulla maglia bianca ci sta benissimo, e camminare con la propria squadra è un pezzo del divertimento. È un invito, non un obbligo: non c'è nessuna gara fra contrade, e chi non ne ha una parte esattamente come gli altri.</p>
     </div>
 
-    <p class="sb-riv-cap sb-cw-su">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-link" href="/eventi#contrade">le contrade in /eventi<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+    <p class="sb-riv-cap sb-cw-su">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-inline" href="/eventi#contrade">le contrade in /eventi</a></p>
   </section>
 
   <section class="sb-container sb-riv-sec" id="dietro">
@@ -2414,7 +2515,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
        tasto che dicesse «vai al pagamento» a chi ha scelto i contanti
        prometterebbe una schermata che non arriva. Mentre la richiesta è in
        volo la scritta è un'altra e non si tocca. */
-    if (!inviando) {
+    if (!inviando && !inPausa) {
       testo(etichettaVai, comePaga() === "contanti"
         ? "Iscriviti — " + somma + " € da pagare al ritrovo"
         : "Vai al pagamento — " + somma + " €");
@@ -2641,10 +2742,20 @@ html.rsm-still .sb-cw-segno { transition: none; }
     );
   }
 
-  function chiudiModulo(testoEsito) {
+  /* Il tipo si può scegliere, e il predefinito resta quello di prima. Serve
+     per una ragione sola ma buona: l'iscrizione in contanti andata a buon
+     fine si vedeva grigia come un avviso qualunque, e chi ha appena mandato
+     il modulo ha bisogno di vedere un colore che dice «fatto».
+
+     La pagina ci si porta sopra solo se il modulo era stato mandato: questa
+     funzione la chiama anche l'avvio, quando le iscrizioni sono chiuse, e lì
+     uno scorrimento a pagina appena aperta sposterebbe sotto il naso una
+     pagina che nessuno ha ancora toccato. */
+  function chiudiModulo(testoEsito, tipo) {
     form.hidden = true;
     if (avanz) avanz.hidden = true;
-    mostra("neutro", testoEsito);
+    if (provatoAMandare) annuncia(tipo || "neutro", testoEsito);
+    else mostra(tipo || "neutro", testoEsito);
   }
 
   /* ══ Il ritorno dal pagamento ═══════════════════════════════════════════
@@ -2692,7 +2803,164 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
   var inviando = false;
   var inviato = false;
+  var inPausa = false;
   var provatoAMandare = false;
+
+  /* ══ La sigla del tentativo ═════════════════════════════════════════════
+     Due invii dello stesso identico modulo devono valere una iscrizione
+     sola, e a deciderlo non può essere questa pagina: la pagina è proprio
+     quella che non sa com'è andata — è per questo che chi compila ripreme.
+     Lo decide la funzione, e questa sigla è quello che le permette di
+     deciderlo: la stessa sigla vuol dire lo stesso modulo, e il numero della
+     fattura scende da lì. Il secondo invio trova il numero già preso e non
+     crea niente.
+
+     È fatta di due pezzi, e servono tutti e due.
+
+     La prima metà è a caso, nasce quando si comincia a compilare e vive in
+     sessionStorage: distingue questa scheda del browser da qualunque altra,
+     compresa quella di un'altra persona che sta compilando adesso.
+
+     La seconda metà è l'impronta di quello che si sta mandando. Serve al
+     caso opposto — chi annulla il pagamento, torna indietro, AGGIUNGE UN
+     FIGLIO e rimanda. Quello non è lo stesso modulo: è un'iscrizione da
+     venticinque euro dove prima ce n'era una da venti, e riusare la fattura
+     di prima vorrebbe dire tenere il vecchio conto sul registro e mostrargli
+     il nuovo alla cassa. Cambia un carattere in un campo, cambia l'impronta,
+     e nasce una fattura nuova come è giusto.
+
+     Venti caratteri in tutto — dodici di sessione e otto d'impronta — perché
+     venti sono quelli che entrano in un numero di fattura di PayPal dopo il
+     prefisso. */
+  var SIGLA_SESSIONE = "rsm-cw-sessione";
+  var sessioneOra = "";
+
+  function aCaso(quanti) {
+    var s = "";
+    try {
+      if (window.crypto && window.crypto.getRandomValues) {
+        var n = new Uint8Array(quanti);
+        window.crypto.getRandomValues(n);
+        for (var i = 0; i < n.length; i++) s += "0123456789abcdefghijklmnopqrstuvwxyz"[n[i] % 36];
+      }
+    } catch (e) {}
+    /* Senza crypto — browser vecchi, contesti non sicuri — si ripiega su
+       Math.random. Non è imprevedibile, e non deve esserlo: questa sigla non
+       protegge niente, distingue soltanto. */
+    while (s.length < quanti) s += Math.random().toString(36).slice(2);
+    return s.slice(0, quanti);
+  }
+
+  function siglaSessione() {
+    if (sessioneOra) return sessioneOra;
+    var letta = "";
+    try { letta = sessionStorage.getItem(SIGLA_SESSIONE) || ""; } catch (e) {}
+    sessioneOra = /^[a-z0-9]{12}$/.test(letta) ? letta : aCaso(12);
+    try { sessionStorage.setItem(SIGLA_SESSIONE, sessioneOra); } catch (e) {}
+    return sessioneOra;
+  }
+
+  /* Una nuova sessione: si chiama quando l'iscrizione è andata a buon fine,
+     così chi ne registra una seconda dallo stesso browser — un'altra
+     famiglia allo stesso computer, il quinto maggiorenne che non stava nel
+     modulo — parte con una sigla pulita invece di sbattere contro la
+     fattura di prima. */
+  function scordaSessione() {
+    sessioneOra = "";
+    try { sessionStorage.removeItem(SIGLA_SESSIONE); } catch (e) {}
+  }
+
+  /* L'impronta: FNV-1a a 32 bit, otto caratteri in base 36. Non è una firma
+     e non deve resistere a nessuno — deve solo cambiare quando cambia il
+     testo, che è tutto quello che serve per accorgersi che il modulo non è
+     più quello di prima. */
+  function impronta(testoDa) {
+    var h = 2166136261;
+    for (var i = 0; i < testoDa.length; i++) {
+      h ^= testoDa.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return ("00000000" + h.toString(36)).slice(-8);
+  }
+
+  /* ══ Quindici secondi fra un invio e l'altro ════════════════════════════
+     Il tasto si spegne mentre la richiesta è in volo, e non basta: chi non
+     vede tornare niente ricarica la pagina, e una pagina ricaricata ha il
+     tasto acceso e non si ricorda niente. È così che una sola persona ha
+     mandato tre volte lo stesso modulo in un minuto.
+
+     Quindi il momento dell'ultimo invio si scrive in localStorage, che una
+     ricaricata se la porta: per quindici secondi da lì, questo dispositivo
+     non manda un secondo modulo e dice perché. Non è una difesa contro
+     nessuno — chi vuole iscrivere due famiglie aspetta un quarto di minuto —
+     è un paraurti davanti al momento in cui è più facile sbagliare.
+
+     localStorage e non sessionStorage: la ricaricata dev'essere coperta
+     anche se il browser ha aperto la pagina in una scheda nuova. In
+     navigazione privata può non esserci, e allora resta la variabile qui
+     sotto, che copre almeno il doppio tocco senza ricaricare. */
+  var PAUSA_MS = 15000;
+  var CHIAVE_PAUSA = "rsm-cw-ultimo-invio";
+  var ultimoQui = 0;
+  var timerPausa = 0;
+
+  function ultimoInvio() {
+    var t = 0;
+    try { t = Number(localStorage.getItem(CHIAVE_PAUSA)) || 0; } catch (e) {}
+    return Math.max(t, ultimoQui);
+  }
+
+  function segnaInvio() {
+    ultimoQui = Date.now();
+    try { localStorage.setItem(CHIAVE_PAUSA, String(ultimoQui)); } catch (e) {}
+  }
+
+  /* Quanto manca, in secondi, o zero se non manca niente. Un tempo nel
+     futuro — l'orologio del telefono spostato indietro, il cambio dell'ora —
+     vale come «nessuna pausa»: meglio lasciar passare un doppione che
+     bloccare per sempre chi non ha fatto niente di male. */
+  function pausaResidua() {
+    var passati = Date.now() - ultimoInvio();
+    if (passati < 0 || passati >= PAUSA_MS) return 0;
+    return Math.ceil((PAUSA_MS - passati) / 1000);
+  }
+
+  /* ══ Dire come sta andando, dove si sta guardando ═══════════════════════
+     Il modulo è lungo e il riquadro degli esiti sta in cima: chi preme il
+     tasto in fondo, sul telefono, non lo vedrebbe mai. Dopo un invio la
+     pagina ci porta sopra — perché quello è il momento in cui l'unica cosa
+     che conta è cosa c'è scritto lì. */
+  function annuncia(tipo, messaggio) {
+    mostra(tipo, messaggio);
+    try {
+      esito.scrollIntoView({ behavior: dolce ? "smooth" : "auto", block: "center" });
+    } catch (e) {
+      try { esito.scrollIntoView(); } catch (e2) {}
+    }
+  }
+
+  /* Il conto alla rovescia della pausa. Il tasto resta spento e dice quanto
+     manca: un tasto spento e muto è quello che fa premere più forte. */
+  function aspettaEriaccendi(secondi) {
+    inPausa = true;
+    bottone.disabled = true;
+    testo(etichettaVai, "Aspetta " + secondi + "…");
+    annuncia("attesa",
+      "Un invio da questo dispositivo è partito pochi secondi fa e lo stiamo ancora registrando. " +
+      "Aspetta " + secondi + (secondi === 1 ? " secondo" : " secondi") + " prima di rimandare: " +
+      "premere di nuovo adesso non serve a niente, e in ogni caso non ti iscriviamo due volte. " +
+      "Se nel frattempo arriva la mail di conferma, sei a posto così.");
+
+    window.clearTimeout(timerPausa);
+    timerPausa = window.setTimeout(function () {
+      var ancora = pausaResidua();
+      if (ancora) return aspettaEriaccendi(ancora);
+      inPausa = false;
+      bottone.disabled = false;
+      mostra("neutro", "Puoi rimandare il modulo. Se nel frattempo è arrivata la mail di conferma, l'iscrizione è già registrata e non serve.");
+      programma();
+    }, 1000);
+  }
 
   /* ══ L'invio ════════════════════════════════════════════════════════════
      Il primo campo sbagliato si porta il fuoco: chi ha sbagliato non deve
@@ -2746,9 +3014,23 @@ html.rsm-still .sb-cw-segno { transition: none; }
       return;
     }
 
+    /* La pausa fra due invii. Sta qui e non prima dei controlli sui campi:
+       chi ha sbagliato una data deve poterla correggere e rimandare subito,
+       che non è il caso da cui ci si difende. Il caso da cui ci si difende è
+       il modulo giusto rimandato uguale perché non è tornata risposta. */
+    var restano = pausaResidua();
+    if (restano) {
+      aspettaEriaccendi(restano);
+      return;
+    }
+
     inviando = true;
     bottone.disabled = true;
     testo(etichettaVai, "Un momento…");
+    segnaInvio();
+    annuncia("attesa", comePaga() === "contanti"
+      ? "Stiamo registrando l'iscrizione. Ci vogliono pochi secondi: tieni aperta questa pagina finché non ti diciamo che è fatta — non ricaricare e non premere di nuovo."
+      : "Un momento, stiamo preparando il pagamento. Fra pochi secondi si apre PayPal: tieni aperta questa pagina e non premere di nuovo.");
 
     var adulti = [];
     for (var h = 0; h < righeA.length; h++) {
@@ -2770,24 +3052,38 @@ html.rsm-still .sb-cw-segno { transition: none; }
       });
     }
 
+    var dati = {
+      nome: PER_ID.nome.el.value,
+      cognome: PER_ID.cognome.el.value,
+      dataNascita: nascitaEl.value,
+      codiceFiscale: PER_ID.cf.el.value.toUpperCase().replace(/\s/g, ""),
+      email: PER_ID.email.el.value,
+      telefono: PER_ID.telefono.el.value,
+      note: CAMPO_NOTE.el.value,
+      consenso: consenso.checked,
+      pagamento: comePaga(),
+      sito: trappola ? trappola.value : "",
+      adulti: adulti,
+      minori: minori
+    };
+    /* La sigla si calcola qui, sull'oggetto già pronto: sessione più impronta
+       di quello che si sta mandando. Rimandare lo stesso modulo dà la stessa
+       sigla e quindi una sola iscrizione; cambiare un campo e rimandare dà
+       una sigla nuova, e un'iscrizione nuova come dev'essere. */
+    dati.tentativo = siglaSessione() + impronta(JSON.stringify(dati));
+
+    /* Quaranta secondi, non venticinque. La funzione ne ha sessanta, e il
+       browser deve mollare prima di lei: mollare dopo vorrebbe dire aspettare
+       una risposta che non arriverà più. Quaranta è tanto da aspettare, e per
+       questo mentre passano c'è il riquadro che dice cosa sta succedendo —
+       ma è sempre meno del guaio che c'era prima, quando la pagina si
+       arrendeva a venticinque e l'iscrizione andava a buon fine a trenta,
+       senza che nessuno dei due lo sapesse. */
     chiedi("/api/iscrizione-color-walk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome: PER_ID.nome.el.value,
-        cognome: PER_ID.cognome.el.value,
-        dataNascita: nascitaEl.value,
-        codiceFiscale: PER_ID.cf.el.value.toUpperCase().replace(/\s/g, ""),
-        email: PER_ID.email.el.value,
-        telefono: PER_ID.telefono.el.value,
-        note: CAMPO_NOTE.el.value,
-        consenso: consenso.checked,
-        pagamento: comePaga(),
-        sito: trappola ? trappola.value : "",
-        adulti: adulti,
-        minori: minori
-      })
-    }, 25)
+      body: JSON.stringify(dati)
+    }, 40)
       .then(function (res) {
         /* Iscrizioni chiuse fra il caricamento della pagina e l'invio: la
            funzione risponde 403 con `chiuse`, e qui si toglie il modulo invece
@@ -2808,14 +3104,24 @@ html.rsm-still .sb-cw-segno { transition: none; }
           inviando = false;
           inviato = true;
           scordaBozza();
+          scordaSessione();
           var insieme = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
           var quanto = ((res.d.totaleCent != null ? res.d.totaleCent : totaleCent()) / 100).toFixed(2).replace(".", ",") + " €";
+          /* `ripetuta` vuol dire che questo modulo era già arrivato e che la
+             funzione ha ritrovato la stessa iscrizione invece di farne una
+             seconda. Vale la pena dirlo: chi rimanda lo fa perché teme di non
+             essere iscritto, e «era già registrata» è precisamente la
+             risposta che sta cercando — più di «registrata», che gli
+             lascerebbe il dubbio di essersi iscritto due volte. */
           chiudiModulo(
-            "Iscrizione registrata" + (res.d.nome ? ", " + res.d.nome : "") + "!" + insieme +
+            (res.d.ripetuta
+              ? "Eri già iscritto" + (res.d.nome ? ", " + res.d.nome : "") + ": questo modulo lo avevamo già ricevuto e l'iscrizione è una sola."
+              : "Iscrizione registrata" + (res.d.nome ? ", " + res.d.nome : "") + "!") + insieme +
             " La quota di " + quanto + " si paga in contanti al banchetto delle iscrizioni in Piazza Chiesa: martedì 15 settembre dalle 17:30, o domenica 20 alle 15:30, prima della partenza. Porta la cifra giusta se puoi." +
             (res.d.spedita
               ? " Ti abbiamo mandato una mail con il riepilogo."
               : " La mail di riepilogo non è partita, ma l'iscrizione è registrata lo stesso: se vuoi una conferma scrivi a color-walk@rivaltasulmincio.it.")
+            , "ok"
           );
           return;
         }
@@ -2831,7 +3137,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
            PayPal che non risponde, la connessione che cade a metà. Lì
            riprovare è esattamente la cosa da fare. */
         if (res.d && res.d.errore && res.stato >= 400 && res.stato < 500) {
-          mostra("errore", maiuscola(res.d.errore) + ".");
+          annuncia("errore", maiuscola(res.d.errore) + ".");
           inviando = false;
           bottone.disabled = false;
           programma();
@@ -2847,9 +3153,25 @@ html.rsm-still .sb-cw-segno { transition: none; }
         location.href = res.d.url;
       })
       .catch(function (err) {
-        mostra("errore", err && err.scaduta
-          ? "La richiesta ci ha messo troppo e l'abbiamo interrotta. Non è stato addebitato niente: controlla la connessione e riprova."
-          : "Non è stato possibile registrare l'iscrizione (" + ((err && err.message) || "errore") + "). Riprova tra poco.");
+        /* Qui dentro non si sa com'è andata, ed è l'unica cosa onesta da
+           scrivere. La richiesta è partita: può essere caduta prima di
+           arrivare, e allora non è successo niente, oppure essere arrivata e
+           aver registrato tutto mentre tornava indietro la risposta che si è
+           persa. Il messaggio di prima diceva «riprova tra poco» come se
+           fosse il primo caso — e chi era nel secondo si è iscritto tre volte
+           dando retta a quella riga.
+
+           Adesso dice le due cose che servono davvero: guarda la posta, e se
+           proprio devi rimandare, rimanda pure — questo stesso modulo, con la
+           sua sigla, non ti registra una seconda volta. */
+        annuncia("errore",
+          (err && err.scaduta
+            ? "La risposta non è arrivata in tempo e abbiamo smesso di aspettarla. "
+            : "La richiesta si è interrotta (" + ((err && err.message) || "errore") + "). ") +
+          "L'iscrizione però potrebbe essere comunque registrata: guarda la posta fra un minuto — " +
+          "se arriva la mail di conferma sei iscritto e non devi fare altro. " +
+          "Se non arriva, rimanda pure questo stesso modulo senza cambiare niente: non ti iscriviamo due volte. " +
+          "Se hai pagato online, non ripagare senza aver prima scritto a color-walk@rivaltasulmincio.it.");
         inviando = false;
         bottone.disabled = false;
         programma();
@@ -2879,6 +3201,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
       .then(function (res) {
         if (!res.ok || !res.d || !res.d.pagato) throw new Error("non risulta pagata");
         scordaBozza();
+        scordaSessione();
         var insieme = res.d.persone > 1 ? " Siete iscritti in " + res.d.persone + "." : "";
         mostra("ok", "Iscrizione e pagamento ricevuti" + (res.d.nome ? ", " + res.d.nome : "") + ", grazie!" + insieme +
           " La conferma con la ricevuta ti arriva per email fra pochi istanti. Ci vediamo il 20 settembre.");
@@ -2917,6 +3240,9 @@ html.rsm-still .sb-cw-segno { transition: none; }
   </main>
 </div>
 
+<!-- La nota di stagione: perché il sito ha questi colori e da dove vengono
+     esattamente. La mette build.mjs sulle sole pagine di stagione; sulle tre
+     della Color Walk il segnaposto diventa vuoto. -->
 <footer class="sb-home sb-foot">
   <div class="sb-container sb-foot-wrap">
     <div class="sb-foot-grid">
@@ -2986,12 +3312,17 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
     <div class="sb-foot-bottom">
       <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
+      <!-- Il marchio non è una firma di cortesia: questo sito lo ha fatto una
+           persona sola, dalla prima riga di CSS all'ultimo dato controllato, e
+           accanto al logo c'è scritto. «Fonti» invece è sparito da qui: la
+           stessa voce sta già nella colonna Territorio qui sopra, e due
+           collegamenti allo stesso posto non sono una comodità. -->
       <div class="sb-foot-bottom-links">
-        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini — albertopecchini.it" title="albertopecchini.it">
           <img src="assets/loghi/ap.png" alt="Alberto Pecchini" width="18" height="18" decoding="async" loading="lazy">
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
-        <a class="sb-foot-by" href="/dati">Fonti</a>
+        <a class="sb-foot-by sb-riv-foot-fatto" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Ideato, scritto e costruito da <strong>Alberto Pecchini</strong></a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -3032,6 +3363,15 @@ html.rsm-still .sb-cw-segno { transition: none; }
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

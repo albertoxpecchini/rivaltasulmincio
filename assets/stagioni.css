@@ -1,0 +1,498 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STAGIONI — il sito si veste del mese, prefisso .sb-stag-
+
+   Un mese, un simbolo. Da settembre l'accento azzurro del design system vira
+   sulla tinta della stagione, un tralcio attraversa la testata e qualche
+   foglia scende sul fondale. Impaginato, caratteri, misure, margine sinistro,
+   prosa giustificata, smusso e vetro non si muovono di una virgola: cambia
+   l'accento, non il sito.
+
+   ── I colori non sono scelti a occhio ────────────────────────────────────
+   Rivalta non ha vigne: la sua terra fa cereali e meloni. Ma il Mincio che le
+   passa davanti scende dall'anfiteatro morenico del Garda, e lassù il vino
+   c'è. Le sei tinte di settembre sono le parole con cui l'articolo 6 dei due
+   disciplinari di zona descrive quei vini — «rosso rubino più o meno
+   intenso», «o granato», «tendente al cerasuolo con l'invecchiamento»,
+   «rosato brillante», «giallo paglierino», «sentore di viola o ribes».
+   Stanno scritte, con la loro denominazione e la fonte, nella nota in fondo
+   a ogni pagina di stagione. Il tema è una citazione, non un capriccio.
+
+   ── Regole del file ──────────────────────────────────────────────────────
+   · Niente qui è sempre attivo: ogni regola è appesa a html[data-stagione],
+     e quell'attributo lo scrive build.mjs solo sulle pagine di stagione. Le
+     tre della Color Walk hanno una vernice loro (.sb-cr) e restano fuori.
+   · Il tema non aggiunge strati al fondale: ritinge i due aloni che sb.css
+     ha già. Un terzo velo sopra due sarebbe una patina, non un colore.
+   · Il movimento segue le regole del resto del sito: si spegne con
+     prefers-reduced-motion e col tasto «ferma il movimento» (html.rsm-still).
+     In quel caso restano il colore e le foglie posate, ferme.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ SETTEMBRE · UVA ═════════════════════════════════════════════════════
+   ── Palette chiara ───────────────────────────────────────────────────────
+   I grigi del sito sono puri: R uguale a G uguale a B. A settembre si
+   scaldano di pochissimo — la carta di una pagina d'autunno non è bianco
+   di schermo. Lo scarto è di due o tre punti per canale: non si vede
+   guardando una superficie sola, si sente guardando la pagina intera.
+   I rapporti di contrasto del testo restano quelli di prima. */
+html[data-stagione="uva"] .sb-home {
+  --sb-bg: #fcfbf9;
+  --sb-bg-alt: #f8f6f2;
+  --sb-surface-75: #fbfaf7;
+  --sb-surface-100: #f6f3ef;
+  --sb-surface-200: #efebe5;
+  --sb-overlay: rgba(92, 30, 40, 0.05);
+  --sb-border: #e9e4dc;
+  --sb-border-strong: #dcd5c9;
+  --sb-border-stronger: #c8bfb0;
+  --sb-fg: #1a1614;
+  --sb-fg-light: #554d46;
+  --sb-fg-lighter: #726960;
+  --sb-fg-muted: #948a7d;
+
+  /* L'unica tinta, e il suo testo. Granato: il rosso che i disciplinari
+     danno al vino invecchiato. Sul chiaro il testo scende a #7a1f34 —
+     quasi 10:1 sul fondo, più di quanto chiedesse l'azzurro. */
+  --sb-brand: #8c2438;
+  --sb-brand-text: #7a1f34;
+
+  /* I bottoni tengono il rapporto del sistema: campo chiaro, inchiostro
+     scuro. Cambia la tinta del campo, non chi è chiaro e chi è scuro. */
+  --sb-btn-bg: hsl(348, 36%, 74%);
+  --sb-btn-bd: hsla(348, 55%, 30%, 0.75);
+  --sb-btn-bg-hover: hsl(348, 34%, 67%);
+  --sb-btn-fg: #180d10;
+
+  /* Anche le ombre hanno una temperatura: un'ombra grigia sotto una
+     lastra su carta calda si legge come sporco. */
+  --sb-shadow-card: 0 4px 20px -6px rgba(74, 30, 24, 0.13);
+  --sb-glass-spec: rgba(255, 252, 248, 0.74);
+  --sb-glass-rim: rgba(255, 250, 244, 0.56);
+  --sb-glass-shadow: 0 10px 34px -14px rgba(74, 26, 30, 0.22);
+  --sb-glass-sheen: rgba(255, 251, 246, 0.42);
+
+  /* ── Le sei parole ──────────────────────────────────────────────────
+     Una variabile per tinta, e il nome della variabile è la parola del
+     disciplinare. Le usano i pastelli della nota, il festone e le foglie
+     che scendono; --stag-oro è la sola aggiunta, ed è il paglierino
+     abbassato quanto basta per fare da TESTO su fondo chiaro. */
+  --stag-rubino: #9b1b30;      /* «rosso rubino più o meno intenso»      */
+  --stag-granato: #6b2029;     /* «…o granato»                            */
+  --stag-cerasuolo: #b8323f;   /* «tendente al cerasuolo con l'invecc.»   */
+  --stag-rosato: #e2879b;      /* «rosato brillante»                      */
+  --stag-paglierino: #d8bd60;  /* «giallo paglierino»                     */
+  --stag-viola: #6d4a8c;       /* «sentore di viola o ribes»              */
+  --stag-oro: #7d6a1c;         /* il paglierino, leggibile come testo     */
+  --stag-vite: #7c8a3e;        /* la foglia com'è a settembre             */
+  --stag-vite-oro: #96702e;    /* la foglia che ha già girato             */
+  --stag-nervo: rgba(252, 251, 249, 0.55);
+  --stag-luce: rgba(255, 255, 255, 0.34);
+}
+
+/* ── Palette scura ────────────────────────────────────────────────────────
+   Al buio i neri si scaldano come i bianchi, e le sei tinte salgono di
+   luminosità quel tanto che serve a restare tinte e non macchie. Il rosato
+   diventa il colore del testo d'accento: il granato, su nero, sparisce. */
+html[data-stagione="uva"].dark .sb-home {
+  --sb-bg: #161413;
+  --sb-bg-alt: #1b1817;
+  --sb-surface-75: #1f1c1a;
+  --sb-surface-100: #262220;
+  --sb-surface-200: #2c2825;
+  --sb-overlay: rgba(255, 236, 230, 0.065);
+  --sb-border: #2e2926;
+  --sb-border-strong: #3a342f;
+  --sb-border-stronger: #47403a;
+  --sb-fg: #f0ece7;
+  --sb-fg-light: #b9b1a8;
+  --sb-fg-lighter: #9a9188;
+  --sb-fg-muted: #746c64;
+
+  --sb-brand: #c9546c;
+  --sb-brand-text: #e79aa8;
+
+  --sb-btn-bg: hsl(348, 32%, 22%);
+  --sb-btn-bd: hsla(348, 70%, 68%, 0.32);
+  --sb-btn-bg-hover: hsl(348, 28%, 28%);
+  --sb-btn-fg: #ffffff;
+
+  --sb-shadow-card: 0 4px 24px -6px rgba(0, 0, 0, 0.6);
+  --sb-glass-spec: rgba(255, 244, 238, 0.11);
+  --sb-glass-rim: rgba(255, 244, 238, 0.09);
+  --sb-glass-shadow: 0 10px 38px -14px rgba(0, 0, 0, 0.68);
+  --sb-glass-sheen: rgba(255, 244, 238, 0.1);
+
+  --stag-rubino: #c94055;
+  --stag-granato: #a03648;
+  --stag-cerasuolo: #d75c6c;
+  --stag-rosato: #f0a8b7;
+  --stag-paglierino: #e3c977;
+  --stag-viola: #ab8ccb;
+  --stag-oro: #d9bf6b;
+  --stag-vite: #a3ad6f;
+  --stag-vite-oro: #d2a660;
+  --stag-nervo: rgba(22, 20, 19, 0.6);
+  --stag-luce: rgba(255, 245, 240, 0.2);
+}
+
+/* ── Le mille cose piccole ────────────────────────────────────────────────
+   Quello che non passa dai token e resterebbe azzurro: la selezione, il
+   cursore che lampeggia nel campo di ricerca, i quadratini dei moduli, i
+   pallini delle liste, la barra di scorrimento. Sono dettagli che nessuno
+   nomina e che tutti vedono. */
+html[data-stagione="uva"] .sb-home ::selection {
+  /* Una macchia di vino sulla carta, non un evidenziatore. */
+  background: hsla(348, 62%, 42%, 0.24);
+}
+html[data-stagione="uva"].dark .sb-home ::selection { background: hsla(348, 62%, 58%, 0.3); }
+html[data-stagione="uva"] .sb-home { accent-color: var(--sb-brand); caret-color: var(--sb-brand); }
+html[data-stagione="uva"] { scrollbar-color: var(--sb-border-stronger) transparent; }
+html[data-stagione="uva"] .sb-riv-li::marker { color: var(--stag-vite); }
+
+/* Il pallino che pulsa nelle pillole: il suo alone è scritto a mano in
+   sb.css e non passa dal token, quindi il battito va rifatto con la tinta
+   giusta. Stessa durata, stesso raggio: cambia solo il colore. */
+@keyframes sb-stag-ping {
+  0%   { box-shadow: 0 0 0 0 hsla(348, 60%, 42%, 0.5); }
+  70%  { box-shadow: 0 0 0 7px hsla(348, 60%, 42%, 0); }
+  100% { box-shadow: 0 0 0 0 hsla(348, 60%, 42%, 0); }
+}
+html[data-stagione="uva"] .sb-chip-dot { animation-name: sb-stag-ping; }
+
+/* Il numero di sezione passa in paglierino: resta muto — è una coordinata,
+   non un'informazione — ma è la coordinata della stagione. */
+html[data-stagione="uva"] .sb-riv-secnum { color: var(--stag-oro); }
+
+/* ── I due aloni del fondale ──────────────────────────────────────────────
+   Il fondale del sito è già fatto di due aloni che derivano lentamente in
+   controfase (sb.css, .sb-home::before e ::after), ed erano l'ultima
+   superficie azzurra grande abbastanza da contraddire tutto il resto. Qui
+   non se ne aggiunge un terzo: si ritingono quei due. Stessa geometria,
+   stesse due animazioni, stessa opacità — vinaccia quello che entra da
+   sinistra, paglierino quello che scende da destra.
+
+   Il footer resta fuori da sé: .sb-home.sb-foot::before ha già content:none
+   in sb.css, e qui si tocca solo lo sfondo. */
+html[data-stagione="uva"] .sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(344, 46%, 38%, 0.15), transparent 62%);
+}
+html[data-stagione="uva"] .sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(44, 58%, 48%, 0.13), transparent 60%);
+}
+html[data-stagione="uva"].dark .sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(344, 56%, 54%, 0.16), transparent 62%);
+}
+html[data-stagione="uva"].dark .sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(44, 62%, 58%, 0.11), transparent 60%);
+}
+
+/* ═══ IL FESTONE ══════════════════════════════════════════════════════════
+   Un tralcio che attraversa la testata, con foglie, grappoli e viticci
+   appesi. È SVG in pagina e non un'immagine ripetuta, perché ogni pendaglio
+   deve dondolare per conto suo: un festone in cui tutto oscilla nello stesso
+   istante non è un festone, è una texture che trema.
+
+   Sta fisso sotto la nav — che è sticky — e resta lì mentre la pagina
+   scorre. pointer-events:none: non intercetta niente, non è un ostacolo. */
+.sb-stag-festone {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  height: 50px;
+  z-index: 49;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.86;
+  animation: sb-stag-cala 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+.sb-stag-festone svg { display: block; }
+@keyframes sb-stag-cala {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 0.86; transform: none; }
+}
+
+/* Finché la pagina è in cima la nav non ha bordo e il tralcio è solo
+   appoggiato; appena qualcosa le scorre sotto, la barra prende ombra e il
+   tralcio si scurisce un filo — così si legge appeso alla barra e non
+   sospeso per aria. */
+.sb-nav--scrolled + .sb-stag-festone { opacity: 1; }
+.sb-stag-festone,
+.sb-nav--scrolled + .sb-stag-festone { transition: opacity 0.25s ease; }
+
+/* I pezzi del tralcio. Il colore lo dà il foglio e non l'attributo, così
+   segue il tema chiaro/scuro senza duplicare il disegno. */
+.sb-stag-tralcio { fill: none; stroke: var(--stag-vite); stroke-width: 1.9; stroke-linecap: round; }
+.sb-stag-verde { fill: var(--stag-vite); }
+.sb-stag-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
+.sb-stag-acino { fill: var(--stag-granato); }
+.sb-stag-luce { fill: var(--stag-luce); }
+
+/* A settembre i filari non sono di un verde solo: una foglia su tre ha già
+   girato, e un grappolo su due è più chiaro dell'altro. Due righe di
+   nth-of-type e il tralcio smette di sembrare un timbro ripetuto.
+   (<defs> non è un <g>, quindi la numerazione conta solo le campate.) */
+.sb-stag-festone svg > g:nth-of-type(3n + 2) .sb-stag-verde { fill: var(--stag-vite-oro); }
+.sb-stag-festone svg > g:nth-of-type(3n + 2) .sb-stag-tralcio { stroke: var(--stag-vite-oro); }
+.sb-stag-festone svg > g:nth-of-type(2n) .sb-stag-acino { fill: var(--stag-rubino); }
+
+/* Il dondolio. Il pendaglio ruota attorno al punto in cui è attaccato al
+   tralcio — che nel suo sistema di coordinate è l'origine — di poco più di
+   due gradi. Il ritardo negativo scalato sull'indice della campata fa
+   partire ognuno a un punto diverso del ciclo: è quello, e non l'ampiezza,
+   che toglie l'effetto marionetta. */
+@keyframes sb-stag-dondola {
+  0%, 100% { transform: rotate(-2.4deg); }
+  50%      { transform: rotate(2.4deg); }
+}
+.sb-stag-pend {
+  transform-origin: 0 0;
+  animation: sb-stag-dondola 5.6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.41s);
+}
+
+/* Sotto i 700px il tralcio non compare: in testa lo spazio è poco e
+   ruberebbe la prima riga di quello che si è venuti a leggere. */
+@media (max-width: 699.98px) { .sb-stag-festone { display: none; } }
+
+/* ═══ LE FOGLIE CHE SCENDONO ══════════════════════════════════════════════
+   Lo strato lo riempie assets/stagioni.js. Sta dietro al contenuto — .sb-main
+   ha z-index 1, questo 0 — quindi non copre mai una riga di testo.
+
+   Ogni particella è fatta di tre gusci annidati perché tre movimenti
+   diversi non stanno in una sola trasformazione: il guscio esterno CADE, il
+   secondo ONDEGGIA di lato, il terzo GIRA su sé stesso. Le foglie, in più,
+   si VOLTANO — una foglia che scende mostra a turno il dritto e il rovescio,
+   ed è quel lampo che la fa sembrare una foglia invece che un adesivo. */
+.sb-stag-cielo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sb-stag-p {
+  position: absolute;
+  top: 0;
+  left: var(--sl, 50%);
+  width: var(--sw, 20px);
+  height: var(--sw, 20px);
+  color: var(--sc, var(--stag-vite));
+  opacity: var(--so, 0.18);
+  will-change: transform;
+  animation: sb-stag-cade var(--sd, 30s) linear var(--sdl, 0s) infinite;
+}
+.sb-stag-x,
+.sb-stag-r { display: block; width: 100%; height: 100%; }
+.sb-stag-x { animation: sb-stag-ondeggia var(--sxd, 7s) ease-in-out var(--sxdl, 0s) infinite alternate; }
+.sb-stag-r { animation: sb-stag-gira var(--srd, 26s) linear infinite; }
+.sb-stag-p svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+.sb-stag-p--foglia svg { animation: sb-stag-volta var(--svd, 4.4s) ease-in-out infinite alternate; }
+
+@keyframes sb-stag-cade {
+  from { transform: translate3d(0, -18vh, 0); }
+  to   { transform: translate3d(0, 118vh, 0); }
+}
+@keyframes sb-stag-ondeggia {
+  from { transform: translateX(calc(var(--sx, 24px) * -1)); }
+  to   { transform: translateX(var(--sx, 24px)); }
+}
+@keyframes sb-stag-gira {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(var(--srr, 360deg)); }
+}
+@keyframes sb-stag-volta {
+  from { transform: perspective(150px) rotateY(-42deg); }
+  to   { transform: perspective(150px) rotateY(38deg); }
+}
+
+/* ═══ LA NOTA DI STAGIONE ═════════════════════════════════════════════════
+   Sopra il footer: perché l'uva, e da dove vengono i sei colori. Porta
+   .sb-home per avere i token, ma .sb-home vuol dire anche «pagina intera» —
+   min-height a tutto schermo e i due aloni del fondale — e nessuna delle due
+   cose le serve. Si tolgono qui, come fa il footer poco più su in sb.css. */
+.sb-stag-nota {
+  min-height: 0;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  padding: clamp(2.6rem, 5vw, 4rem) 0 clamp(1.4rem, 3vw, 2rem);
+}
+.sb-home.sb-stag-nota::before { content: none; }
+
+/* La nota non porta più la fascia dei sei colori in cima: i sei colori
+   stanno già scritti qui sotto uno per uno, con la parola del disciplinare
+   accanto, e una riga tinta sopra al titolo li anticipava senza dire niente
+   in più. Resta però da spegnere l'::after di .sb-home — è il secondo alone
+   del fondale, e qui non ci va comunque.
+
+   Il selettore riparte da html[data-stagione] non per abitudine ma per
+   necessità: la regola che ritinge l'alone è appesa a
+   html[data-stagione="uva"] .sb-home::after e vincerebbe per specificità. */
+html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
+
+/* Tutto parte dal margine sinistro e nessuna colonna si centra, come nel
+   resto del sito. La prosa si ferma a 46rem: è la misura della colonna di
+   lettura, e vale anche qui in fondo. */
+.sb-stag-nota-in { max-width: 72rem; }
+
+.sb-stag-occhiello {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--sb-brand-text);
+}
+.sb-stag-occhiello-i { flex: none; overflow: visible; }
+
+.sb-stag-nota-t {
+  margin: 0 0 0.9rem;
+  max-width: 46rem;
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--sb-fg);
+}
+.sb-stag-nota-p {
+  margin: 0 0 0.7rem;
+  max-width: 46rem;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: var(--sb-fg-light);
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.sb-stag-nota-p a { color: var(--sb-brand-text); text-decoration: none; }
+.sb-stag-nota-p a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Le sei tinte ─────────────────────────────────────────────────────────
+   Una riga per colore: il pastello, la parola testuale del disciplinare, e
+   sotto la denominazione da cui viene. Il pastello ha lo smusso del sito —
+   angolo in alto a sinistra e in basso a destra tagliati — perché anche un
+   quadratino di sei millimetri fa parte del sistema. */
+.sb-stag-tinte {
+  list-style: none;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem 1.6rem;
+  grid-template-columns: 1fr;
+  counter-reset: none;
+}
+@media (min-width: 620px) { .sb-stag-tinte { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .sb-stag-tinte { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sb-stag-tinta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+  align-items: center;
+  min-width: 0;
+}
+.sb-stag-tinta-q {
+  grid-row: 1 / 3;
+  width: 22px;
+  height: 22px;
+  background: var(--q);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  box-shadow: inset 0 0 0 1px rgba(128, 116, 108, 0.28);
+}
+.sb-stag-tinta-w {
+  font-size: 0.86rem;
+  line-height: 1.35;
+  color: var(--sb-fg);
+  font-style: italic;
+  text-wrap: pretty;
+}
+.sb-stag-tinta-d {
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: var(--sb-fg-muted);
+  text-wrap: pretty;
+}
+
+/* ── Le due zone ──────────────────────────────────────────────────────────
+   Le colline a monte e la pianura a valle: due colonne, non due schede con
+   un bordo attorno. Il filo verticale a sinistra è la sola decorazione, ed è
+   lo stesso segno della citazione (.sb-riv-cit) — solo con la tinta della
+   stagione al posto del grigio. */
+.sb-stag-zone {
+  display: grid;
+  gap: 1.1rem 2rem;
+  grid-template-columns: 1fr;
+  margin-top: 1.8rem;
+}
+@media (min-width: 780px) { .sb-stag-zone { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sb-stag-zona { padding-left: 0.9rem; border-left: 2px solid var(--stag-vite); min-width: 0; }
+.sb-stag-zona:nth-child(2) { border-left-color: var(--stag-granato); }
+.sb-stag-zona-t {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sb-fg-lighter);
+}
+.sb-stag-zona-d {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--sb-fg-light);
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.sb-stag-zona-d em { font-style: italic; color: var(--sb-fg); }
+
+.sb-stag-fonti {
+  margin: 1.6rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--sb-fg-muted);
+}
+.sb-stag-fonti a { color: var(--sb-fg-lighter); text-decoration: none; }
+.sb-stag-fonti a:hover { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Sotto i 480px la colonna è troppo stretta per la giustificazione: fra una
+   parola e l'altra si aprirebbero voragini. Stessa regola del resto del
+   sito, stessa soglia. */
+@media (max-width: 479.98px) {
+  .sb-stag-nota-p,
+  .sb-stag-zona-d { text-align: left; }
+}
+
+/* ═══ MOVIMENTO E STAMPA ══════════════════════════════════════════════════
+   Chi ha chiesto meno movimento — al sistema operativo o col tasto nella
+   barra — tiene il colore e perde la deriva. Le foglie restano dove il JS le
+   ha posate, il tralcio smette di dondolare e non cala più: è appeso e
+   basta. */
+html.rsm-still .sb-stag-festone,
+html.rsm-still .sb-stag-pend,
+html.rsm-still .sb-stag-p,
+html.rsm-still .sb-stag-x,
+html.rsm-still .sb-stag-r,
+html.rsm-still .sb-stag-p svg { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-stag-festone,
+  html:not(.rsm-motion) .sb-stag-pend,
+  html:not(.rsm-motion) .sb-stag-p,
+  html:not(.rsm-motion) .sb-stag-x,
+  html:not(.rsm-motion) .sb-stag-r,
+  html:not(.rsm-motion) .sb-stag-p svg { animation: none; }
+}
+
+/* Su carta il tema non serve a niente: il tralcio e le foglie sono
+   inchiostro speso per un fondale che sulla pagina stampata non c'è. La
+   nota invece è testo, e resta. */
+@media print {
+  .sb-stag-festone,
+  .sb-stag-cielo { display: none; }
+  .sb-stag-nota { border-top: 1px solid #ccc; }
+}

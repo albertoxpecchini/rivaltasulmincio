@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #7a1f34; } a:hover { color: #8c2438; }
+    .mono { font-family: "Roboto Mono", ui-monospace, monospace; }
+    .cut { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+  </style>
+</helmet>
+
+<!-- Le sei parole del disciplinare, e il colore che ognuna diventa. -->
+<div style="width: 1080px; background: #fcfbf9; color: #1a1614; padding: 44px 48px 48px;">
+
+  <!-- La batteria d'assaggio: la stessa fascia che sta in cima alla nota -->
+  <div style="height: 4px; margin-bottom: 26px; background: linear-gradient(90deg,
+      #9b1b30 0 16.667%, #6b2029 0 33.333%, #b8323f 0 50%,
+      #e2879b 0 66.667%, #d8bd60 0 83.333%, #6d4a8c 0 100%);"></div>
+
+  <span class="mono" style="font-size: 12px; color: #7d6a1c; font-weight: 700; letter-spacing: .1em;">SETTEMBRE · VENDEMMIA</span>
+  <h1 style="font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; margin: 8px 0 10px;">Sei parole, sei colori</h1>
+  <p style="font-size: 0.95rem; line-height: 1.65; color: #554d46; max-width: 46rem; margin: 0 0 34px; text-align: justify;">
+    Nessuna di queste tinte è stata scelta a occhio. Sono i colori che l'articolo 6 dei disciplinari
+    del <strong>Garda Colli Mantovani DOC</strong> e del <strong>Lambrusco Mantovano DOC</strong>
+    scrive, parola per parola, per descrivere i propri vini. Il nome della variabile CSS è la parola
+    del disciplinare.
+  </p>
+
+  <!-- Le sei tinte, chiaro e scuro affiancati -->
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 24px;">
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #9b1b30;"></div>
+        <div style="flex: 1; background: #c94055;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«rosso rubino più o meno intenso»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Lambrusco Mantovano DOC · rosso</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-rubino<br>#9b1b30 · #c94055</div>
+    </div>
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #6b2029;"></div>
+        <div style="flex: 1; background: #a03648;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«…o granato»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Lambrusco Mantovano DOC · rosso</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-granato<br>#6b2029 · #a03648</div>
+    </div>
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #b8323f;"></div>
+        <div style="flex: 1; background: #d75c6c;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«tendente al cerasuolo con l'invecchiamento»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Garda Colli Mantovani DOC · rosso</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-cerasuolo<br>#b8323f · #d75c6c</div>
+    </div>
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #e2879b;"></div>
+        <div style="flex: 1; background: #f0a8b7;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«rosato brillante»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Garda Colli Mantovani DOC · chiaretto</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-rosato<br>#e2879b · #f0a8b7</div>
+    </div>
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #d8bd60;"></div>
+        <div style="flex: 1; background: #e3c977;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«giallo paglierino»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Garda Colli Mantovani DOC · bianco</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-paglierino<br>#d8bd60 · #e3c977</div>
+    </div>
+
+    <div>
+      <div style="display: flex; height: 74px;">
+        <div class="cut" style="flex: 1; background: #6d4a8c;"></div>
+        <div style="flex: 1; background: #ab8ccb;"></div>
+      </div>
+      <div style="margin-top: 9px; font-size: 0.92rem; font-style: italic; line-height: 1.35;">«sentore di viola o ribes»</div>
+      <div style="font-size: 0.72rem; color: #948a7d; margin-top: 2px;">Lambrusco Mantovano DOC · odore</div>
+      <div class="mono" style="font-size: 0.68rem; color: #726960; margin-top: 6px;">--stag-viola<br>#6d4a8c · #ab8ccb</div>
+    </div>
+  </div>
+
+  <!-- Non vino: il verde della vite e l'oro leggibile -->
+  <h2 style="font-size: 1.05rem; font-weight: 600; margin: 40px 0 12px;">Le tre che non sono vino</h2>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <span class="cut" style="width: 42px; height: 42px; background: #7c8a3e; flex: none;"></span>
+      <div><div style="font-size: 0.88rem; font-weight: 600;">Foglia di vite</div><div class="mono" style="font-size: 0.68rem; color: #726960;">--stag-vite · tralcio e foglie</div></div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <span class="cut" style="width: 42px; height: 42px; background: #96702e; flex: none;"></span>
+      <div><div style="font-size: 0.88rem; font-weight: 600;">La foglia già girata</div><div class="mono" style="font-size: 0.68rem; color: #726960;">--stag-vite-oro · una su tre</div></div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <span class="cut" style="width: 42px; height: 42px; background: #7d6a1c; flex: none;"></span>
+      <div><div style="font-size: 0.88rem; font-weight: 600;">Paglierino leggibile</div><div class="mono" style="font-size: 0.68rem; color: #726960;">--stag-oro · numeri di sezione</div></div>
+    </div>
+  </div>
+
+  <!-- Mappatura sui token del sistema + contrasti -->
+  <h2 style="font-size: 1.05rem; font-weight: 600; margin: 40px 0 12px;">Dove finiscono, e cosa resta fermo</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px;">
+    <div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem;">
+        <tbody>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td class="mono" style="padding: 7px 0; color: #726960;">--sb-brand</td><td style="padding: 7px 0;">#8c2438 · #c9546c</td></tr>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td class="mono" style="padding: 7px 0; color: #726960;">--sb-brand-text</td><td style="padding: 7px 0;">#7a1f34 · #e79aa8</td></tr>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td class="mono" style="padding: 7px 0; color: #726960;">--sb-bg</td><td style="padding: 7px 0;">#fcfbf9 · #161413</td></tr>
+          <tr><td class="mono" style="padding: 7px 0; color: #726960;">--sb-btn-bg</td><td style="padding: 7px 0;">hsl(348 36% 74%)</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size: 0.78rem; color: #726960; line-height: 1.55; margin: 12px 0 0;">
+        Il testo d'accento sta a <strong>9,8:1</strong> sul chiaro e <strong>8,5:1</strong> sullo
+        scuro — sopra a dove stava l'azzurro.
+      </p>
+    </div>
+    <div>
+      <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">Titillium Web · Roboto Mono</span>
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">smusso 10 / 18 px</span>
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">colonna 46rem, giustificata</span>
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">tutto dal margine sinistro</span>
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">vetro: blur 20px, sat 150%</span>
+        <span class="cut" style="padding: 6px 12px; background: #efebe5; font-size: 0.8rem; color: #554d46;">gerarchia dei grigi</span>
+      </div>
+      <p style="font-size: 0.78rem; color: #726960; line-height: 1.55; margin: 14px 0 0;">
+        I grigi si scaldano di due o tre punti per canale: non si vede su una superficie sola, si
+        sente sulla pagina intera.
+      </p>
+    </div>
+  </div>
+
+  <p style="font-size: 0.72rem; color: #948a7d; margin: 30px 0 0;">
+    Fonti: <a href="https://www.agraria.org/vini/garda-colli-mantovani-doc.htm">Garda Colli Mantovani DOC — disciplinare, art. 6</a> ·
+    <a href="https://www.agraria.org/vini/lambrusco-mantovano-doc.htm">Lambrusco Mantovano DOC — disciplinare, art. 6</a>
+  </p>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1080,"height":1000}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

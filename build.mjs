@@ -21,6 +21,208 @@ const SITE = "https://www.rivaltasulmincio.it";
 const head = readFileSync("_build/head.html", "utf8");
 const foot = readFileSync("_build/foot.html", "utf8");
 
+/* ── Il vestito del mese ─────────────────────────────────────────────────
+   Un mese, un simbolo. Il sito si veste della stagione: l'accento azzurro
+   del design system vira sulla tinta del mese, un festone si appende alla
+   testata, qualche foglia scende sul fondale. Impaginato, caratteri, grigi,
+   margine sinistro e smusso non si muovono: cambia l'accento, non il sito.
+
+   Qui si cambia UNA riga. STAGIONE punta alla voce del mese in corso; a
+   ottobre si aggiunge la voce nuova e si sposta il puntatore. STAGIONE a
+   null spoglia il sito e non lascia in giro né classi né script.
+
+   Fuori restano le tre pagine della Color Walk: una vernice ce l'hanno già
+   (.sb-cr, le tinte delle polveri) e due stagioni addosso sono una di
+   troppo. Non è un elenco di nomi da tenere aggiornato — è lo stesso
+   riconoscimento che decide se caricare color-walk.js.
+
+   Il colore, il festone e la nota sono CSS e HTML: arrivano anche senza
+   JavaScript. Solo le foglie che scendono hanno bisogno di
+   assets/stagioni.js, ed è l'unico peso in più.
+
+   ── E i colori da dove vengono ────────────────────────────────────────
+   Non da un occhio che sceglie un viola che sta bene. Rivalta non ha
+   vigne — la sua terra fa cereali e meloni, sta scritto in /attivita — ma
+   il Mincio che le passa davanti scende dall'anfiteatro morenico del
+   Garda, e lassù il vino c'è. Le sei tinte di settembre sono le parole
+   con cui l'articolo 6 dei due disciplinari di zona descrive quei vini:
+   «rosso rubino più o meno intenso», «o granato», «tendente al cerasuolo
+   con l'invecchiamento», «rosato brillante», «giallo paglierino»,
+   «sentore di viola o ribes». Ognuna sta scritta nella nota in fondo alle
+   pagine, con la denominazione da cui viene e la fonte.
+
+   Questo è il senso di `tinte` e `zone` qui sotto: non sono decorazione,
+   sono la citazione. Cambiando mese cambiano le une e le altre. */
+const STAGIONI = {
+  uva: {
+    nome: "settembre · vendemmia",
+    occhiello: "Settembre · vendemmia",
+    titolo: "I colori di questo mese sono parole",
+    testo: [
+      `A Rivalta non ci sono vigne: qui la terra fa <a href="/attivita#economia">cereali e meloni</a>. Ma il fiume che le passa davanti scende dall'<strong>anfiteatro morenico del Garda</strong>, e lassù — una ventina di chilometri risalendo il Mincio — il vino si fa da molto prima che ci fosse un disciplinare a descriverlo.`,
+      `Le sei tinte di settembre non le ha scelte nessuno a occhio: sono i colori che i disciplinari di quei vini <strong>scrivono, parola per parola</strong>, all'articolo 6.`,
+    ],
+    /* Ogni tinta: la variabile del foglio, la parola testuale del
+       disciplinare, e da quale vino viene. L'ordine è quello in cui si
+       leggono in fondo alla pagina. */
+    tinte: [
+      { v: "rubino", parola: "rosso rubino più o meno intenso", dove: "Lambrusco Mantovano DOC · rosso" },
+      { v: "granato", parola: "…o granato", dove: "Lambrusco Mantovano DOC · rosso" },
+      { v: "cerasuolo", parola: "tendente al cerasuolo con l'invecchiamento", dove: "Garda Colli Mantovani DOC · rosso" },
+      { v: "rosato", parola: "rosato brillante", dove: "Garda Colli Mantovani DOC · chiaretto" },
+      { v: "paglierino", parola: "giallo paglierino", dove: "Garda Colli Mantovani DOC · bianco" },
+      { v: "viola", parola: "sentore di viola o ribes", dove: "Lambrusco Mantovano DOC · odore" },
+    ],
+    zone: [
+      {
+        t: "Le colline, risalendo il Mincio",
+        d: `<strong>Garda Colli Mantovani DOC</strong> e <strong>Alto Mincio IGT</strong> stanno sugli stessi sei comuni dell'anfiteatro morenico: Castiglione delle Stiviere, Cavriana, Monzambano, Ponti sul Mincio, Solferino, Volta Mantovana. Due di quei paesi stanno sul Mincio come Rivalta, solo più a monte. Uve: garganega e trebbiano per il bianco, merlot, rondinella e cabernet per il rosso e il chiaretto.`,
+      },
+      {
+        t: "La pianura, oltre l'Oglio e oltre il Po",
+        d: `<strong>Lambrusco Mantovano DOC</strong> in due sottozone: <em>Viadanese-Sabbionetano</em> fra Oglio e Po — Commessaggio, Dosolo, Gazzuolo, Sabbioneta, Viadana — e <em>Oltrepò Mantovano</em>, oltre il Po. Uve Lambrusco Viadanese (o Grappello Ruberti), Maestri, Marani e Salamino.`,
+      },
+    ],
+    fonti: [
+      { t: "Garda Colli Mantovani DOC — disciplinare, art. 6", u: "https://www.agraria.org/vini/garda-colli-mantovani-doc.htm" },
+      { t: "Lambrusco Mantovano DOC — disciplinare, art. 6", u: "https://www.agraria.org/vini/lambrusco-mantovano-doc.htm" },
+      { t: "Strada dei Vini e dei Sapori Mantovani", u: "https://www.mantovastrada.it/" },
+    ],
+    /* Il ritmo del festone: cosa pende da ogni campata. Scritto a mano e
+       non tirato a caso — il build deve dare lo stesso file a ogni giro,
+       o quindici pagine cambiano a ogni `node build.mjs` senza motivo. */
+    pendenti: ["foglia", "grappolo", "viticcio", "foglia", "grappolo", "foglia", "viticcio", "grappolo", "foglia", "viticcio", "grappolo", "foglia", "grappolo"],
+  },
+};
+const STAGIONE = "uva";
+const stagione = STAGIONE && STAGIONI[STAGIONE] ? STAGIONE : null;
+if (STAGIONE && !stagione) throw new Error(`STAGIONE = "${STAGIONE}" — voce assente da STAGIONI`);
+const stag = stagione ? STAGIONI[stagione] : null;
+
+/* ── Il festone ──────────────────────────────────────────────────────────
+   Un tralcio che attraversa la testata, con foglie, grappoli e viticci
+   appesi. NON è un'immagine ripetuta: è SVG in pagina, perché ogni pendaglio
+   deve poter dondolare per conto suo — un festone in cui tutto oscilla allo
+   stesso istante non è un festone, è una texture che trema.
+
+   Tredici campate da 200px coprono 2600px, cioè qualunque schermo; il
+   contenitore taglia il resto. L'arco di ogni campata parte e finisce a
+   y=4, così le campate si saldano fra loro senza giunte visibili, e tocca
+   il punto più basso a (100, 23.5), che è dove si attacca il pendaglio.
+
+   I disegni stanno una volta sola in <defs> e si ripetono con <use>: il
+   tralcio intero pesa poco più di una foto piccola, e il colore lo prende
+   dal foglio (classi, non attributi) così segue il tema chiaro/scuro.
+
+   La foglia è quella della vite: cinque lobi, seni profondi, nervature
+   che partono tutte dal picciolo. Il grappolo è conico, largo in cima e a
+   punta in fondo, con tre acini che prendono luce. Il viticcio è la
+   spirale con cui la vite si aggrappa. */
+function renderFestone(s) {
+  const CAMPATA = 200;
+  const N = s.pendenti.length;
+  const W = CAMPATA * N;
+
+  /* Le tre scale si ripetono ogni tre campate: due pendagli identici
+     accanto si riconoscono subito come copie, tre scale diverse no. */
+  const SCALE = [0.98, 0.86, 0.92];
+
+  const campate = s.pendenti
+    .map((p, i) => {
+      const x = i * CAMPATA;
+      const sc = SCALE[i % SCALE.length];
+      return (
+        `<g transform="translate(${x} 0)">` +
+        `<use href="#stag-arco"/>` +
+        `<g transform="translate(100 23.5) scale(${sc})">` +
+        `<g class="sb-stag-pend" style="--i:${i}"><use href="#stag-${p}"/></g>` +
+        `</g></g>`
+      );
+    })
+    .join("");
+
+  return (
+    `    <div class="sb-stag-festone" aria-hidden="true">\n` +
+    `      <svg width="${W}" height="50" viewBox="0 0 ${W} 50" fill="none" focusable="false">\n` +
+    `        <defs>\n` +
+    `          <path id="stag-arco" class="sb-stag-tralcio" d="M0 4C50 30 150 30 200 4"/>\n` +
+    /* Foglia di vite: picciolo, lembo a cinque lobi, cinque nervature. */
+    `          <g id="stag-foglia">` +
+    `<path class="sb-stag-tralcio" d="M0 0v4"/>` +
+    `<path class="sb-stag-verde" d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/>` +
+    `<path class="sb-stag-nervo" d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6"/>` +
+    `</g>\n` +
+    /* Grappolo conico: dieci acini che si stringono verso la punta, tre
+       con la luce addosso in alto a sinistra, da dove viene sempre. */
+    `          <g id="stag-grappolo">` +
+    `<path class="sb-stag-tralcio" d="M0 0v3.4"/>` +
+    `<g class="sb-stag-acino">` +
+    `<circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>` +
+    `<circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>` +
+    `<circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/>` +
+    `<circle cx="0.1" cy="20" r="3.2"/>` +
+    `</g>` +
+    `<g class="sb-stag-luce"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>` +
+    `</g>\n` +
+    /* Viticcio: la spirale con cui la vite si tiene. */
+    `          <g id="stag-viticcio">` +
+    `<path class="sb-stag-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/>` +
+    `</g>\n` +
+    `        </defs>\n` +
+    `        ${campate}\n` +
+    `      </svg>\n` +
+    `    </div>`
+  );
+}
+
+/* ── La nota di stagione ─────────────────────────────────────────────────
+   Sopra il footer, su tutte le pagine di stagione: cosa c'entra l'uva con
+   Rivalta, e da dove vengono esattamente i sei colori. Senza questa nota il
+   tema sarebbe un capriccio cromatico; con questa nota è una citazione, e si
+   può controllare. Le fonti sono in fondo, come dappertutto sul sito. */
+function renderNota(s) {
+  const tinte = s.tinte
+    .map(
+      (t) =>
+        `          <li class="sb-stag-tinta">\n` +
+        `            <span class="sb-stag-tinta-q" style="--q: var(--stag-${t.v})" aria-hidden="true"></span>\n` +
+        `            <span class="sb-stag-tinta-w">«${escape(t.parola)}»</span>\n` +
+        `            <span class="sb-stag-tinta-d">${escape(t.dove)}</span>\n` +
+        `          </li>`
+    )
+    .join("\n");
+
+  const zone = s.zone
+    .map(
+      (z) =>
+        `          <div class="sb-stag-zona">\n` +
+        `            <h3 class="sb-stag-zona-t">${escape(z.t)}</h3>\n` +
+        `            <p class="sb-stag-zona-d">${z.d}</p>\n` +
+        `          </div>`
+    )
+    .join("\n");
+
+  const fonti = s.fonti
+    .map((f) => `<a href="${f.u}" target="_blank" rel="noreferrer noopener">${escape(f.t)}</a>`)
+    .join(" · ");
+
+  return (
+    `<section class="sb-home sb-stag-nota" aria-labelledby="stag-nota-t">\n` +
+    `  <div class="sb-container sb-stag-nota-in">\n` +
+    `    <p class="sb-stag-occhiello">\n` +
+    `      <svg class="sb-stag-occhiello-i" width="13" height="17" viewBox="-12 0 24 24" aria-hidden="true"><g class="sb-stag-acino"><circle cx="-5.2" cy="5.4" r="2.9"/><circle cx="0.2" cy="5.4" r="2.9"/><circle cx="5.4" cy="5.4" r="2.9"/><circle cx="-2.6" cy="10.1" r="2.9"/><circle cx="2.8" cy="10.1" r="2.9"/><circle cx="0.1" cy="14.8" r="2.9"/></g><path class="sb-stag-tralcio" d="M0 0v2.6"/></svg>\n` +
+    `      ${escape(s.occhiello)}\n` +
+    `    </p>\n` +
+    `    <h2 class="sb-stag-nota-t" id="stag-nota-t">${escape(s.titolo)}</h2>\n` +
+    s.testo.map((p) => `    <p class="sb-stag-nota-p">${p}</p>\n`).join("") +
+    `    <ol class="sb-stag-tinte">\n${tinte}\n    </ol>\n` +
+    `    <div class="sb-stag-zone">\n${zone}\n    </div>\n` +
+    `    <p class="sb-stag-fonti">Fonti: ${fonti}</p>\n` +
+    `  </div>\n` +
+    `</section>\n`
+  );
+}
+
 /* ── Ultimo aggiornamento del sito ───────────────────────────────────────
    "Quando il sito è cambiato l'ultima volta" è la data dell'ultimo commit:
    scritta una volta qui e messa in testata, nel foglio del menu su schermo
@@ -84,7 +286,7 @@ const renderNews = () => {
             }${
               n.nota ? `\n            <p class="sb-riv-news-note">${escape(n.nota)}</p>` : ""
             }
-            <span class="sb-link sb-riv-news-go">Leggi su ${escape(n.testata)}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+            <span class="sb-link sb-riv-news-go">Leggi su ${escape(n.testata)}</span>
           </div></div>
         </a>`
     )
@@ -170,7 +372,294 @@ const shortcodes = (html) =>
         `${lat}, ${lon}`
       )
     )
+    .replace(/\{\{aperto:([a-z0-9-]+)\}\}/g, (_, id) => renderAperto(id))
     .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug));
+
+/* ── Gli aggiornamenti ────────────────────────────────────────────────────
+   Il registro dei commit non è un elenco di novità: dice «via un import
+   rimasto orfano» e «il build non si ferma più su un ritorno a capo», che a
+   chi cerca l'orario del mercato non servono a niente.
+
+   _build/aggiornamenti.json è la lista scritta a mano di quello che è
+   cambiato PER CHI LEGGE: un orario nuovo, una strada chiusa, una pagina che
+   prima non c'era. Una voce si aggiunge lì e compare in /aggiornamenti; se
+   una modifica non cambia niente per chi apre il sito, in quel file non ci
+   entra — è tutto il senso della pagina. */
+const AGGIORNAMENTI = JSON.parse(readFileSync("_build/aggiornamenti.json", "utf8"));
+
+const dataBreve = (iso) => {
+  const [a, m, g] = iso.split("-").map(Number);
+  return `${g} ${MESI_BREVI[m - 1]} ${a}`;
+};
+
+const renderAggiornamenti = () => {
+  const voci = [...AGGIORNAMENTI].sort((x, y) => (x.data < y.data ? 1 : x.data > y.data ? -1 : 0));
+  return (
+    `<ol class="sb-riv-crono">\n` +
+    voci
+      .map((v) => {
+        const chiave = v.chiave ? " sb-riv-crono-riga--chiave" : "";
+        const dove = v.dove
+          ? `\n        <a class="sb-link" href="${escape(v.dove)}">Vai a vedere</a>`
+          : "";
+        const voce = v.voce ? ` <span class="sb-riv-na">· ${escape(v.voce)}</span>` : "";
+        return (
+          `      <li class="sb-riv-crono-riga${chiave}">\n` +
+          `        <time class="sb-riv-crono-anno" datetime="${escape(v.data)}">${dataBreve(v.data)}</time>\n` +
+          `        <div class="sb-riv-crono-fatto">\n` +
+          `          <strong>${escape(v.titolo)}</strong>${voce}\n` +
+          `          <p>${escape(v.testo)}</p>${dove}\n` +
+          `        </div>\n` +
+          `      </li>`
+        );
+      })
+      .join("\n") +
+    `\n    </ol>`
+  );
+};
+
+/* ── Il muro dei commit ───────────────────────────────────────────────────
+   Il numero scritto coi quadratini, portato qui dalla sezione «Open source»
+   di albertopecchini.it — che a sua volta l'ha preso da supabase.com. Là il
+   fondale è un finto grafo delle contribuzioni dove le celle accese compongono
+   un numero; qui il numero è quello vero di questo repository: quanti commit
+   ci sono voluti per fare il sito.
+
+   Là è un componente React che monta 1.100 rettangoli nel browser di chi
+   legge. Qui non serve: il conteggio non cambia fra un build e l'altro, quindi
+   il muro esce già disegnato dal build ed è HTML statico come tutto il resto —
+   zero JavaScript, e funziona identico a script spenti.
+
+   Il carattere è cinque colonne per sette righe a cifra, un pixel di spazio
+   fra una e l'altra: la misura minima in cui una cifra resta una cifra —
+   sotto le cinque colonne lo zero e l'otto diventano lo stesso disegno.
+
+   ── La griglia si taglia sul numero, non viceversa ────────────────────────
+   Prima la griglia era fissa — 32 colonne per 16 righe — e il numero ci
+   veniva centrato dentro con una divisione intera. Ma 32 meno le 17 colonne
+   di un numero a tre cifre fa 15, che è dispari: restavano sette colonne di
+   margine da una parte e otto dall'altra, e il numero si leggeva storto senza
+   che si capisse perché. Adesso il margine è dichiarato — sette colonne per
+   lato, quattro righe sopra e sotto — e la griglia è quello che ne esce: il
+   numero sta esattamente in mezzo, a qualunque numero di cifre.
+
+   Il ritardo dell'accensione sta sulla COLONNA, non sulla cella: sono
+   centinaia di celle e uno `style` per ciascuna sarebbero centinaia di
+   attributi per un'onda che si vede uguale. Il fondo si apre da sinistra a
+   destra, e le celle del numero partono un po' dopo — così il numero emerge
+   dal rumore invece di nascerci dentro già acceso. */
+const COMMITS = (() => {
+  try {
+    return Number(execSync("git rev-list --count HEAD", { encoding: "utf8" }).trim()) || 0;
+  } catch {
+    return 0;
+  }
+})();
+
+const CIFRE = {
+  "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"],
+  "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+  "2": ["01110", "10001", "00001", "00110", "01000", "10000", "11111"],
+  "3": ["01110", "10001", "00001", "00110", "00001", "10001", "01110"],
+  "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"],
+  "5": ["11111", "10000", "11110", "00001", "00001", "10001", "01110"],
+  "6": ["01110", "10001", "10000", "11110", "10001", "10001", "01110"],
+  "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+  "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
+  "9": ["01110", "10001", "10001", "01111", "00001", "10001", "01110"],
+};
+
+const maschera = (testo) => {
+  const accese = new Set();
+  let x = 0;
+  for (const ch of testo) {
+    const g = CIFRE[ch];
+    if (g) {
+      for (let r = 0; r < g.length; r++) {
+        for (let c = 0; c < g[r].length; c++) if (g[r][c] === "1") accese.add(`${x + c},${r}`);
+      }
+    }
+    x += 6; // 5 di cifra + 1 di spazio
+  }
+  return accese;
+};
+
+const renderMuro = () => {
+  const CELLA = 3;
+  const VUOTO = 0.5;
+  const MARGINE_X = 7; // colonne di rumore per lato
+  const MARGINE_Y = 4; // righe di rumore sopra e sotto
+  const testo = String(COMMITS);
+  const acc = maschera(testo);
+
+  /* Il numero decide la griglia: larghezza delle cifre più il margine, due
+     volte. Nessuna divisione intera, nessun mezzo quadratino di scarto. */
+  const LARGO = testo.length * 6 - 1;
+  const COL = LARGO + MARGINE_X * 2;
+  const RIGHE = 7 + MARGINE_Y * 2;
+  const x0 = MARGINE_X;
+  const y0 = MARGINE_Y;
+
+  /* Rumore ripetibile: xorshift con seme fisso. Un fondale che cambia disegno
+     a ogni build è un fondale che si fa notare nei diff senza motivo. */
+  let seme = 0x9e3779b9;
+  const caso = () => {
+    seme ^= seme << 13;
+    seme ^= seme >>> 17;
+    seme ^= seme << 5;
+    return (seme >>> 0) / 0xffffffff;
+  };
+
+  const colonne = [];
+  for (let c = 0; c < COL; c++) {
+    const celle = [];
+    for (let r = 0; r < RIGHE; r++) {
+      const v = caso();
+      const on = acc.has(`${c - x0},${r - y0}`);
+      const lv = v < 0.45 ? 0 : v < 0.65 ? 1 : v < 0.8 ? 2 : v < 0.92 ? 3 : 4;
+      /* Misura e raggio non stanno qui: li mette il foglio di stile con le
+         proprietà geometriche SVG (width/height/rx valgono anche in CSS).
+         Centinaia di celle per tre attributi identici erano chilobyte di
+         pagina per dire cento volte la stessa cosa. Anche il livello è finito
+         nella classe, per lo stesso motivo. */
+      const n = (v) => String(Math.round(v * 10) / 10);
+      celle.push(
+        `<rect class="${on ? "on l" : "l"}${lv}" x="${n(c * (CELLA + VUOTO))}" y="${n(r * (CELLA + VUOTO))}"/>`
+      );
+    }
+    colonne.push(`<g style="--d:${(c * 0.02).toFixed(2)}s">${celle.join("")}</g>`);
+  }
+
+  const w = (COL * (CELLA + VUOTO) - VUOTO).toFixed(1);
+  const h = (RIGHE * (CELLA + VUOTO) - VUOTO).toFixed(1);
+  /* preserveAspectRatio resta quello di serie: il muro adesso sta dentro una
+     lastra sua e si vede tutto: ritagliarlo per riempire un riquadro voleva
+     dire mangiare via le colonne di bordo, e con loro la simmetria. */
+  return (
+    `<svg class="sb-riv-cwall" viewBox="0 0 ${w} ${h}" role="img" aria-label="${COMMITS} commit">` +
+    colonne.join("") +
+    `</svg>`
+  );
+};
+
+/* ── Il banner degli aggiornamenti in home ────────────────────────────────
+   Le ultime due voci del registro, in fondo alla home e sopra il footer. In
+   fondo alla pagina c'è di suo il momento in cui uno si chiede «e poi?»: è lì
+   che una riga di novità serve, non in mezzo alle altre. */
+const renderAggBanner = () => {
+  const voci = [...AGGIORNAMENTI]
+    .sort((x, y) => (x.data < y.data ? 1 : x.data > y.data ? -1 : 0))
+    .slice(0, 2);
+  if (!voci.length) return "";
+  return (
+    `<section class="sb-container sb-riv-aggban" aria-labelledby="aggban-tit">\n` +
+    `      <div class="sb-panel"><div class="sb-panel-inner sb-riv-aggban-pad">\n` +
+    `        <div class="sb-riv-aggban-testa">\n` +
+    `          <span class="sb-riv-aggban-occhiello" id="aggban-tit"><span class="sb-chip-dot" aria-hidden="true"></span>Cosa è cambiato</span>\n` +
+    `          <a class="sb-link" href="/aggiornamenti">Tutti gli aggiornamenti</a>\n` +
+    `        </div>\n` +
+    `        <ul class="sb-riv-aggban-lista">\n` +
+    voci
+      .map(
+        (v) =>
+          `          <li><time datetime="${escape(v.data)}">${dataBreve(v.data)}</time>` +
+          `<a href="${escape(v.dove || "/aggiornamenti")}">${escape(v.titolo)}</a></li>`
+      )
+      .join("\n") +
+    `\n        </ul>\n` +
+    `      </div></div>\n` +
+    `    </section>`
+  );
+};
+
+/* ── Gli orari di apertura ────────────────────────────────────────────────
+   _build/orari.json tiene gli orari in sintassi OpenStreetMap — «Tu-Su
+   19:00-22:30» — e da lì escono due cose che devono per forza dire lo stesso:
+   la riga leggibile scritta qui dentro la pagina, e il «aperto ora / chiuso»
+   che assets/orari.js calcola nel browser sull'ora di chi guarda.
+
+   Perché la stessa stringa e non due campi: un orario scritto due volte
+   diverge al primo cambiamento, e la versione sbagliata è sempre quella che
+   qualcuno legge prima di uscire di casa.
+
+   Senza JavaScript resta la riga degli orari, che è esattamente quello che
+   c'era prima del pallino: si perde il comodo, non l'informazione. */
+const orari = JSON.parse(readFileSync("_build/orari.json", "utf8"));
+
+const GG = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+const GG_IT = ["lu", "ma", "me", "gio", "ve", "sa", "do"];
+
+/* «Tu-Su» e «Sa,Su» diventano l'insieme dei giorni che nominano. */
+const giorniDi = (spec) => {
+  const dentro = new Set();
+  for (const pezzo of spec.split(",")) {
+    const [a, b] = pezzo.trim().split("-");
+    const i = GG.indexOf(a);
+    if (i < 0) throw new Error(`orari: giorno sconosciuto «${a}» in «${spec}»`);
+    if (b === undefined) { dentro.add(i); continue; }
+    const j = GG.indexOf(b);
+    if (j < 0) throw new Error(`orari: giorno sconosciuto «${b}» in «${spec}»`);
+    // Un intervallo può scavalcare la domenica (Sa-Tu): si gira in tondo.
+    for (let k = i; ; k = (k + 1) % 7) { dentro.add(k); if (k === j) break; }
+  }
+  return [...dentro].sort((a, b) => a - b);
+};
+
+/* E tornano indietro in italiano, richiusi in intervalli: 0..6 → «lu–ve»,
+   tutti e sette → «tutti i giorni». */
+const GG_IT_LUNGHI = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"];
+
+const giorniIt = (indici) => {
+  if (indici.length === 7) return "tutti i giorni";
+  // Un giorno solo si scrive per esteso: «venerdì 08:00–13:00» si legge, «ve
+  // 08:00–13:00» si decifra. Le abbreviazioni servono quando i giorni sono
+  // tanti e la riga deve stare in una cella di tabella.
+  if (indici.length === 1) return GG_IT_LUNGHI[indici[0]];
+  const blocchi = [];
+  for (const i of indici) {
+    const ultimo = blocchi[blocchi.length - 1];
+    if (ultimo && ultimo[1] === i - 1) ultimo[1] = i;
+    else blocchi.push([i, i]);
+  }
+  const pezzi = blocchi.map(([a, b]) =>
+    a === b ? GG_IT[a] : b === a + 1 ? `${GG_IT[a]} e ${GG_IT[b]}` : `${GG_IT[a]}–${GG_IT[b]}`
+  );
+  return pezzi.length > 1 ? `${pezzi.slice(0, -1).join(", ")} e ${pezzi[pezzi.length - 1]}` : pezzi[0];
+};
+
+const leggibile = (oh) => {
+  if (oh.trim() === "24/7") return "sempre aperto";
+  return oh
+    .split(";")
+    .map((regola) => {
+      const m = /^\s*([A-Za-z,\-\s]+?)\s+([\d:,\-\s]+)\s*$/.exec(regola);
+      if (!m) throw new Error(`orari: regola non riconosciuta «${regola.trim()}»`);
+      const ore = m[2]
+        .split(",")
+        .map((f) => {
+          const t = /^\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s*$/.exec(f);
+          if (!t) throw new Error(`orari: fascia non riconosciuta «${f.trim()}»`);
+          return `${t[1]}–${t[2]}`;
+        })
+        .join(" e ");
+      return `${giorniIt(giorniDi(m[1].trim()))} ${ore}`;
+    })
+    .join(" · ");
+};
+
+/* Il pallino nasce nascosto: lo accende assets/orari.js dopo aver calcolato
+   se in questo momento è aperto. Un «Aperto ora» scritto dal build sarebbe
+   vero solo nell'istante della build. */
+const renderAperto = (id) => {
+  const o = orari[id];
+  if (!o) throw new Error(`{{aperto:${id}}} — voce assente da _build/orari.json`);
+  return (
+    `<span class="sb-riv-ap" data-oh="${escape(o.oh)}">` +
+    `<span class="sb-riv-ap-stato" hidden></span>` +
+    `<span class="sb-riv-ap-ore" title="Orari — fonte: ${escape(o.fonte)}">${escape(leggibile(o.oh))}</span>` +
+    `</span>`
+  );
+};
 
 /* ── La mappa ─────────────────────────────────────────────────────────────
    I punti non si caricano a runtime: il dataset è già qui al momento del
@@ -536,7 +1025,7 @@ const renderMeteoOra = () => {
           <div class="sb-riv-ora-minis">
 ${mini}
           </div>
-          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio</a>
           <span class="sb-riv-ora-stato" data-meteo-stato="breve">Lettura in corso</span>
         </div></div>
       </aside>`;
@@ -973,6 +1462,55 @@ const sezioniDi = (html) => {
   return out;
 };
 
+/* ── Un'ancora per ogni titolo ────────────────────────────────────────────
+   Le pagine qui sono lunghe: /paese e /attivita si leggono a schermate, e
+   mandare a qualcuno «guarda gli orari delle Messe» ha voluto dire finora
+   mandargli l'intera pagina e fidarsi che scorresse fino in fondo.
+
+   Le sezioni un'ancora ce l'hanno già (#messe, #monumenti), i sotto-titoli
+   no. Qui ogni <h3> senza id ne riceve uno preso dal suo stesso testo, e
+   assets/rivalta.js ci appende il § che copia il collegamento.
+
+   L'id si scrive nel build e non nel browser di chi legge: un'ancora che
+   esiste solo se il JavaScript è arrivato è un'ancora che si rompe proprio
+   nel caso che conta — il link mandato a qualcun altro.
+
+   Gli <h2> restano scoperti apposta: stanno dentro una <section> che l'id ce
+   l'ha già, e due bersagli a un dito di distanza sarebbero due indirizzi per
+   lo stesso posto. Il § dell'h2 punta alla sezione che lo contiene. */
+const slugTitolo = (s) =>
+  senzaTag(s)
+    .toLowerCase()
+    .replace(/[àáâä]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i")
+    .replace(/[òóôö]/g, "o").replace(/[ùúûü]/g, "u").replace(/[ç]/g, "c")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+/* Un titolo lungo non fa un indirizzo lungo: si taglia a sessanta caratteri,
+   ma sull'ultimo trattino intero — «…strade-e-parco-chiusi», non
+   «…strade-e-parco-chiusi-da», che sembra una parola mangiata a metà. */
+const accorcia = (t) => (t.length <= 60 ? t : t.slice(0, 60).replace(/-[^-]*$/, ""));
+
+
+const ancore = (html) => {
+  const presi = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
+  return html.replace(/<h3\b([^>]*)>([\s\S]*?)<\/h3>/g, (tutto, attr, testo) => {
+    if (/\bid=/.test(attr)) return tutto;
+    // I titoli della rassegna stampa restano scoperti: ogni scheda è già
+    // tutta un collegamento all'articolo della testata, e un'ancora accanto
+    // sarebbe un secondo collegamento che porta da un'altra parte.
+    if (attr.includes("sb-riv-news-title")) return tutto;
+    const base = accorcia(slugTitolo(testo));
+    if (!base) return tutto;
+    // Due «Etimologia» nella stessa pagina non possono avere lo stesso id:
+    // il secondo diventa etimologia-2, e il collegamento resta univoco.
+    let id = base;
+    for (let n = 2; presi.has(id); n++) id = `${base}-${n}`;
+    presi.add(id);
+    return `<h3${attr} id="${id}">${testo}</h3>`;
+  });
+};
+
 /* Qualche parola in più a livello di pagina: l'occhiello (.sb-riv-lede) o il
    primo paragrafo. Non si mostra, si cerca soltanto. */
 const parolePagina = (html) => {
@@ -983,6 +1521,13 @@ const parolePagina = (html) => {
 
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
+
+/* Festone e nota sono identici su tutte le pagine di stagione: si compongono
+   una volta qui e si incollano quindici volte, invece di rifarli a ogni giro
+   del ciclo. Fuori stagione restano stringhe vuote e i due segnaposto si
+   sciolgono nel nulla. */
+const FESTONE = stag ? renderFestone(stag) : "";
+const NOTA = stag ? renderNota(stag) : "";
 
 /* ── Un nome, due cose ────────────────────────────────────────────────────
    Il JavaScript delle pagine sta dentro <script> in fondo ai frammenti, e non
@@ -1020,6 +1565,10 @@ for (const file of bodies) {
       .replace(/^<!--[\s\S]*?-->\s*/gm, "")
       .trim()
       .replace("{{NEWS}}", renderNews)
+      .replace("{{AGGIORNAMENTI}}", renderAggiornamenti)
+      .replace("{{AGG_BANNER}}", renderAggBanner)
+      .replace("{{MURO_COMMIT}}", renderMuro)
+      .replaceAll("{{COMMITS}}", String(COMMITS))
       .replace("{{MAPPA}}", renderMappa)
       .replace("{{VOGLIE}}", renderVoglie)
       .replace("{{LUOGHI}}", renderLuoghi)
@@ -1060,11 +1609,22 @@ for (const file of bodies) {
      servono. Le altre dodici non lo scaricano. */
   const conColorWalk = src.includes('class="sb-cr');
 
+  /* E il vestito del mese, che è l'altra faccia della stessa domanda: si
+     mette a tutte le pagine TRANNE quelle che una vernice ce l'hanno già. */
+  const conStagione = Boolean(stagione) && !conColorWalk;
+
+  /* E il conto dell'«aperto adesso»: lo scarica solo la pagina che almeno
+     un orario ce l'ha davvero. Si guarda il corpo già montato, non il
+     frammento: il segnaposto {{aperto:}} a quel punto è diventato markup. */
+  const conOrari = body.includes("sb-riv-ap");
+
   const scriptExtra =
     (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
     (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
     (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
-    (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "");
+    (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "") +
+    (conOrari ? `<script src="assets/orari.js"></script>\n` : "") +
+    (conStagione ? `<script src="assets/stagioni.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:
@@ -1098,9 +1658,23 @@ for (const file of bodies) {
       .replace(/\{\{OG_DESC\}\}/g, escape(desc))
       .replace("{{OG_IMAGE}}", ogImg)
       .replace("{{ROBOTS}}", robots)
+      /* L'attributo su <html> accende il foglio di stagione, e sta lì e non
+         nello script di avvio perché non dipende da niente che si sappia
+         solo nel browser: il mese lo decide il build. Il segnaposto del
+         festone si scioglie su TUTTE le pagine — vuoto dove non serve — o
+         resterebbe scritto in chiaro su quelle della Color Walk.
+
+         Anche il colore della barra del browser passa di stagione: su un
+         telefono la cornice attorno alla pagina è l'ultima cosa che
+         resterebbe del tema di prima. */
+      .replace('<html lang="it">', conStagione ? `<html lang="it" data-stagione="${stagione}">` : '<html lang="it">')
+      .replace('<meta name="theme-color" content="#fcfcfc">', conStagione ? '<meta name="theme-color" content="#fcfbf9">' : '<meta name="theme-color" content="#fcfcfc">')
+      .replace(/[ \t]*\{\{STAGIONE_FESTONE\}\}\r?\n/, conStagione ? `${FESTONE}\r\n` : "")
       .replace("{{HEAD}}", headExtra) +
-    `  <main class="sb-main" id="main">\n${body}\n  </main>\n` +
-    foot.replace("{{SCRIPTS}}", scriptExtra);
+    `  <main class="sb-main" id="main">\n${ancore(body)}\n  </main>\n` +
+    foot
+      .replace("{{SCRIPTS}}", scriptExtra)
+      .replace(/[ \t]*\{\{STAGIONE_NOTA\}\}\r?\n/, conStagione ? NOTA : "");
 
   /* La data dell'ultimo commit sta in testata e in fondo a ogni pagina, con
      tre forme: l'attributo `datetime` legge la macchina, la riga lunga si
@@ -1109,6 +1683,18 @@ for (const file of bodies) {
     .replace(/\{\{UPDATED_ISO\}\}/g, AGG_ISO)
     .replace(/\{\{UPDATED_LONG\}\}/g, AGG_LUNGO)
     .replace(/\{\{UPDATED_SHORT\}\}/g, AGG_BREVE);
+
+  /* La pagina 404 viene servita a QUALSIASI indirizzo sbagliato, e quindi
+     anche a /qualcosa/di/profondo: da lì «assets/sb.css» punterebbe a
+     /qualcosa/di/assets/sb.css e la pagina arriverebbe nuda, senza foglio di
+     stile e senza ricerca — l'unica pagina del sito che ha bisogno di essere
+     leggibile proprio quando qualcosa è andato storto. Solo per lei i
+     percorsi degli asset diventano assoluti.
+
+     Gli indirizzi interni (href="/paese") sono già assoluti e non c'entrano.
+     Vercel la serve da sé: un file 404.html nella radice è la pagina di
+     errore del sito, senza niente da configurare. */
+  if (page === "404") out = out.split('="assets/').join('="/assets/');
 
   writeFileSync(`${page}.html`, out);
 

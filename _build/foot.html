@@ -1,5 +1,9 @@
 </div>
 
+<!-- La nota di stagione: perché il sito ha questi colori e da dove vengono
+     esattamente. La mette build.mjs sulle sole pagine di stagione; sulle tre
+     della Color Walk il segnaposto diventa vuoto. -->
+{{STAGIONE_NOTA}}
 <footer class="sb-home sb-foot">
   <div class="sb-container sb-foot-wrap">
     <div class="sb-foot-grid">
@@ -69,12 +73,17 @@
 
     <div class="sb-foot-bottom">
       <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
+      <!-- Il marchio non è una firma di cortesia: questo sito lo ha fatto una
+           persona sola, dalla prima riga di CSS all'ultimo dato controllato, e
+           accanto al logo c'è scritto. «Fonti» invece è sparito da qui: la
+           stessa voce sta già nella colonna Territorio qui sopra, e due
+           collegamenti allo stesso posto non sono una comodità. -->
       <div class="sb-foot-bottom-links">
-        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini — albertopecchini.it" title="albertopecchini.it">
           <img src="assets/loghi/ap.png" alt="Alberto Pecchini" width="18" height="18" decoding="async" loading="lazy">
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
-        <a class="sb-foot-by" href="/dati">Fonti</a>
+        <a class="sb-foot-by sb-riv-foot-fatto" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Ideato, scritto e costruito da <strong>Alberto Pecchini</strong></a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="{{UPDATED_ISO}}" data-updated="{{UPDATED_ISO}}">{{UPDATED_LONG}}</time></span>
     </div>
@@ -115,6 +124,15 @@
       <svg data-icon-right width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
     </button>
   </div>
+</div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->

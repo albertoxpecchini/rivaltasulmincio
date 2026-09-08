@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #e79aa8; } a:hover { color: #f0a8b7; }
+    .cut { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+    .q { width: 22px; height: 22px; flex: none; clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); box-shadow: inset 0 0 0 1px rgba(128,116,108,.28); }
+  </style>
+</helmet>
+
+<!-- Tema scuro, e la nota di stagione che sta in fondo a ogni pagina. -->
+<div style="width: 1240px; background: #161413; color: #f0ece7; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; inset: 0; pointer-events: none; background:
+      radial-gradient(58rem 32rem at 16% -8%, hsla(344,56%,54%,0.16), transparent 62%),
+      radial-gradient(52rem 30rem at 88% 2%, hsla(44,62%,58%,0.11), transparent 60%);"></div>
+  <div style="position: absolute; inset: 0; opacity: .7; pointer-events: none;
+      background: linear-gradient(#2e2926 1px, transparent 1px) 0 0 / 64px 64px,
+                  linear-gradient(90deg, #2e2926 1px, transparent 1px) 0 0 / 64px 64px;
+      -webkit-mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
+      mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);"></div>
+
+  <!-- NAV -->
+  <div style="position: relative; display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 44px; background: rgba(22,20,19,0.92); backdrop-filter: blur(10px) saturate(140%); border-bottom: 1px solid #2e2926;">
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.98rem; font-weight: 500;">
+      <span style="width: 24px; height: 24px; display: grid; place-items: center; background: #0e9fdb; color: #fff;" class="cut">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9c4 3 12-3 16 0"/><path d="M4 15c4 3 12-3 16 0"/></svg>
+      </span>
+      Rivalta sul Mincio
+    </div>
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14px; color: #b9b1a8; margin-left: 60px;">
+      <span>Il paese</span><span>Servizi</span><span>Territorio</span><span>Eventi</span><span>Il sito</span>
+    </div>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9a9188;">
+      <span style="width:6px;height:6px;border-radius:50%;background:#c9546c;"></span>agg. oggi
+    </div>
+  </div>
+
+  <!-- FESTONE -->
+  <div style="position: relative; height: 50px; overflow: hidden;">
+    <svg width="1240" height="50" viewBox="0 0 1240 50" fill="none" style="display:block;">
+      <defs>
+        <path id="da" d="M0 4C50 30 150 30 200 4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+        <g id="dfo">
+          <path d="M0 0v4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/>
+          <path d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6" fill="none" stroke="#161413" stroke-width=".8" stroke-linecap="round" opacity=".6"/>
+        </g>
+        <g id="dgr">
+          <path d="M0 0v3.4" fill="none" stroke="#a3ad6f" stroke-width="1.9" stroke-linecap="round"/>
+          <g>
+            <circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>
+            <circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>
+            <circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/><circle cx="0.1" cy="20" r="3.2"/>
+          </g>
+          <g fill="rgba(255,245,240,.2)"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>
+        </g>
+        <g id="dvi"><path d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0" fill="none" stroke-width="1.9" stroke-linecap="round"/></g>
+      </defs>
+      <g stroke="#a3ad6f"><use href="#da" x="0"/></g>
+      <g transform="translate(100 23.5) scale(.98)" fill="#a3ad6f" stroke="#a3ad6f"><use href="#dfo"/></g>
+      <g stroke="#d2a660"><use href="#da" x="200"/></g>
+      <g transform="translate(300 23.5) scale(.86)" fill="#c94055"><use href="#dgr"/></g>
+      <g stroke="#a3ad6f"><use href="#da" x="400"/></g>
+      <g transform="translate(500 23.5) scale(.92)" stroke="#a3ad6f"><use href="#dvi"/></g>
+      <g stroke="#a3ad6f"><use href="#da" x="600"/></g>
+      <g transform="translate(700 23.5) scale(.98)" fill="#a3ad6f" stroke="#a3ad6f"><use href="#dfo"/></g>
+      <g stroke="#d2a660"><use href="#da" x="800"/></g>
+      <g transform="translate(900 23.5) scale(.86)" fill="#a03648"><use href="#dgr"/></g>
+      <g stroke="#a3ad6f"><use href="#da" x="1000"/></g>
+      <g transform="translate(1100 23.5) scale(.92)" fill="#d2a660" stroke="#d2a660"><use href="#dfo"/></g>
+      <g stroke="#a3ad6f"><use href="#da" x="1200"/></g>
+    </svg>
+  </div>
+
+  <!-- Un pezzo di pagina -->
+  <div style="position: relative; padding: 46px 44px 40px;">
+    <span style="display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; color: #d9bf6b; margin-bottom: 0.5rem;">01 — Inquadramento</span>
+    <h1 style="margin: 0 0 12px; font-size: 2.4rem; font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;">Il paese, <span style="color: #e79aa8;">in ogni suo dato</span></h1>
+    <p style="margin: 0 0 22px; max-width: 46rem; font-size: 0.98rem; line-height: 1.6; color: #b9b1a8; text-align: justify;">
+      Al buio i neri si scaldano come i bianchi, e le sei tinte salgono di luminosità quel tanto
+      che serve a restare tinte e non macchie. Il testo d'accento passa al rosato: il granato, su
+      nero, sparirebbe.
+    </p>
+    <div style="display: flex; gap: 10px;">
+      <span style="padding: 11px 20px; background: hsl(348,32%,22%); border: 1px solid hsla(348,70%,68%,.32); color: #fff; font-weight: 600; font-size: 14px;" class="cut">Comincia dal paese</span>
+      <span style="padding: 11px 20px; border: 1px solid #2e2926; background: #1f1c1a; color: #f0ece7; font-weight: 600; font-size: 14px;" class="cut">Dati e fonti</span>
+    </div>
+  </div>
+
+  <!-- ── LA NOTA DI STAGIONE, in fondo a ogni pagina ── -->
+  <div style="position: relative; padding: 46px 44px 40px;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,
+        #c94055 0 16.667%, #a03648 0 33.333%, #d75c6c 0 50%,
+        #f0a8b7 0 66.667%, #e3c977 0 83.333%, #ab8ccb 0 100%);"></div>
+
+    <p style="display: inline-flex; align-items: center; gap: 0.45rem; margin: 0 0 0.55rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; color: #e79aa8;">
+      <svg width="13" height="17" viewBox="-12 0 24 24" fill="#e79aa8" style="overflow:visible"><circle cx="-5.2" cy="5.4" r="2.9"/><circle cx="0.2" cy="5.4" r="2.9"/><circle cx="5.4" cy="5.4" r="2.9"/><circle cx="-2.6" cy="10.1" r="2.9"/><circle cx="2.8" cy="10.1" r="2.9"/><circle cx="0.1" cy="14.8" r="2.9"/><path d="M0 0v2.6" stroke="#a3ad6f" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>
+      Settembre · vendemmia
+    </p>
+    <h2 style="margin: 0 0 0.9rem; max-width: 46rem; font-size: 1.8rem; font-weight: 400; letter-spacing: -0.02em; line-height: 1.2;">I colori di questo mese sono parole</h2>
+    <p style="margin: 0 0 0.7rem; max-width: 46rem; font-size: 0.94rem; line-height: 1.65; color: #b9b1a8; text-align: justify;">
+      A Rivalta non ci sono vigne: qui la terra fa <a href="#">cereali e meloni</a>. Ma il fiume che
+      le passa davanti scende dall'<strong style="color:#f0ece7">anfiteatro morenico del Garda</strong>,
+      e lassù — una ventina di chilometri risalendo il Mincio — il vino si fa da molto prima che ci
+      fosse un disciplinare a descriverlo.
+    </p>
+    <p style="margin: 0 0 0.7rem; max-width: 46rem; font-size: 0.94rem; line-height: 1.65; color: #b9b1a8; text-align: justify;">
+      Le sei tinte di settembre non le ha scelte nessuno a occhio: sono i colori che i disciplinari
+      di quei vini <strong style="color:#f0ece7">scrivono, parola per parola</strong>, all'articolo 6.
+    </p>
+
+    <ol style="list-style: none; margin: 1.6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0.85rem 1.6rem;">
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #c94055;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«rosso rubino più o meno intenso»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Lambrusco Mantovano DOC · rosso</span>
+      </li>
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #a03648;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«…o granato»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Lambrusco Mantovano DOC · rosso</span>
+      </li>
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #d75c6c;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«tendente al cerasuolo con l'invecchiamento»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Garda Colli Mantovani DOC · rosso</span>
+      </li>
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #f0a8b7;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«rosato brillante»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Garda Colli Mantovani DOC · chiaretto</span>
+      </li>
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #e3c977;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«giallo paglierino»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Garda Colli Mantovani DOC · bianco</span>
+      </li>
+      <li style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.6rem; align-items: center;">
+        <span class="q" style="grid-row: 1/3; background: #ab8ccb;"></span>
+        <span style="font-size: 0.86rem; font-style: italic; line-height: 1.35;">«sentore di viola o ribes»</span>
+        <span style="font-size: 0.7rem; color: #746c64;">Lambrusco Mantovano DOC · odore</span>
+      </li>
+    </ol>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.1rem 2rem; margin-top: 1.8rem;">
+      <div style="padding-left: 0.9rem; border-left: 2px solid #a3ad6f;">
+        <h3 style="margin: 0 0 0.35rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #9a9188;">Le colline, risalendo il Mincio</h3>
+        <p style="margin: 0; font-size: 0.86rem; line-height: 1.6; color: #b9b1a8; text-align: justify;"><strong style="color:#f0ece7">Garda Colli Mantovani DOC</strong> e <strong style="color:#f0ece7">Alto Mincio IGT</strong> stanno sugli stessi sei comuni dell'anfiteatro morenico: Castiglione delle Stiviere, Cavriana, Monzambano, Ponti sul Mincio, Solferino, Volta Mantovana. Due di quei paesi stanno sul Mincio come Rivalta, solo più a monte.</p>
+      </div>
+      <div style="padding-left: 0.9rem; border-left: 2px solid #a03648;">
+        <h3 style="margin: 0 0 0.35rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #9a9188;">La pianura, oltre l'Oglio e oltre il Po</h3>
+        <p style="margin: 0; font-size: 0.86rem; line-height: 1.6; color: #b9b1a8; text-align: justify;"><strong style="color:#f0ece7">Lambrusco Mantovano DOC</strong> in due sottozone: <em style="color:#f0ece7">Viadanese-Sabbionetano</em> fra Oglio e Po e <em style="color:#f0ece7">Oltrepò Mantovano</em>, oltre il Po. Uve Lambrusco Viadanese (o Grappello Ruberti), Maestri, Marani e Salamino.</p>
+      </div>
+    </div>
+
+    <p style="margin: 1.6rem 0 0; font-size: 0.72rem; line-height: 1.6; color: #746c64;">
+      Fonti: <a href="https://www.agraria.org/vini/garda-colli-mantovani-doc.htm" style="color:#9a9188">Garda Colli Mantovani DOC — disciplinare, art. 6</a> ·
+      <a href="https://www.agraria.org/vini/lambrusco-mantovano-doc.htm" style="color:#9a9188">Lambrusco Mantovano DOC — disciplinare, art. 6</a> ·
+      <a href="https://www.mantovastrada.it/" style="color:#9a9188">Strada dei Vini e dei Sapori Mantovani</a>
+    </p>
+  </div>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1240,"height":900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

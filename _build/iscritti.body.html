@@ -149,6 +149,7 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 .sb-is-corpo[hidden],
 .sb-is-min[hidden],
 .sb-is-incassa[hidden],
+.sb-is-piu[hidden],
 .sb-is-conteggio[hidden] { display: none; }
 
 /* ── La porta ──────────────────────────────────────────────────────────────
@@ -449,6 +450,24 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
 .sb-is-corpo { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px solid var(--sb-border); }
 
+/* I due tasti in fondo alla scheda aperta. Piccoli e separati da una riga:
+   stanno sotto i dati, e non devono somigliare al tasto del contante — che è
+   quello che si preme di corsa — né gareggiare con lui per l'occhio.
+   Da sinistra come tutto il resto della pagina. */
+.sb-is-piu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--sb-border);
+}
+/* Il tasto che toglie si distingue solo da fermo appena, e si scopre al
+   passaggio: un rosso pieno in fondo a trecento schede sarebbe un elenco che
+   sembra pieno di allarmi. */
+.sb-is-piu-no { color: var(--cr-rosso, #c0392b); }
+.sb-is-piu-no:hover { border-color: var(--cr-rosso, #c0392b); }
+
 /* Etichetta e valore su due colonne fisse, non a flex: così i valori di tutte
    le righe di tutte le schede stanno su una sola verticale, e l'occhio che
    cerca un codice fiscale scende dritto invece di andarlo a ripescare riga
@@ -679,7 +698,7 @@ html.rsm-still .sb-is-frec { transition: none; }
   .sb-home::before, .sb-home::after { display: none !important; }
 
   .sb-nav, .sb-foot, .sb-ctl,
-  .sb-is-comandi, .sb-is-porta, .sb-is-incassa, .sb-is-frec, .sb-is-nota,
+  .sb-is-comandi, .sb-is-porta, .sb-is-incassa, .sb-is-piu, .sb-is-frec, .sb-is-nota,
   .sb-is-esito { display: none !important; }
   .sb-main { padding: 0 !important; }
   .sb-is .sb-container { max-width: none !important; padding: 0 !important; }
@@ -1135,6 +1154,14 @@ html.rsm-still .sb-is-frec { transition: none; }
       corpo.appendChild(ul);
     }
 
+    /* I due gesti che si fanno di rado e con la testa: rimandare la ricevuta
+       a chi non l'ha ricevuta, e togliere di mezzo un doppione. Stanno in
+       fondo alla scheda aperta e non fuori come il tasto del contante,
+       perché sono l'opposto di quello: quello si preme di corsa cento volte
+       la mattina del 20, questi si premono guardando bene quale riga si ha
+       davanti. */
+    corpo.appendChild(comandiDi(i));
+
     inner.appendChild(corpo);
 
     /* Il tasto del contante: fuori dalla testata premibile, e visibile senza
@@ -1343,6 +1370,112 @@ html.rsm-still .sb-is-frec { transition: none; }
   }
 
 
+
+
+  /* ══ Rimandare la ricevuta, e togliere un doppione ══════════════════════
+     Due tasti in fondo a ogni scheda aperta. Nascono dallo stesso guasto: una
+     persona ha mandato tre volte lo stesso modulo perché non le tornava
+     indietro niente, si è ritrovata in elenco tre volte e senza nemmeno una
+     mail. Rimediare voleva dire entrare nel pannello di PayPal e cercare a
+     mano tre fatture fra le altre, e la mail non c'era modo di rifarla
+     partire in nessun modo.
+
+     Il modulo adesso i doppioni non li fa più — se ne occupa la sigla del
+     tentativo, in /api/iscrizione-color-walk — ma i tre di quella volta
+     restano lì, e resta il caso della mail che non arriva, che dipende da
+     caselle e filtri su cui non abbiamo nessuna presa. */
+  function comandiDi(i) {
+    var riga = document.createElement("div");
+    riga.className = "sb-is-piu";
+
+    var chi = (i.nome + " " + i.cognome).trim() || "questa iscrizione";
+
+    var rimanda = document.createElement("button");
+    rimanda.type = "button";
+    rimanda.className = "sb-btn sb-btn--secondary sb-btn--sm sb-is-piu-t";
+    rimanda.textContent = "Rimanda la ricevuta";
+    rimanda.addEventListener("click", function () { rimandaRicevuta(i, rimanda, chi); });
+    riga.appendChild(rimanda);
+
+    /* Un'iscrizione pagata non si annulla da qui: dietro ci sono dieci euro
+       veri e un eventuale rimborso, che è una decisione da prendere davanti
+       al movimento su PayPal. La funzione lo rifiuta comunque; qui il tasto
+       non compare nemmeno, che è il modo di non farlo nemmeno pensare. */
+    if (!i.pagato) {
+      var togli = document.createElement("button");
+      togli.type = "button";
+      togli.className = "sb-btn sb-btn--secondary sb-btn--sm sb-is-piu-t sb-is-piu-no";
+      togli.textContent = "Annulla l'iscrizione";
+      togli.addEventListener("click", function () { annullaIscrizione(i, togli, chi); });
+      riga.appendChild(togli);
+    }
+
+    return riga;
+  }
+
+  /* L'indirizzo si può correggere al volo, e il predefinito è quello scritto
+     sulla fattura: chiedere ogni volta di riscriverlo sarebbe il modo di
+     sbagliarlo proprio quando si sta rimediando a una mail non arrivata. */
+  function rimandaRicevuta(i, tasto, chi) {
+    var a = prompt("A quale indirizzo mandiamo la ricevuta di " + chi + "?", i.email || "");
+    if (a === null) return;
+    a = String(a).trim();
+    if (!a) return;
+
+    tasto.disabled = true;
+    tasto.textContent = "Un momento…";
+
+    scrivi({ ricevuta: true, fattura: i.id, numero: i.numero, a: a })
+      .then(function (res) {
+        if (!res.ok || !res.d.rimandata) throw new Error((res.d && res.d.errore) || "non è andata");
+        tasto.textContent = "Ricevuta mandata";
+        mostra("ok", "Ricevuta rimandata a " + res.d.a + ".");
+      })
+      .catch(function (err) {
+        mostra("errore", "Non è stato possibile mandare la ricevuta (" + err.message + "). L'iscrizione non è cambiata.");
+        tasto.disabled = false;
+        tasto.textContent = "Rimanda la ricevuta";
+      });
+  }
+
+  /* La conferma dice il nome, quante persone e quanti euro: è l'ultimo
+     momento in cui una riga letta male si può ancora fermare, e cancellare
+     l'iscrizione sbagliata di una famiglia che si presenta al ritrovo è un
+     guaio che non si scopre fino a quel giorno. */
+  function annullaIscrizione(i, tasto, chi) {
+    var quante = 1 + (i.adulti || []).length + (i.minori || []).length;
+    if (!confirm(
+      "Annullare l'iscrizione di " + chi + " — " + quante + (quante === 1 ? " persona" : " persone") +
+      ", " + euro(i.importoCent) + " da incassare?\n\n" +
+      "Sparisce dall'elenco e dal conto. Non si può rifare da qui: bisogna riscriverla."
+    )) return;
+
+    tasto.disabled = true;
+    tasto.textContent = "Un momento…";
+
+    scrivi({ annulla: true, fattura: i.id, numero: i.numero })
+      .then(function (res) {
+        if (!res.ok || !res.d.annullata) throw new Error((res.d && res.d.errore) || "non è andata");
+        mostra("ok", "Iscrizione di " + chi + " annullata.");
+        return carica();
+      })
+      .catch(function (err) {
+        mostra("errore", "Non è stato possibile annullare l'iscrizione (" + err.message + "). È rimasta com'era.");
+        tasto.disabled = false;
+        tasto.textContent = "Annulla l'iscrizione";
+      });
+  }
+
+  /* Le tre scritture parlano tutte allo stesso indirizzo con la stessa
+     chiave: scriverlo una volta sola è quello che impedisce a una di loro di
+     dimenticarsi l'intestazione il giorno che si tocca. */
+  function scrivi(corpo) {
+    return fetch("/api/iscritti-color-walk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-chiave": chiave },
+      body: JSON.stringify(corpo),
+    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); });
+  }
   /* ══ Ricopiare un modulo cartaceo ═══════════════════════════════════════
      Dodici campi scritti a penna che diventano un'iscrizione. Qui la pagina
      non controlla niente di quello che conta: età, codice fiscale e date li

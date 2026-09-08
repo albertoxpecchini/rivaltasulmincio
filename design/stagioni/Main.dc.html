@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #7a1f34; } a:hover { color: #8c2438; }
+    .cut { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+    .cut-lg { clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); }
+  </style>
+</helmet>
+
+<!-- Pagina di Rivalta vestita da settembre — tema chiaro. Valori identici a
+     quelli spediti: assets/stagioni.css, blocco html[data-stagione="uva"]. -->
+<div style="width: 1240px; background: #fcfbf9; color: #1a1614; position: relative; overflow: hidden;">
+
+  <!-- I due aloni del fondale, ritinti: vinaccia da sinistra, paglierino da destra -->
+  <div style="position: absolute; inset: 0; pointer-events: none; background:
+      radial-gradient(58rem 32rem at 16% -8%, hsla(344,46%,38%,0.15), transparent 62%),
+      radial-gradient(52rem 30rem at 88% 2%, hsla(44,58%,48%,0.13), transparent 60%);"></div>
+  <!-- La griglia tecnica del sito, in bordo caldo -->
+  <div style="position: absolute; inset: 0; opacity: .7; pointer-events: none;
+      background: linear-gradient(#e9e4dc 1px, transparent 1px) 0 0 / 64px 64px,
+                  linear-gradient(90deg, #e9e4dc 1px, transparent 1px) 0 0 / 64px 64px;
+      -webkit-mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
+      mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);"></div>
+
+  <!-- ── NAV ── -->
+  <div style="position: relative; display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 44px; background: rgba(252,251,249,0.92); backdrop-filter: blur(10px) saturate(140%);">
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.98rem; font-weight: 500;">
+      <span style="width: 24px; height: 24px; display: grid; place-items: center; background: #0e9fdb; color: #fff;" class="cut">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9c4 3 12-3 16 0"/><path d="M4 15c4 3 12-3 16 0"/></svg>
+      </span>
+      Rivalta sul Mincio
+    </div>
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14px; color: #554d46; margin-left: 60px;">
+      <span>Il paese</span><span>Servizi</span><span>Territorio</span><span>Eventi</span><span>Il sito</span>
+    </div>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #726960;">
+      <span style="display:flex; align-items:center; gap:8px; padding: 6px 12px; border: 1px solid #e9e4dc;" class="cut">Cerca <kbd style="font-family: 'Roboto Mono', monospace; font-size: 11px; border: 1px solid #dcd5c9; padding: 0 4px;">/</kbd></span>
+      <span style="display:flex; align-items:center; gap:5px;"><span style="width:6px;height:6px;border-radius:50%;background:#8c2438;"></span>agg. oggi</span>
+    </div>
+  </div>
+
+  <!-- ── FESTONE ──
+       Tre campate da 200px del tralcio spedito: arco M0 4C50 30 150 30 200 4,
+       pendaglio agganciato a (100, 23.5). Foglia, grappolo, viticcio. -->
+  <div style="position: relative; height: 50px; overflow: hidden; opacity: .86;">
+    <svg width="1240" height="50" viewBox="0 0 1240 50" fill="none" style="display:block;">
+      <defs>
+        <path id="a" d="M0 4C50 30 150 30 200 4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+        <g id="fo">
+          <path d="M0 0v4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/>
+          <path d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6" fill="none" stroke="#fcfbf9" stroke-width=".8" stroke-linecap="round" opacity=".55"/>
+        </g>
+        <g id="gr">
+          <path d="M0 0v3.4" fill="none" stroke="#7c8a3e" stroke-width="1.9" stroke-linecap="round"/>
+          <g>
+            <circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>
+            <circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>
+            <circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/>
+            <circle cx="0.1" cy="20" r="3.2"/>
+          </g>
+          <g fill="rgba(255,255,255,.34)"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>
+        </g>
+        <g id="vi"><path d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0" fill="none" stroke-width="1.9" stroke-linecap="round"/></g>
+      </defs>
+      <g stroke="#7c8a3e"><use href="#a" x="0"/></g>
+      <g transform="translate(100 23.5) scale(.98)" fill="#7c8a3e" stroke="#7c8a3e"><use href="#fo"/></g>
+      <g stroke="#96702e"><use href="#a" x="200"/></g>
+      <g transform="translate(300 23.5) scale(.86)" fill="#9b1b30"><use href="#gr"/></g>
+      <g stroke="#7c8a3e"><use href="#a" x="400"/></g>
+      <g transform="translate(500 23.5) scale(.92)" stroke="#7c8a3e"><use href="#vi"/></g>
+      <g stroke="#7c8a3e"><use href="#a" x="600"/></g>
+      <g transform="translate(700 23.5) scale(.98)" fill="#7c8a3e" stroke="#7c8a3e"><use href="#fo"/></g>
+      <g stroke="#96702e"><use href="#a" x="800"/></g>
+      <g transform="translate(900 23.5) scale(.86)" fill="#6b2029"><use href="#gr"/></g>
+      <g stroke="#7c8a3e"><use href="#a" x="1000"/></g>
+      <g transform="translate(1100 23.5) scale(.92)" fill="#96702e" stroke="#96702e"><use href="#fo"/></g>
+      <g stroke="#7c8a3e"><use href="#a" x="1200"/></g>
+    </svg>
+  </div>
+
+  <!-- ── CORPO ── -->
+  <div style="position: relative; padding: 56px 44px 48px;">
+    <h1 style="margin: 0 0 14px; font-size: 3.4rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1.06; max-width: 46rem;">
+      Rivalta sul Mincio<br><span style="color: #7a1f34;">il paese, in ogni suo dato</span>
+    </h1>
+    <p style="margin: 0 0 12px; max-width: 46rem; font-size: 1rem; line-height: 1.6; color: #554d46; text-align: justify;">
+      Frazione del <a href="#">Comune di Rodigo</a>, provincia di Mantova. Il centro abitato più
+      popoloso del comune, affacciato sulla <a href="#">Riserva Naturale Valli del Mincio</a>.
+    </p>
+    <p style="margin: 0 0 26px; max-width: 46rem; font-size: 1rem; line-height: 1.6; color: #554d46; text-align: justify;">
+      Da settembre l'unica tinta del sito non è più l'azzurro: è il colore che i disciplinari dei
+      vini di qui danno al vino. Il resto — impaginato, caratteri, misure, margine sinistro — non
+      si muove di una virgola.
+    </p>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 40px;">
+      <span style="padding: 11px 20px; background: #dbaab2; border: 1px solid hsla(348,55%,30%,.75); color: #180d10; font-weight: 600; font-size: 14px;" class="cut">Comincia dal paese</span>
+      <span style="padding: 11px 20px; border: 1px solid #e9e4dc; background: #fbfaf7; color: #1a1614; font-weight: 600; font-size: 14px;" class="cut">Dati e fonti</span>
+    </div>
+
+    <!-- Pillole: il pallino che pulsa è passato al granato -->
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 46px;">
+      <span style="display:flex;align-items:center;gap:8px;padding: 8px 14px; background: rgba(251,250,247,.7); border: 1px solid #e9e4dc; font-size: 13px; color: #554d46;" class="cut"><span style="width:6px;height:6px;border-radius:50%;background:#8c2438;box-shadow:0 0 0 5px hsla(348,60%,42%,.14)"></span>Aggiornato all'11 agosto 2026</span>
+      <span style="padding: 8px 14px; background: rgba(251,250,247,.7); border: 1px solid #e9e4dc; font-size: 13px; color: #554d46;" class="cut">CAP 46040</span>
+      <span style="padding: 8px 14px; background: rgba(251,250,247,.7); border: 1px solid #e9e4dc; font-size: 13px; color: #554d46;" class="cut">45.180192 N, 10.677137 E</span>
+    </div>
+
+    <!-- Testata di sezione: il numero passa al paglierino leggibile -->
+    <div style="max-width: 46rem; margin-bottom: 16px;">
+      <span style="display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; color: #7d6a1c; margin-bottom: 0.5rem;">01 — Inquadramento</span>
+      <h2 style="margin: 0; font-size: 2.1rem; font-weight: 400; letter-spacing: -0.02em; line-height: 1.15;">Anagrafica</h2>
+    </div>
+
+    <!-- Lastra di vetro: smusso, sfocatura e ombra del sistema, ombra riscaldata -->
+    <div class="cut-lg" style="max-width: 46rem; background: rgba(251,250,247,0.58); backdrop-filter: blur(20px) saturate(150%); border: 1px solid #e9e4dc; box-shadow: 0 10px 34px -14px rgba(74,26,30,0.22); padding: 22px 26px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 0.92rem;">
+        <span style="color: #554d46;">Denominazione</span><span style="font-weight: 600;">Rivalta sul Mincio</span>
+        <span style="color: #554d46;">Comune</span><span style="font-weight: 600;">Rodigo (MN)</span>
+        <span style="color: #554d46;">Abitanti</span><span style="font-weight: 600;">2.984</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1240,"height":760}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

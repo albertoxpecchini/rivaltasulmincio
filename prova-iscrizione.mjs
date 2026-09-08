@@ -28,10 +28,19 @@ global.fetch = async (url, o = {}) => {
   if (u.includes("/v1/oauth2/token")) return risposta({ access_token: "gettone", expires_in: 3600 });
   if (u.includes("/search-invoices")) return risposta({ items: inviato.gia });
   if (u.endsWith("/v2/invoicing/invoices")) {
+    inviato.creazioni++;
+    inviato.richiestaId = (o.headers || {})["PayPal-Request-Id"] || "";
+    /* Il numero già preso, che è come PayPal dice «questo modulo me l'hai
+       già mandato». Non è un guasto da simulare per completezza: è la sola
+       cosa che tiene fuori i doppioni, e va provata. */
+    if (inviato.doppione) return rifiuto(400, { name: "DUPLICATE_INVOICE_NUMBER", message: "Duplicate Invoice Number" });
     inviato.fattura = corpo;
     return risposta({ id: "INV2-PROVA" });
   }
   if (u.includes("/send")) return risposta({});
+  /* La rilettura di una fattura per identificativo: serve solo quando il
+     numero risulta già preso e si va a vedere di chi è. */
+  if (/\/v2\/invoicing\/invoices\/[^/]+$/.test(u)) return risposta(inviato.ritrovata || {});
   if (u.includes("/v2/checkout/orders")) {
     inviato.ordine = corpo;
     return risposta({ id: "ORDINEPROVA00001", links: [{ rel: "payer-action", href: "https://www.paypal.com/checkoutnow?token=ORDINEPROVA00001" }] });
@@ -46,6 +55,13 @@ global.fetch = async (url, o = {}) => {
 const risposta = (corpo) => ({
   ok: true,
   status: 200,
+  json: async () => corpo,
+  text: async () => JSON.stringify(corpo),
+});
+
+const rifiuto = (status, corpo) => ({
+  ok: false,
+  status,
   json: async () => corpo,
   text: async () => JSON.stringify(corpo),
 });
@@ -73,8 +89,8 @@ const BASE = {
 let passate = 0;
 let fallite = 0;
 
-async function prova(nome, corpo, atteso, { gia = [] } = {}) {
-  inviato = { fattura: null, ordine: null, mail: null, chiamate: [], gia };
+async function prova(nome, corpo, atteso, { gia = [], doppione = false, ritrovata = null } = {}) {
+  inviato = { fattura: null, ordine: null, mail: null, chiamate: [], gia, doppione, ritrovata, creazioni: 0, richiestaId: "" };
   const res = finestra();
   await handler({ method: "POST", body: corpo }, res);
   const ok = atteso(res, inviato);
@@ -489,6 +505,97 @@ await prova(
     voci(i).length === 1 &&
     voci(i)[0] === "A|Maria|Rossi|1985-12-10|RSSMRA85T10A562S" &&
     i.ordine.purchase_units[0].amount.value === "10.00"
+);
+
+console.log("\n── Lo stesso modulo mandato due volte ─────────────────────────");
+
+/* Il guasto da cui nasce tutto questo: una persona ha mandato tre volte lo
+   stesso modulo in un minuto perché non le tornava indietro niente, e si è
+   ritrovata iscritta tre volte senza ricevere nemmeno una mail. */
+const SIGLA = "abcdefghijkl1234abcd";
+
+await prova(
+  "la sigla del tentativo diventa il numero della fattura",
+  { ...BASE, pagamento: "contanti", tentativo: SIGLA },
+  (r, i) =>
+    r.codice === 200 &&
+    i.fattura.detail.invoice_number === "CW-T-ABCDEFGHIJKL1234ABCD" &&
+    i.fattura.detail.invoice_number.length === 25
+);
+
+await prova(
+  "e viaggia anche come PayPal-Request-Id",
+  { ...BASE, pagamento: "contanti", tentativo: SIGLA },
+  (r, i) => r.codice === 200 && i.richiestaId === SIGLA
+);
+
+await prova(
+  "numero già preso → nessuna seconda fattura, e l'iscrizione risulta registrata",
+  { ...BASE, pagamento: "contanti", tentativo: SIGLA },
+  (r, i) => r.codice === 200 && r.corpo.contanti === true && r.corpo.ripetuta === true && i.fattura === null && i.creazioni === 1,
+  { doppione: true }
+);
+
+/* La parte che ripara il guasto vero: la prima volta la mail non era
+   partita, e chi rimanda il modulo la sta cercando. */
+await prova(
+  "e la ricevuta riparte, che è quello che chi rimanda sta cercando",
+  { ...BASE, pagamento: "contanti", tentativo: SIGLA },
+  (r, i) => r.codice === 200 && r.corpo.spedita === true && /da pagare al ritrovo/.test(i.mail.subject),
+  { doppione: true }
+);
+
+await prova(
+  "pagando online, il doppione riapre il checkout sulla stessa fattura",
+  { ...BASE, tentativo: SIGLA },
+  (r, i) =>
+    r.codice === 200 &&
+    r.corpo.url.includes("paypal.com") &&
+    i.creazioni === 1 &&
+    i.ordine.purchase_units[0].invoice_id === "CW-T-ABCDEFGHIJKL1234ABCD",
+  { doppione: true }
+);
+
+/* La sigla arriva da fuori, e da fuori si scrive qualunque cosa: se il numero
+   risulta già preso da una fattura intestata a un altro indirizzo, quella
+   fattura non si tocca e non se ne dice niente. */
+await prova(
+  "numero preso da un'altra persona → si rifiuta, senza toccare la sua iscrizione",
+  { ...BASE, pagamento: "contanti", tentativo: SIGLA },
+  (r, i) => r.codice === 409 && i.fattura === null && i.mail === null,
+  {
+    doppione: true,
+    gia: [{ id: "INV2-ALTRUI", detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-ABCDEFGHIJKL1234ABCD" } }],
+    ritrovata: {
+      id: "INV2-ALTRUI",
+      detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-ABCDEFGHIJKL1234ABCD" },
+      primary_recipients: [{ billing_info: { email_address: "qualcunaltro@example.com" } }],
+    },
+  }
+);
+
+await prova(
+  "senza sigla ci si iscrive come sempre, col numero dall'orologio",
+  { ...BASE, pagamento: "contanti" },
+  (r, i) => r.codice === 200 && /^CW-[0-9a-z]/.test(i.fattura.detail.invoice_number) && i.fattura.detail.invoice_number.length <= 25
+);
+
+await prova(
+  "una sigla storta non blocca nessuno: si ricade sull'orologio",
+  { ...BASE, pagamento: "contanti", tentativo: "ab" },
+  (r, i) => r.codice === 200 && !i.fattura.detail.invoice_number.startsWith("CW-T-")
+);
+
+await prova(
+  "una sigla piena di caratteri strani non entra nel numero di fattura",
+  { ...BASE, pagamento: "contanti", tentativo: "aaaa/bbbb<cccc>dddd" },
+  (r, i) => r.codice === 200 && /^CW-[0-9A-Za-z-]+$/.test(i.fattura.detail.invoice_number)
+);
+
+await prova(
+  "due sigle diverse sono due iscrizioni diverse",
+  { ...BASE, pagamento: "contanti", tentativo: "zzzzzzzzzzzz9999zzzz" },
+  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number === "CW-T-ZZZZZZZZZZZZ9999ZZZZ"
 );
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);

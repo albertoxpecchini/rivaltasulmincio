@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-stagione="uva">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Il paese — Rivalta sul Mincio</title>
 <meta name="description" content="Anagrafica, etimologia, dati ISTAT e demografia, tessuto edificato, monumenti, luoghi di culto e orari delle S. Messe di Rivalta sul Mincio (Rodigo, MN).">
-<meta name="theme-color" content="#fcfcfc">
+<meta name="theme-color" content="#fcfbf9">
 <link rel="canonical" href="https://www.rivaltasulmincio.it/paese">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+<!-- Il vestito del mese. Inerte finché build.mjs non scrive data-stagione
+     su <html>: senza quell'attributo il foglio non tocca niente. -->
+<link rel="stylesheet" href="assets/stagioni.css">
 
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
@@ -55,23 +58,76 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
           <img class="sb-riv-brand-glyph" src="assets/favicon.svg" alt="" width="24" height="24" decoding="async">
           <span class="sb-nav-brand-name">Rivalta<span class="sb-riv-brand-tail"> sul Mincio</span></span>
         </a>
+        <!-- ── Cinque voci, cinque tendine ────────────────────────────────
+             Tredici indirizzi non stanno in una barra: o si accavallano o si
+             leggono uno per uno come una lista della spesa. Qui in barra ci
+             sono cinque parole, e ognuna apre la sua tendina con dentro le
+             pagine e una riga che dice cosa ci si trova.
+
+             Le tendine si aprono al passaggio del mouse e al focus da
+             tastiera — è CSS, quindi funzionano anche senza JavaScript. Il
+             clic (rivalta.js) serve a chi ha un dito invece di un puntatore,
+             e tiene aria-expanded in fase con quello che si vede.
+
+             Il fondo che scivola da una voce all'altra sta PRIMA dei tasti
+             perché nell'ordine di pittura deve finirci sotto. -->
         <div class="sb-nav-links">
-          <!-- Il fondo che scivola da una voce all'altra. Sta PRIMA dei link
-               perché nell'ordine di pittura deve finirci sotto, ed è
-               aria-hidden perché non dice niente che l'attributo
-               aria-current sulla voce non dica già meglio. -->
           <span class="sb-nav-pill" aria-hidden="true"></span>
-          <a class="sb-nav-link" href="/paese">Il paese</a>
-          <a class="sb-nav-link" href="/storia">Storia</a>
-          <a class="sb-nav-link" href="/servizi">Servizi</a>
-          <a class="sb-nav-link" href="/attivita">Attività</a>
-          <a class="sb-nav-link" href="/mangiare">Mangiare</a>
-          <a class="sb-nav-link" href="/comunita">Comunità</a>
-          <a class="sb-nav-link" href="/muoversi">Muoversi</a>
-          <a class="sb-nav-link" href="/natura">Natura</a>
-          <a class="sb-nav-link" href="/eventi">Eventi</a>
-          <a class="sb-nav-link" href="/mappa">Mappa</a>
-          <a class="sb-nav-link" href="/dati">Dati</a>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-paese">Il paese<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-paese">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/paese"><span class="sb-riv-tendina-t">Il paese</span><span class="sb-riv-tendina-d">Anagrafica, demografia, monumenti, Messe</span></a>
+                <a href="/storia"><span class="sb-riv-tendina-t">Storia</span><span class="sb-riv-tendina-d">Da Ripalta matildica ai mestieri del fiume</span></a>
+                <a href="/comunita"><span class="sb-riv-tendina-t">Comunità</span><span class="sb-riv-tendina-d">Scuole, museo, associazioni, sport</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-servizi">Servizi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-servizi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/servizi"><span class="sb-riv-tendina-t">Servizi</span><span class="sb-riv-tendina-d">Comune, farmacia, rifiuti, fibra e 5G</span></a>
+                <a href="/attivita"><span class="sb-riv-tendina-t">Attività</span><span class="sb-riv-tendina-d">Negozi, uffici, bar e ristoranti</span></a>
+                <a href="/mangiare"><span class="sb-riv-tendina-t">Mangiare</span><span class="sb-riv-tendina-d">Si parte dal piatto, non dal locale</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-territorio">Territorio<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-territorio">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/muoversi"><span class="sb-riv-tendina-t">Muoversi</span><span class="sb-riv-tendina-d">Strade, parcheggi, autobus, ciclabili</span></a>
+                <a href="/natura"><span class="sb-riv-tendina-t">Natura</span><span class="sb-riv-tendina-d">Valli del Mincio, parchi, corsi d'acqua</span></a>
+                <a href="/mappa"><span class="sb-riv-tendina-t">Mappa</span><span class="sb-riv-tendina-d">I luoghi censiti, uno per uno</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-eventi">Eventi<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina" id="tend-eventi">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/eventi"><span class="sb-riv-tendina-t">Eventi</span><span class="sb-riv-tendina-d">Sagre, feste e ricorrenze del paese</span></a>
+                <a href="/color-walk"><span class="sb-riv-tendina-t">Color Walk</span><span class="sb-riv-tendina-d">La camminata di domenica 20 settembre</span></a>
+                <a href="/color-walk-regolamento"><span class="sb-riv-tendina-t">Regolamento</span><span class="sb-riv-tendina-d">Quote, percorso, come ci si iscrive</span></a>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="sb-riv-nav-item">
+            <button class="sb-nav-link sb-riv-nav-trigger" type="button" data-tendina aria-expanded="false" aria-controls="tend-sito">Il sito<svg class="sb-riv-nav-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="sb-riv-tendina sb-riv-tendina--fine" id="tend-sito">
+              <div class="sb-panel"><div class="sb-panel-inner sb-riv-tendina-pad">
+                <a href="/aggiornamenti"><span class="sb-riv-tendina-t">Aggiornamenti</span><span class="sb-riv-tendina-d">Cosa è cambiato, in ordine di data</span></a>
+                <a href="/dati"><span class="sb-riv-tendina-t">Dati e fonti</span><span class="sb-riv-tendina-d">Da dove viene ogni numero del sito</span></a>
+                <a href="/#fatto-da"><span class="sb-riv-tendina-t">Chi l'ha fatto</span><span class="sb-riv-tendina-d">Una persona sola, e il codice in chiaro</span></a>
+              </div></div>
+            </div>
+          </div>
         </div>
         <div class="sb-nav-right">
           <!-- Tema e movimento non stanno più qui: sono due preferenze, e le
@@ -84,12 +140,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <kbd class="sb-riv-kbd sb-riv-search-open-kbd">/</kbd>
           </button>
 
-          <span class="sb-riv-updated">
+          <!-- La data non è più solo una scritta: porta a /aggiornamenti, dove
+               c'è scritto cosa è cambiato. Chi vede «agg. oggi» la prima cosa
+               che vuole sapere è «cambiato cosa?». -->
+          <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <abbr class="sb-riv-updated-lbl" title="ultimo aggiornamento">agg.</abbr>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
-          </span>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-07" data-updated="2026-09-07">7 set</time>
+          </a>
 
-          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+          <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Sito ideato, scritto e costruito da Alberto Pecchini" title="Tutto questo sito — testi, dati, codice — è costruito da Alberto Pecchini">
             <img src="assets/loghi/ap.png" alt="" width="20" height="20" decoding="async">
           </a>
 
@@ -99,27 +158,50 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </div>
       </div>
     </nav>
+    <!-- Il festone di stagione, appeso sotto la testata. Lo mette build.mjs
+         solo sulle pagine di stagione: sulle tre della Color Walk, che una
+         vernice ce l'hanno già, il segnaposto diventa vuoto. -->
+    <div class="sb-stag-festone" aria-hidden="true">
+      <svg width="2600" height="50" viewBox="0 0 2600 50" fill="none" focusable="false">
+        <defs>
+          <path id="stag-arco" class="sb-stag-tralcio" d="M0 4C50 30 150 30 200 4"/>
+          <g id="stag-foglia"><path class="sb-stag-tralcio" d="M0 0v4"/><path class="sb-stag-verde" d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/><path class="sb-stag-nervo" d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6"/></g>
+          <g id="stag-grappolo"><path class="sb-stag-tralcio" d="M0 0v3.4"/><g class="sb-stag-acino"><circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/><circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/><circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/><circle cx="0.1" cy="20" r="3.2"/></g><g class="sb-stag-luce"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g></g>
+          <g id="stag-viticcio"><path class="sb-stag-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/></g>
+        </defs>
+        <g transform="translate(0 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.98)"><g class="sb-stag-pend" style="--i:0"><use href="#stag-foglia"/></g></g></g><g transform="translate(200 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.86)"><g class="sb-stag-pend" style="--i:1"><use href="#stag-grappolo"/></g></g></g><g transform="translate(400 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.92)"><g class="sb-stag-pend" style="--i:2"><use href="#stag-viticcio"/></g></g></g><g transform="translate(600 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.98)"><g class="sb-stag-pend" style="--i:3"><use href="#stag-foglia"/></g></g></g><g transform="translate(800 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.86)"><g class="sb-stag-pend" style="--i:4"><use href="#stag-grappolo"/></g></g></g><g transform="translate(1000 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.92)"><g class="sb-stag-pend" style="--i:5"><use href="#stag-foglia"/></g></g></g><g transform="translate(1200 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.98)"><g class="sb-stag-pend" style="--i:6"><use href="#stag-viticcio"/></g></g></g><g transform="translate(1400 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.86)"><g class="sb-stag-pend" style="--i:7"><use href="#stag-grappolo"/></g></g></g><g transform="translate(1600 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.92)"><g class="sb-stag-pend" style="--i:8"><use href="#stag-foglia"/></g></g></g><g transform="translate(1800 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.98)"><g class="sb-stag-pend" style="--i:9"><use href="#stag-viticcio"/></g></g></g><g transform="translate(2000 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.86)"><g class="sb-stag-pend" style="--i:10"><use href="#stag-grappolo"/></g></g></g><g transform="translate(2200 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.92)"><g class="sb-stag-pend" style="--i:11"><use href="#stag-foglia"/></g></g></g><g transform="translate(2400 0)"><use href="#stag-arco"/><g transform="translate(100 23.5) scale(0.98)"><g class="sb-stag-pend" style="--i:12"><use href="#stag-grappolo"/></g></g></g>
+      </svg>
+    </div>
     <div class="sb-menu-sheet" id="menu-sheet">
       <div class="sb-container">
         <nav class="sb-menu-nav" aria-label="Navigazione del sito">
+          <p class="sb-riv-menu-tit">Il paese</p>
           <a href="/paese">Il paese</a>
           <a href="/storia">Storia</a>
+          <a href="/comunita">Comunità</a>
+          <p class="sb-riv-menu-tit">Servizi</p>
           <a href="/servizi">Servizi</a>
           <a href="/attivita">Attività</a>
           <a href="/mangiare">Mangiare</a>
-          <a href="/comunita">Comunità</a>
+          <p class="sb-riv-menu-tit">Territorio</p>
           <a href="/muoversi">Muoversi</a>
           <a href="/natura">Natura</a>
-          <a href="/eventi">Eventi</a>
           <a href="/mappa">Mappa</a>
+          <p class="sb-riv-menu-tit">Eventi</p>
+          <a href="/eventi">Eventi</a>
+          <a href="/color-walk">Color Walk</a>
+          <a href="/color-walk-regolamento">Regolamento</a>
+          <p class="sb-riv-menu-tit">Il sito</p>
+          <a href="/aggiornamenti">Aggiornamenti</a>
           <a href="/dati">Dati e fonti</a>
+          <a href="/#fatto-da">Chi l'ha fatto</a>
         </nav>
         <div class="sb-riv-menu-foot">
           <button class="sb-riv-menu-cerca" type="button" data-search-open>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <span class="sb-riv-menu-agg">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -196,14 +278,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Etimologia</h3>
+  <h3 class="sb-riv-subhead" id="etimologia">Etimologia</h3>
   <p class="sb-riv-p">Il nome deriva dalla posizione geografica: <strong>la riva più alta del fiume Mincio</strong>. Nel dialetto locale il fiume è semplicemente <em>«al Mens»</em> e la palude <em>«la val»</em>.</p>
 
-  <h3 class="sb-riv-subhead">Frazioni e località</h3>
+  <h3 class="sb-riv-subhead" id="frazioni-e-localita">Frazioni e località</h3>
   <p class="sb-riv-p">Il Comune di Rodigo si compone di tre centri: <strong>Rodigo</strong> (capoluogo), <strong>Rivalta sul Mincio</strong> e <strong>Fossato</strong>.</p>
   <p class="sb-riv-p">Le località minori mappate nell'intorno sono Camignana, Casazze, Belvedere, Soana Alta, Soana Bassa, Pilone, Canova, Corte Catenaccio, Monte Perego, Corte Tesorino e Bolzacchini.</p>
 
-  <h3 class="sb-riv-subhead">Confini e relazioni</h3>
+  <h3 class="sb-riv-subhead" id="confini-e-relazioni">Confini e relazioni</h3>
   <div class="sb-riv-grid">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
       <h4>Comuni confinanti</h4>
@@ -230,7 +312,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p>Rivalta è il centro abitato più popoloso del Comune di Rodigo, davanti al capoluogo.</p>
   </div>
 
-  <h3 class="sb-riv-subhead">Comune di Rodigo</h3>
+  <h3 class="sb-riv-subhead" id="comune-di-rodigo">Comune di Rodigo</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -245,7 +327,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Rivalta sul Mincio (frazione)</h3>
+  <h3 class="sb-riv-subhead" id="rivalta-sul-mincio-frazione">Rivalta sul Mincio (frazione)</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -260,7 +342,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">ISTAT pubblica il dettaglio per frazione solo in occasione dei censimenti: per un numero anagrafico aggiornato ci si rivolge all'Ufficio Anagrafe del Comune di Rodigo.</p>
 
-  <h3 class="sb-riv-subhead">Dove trovare i dati ISTAT ufficiali</h3>
+  <h3 class="sb-riv-subhead" id="dove-trovare-i-dati-istat-ufficiali">Dove trovare i dati ISTAT ufficiali</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -292,7 +374,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <div class="sb-riv-stat"><div class="sb-panel"><div class="sb-panel-inner"><span class="sb-riv-stat-v">59</span><span class="sb-riv-stat-l">villette isolate censite</span></div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Tipologie edilizie</h3>
+  <h3 class="sb-riv-subhead" id="tipologie-edilizie">Tipologie edilizie</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table">
@@ -318,7 +400,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
   <p class="sb-riv-cap">Altezze: dove il dato è presente prevalgono i <strong>2 piani</strong> (118 edifici), seguiti da 1 piano (23) e 3 piani (2).</p>
 
-  <h3 class="sb-riv-subhead">Lettura urbanistica</h3>
+  <h3 class="sb-riv-subhead" id="lettura-urbanistica">Lettura urbanistica</h3>
   <p class="sb-riv-p">Rivalta si è sviluppata molto negli ultimi decenni, in particolare dopo la costruzione della <strong>circonvallazione negli anni '70</strong>. A parte il centro storico — a ridosso della chiesa e del fiume — il paese è formato per lo più da costruzioni recenti: villette, bifamiliari e case a schiera, di aspetto ordinato.</p>
   <p class="sb-riv-p">Il paese si divide in <strong>sei contrade</strong> — la Filanda, il Roccolo, le Colonie, i Piasaröi, la Plàtana e le Fanfane — che a settembre si sfidano al <a href="/eventi#contrade">Palio delle Contrade</a>. Di tre di quei nomi resta traccia nella toponomastica di oggi: <strong>Via Roccolo</strong>, <strong>Piazza Platana</strong> col suo parco e l'Area Feste, e l'insegna del pub <strong>«Le Antiche Colonie»</strong>.</p>
   <p class="sb-riv-p">Non ci sono vestigia monumentali di rilievo: l'edificio più interessante è la <strong><a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.176048&amp;mlon=10.681542#map=18/45.176048/10.681542" target="_blank" rel="noreferrer noopener" title="Corte Arrivabene — apri su OpenStreetMap">Corte Arrivabene<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a></strong>, residenza dei conti omonimi, tipica casa padronale del Settecento immersa in un ampio giardino.</p>
@@ -402,7 +484,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p>Dal <strong>5 settembre 2026</strong> Rivalta segue il calendario dell'<strong>Unità pastorale «Un Solo Pane»</strong>, che tiene insieme sei paesi: Castellucchio, Rivalta, Rodigo, Gabbiana, Ospitaletto e Sarginesco.</p>
   </div>
 
-  <h3 class="sb-riv-subhead">Festive</h3>
+  <h3 class="sb-riv-subhead" id="festive">Festive</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -418,7 +500,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </div></div></div>
   </div>
 
-  <h3 class="sb-riv-subhead">Feriali</h3>
+  <h3 class="sb-riv-subhead" id="feriali">Feriali</h3>
   <div class="sb-riv-tablewrap">
     <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
       <table class="sb-riv-table sb-riv-table--wide">
@@ -454,7 +536,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <p class="sb-riv-p"><strong>Fino al 4 settembre 2026</strong> a Rivalta la festiva si celebra anche il <strong>sabato alle 18.00</strong>; dal 5 settembre resta la sola domenica alle 11.00.</p>
   </div>
 
-  <h3 class="sb-riv-subhead">Le due parrocchie</h3>
+  <h3 class="sb-riv-subhead" id="le-due-parrocchie">Le due parrocchie</h3>
   <div class="sb-riv-grid">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
       <h4>Parrocchia Santi Vigilio e Donato</h4>
@@ -472,13 +554,70 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-cap">Le altre chiese e cappelle del paese — Santa Maria di Lourdes, Sant'Antonio, la santella di Corte Mincio — non hanno un calendario di celebrazioni fisso.</p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link" href="/">← Torna alla home</a>
-    <a class="sb-link" href="/servizi">Servizi <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="sb-link" href="/">Torna alla home</a>
+    <a class="sb-link" href="/servizi">Servizi</a>
   </div>
 </section>
   </main>
 </div>
 
+<!-- La nota di stagione: perché il sito ha questi colori e da dove vengono
+     esattamente. La mette build.mjs sulle sole pagine di stagione; sulle tre
+     della Color Walk il segnaposto diventa vuoto. -->
+<section class="sb-home sb-stag-nota" aria-labelledby="stag-nota-t">
+  <div class="sb-container sb-stag-nota-in">
+    <p class="sb-stag-occhiello">
+      <svg class="sb-stag-occhiello-i" width="13" height="17" viewBox="-12 0 24 24" aria-hidden="true"><g class="sb-stag-acino"><circle cx="-5.2" cy="5.4" r="2.9"/><circle cx="0.2" cy="5.4" r="2.9"/><circle cx="5.4" cy="5.4" r="2.9"/><circle cx="-2.6" cy="10.1" r="2.9"/><circle cx="2.8" cy="10.1" r="2.9"/><circle cx="0.1" cy="14.8" r="2.9"/></g><path class="sb-stag-tralcio" d="M0 0v2.6"/></svg>
+      Settembre · vendemmia
+    </p>
+    <h2 class="sb-stag-nota-t" id="stag-nota-t">I colori di questo mese sono parole</h2>
+    <p class="sb-stag-nota-p">A Rivalta non ci sono vigne: qui la terra fa <a href="/attivita#economia">cereali e meloni</a>. Ma il fiume che le passa davanti scende dall'<strong>anfiteatro morenico del Garda</strong>, e lassù — una ventina di chilometri risalendo il Mincio — il vino si fa da molto prima che ci fosse un disciplinare a descriverlo.</p>
+    <p class="sb-stag-nota-p">Le sei tinte di settembre non le ha scelte nessuno a occhio: sono i colori che i disciplinari di quei vini <strong>scrivono, parola per parola</strong>, all'articolo 6.</p>
+    <ol class="sb-stag-tinte">
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-rubino)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«rosso rubino più o meno intenso»</span>
+            <span class="sb-stag-tinta-d">Lambrusco Mantovano DOC · rosso</span>
+          </li>
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-granato)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«…o granato»</span>
+            <span class="sb-stag-tinta-d">Lambrusco Mantovano DOC · rosso</span>
+          </li>
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-cerasuolo)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«tendente al cerasuolo con l'invecchiamento»</span>
+            <span class="sb-stag-tinta-d">Garda Colli Mantovani DOC · rosso</span>
+          </li>
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-rosato)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«rosato brillante»</span>
+            <span class="sb-stag-tinta-d">Garda Colli Mantovani DOC · chiaretto</span>
+          </li>
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-paglierino)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«giallo paglierino»</span>
+            <span class="sb-stag-tinta-d">Garda Colli Mantovani DOC · bianco</span>
+          </li>
+          <li class="sb-stag-tinta">
+            <span class="sb-stag-tinta-q" style="--q: var(--stag-viola)" aria-hidden="true"></span>
+            <span class="sb-stag-tinta-w">«sentore di viola o ribes»</span>
+            <span class="sb-stag-tinta-d">Lambrusco Mantovano DOC · odore</span>
+          </li>
+    </ol>
+    <div class="sb-stag-zone">
+          <div class="sb-stag-zona">
+            <h3 class="sb-stag-zona-t">Le colline, risalendo il Mincio</h3>
+            <p class="sb-stag-zona-d"><strong>Garda Colli Mantovani DOC</strong> e <strong>Alto Mincio IGT</strong> stanno sugli stessi sei comuni dell'anfiteatro morenico: Castiglione delle Stiviere, Cavriana, Monzambano, Ponti sul Mincio, Solferino, Volta Mantovana. Due di quei paesi stanno sul Mincio come Rivalta, solo più a monte. Uve: garganega e trebbiano per il bianco, merlot, rondinella e cabernet per il rosso e il chiaretto.</p>
+          </div>
+          <div class="sb-stag-zona">
+            <h3 class="sb-stag-zona-t">La pianura, oltre l'Oglio e oltre il Po</h3>
+            <p class="sb-stag-zona-d"><strong>Lambrusco Mantovano DOC</strong> in due sottozone: <em>Viadanese-Sabbionetano</em> fra Oglio e Po — Commessaggio, Dosolo, Gazzuolo, Sabbioneta, Viadana — e <em>Oltrepò Mantovano</em>, oltre il Po. Uve Lambrusco Viadanese (o Grappello Ruberti), Maestri, Marani e Salamino.</p>
+          </div>
+    </div>
+    <p class="sb-stag-fonti">Fonti: <a href="https://www.agraria.org/vini/garda-colli-mantovani-doc.htm" target="_blank" rel="noreferrer noopener">Garda Colli Mantovani DOC — disciplinare, art. 6</a> · <a href="https://www.agraria.org/vini/lambrusco-mantovano-doc.htm" target="_blank" rel="noreferrer noopener">Lambrusco Mantovano DOC — disciplinare, art. 6</a> · <a href="https://www.mantovastrada.it/" target="_blank" rel="noreferrer noopener">Strada dei Vini e dei Sapori Mantovani</a></p>
+  </div>
+</section>
 <footer class="sb-home sb-foot">
   <div class="sb-container sb-foot-wrap">
     <div class="sb-foot-grid">
@@ -548,12 +687,17 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
     <div class="sb-foot-bottom">
       <span>© <span data-year>2026</span> — Dati OpenStreetMap, licenza ODbL</span>
+      <!-- Il marchio non è una firma di cortesia: questo sito lo ha fatto una
+           persona sola, dalla prima riga di CSS all'ultimo dato controllato, e
+           accanto al logo c'è scritto. «Fonti» invece è sparito da qui: la
+           stessa voce sta già nella colonna Territorio qui sopra, e due
+           collegamenti allo stesso posto non sono una comodità. -->
       <div class="sb-foot-bottom-links">
-        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini" title="Alberto Pecchini">
+        <a class="sb-riv-mark sb-riv-mark--foot" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Alberto Pecchini — albertopecchini.it" title="albertopecchini.it">
           <img src="assets/loghi/ap.png" alt="Alberto Pecchini" width="18" height="18" decoding="async" loading="lazy">
         </a>
         <span class="sb-foot-sep" aria-hidden="true">·</span>
-        <a class="sb-foot-by" href="/dati">Fonti</a>
+        <a class="sb-foot-by sb-riv-foot-fatto" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Ideato, scritto e costruito da <strong>Alberto Pecchini</strong></a>
       </div>
       <span>Ultimo aggiornamento: <time datetime="2026-09-07" data-updated="2026-09-07">7 settembre 2026</time></span>
     </div>
@@ -595,6 +739,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     </button>
   </div>
 </div>
+<!-- ── Torna in cima ────────────────────────────────────────────────────────
+     Sta a destra, dalla parte opposta alla barra delle preferenze, e compare
+     solo dopo due schermate: in cima alla pagina sarebbe arredamento.
+     Porta .sb-home con sé come la barra, per gli stessi token del tema. -->
+<div class="sb-home sb-riv-top-wrap">
+  <button class="sb-riv-top" type="button" data-top aria-label="Torna in cima alla pagina" title="Torna in cima">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+</div>
 <!-- L'onda del tema sta qui, figlia diretta del body: dentro la barra (che ha
      un pannello con ombra e fondo proprio) verrebbe ritagliata. -->
 <div class="sb-theme-wipe" aria-hidden="true"></div>
@@ -611,5 +764,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      da sé e il tasto non compare. -->
 <script src="assets/ricerca-dati.js"></script>
 <script src="assets/ricerca.js"></script>
+<script src="assets/stagioni.js"></script>
 </body>
 </html>
