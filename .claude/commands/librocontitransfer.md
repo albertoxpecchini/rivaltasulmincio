@@ -1,6 +1,6 @@
 ---
 description: Porta nel sito le fotografie scansionate dal libro «Eventi e Ricordi» — ritaglio, descrizioni, figure nel frammento, scheda del libro, registro, build e push
-argument-hint: [percorsi delle scansioni + sezione di destinazione, data e pagina di ognuna]
+argument-hint: [percorsi delle scansioni + sezione di destinazione e data di ognuna]
 ---
 
 # /librocontitransfer
@@ -9,7 +9,8 @@ Il lavoro è sempre lo stesso, e la divisione dei compiti anche.
 
 **Fa l'utente:** sfoglia «Rivalta sul Mincio 2001‑2013 — Eventi e Ricordi», sceglie le immagini
 pertinenti a una sezione del sito, le scansiona e ne manda i percorsi dicendo **dove vanno** e,
-per ognuna, **quando** è stata scattata e a **che pagina** del libro sta.
+per ognuna, **quando** è stata scattata. Spesso aggiunge la pagina del libro: serve a te per
+ritrovarla, **non va scritta in pagina** (vedi §5).
 
 **Fai tu:** tutto il resto. Le descrizioni le scrivi tu — l'utente non le manda mai, e non gliele
 si chiede.
@@ -29,8 +30,8 @@ fotografie digitali: retinate, a volte capovolte, sempre troppo pesanti.
 | dove esattamente nella sezione | decidi tu il punto che regge meglio, e lo motivi in una riga |
 | il paragrafo che introduce le foto | lo scrivi tu, agganciandolo a quello che la sezione dice già |
 
-Chiedi **solo** se manca la pagina del libro o la data, e servono per la didascalia; se una
-fotografia non ha pagina (la copertina, per esempio) si scrive la didascalia senza.
+Non chiedere quasi mai niente: la data serve al testo solo se il paragrafo di apertura la usa, e
+in quel caso la si chiede in una riga. Tutto il resto lo decidi guardando.
 
 ---
 
@@ -84,18 +85,25 @@ tessere su tre lascerebbero mezza fila vuota.
   <div class="sb-panel"><div class="sb-panel-inner">
     <img src="assets/foto/archivio/<nome>.jpg" alt="…" loading="lazy" decoding="async" width="1600" height="1067">
   </div></div>
-  <figcaption>Una frase che dice cosa succede. <span class="sb-riv-foto-by">15 dicembre 2003 — pag. 27</span></figcaption>
+  <figcaption>Una frase che dice cosa succede.</figcaption>
 </figure>
 ```
 
-`.sb-riv-foto-by` si stampa da sé preceduto da « · » e in grigio: dentro ci va **data e pagina**,
-niente altro. Chi volesse controllare deve poter aprire il volume al punto giusto.
+La didascalia finisce lì. **Niente `.sb-riv-foto-by` con data e pagina** appesa in coda: quella
+classe serve al credito fotografico dei luoghi (`Foto: …`), non a citare il volume.
 
 ## 5. Le parole
 
 **La didascalia** dice cosa sta succedendo, in una frase, al presente, senza aggettivi di
 ammirazione: «Il fuoco è arrivato in cima: le feste sono finite», non «Suggestiva immagine del
-falò». Non ripete la data — quella sta già nella `.sb-riv-foto-by` accanto.
+falò».
+
+**Non si citano data e pagina sotto la fotografia.** «10 ottobre 2008 — pag. 95» e simili non
+vanno in pagina: sono apparato, e chi legge sta guardando una fotografia del suo paese, non
+consultando una fonte. Da dove viene lo dice già la scheda del libro sotto al gruppo. Se una data
+conta davvero per capire cosa si vede — che una cosa si faceva altrove, che è stata l'ultima volta
+— si scrive **nel paragrafo di apertura**, in mezzo alla prosa, non in coda alla didascalia. La
+pagina resta solo nell'indice interno di `assets/foto/README.md`, che non va online.
 
 **Il testo alternativo** descrive quello che si vede a chi non lo vede: composizione, luce, cosa
 c'è in primo piano e cosa dietro. Non è la didascalia ripetuta e non è un titolo. Lungo il giusto

@@ -1141,14 +1141,17 @@ didascalia ruba l'attenzione al motivo per cui esiste. Il segnaposto sta in `bui
 frammenti per la stessa ragione per cui ci sta la nav: quattro copie a mano vuol dire che prima o
 poi tre sono giuste e una no, e sarà quella col nome di chi ha fatto il dono scritto storto.
 
-Accanto a ogni didascalia va la **pagina** del libro, in `<span class="sb-riv-foto-by">`: chi
-volesse controllare deve poter aprire il volume al punto giusto.
+La didascalia però **non cita data e pagina**. «10 ottobre 2008 — pag. 95» in coda a una
+fotografia è apparato: chi legge sta guardando il suo paese, non consultando una fonte, e da dove
+viene lo dice già la scheda qui sotto. Una data che serve davvero a capire cosa si vede si scrive
+nella prosa che introduce le immagini; il numero di pagina resta nell'indice interno di
+[`assets/foto/README.md`](assets/foto/README.md), che non va online.
 
 Il giro completo — ritaglio, nomi, didascalie, testi alternativi, figure nel frammento, scheda del
 libro, registro, build e push — sta scritto in
 [`.claude/commands/librocontitransfer.md`](.claude/commands/librocontitransfer.md), che è il
-comando `/librocontitransfer`: chi manda le scansioni dice solo **dove vanno, quando** e a **che
-pagina**, il resto lo fa il comando.
+comando `/librocontitransfer`: chi manda le scansioni dice solo **dove vanno** e **quando** sono
+state scattate, il resto lo fa il comando.
 
 > **Le vetrine delle attività vogliono un permesso.** Fotografare dalla strada pubblica è una cosa,
 > pubblicare la foto su un sito che presenta quell'attività è un'altra: serve l'ok del titolare, e

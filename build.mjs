@@ -376,7 +376,7 @@ const renderLibro = () => `<aside class="sb-riv-fonte">
       <div class="sb-riv-fonte-testo">
         <span class="sb-riv-fonte-occhiello">Da dove vengono queste fotografie</span>
         <p class="sb-riv-fonte-titolo"><strong>Rivalta sul Mincio 2001&#8202;–&#8202;2013 — Eventi e Ricordi</strong><br><span class="sb-riv-na">Nuova Universo Gutenberg Edizioni</span></p>
-        <p class="sb-riv-p">Dodici anni di paese raccolti in un volume: le feste, i lavori, le sere che poi si raccontano. Le fotografie qui sopra sono riprodotte da lì, e accanto a ognuna c'è la pagina.</p>
+        <p class="sb-riv-p">Dodici anni di paese raccolti in un volume: le feste, i lavori, le sere che poi si raccontano. Le fotografie qui sopra sono riprodotte da lì.</p>
         <p class="sb-riv-fonte-grazie">Il libro è arrivato al sito in dono da <strong>Annasofia Sanfelici</strong>. Grazie.</p>
       </div>
     </div></div>
