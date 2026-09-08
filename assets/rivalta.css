@@ -545,6 +545,27 @@ h3[id] {
 .sb-riv-cit-fonte a { color: var(--sb-brand-text); text-decoration: none; }
 .sb-riv-cit-fonte a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
+/* L'epigrafe della home: la stessa citazione, ma in apertura di pagina invece
+   che in mezzo alla prosa. Cambiano tre cose e nessuna di più — un filo più
+   grande, un inchiostro appena più fermo, e la larghezza della colonna di
+   testa che le sta sotto. Il filo a sinistra resta grigio come tutti gli
+   altri: se qui diventasse d'accento, sarebbe l'unica citazione del sito a
+   valere più delle altre.
+
+   A bandiera e non giustificata: sono due righe, e giustificarne due vuol
+   dire aprire voragini fra le parole per riempire la prima. */
+.sb-riv-cit--epigrafe {
+  margin: 1.5rem 0 0;
+  max-width: 40rem;
+}
+.sb-riv-cit--epigrafe p {
+  margin-bottom: 0.55rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--sb-fg-light);
+  text-align: left;
+}
+
 /* ── Cronologia ───────────────────────────────────────────────────────────
    Una tabella a due colonne saprebbe dire le stesse date, ma non che sono una
    sequenza: qui la colonna di sinistra è un asse, e ogni voce ci si aggancia
