@@ -1144,6 +1144,12 @@ poi tre sono giuste e una no, e sarà quella col nome di chi ha fatto il dono sc
 Accanto a ogni didascalia va la **pagina** del libro, in `<span class="sb-riv-foto-by">`: chi
 volesse controllare deve poter aprire il volume al punto giusto.
 
+Il giro completo — ritaglio, nomi, didascalie, testi alternativi, figure nel frammento, scheda del
+libro, registro, build e push — sta scritto in
+[`.claude/commands/librocontitransfer.md`](.claude/commands/librocontitransfer.md), che è il
+comando `/librocontitransfer`: chi manda le scansioni dice solo **dove vanno, quando** e a **che
+pagina**, il resto lo fa il comando.
+
 > **Le vetrine delle attività vogliono un permesso.** Fotografare dalla strada pubblica è una cosa,
 > pubblicare la foto su un sito che presenta quell'attività è un'altra: serve l'ok del titolare, e
 > l'insegna è un marchio. Chiederlo mentre si scatta è anche il modo più semplice per ottenere una
