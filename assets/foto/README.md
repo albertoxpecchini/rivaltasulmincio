@@ -15,8 +15,9 @@ frammento, con la didascalia e l'autore accanto. Lo stesso vale per `archivio/`,
 fotografie di **un giorno** e non di un posto, tutte riprodotte dal libro «Rivalta sul Mincio
 2001-2013 — Eventi e Ricordi» (dono di Annasofia Sanfelici), insieme alla copertina del volume.
 Sotto ogni gruppo di queste immagini va il segnaposto `{{libro}}`, che stampa la scheda del
-libro: è la regola, una fotografia d'archivio dice sempre da dove viene, e accanto a ognuna si
-scrive la pagina.
+libro: è la regola, una fotografia d'archivio dice sempre da dove viene. La pagina del volume
+**non si scrive in pagina** — è apparato, non contenuto — e resta solo qui sotto, per ritrovare
+l'originale.
 
 | File | Cosa | Quando |
 | :--- | :--- | :--- |
@@ -28,7 +29,24 @@ scrive la pagina.
 | `archivio/buriel-2006-il-falo.jpg` | il burièl in fiamme — pag. 62 | 6 gen 2006 |
 | `archivio/giunta-rodigo-2003.jpg` | la giunta comunale col gonfalone — pag. 27 | 15 dic 2003 |
 | `archivio/comune-rodigo-2008-la-classe.jpg` | la classe seconda davanti al municipio — pag. 95 | 10 ott 2008 |
-| `archivio/comune-rodigo-2008-in-consiglio.jpg` | il sindaco parla ai bambini in consiglio — pag. 95 | 10 ott 2008 | Titolo, testo alternativo e
+| `archivio/comune-rodigo-2008-in-consiglio.jpg` | il sindaco parla ai bambini in consiglio — pag. 95 | 10 ott 2008 |
+| `archivio/gemellaggio-berg-corteo.jpg` | il corteo di Berg per le vie del paese | — |
+| `archivio/gemellaggio-berg-le-fasce.jpg` | le due fasce affiancate, sindaco e rappresentante tedesco | — |
+| `archivio/gemellaggio-berg-concerto-ostello.jpg` | la banda davanti all'ex Ostello del Mincio | — |
+| `archivio/estate-rivaltese-tamburini-berg.jpg` | i tamburini di Berg all'Estate Rivaltese | — |
+| `archivio/estate-rivaltese-cena-sotto-gli-alberi.jpg` | la cena sotto gli alberi | — |
+| `archivio/estate-rivaltese-i-volontari.jpg` | i volontari al banco | — |
+| `archivio/cena-burato-brindisi.jpg` | un brindisi, cena da Burato | — |
+| `archivio/cena-burato-tavolata.jpg` | la tavolata, cena da Burato | — |
+| `archivio/gemellaggio-berg-il-dono.jpg` | un cesto in dono, ricevimento ufficiale | — |
+| `archivio/gemellaggio-berg-la-sciarpa.jpg` | la sciarpa del gemellaggio consegnata a mano | — |
+| `archivio/gemellaggio-berg-il-brindisi.jpg` | un brindisi sotto il lampadario | — |
+| `archivio/gemellaggio-berg-coro-in-chiesa.jpg` | un coro canta all'altare della parrocchiale | — |
+| `archivio/gemellaggio-berg-pallavolo-gruppo.jpg` | le squadre miste in palestra | — |
+| `archivio/gemellaggio-berg-pallavolo-squadra-a.jpg` | la squadra femminile in maglia azzurra | — |
+| `archivio/gemellaggio-berg-pallavolo-squadra-b.jpg` | una squadra maschile in arancio e verde | — |
+| `archivio/gemellaggio-francesi-canoa-gruppo.jpg` | il gruppo prima di scendere in canoa | — |
+| `archivio/gemellaggio-francesi-canoa-fiume.jpg` | in canoa sul Mincio con visitatori francesi | — | Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
