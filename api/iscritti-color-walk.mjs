@@ -70,6 +70,8 @@ import {
   QUOTA_ADULTO_CENT,
   QUOTA_MINORE_CENT,
   annullata,
+  annullaFattura,
+  cancellaFattura,
   componiFattura,
   creaFattura,
   moduloDi,
@@ -164,12 +166,16 @@ export default async function handler(req, res) {
     /* `await` e non solo `return`: senza, un errore là dentro nascerebbe
        dopo che questa funzione è già finita, e il catch qui sotto non lo
        vedrebbe passare. */
-    /* Due cose si scrivono da questa porta, e si distinguono dal corpo:
-       riportare un modulo cartaceo, o segnare incassato il contante di
-       un'iscrizione che c'è già. Chi manda un `cartaceo` sta facendo la
-       prima. */
+    /* Quattro cose si scrivono da questa porta, e si distinguono dal corpo:
+       riportare un modulo cartaceo, annullare un'iscrizione, rimandare la
+       ricevuta a chi non l'ha ricevuta, o segnare incassato il contante di
+       un'iscrizione che c'è già — che resta il caso senza etichetta, perché
+       è quello che si fa cento volte la mattina del 20. */
     if (req.method === "POST") {
-      return req.body?.cartaceo ? await riporta(req, res) : await incassa(req, res);
+      if (req.body?.cartaceo) return await riporta(req, res);
+      if (req.body?.annulla) return await annulla(req, res);
+      if (req.body?.ricevuta) return await rimanda(req, res);
+      return await incassa(req, res);
     }
     return await elenco(res);
   } catch (errore) {
@@ -510,4 +516,121 @@ async function incassa(req, res) {
   });
 
   return res.status(200).json({ incassata: true, gia: false, id: fattura.id });
+}
+
+/* ── Trovare l'iscrizione su cui si sta per scrivere ──────────────────────
+   Le tre scritture che agiscono su un'iscrizione che c'è già partono tutte
+   dalla stessa domanda, e sbagliarla in una sola delle tre vorrebbe dire
+   toccare la fattura di qualcun altro. Quindi si chiede una volta sola.
+
+   Il marchio dell'evento si ricontrolla sempre: questa chiave apre l'elenco
+   della Color Walk, non il permesso di scrivere su una qualunque fattura che
+   ci sia sul conto PayPal. */
+async function quale(req) {
+  const id = pulisci(req.body?.fattura, 40);
+  const numero = pulisci(req.body?.numero, 40);
+  if (!id && !numero) return { errore: "manca l'iscrizione", codice: 400 };
+
+  const fattura = id ? await leggiFattura(id).catch(() => null) : await trovaFattura(numero);
+  if (!fattura) return { errore: "iscrizione non trovata", codice: 404 };
+  if (String(fattura?.detail?.reference || "") !== EVENTO) {
+    return { errore: "iscrizione non trovata", codice: 404 };
+  }
+  return { fattura };
+}
+
+/* ── Togliere un'iscrizione ───────────────────────────────────────────────
+   Serve per una cosa sola, ed è una cosa che capita: il doppione. Qualcuno
+   manda lo stesso modulo due o tre volte perché non gli torna indietro
+   niente, e in elenco compare tre volte con lo stesso figlio. Finché non
+   c'era questo, l'unico modo di far pulizia era entrare nel pannello di
+   PayPal — cioè un posto dove per sbagliare basta un clic, e dove non c'è
+   niente che dica quale di quelle fatture è la Color Walk.
+
+   Un'iscrizione già pagata non si tocca da qui, e non è una precauzione
+   generica: dietro ci sono dieci euro veri, e toglierla vorrebbe dire
+   decidere anche di un rimborso. Quella decisione la prende una persona, nel
+   pannello di PayPal, guardando il movimento. */
+async function annulla(req, res) {
+  const trovata = await quale(req);
+  if (trovata.errore) return res.status(trovata.codice).json({ errore: trovata.errore });
+  const fattura = trovata.fattura;
+
+  if (saldata(fattura)) {
+    return res.status(409).json({
+      errore:
+        "questa iscrizione risulta pagata: non si toglie da qui. " +
+        "Se va rimborsata, il movimento si tratta nel pannello di PayPal.",
+    });
+  }
+
+  if (annullata(fattura)) {
+    /* Già annullata non è un errore: è qualcuno che ha premuto due volte, o
+       due persone che stanno facendo pulizia insieme. Il mondo è nello stato
+       che si voleva. */
+    return res.status(200).json({ annullata: true, gia: true, id: fattura.id });
+  }
+
+  /* Una bozza non si annulla, si butta: vedi `cancellaFattura`. */
+  if (String(fattura.status || "") === "DRAFT") await cancellaFattura(fattura.id);
+  else await annullaFattura(fattura.id);
+
+  return res.status(200).json({ annullata: true, gia: false, id: fattura.id });
+}
+
+/* ── Rimandare la ricevuta ────────────────────────────────────────────────
+   La mail può non essere arrivata, e quando non arriva non c'è nessun modo
+   di accorgersene da qui: la fattura è scritta, l'iscrizione è valida, e
+   l'unico che sa che manca qualcosa è chi sta guardando una casella vuota.
+   Prima di questo, l'unica risposta possibile era scriverla a mano.
+
+   La ricevuta si compone dalla fattura vera, riletta adesso da PayPal — non
+   dai campi di una pagina — quindi dice esattamente quello che c'è scritto
+   nel registro: chi è iscritto, quanto, e se quei soldi ci sono già o si
+   pagano al ritrovo. È la stessa funzione che scrive le altre due mail del
+   progetto, e quindi non può divergere da loro.
+
+   L'indirizzo di solito è quello della fattura. Si può scriverne un altro
+   perché il caso esiste ed è banale: al banchetto uno detta la mail e chi
+   scrive sbaglia una lettera. Non apre niente che non fosse già aperto — chi
+   ha questa chiave l'elenco lo sta già leggendo per intero. */
+async function rimanda(req, res) {
+  const trovata = await quale(req);
+  if (trovata.errore) return res.status(trovata.codice).json({ errore: trovata.errore });
+  const fattura = trovata.fattura;
+
+  if (annullata(fattura)) {
+    return res.status(409).json({ errore: "questa iscrizione è annullata: non c'è nessuna ricevuta da mandare" });
+  }
+
+  const scritta = String(fattura?.primary_recipients?.[0]?.billing_info?.email_address || "").trim();
+  const altro = pulisci(req.body?.a, 200);
+  const a = altro || scritta;
+  if (!EMAIL_RE.test(a)) {
+    return res.status(400).json({
+      errore: altro
+        ? "l'indirizzo scritto qui non è valido"
+        : "questa iscrizione non ha nessun indirizzo email: scrivilo qui accanto",
+    });
+  }
+
+  const numero = String(fattura?.detail?.invoice_number || "");
+  const mail = ricevuta({
+    fattura,
+    pagato: saldata(fattura),
+    /* La data della ricevuta è quella del pagamento, se c'è stato, e non
+       quella di adesso: una ricevuta rimandata a settembre per un pagamento
+       di agosto deve dire agosto. */
+    quando: fattura?.payments?.transactions?.[0]?.payment_date || fattura?.detail?.invoice_date,
+    cartaceo: moduloDi(numero),
+  });
+
+  try {
+    await spedisci({ a, oggetto: mail.oggetto, html: mail.html, testo: mail.testo });
+  } catch (errore) {
+    console.error(`ricevuta di ${numero} non rimandata a ${a}:`, errore.message);
+    return res.status(502).json({ errore: `la mail non è partita (${errore.message})` });
+  }
+
+  return res.status(200).json({ rimandata: true, a, nome: mail.nome, persone: mail.persone });
 }

@@ -160,6 +160,18 @@ function stubFetch(pagine, { rotto = false } = {}) {
       return risposta(200, { id: "email_1" });
     }
 
+    /* Annullare e cancellare. Vanno prima della rilettura per identificativo,
+       che altrimenti se le prende lei: sono tutte e tre sotto lo stesso
+       percorso, e a distinguerle è il metodo e la coda. */
+    if (u.endsWith("/cancel") && o.method === "POST") {
+      scritte.push({ url: u, corpo: JSON.parse(o.body || "{}") });
+      return risposta(200, {});
+    }
+    if (u.includes("/v2/invoicing/invoices/") && o.method === "DELETE") {
+      scritte.push({ url: u, corpo: {} });
+      return risposta(200, {});
+    }
+
     if (u.includes("/v2/invoicing/invoices/")) {
       const id = u.split("/").pop();
       const trovata = pagine.flat().find((f) => f.id === id);
@@ -709,6 +721,117 @@ function verifica(nome, ok, extra) {
   verifica("in elenco la scheda dice il numero del foglio, e le altre no",
     cartacea?.modulo === "7" && online?.modulo === "" && res.corpo?.cartacei === 1,
     JSON.stringify({ cartacea: cartacea?.modulo, online: online?.modulo, cartacei: res.corpo?.cartacei }));
+}
+
+console.log("\n── Annullare un doppione, e rimandare la ricevuta ─────────────");
+
+/* Le due cose nate dal guasto del 6 settembre: qualcuno ha mandato tre volte
+   lo stesso modulo e si è ritrovato tre volte in elenco, senza mail. */
+async function scrivi(corpo, pagine) {
+  process.env.PAYPAL_CLIENT_ID = "finto";
+  process.env.PAYPAL_CLIENT_SECRET = "finto";
+  process.env.ISCRITTI_CHIAVE = CHIAVE;
+  process.env.RESEND_API_KEY = "re_finta";
+  scritte = [];
+  creata = null;
+  mandata = null;
+  global.fetch = stubFetch(pagine);
+  const res = finestra();
+  await handler({ method: "POST", query: { chiave: CHIAVE }, headers: {}, body: corpo }, res);
+  return res;
+}
+
+{
+  const doppione = inContanti(11);
+  const res = await scrivi({ annulla: true, fattura: "INV2-11" }, [[doppione]]);
+  const annullamento = scritte.find((s) => s.url.includes("/cancel"));
+  verifica("un doppione non pagato si annulla, e PayPal non scrive a nessuno",
+    res.codice === 200 && res.corpo?.annullata === true && res.corpo?.gia === false &&
+      !!annullamento && annullamento.corpo.send_to_recipient === false,
+    `${res.codice} ${JSON.stringify(res.corpo)} — ${JSON.stringify(annullamento)}`);
+}
+
+{
+  const pagata = fattura(12);
+  const res = await scrivi({ annulla: true, fattura: "INV2-12" }, [[pagata]]);
+  verifica("un'iscrizione già pagata NON si annulla da qui: ci sono dieci euro veri",
+    res.codice === 409 && !scritte.some((s) => s.url.includes("/cancel")),
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const gia = inContanti(13, { status: "CANCELLED" });
+  const res = await scrivi({ annulla: true, fattura: "INV2-13" }, [[gia]]);
+  verifica("annullarla due volte non è un errore: il mondo è già com'era voluto",
+    res.codice === 200 && res.corpo?.gia === true && !scritte.some((s) => s.url.includes("/cancel")),
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const bozza = inContanti(14, { status: "DRAFT" });
+  const res = await scrivi({ annulla: true, fattura: "INV2-14" }, [[bozza]]);
+  const buttata = scritte.find((s) => s.url.includes("INV2-14"));
+  verifica("una bozza non si annulla, si butta — PayPal non la lascia annullare",
+    res.codice === 200 && res.corpo?.annullata === true && !!buttata && !buttata.url.includes("/cancel"),
+    `${res.codice} ${JSON.stringify(res.corpo)} — ${JSON.stringify(buttata?.url)}`);
+}
+
+{
+  /* Una fattura di un altro evento sul conto PayPal: questa chiave apre la
+     Color Walk, non il permesso di annullare qualunque cosa. */
+  const altrui = inContanti(15, { detail: { reference: "un-altro-evento" } });
+  const res = await scrivi({ annulla: true, fattura: "INV2-15" }, [[altrui]]);
+  verifica("una fattura di un altro evento non si tocca",
+    res.codice === 404 && !scritte.some((s) => s.url.includes("/cancel")),
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const chi = inContanti(16);
+  const res = await scrivi({ ricevuta: true, fattura: "INV2-16" }, [[chi]]);
+  verifica("la ricevuta si rimanda all'indirizzo scritto sulla fattura",
+    res.codice === 200 && res.corpo?.rimandata === true && mandata?.to?.[0] === "tizio16@example.com" &&
+      /da pagare al ritrovo/.test(mandata?.subject || ""),
+    `${res.codice} ${JSON.stringify(res.corpo)} — ${mandata?.to} ${mandata?.subject}`);
+}
+
+{
+  const chi = fattura(17);
+  const res = await scrivi({ ricevuta: true, fattura: "INV2-17" }, [[chi]]);
+  verifica("e a chi ha già pagato dice «confermata», non «da pagare»",
+    res.codice === 200 && /confermata/.test(mandata?.subject || "") && !/da pagare/.test(mandata?.subject || ""),
+    `${res.codice} ${mandata?.subject}`);
+}
+
+{
+  const chi = inContanti(18);
+  const res = await scrivi({ ricevuta: true, fattura: "INV2-18", a: "corretto@example.com" }, [[chi]]);
+  verifica("si può correggere l'indirizzo: al banchetto una lettera si sbaglia",
+    res.codice === 200 && mandata?.to?.[0] === "corretto@example.com",
+    `${res.codice} ${JSON.stringify(mandata?.to)}`);
+}
+
+{
+  const chi = inContanti(19);
+  const res = await scrivi({ ricevuta: true, fattura: "INV2-19", a: "non una mail" }, [[chi]]);
+  verifica("un indirizzo storto non manda niente da nessuna parte",
+    res.codice === 400 && mandata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const morta = inContanti(20, { status: "CANCELLED" });
+  const res = await scrivi({ ricevuta: true, fattura: "INV2-20" }, [[morta]]);
+  verifica("da un'iscrizione annullata non parte nessuna ricevuta",
+    res.codice === 409 && mandata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const res = await scrivi({ annulla: true }, [[]]);
+  verifica("senza dire quale iscrizione, non si annulla niente",
+    res.codice === 400 && !scritte.some((s) => s.url.includes("/cancel")),
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);

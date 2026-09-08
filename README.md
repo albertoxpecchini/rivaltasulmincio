@@ -437,7 +437,8 @@ rivaltasulmincio/
 │   ├── iscrizione-color-walk.mjs   #   registra l'iscrizione: apre il pagamento, oppure
 │   │                           #   la segna da pagare al ritrovo. E verifica il ritorno
 │   ├── conferma-color-walk.mjs     #   il webhook PayPal: incassa e manda ricevuta o avviso
-│   ├── iscritti-color-walk.mjs     #   l'elenco per chi organizza, e il tasto «incassato»
+│   ├── iscritti-color-walk.mjs     #   l'elenco per chi organizza: il tasto «incassato»,
+│   │                           #   annullare un doppione, rimandare una ricevuta
 │   ├── _paypal.mjs             #   la porta verso PayPal, e il formato di un'iscrizione
 │   └── _posta.mjs              #   le mail: come si compongono e da dove escono
 │                               #   (in coda ha un blocco GENERATO da build.mjs: i modelli)
@@ -687,6 +688,32 @@ PayPal. È il webhook che incassa e manda le mail.
 sola porta chiusa a chiave del sito, e in più il **tasto «incassato»**: il gesto del banchetto, con
 il telefono in una mano e i soldi nell'altra. Segna la fattura saldata, metodo contanti. Si potrebbe
 fare anche dall'app PayPal — ma sui gradini della chiesa il bottone vince.
+
+In fondo a ogni scheda aperta ci sono altri due tasti, che si premono di rado e con la testa:
+**«Rimanda la ricevuta»** — la stessa mail, ricomposta dalla fattura vera e mandata all'indirizzo
+scritto sopra o a uno corretto al volo, per il caso in cui non sia mai arrivata — e **«Annulla
+l'iscrizione»**, per togliere un doppione. Un'iscrizione già pagata da lì non si annulla: dietro ci
+sono dieci euro veri, e un rimborso è una decisione da prendere davanti al movimento su PayPal.
+
+##### Lo stesso modulo mandato due volte
+
+Il 6 settembre una persona ha mandato **tre volte lo stesso modulo in un minuto**, perché non le
+tornava indietro niente: si è ritrovata tre volte in elenco e senza nemmeno una mail. Il guasto era
+uno solo — la funzione ci metteva più dei venti secondi che aveva, e veniva spenta a metà: la
+fattura era già scritta, la ricevuta non ancora partita, e al browser arrivava un errore che diceva
+«riprova tra poco». Da lì sono nate cinque cose, e nessuna delle cinque da sola sarebbe bastata.
+
+| | |
+|---|---|
+| **la sigla del tentativo** | la pagina si inventa una sigla quando si comincia a compilare e la rimanda uguale a ogni invio; il numero della fattura scende da lì, e il secondo invio trova il numero **già preso**. È PayPal a garantire l'unicità, nell'istante in cui scrive: un controllo nostro dovrebbe prima cercare, e la ricerca delle fatture arriva con qualche secondo di ritardo — proprio nel minuto in cui uno preme tre volte |
+| **l'impronta di quello che si manda** | seconda metà della sigla. Chi annulla il pagamento, torna indietro e *aggiunge un figlio* non sta rimandando lo stesso modulo: cambia l'impronta, e nasce una fattura nuova come dev'essere |
+| **quindici secondi fra un invio e l'altro** | in `localStorage`, che una ricaricata se la porta. Il tasto spento non basta: chi non vede tornare niente ricarica, e una pagina ricaricata ha il tasto acceso |
+| **il riquadro che dice cosa sta succedendo** | finché la funzione non risponde, e un banner verde quando risponde. Il tasto che diceva «Un momento…» in fondo a un modulo lungo non lo vedeva nessuno |
+| **sessanta secondi invece di venti** | in `vercel.json`. Quattro chiamate a PayPal in fila hanno sei secondi ciascuna: il conto non stava dentro il tetto, e il tetto non si vedeva da nessuna parte |
+
+E una sesta, che non si vede: il `catch` di `iscrivi` adesso **scrive nei log**. Prima il guasto
+usciva di lì dentro un 502 e non lasciava traccia da nessuna parte — un errore che il browser vede e
+il server non scrive è un errore che non si aggiusta.
 
 Il `GET` di verifica esiste perché l'indirizzo di ritorno lo digita chiunque: senza quel controllo
 basterebbe aprire `/color-walk?stato=ok` per vedersi dire «iscrizione ricevuta» senza aver pagato

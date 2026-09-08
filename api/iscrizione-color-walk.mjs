@@ -56,6 +56,9 @@ import {
   incassaOrdine,
   leggiOrdine,
   numeroFattura,
+  numeroDaTentativo,
+  emailFattura,
+  trovaFattura,
   personeDa,
   pulisci,
   saldata,
@@ -85,6 +88,14 @@ const SITE = "https://www.rivaltasulmincio.it";
    maiuscole e cifre. Serve a non andare a chiedere a PayPal notizie di una
    stringa che un ordine non è, scritta a mano nella barra del browser. */
 const ORDINE_RE = /^[A-Z0-9]{10,25}$/;
+
+/* La sigla del tentativo: quella che la pagina si inventa quando si comincia
+   a compilare e rimanda uguale a ogni invio dello stesso modulo. Non
+   identifica una persona e non serve a riconoscerla: serve a riconoscere UN
+   MODULO, per non registrarlo due volte. Si accetta solo la forma che manda
+   la pagina — lettere, cifre e trattini — perché da lì scende un numero di
+   fattura, e in un numero di fattura non ci va di tutto. */
+const TENTATIVO_RE = /^[A-Za-z0-9_-]{8,60}$/;
 
 /* ── Quante iscrizioni non pagate può avere lo stesso indirizzo ────────────
    Finché si pagava solo con la carta, a fare da filtro era il pagamento: chi
@@ -199,6 +210,12 @@ async function iscrivi(req, res) {
   const note = pulisci(req.body?.note, 300);
   const consenso = req.body?.consenso === true;
   const modalita = pulisci(req.body?.pagamento, 20).toLowerCase();
+  /* Storta o assente, la sigla non è un motivo per dire di no: chi arriva da
+     un browser che non ha saputo generarla si iscrive lo stesso, e la sua
+     fattura prende il numero dall'orologio come si è sempre fatto. Perde solo
+     la rete contro il doppione, che è meglio di perdere l'iscrizione. */
+  const grezzoTentativo = pulisci(req.body?.tentativo, 80);
+  const tentativo = TENTATIVO_RE.test(grezzoTentativo) ? grezzoTentativo : "";
 
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({ errore: "email mancante o non valida" });
@@ -304,7 +321,7 @@ async function iscrivi(req, res) {
 
     /* Quando è stato dato il consenso, non solo che è stato dato: è la parte
        che serve se un domani qualcuno chiede conto di quei dati. */
-    const numero = numeroFattura();
+    let numero = numeroDaTentativo(tentativo) || numeroFattura();
     const corpo = componiFattura({
       numero,
       adulto,
@@ -316,17 +333,64 @@ async function iscrivi(req, res) {
       note,
       consenso: new Date().toISOString(),
     });
-    const creata = await creaFattura(corpo);
+    let creata = await creaFattura(corpo, tentativo);
 
-    const idFattura = creata?.id || String(creata?.href || "").split("/").pop();
-    if (!idFattura) throw new Error("PayPal ha creato la fattura ma non ha detto quale");
+    /* Numero già preso SENZA che ci fosse una sigla. Non è il caso di sopra:
+       qui il numero veniva dall'orologio, e due iscrizioni nello stesso
+       millisecondo con le stesse quattro cifre a caso sono una cosa che non
+       succede — ma se succedesse, trattarla come «era già registrata»
+       vorrebbe dire dire «sei iscritto» a chi non lo è, e perdere
+       l'iscrizione senza che nessuno se ne accorga. Si rifà, con un numero
+       nuovo, una volta sola. */
+    if (creata?.giaFatto && !tentativo) {
+      console.warn(`iscrizione ${numero}: numero dall'orologio già preso, si rifà`);
+      numero = numeroFattura();
+      corpo.detail.invoice_number = numero;
+      creata = await creaFattura(corpo);
+    }
+
+    /* Il numero era già preso. Se scende dal tentativo — e scende dal
+       tentativo ogni volta che la pagina ne manda uno — l'unico che può
+       averlo preso è il tentativo di prima dello stesso modulo: quello che
+       non è tornato indietro e ha fatto premere di nuovo. Quindi non è una
+       seconda iscrizione, è la stessa che chiede di nuovo la sua risposta.
+
+       Non si crea niente e non si tocca niente: si riprende da dove si era
+       rimasti. Per i contanti vuol dire rimandare la mail — che è proprio
+       quella che la prima volta non era partita — e per il pagamento online
+       vuol dire riaprire un checkout sulla stessa fattura. */
+    const ripetuta = creata?.giaFatto === true && Boolean(tentativo);
+
+    /* La fattura che c'era già. Serve solo per l'identificativo, e non è
+       detto che arrivi: la ricerca di PayPal è un indice che ci mette
+       qualche secondo, e una fattura nata trenta secondi fa lì dentro può
+       non esserci ancora. Non trovarla non ferma niente — il numero è
+       nostro, la fattura è nostra — ma se la si trova si controlla che sia
+       davvero intestata a questo indirizzo, perché la sigla del tentativo
+       arriva da fuori e da fuori si scrive qualunque cosa. */
+    let idFattura = creata?.id || String(creata?.href || "").split("/").pop();
+    if (ripetuta) {
+      const gia = await trovaFattura(numero).catch(() => null);
+      if (gia && emailFattura(gia) && emailFattura(gia) !== email.toLowerCase()) {
+        return res.status(409).json({
+          errore:
+            "questa iscrizione risulta già registrata a un altro indirizzo — " +
+            "ricarica la pagina e riprova, e se succede ancora scrivi a color-walk@rivaltasulmincio.it",
+        });
+      }
+      idFattura = gia?.id || "";
+      if (!idFattura) {
+        console.warn(`iscrizione ${numero}: numero già preso ma fattura non ritrovata (indice PayPal in ritardo)`);
+      }
+    }
+    if (!idFattura && !ripetuta) throw new Error("PayPal ha creato la fattura ma non ha detto quale");
 
     /* Fuori dalla bozza, senza che PayPal scriva a nessuno: una bozza non
        accetta pagamenti, e senza questo passaggio né l'incasso online né il
        contante potrebbero mai essere segnati. */
-    await spedisciFattura(idFattura);
+    if (idFattura) await spedisciFattura(idFattura);
 
-    if (modalita === "contanti") return contanti(res, { fattura: corpo, idFattura, numero, email, totaleCent });
+    if (modalita === "contanti") return contanti(res, { fattura: corpo, idFattura, numero, email, totaleCent, ripetuta });
 
     /* Quello che chi paga legge sulla pagina di PayPal, accanto alla cifra.
        Singolare e plurale scritti giusti: è corto, lo legge una persona, e
@@ -353,6 +417,13 @@ async function iscrivi(req, res) {
 
     return res.status(200).json({ url: ordine.url });
   } catch (errore) {
+    /* Questo `console.error` non c'era, ed è costato un'indagine intera. Il
+       giorno che un'iscrizione si è rotta a metà — la fattura creata, la mail
+       mai partita, e chi compilava che ha premuto tre volte — dei log non
+       c'era niente da leggere: il guasto usciva di qui dentro un 502 e non
+       lasciava traccia da nessuna parte. Un errore che il browser vede e il
+       server non scrive è un errore che non si aggiusta. */
+    console.error("iscrizione non riuscita:", errore?.stack || errore?.message || errore);
     return res.status(502).json({ errore: String(errore.message || errore) });
   }
 }
@@ -367,12 +438,20 @@ async function iscrivi(req, res) {
    sulla fattura, che è il registro. Si risponde comunque «fatto», con
    l'avviso che la conferma non è arrivata: dire «non è riuscita» a chi è
    invece iscritto lo farebbe iscrivere una seconda volta. */
-async function contanti(res, { fattura, idFattura, numero, email, totaleCent }) {
+async function contanti(res, { fattura, idFattura, numero, email, totaleCent, ripetuta = false }) {
   /* La fattura passata qui è lo stesso oggetto mandato a PayPal un attimo
      fa: le stesse voci, gli stessi importi. La mail si compone da quello e
      non dai campi del modulo, così quello che la persona legge è quello che
      è stato scritto nel registro — non una seconda copia che potrebbe
-     raccontare qualcos'altro. */
+     raccontare qualcos'altro.
+
+     E si compone anche quando l'iscrizione c'era già. Anzi: soprattutto
+     allora. Il modulo rimandato una seconda volta è quasi sempre il modulo di
+     qualcuno a cui la prima volta la mail NON è arrivata — è per questo che
+     ha premuto di nuovo — e rimandarla è l'unica cosa che gli serve. Una
+     ricevuta in doppia copia è un fastidio di due secondi; una ricevuta che
+     non arriva mai è una persona che si presenta al banchetto senza sapere
+     se è iscritta. */
   const mail = ricevuta({ fattura, pagato: false });
 
   let spedita = true;
@@ -380,12 +459,16 @@ async function contanti(res, { fattura, idFattura, numero, email, totaleCent }) 
     await spedisci({ a: email, oggetto: mail.oggetto, html: mail.html, testo: mail.testo });
   } catch (errore) {
     spedita = false;
-    console.error(`iscrizione ${numero} (${idFattura}) registrata ma mail non spedita:`, errore.message);
+    console.error(`iscrizione ${numero} (${idFattura || "senza id"}) registrata ma mail non spedita:`, errore.message);
   }
 
   return res.status(200).json({
     contanti: true,
     spedita,
+    /* Che fosse già registrata lo sa la pagina, e le serve per non dire
+       «iscrizione registrata» a chi la stava rimandando: gli dice che era già
+       a posto, che è la cosa che stava cercando di sapere. */
+    ripetuta,
     nome: mail.nome,
     persone: mail.persone,
     totaleCent,

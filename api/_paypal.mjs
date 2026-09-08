@@ -275,6 +275,41 @@ const centesimi = (valore) => Math.round(Number(valore || 0) * 100);
 export const numeroFattura = () =>
   `CW-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36).padStart(4, "0")}`.slice(0, 25);
 
+/* ── Lo stesso modulo mandato due volte ───────────────────────────────────
+   Il numero di fattura ricavato dal tentativo, invece che dall'orologio. È
+   la cosa che impedisce a un modulo rimandato di iscrivere due volte la
+   stessa famiglia, e nasce da un guasto vero: chi compila non vede tornare
+   niente — la funzione ci ha messo troppo, la rete è caduta, il telefono ha
+   cambiato cella — preme di nuovo, e si ritrova iscritto tre volte.
+
+   Il meccanismo sta tutto qui: la pagina si inventa una sigla a caso quando
+   si comincia a compilare, e la rimanda IDENTICA a ogni tentativo. Il numero
+   della fattura scende da quella sigla, quindi il secondo tentativo chiede a
+   PayPal una fattura con un numero già preso — e PayPal rifiuta. Quel
+   rifiuto è la difesa: non è un guasto, è la prova che quell'iscrizione
+   c'è già, e da lì si riprende invece di rifarla.
+
+   Che a dire di no sia PayPal, e non un controllo nostro, è la parte che
+   conta. Un controllo nostro dovrebbe prima cercare, e la ricerca delle
+   fatture di PayPal è un indice che arriva con qualche secondo di ritardo:
+   proprio nel minuto in cui uno preme tre volte, quella ricerca risponde
+   «non c'è niente» tutte e tre. Il numero unico invece vale nell'istante in
+   cui PayPal scrive, perché è lui a garantirlo.
+
+   Venticinque caratteri esatti: `CW-T-` più venti di sigla. */
+export const numeroDaTentativo = (tentativo) => {
+  const pulita = String(tentativo || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+  return pulita.length >= 8 ? `CW-T-${pulita.slice(0, 20)}` : "";
+};
+
+/* L'indirizzo a cui una fattura è intestata. Serve in un punto solo: quando
+   si scopre che il numero era già preso, prima di riusare quella fattura
+   bisogna sapere che è davvero la stessa iscrizione e non quella di un altro
+   finita sotto lo stesso numero — la sigla arriva da fuori, e da fuori si può
+   scrivere qualunque cosa. */
+export const emailFattura = (fattura) =>
+  String(fattura?.primary_recipients?.[0]?.billing_info?.email_address || "").trim().toLowerCase();
+
 
 /* ── Il modulo cartaceo riportato a mano ──────────────────────────────────
    Chi si iscrive al banchetto compila un foglio, e quel foglio porta in cima
@@ -457,9 +492,24 @@ export function comePagata(fattura) {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Creare. Il numero già preso non è un guasto: è il webhook che ripassa
-   sullo stesso pagamento, e la fattura di quel pagamento esiste già. */
-export const creaFattura = (corpo) =>
-  paypal("/v2/invoicing/invoices", { metodo: "POST", corpo, tollera: ["DUPLICATE_INVOICE_NUMBER"] });
+   sullo stesso pagamento, e la fattura di quel pagamento esiste già. Oppure —
+   il caso per cui questa tolleranza è diventata importante — è lo stesso
+   modulo rimandato una seconda volta perché la prima non era tornata
+   indietro: vedi `numeroDaTentativo`.
+
+   `PayPal-Request-Id` è la cintura sopra le bretelle. Dove PayPal la
+   riconosce, la seconda richiesta identica non crea niente e restituisce la
+   risposta della prima — identificativo compreso, che è proprio quello che
+   al secondo giro manca. Dove non la riconosce non fa danno: è
+   un'intestazione in più che nessuno legge, e a fermare il doppione resta il
+   numero di fattura. */
+export const creaFattura = (corpo, tentativo = "") =>
+  paypal("/v2/invoicing/invoices", {
+    metodo: "POST",
+    corpo,
+    tollera: ["DUPLICATE_INVOICE_NUMBER"],
+    ...(tentativo ? { intestazioni: { "PayPal-Request-Id": String(tentativo).slice(0, 108) } } : {}),
+  });
 
 /* «Spedire» una fattura che non va spedita a nessuno. Serve solo a portarla
    fuori dalla bozza: una bozza non accetta pagamenti, e senza questo
@@ -690,6 +740,18 @@ export const annullaFattura = (id) =>
   });
 
 export const annullata = (fattura) => String(fattura?.status || "") === "CANCELLED";
+
+/* Cancellare, che è un'altra cosa dall'annullare, e la differenza la impone
+   PayPal: una fattura ancora in bozza non si può annullare — non è mai
+   uscita, non c'è niente da disdire — e l'unico modo di toglierla di mezzo è
+   buttarla via. Restare in bozza è raro ma succede: la funzione che l'ha
+   creata si è spenta fra la creazione e la spedizione. Senza questo, una
+   bozza rimasta lì non si sarebbe potuta togliere da nessuna parte. */
+export const cancellaFattura = (id) =>
+  paypal(`/v2/invoicing/invoices/${encodeURIComponent(id)}`, {
+    metodo: "DELETE",
+    tollera: ["RESOURCE_NOT_FOUND", "INVOICE_STATE_NOT_ALLOWED"],
+  });
 
 /* L'incasso, riletto da PayPal a partire dal suo identificativo. È la sola
    cosa che si prende dall'avviso del webhook: il resto — se ha pagato, e
