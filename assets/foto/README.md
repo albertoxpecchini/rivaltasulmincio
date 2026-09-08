@@ -12,9 +12,23 @@ I luoghi stanno in questa cartella, le attività in `attivita/`. In `storia/` ci
 immagini d'archivio della pagina `/storia` — carte, affreschi, reperti: non passano da
 `luoghi.json` e non hanno uno slug, perché non sono posti. Le figure sono scritte a mano nel
 frammento, con la didascalia e l'autore accanto. Lo stesso vale per `archivio/`, dove stanno le
-fotografie di **un giorno** e non di un posto — l'inaugurazione della Madonnina del 27 giugno
-2004, riprodotte dal libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi» — e la copertina
-del libro stesso. Titolo, testo alternativo e
+fotografie di **un giorno** e non di un posto, tutte riprodotte dal libro «Rivalta sul Mincio
+2001-2013 — Eventi e Ricordi» (dono di Annasofia Sanfelici), insieme alla copertina del volume.
+Sotto ogni gruppo di queste immagini va il segnaposto `{{libro}}`, che stampa la scheda del
+libro: è la regola, una fotografia d'archivio dice sempre da dove viene, e accanto a ognuna si
+scrive la pagina.
+
+| File | Cosa | Quando |
+| :--- | :--- | :--- |
+| `archivio/eventi-e-ricordi-copertina.jpg` | la copertina del libro | — |
+| `archivio/madonnina-2004-velata.jpg` | la Madonnina ancora sotto il telo | 27 giu 2004 |
+| `archivio/madonnina-2004-benedizione.jpg` | scoperta e illuminata, la benedizione | 27 giu 2004 |
+| `archivio/madonnina-2004-la-gente.jpg` | il paese che guarda | 27 giu 2004 |
+| `archivio/buriel-2006-la-catasta.jpg` | il burièl a Corte Mincio, prima del fuoco — pag. 62 | 6 gen 2006 |
+| `archivio/buriel-2006-il-falo.jpg` | il burièl in fiamme — pag. 62 | 6 gen 2006 |
+| `archivio/giunta-rodigo-2003.jpg` | la giunta comunale col gonfalone — pag. 27 | 15 dic 2003 |
+| `archivio/comune-rodigo-2008-la-classe.jpg` | la classe seconda davanti al municipio — pag. 95 | 10 ott 2008 |
+| `archivio/comune-rodigo-2008-in-consiglio.jpg` | il sindaco parla ai bambini in consiglio — pag. 95 | 10 ott 2008 | Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
