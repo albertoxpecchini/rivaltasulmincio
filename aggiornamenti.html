@@ -255,6 +255,22 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <li class="sb-riv-crono-riga sb-riv-crono-riga--chiave">
         <time class="sb-riv-crono-anno" datetime="2026-09-08">8 set 2026</time>
         <div class="sb-riv-crono-fatto">
+          <strong>Le fotografie dell'inaugurazione della Madonnina</strong> <span class="sb-riv-na">· Il paese</span>
+          <p>Piazza Chiesa, la sera del 27 giugno 2004: la Madonnina ancora sotto il telo, poi scoperta e illuminata con la benedizione, e il paese che guarda. Tre fotografie in fondo a «Monumenti e memorie», riprodotte dal libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi», che il sito ha avuto in dono da Annasofia Sanfelici. Il monumento della piazza si chiama adesso col suo nome — la Madonnina — anche nel registro dei luoghi e sulla mappa.</p>
+        <a class="sb-link" href="/paese#monumenti">Vai a vedere</a>
+        </div>
+      </li>
+      <li class="sb-riv-crono-riga">
+        <time class="sb-riv-crono-anno" datetime="2026-09-08">8 set 2026</time>
+        <div class="sb-riv-crono-fatto">
+          <strong>In fondo a ogni pagina c'è da dove arrivate</strong> <span class="sb-riv-na">· Sito</span>
+          <p>Un contatore di visite con le bandiere: quante volte il sito è stato aperto, da quanti paesi, e da quali. Si conta una visita per paese e nient'altro — niente cookie, niente profili, nessun indirizzo scritto da qualche parte — e la propria visita si conta una volta sola per ogni giro sul sito, non a ogni pagina. Chi guarda vede la propria bandiera segnata «sei qui».</p>
+        <a class="sb-link" href="/">Vai a vedere</a>
+        </div>
+      </li>
+      <li class="sb-riv-crono-riga sb-riv-crono-riga--chiave">
+        <time class="sb-riv-crono-anno" datetime="2026-09-08">8 set 2026</time>
+        <div class="sb-riv-crono-fatto">
           <strong>Il sito si veste del mese: settembre è l'uva</strong> <span class="sb-riv-na">· Sito</span>
           <p>Da questo mese il sito cambia colore con la stagione, e a settembre è vendemmia: l'azzurro di sempre lascia il posto ai rossi del vino, un tralcio con foglie e grappoli attraversa la testata e qualcosa scende piano sul fondale. I sei colori non sono scelti a occhio: sono le parole con cui l'articolo 6 dei disciplinari del Garda Colli Mantovani DOC e del Lambrusco Mantovano DOC descrive quei vini — «rosso rubino più o meno intenso», «rosato brillante», «giallo paglierino». In fondo a ogni pagina c'è scritto quale parola è quale colore, e da dove viene. Testi, tabelle e impaginato non cambiano di una virgola. Chi preferisce la pagina ferma lo dice col tasto «ferma il movimento» nella barra in basso a sinistra: resta il colore, il movimento no. Le pagine della Color Walk restano com'erano.</p>
         <a class="sb-link" href="/#stag-nota-t">Vai a vedere</a>
@@ -537,6 +553,25 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </div>
     </div>
 
+    <!-- ── Il contatore delle bandiere ──────────────────────────────────────
+         Chi passa di qui, e da dove. Nasce `hidden` e lo mostra
+         assets/visite.js solo quando i numeri sono arrivati davvero: a script
+         spenti, o col contatore giù, in fondo alla pagina non resta un
+         riquadro vuoto pieno di trattini — non resta niente.
+
+         Il conto vero sta in /api/visite: un numero per paese e nient'altro,
+         nessun cookie, nessun indirizzo salvato. -->
+    <section class="sb-riv-visite" data-visite hidden aria-labelledby="sb-visite-tit">
+      <div class="sb-panel"><div class="sb-panel-inner sb-riv-visite-in">
+        <div class="sb-riv-visite-head">
+          <h2 class="sb-riv-visite-tit" id="sb-visite-tit">Da dove arrivate</h2>
+          <p class="sb-riv-visite-conto"><strong data-visite-totale>—</strong> visite da <strong data-visite-paesi>—</strong> paesi</p>
+        </div>
+        <ol class="sb-riv-visite-lista" data-visite-lista></ol>
+        <p class="sb-riv-visite-nota">Si conta una visita per paese, e nient'altro: nessun cookie, nessun profilo, nessun indirizzo scritto da qualche parte. Il conto lo tiene <a href="https://jasoncameron.dev/abacus/" target="_blank" rel="noreferrer noopener">Abacus</a>, le bandiere sono <a href="https://github.com/catamphetamine/country-flag-icons" target="_blank" rel="noreferrer noopener">country-flag-icons</a>.</p>
+      </div></div>
+    </section>
+
     <div class="sb-foot-hairline" aria-hidden="true"></div>
 
     <div class="sb-foot-bottom">
@@ -616,6 +651,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      poi il comportamento della tendina. Due file per tutte le pagine, in
      cache dopo la prima. Se l'indice non c'è, ricerca.js si tira indietro
      da sé e il tasto non compare. -->
+<!-- Il contatore delle bandiere in fondo: ultimo della fila, perché è
+     l'unica cosa della pagina che può tranquillamente non arrivare mai. -->
+<script src="assets/visite.js"></script>
 <script src="assets/ricerca-dati.js"></script>
 <script src="assets/ricerca.js"></script>
 <script src="assets/stagioni.js"></script>

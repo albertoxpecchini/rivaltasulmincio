@@ -11,7 +11,10 @@ segnaposto nella pagina non produce niente — nessun buco, nessuna immagine rot
 I luoghi stanno in questa cartella, le attività in `attivita/`. In `storia/` ci sono invece le
 immagini d'archivio della pagina `/storia` — carte, affreschi, reperti: non passano da
 `luoghi.json` e non hanno uno slug, perché non sono posti. Le figure sono scritte a mano nel
-frammento, con la didascalia e l'autore accanto. Titolo, testo alternativo e
+frammento, con la didascalia e l'autore accanto. Lo stesso vale per `archivio/`, dove stanno le
+fotografie di **un giorno** e non di un posto — l'inaugurazione della Madonnina del 27 giugno
+2004, riprodotte dal libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi» — e la copertina
+del libro stesso. Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
@@ -26,7 +29,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `monumento-salvo-dacquisto.jpg` | Monumento a Salvo D'Acquisto | zona Via Madonnina |
 | `monumento-marinaio.jpg` | Monumento al Marinaio | Via Porto |
 | `mausoleo-arrivabene.jpg` | Mausoleo Arrivabene | zona Via Giovanni Arrivabene |
-| `monumento-piazza-chiesa.jpg` | Monumento di Piazza Chiesa | Piazza Chiesa |
+| `monumento-piazza-chiesa.jpg` | Madonnina di Piazza Chiesa | Piazza Chiesa |
 | `ponte-ferradina.jpg` | Ponte della Ferradina | ~1,3 km dal centro |
 | `lavatoio-via-porto.jpg` | Lavatoio storico | Via Porto |
 | `panchina-terroni.jpg` | «Panchina dei Terroni» | ~895 m dal centro |

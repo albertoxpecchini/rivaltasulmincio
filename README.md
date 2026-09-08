@@ -44,11 +44,11 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **4.209 righe CSS** | `rivalta.css` (2.487) · `sb.css` (1.016) · `stagioni.css` (520) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **2.350 righe**, 10 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
-| **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
+| **Design system** | **4.566 righe CSS** | `rivalta.css` (2.829) · `sb.css` (1.053) · `stagioni.css` (498) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **2.571 righe**, 11 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `visite.js` (221) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
+| **JavaScript su server** | **383 righe**, 2 file | `api/meteo.mjs` (221) e `api/visite.mjs` (162): la stazione meteo e il contatore delle bandiere, le sole due cose sempre accese che non girino nel browser di chi legge |
 | **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
-| **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
+| **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`, più 253 bandiere SVG in `assets/vendor/bandiere/` (174 kB). Il solo servizio esterno è [Abacus](#-il-contatore-delle-bandiere), che tiene il conto delle visite |
 | **Cose da mangiare** | **18** | 9 voglie, 18 piatti e 15 locali in `_build/gusto.json` |
 | **Luoghi censiti** | **152** | 65 luoghi + 87 attività in `_build/luoghi.json`, 123 con coordinate OSM |
 | **Dataset OSM** | **330 POI** su 10.191 righe JSON | 74 strade · 92 elementi stradali · 106 incroci · 16 corsi d'acqua |
@@ -166,6 +166,91 @@ disegno a ogni build, niente diff inutili). Misura, raggio e livello delle celle
 nella classe, non in cinquecento attributi ripetuti; il ritardo dell'accensione sta sulla
 **colonna** e non sulla cella — l'onda da sinistra a destra si vede uguale, la pagina pesa molto
 meno.
+
+---
+
+## 🚩 Il contatore delle bandiere
+
+In fondo a ogni pagina, sopra il filo del footer: **«Da dove arrivate»** — quante volte il sito è
+stato aperto, da quanti paesi, e da quali, con la bandiera di ognuno e una barra in proporzione.
+È il vecchio *flag counter* dei siti di vent'anni fa, rifatto col vestito di questo: la stessa
+lastra di vetro delle card, la stessa occhiellatura maiuscola delle colonne del footer, l'azzurro
+del brand come unica tinta. Le bandiere sono l'eccezione, e sono voluta — un contatore di bandiere
+senza bandiere non è un contatore di bandiere.
+
+**Cosa si salva: un numero per paese, e basta.** Nessun cookie, nessuna sessione lato server,
+nessun profilo, nessun indirizzo IP scritto da qualche parte. L'IP lo legge Vercel per dire
+«Italia», e da lì non esce. Guardando questi dati non c'è modo di risalire a una persona, perché
+di persone non ce n'è traccia.
+
+### Le due cose che un sito statico non ha
+
+Contare le visite vuol dire sapere **da dove arriva** chi apre la pagina e **ricordarsi** il conto
+fra una visita e l'altra.
+
+La prima la regala Vercel: ogni richiesta che arriva a una funzione porta l'header
+`x-vercel-ip-country`. La seconda no — e per contare delle visite non si mette in piedi un
+database. Il conto sta quindi su **[Abacus](https://jasoncameron.dev/abacus/)**, un servizio
+gratuito che sa fare una cosa sola: tenere dei numeri interi e alzarli di uno. Niente iscrizione,
+niente chiavi, niente da configurare. Un contatore per paese (`paese-IT`, `paese-DE`, …) più uno
+per il totale, nello spazio `rivalta-sul-mincio.it`.
+
+È l'unica dipendenza esterna a runtime di tutto il sito, e sta scritto in chiaro nella nota sotto
+al contatore. Se Abacus un giorno non risponde, il blocco non compare e il footer è quello di
+sempre: nasce `hidden` e lo mostra `assets/visite.js` solo quando i numeri sono arrivati davvero.
+Lo stesso vale a script spenti.
+
+### Il limite che decide il disegno
+
+Abacus **non sa elencare le proprie chiavi** — si può chiedere quanto vale `paese-DE`, non «quali
+paesi esistono» — e accetta **30 richieste ogni 10 secondi** per indirizzo IP. Le due cose insieme
+escludono la strada ovvia, cioè passare in rassegna tutti e 253 i codici ISO a ogni lettura:
+sarebbero un minuto e mezzo di attesa e ottantasette richieste rifiutate.
+
+Quindi `api/visite.mjs` legge la tabella su una **lista fissa di 28 paesi** (`ROSTER`), scelta per
+un sito di paese: l'Europa, le Americhe dove Rivalta ha mandato gente, l'Australia. Ventotto
+letture più il totale: una finestra sola, mezzo secondo. Chi arriva da fuori lista non si perde
+per questo:
+
+- la sua visita **viene contata lo stesso**, sul contatore del suo paese;
+- la `POST` gli restituisce quel numero e il browser mette la sua riga in tabella insieme alle
+  altre — chi guarda da Hanoi la bandiera del Vietnam la vede, segnata «sei qui»;
+- quello che avanza finisce nella riga **«resto del mondo»**, che non è una stima: è il totale
+  vero meno la somma di quelli mostrati.
+
+Se un giorno da un paese fuori lista arriva gente per davvero, si aggiunge il suo codice a
+`ROSTER` e la riga compare al primo aggiornamento. È l'unica manutenzione che il file chiede.
+
+### Le due strade
+
+| | Cosa fa | Cache |
+| :--- | :--- | :--- |
+| `GET /api/visite` | la tabella, uguale per tutti | `s-maxage=300, stale-while-revalidate=86400` — Abacus interrogato al massimo una volta ogni 5 minuti, mille visite o una sola |
+| `POST /api/visite` | segna **questa** visita e risponde col paese di chi legge | `no-store`: è l'unica risposta del sito che parla di chi la sta chiedendo |
+
+La tabella esce dalla CDN ed è vecchia al massimo di cinque minuti, quindi la visita appena fatta
+lì dentro non c'è ancora: il numero fresco del proprio paese arriva dalla `POST`, ed è quello che
+vince. Le due chiamate partono insieme.
+
+**Una visita per sessione, non per pagina.** Chi legge il paese, poi la storia, poi la mappa è una
+persona che gira il sito, non tre visitatori dal Nord Italia. Il ricordo sta in `sessionStorage`:
+dura quanto la scheda del browser, non lascia niente sul disco e non è un cookie. I robot
+(`user-agent` con `bot`, `crawl`, `spider`, …) non si contano, e in anteprima locale non si conta
+niente — l'header del paese Vercel lo mette solo in produzione, quindi mentre si lavora il
+contatore si vede ma non sale.
+
+### Bandiere e nomi
+
+Le **bandiere** sono 253 SVG di
+[country-flag-icons](https://github.com/catamphetamine/country-flag-icons) (MIT), ospitati in
+`assets/vendor/bandiere/` come Leaflet: 174 kB in tutto il repo, e in pagina si scarica solo
+quella dei paesi che si vedono. Non sono emoji — su Windows le emoji-bandiera non esistono, e
+metà dei visitatori vedrebbe due lettere in un rettangolo.
+
+I **nomi dei paesi** non sono scritti da nessuna parte: li dice `Intl.DisplayNames`, che sta già
+dentro il browser e li conosce in italiano. Duecento nomi da mantenere a mano sarebbero duecento
+occasioni di scrivere «Cecoslovacchia». Se il browser non ce l'ha, resta il codice a due lettere —
+brutto, ma non sbagliato.
 
 ---
 
@@ -426,14 +511,20 @@ rivaltasulmincio/
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
+│   ├── visite.js               #   il contatore delle bandiere in fondo a ogni pagina: segna la
+│   │                           #   visita, chiede la tabella a /api/visite e la disegna
 │   ├── color-walk.js           #   il movimento della camminata: blocchi che entrano, filo del
 │   │                           #   percorso, barra di lettura — solo sulle tre pagine .sb-cr
 │   ├── favicon.svg             #   la sagoma smussata del sito, col Mincio dentro — fa anche da marchio in testata
 │   ├── loghi/                  #   i marchi: ap.png (firma), comune-rodigo, anspi
-│   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/
-│   └── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
+│   ├── foto/                   #   le fotografie: <slug>.jpg, le attività in foto/attivita/,
+│   │                           #   le immagini d'archivio in foto/storia/ e foto/archivio/
+│   ├── vendor/leaflet/         #   Leaflet 1.9.4 ospitato qui, nessuna CDN
+│   └── vendor/bandiere/        #   253 bandiere SVG (country-flag-icons, MIT), per il contatore
 ├── api/                        # le cose che NON girano nel browser di chi legge
 │   ├── meteo.mjs               #   la stazione di meteomincio, tradotta in JSON
+│   ├── visite.mjs              #   il contatore: legge il paese dall'header di Vercel, tiene i
+│   │                           #   numeri su Abacus, e risponde con la tabella per il footer
 │   ├── iscrizione-color-walk.mjs   #   registra l'iscrizione: apre il pagamento, oppure
 │   │                           #   la segna da pagare al ritrovo. E verifica il ritorno
 │   ├── conferma-color-walk.mjs     #   il webhook PayPal: incassa e manda ricevuta o avviso
@@ -1033,6 +1124,20 @@ Il build dice a ogni giro a che punto siamo:
 **Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB. Le misure sono scritte
 nell'attributo `width`/`height` dell'immagine, così la pagina non sobbalza mentre carica.
 
+### Le immagini che non sono un posto
+
+Una carta, un affresco, la sera in cui è stato inaugurato un monumento: non sono la fotografia di
+un luogo, sono la fotografia di un documento o di un giorno — e un luogo lo si può rifotografare
+domani, quella sera no. Non passano dal registro e non hanno uno slug: stanno in
+`assets/foto/storia/` (le carte e i reperti di `/storia`) e in `assets/foto/archivio/` (le
+fotografie d'archivio del paese), e la `<figure>` si scrive a mano nel frammento, con la sua
+didascalia e la sua provenienza accanto.
+
+Una fotografia d'archivio senza la provenienza è un'immagine trovata: dove viene da un libro, il
+libro si mostra — la scheda `.sb-riv-fonte` in fondo a `/paese#monumenti` ne è l'esempio, con il
+volume disegnato in tre dimensioni da due facce di CSS (copertina e dorso, ferme: un oggetto che
+gira mentre si legge una didascalia ruba l'attenzione al motivo per cui esiste).
+
 > **Le vetrine delle attività vogliono un permesso.** Fotografare dalla strada pubblica è una cosa,
 > pubblicare la foto su un sito che presenta quell'attività è un'altra: serve l'ok del titolare, e
 > l'insegna è un marchio. Chiederlo mentre si scatta è anche il modo più semplice per ottenere una
@@ -1288,6 +1393,13 @@ Settembre è l'uva, e i suoi sei colori sono parole di disciplinare.
 - **Testi del dossier e impaginazione** — © Alberto Pecchini. Le fonti istituzionali citate
   (Comune di Rodigo, ISTAT, Parco del Mincio, APAM) restano dei rispettivi titolari.
 - **Rassegna stampa** — titoli, testate e link appartengono alle testate: qui c'è solo l'indice.
+- **Bandiere** — [country-flag-icons](https://github.com/catamphetamine/country-flag-icons) di
+  Nikolay Kuchumov, licenza **MIT**, ospitate in `assets/vendor/bandiere/`.
+- **Conteggio delle visite** — [Abacus](https://jasoncameron.dev/abacus/) di Jason Cameron,
+  servizio gratuito: tiene i numeri, non sa nient'altro di chi passa.
+- **Fotografie dell'inaugurazione della Madonnina** (27 giugno 2004) — riprodotte da «Rivalta sul
+  Mincio 2001-2013 — Eventi e Ricordi», Nuova Universo Gutenberg Edizioni. Il volume è un dono di
+  **Annasofia Sanfelici**.
 
 ## 📬 Contatti
 

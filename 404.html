@@ -412,6 +412,25 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </div>
     </div>
 
+    <!-- ── Il contatore delle bandiere ──────────────────────────────────────
+         Chi passa di qui, e da dove. Nasce `hidden` e lo mostra
+         assets/visite.js solo quando i numeri sono arrivati davvero: a script
+         spenti, o col contatore giù, in fondo alla pagina non resta un
+         riquadro vuoto pieno di trattini — non resta niente.
+
+         Il conto vero sta in /api/visite: un numero per paese e nient'altro,
+         nessun cookie, nessun indirizzo salvato. -->
+    <section class="sb-riv-visite" data-visite hidden aria-labelledby="sb-visite-tit">
+      <div class="sb-panel"><div class="sb-panel-inner sb-riv-visite-in">
+        <div class="sb-riv-visite-head">
+          <h2 class="sb-riv-visite-tit" id="sb-visite-tit">Da dove arrivate</h2>
+          <p class="sb-riv-visite-conto"><strong data-visite-totale>—</strong> visite da <strong data-visite-paesi>—</strong> paesi</p>
+        </div>
+        <ol class="sb-riv-visite-lista" data-visite-lista></ol>
+        <p class="sb-riv-visite-nota">Si conta una visita per paese, e nient'altro: nessun cookie, nessun profilo, nessun indirizzo scritto da qualche parte. Il conto lo tiene <a href="https://jasoncameron.dev/abacus/" target="_blank" rel="noreferrer noopener">Abacus</a>, le bandiere sono <a href="https://github.com/catamphetamine/country-flag-icons" target="_blank" rel="noreferrer noopener">country-flag-icons</a>.</p>
+      </div></div>
+    </section>
+
     <div class="sb-foot-hairline" aria-hidden="true"></div>
 
     <div class="sb-foot-bottom">
@@ -491,6 +510,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      poi il comportamento della tendina. Due file per tutte le pagine, in
      cache dopo la prima. Se l'indice non c'è, ricerca.js si tira indietro
      da sé e il tasto non compare. -->
+<!-- Il contatore delle bandiere in fondo: ultimo della fila, perché è
+     l'unica cosa della pagina che può tranquillamente non arrivare mai. -->
+<script src="/assets/visite.js"></script>
 <script src="/assets/ricerca-dati.js"></script>
 <script src="/assets/ricerca.js"></script>
 <script src="/assets/stagioni.js"></script>
