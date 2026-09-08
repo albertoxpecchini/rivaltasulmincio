@@ -68,8 +68,8 @@
             <span class="sb-chip"><span class="sb-chip-dot" aria-hidden="true"></span>Comune di Rodigo — 31 agosto 2026</span>
           </div>
           <div class="sb-riv-flash-actions">
-            <a class="sb-link" href="https://www.comune.rodigo.mn.it/novita/prima-segnalazione-danni-subiti-a-seguito-degli-eventi-meteorici-del-28-08-2026/" target="_blank" rel="noreferrer noopener">Avviso e modulo sul sito del Comune <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
-            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">La cronaca su Gazzetta di Mantova <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+            <a class="sb-link" href="https://www.comune.rodigo.mn.it/novita/prima-segnalazione-danni-subiti-a-seguito-degli-eventi-meteorici-del-28-08-2026/" target="_blank" rel="noreferrer noopener">Avviso e modulo sul sito del Comune</a>
+            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">La cronaca su Gazzetta di Mantova</a>
           </div>
         </div></div>
       </div>
@@ -278,10 +278,16 @@
       </div>
     </section>
     <!-- ── CHI L'HA FATTO ───────────────────────────────────────────────────
-         Il muro dei commit sta per ULTIMO fra i figli di .sb-riv-open: da
-         1024px in su esce dal flusso e va sotto al pannello, sotto non esce e
-         finisce in fondo, che è dove deve stare su un telefono. Il numero non
-         è scritto a mano — lo conta il build dal repository. -->
+         Due colonne affiancate, non un fondale sotto al testo. Il muro dei
+         commit stava dietro alla prosa, sfumato da una maschera ovale: metà
+         del numero finiva sotto alle righe e l'altra metà si spegneva nel
+         nulla, così il conteggio si leggeva storto e a pezzi.
+
+         Adesso il muro ha una lastra sua nella seconda colonna, si vede
+         intero e il numero sta dritto in mezzo alla griglia. Su schermo
+         stretto la colonna scende sotto il testo, che è dove va su un
+         telefono. Il numero non è scritto a mano — lo conta il build dal
+         repository. -->
     <section class="sb-section sb-container" id="fatto-da" aria-labelledby="fatto-da-tit">
       <div class="sb-riv-open">
         <div class="sb-riv-open-testo">
@@ -313,7 +319,13 @@
           </div></div>
         </div>
 
-        <div class="sb-riv-cwall-wrap">{{MURO_COMMIT}}</div>
+        <figure class="sb-riv-cwall-wrap">
+          <div class="sb-panel"><div class="sb-panel-inner sb-riv-cwall-pad">
+            <span class="sb-riv-cwall-occhiello"><span class="sb-chip-dot" aria-hidden="true"></span>Commit</span>
+            {{MURO_COMMIT}}
+            <figcaption class="sb-riv-cwall-cap">Il numero è quello vero di <code>albertoxpecchini/rivaltasulmincio</code>: lo conta il build dal repository, non è scritto a mano.</figcaption>
+          </div></div>
+        </figure>
       </div>
     </section>
 

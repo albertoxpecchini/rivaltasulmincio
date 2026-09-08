@@ -320,37 +320,16 @@ html[data-stagione="uva"].dark .sb-home::after {
 }
 .sb-home.sb-stag-nota::before { content: none; }
 
-/* Sei fasce da tre pixel in cima alla nota, nell'ordine in cui i colori si
-   leggono qui sotto: è la batteria d'assaggio del mese, e dice in un colpo
-   d'occhio quante sono le tinte prima ancora di leggerne una.
-
-   Sta su ::after e non su un elemento suo perché ::after su .sb-home esiste
-   già — è il secondo alone del fondale — e qui va comunque spento: tanto
-   vale riusarlo. Va riscritto per intero (posizione, z, animazione), o si
-   porta dietro quello che era prima.
+/* La nota non porta più la fascia dei sei colori in cima: i sei colori
+   stanno già scritti qui sotto uno per uno, con la parola del disciplinare
+   accanto, e una riga tinta sopra al titolo li anticipava senza dire niente
+   in più. Resta però da spegnere l'::after di .sb-home — è il secondo alone
+   del fondale, e qui non ci va comunque.
 
    Il selettore riparte da html[data-stagione] non per abitudine ma per
-   necessità: la regola che ritinge l'alone, poco più su, è appesa a
-   html[data-stagione="uva"] .sb-home::after e vincerebbe per specificità.
-   Senza questo prefisso la fascia prende posizione e altezza ma resta
-   dipinta con l'alone — cioè invisibile. */
-html[data-stagione] .sb-home.sb-stag-nota::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  z-index: 0;
-  animation: none;
-  background: linear-gradient(
-    90deg,
-    var(--stag-rubino) 0 16.667%,
-    var(--stag-granato) 0 33.333%,
-    var(--stag-cerasuolo) 0 50%,
-    var(--stag-rosato) 0 66.667%,
-    var(--stag-paglierino) 0 83.333%,
-    var(--stag-viola) 0 100%
-  );
-}
+   necessità: la regola che ritinge l'alone è appesa a
+   html[data-stagione="uva"] .sb-home::after e vincerebbe per specificità. */
+html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 
 /* Tutto parte dal margine sinistro e nessuna colonna si centra, come nel
    resto del sito. La prosa si ferma a 46rem: è la misura della colonna di
@@ -515,6 +494,5 @@ html.rsm-still .sb-stag-p svg { animation: none; }
 @media print {
   .sb-stag-festone,
   .sb-stag-cielo { display: none; }
-  html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
   .sb-stag-nota { border-top: 1px solid #ccc; }
 }

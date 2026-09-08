@@ -322,11 +322,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 .sb-cwr-fatti .sb-chip { gap: 0.5rem; white-space: normal; }
 .sb-cwr-fatti .sb-chip svg { flex: none; }
 
-/* La freccia che torna indietro va a sinistra, e al passaggio deve scostarsi
-   a sinistra: .sb-link in sb.css sposta la sua icona di due pixel a destra,
-   che su una freccia all'indietro è il verso sbagliato. */
-.sb-cwr-indietro:hover svg { transform: translateX(-2px); }
-
 /* Il blocco del manifesto scende sotto la testata: prima stava sopra a tutto
    e la prima cosa della pagina del regolamento era un'immagine grande. Adesso
    si legge di che regolamento si tratta, e poi si vede l'evento. */
@@ -628,8 +623,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p">Eventuali modifiche fino al giorno dell'evento vengono pubblicate su questa pagina e comunicate via email agli iscritti. <strong>Regolamento aggiornato il 6 settembre 2026</strong>. Due cose. I <strong>moduli cartacei</strong> del banchetto vengono riportati nell'elenco degli iscritti insieme a quelli online — la firma resta sulla carta, i dati entrano nel conto unico dei partecipanti — e il codice fiscale dei minori si chiede anche sul foglio, sempre facoltativo (punti 3 e 9). E, rispetto alla versione del 4 settembre, una singola iscrizione può portare <strong>fino a quattro maggiorenni</strong> invece di uno solo, con il codice fiscale obbligatorio per ognuno e la responsabilità divisa fra loro — punti 2, 3 e 7. Da lì scendono le altre precisazioni: la mail resta una sola e arriva a chi compila (punto 2), l'uso dell'immagine lo autorizza ognuno per sé (punto 8), i dati raccolti comprendono i loro e ognuno può chiedere i propri di suo (punto 9), e il regolamento lo accettano loro (punto 10). Il <strong>4 settembre</strong>, rispetto alla versione del 2, erano stati precisati il conteggio delle età al giorno della camminata, il tetto di otto minori per iscrizione, la scadenza per la cessione (prima «sette giorni prima», che cadeva prima ancora dell'apertura del banchetto del 15), il canale dei rimborsi, i dati raccolti e i destinatari a cui passano.</p>
 
   <div class="sb-riv-pager">
-    <a class="sb-link sb-cwr-indietro" href="/color-walk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Iscrizione alla Color Walk</a>
-    <a class="sb-link" href="/color-walk-modulo">Modulo da stampare <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="sb-link" href="/color-walk">Iscrizione alla Color Walk</a>
+    <a class="sb-link" href="/color-walk-modulo">Modulo da stampare</a>
   </div>
 </section>
 </div>

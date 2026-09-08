@@ -286,7 +286,7 @@ const renderNews = () => {
             }${
               n.nota ? `\n            <p class="sb-riv-news-note">${escape(n.nota)}</p>` : ""
             }
-            <span class="sb-link sb-riv-news-go">Leggi su ${escape(n.testata)}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+            <span class="sb-link sb-riv-news-go">Leggi su ${escape(n.testata)}</span>
           </div></div>
         </a>`
     )
@@ -434,11 +434,20 @@ const renderAggiornamenti = () => {
    fra una e l'altra: la misura minima in cui una cifra resta una cifra —
    sotto le cinque colonne lo zero e l'otto diventano lo stesso disegno.
 
-   Il ritardo dell'accensione sta sulla COLONNA, non sulla cella: sono 648
-   celle e uno `style` per ciascuna sarebbero 648 attributi per un'onda che si
-   vede uguale. Il fondo si apre da sinistra a destra, e le celle del numero
-   partono un po' dopo — così il numero emerge dal rumore invece di nascerci
-   dentro già acceso. */
+   ── La griglia si taglia sul numero, non viceversa ────────────────────────
+   Prima la griglia era fissa — 32 colonne per 16 righe — e il numero ci
+   veniva centrato dentro con una divisione intera. Ma 32 meno le 17 colonne
+   di un numero a tre cifre fa 15, che è dispari: restavano sette colonne di
+   margine da una parte e otto dall'altra, e il numero si leggeva storto senza
+   che si capisse perché. Adesso il margine è dichiarato — sette colonne per
+   lato, quattro righe sopra e sotto — e la griglia è quello che ne esce: il
+   numero sta esattamente in mezzo, a qualunque numero di cifre.
+
+   Il ritardo dell'accensione sta sulla COLONNA, non sulla cella: sono
+   centinaia di celle e uno `style` per ciascuna sarebbero centinaia di
+   attributi per un'onda che si vede uguale. Il fondo si apre da sinistra a
+   destra, e le celle del numero partono un po' dopo — così il numero emerge
+   dal rumore invece di nascerci dentro già acceso. */
 const COMMITS = (() => {
   try {
     return Number(execSync("git rev-list --count HEAD", { encoding: "utf8" }).trim()) || 0;
@@ -478,12 +487,18 @@ const maschera = (testo) => {
 const renderMuro = () => {
   const CELLA = 3;
   const VUOTO = 0.5;
-  const COL = 32;
-  const RIGHE = 16;
+  const MARGINE_X = 7; // colonne di rumore per lato
+  const MARGINE_Y = 4; // righe di rumore sopra e sotto
   const testo = String(COMMITS);
   const acc = maschera(testo);
-  const x0 = Math.floor((COL - (testo.length * 6 - 1)) / 2);
-  const y0 = Math.floor((RIGHE - 7) / 2);
+
+  /* Il numero decide la griglia: larghezza delle cifre più il margine, due
+     volte. Nessuna divisione intera, nessun mezzo quadratino di scarto. */
+  const LARGO = testo.length * 6 - 1;
+  const COL = LARGO + MARGINE_X * 2;
+  const RIGHE = 7 + MARGINE_Y * 2;
+  const x0 = MARGINE_X;
+  const y0 = MARGINE_Y;
 
   /* Rumore ripetibile: xorshift con seme fisso. Un fondale che cambia disegno
      a ogni build è un fondale che si fa notare nei diff senza motivo. */
@@ -504,9 +519,9 @@ const renderMuro = () => {
       const lv = v < 0.45 ? 0 : v < 0.65 ? 1 : v < 0.8 ? 2 : v < 0.92 ? 3 : 4;
       /* Misura e raggio non stanno qui: li mette il foglio di stile con le
          proprietà geometriche SVG (width/height/rx valgono anche in CSS).
-         Cinquecento celle per tre attributi identici erano quindici
-         chilobyte di pagina per dire cinque volte la stessa cosa. Anche il
-         livello è finito nella classe, per lo stesso motivo. */
+         Centinaia di celle per tre attributi identici erano chilobyte di
+         pagina per dire cento volte la stessa cosa. Anche il livello è finito
+         nella classe, per lo stesso motivo. */
       const n = (v) => String(Math.round(v * 10) / 10);
       celle.push(
         `<rect class="${on ? "on l" : "l"}${lv}" x="${n(c * (CELLA + VUOTO))}" y="${n(r * (CELLA + VUOTO))}"/>`
@@ -517,8 +532,11 @@ const renderMuro = () => {
 
   const w = (COL * (CELLA + VUOTO) - VUOTO).toFixed(1);
   const h = (RIGHE * (CELLA + VUOTO) - VUOTO).toFixed(1);
+  /* preserveAspectRatio resta quello di serie: il muro adesso sta dentro una
+     lastra sua e si vede tutto: ritagliarlo per riempire un riquadro voleva
+     dire mangiare via le colonne di bordo, e con loro la simmetria. */
   return (
-    `<svg class="sb-riv-cwall" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">` +
+    `<svg class="sb-riv-cwall" viewBox="0 0 ${w} ${h}" role="img" aria-label="${COMMITS} commit">` +
     colonne.join("") +
     `</svg>`
   );
@@ -1007,7 +1025,7 @@ const renderMeteoOra = () => {
           <div class="sb-riv-ora-minis">
 ${mini}
           </div>
-          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="sb-link sb-riv-ora-go" href="/natura#stazione-meteo">La stazione in dettaglio</a>
           <span class="sb-riv-ora-stato" data-meteo-stato="breve">Lettura in corso</span>
         </div></div>
       </aside>`;

@@ -461,23 +461,60 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   to   { opacity: 1; transform: translateX(130%); }
 }
 
-/* Link verdi "testo + freccia" */
+/* ── Tasti di testo ───────────────────────────────────────────────────────
+   Ogni scritta che porta da qualche parte è un tasto vero: cornice, fondo,
+   e un'area da premere larga quanto un dito. Prima erano parole colorate
+   con una freccia accanto, e una parola colorata in mezzo alla pagina non
+   dice se si preme o se è soltanto scritta in un altro colore.
+
+   Niente frecce, di nessun tipo: né la «→» che spingeva avanti né la «↗»
+   dei collegamenti fuori dal sito. La forma dice già che si preme, e una
+   freccia in più è un segno da leggere per sapere quello che si vedeva
+   comunque.
+
+   Il fondo è quello di .sb-btn--secondary — stessa famiglia, misura più
+   bassa: questi tasti stanno in fila dentro le lastre e in coda alle
+   pagine, dove un bottone da 38px peserebbe come un invito principale.
+
+   Le scritte DENTRO un paragrafo non diventano tasti: un riquadro in mezzo
+   a una riga di prosa spezza la riga. Quelle prendono .sb-inline e restano
+   parole, in grassetto, che si vedono subito. */
 .sb-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.875rem;
-  color: var(--sb-brand-text);
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 34px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-bg-alt);
+  color: var(--sb-fg);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  font-family: inherit;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
-.sb-link:hover { text-decoration: underline; text-underline-offset: 3px; }
-.sb-link svg { transition: transform 0.15s ease; }
-.sb-link:hover svg { transform: translateX(2px); }
+.sb-link:hover {
+  background: var(--sb-surface-200);
+  border-color: var(--sb-border-stronger);
+  color: var(--sb-fg);
+  text-decoration: none;
+}
+
+/* La scritta dentro il paragrafo: non è un tasto, è una parola che porta
+   da qualche parte. Grassetto e tinta d'accento — si vede subito senza
+   spezzare la riga in cui sta. */
+.sb-inline {
+  font-weight: 600;
+  color: var(--sb-brand-text);
+  text-decoration: none;
+}
+.sb-inline:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── Hero ────────────────────────────────────────────────────────────────
    Niente fondale proprio e niente overflow:hidden: il fondo della hero è il
