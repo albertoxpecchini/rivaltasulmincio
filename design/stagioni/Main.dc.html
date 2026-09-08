@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #6a3d7a; } a:hover { color: #7c5a1f; }
+    .riv-cut { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+    .riv-cut-lg { clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); }
+  </style>
+</helmet>
+
+<!-- ARTBOARD: pagina di Rivalta vestita "Vendemmia" — tema chiaro -->
+<div style="width: 1180px; background: #fcfcfc; color: #171717; position: relative; overflow: hidden;">
+
+  <!-- Fondale continuo: il grigio del sito + una velatura vinaccia bassissima e una griglia di tralci -->
+  <div style="position: absolute; inset: 0; background:
+      radial-gradient(120% 80% at 82% -10%, rgba(109,63,124,0.10), transparent 60%),
+      radial-gradient(90% 60% at 8% 108%, rgba(185,118,42,0.08), transparent 55%);
+      pointer-events: none;"></div>
+  <!-- Strato foglie/acini che fluttuano (qui statico, posato) -->
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; color: #6d3f7c;">
+    <svg width="34" height="40" viewBox="0 0 34 40" style="position:absolute; top:120px; left:70px; opacity:.16; transform: rotate(-12deg);"><path d="M17 3C10 3 4 7 4 15c0 9 8 16 13 22 5-6 13-13 13-22C30 7 24 3 17 3Z" fill="currentColor"/><path d="M17 8v26" stroke="#fff" stroke-width="1.4" opacity=".5"/></svg>
+    <svg width="22" height="22" viewBox="0 0 22 22" style="position:absolute; top:300px; left:280px; opacity:.14;"><circle cx="11" cy="11" r="9" fill="#b9762a"/></svg>
+    <svg width="30" height="36" viewBox="0 0 34 40" style="position:absolute; top:220px; right:120px; opacity:.13; transform: rotate(18deg);"><path d="M17 3C10 3 4 7 4 15c0 9 8 16 13 22 5-6 13-13 13-22C30 7 24 3 17 3Z" fill="currentColor"/></svg>
+    <svg width="18" height="18" viewBox="0 0 22 22" style="position:absolute; top:520px; left:120px; opacity:.16;"><circle cx="11" cy="11" r="9" fill="#6d3f7c"/></svg>
+    <svg width="16" height="16" viewBox="0 0 22 22" style="position:absolute; top:640px; right:240px; opacity:.13;"><circle cx="11" cy="11" r="9" fill="#6f7d3a"/></svg>
+  </div>
+
+  <!-- ─────────  NAV  ───────── -->
+  <div style="position: relative;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 64px; padding: 0 40px; border-bottom: 1px solid #e8e8e8; background: rgba(252,252,252,0.72); backdrop-filter: blur(20px) saturate(150%);">
+      <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px;">
+        <span style="width: 24px; height: 24px; display: grid; place-items: center; background: #6d3f7c; color: #fff;" class="riv-cut">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 15c4 3 12 3 16 0"/><path d="M4 10c4 3 12 3 16 0"/></svg>
+        </span>
+        Rivalta<span style="font-weight: 400; color: #6f6f6f;">&nbsp;sul Mincio</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 28px; font-size: 14px; color: #525252;">
+        <span>Il paese</span><span>Servizi</span><span>Territorio</span><span>Eventi</span><span>Il sito</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; font-size: 13px; color: #6f6f6f;">
+        <span style="display:flex; align-items:center; gap:6px; padding: 5px 10px; border: 1px solid #e8e8e8;" class="riv-cut">Cerca <kbd style="font-family: 'Roboto Mono', monospace; font-size: 11px; border: 1px solid #dbdbdb; padding: 0 4px;">/</kbd></span>
+      </div>
+    </div>
+
+    <!-- FESTONE: swag di tralci e grappoli appeso al bordo basso della nav -->
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 63px; height: 46px; overflow: hidden; pointer-events: none;">
+      <svg width="1180" height="46" viewBox="0 0 1180 46" preserveAspectRatio="none" style="display:block;">
+        <path d="M0 2 C 130 44, 260 44, 393 6 C 520 44, 650 44, 786 6 C 920 44, 1050 44, 1180 2" fill="none" stroke="#6f7d3a" stroke-width="2" opacity=".55"/>
+        <g fill="#6d3f7c">
+          <g transform="translate(190,20)"><circle cx="0" cy="0" r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cx="0" cy="15" r="4"/></g>
+          <g transform="translate(585,20)"><circle cx="0" cy="0" r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cx="0" cy="15" r="4"/></g>
+          <g transform="translate(980,20)"><circle cx="0" cy="0" r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cx="0" cy="15" r="4"/></g>
+        </g>
+        <g fill="#6f7d3a" opacity=".8">
+          <path d="M92 12c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
+          <path d="M390 10c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
+          <path d="M786 10c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
+          <path d="M1090 12c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ─────────  CORPO  ───────── -->
+  <div style="position: relative; padding: 72px 40px 40px; max-width: 900px;">
+
+    <!-- Occhiello di stagione -->
+    <div style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; background: rgba(109,63,124,0.10); color: #5a3168; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;" class="riv-cut">
+      <svg width="14" height="16" viewBox="0 0 24 28" fill="currentColor"><circle cx="12" cy="8" r="4"/><circle cx="7" cy="12" r="4"/><circle cx="17" cy="12" r="4"/><circle cx="12" cy="16" r="4"/><circle cx="9" cy="21" r="4"/><circle cx="15" cy="21" r="4"/><path d="M12 4V0" stroke="currentColor" stroke-width="2"/></svg>
+      Settembre · vendemmia
+    </div>
+
+    <h1 style="font-size: 44px; line-height: 1.12; font-weight: 700; margin: 18px 0 12px; text-wrap: pretty;">
+      Il paese, un mese alla volta
+    </h1>
+    <p style="font-size: 18px; line-height: 1.6; color: #525252; max-width: 46rem; text-align: justify; margin: 0 0 28px;">
+      Da settembre il sito si veste della stagione. L'azzurro di sempre lascia il posto al
+      viola dell'uva e all'ambra della vendemmia; il resto — l'impaginato, i caratteri, il
+      margine sinistro — non si muove. Il movimento si spegne dalla barra delle preferenze.
+    </p>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 44px;">
+      <span style="padding: 10px 18px; background: #6d3f7c; color: #fff; font-weight: 600; font-size: 14px;" class="riv-cut">Azione primaria</span>
+      <span style="padding: 10px 18px; border: 1px solid #b9762a; color: #7c5a1f; font-weight: 600; font-size: 14px;" class="riv-cut">Azione secondaria</span>
+    </div>
+
+    <!-- Testata di sezione: numero in ambra, filo in viola -->
+    <div style="border-top: 2px solid #6d3f7c; padding-top: 14px; margin-bottom: 18px;">
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #b9762a; font-weight: 700;">07 — Vendemmia</div>
+      <h2 style="font-size: 26px; font-weight: 700; margin: 4px 0 0;">Testate e riquadri rivestiti d'autunno</h2>
+    </div>
+
+    <!-- Riquadro vetro con venatura di stagione -->
+    <div style="position: relative; background: rgba(251,251,251,0.58); backdrop-filter: blur(20px) saturate(150%); border: 1px solid #e8e8e8; box-shadow: 0 10px 34px -14px rgba(90,49,104,0.28); padding: 26px 28px;" class="riv-cut-lg">
+      <div style="position: absolute; top: 0; left: 0; width: 4px; height: 64px; background: linear-gradient(#6d3f7c, #b9762a);"></div>
+      <p style="margin: 0 0 10px; font-size: 15px; line-height: 1.6; color: #171717; text-align: justify;">
+        Le lastre di vetro del design system restano lastre: stesso smusso, stessa
+        sfocatura del fondale, stessa ombra. Cambia solo l'accento — il filo colorato sul
+        bordo, il titolo, il numero di sezione — e un grappolo in filigrana nell'angolo.
+      </p>
+      <div style="display: flex; gap: 20px; font-size: 13px; color: #6f6f6f;">
+        <span>· Contrasto testo invariato</span><span>· Solo i dettagli virano</span>
+      </div>
+      <svg width="120" height="140" viewBox="0 0 48 64" style="position: absolute; right: 10px; bottom: -6px; opacity: .07; color: #6d3f7c;" fill="currentColor" aria-hidden="true">
+        <circle cx="24" cy="18" r="6"/><circle cx="17" cy="27" r="6"/><circle cx="31" cy="27" r="6"/><circle cx="12" cy="37" r="6"/><circle cx="24" cy="38" r="6"/><circle cx="36" cy="37" r="6"/><circle cx="18" cy="47" r="6"/><circle cx="30" cy="47" r="6"/><circle cx="24" cy="55" r="6"/>
+      </svg>
+    </div>
+
+    <!-- riga di "chip" -->
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;">
+      <span style="padding: 6px 12px; background: rgba(109,63,124,0.10); color: #5a3168; font-size: 13px;" class="riv-cut">viola uva</span>
+      <span style="padding: 6px 12px; background: rgba(185,118,42,0.12); color: #7c5a1f; font-size: 13px;" class="riv-cut">ambra vendemmia</span>
+      <span style="padding: 6px 12px; background: rgba(111,125,58,0.14); color: #566030; font-size: 13px;" class="riv-cut">foglia di vite</span>
+    </div>
+  </div>
+
+  <!-- ─────────  FOOT  ───────── -->
+  <div style="position: relative; border-top: 1px solid #e8e8e8; padding: 24px 40px; font-size: 13px; color: #6f6f6f; display: flex; justify-content: space-between; background: rgba(248,248,248,0.7);">
+    <span>Rivalta sul Mincio — dossier del paese</span>
+    <span>tema di stagione · si spegne dalle preferenze</span>
+  </div>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1180,"height":1180}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

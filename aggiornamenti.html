@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-stagione="uva">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="assets/sb.css">
 <link rel="stylesheet" href="assets/rivalta.css">
 <link rel="stylesheet" href="assets/controlbar.css">
+<!-- Il vestito del mese. Inerte finché build.mjs non scrive data-stagione
+     su <html>: senza quell'attributo il foglio non tocca niente. -->
+<link rel="stylesheet" href="assets/stagioni.css">
 
 <!-- Tema calcolato PRIMA del primo paint, o si vede un lampo di bianco
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
@@ -155,6 +158,10 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         </div>
       </div>
     </nav>
+    <!-- Il festone di stagione, appeso sotto la testata. Lo mette build.mjs
+         solo sulle pagine di stagione: sulle tre della Color Walk, che una
+         vernice ce l'hanno già, il segnaposto diventa vuoto. -->
+    <div class="sb-stag-festone" aria-hidden="true"></div>
     <div class="sb-menu-sheet" id="menu-sheet">
       <div class="sb-container">
         <nav class="sb-menu-nav" aria-label="Navigazione del sito">
@@ -235,6 +242,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <ol class="sb-riv-crono">
+      <li class="sb-riv-crono-riga sb-riv-crono-riga--chiave">
+        <time class="sb-riv-crono-anno" datetime="2026-09-08">8 set 2026</time>
+        <div class="sb-riv-crono-fatto">
+          <strong>Il sito si veste del mese: settembre è l'uva</strong> <span class="sb-riv-na">· Sito</span>
+          <p>Da questo mese il sito cambia colore con la stagione. A settembre è vendemmia: l'azzurro di sempre lascia il posto al viola dell'uva e all'ambra, un festone di tralci e grappoli si appende sotto la testata e qualche foglia scende piano sul fondale. Testi, tabelle e impaginato non cambiano di una virgola. Chi preferisce la pagina ferma lo dice col tasto «ferma il movimento» nella barra in basso a sinistra: resta il colore, il movimento no. Le pagine della Color Walk restano com'erano.</p>
+        <a class="sb-link" href="/">Vai a vedere</a>
+        </div>
+      </li>
       <li class="sb-riv-crono-riga sb-riv-crono-riga--chiave">
         <time class="sb-riv-crono-anno" datetime="2026-09-07">7 set 2026</time>
         <div class="sb-riv-crono-fatto">
@@ -536,5 +551,6 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
      da sé e il tasto non compare. -->
 <script src="assets/ricerca-dati.js"></script>
 <script src="assets/ricerca.js"></script>
+<script src="assets/stagioni.js"></script>
 </body>
 </html>

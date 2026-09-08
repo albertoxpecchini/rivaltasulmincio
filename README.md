@@ -44,8 +44,8 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **3.220 righe CSS** | `sb.css` (1.016) · `rivalta.css` (2.018) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **1.827 righe**, 8 file | `controlbar.js` (364) · `glass.js` (328) · `ricerca.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `rivalta.js` (115) · `gusto.js` (90) |
+| **Design system** | **3.838 righe CSS** | `rivalta.css` (2.487) · `sb.css` (1.016) · `controlbar.css` (186) · `stagioni.css` (149) |
+| **JavaScript nel browser** | **2.256 righe**, 10 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `orari.js` (159) · `stagioni.js` (105) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
@@ -277,6 +277,49 @@ ripiego nel CSS.
 
 ---
 
+## 🍇 Il vestito del mese
+
+Un mese, un simbolo. Il sito si veste della stagione: l'accento azzurro del design system vira sulla
+tinta del mese, un festone si appende sotto la testata, qualche foglia scende piano sul fondale.
+**Settembre è l'uva** — viola dell'uva, ambra della vendemmia, verde della foglia di vite.
+
+Quello che **non** cambia è tutto il resto: impaginato, caratteri, grigi di testo e superfici,
+margine sinistro, prosa giustificata, smusso, vetro. Cambia l'accento, non il sito. La tela di
+partenza è in [`design/stagioni/`](design/stagioni/) — quattro artboard di Claude Design: pagina
+chiara, pagina scura, palette, simbolo e movimento.
+
+**Si cambia una riga sola**, in cima a [`build.mjs`](build.mjs):
+
+```js
+const STAGIONI = { uva: { nome: "settembre · vendemmia" } };
+const STAGIONE = "uva";   // null spoglia il sito
+```
+
+Da lì il build scrive `data-stagione="uva"` su `<html>`, scioglie il segnaposto del festone e
+appende `stagioni.js`. A ottobre si aggiunge la voce nuova a `STAGIONI`, si sposta il puntatore e si
+scrive il blocco `html[data-stagione="…"]` in [`assets/stagioni.css`](assets/stagioni.css).
+`STAGIONE = null` toglie tutto e non lascia in giro né classi né script.
+
+- **Il colore e il festone sono CSS puro** ([`assets/stagioni.css`](assets/stagioni.css), 149 righe,
+  appese a `html[data-stagione]`): arrivano anche senza JavaScript. Il foglio è caricato da tutte le
+  pagine ed è **inerte** finché quell'attributo non c'è.
+- **I due aloni del fondale non sono un terzo strato**: `.sb-home::before` e `::after` esistono già
+  in `sb.css` ed erano l'unica superficie azzurra grande abbastanza da contraddire il resto. Si
+  ritingono quelli — stessa geometria, stesse due derive in controfase, stessa opacità.
+- **Solo le foglie che scendono hanno bisogno di JS** ([`assets/stagioni.js`](assets/stagioni.js),
+  105 righe): 9-12 particelle dietro al contenuto, `z-index` sotto `.sb-main`, `pointer-events:
+  none`. Non coprono mai il testo.
+- **Il movimento segue le regole di sempre**: con `prefers-reduced-motion` o col tasto «ferma il
+  movimento» (`html.rsm-still`) le foglie non scendono — ne restano cinque, sparse e ferme, e il
+  festone non cala. Se l'impostazione cambia a pagina aperta, un osservatore sulla classe di `<html>`
+  rifà lo strato.
+- **Sotto i 700px il festone non compare**: in testa lo spazio è poco e ruberebbe la prima riga.
+- **Le tre pagine della Color Walk restano fuori.** Una vernice ce l'hanno già — `.sb-cr`, le tinte
+  delle polveri — e due stagioni addosso sono una di troppo. Non c'è un elenco di nomi da tenere
+  aggiornato: è lo stesso riconoscimento che decide se caricare `color-walk.js`.
+
+---
+
 ## 🎛️ La barra di controllo
 
 In basso a sinistra, fuori dal bordo, con la sola linguetta a vista: esce quando il puntatore le si
@@ -323,6 +366,9 @@ rivaltasulmincio/
 │   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
 │   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
+│   ├── stagioni.css            #   il vestito del mese: accento, festone, foglie — inerte finché
+│   │                           #   build.mjs non scrive data-stagione su <html>
+│   ├── stagioni.js             #   le foglie che scendono sul fondale — solo sulle pagine di stagione
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
@@ -359,6 +405,9 @@ rivaltasulmincio/
 │       ├── ricevuta-color-walk.html   #     a chi ha pagato E a chi paga al ritrovo
 │       ├── fallita-color-walk.html    #     a chi si è fermato a metà
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
+├── design/                     # le tele di Claude Design da cui nascono le cose disegnate
+│   ├── color-walk/             #   banner e locandina della camminata (.dc.html → .png/.pdf)
+│   └── stagioni/               #   il vestito del mese: pagina chiara, scura, palette, simbolo
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
 ├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
@@ -1134,6 +1183,14 @@ blocchi di token in cima a [`assets/sb.css`](assets/sb.css); tutto il resto del 
 ![#e8e8e8](https://img.shields.io/badge/Bordo-%23E8E8E8-E8E8E8?style=flat-square&labelColor=555)
 
 Carattere del sito: **Titillium Web** (+ Roboto Mono per il codice).
+
+Da settembre l'accento non è più fisso: lo [vestito del mese](#-il-vestito-del-mese) lo sostituisce
+con la tinta di stagione, riscrivendo gli stessi token in [`assets/stagioni.css`](assets/stagioni.css).
+Settembre è l'uva.
+
+![#6d3f7c](https://img.shields.io/badge/Viola_uva-%236D3F7C-6D3F7C?style=flat-square)
+![#b9762a](https://img.shields.io/badge/Ambra_vendemmia-%23B9762A-B9762A?style=flat-square)
+![#6f7d3a](https://img.shields.io/badge/Foglia_di_vite-%236F7D3A-6F7D3A?style=flat-square)
 
 ---
 

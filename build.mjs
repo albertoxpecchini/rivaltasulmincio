@@ -21,6 +21,32 @@ const SITE = "https://www.rivaltasulmincio.it";
 const head = readFileSync("_build/head.html", "utf8");
 const foot = readFileSync("_build/foot.html", "utf8");
 
+/* ── Il vestito del mese ─────────────────────────────────────────────────
+   Un mese, un simbolo. Il sito si veste della stagione: l'accento azzurro
+   del design system vira sulla tinta del mese, un festone si appende alla
+   testata, qualche foglia scende sul fondale. Impaginato, caratteri, grigi,
+   margine sinistro e smusso non si muovono: cambia l'accento, non il sito.
+
+   Qui si cambia UNA riga. STAGIONE punta alla voce del mese in corso; a
+   ottobre si aggiunge la voce nuova e si sposta il puntatore. STAGIONE a
+   null spoglia il sito e non lascia in giro né classi né script.
+
+   Fuori restano le tre pagine della Color Walk: una vernice ce l'hanno già
+   (.sb-cr, le tinte delle polveri) e due stagioni addosso sono una di
+   troppo. Non è un elenco di nomi da tenere aggiornato — è lo stesso
+   riconoscimento che decide se caricare color-walk.js.
+
+   Il colore e il festone sono CSS puro (assets/stagioni.css, appeso a
+   html[data-stagione]): arrivano anche senza JavaScript. Solo le foglie che
+   scendono hanno bisogno di assets/stagioni.js, ed è l'unico peso in più. */
+const STAGIONI = {
+  uva: { nome: "settembre · vendemmia" },
+};
+const STAGIONE = "uva";
+const stagione = STAGIONE && STAGIONI[STAGIONE] ? STAGIONE : null;
+if (STAGIONE && !stagione) throw new Error(`STAGIONE = "${STAGIONE}" — voce assente da STAGIONI`);
+const FESTONE = `    <div class="sb-stag-festone" aria-hidden="true"></div>`;
+
 /* ── Ultimo aggiornamento del sito ───────────────────────────────────────
    "Quando il sito è cambiato l'ultima volta" è la data dell'ultimo commit:
    scritta una volta qui e messa in testata, nel foglio del menu su schermo
@@ -1382,6 +1408,10 @@ for (const file of bodies) {
      servono. Le altre dodici non lo scaricano. */
   const conColorWalk = src.includes('class="sb-cr');
 
+  /* E il vestito del mese, che è l'altra faccia della stessa domanda: si
+     mette a tutte le pagine TRANNE quelle che una vernice ce l'hanno già. */
+  const conStagione = Boolean(stagione) && !conColorWalk;
+
   /* E il conto dell'«aperto adesso»: lo scarica solo la pagina che almeno
      un orario ce l'ha davvero. Si guarda il corpo già montato, non il
      frammento: il segnaposto {{aperto:}} a quel punto è diventato markup. */
@@ -1392,7 +1422,8 @@ for (const file of bodies) {
     (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
     (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
     (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "") +
-    (conOrari ? `<script src="assets/orari.js"></script>\n` : "");
+    (conOrari ? `<script src="assets/orari.js"></script>\n` : "") +
+    (conStagione ? `<script src="assets/stagioni.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:
@@ -1426,6 +1457,13 @@ for (const file of bodies) {
       .replace(/\{\{OG_DESC\}\}/g, escape(desc))
       .replace("{{OG_IMAGE}}", ogImg)
       .replace("{{ROBOTS}}", robots)
+      /* L'attributo su <html> accende il foglio di stagione, e sta lì e non
+         nello script di avvio perché non dipende da niente che si sappia
+         solo nel browser: il mese lo decide il build. Il segnaposto del
+         festone si scioglie su TUTTE le pagine — vuoto dove non serve — o
+         resterebbe scritto in chiaro su quelle della Color Walk. */
+      .replace('<html lang="it">', conStagione ? `<html lang="it" data-stagione="${stagione}">` : '<html lang="it">')
+      .replace(/[ \t]*\{\{STAGIONE_FESTONE\}\}\r?\n/, conStagione ? `${FESTONE}\r\n` : "")
       .replace("{{HEAD}}", headExtra) +
     `  <main class="sb-main" id="main">\n${ancore(body)}\n  </main>\n` +
     foot.replace("{{SCRIPTS}}", scriptExtra);

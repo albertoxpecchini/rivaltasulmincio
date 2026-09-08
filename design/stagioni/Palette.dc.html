@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #6a3d7a; } a:hover { color: #7c5a1f; }
+    .mono { font-family: "Roboto Mono", ui-monospace, monospace; }
+    .cut { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+  </style>
+</helmet>
+
+<!-- ARTBOARD: palette di stagione e mappatura sui token .sb- -->
+<div style="width: 940px; background: #fcfcfc; color: #171717; padding: 40px 44px;">
+  <div class="mono" style="font-size: 13px; color: #b9762a; font-weight: 700;">SETTEMBRE — UVA</div>
+  <h1 style="font-size: 30px; font-weight: 700; margin: 6px 0 4px;">Palette vendemmia</h1>
+  <p style="font-size: 15px; color: #525252; max-width: 40rem; margin: 0 0 30px; text-align: justify;">
+    Tre tinte, stesse regole del sistema: una domina (il viola dell'uva, al posto
+    dell'azzurro), una spinge sui dettagli caldi (ambra), una fa da vegetale muto sul
+    fondale (foglia di vite). Il testo e i grigi non cambiano di una virgola.
+  </p>
+
+  <!-- coppie chiaro/scuro -->
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+
+    <div class="cut" style="border: 1px solid #e8e8e8; overflow: hidden;">
+      <div style="height: 96px; background: #6d3f7c;"></div>
+      <div style="height: 44px; background: #7a4e88;"></div>
+      <div style="padding: 12px 14px;">
+        <div style="font-weight: 700; font-size: 15px;">Viola uva</div>
+        <div class="mono" style="font-size: 12px; color: #6f6f6f; margin-top: 4px;">#6d3f7c · chiaro<br>#7a4e88 · scuro</div>
+        <div class="mono" style="font-size: 11px; color: #8f8f8f; margin-top: 8px;">--sb-brand<br>--sb-btn-bg</div>
+      </div>
+    </div>
+
+    <div class="cut" style="border: 1px solid #e8e8e8; overflow: hidden;">
+      <div style="height: 96px; background: #b9762a;"></div>
+      <div style="height: 44px; background: #d69a52;"></div>
+      <div style="padding: 12px 14px;">
+        <div style="font-weight: 700; font-size: 15px;">Ambra vendemmia</div>
+        <div class="mono" style="font-size: 12px; color: #6f6f6f; margin-top: 4px;">#b9762a · chiaro<br>#d69a52 · scuro</div>
+        <div class="mono" style="font-size: 11px; color: #8f8f8f; margin-top: 8px;">numeri di sezione<br>bordo azione 2ª · hover</div>
+      </div>
+    </div>
+
+    <div class="cut" style="border: 1px solid #e8e8e8; overflow: hidden;">
+      <div style="height: 96px; background: #6f7d3a;"></div>
+      <div style="height: 44px; background: #9aa86a;"></div>
+      <div style="padding: 12px 14px;">
+        <div style="font-weight: 700; font-size: 15px;">Foglia di vite</div>
+        <div class="mono" style="font-size: 12px; color: #6f6f6f; margin-top: 4px;">#6f7d3a · chiaro<br>#9aa86a · scuro</div>
+        <div class="mono" style="font-size: 11px; color: #8f8f8f; margin-top: 8px;">tralci del festone<br>foglie del fondale</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- testo che vira -->
+  <h2 style="font-size: 18px; font-weight: 700; margin: 34px 0 12px;">Testo d'accento (contrasto verificato)</h2>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+    <div class="cut" style="background: #fcfcfc; border: 1px solid #e8e8e8; padding: 16px 18px;">
+      <div style="font-size: 12px; color: #8f8f8f; text-transform: uppercase; letter-spacing: .04em;">Su fondo chiaro</div>
+      <p style="margin: 8px 0 0; font-size: 15px;">Un <a href="#">collegamento nel testo</a> e una <span style="color: #5a3168; font-weight: 600;">parola d'accento</span> — <span class="mono" style="font-size: 12px; color: #6f6f6f;">#5a3168 su #fcfcfc ≈ 7.4:1</span></p>
+    </div>
+    <div class="cut" style="background: #141414; border: 1px solid #2a2a2a; padding: 16px 18px;">
+      <div style="font-size: 12px; color: #808080; text-transform: uppercase; letter-spacing: .04em;">Su fondo scuro</div>
+      <p style="margin: 8px 0 0; font-size: 15px; color: #ededed;">Un <span style="color:#c9a0d4;">collegamento nel testo</span> e una <span style="color: #d3aede; font-weight: 600;">parola d'accento</span> — <span class="mono" style="font-size: 12px; color: #969696;">#c9a0d4 su #141414 ≈ 6.9:1</span></p>
+    </div>
+  </div>
+
+  <!-- cosa NON cambia -->
+  <h2 style="font-size: 18px; font-weight: 700; margin: 34px 0 12px;">Cosa resta fermo</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+    <span class="cut" style="padding: 6px 12px; background: #f0f0f0; font-size: 13px; color: #525252;">grigi di testo e superfici</span>
+    <span class="cut" style="padding: 6px 12px; background: #f0f0f0; font-size: 13px; color: #525252;">Titillium Web · Roboto Mono</span>
+    <span class="cut" style="padding: 6px 12px; background: #f0f0f0; font-size: 13px; color: #525252;">smusso 10 / 18 px</span>
+    <span class="cut" style="padding: 6px 12px; background: #f0f0f0; font-size: 13px; color: #525252;">margine sinistro, prosa giustificata</span>
+    <span class="cut" style="padding: 6px 12px; background: #f0f0f0; font-size: 13px; color: #525252;">vetro: blur, saturazione, ombra</span>
+  </div>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":940,"height":900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

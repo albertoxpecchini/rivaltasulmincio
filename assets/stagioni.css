@@ -1,0 +1,149 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STAGIONI — il sito si veste del mese, prefisso .sb-stag-
+
+   Un mese, un simbolo. Da settembre l'accento azzurro del design system vira
+   sulla tinta di stagione, un festone si appende alla testata e qualche
+   foglia scende sul fondale. Tutto il resto — impaginato, caratteri, grigi,
+   margine sinistro, smusso, vetro — non si muove di una virgola.
+
+   Niente qui è sempre attivo: ogni regola è appesa a html[data-stagione="…"],
+   e quell'attributo lo scrive build.mjs solo sulle pagine di stagione. Le tre
+   della Color Walk hanno una vernice loro (.sb-cr) e restano fuori.
+
+   Il movimento (festone che cala, foglie che scendono) segue le stesse regole
+   del resto del sito: si spegne con prefers-reduced-motion e col tasto «ferma
+   il movimento» (html.rsm-still). In quel caso resta il colore e qualche
+   foglia posata, ferma.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── SETTEMBRE · uva ──────────────────────────────────────────────────────
+   L'accento vira: viola dell'uva al posto dell'azzurro, ambra della
+   vendemmia sui numeri di sezione. I bottoni restano tinte chiare con
+   testo scuro, come nel sistema: cambia la tinta, non il rapporto. */
+html[data-stagione="uva"] .sb-home {
+  --sb-brand: #6d3f7c;
+  --sb-brand-text: #5a3168;
+  --sb-btn-bg: hsl(289, 24%, 72%);
+  --sb-btn-bd: hsla(289, 38%, 40%, 0.7);
+  --sb-btn-bg-hover: hsl(289, 24%, 65%);
+  --sb-stag-accent: #6d3f7c;
+  --sb-stag-warm: #9a6a24;
+  --sb-stag-leaf: #6f7d3a;
+}
+html[data-stagione="uva"].dark .sb-home {
+  --sb-brand: #a870bd;
+  --sb-brand-text: #c9a0d4;
+  --sb-btn-bg: hsl(289, 32%, 24%);
+  --sb-btn-bd: hsla(289, 60%, 62%, 0.34);
+  --sb-btn-bg-hover: hsl(289, 30%, 30%);
+  --sb-stag-accent: #c9a0d4;
+  --sb-stag-warm: #d69a52;
+  --sb-stag-leaf: #9aa86a;
+}
+html[data-stagione="uva"] .sb-home ::selection { background: hsla(289, 45%, 55%, 0.35); }
+
+/* Il numero di sezione passa in ambra: resta muto — è una coordinata — ma è
+   la coordinata della stagione. */
+html[data-stagione="uva"] .sb-riv-secnum { color: var(--sb-stag-warm); }
+
+/* ── I due aloni del fondale ─────────────────────────────────────────────
+   Il fondale del sito è già fatto di due aloni che derivano lentamente in
+   controfase (sb.css, .sb-home::before e ::after) — ed erano l'unica
+   superficie azzurra rimasta grande abbastanza da contraddire tutto il
+   resto. Qui non se ne aggiunge un terzo: si ritingono quei due, stessa
+   geometria, stesse due animazioni, stessa opacità. Vinaccia quello che
+   entra da sinistra, ambra quello che scende da destra.
+
+   Il footer resta fuori da sé: .sb-home.sb-foot::before ha già content:none
+   in sb.css, e qui si tocca solo lo sfondo. */
+html[data-stagione="uva"] .sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(289, 36%, 42%, 0.15), transparent 62%);
+}
+html[data-stagione="uva"] .sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(33, 64%, 46%, 0.12), transparent 60%);
+}
+html[data-stagione="uva"].dark .sb-home::before {
+  background: radial-gradient(58rem 32rem at 16% -8%, hsla(289, 52%, 58%, 0.16), transparent 62%);
+}
+html[data-stagione="uva"].dark .sb-home::after {
+  background: radial-gradient(52rem 30rem at 88% 2%, hsla(33, 70%, 58%, 0.11), transparent 60%);
+}
+
+/* Il pallino che pulsa nelle pillole: l'alone è scritto a mano in sb.css e
+   non passa dal token, quindi il battito va rifatto con la tinta giusta. */
+@keyframes sb-stag-ping {
+  0%   { box-shadow: 0 0 0 0 hsla(289, 45%, 48%, 0.5); }
+  70%  { box-shadow: 0 0 0 7px hsla(289, 45%, 48%, 0); }
+  100% { box-shadow: 0 0 0 0 hsla(289, 45%, 48%, 0); }
+}
+html[data-stagione="uva"] .sb-chip-dot { animation-name: sb-stag-ping; }
+
+/* ── Festone ─────────────────────────────────────────────────────────────
+   Un tralcio scallopato con un grappolo ogni 400px, appeso sotto la testata
+   e fermo lì mentre la pagina scorre (la nav è sticky, questo la segue). È
+   una sola immagine ripetuta: nessun peso di markup per pagina oltre al div.
+   pointer-events:none — non intercetta niente. */
+.sb-stag-festone {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  height: 42px;
+  z-index: 49;
+  pointer-events: none;
+  opacity: 0.62;
+  background-repeat: repeat-x;
+  background-position: top center;
+  background-size: 400px 42px;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='42' viewBox='0 0 400 42'%3E%3Cpath d='M0 4C50 26 150 26 200 8C250 26 350 26 400 4' fill='none' stroke='%236f7d3a' stroke-width='1.8' stroke-linecap='round'/%3E%3Cg stroke='%236f7d3a' stroke-width='1.4' stroke-linecap='round' fill='none'%3E%3Cpath d='M100 21v3'/%3E%3Cpath d='M300 21v3'/%3E%3C/g%3E%3Cg fill='%236f7d3a'%3E%3Cpath d='M100 39c-5.2-3.2-8-7-8-10.8 0-3.4 3.4-6.2 8-6.2s8 2.8 8 6.2c0 3.8-2.8 7.6-8 10.8Z'/%3E%3Cpath d='M300 39c-5.2-3.2-8-7-8-10.8 0-3.4 3.4-6.2 8-6.2s8 2.8 8 6.2c0 3.8-2.8 7.6-8 10.8Z'/%3E%3C/g%3E%3Cg stroke='%23fcfcfc' stroke-width='1' opacity='.45'%3E%3Cpath d='M100 26v11'/%3E%3Cpath d='M300 26v11'/%3E%3C/g%3E%3Cg fill='%236d3f7c'%3E%3Ccircle cx='200' cy='12' r='3.2'/%3E%3Ccircle cx='194' cy='15.5' r='3.2'/%3E%3Ccircle cx='206' cy='15.5' r='3.2'/%3E%3Ccircle cx='197' cy='20.5' r='3.2'/%3E%3Ccircle cx='203' cy='20.5' r='3.2'/%3E%3Ccircle cx='200' cy='25.5' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+  animation: sb-stag-cala 0.6s ease 0.15s both;
+}
+html[data-stagione="uva"].dark .sb-stag-festone {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='42' viewBox='0 0 400 42'%3E%3Cpath d='M0 4C50 26 150 26 200 8C250 26 350 26 400 4' fill='none' stroke='%239aa86a' stroke-width='1.8' stroke-linecap='round'/%3E%3Cg stroke='%239aa86a' stroke-width='1.4' stroke-linecap='round' fill='none'%3E%3Cpath d='M100 21v3'/%3E%3Cpath d='M300 21v3'/%3E%3C/g%3E%3Cg fill='%239aa86a'%3E%3Cpath d='M100 39c-5.2-3.2-8-7-8-10.8 0-3.4 3.4-6.2 8-6.2s8 2.8 8 6.2c0 3.8-2.8 7.6-8 10.8Z'/%3E%3Cpath d='M300 39c-5.2-3.2-8-7-8-10.8 0-3.4 3.4-6.2 8-6.2s8 2.8 8 6.2c0 3.8-2.8 7.6-8 10.8Z'/%3E%3C/g%3E%3Cg stroke='%23141414' stroke-width='1' opacity='.45'%3E%3Cpath d='M100 26v11'/%3E%3Cpath d='M300 26v11'/%3E%3C/g%3E%3Cg fill='%23c9a0d4'%3E%3Ccircle cx='200' cy='12' r='3.2'/%3E%3Ccircle cx='194' cy='15.5' r='3.2'/%3E%3Ccircle cx='206' cy='15.5' r='3.2'/%3E%3Ccircle cx='197' cy='20.5' r='3.2'/%3E%3Ccircle cx='203' cy='20.5' r='3.2'/%3E%3Ccircle cx='200' cy='25.5' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+}
+@keyframes sb-stag-cala {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 0.62; transform: none; }
+}
+html.rsm-still .sb-stag-festone { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-stag-festone { animation: none; }
+}
+/* Sotto i 700px lo spazio in testa è troppo poco: il festone si accende
+   solo dove non ruba la prima riga di contenuto. */
+@media (max-width: 699.98px) { .sb-stag-festone { display: none; } }
+
+/* ── Foglie sul fondale ──────────────────────────────────────────────────
+   Lo strato lo riempie assets/stagioni.js: 8-12 particelle fra foglie e
+   acini, dietro al contenuto (z sotto .sb-main), mai sopra il testo. Il JS
+   scrive left/durata/ritardo/rotazione come custom property; qui c'è solo
+   il movimento, ed è appeso alle stesse regole del resto del sito. */
+.sb-stag-cielo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sb-stag-p {
+  position: absolute;
+  top: 0;
+  left: var(--sl, 50%);
+  width: var(--sw, 18px);
+  height: var(--sw, 18px);
+  opacity: var(--so, 0.16);
+  color: var(--sc, var(--sb-stag-accent));
+  will-change: transform;
+  animation: sb-stag-drift var(--sd, 26s) linear var(--sdl, 0s) infinite;
+}
+.sb-stag-p svg { display: block; width: 100%; height: 100%; }
+@keyframes sb-stag-drift {
+  0%   { transform: translate3d(0, -14vh, 0) rotate(0deg); }
+  100% { transform: translate3d(var(--sx, 30px), 116vh, 0) rotate(var(--sr, 240deg)); }
+}
+/* Ferme, ma posate dove sono: quando il movimento è spento il JS le mette
+   già sparse (top/left inline) e questa riga toglie la deriva. */
+html.rsm-still .sb-stag-p { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-stag-p { animation: none; }
+}
