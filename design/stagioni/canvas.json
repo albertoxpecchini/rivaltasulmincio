@@ -1,12 +1,26 @@
 {
   "artboards": [
-    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1180, "h": 1180, "title": "Pagina · tema chiaro" },
-    { "file": "Dark.dc.html", "x": 1300, "y": 0, "w": 1180, "h": 1180, "title": "Pagina · tema scuro" },
-    { "file": "Palette.dc.html", "x": 0, "y": 1320, "w": 940, "h": 900, "title": "Palette vendemmia" },
-    { "file": "Motif.dc.html", "x": 1060, "y": 1320, "w": 980, "h": 1120, "title": "Simbolo e movimento" }
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1240, "h": 760, "title": "Pagina · tema chiaro" },
+    { "file": "Dark.dc.html", "x": 1360, "y": 0, "w": 1240, "h": 1420, "title": "Tema scuro · e la nota di stagione" },
+    { "file": "Palette.dc.html", "x": 0, "y": 880, "w": 1080, "h": 1000, "title": "Sei parole, sei colori" },
+    { "file": "Zone.dc.html", "x": 0, "y": 2000, "w": 1060, "h": 700, "title": "La geografia dei vini" },
+    { "file": "Motif.dc.html", "x": 1360, "y": 1540, "w": 1080, "h": 1080, "title": "Disegno e movimento" }
   ],
   "annotations": [
-    { "id": "brief", "x": 0, "y": -150, "w": 520, "text": "Tema di stagione — SETTEMBRE: uva / vendemmia.\nL'accento azzurro del design system .sb- vira su viola uva + ambra; grigi, caratteri, impaginato e smusso restano identici. Festone in testata, foglie che fluttuano sul fondale. Non tocca color-walk. Motore mensile: a ottobre cambia simbolo da un punto solo in build.mjs." }
+    {
+      "id": "brief",
+      "x": 0,
+      "y": -190,
+      "w": 620,
+      "text": "TEMA DI STAGIONE — settembre: uva, vendemmia.\n\nRivalta non ha vigne: la sua terra fa cereali e meloni. Ma il Mincio scende dall'anfiteatro morenico del Garda, dove il vino c'è. Le sei tinte del mese sono le parole con cui l'articolo 6 dei disciplinari del Garda Colli Mantovani DOC e del Lambrusco Mantovano DOC descrive quei vini — non un viola scelto a occhio.\n\nCambia l'accento del design system .sb-, non il sito: impaginato, caratteri, misure, margine sinistro, smusso e vetro restano identici. Non tocca le tre pagine della Color Walk. Motore mensile: a ottobre si cambia una riga in build.mjs."
+    },
+    {
+      "id": "spedito",
+      "x": 1360,
+      "y": -190,
+      "w": 460,
+      "text": "Questa tela documenta quello che è ANDATO ONLINE: colori, tracciati SVG e parametri di movimento sono gli stessi di assets/stagioni.css e assets/stagioni.js, non uno schizzo preparatorio."
+    }
   ],
   "launch": { "view": "canvas" }
 }

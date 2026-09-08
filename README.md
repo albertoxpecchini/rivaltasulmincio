@@ -44,8 +44,8 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **3.838 righe CSS** | `rivalta.css` (2.487) · `sb.css` (1.016) · `controlbar.css` (186) · `stagioni.css` (149) |
-| **JavaScript nel browser** | **2.256 righe**, 10 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `orari.js` (159) · `stagioni.js` (105) · `gusto.js` (90) |
+| **Design system** | **4.209 righe CSS** | `rivalta.css` (2.487) · `sb.css` (1.016) · `stagioni.css` (520) · `controlbar.css` (186) |
+| **JavaScript nel browser** | **2.350 righe**, 10 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
 | **JavaScript su server** | **221 righe**, 1 file | `api/meteo.mjs`, la sola cosa che non giri nel browser di chi legge |
 | **Build** | **1.421 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`. Niente `package.json` |
@@ -279,41 +279,94 @@ ripiego nel CSS.
 
 ## 🍇 Il vestito del mese
 
-Un mese, un simbolo. Il sito si veste della stagione: l'accento azzurro del design system vira sulla
-tinta del mese, un festone si appende sotto la testata, qualche foglia scende piano sul fondale.
-**Settembre è l'uva** — viola dell'uva, ambra della vendemmia, verde della foglia di vite.
+Un mese, un simbolo. Il sito si veste della stagione: l'unica tinta del design system vira sul
+colore del mese, un tralcio attraversa la testata, qualcosa scende piano sul fondale.
+**Settembre è l'uva.**
 
-Quello che **non** cambia è tutto il resto: impaginato, caratteri, grigi di testo e superfici,
-margine sinistro, prosa giustificata, smusso, vetro. Cambia l'accento, non il sito. La tela di
-partenza è in [`design/stagioni/`](design/stagioni/) — quattro artboard di Claude Design: pagina
-chiara, pagina scura, palette, simbolo e movimento.
+### I colori non sono scelti a occhio
 
-**Si cambia una riga sola**, in cima a [`build.mjs`](build.mjs):
+Questa è la parte che tiene in piedi tutto il resto. **Rivalta non ha vigne**: la sua terra fa
+cereali e meloni, e sta scritto in [`/attivita`](attivita.html). Nessuna denominazione di vino tocca
+Rodigo. Ma il Mincio che passa davanti al paese scende dall'**anfiteatro morenico del Garda**, e
+lassù — una ventina di chilometri più a monte — il vino c'è da molto prima che ci fosse un
+disciplinare a descriverlo.
+
+Le sei tinte di settembre sono **le parole con cui l'articolo 6 di quei disciplinari descrive quei
+vini**, prese alla lettera:
+
+| Variabile | La parola del disciplinare | Da dove | Chiaro · scuro |
+| :--- | :--- | :--- | :--- |
+| `--stag-rubino` | «rosso rubino più o meno intenso» | Lambrusco Mantovano DOC · rosso | `#9b1b30` · `#c94055` |
+| `--stag-granato` | «…o granato» | Lambrusco Mantovano DOC · rosso | `#6b2029` · `#a03648` |
+| `--stag-cerasuolo` | «tendente al cerasuolo con l'invecchiamento» | Garda Colli Mantovani DOC · rosso | `#b8323f` · `#d75c6c` |
+| `--stag-rosato` | «rosato brillante» | Garda Colli Mantovani DOC · chiaretto | `#e2879b` · `#f0a8b7` |
+| `--stag-paglierino` | «giallo paglierino» | Garda Colli Mantovani DOC · bianco | `#d8bd60` · `#e3c977` |
+| `--stag-viola` | «sentore di viola o ribes» | Lambrusco Mantovano DOC · odore | `#6d4a8c` · `#ab8ccb` |
+
+Le due denominazioni di collina — **Garda Colli Mantovani DOC** e **Alto Mincio IGT** — stanno sugli
+stessi sei comuni: Castiglione delle Stiviere, Cavriana, Monzambano, Ponti sul Mincio, Solferino,
+Volta Mantovana. **Due di quei paesi stanno sul Mincio come Rivalta**, solo più a monte. Quella di
+pianura è il **Lambrusco Mantovano DOC**, in due sottozone oltre l'Oglio e oltre il Po.
+
+Tutto questo non resta nel README: sta **in fondo a ogni pagina di stagione**, in una nota con i sei
+pastelli, la parola di ciascuno, la denominazione da cui viene e le fonti. Il tema è una citazione,
+e si può controllare.
+
+> Fonti: [Garda Colli Mantovani DOC — disciplinare, art. 6](https://www.agraria.org/vini/garda-colli-mantovani-doc.htm) ·
+> [Lambrusco Mantovano DOC — disciplinare, art. 6](https://www.agraria.org/vini/lambrusco-mantovano-doc.htm) ·
+> [Strada dei Vini e dei Sapori Mantovani](https://www.mantovastrada.it/)
+
+### Cosa cambia, e cosa no
+
+Cambia l'accento, non il sito: impaginato, caratteri, misure, margine sinistro, prosa giustificata,
+smusso e vetro restano identici. I grigi si scaldano di due o tre punti per canale — non si vede su
+una superficie sola, si sente sulla pagina intera. Il testo d'accento sta a **9,8:1** sul chiaro e
+**8,5:1** sullo scuro, sopra a dove stava l'azzurro.
+
+La tela è in [`design/stagioni/`](design/stagioni/) — cinque artboard di Claude Design che
+documentano quello che è andato online, non uno schizzo preparatorio.
+
+### Si cambia una riga sola
+
+In cima a [`build.mjs`](build.mjs):
 
 ```js
-const STAGIONI = { uva: { nome: "settembre · vendemmia" } };
+const STAGIONI = { uva: { nome: "settembre · vendemmia", tinte: […], zone: […], fonti: […] } };
 const STAGIONE = "uva";   // null spoglia il sito
 ```
 
-Da lì il build scrive `data-stagione="uva"` su `<html>`, scioglie il segnaposto del festone e
-appende `stagioni.js`. A ottobre si aggiunge la voce nuova a `STAGIONI`, si sposta il puntatore e si
-scrive il blocco `html[data-stagione="…"]` in [`assets/stagioni.css`](assets/stagioni.css).
-`STAGIONE = null` toglie tutto e non lascia in giro né classi né script.
+Da lì il build scrive `data-stagione="uva"` su `<html>`, compone il tralcio e la nota, scioglie i due
+segnaposto e appende `stagioni.js`. A ottobre si aggiunge la voce nuova a `STAGIONI`, si sposta il
+puntatore e si scrive il blocco `html[data-stagione="…"]` in
+[`assets/stagioni.css`](assets/stagioni.css). `STAGIONE = null` toglie tutto e non lascia in giro né
+classi né script.
 
-- **Il colore e il festone sono CSS puro** ([`assets/stagioni.css`](assets/stagioni.css), 149 righe,
-  appese a `html[data-stagione]`): arrivano anche senza JavaScript. Il foglio è caricato da tutte le
-  pagine ed è **inerte** finché quell'attributo non c'è.
+### I pezzi, e perché sono fatti così
+
+- **Colore, tralcio e nota sono CSS e HTML** ([`assets/stagioni.css`](assets/stagioni.css), 520
+  righe, tutte appese a `html[data-stagione]`): arrivano anche senza JavaScript. Il foglio è
+  caricato da tutte le pagine ed è **inerte** finché quell'attributo non c'è.
+- **Il tralcio è SVG in pagina, non un'immagine ripetuta**, perché ogni pendaglio deve dondolare per
+  conto suo: un festone in cui tutto oscilla nello stesso istante non è un festone, è una texture
+  che trema. Tredici campate da 200 px si saldano fra loro (ogni arco parte e finisce a `y=4`), i
+  disegni stanno una volta in `<defs>` e si ripetono con `<use>`, e lo sfasamento del dondolio è
+  `calc(var(--i) * -0.41s)`. Una foglia su tre ha già girato all'oro, un grappolo su due è più chiaro.
 - **I due aloni del fondale non sono un terzo strato**: `.sb-home::before` e `::after` esistono già
-  in `sb.css` ed erano l'unica superficie azzurra grande abbastanza da contraddire il resto. Si
+  in `sb.css` ed erano l'ultima superficie azzurra grande abbastanza da contraddire il resto. Si
   ritingono quelli — stessa geometria, stesse due derive in controfase, stessa opacità.
-- **Solo le foglie che scendono hanno bisogno di JS** ([`assets/stagioni.js`](assets/stagioni.js),
-  105 righe): 9-12 particelle dietro al contenuto, `z-index` sotto `.sb-main`, `pointer-events:
-  none`. Non coprono mai il testo.
+- **Solo quello che scende ha bisogno di JS** ([`assets/stagioni.js`](assets/stagioni.js), 199
+  righe). Quattro specie — foglia, grappolino, acino, viticcio — e **non cadono uguale**: la foglia
+  è larga e leggera, ondeggia molto e si volta mostrando il rovescio; l'acino è tondo e pieno,
+  scende quasi diritto e più svelto, e non si volta perché da qualunque parte lo guardi è lo stesso.
+  Tre gusci annidati (cade · ondeggia · gira) perché tre movimenti non stanno in una trasformazione
+  sola. Tre piani di profondità per la parallasse. Le tinte non si mescolano fra specie: un acino
+  verde a settembre non esiste.
 - **Il movimento segue le regole di sempre**: con `prefers-reduced-motion` o col tasto «ferma il
-  movimento» (`html.rsm-still`) le foglie non scendono — ne restano cinque, sparse e ferme, e il
-  festone non cala. Se l'impostazione cambia a pagina aperta, un osservatore sulla classe di `<html>`
-  rifà lo strato.
-- **Sotto i 700px il festone non compare**: in testa lo spazio è poco e ruberebbe la prima riga.
+  movimento» (`html.rsm-still`) non scende niente — restano sei cose posate dove sono, e il tralcio
+  non cala. Se l'impostazione cambia a pagina aperta, un osservatore sulla classe di `<html>` rifà
+  lo strato.
+- **Sotto i 700px il tralcio non compare** (in testa ruberebbe la prima riga) e le particelle
+  scendono da 14 a 8: ognuna sono quattro nodi animati, e quello quasi sempre è un telefono.
 - **Le tre pagine della Color Walk restano fuori.** Una vernice ce l'hanno già — `.sb-cr`, le tinte
   delle polveri — e due stagioni addosso sono una di troppo. Non c'è un elenco di nomi da tenere
   aggiornato: è lo stesso riconoscimento che decide se caricare `color-walk.js`.
@@ -366,9 +419,10 @@ rivaltasulmincio/
 │   ├── ricerca.js              #   la tendina «Cerca» in testata (/ o ⌘K); legge l'indice qui sotto
 │   ├── ricerca-dati.js         #   GENERATO da build.mjs: l'indice di ricerca di tutte le pagine
 │   ├── controlbar.css / .js    #   barra di controllo: tema, sensore orario, movimento
-│   ├── stagioni.css            #   il vestito del mese: accento, festone, foglie — inerte finché
-│   │                           #   build.mjs non scrive data-stagione su <html>
-│   ├── stagioni.js             #   le foglie che scendono sul fondale — solo sulle pagine di stagione
+│   ├── stagioni.css            #   il vestito del mese: accento, tralcio, nota, foglie — inerte
+│   │                           #   finché build.mjs non scrive data-stagione su <html>
+│   ├── stagioni.js             #   quattro specie che scendono sul fondale, ognuna con la sua
+│   │                           #   fisica — solo sulle pagine di stagione
 │   ├── glass.js                #   movimento del vetro: card che si inclinano, parallasse, pillola
 │   ├── mappa.js                #   monta Leaflet e i 268 segnaposto — solo su /mappa
 │   ├── gusto.js                #   i tasti delle voglie — solo su /mangiare
@@ -407,7 +461,8 @@ rivaltasulmincio/
 │       └── evento.json                  #     ritrovo, distanza, rimborsi: da compilare
 ├── design/                     # le tele di Claude Design da cui nascono le cose disegnate
 │   ├── color-walk/             #   banner e locandina della camminata (.dc.html → .png/.pdf)
-│   └── stagioni/               #   il vestito del mese: pagina chiara, scura, palette, simbolo
+│   └── stagioni/               #   il vestito del mese: pagina chiara e scura, palette dai
+│                               #   disciplinari, geografia dei vini, disegno e movimento
 ├── theme/                      # i sorgenti React di albertopecchini.it da cui è portata la barra
 │                               #   (riferimento, NON serve al sito: non va online)
 ├── build.mjs                   # incolla guscio + contenuto, genera sitemap.xml, ricerca-dati.js e le due mail
@@ -1184,13 +1239,16 @@ blocchi di token in cima a [`assets/sb.css`](assets/sb.css); tutto il resto del 
 
 Carattere del sito: **Titillium Web** (+ Roboto Mono per il codice).
 
-Da settembre l'accento non è più fisso: lo [vestito del mese](#-il-vestito-del-mese) lo sostituisce
+Da settembre l'accento non è più fisso: il [vestito del mese](#-il-vestito-del-mese) lo sostituisce
 con la tinta di stagione, riscrivendo gli stessi token in [`assets/stagioni.css`](assets/stagioni.css).
-Settembre è l'uva.
+Settembre è l'uva, e i suoi sei colori sono parole di disciplinare.
 
-![#6d3f7c](https://img.shields.io/badge/Viola_uva-%236D3F7C-6D3F7C?style=flat-square)
-![#b9762a](https://img.shields.io/badge/Ambra_vendemmia-%23B9762A-B9762A?style=flat-square)
-![#6f7d3a](https://img.shields.io/badge/Foglia_di_vite-%236F7D3A-6F7D3A?style=flat-square)
+![#9b1b30](https://img.shields.io/badge/rosso_rubino-%239B1B30-9B1B30?style=flat-square)
+![#6b2029](https://img.shields.io/badge/granato-%236B2029-6B2029?style=flat-square)
+![#b8323f](https://img.shields.io/badge/cerasuolo-%23B8323F-B8323F?style=flat-square)
+![#e2879b](https://img.shields.io/badge/rosato_brillante-%23E2879B-E2879B?style=flat-square&labelColor=555)
+![#d8bd60](https://img.shields.io/badge/giallo_paglierino-%23D8BD60-D8BD60?style=flat-square&labelColor=555)
+![#6d4a8c](https://img.shields.io/badge/viola_o_ribes-%236D4A8C-6D4A8C?style=flat-square)
 
 ---
 

@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
+    a { color: #7a1f34; } a:hover { color: #8c2438; }
+    .mono { font-family: "Roboto Mono", ui-monospace, monospace; }
+    .lbl { font-family: "Titillium Web", Geneva, Tahoma, sans-serif; font-size: 12px; fill: #554d46; }
+    .lbl-s { font-family: "Titillium Web", Geneva, Tahoma, sans-serif; font-size: 10.5px; fill: #948a7d; }
+    .lbl-b { font-family: "Titillium Web", Geneva, Tahoma, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1614; }
+    .cap { font-family: "Titillium Web", Geneva, Tahoma, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+  </style>
+</helmet>
+
+<!-- Perché l'uva c'entra con Rivalta: la geografia del fiume. -->
+<div style="width: 1060px; background: #fcfbf9; color: #1a1614; padding: 44px 48px 44px;">
+
+  <span class="mono" style="font-size: 12px; color: #7d6a1c; font-weight: 700; letter-spacing: .1em;">SETTEMBRE · VENDEMMIA</span>
+  <h1 style="font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; margin: 8px 0 10px;">Rivalta non ha vigne. Il suo fiume sì.</h1>
+  <p style="font-size: 0.95rem; line-height: 1.65; color: #554d46; max-width: 46rem; margin: 0 0 30px; text-align: justify;">
+    Qui la terra fa cereali e meloni, e nessuna denominazione di vino tocca Rodigo. Ma il Mincio
+    che passa davanti al paese scende dall'<strong>anfiteatro morenico del Garda</strong>, dove
+    stanno le due denominazioni di collina; e più a valle, oltre l'Oglio e oltre il Po, comincia
+    quella di pianura. Il paese sta esattamente in mezzo, sull'acqua che le collega.
+  </p>
+
+  <!-- ── Lo schema ── -->
+  <div style="border: 1px solid #e9e4dc; background: #fbfaf7; padding: 18px 20px 12px;">
+    <svg width="960" height="452" viewBox="0 0 960 452" style="display:block;">
+
+      <!-- Colline moreniche -->
+      <path d="M56 72C56 52 76 44 110 44 190 44 254 52 262 76 272 106 264 168 250 196 236 224 196 232 150 226 96 219 56 200 56 160Z"
+            fill="rgba(124,138,62,.13)" stroke="#7c8a3e" stroke-width="1.2" stroke-dasharray="4 4"/>
+      <text class="cap" x="72" y="66" fill="#5f6b2d">Colline moreniche</text>
+
+      <!-- Pianura del Lambrusco -->
+      <path d="M56 356C56 342 120 336 210 336 330 336 430 344 470 356 470 400 430 412 300 412 150 412 56 400 56 380Z"
+            fill="rgba(107,32,41,.1)" stroke="#6b2029" stroke-width="1.2" stroke-dasharray="4 4"/>
+      <text class="cap" x="72" y="356" fill="#6b2029">Pianura, oltre l'Oglio e il Po</text>
+
+      <!-- Lago di Garda -->
+      <path d="M196 8C232 8 256 18 258 34 260 50 240 58 216 56 190 54 176 42 178 26 180 14 186 8 196 8Z" fill="#cfe2ea" stroke="#8fb6c6" stroke-width="1.2"/>
+      <text class="lbl" x="272" y="34">Lago di Garda</text>
+
+      <!-- Il Mincio -->
+      <path d="M222 56C226 92 250 104 254 138 258 174 236 190 240 218 244 250 268 262 280 288 292 314 296 330 302 348 308 368 316 380 330 392"
+            fill="none" stroke="#8fb6c6" stroke-width="3.4" stroke-linecap="round"/>
+      <text class="lbl-s" x="196" y="128" transform="rotate(-78 196 128)">MINCIO</text>
+
+      <!-- Il Po -->
+      <path d="M56 420C140 408 230 424 320 414 410 404 500 420 600 410" fill="none" stroke="#8fb6c6" stroke-width="3.4" stroke-linecap="round"/>
+      <text class="lbl-s" x="614" y="414">PO</text>
+
+      <!-- Comuni della DOC di collina: sei pallini granato -->
+      <g fill="#8c2438">
+        <circle cx="254" cy="96" r="4.6"/><circle cx="252" cy="146" r="4.6"/>
+        <circle cx="196" cy="196" r="4.6"/><circle cx="186" cy="150" r="4.6"/>
+        <circle cx="140" cy="122" r="4.6"/><circle cx="98" cy="164" r="4.6"/>
+      </g>
+      <text class="lbl" x="266" y="100">Ponti sul Mincio</text>
+      <text class="lbl" x="264" y="150">Monzambano</text>
+      <text class="lbl" x="208" y="200">Volta Mantovana</text>
+      <text class="lbl" x="198" y="154">Cavriana</text>
+      <text class="lbl" x="152" y="126">Solferino</text>
+      <text class="lbl" x="110" y="168">Castiglione d. S.</text>
+
+      <!-- Le due denominazioni di collina -->
+      <g transform="translate(430 82)">
+        <rect x="0" y="0" width="290" height="1.6" fill="#8c2438"/>
+        <text class="lbl-b" x="0" y="22">Garda Colli Mantovani DOC</text>
+        <text class="lbl-b" x="0" y="42">Alto Mincio IGT</text>
+        <text class="lbl" x="0" y="66">Gli stessi sei comuni. Sedimenti glaciali,</text>
+        <text class="lbl" x="0" y="83">terreni sciolti e drenanti, fino a 200 m.</text>
+        <text class="lbl-s" x="0" y="106">Garganega e trebbiano per il bianco;</text>
+        <text class="lbl-s" x="0" y="121">merlot, rondinella e cabernet per rosso e chiaretto.</text>
+      </g>
+
+      <!-- Rivalta -->
+      <g>
+        <circle cx="292" cy="300" r="12" fill="none" stroke="#8c2438" stroke-width="1.4" opacity=".45"/>
+        <circle cx="292" cy="300" r="6" fill="#1a1614"/>
+        <text class="lbl-b" x="312" y="296">Rivalta sul Mincio</text>
+        <text class="lbl-s" x="312" y="312">Nessuna denominazione. Cereali e meloni.</text>
+      </g>
+
+      <!-- Mantova -->
+      <circle cx="310" cy="360" r="4" fill="#948a7d"/>
+      <text class="lbl" x="322" y="364">Mantova, i laghi</text>
+
+      <!-- Sottozone del Lambrusco -->
+      <g transform="translate(560 250)">
+        <rect x="0" y="0" width="290" height="1.6" fill="#6b2029"/>
+        <text class="lbl-b" x="0" y="22">Lambrusco Mantovano DOC</text>
+        <text class="lbl" x="0" y="46">Viadanese-Sabbionetano — fra Oglio e Po:</text>
+        <text class="lbl" x="0" y="63">Commessaggio, Dosolo, Gazzuolo,</text>
+        <text class="lbl" x="0" y="80">Sabbioneta, Viadana.</text>
+        <text class="lbl" x="0" y="104">Oltrepò Mantovano — oltre il Po.</text>
+        <text class="lbl-s" x="0" y="128">Lambrusco Viadanese (o Grappello Ruberti),</text>
+        <text class="lbl-s" x="0" y="143">Maestri, Marani, Salamino.</text>
+      </g>
+
+      <!-- Il filo che lega: dalle colline a Rivalta -->
+      <path d="M250 214C258 240 268 262 284 286" fill="none" stroke="#8c2438" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>
+      <text class="lbl-s" x="200" y="262" fill="#8c2438">una ventina di km</text>
+    </svg>
+    <p style="margin: 6px 0 0; font-size: 0.7rem; color: #948a7d;">
+      Schema, non una carta in scala: serve a dire chi sta a monte e chi a valle, non dove sono
+      esattamente le cose. Per le posizioni vere c'è <span class="mono">/mappa</span>.
+    </p>
+  </div>
+
+  <p style="font-size: 0.72rem; color: #948a7d; margin: 22px 0 0;">
+    Fonti: <a href="https://www.agraria.org/vini/garda-colli-mantovani-doc.htm">Garda Colli Mantovani DOC</a> ·
+    <a href="https://www.agraria.org/vini/lambrusco-mantovano-doc.htm">Lambrusco Mantovano DOC</a> ·
+    <a href="https://www.mantovastrada.it/">Strada dei Vini e dei Sapori Mantovani</a>
+  </p>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1060,"height":700}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

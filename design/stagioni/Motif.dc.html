@@ -10,98 +10,177 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap">
   <style>
     body { margin: 0; font-family: "Titillium Web", Geneva, Tahoma, sans-serif; }
-    a { color: #6a3d7a; } a:hover { color: #7c5a1f; }
+    a { color: #7a1f34; } a:hover { color: #8c2438; }
     .mono { font-family: "Roboto Mono", ui-monospace, monospace; }
-    .cut { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
-    .cell { border: 1px solid #e8e8e8; padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-    .cap { font-weight: 700; font-size: 14px; }
-    .note { font-size: 13px; color: #525252; line-height: 1.55; }
-    @keyframes riv-drift { to { transform: translateY(240px) rotate(40deg); } }
-    @keyframes riv-sway { 50% { transform: translateX(14px); } }
+    .cell { border: 1px solid #e9e4dc; background: #fbfaf7; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+    .cap { font-weight: 700; font-size: 0.92rem; }
+    .note { font-size: 0.82rem; color: #554d46; line-height: 1.55; }
+    .k { font-family: "Roboto Mono", ui-monospace, monospace; font-size: 0.68rem; color: #726960; }
+    @keyframes dondola { 0%,100% { transform: rotate(-2.4deg) } 50% { transform: rotate(2.4deg) } }
+    @keyframes cade { from { transform: translateY(-30px) } to { transform: translateY(120px) } }
+    @keyframes onda { from { transform: translateX(-22px) } to { transform: translateX(22px) } }
+    @keyframes gira { from { transform: rotate(0) } to { transform: rotate(300deg) } }
+    @keyframes volta { from { transform: perspective(150px) rotateY(-42deg) } to { transform: perspective(150px) rotateY(38deg) } }
   </style>
 </helmet>
 
-<!-- ARTBOARD: alfabeto grafico dell'uva + come si muove -->
-<div style="width: 980px; background: #fcfcfc; color: #171717; padding: 40px 44px;">
-  <div class="mono" style="font-size: 13px; color: #b9762a; font-weight: 700;">SETTEMBRE — UVA</div>
-  <h1 style="font-size: 30px; font-weight: 700; margin: 6px 0 4px;">Il simbolo e il suo movimento</h1>
-  <p style="font-size: 15px; color: #525252; max-width: 42rem; margin: 0 0 28px; text-align: justify;">
-    Un solo alfabeto: grappolo, foglia, viticcio. Disegnati in SVG stroke/fill sulla
-    griglia 24, così scalano e si ricolorano con l'accento. Niente emoji.
+<!-- L'alfabeto grafico della vite, e come si muove. -->
+<div style="width: 1080px; background: #fcfbf9; color: #1a1614; padding: 44px 48px 46px;">
+
+  <span class="mono" style="font-size: 12px; color: #7d6a1c; font-weight: 700; letter-spacing: .1em;">SETTEMBRE · VENDEMMIA</span>
+  <h1 style="font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; margin: 8px 0 10px;">Tre disegni, e come si muovono</h1>
+  <p style="font-size: 0.95rem; line-height: 1.65; color: #554d46; max-width: 46rem; margin: 0 0 30px; text-align: justify;">
+    Foglia, grappolo, viticcio: tre soli disegni, in SVG, sulla griglia dei 24. Nessuna emoji.
+    Gli stessi tre stanno appesi al tralcio della testata e scendono sul fondale, così una foglia
+    è sempre la stessa foglia.
   </p>
 
-  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
-    <div class="cell cut">
-      <svg width="72" height="96" viewBox="0 0 48 64" aria-hidden="true">
-        <path d="M24 12V4" stroke="#6f7d3a" stroke-width="2.4" stroke-linecap="round"/>
-        <path d="M24 8c-6-5-14-3-16 2 6 1 12 3 16 3Zm0 0c6-5 14-3 16 2-6 1-12 3-16 3Z" fill="#6f7d3a"/>
-        <g fill="#6d3f7c">
-          <circle cx="24" cy="18" r="6"/><circle cx="17" cy="27" r="6"/><circle cx="31" cy="27" r="6"/>
-          <circle cx="12" cy="37" r="6"/><circle cx="24" cy="38" r="6"/><circle cx="36" cy="37" r="6"/>
-          <circle cx="18" cy="47" r="6"/><circle cx="30" cy="47" r="6"/><circle cx="24" cy="56" r="6"/>
-        </g>
-      </svg>
-      <div class="cap">Grappolo</div>
-      <div class="note">Nove acini a piramide rovescia + due foglioline. In filigrana negli angoli dei riquadri, pieno nell'occhiello di stagione.</div>
-    </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;">
 
-    <div class="cell cut">
-      <svg width="84" height="84" viewBox="0 0 48 48" aria-hidden="true">
-        <path d="M24 6c-3 5-9 7-15 7 2 4 2 7 0 11 5 0 9 2 12 7 3-5 7-7 12-7-2-4-2-7 0-11-6 0-12-2-15-7Z" fill="#6f7d3a"/>
-        <path d="M24 6v34M12 20l12 6M36 20l-12 6" stroke="#fcfcfc" stroke-width="1.6" opacity=".6"/>
+    <div class="cell">
+      <svg width="132" height="146" viewBox="-14 -1 28 29" fill="none">
+        <path d="M0 0v3" stroke="#7c8a3e" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z" fill="#7c8a3e"/>
+        <path d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6" fill="none" stroke="#fcfbf9" stroke-width=".7" stroke-linecap="round" opacity=".62"/>
       </svg>
       <div class="cap">Foglia di vite</div>
-      <div class="note">Cinque lobi semplificati. È la particella che fluttua sul fondale e che punteggia il festone.</div>
+      <div class="note">Cinque lobi, seni profondi, larga quanto è lunga — è quello che la fa
+        leggere come vite e non come una goccia. Le cinque nervature partono tutte dal picciolo.</div>
+      <div class="k">–12.4…12.4 × 2…25.4 · picciolo in (0,0)</div>
     </div>
 
-    <div class="cell cut">
-      <svg width="84" height="84" viewBox="0 0 48 48" aria-hidden="true">
-        <path d="M8 12c8 0 8 10 0 10s-8 12 4 12 12-12 4-12" fill="none" stroke="#b9762a" stroke-width="2.6" stroke-linecap="round"/>
-        <path d="M24 34c6 0 10 4 16 2" fill="none" stroke="#6f7d3a" stroke-width="2.4" stroke-linecap="round"/>
+    <div class="cell">
+      <svg width="118" height="146" viewBox="-13 -1 26 26" fill="none">
+        <path d="M0 0v3.4" stroke="#7c8a3e" stroke-width="1.3" stroke-linecap="round"/>
+        <g fill="#6b2029">
+          <circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>
+          <circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>
+          <circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/>
+          <circle cx="0.1" cy="20" r="3.2"/>
+        </g>
+        <g fill="rgba(255,255,255,.34)"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>
+      </svg>
+      <div class="cap">Grappolo</div>
+      <div class="note">Conico: quattro acini in cima, poi tre, due, uno. Gli acini si toccano —
+        raggio 3,2 e passo 5,5 — o si legge una costellazione invece di un grappolo. Tre prendono
+        luce, sempre da sinistra.</div>
+      <div class="k">10 acini · peduncolo in (0,0)</div>
+    </div>
+
+    <div class="cell">
+      <svg width="94" height="146" viewBox="-9 -1 18 25" fill="none">
+        <path d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0" stroke="#7c8a3e" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <div class="cap">Viticcio</div>
-      <div class="note">La spirale. Chiude il festone alle due estremità e fa da separatore fra le sezioni, in tono muto.</div>
+      <div class="note">La spirale con cui la vite si aggrappa. Un solo tratto, che si stringe
+        avvitandosi: è il pezzo che rompe il ritmo fra una foglia e un grappolo.</div>
+      <div class="k">tratto 1,9 · linecap tondo</div>
     </div>
   </div>
 
-  <!-- FESTONE -->
-  <h2 style="font-size: 18px; font-weight: 700; margin: 34px 0 10px;">Festone — appeso al bordo basso della testata</h2>
-  <div class="cut" style="border: 1px solid #e8e8e8; padding: 0; overflow: hidden; background: #fbfbfb;">
-    <svg width="892" height="60" viewBox="0 0 892 60" preserveAspectRatio="none" style="display:block;">
-      <path d="M0 4 C 100 50, 200 50, 297 8 C 395 50, 495 50, 595 8 C 695 50, 795 50, 892 4" fill="none" stroke="#6f7d3a" stroke-width="2.4"/>
-      <g fill="#6d3f7c">
-        <g transform="translate(148,24)"><circle r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cy="15" r="4"/></g>
-        <g transform="translate(446,24)"><circle r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cy="15" r="4"/></g>
-        <g transform="translate(744,24)"><circle r="4"/><circle cx="7" cy="3" r="4"/><circle cx="-7" cy="3" r="4"/><circle cx="3" cy="9" r="4"/><circle cx="-3" cy="9" r="4"/><circle cy="15" r="4"/></g>
-      </g>
-      <g fill="#6f7d3a">
-        <path d="M70 16c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
-        <path d="M297 14c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
-        <path d="M595 14c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
-        <path d="M822 16c-6 0-10 3-10 9 0 6 6 11 10 15 4-4 10-9 10-15 0-6-4-9-10-9Z"/>
-      </g>
+  <!-- ── IL TRALCIO ── -->
+  <h2 style="font-size: 1.05rem; font-weight: 600; margin: 38px 0 10px;">Il tralcio della testata</h2>
+  <p class="note" style="max-width: 46rem; margin: 0 0 12px;">
+    Tredici campate da 200&nbsp;px, in un SVG solo. Ogni arco parte e finisce a <span class="k">y=4</span>,
+    così le campate si saldano senza giunte; il punto più basso è <span class="k">(100, 23.5)</span> ed
+    è lì che si attacca il pendaglio. I disegni stanno una volta in <span class="k">&lt;defs&gt;</span>
+    e si ripetono con <span class="k">&lt;use&gt;</span>.
+  </p>
+  <div style="border: 1px solid #e9e4dc; background: #fbfaf7; overflow: hidden;">
+    <svg width="984" height="62" viewBox="0 0 984 62" fill="none" style="display:block;">
+      <defs>
+        <path id="a" d="M0 4C50 30 150 30 200 4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+        <g id="fo">
+          <path d="M0 0v4" fill="none" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/>
+          <path d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6" fill="none" stroke="#fbfaf7" stroke-width=".8" stroke-linecap="round" opacity=".6"/>
+        </g>
+        <g id="gr">
+          <path d="M0 0v3.4" fill="none" stroke="#7c8a3e" stroke-width="1.9" stroke-linecap="round"/>
+          <g>
+            <circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>
+            <circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>
+            <circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/><circle cx="0.1" cy="20" r="3.2"/>
+          </g>
+          <g fill="rgba(255,255,255,.34)"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>
+        </g>
+        <g id="vi"><path d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0" fill="none" stroke-width="1.9" stroke-linecap="round"/></g>
+      </defs>
+      <g stroke="#7c8a3e"><use href="#a" x="0"/></g>
+      <g style="animation: dondola 5.6s ease-in-out infinite; transform-origin: 100px 23.5px" fill="#7c8a3e" stroke="#7c8a3e"><g transform="translate(100 23.5) scale(.98)"><use href="#fo"/></g></g>
+      <g stroke="#96702e"><use href="#a" x="200"/></g>
+      <g style="animation: dondola 5.6s ease-in-out -0.41s infinite; transform-origin: 300px 23.5px" fill="#9b1b30"><g transform="translate(300 23.5) scale(.86)"><use href="#gr"/></g></g>
+      <g stroke="#7c8a3e"><use href="#a" x="400"/></g>
+      <g style="animation: dondola 5.6s ease-in-out -0.82s infinite; transform-origin: 500px 23.5px" stroke="#7c8a3e"><g transform="translate(500 23.5) scale(.92)"><use href="#vi"/></g></g>
+      <g stroke="#7c8a3e"><use href="#a" x="600"/></g>
+      <g style="animation: dondola 5.6s ease-in-out -1.23s infinite; transform-origin: 700px 23.5px" fill="#96702e" stroke="#96702e"><g transform="translate(700 23.5) scale(.98)"><use href="#fo"/></g></g>
+      <g stroke="#96702e"><use href="#a" x="800"/></g>
     </svg>
   </div>
-  <p class="note" style="margin: 10px 0 0;">Altezza 40–48&nbsp;px, <span class="mono" style="font-size:12px;">preserveAspectRatio="none"</span> così segue la larghezza. All'ingresso i grappoli scendono di 6&nbsp;px con un rimbalzo (240&nbsp;ms, una volta). Non c'è su color-walk.</p>
+  <p class="note" style="margin: 10px 0 0;">
+    Ogni pendaglio dondola di ±2,4°, e parte a un punto diverso del ciclo — il ritardo è
+    <span class="k">calc(var(--i) * -0.41s)</span>. È lo sfasamento, non l'ampiezza, a togliere
+    l'effetto marionetta. Una foglia su tre ha già girato all'oro, un grappolo su due è più chiaro.
+  </p>
 
-  <!-- MOVIMENTO -->
-  <h2 style="font-size: 18px; font-weight: 700; margin: 34px 0 10px;">Strato che fluttua sul fondale</h2>
-  <div class="cut" style="position: relative; height: 200px; border: 1px solid #e8e8e8; background: radial-gradient(120% 100% at 80% 0, rgba(109,63,124,0.08), transparent 60%); overflow: hidden;">
-    <svg width="26" height="26" viewBox="0 0 48 48" style="position:absolute; top:12px; left:10%; opacity:.5;"><path d="M24 6c-3 5-9 7-15 7 2 4 2 7 0 11 5 0 9 2 12 7 3-5 7-7 12-7-2-4-2-7 0-11-6 0-12-2-15-7Z" fill="#6f7d3a"/></svg>
-    <span style="position:absolute; top:8px; left:34%; width:12px; height:12px; border-radius:50%; background:#6d3f7c; opacity:.35; animation: riv-drift 6s linear infinite;"></span>
-    <svg width="30" height="30" viewBox="0 0 48 48" style="position:absolute; top:20px; left:58%; opacity:.4; animation: riv-sway 5s ease-in-out infinite;"><path d="M24 6c-3 5-9 7-15 7 2 4 2 7 0 11 5 0 9 2 12 7 3-5 7-7 12-7-2-4-2-7 0-11-6 0-12-2-15-7Z" fill="#b9762a"/></svg>
-    <span style="position:absolute; top:10px; left:82%; width:9px; height:9px; border-radius:50%; background:#6f7d3a; opacity:.4; animation: riv-drift 7s linear infinite;"></span>
+  <!-- ── LA CADUTA ── -->
+  <h2 style="font-size: 1.05rem; font-weight: 600; margin: 38px 0 10px;">Quello che scende, e perché non scende uguale</h2>
+  <div style="display: grid; grid-template-columns: 300px 1fr; gap: 26px; align-items: start;">
+    <div style="position: relative; height: 190px; border: 1px solid #e9e4dc; background: #fbfaf7; overflow: hidden;">
+      <div style="position:absolute; left:22%; top:0; width:30px; height:30px; opacity:.34; animation: cade 5s linear infinite;">
+        <span style="display:block; width:100%; height:100%; animation: onda 3.2s ease-in-out infinite alternate;">
+          <span style="display:block; width:100%; height:100%; animation: gira 9s linear infinite;">
+            <svg viewBox="-13 0 26 27" style="width:100%; height:100%; animation: volta 4.2s ease-in-out infinite alternate;"><path d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z" fill="#7c8a3e"/></svg>
+          </span>
+        </span>
+      </div>
+      <div style="position:absolute; left:62%; top:0; width:16px; height:16px; opacity:.3; animation: cade 3.4s linear -1s infinite;">
+        <span style="display:block; width:100%; height:100%; animation: onda 5s ease-in-out infinite alternate;">
+          <svg viewBox="0 0 24 24" style="width:100%;height:100%"><circle cx="12" cy="12" r="10" fill="#6b2029"/><circle cx="8.6" cy="8.6" r="2.1" fill="#fff" opacity=".22"/></svg>
+        </span>
+      </div>
+    </div>
+    <div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+        <thead>
+          <tr style="border-bottom: 1px solid #dcd5c9; text-align: left;">
+            <th style="padding: 6px 8px 6px 0; font-weight: 600;">Specie</th>
+            <th style="padding: 6px 8px; font-weight: 600;">Quota</th>
+            <th style="padding: 6px 8px; font-weight: 600;">Ondeggia</th>
+            <th style="padding: 6px 8px; font-weight: 600;">Zavorra</th>
+            <th style="padding: 6px 0 6px 8px; font-weight: 600;">Si volta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td style="padding: 6px 8px 6px 0;">foglia</td><td style="padding: 6px 8px;">46%</td><td style="padding: 6px 8px;">1,00</td><td style="padding: 6px 8px;">1,12</td><td style="padding: 6px 0 6px 8px;">sì</td></tr>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td style="padding: 6px 8px 6px 0;">grappolino</td><td style="padding: 6px 8px;">25%</td><td style="padding: 6px 8px;">0,34</td><td style="padding: 6px 8px;">0,82</td><td style="padding: 6px 0 6px 8px;">no</td></tr>
+          <tr style="border-bottom: 1px solid #e9e4dc;"><td style="padding: 6px 8px 6px 0;">acino</td><td style="padding: 6px 8px;">16%</td><td style="padding: 6px 8px;">0,22</td><td style="padding: 6px 8px;">0,74</td><td style="padding: 6px 0 6px 8px;">no</td></tr>
+          <tr><td style="padding: 6px 8px 6px 0;">viticcio</td><td style="padding: 6px 8px;">13%</td><td style="padding: 6px 8px;">0,86</td><td style="padding: 6px 8px;">1,04</td><td style="padding: 6px 0 6px 8px;">no</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin: 12px 0 0;">
+        Tre gusci annidati, perché tre movimenti non stanno in una sola trasformazione: il primo
+        <strong>cade</strong>, il secondo <strong>ondeggia</strong>, il terzo <strong>gira</strong>.
+        La foglia, in più, <strong>si volta</strong> — ed è quel lampo di taglio che la fa sembrare
+        una foglia invece che un adesivo. L'acino no: da qualunque parte lo guardi è lo stesso, e
+        scende più svelto perché è pieno.
+      </p>
+      <p class="note" style="margin: 10px 0 0;">
+        Tre piani di profondità: lontano piccolo, pallido e lento (42% dei casi); vicino grande,
+        più netto e svelto (23%). Le tinte non si mescolano fra specie — un acino verde a settembre
+        non esiste.
+      </p>
+      <p class="note" style="margin: 10px 0 0; color: #726960;">
+        Con <span class="k">prefers-reduced-motion</span> o col tasto «ferma il movimento» non
+        scende niente: restano sei cose posate dove sono. Su schermo stretto sono otto invece di
+        quattordici — ogni particella sono quattro nodi animati.
+      </p>
+    </div>
   </div>
-  <ul class="note" style="margin: 12px 0 0; padding-left: 18px;">
-    <li>8–12 particelle, dietro al contenuto (<span class="mono" style="font-size:12px;">z sotto .sb-container</span>), mai sopra il testo, <span class="mono" style="font-size:12px;">pointer-events: none</span>.</li>
-    <li>Caduta lenta 18–34&nbsp;s + oscillazione laterale, rotazione dolce, opacità 0.10–0.22.</li>
-    <li>Si spegne con <span class="mono" style="font-size:12px;">prefers-reduced-motion</span> e col tasto «ferma il movimento» (<span class="mono" style="font-size:12px;">html.rsm-still</span>): resta qualche foglia posata, ferma.</li>
-    <li>Generato da <span class="mono" style="font-size:12px;">assets/stagioni.js</span> solo sulle pagine di stagione; le 3 di color-walk non lo caricano.</li>
-  </ul>
 </div>
 
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":980,"height":1120}}'>
+<script data-dc-script data-props='{"$preview":{"width":1080,"height":1080}}'>
 class Component extends DCLogic {}
 </script>
 </body>
