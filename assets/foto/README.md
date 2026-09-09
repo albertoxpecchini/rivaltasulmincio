@@ -12,11 +12,13 @@ I luoghi stanno in questa cartella, le attività in `attivita/`. In `storia/` ci
 immagini d'archivio della pagina `/storia` — carte, affreschi, reperti: non passano da
 `luoghi.json` e non hanno uno slug, perché non sono posti. Le figure sono scritte a mano nel
 frammento, con la didascalia e l'autore accanto. Lo stesso vale per `archivio/`, dove stanno le
-fotografie di **un giorno** e non di un posto, tutte riprodotte dal libro «Rivalta sul Mincio
-2001-2013 — Eventi e Ricordi» (dono di Annasofia Sanfelici), insieme alla copertina del volume.
-Sotto ogni gruppo di queste immagini va il segnaposto `{{libro}}`, che stampa la scheda del
-libro: è la regola, una fotografia d'archivio dice sempre da dove viene. La pagina del volume
-**non si scrive in pagina** — è apparato, non contenuto — e resta solo qui sotto, per ritrovare
+fotografie di **un giorno** e non di un posto, riprodotte da due libri, entrambi in dono da
+Annasofia Sanfelici: «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi» (segnaposto `{{libro}}`) e
+«rivalta nel '900 — Immagini per non dimenticare» del Circolo Fotografico Rivalta e del Comune di
+Rodigo (segnaposto `{{libro900}}`). Le copertine dei due volumi stanno anch'esse qui.
+Sotto ogni gruppo di queste immagini va il segnaposto del suo libro, che ne stampa la scheda: è
+la regola, una fotografia d'archivio dice sempre da dove viene. La pagina del volume **non si
+scrive in pagina** — è apparato, non contenuto — e resta solo qui sotto, per ritrovare
 l'originale.
 
 | File | Cosa | Quando |
@@ -51,7 +53,42 @@ l'originale.
 | `archivio/gemellaggio-corale-2012-tastiera.jpg` | il coro tedesco attorno alla tastiera elettronica | 1 ott 2012 |
 | `archivio/gemellaggio-corale-2012-il-coro-grande.jpg` | il coro al completo davanti all'altare | 1 ott 2012 |
 | `archivio/gemellaggio-corale-2012-il-canto.jpg` | il coro canta, diretto dal maestro | 1 ott 2012 |
-| `archivio/gemellaggio-corale-2012-i-fiori.jpg` | applausi e fiori per il solista | 1 ott 2012 | Titolo, testo alternativo e
+| `archivio/gemellaggio-corale-2012-i-fiori.jpg` | applausi e fiori per il solista | 1 ott 2012 |
+| `archivio/rivalta-nel-900-copertina.jpg` | la copertina di «rivalta nel '900» | — |
+| `archivio/teatro-rossini-1994-la-demolizione.jpg` | «rivalta nel '900»: il Teatro Rossini durante l'abbattimento (scan 4) | 1994 c. |
+| `archivio/teatro-rossini-2000.jpg` | dov'era il Teatro Rossini: il vuoto recintato (scan 5) | 2000 c. |
+| `archivio/teatro-italia-1980.jpg` | il Teatro Italia «dla Pina» all'angolo (scan 28) | 1980 c. |
+| `archivio/teatro-italia-2000-le-case.jpg` | «c'era una volta il Teatro Italia»: le case oggi (scan 27) | 2000 c. |
+| `archivio/pisiun-granda-1981-via-settefrati.jpg` | la «pisiun granda» dietro la siepe, da via Settefrati (scan 20) | 1981 c. |
+| `archivio/pisiun-granda-2000-via-settefrati.jpg` | la stessa strada aperta, la casa in vista (scan 19) | 2000 c. |
+| `archivio/pisiun-granda-1983-incrocio.jpg` | l'incrocio della possessione, strada bianca (scan 16) | 23 set 1983 |
+| `archivio/pisiun-granda-2000-il-parcheggio.jpg` | lo stesso incrocio col parcheggio nuovo (scan 15) | 2000 c. |
+| `archivio/pisiun-granda-1989-la-corte.jpg` | dentro la corte, prima del restauro (scan 8) | 1989 c. |
+| `archivio/pisiun-granda-2000-la-corte.jpg` | la corte restaurata, il dipinto rifatto (scan 9) | 2000 c. |
+| `archivio/cascina-cantoni-1981.jpg` | la cascina di Amadio Cantoni, casa e fienile (scan 25) | 1981 c. |
+| `archivio/cascina-cantoni-2000.jpg` | dov'era la cascina: muro di cinta e case (scan 26) | 2000 c. |
+| `archivio/centro-parco-1980-il-retro.jpg` | il retro della corte del Centro Parco, prima (scan 24) | 1980 c. |
+| `archivio/centro-parco-2000.jpg` | la corte restaurata, sede del Centro Parco (scan 23) | 2000 c. |
+| `archivio/al-dos-1985.jpg` | «al dòs»: il fabbricato col tetto sfondato (scan 17) | 1985 c. |
+| `archivio/al-dos-2000.jpg` | «al dòs» oggi: la casa in fondo all'orto (scan 18) | 2000 c. |
+| `archivio/dopolavoro-gramsci-1987.jpg` | il dopolavoro di via Gramsci, intonaco andato (scan 7) | 1987 c. |
+| `archivio/via-gramsci-2000.jpg` | lo stesso fronte restaurato, botteghe e bandiera (scan 6) | 2000 c. |
+| `archivio/dopolavoro-gramsci-1986.jpg` | l'ex dopolavoro prima: scala esterna e panni stesi (scan 10) | 1986 c. |
+| `archivio/dopolavoro-gramsci-2000-il-centro.jpg` | al suo posto, il centro commerciale-finanziario (scan 11) | 2000 c. |
+| `archivio/via-tezzone-1998-casa-sarzi-sartori.jpg` | casa Sarzi Sartori «Pèpo e Gigeto», vuota (scan 1) | 1998 c. |
+| `archivio/via-tezzone-2000-le-case-nuove.jpg` | al suo posto le case nuove (scan 33) | 2000 c. |
+| `archivio/al-bacanin-1986.jpg` | «Al Bacanin» dla Olga e Tarabin, intonaco a pezzi (scan 12) | 1986 c. |
+| `archivio/al-bacanin-2000-casa-storti.jpg` | la stessa casa — ora casa Storti — rimessa a nuovo (scan 13) | 2000 c. |
+| `archivio/al-pescatore-1992.jpg` | la trattoria «Al Pescatore» dei Pezzini, all'angolo (scan 3) | 1992 c. |
+| `archivio/al-pescatore-1997.jpg` | la stessa cantonata rifatta a villa con loggia (scan 2) | 1997 c. |
+| `archivio/via-francesca-1982-officina-bellini.jpg` | l'officina meccanica Bellini in via Francesca (scan 21) | 1982 c. |
+| `archivio/via-francesca-2000-fior-di-loto.jpg` | nello stesso punto, il negozio «Fior di Loto» (scan 22) | 2000 c. |
+| `archivio/chiesa-interno-1980.jpg` | l'interno della parrocchiale prima del restauro (scan 30) | 1980 c. |
+| `archivio/chiesa-interno-2000.jpg` | la stessa navata dopo il restauro (scan 29) | 2000 c. |
+| `archivio/monumento-caduti-1994.jpg` | il Monumento ai Caduti, la stele lesionata (scan 32) | 1994 c. |
+| `archivio/monumento-caduti-2000.jpg` | lo stesso monumento ripulito, nel viale (scan 31) | 2000 c. |
+
+Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 

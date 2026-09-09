@@ -1314,6 +1314,12 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   background-size: 100% 100%, auto 100%;
   background-position: 0 0, left center;
 }
+/* Il secondo volume ha la sua copertina, e quindi il suo dorso. */
+.sb-riv-libro--900 .sb-riv-libro-dorso {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.22) 60%, rgba(0, 0, 0, 0.35)),
+    url("foto/archivio/rivalta-nel-900-copertina.jpg");
+}
 /* L'ombra per terra. Sta fuori dalla scatola e non è ruotata: un'ombra è la
    proiezione del libro sul piano d'appoggio, non una sua faccia, e ruotarla
    con lui la farebbe entrare nel tavolo. */

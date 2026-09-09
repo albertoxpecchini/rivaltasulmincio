@@ -362,25 +362,47 @@ const renderFoto = (slug) => {
    copertina è la scansione vera; il dorso è la stessa scansione stirata sul
    suo primo centimetro, così i colori del taglio continuano quelli del
    piatto invece di essere una tinta inventata. */
-const COPERTINA = "assets/foto/archivio/eventi-e-ricordi-copertina.jpg";
+const LIBRI = {
+  eventi: {
+    classe: "",
+    copertina: "assets/foto/archivio/eventi-e-ricordi-copertina.jpg",
+    alt: "La copertina del libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi»: il paese visto dall'alto, sopra la fotografia di un canneto che brucia sul fiume e una barca verde tirata a riva.",
+    titolo: "Rivalta sul Mincio 2001&#8202;–&#8202;2013 — Eventi e Ricordi",
+    editore: "Nuova Universo Gutenberg Edizioni",
+    testo: "Dodici anni di paese raccolti in un volume: le feste, i lavori, le sere che poi si raccontano. Le fotografie qui sopra sono riprodotte da lì.",
+    grazie: "Il libro è arrivato al sito in dono da <strong>Annasofia Sanfelici</strong>. Grazie.",
+  },
+  novecento: {
+    classe: " sb-riv-libro--900",
+    copertina: "assets/foto/archivio/rivalta-nel-900-copertina.jpg",
+    alt: "La copertina del libro «rivalta nel '900 — Immagini per non dimenticare»: una fotografia seppia del porto di Rivalta, con la pescheria a portico sull'acqua, le barche tirate a riva e il campanile fra gli alberi.",
+    titolo: "Rivalta nel '900 — Immagini per non dimenticare",
+    editore: "Circolo Fotografico Rivalta · Comune di Rodigo",
+    testo: "Il paese del Novecento a coppie di fotografie: la stessa strada, la stessa casa, com'era e com'è. Le immagini qui sopra vengono da lì.",
+    grazie: "Anche questo volume è arrivato al sito in dono da <strong>Annasofia Sanfelici</strong>. Grazie.",
+  },
+};
 
-const renderLibro = () => `<aside class="sb-riv-fonte">
+const renderLibro = (chiave = "eventi") => {
+  const b = LIBRI[chiave];
+  return `<aside class="sb-riv-fonte">
     <div class="sb-panel"><div class="sb-panel-inner sb-riv-fonte-in">
-      <div class="sb-riv-libro">
+      <div class="sb-riv-libro${b.classe}">
         <div class="sb-riv-libro-corpo">
-          <img class="sb-riv-libro-piatto" src="${COPERTINA}" alt="La copertina del libro «Rivalta sul Mincio 2001-2013 — Eventi e Ricordi»: il paese visto dall'alto, sopra la fotografia di un canneto che brucia sul fiume e una barca verde tirata a riva." width="820" height="1156" loading="lazy" decoding="async">
+          <img class="sb-riv-libro-piatto" src="${b.copertina}" alt="${b.alt}" width="820" height="1156" loading="lazy" decoding="async">
           <span class="sb-riv-libro-dorso" aria-hidden="true"></span>
         </div>
         <span class="sb-riv-libro-ombra" aria-hidden="true"></span>
       </div>
       <div class="sb-riv-fonte-testo">
         <span class="sb-riv-fonte-occhiello">Da dove vengono queste fotografie</span>
-        <p class="sb-riv-fonte-titolo"><strong>Rivalta sul Mincio 2001&#8202;–&#8202;2013 — Eventi e Ricordi</strong><br><span class="sb-riv-na">Nuova Universo Gutenberg Edizioni</span></p>
-        <p class="sb-riv-p">Dodici anni di paese raccolti in un volume: le feste, i lavori, le sere che poi si raccontano. Le fotografie qui sopra sono riprodotte da lì.</p>
-        <p class="sb-riv-fonte-grazie">Il libro è arrivato al sito in dono da <strong>Annasofia Sanfelici</strong>. Grazie.</p>
+        <p class="sb-riv-fonte-titolo"><strong>${b.titolo}</strong><br><span class="sb-riv-na">${b.editore}</span></p>
+        <p class="sb-riv-p">${b.testo}</p>
+        <p class="sb-riv-fonte-grazie">${b.grazie}</p>
       </div>
     </div></div>
   </aside>`;
+};
 
 /* ── Gli shortcode ────────────────────────────────────────────────────────
    Cinque segnaposto, tutti risolti qui e nessuno scritto a mano nelle pagine:
@@ -411,6 +433,7 @@ const shortcodes = (html) =>
     )
     .replace(/\{\{aperto:([a-z0-9-]+)\}\}/g, (_, id) => renderAperto(id))
     .replace(/\{\{foto:([a-z0-9-]+)\}\}/g, (_, slug) => renderFoto(slug))
+    .replace(/\{\{libro900\}\}/g, () => renderLibro("novecento"))
     .replace(/\{\{libro\}\}/g, () => renderLibro());
 
 /* ── Gli aggiornamenti ────────────────────────────────────────────────────
