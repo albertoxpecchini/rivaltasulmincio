@@ -41,12 +41,17 @@ l'originale.
 | `archivio/gemellaggio-berg-il-dono.jpg` | un cesto in dono, ricevimento ufficiale | — |
 | `archivio/gemellaggio-berg-la-sciarpa.jpg` | la sciarpa del gemellaggio consegnata a mano | — |
 | `archivio/gemellaggio-berg-il-brindisi.jpg` | un brindisi sotto il lampadario | — |
-| `archivio/gemellaggio-berg-coro-in-chiesa.jpg` | un coro canta all'altare della parrocchiale | — |
+| `archivio/gemellaggio-berg-coro-in-chiesa.jpg` | un coro canta davanti all'altare | — |
 | `archivio/gemellaggio-berg-pallavolo-gruppo.jpg` | le squadre miste in palestra | — |
 | `archivio/gemellaggio-berg-pallavolo-squadra-a.jpg` | la squadra femminile in maglia azzurra | — |
 | `archivio/gemellaggio-berg-pallavolo-squadra-b.jpg` | una squadra maschile in arancio e verde | — |
 | `archivio/gemellaggio-francesi-canoa-gruppo.jpg` | il gruppo prima di scendere in canoa | — |
-| `archivio/gemellaggio-francesi-canoa-fiume.jpg` | in canoa sul Mincio con visitatori francesi | — | Titolo, testo alternativo e
+| `archivio/gemellaggio-francesi-canoa-fiume.jpg` | in canoa sul Mincio con visitatori francesi | — |
+| `archivio/gemellaggio-corale-2012-il-maestro.jpg` | il maestro dirige il coro | 1 ott 2012 |
+| `archivio/gemellaggio-corale-2012-tastiera.jpg` | il coro tedesco attorno alla tastiera elettronica | 1 ott 2012 |
+| `archivio/gemellaggio-corale-2012-il-coro-grande.jpg` | il coro al completo davanti all'altare | 1 ott 2012 |
+| `archivio/gemellaggio-corale-2012-il-canto.jpg` | il coro canta, diretto dal maestro | 1 ott 2012 |
+| `archivio/gemellaggio-corale-2012-i-fiori.jpg` | applausi e fiori per il solista | 1 ott 2012 | Titolo, testo alternativo e
 coordinate di ogni voce sono in [`_build/luoghi.json`](../../_build/luoghi.json): se una
 fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 
