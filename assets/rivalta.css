@@ -1095,12 +1095,23 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
   50% { opacity: 0.25; }
 }
 
-/* Sotto i 560px l'etichetta perde le parole e tiene il pallino e il codice, e
-   il tasto sparisce: in una riga sola da telefono il posto è tutto del testo
-   che scorre, e la scheda si raggiunge scendendo di due schermate. */
+/* Sotto i 560px l'etichetta piena se ne va del tutto, e con lei il tasto.
+   Su 390 punti si mangiava metà riga per dire «codice arancione» — che sono
+   esattamente le prime parole del nastro, lette due volte a mezzo schermo di
+   distanza — e al testo restava uno spiraglio in cui non si leggeva niente.
+   Resta il pallino che pulsa, attaccato al margine, e tutto il resto della
+   larghezza è del testo che scorre. La scheda si raggiunge scendendo. */
+.sb-riv-tg-pt--solo { display: none; }
 @media (max-width: 559px) {
-  .sb-riv-tg-eti-lungo { display: none; }
+  .sb-riv-tg-eti,
   .sb-riv-tg-vai { display: none; }
+  .sb-riv-tg-pt--solo { display: block; flex: none; background: var(--sb-alrt); }
+  .sb-riv-tg-riga { gap: 0.55rem; padding-right: 0; min-height: 2.3rem; }
+  .sb-riv-tg-nastro { font-size: 0.82rem; line-height: 2.3rem; }
+  .sb-riv-tg-pista {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.6rem), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 1.6rem), transparent);
+  }
 }
 
 /* ── La scheda dell'allerta ──────────────────────────────────────────────
@@ -1174,6 +1185,10 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
 }
 .sb-riv-allerta-tel a:hover { border-color: var(--sb-alrt); background: color-mix(in srgb, var(--sb-alrt) 16%, transparent); }
 .sb-riv-allerta-tel strong { font-size: 1.05rem; font-variant-numeric: tabular-nums; color: var(--sb-fg); }
+/* Da telefono i due numeri vanno uno sotto l'altro e larghi uguali: a mandare
+   a capo la sola riga lunga si otteneva un gradino, e due bersagli di misura
+   diversa per due cose che si toccano allo stesso modo. */
+@media (max-width: 559px) { .sb-riv-allerta-tel a { flex: 1 1 100%; } }
 .sb-riv-allerta-tel small { font-size: 0.76rem; color: var(--sb-fg-muted); }
 
 /* Chi c'è dietro l'allerta: quattro stemmi, ognuno il collegamento a chi
