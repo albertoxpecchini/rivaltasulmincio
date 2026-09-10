@@ -216,6 +216,27 @@ html[data-stagione] h3[id] {
        invece di un riferimento da consultare con la coda dell'occhio. */
     padding-left: 0.9rem;
     border-left: 1px solid var(--sb-border);
+
+    /* Il conto del `left` guarda la colonna di lettura, non quello che c'è
+       davvero sotto: le fotografie a coppie e le tabelle larghe arrivano a
+       sessanta rem e passerebbero dietro all'indice. Quando succede, rivalta.js
+       scrive in --sb-rail-scarto quanti pixel servono, e la colonna si fa da
+       parte per il tempo in cui l'ingombro le scorre accanto — poi torna al
+       suo posto. Non è un'apparizione: è la stessa colonna che si sposta. */
+    transform: translateX(var(--sb-rail-scarto, 0px));
+    transition: transform 0.34s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.34s ease;
+  }
+
+  /* Dove a destra non c'è abbastanza vuoto per scansare del tutto, la colonna
+     si scosta di quel che può e intanto si smorza: davanti resta il testo, che
+     è quello che si sta guardando. Se ci si passa sopra torna piena, perché
+     smorzata è un'indicazione, non una sparizione. */
+  .sb-riv-rail[data-scansa="stretto"] { opacity: 0.2; }
+  .sb-riv-rail:hover,
+  .sb-riv-rail:focus-within { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:not(.rsm-motion) .sb-riv-rail { transition: none; }
   }
 
   .sb-riv-rail-t {
