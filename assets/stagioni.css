@@ -315,7 +315,15 @@ html[data-stagione="uva"].dark .sb-home::after {
   min-height: 0;
   background: transparent;
   position: relative;
-  z-index: 1;
+  /* Questo strato serve a stare sopra le foglie che scendono (.sb-stag-cielo,
+     z-index 0) e a nient'altro. Era 1 — lo stesso di .sb-main — e fra pari
+     vince chi viene dopo nel documento: la nota, che è l'ultima sezione. Ci
+     finiva sotto l'indice a lato, che vive dentro .sb-main e il cui z-index 5
+     non esce da lì: dall'inizio della vendemmia in giù la colonna si vedeva
+     ma non si poteva più cliccare, perché a raccogliere i clic era la nota
+     stesa sopra. Con 0 la nota resta sopra le foglie — che sono sotto lo zero
+     dello stesso contesto — e torna sotto tutto quello che sta in .sb-main. */
+  z-index: 0;
   padding: clamp(2.6rem, 5vw, 4rem) 0 clamp(1.4rem, 3vw, 2rem);
 }
 .sb-home.sb-stag-nota::before { content: none; }
