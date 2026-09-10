@@ -3,6 +3,33 @@
 <!--prio: 1.0-->
 <!--freq: weekly-->
 
+<!-- ── IL NASTRO DELL'ALLERTA ────────────────────────────────────────────────
+     A scadenza, come l'avviso urgente: allo scoccare di data-scade lo script
+     in fondo alla pagina toglie sia questa fascia sia la scheda che sta più
+     giù (#allerta-meteo), anche senza un nuovo build.
+
+     Sta sopra il titolo perché è la sola cosa in home che non può aspettare
+     che uno scenda. È l'unico blocco del sito che si muove da sé, e la
+     regola del colore vale come per il rosso: uno per volta.
+
+     Per toglierlo prima: cancellare questo <div class="sb-riv-tg" …> INSIEME
+     alla scheda .sb-riv-flash--allerta e allo script che li governa. -->
+<div class="sb-riv-tg" data-allerta data-scade="2026-09-10T23:59:00+02:00" role="region" aria-label="Allerta meteo in corso">
+  <div class="sb-container sb-riv-tg-riga">
+    <span class="sb-riv-tg-eti">
+      <span class="sb-riv-tg-pt" aria-hidden="true"></span>
+      <span class="sb-riv-tg-eti-lungo">Allerta meteo&#8202;—&#8202;</span>codice arancione
+    </span>
+    <div class="sb-riv-tg-pista">
+      <div class="sb-riv-tg-nastro">
+        <span><b>Allerta meteo di codice arancione per rischio temporali.</b><span class="sb-riv-tg-sep">•</span>Dalle 00:00 di mercoledì 9 settembre alle 03:00 di giovedì 10 settembre 2026.<span class="sb-riv-tg-sep">•</span>Possibili temporali intensi, forti raffiche di vento, grandinate, nubifragi e criticità sui corsi d'acqua.<span class="sb-riv-tg-sep">•</span>Evitare gli spostamenti non necessari, i sottopassi, i ponti sui corsi d'acqua e gli alberi isolati.<span class="sb-riv-tg-sep">•</span>Emergenze <b>112</b><span class="sb-riv-tg-sep">•</span>Protezione Civile Regione Lombardia <b>800.061.160</b><span class="sb-riv-tg-sep">•</span></span>
+        <span aria-hidden="true"><b>Allerta meteo di codice arancione per rischio temporali.</b><span class="sb-riv-tg-sep">•</span>Dalle 00:00 di mercoledì 9 settembre alle 03:00 di giovedì 10 settembre 2026.<span class="sb-riv-tg-sep">•</span>Possibili temporali intensi, forti raffiche di vento, grandinate, nubifragi e criticità sui corsi d'acqua.<span class="sb-riv-tg-sep">•</span>Evitare gli spostamenti non necessari, i sottopassi, i ponti sui corsi d'acqua e gli alberi isolati.<span class="sb-riv-tg-sep">•</span>Emergenze <b>112</b><span class="sb-riv-tg-sep">•</span>Protezione Civile Regione Lombardia <b>800.061.160</b><span class="sb-riv-tg-sep">•</span></span>
+      </div>
+    </div>
+    <a class="sb-riv-tg-vai" href="#allerta-meteo">Cosa fare</a>
+  </div>
+</div>
+
 <section class="sb-hero">
       <div class="sb-container sb-riv-heroduo">
         <div class="sb-riv-heroduo-testo">
@@ -61,64 +88,76 @@
         <p>Titoli recenti che parlano del paese, delle Valli e dei rivaltesi. Ogni scheda porta all'articolo originale sul sito della testata.</p>
       </div>
 
-      <!-- AVVISO URGENTE — a scadenza. La tromba d'aria del 28 agosto 2026 e la
-           ricognizione danni aperta dal Comune di Rodigo. Resta in pagina fino
-           alle 13:00 di giovedì 3 settembre 2026 — la consegna del modulo scade
-           alle 12:30 dello stesso giorno. Lo <script> subito dopo il blocco:
-             · alla scadenza toglie l'avviso anche senza un nuovo build;
-             · finché l'avviso è in pagina, nasconde nella rassegna qui sotto la
-               notizia con lo stesso collegamento — così in home compare una
-               volta sola — e la fa ricomparire quando l'avviso scade.
-           Per toglierlo prima, cancellare il <div class="sb-riv-flash
-           sb-riv-flash--urgente" …> INSIEME al suo <script>.
-           Il ROSSO è un'eccezione voluta e circoscritta: è l'unico punto del
-           sito con un secondo colore, riservato agli avvisi urgenti (maltempo,
-           strade chiuse, allerta). Uno per volta. -->
-      <div class="sb-riv-flash sb-riv-flash--urgente" data-scade="2026-09-03T13:00:00+02:00" role="alert">
+      <!-- ── LA SCHEDA DELL'ALLERTA ─────────────────────────────────────────
+           Il testo per esteso di quello che il nastro in testa può solo far
+           passare: le date, i due elenchi del comportamento, i numeri, chi
+           l'ha emessa. Stesso data-scade del nastro — lo script qui sotto
+           li toglie tutti e due insieme.
+           Il ROSSO dell'avviso urgente e l'ARANCIONE dell'allerta non stanno
+           mai in pagina nello stesso momento: uno per volta, come dice la
+           regola in assets/rivalta.css. -->
+      <div class="sb-riv-flash sb-riv-flash--allerta" id="allerta-meteo" data-allerta data-scade="2026-09-10T23:59:00+02:00" role="alert">
         <div class="sb-panel"><div class="sb-panel-inner">
-          <span class="sb-riv-flash-badge sb-riv-flash-badge--urgente">● Ultim'ora — maltempo</span>
-          <h3>Dopo la tromba d'aria del 28 agosto: strade e parco chiusi, danni da segnalare al Comune</h3>
-          <p>Il temporale e la <strong>tromba d'aria di venerdì 28 agosto</strong> hanno abbattuto piante e scoperchiato tetti in tutto il territorio del comune — a Fossato, Rivalta e Rodigo — con danni anche alle aziende agricole. Nessun ferito. A Rivalta restano <strong>chiusi il parco Campino</strong> (che il Comune intitola a Saccardi), <strong>strada Borghetto</strong> e <strong>strada Camignana</strong>; è vietato sostare sotto gli alberi ad alto fusto a fondo Mincio e sulla ciclabile Soradori. Massima prudenza in tutte le zone alberate.</p>
-          <p>Il Comune di Rodigo raccoglie le <strong>segnalazioni di danni</strong> a beni privati e ad attività: il modulo è sul sito del Comune, da inviare <strong>entro le 12:30 di giovedì 3 settembre</strong> a segreteria@comune.rodigo.mn.it o via PEC, con oggetto «Segnalazione danni eventi meteorici del 28/08/2026». È una ricognizione dei danni sul territorio e non dà diritto ad alcun risarcimento.</p>
+          <span class="sb-riv-flash-badge sb-riv-flash-badge--allerta">● Allerta meteo — codice arancione</span>
+          <h3>Rischio temporali: allerta di codice arancione sul territorio</h3>
+          <p>È stata emessa un'<strong>allerta meteo di codice arancione per rischio temporali</strong>, valida <strong>dalle ore 00:00 di mercoledì 9 settembre fino alle ore 03:00 di giovedì 10 settembre 2026</strong>.</p>
+          <p>Sono possibili <strong>temporali intensi, forti raffiche di vento, grandinate, nubifragi</strong> e criticità legate ai corsi d'acqua.</p>
+
+          <div class="sb-riv-allerta-duo">
+            <div>
+              <h4>Cosa non fare</h4>
+              <ul>
+                <li><span aria-hidden="true">✕</span><span>Evitare gli spostamenti non necessari.</span></li>
+                <li><span aria-hidden="true">✕</span><span>Non sostare su ponti o passerelle in prossimità dei corsi d'acqua.</span></li>
+                <li><span aria-hidden="true">✕</span><span>Non ripararsi sotto alberi isolati o strutture alte e leggere.</span></li>
+                <li><span aria-hidden="true">✕</span><span>Evitare di attraversare sottopassi e sottoponti.</span></li>
+              </ul>
+            </div>
+            <div>
+              <h4>Cosa fare</h4>
+              <ul>
+                <li><span aria-hidden="true">✓</span><span>Tenersi aggiornati sull'evoluzione delle condizioni meteo.</span></li>
+                <li><span aria-hidden="true">✓</span><span>Proteggere i locali a piano strada se soggetti ad allagamenti.</span></li>
+                <li><span aria-hidden="true">✓</span><span>Evitare seminterrati e piani terra in caso di rischio allagamento.</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sb-riv-allerta-tel">
+            <a href="tel:112"><strong>112</strong><small>Numero unico di emergenza</small></a>
+            <a href="tel:800061160"><strong>800 061 160</strong><small>Sala Operativa Protezione Civile — Regione Lombardia</small></a>
+          </div>
+
           <div class="sb-riv-flash-meta">
-            <span class="sb-chip"><span class="sb-chip-dot" aria-hidden="true"></span>Comune di Rodigo — 31 agosto 2026</span>
+            <span class="sb-chip"><span class="sb-chip-dot" aria-hidden="true"></span>Protezione Civile — Regione Lombardia</span>
           </div>
           <div class="sb-riv-flash-actions">
-            <a class="sb-link" href="https://www.comune.rodigo.mn.it/novita/prima-segnalazione-danni-subiti-a-seguito-degli-eventi-meteorici-del-28-08-2026/" target="_blank" rel="noreferrer noopener">Avviso e modulo sul sito del Comune</a>
-            <a class="sb-link" href="https://www.gazzettadimantova.it/territorio-mantovano/tromba-d-aria-mantovano-1.13108537" target="_blank" rel="noreferrer noopener">La cronaca su Gazzetta di Mantova</a>
+            <a class="sb-link" href="https://www.allertalom.regione.lombardia.it/homepage" target="_blank" rel="noreferrer noopener">L'allerta in corso su allertaLOM</a>
+            <a class="sb-link" href="https://www.comune.rodigo.mn.it/" target="_blank" rel="noreferrer noopener">Avvisi del Comune di Rodigo</a>
+            <a class="sb-link" href="/servizi">Sicurezza ed emergenza in paese</a>
+          </div>
+
+          <div class="sb-riv-allerta-loghi">
+            <a href="https://www.allertalom.regione.lombardia.it/homepage" target="_blank" rel="noreferrer noopener" title="Protezione Civile — Regione Lombardia"><img src="/assets/loghi/protezione-civile-lombardia.webp" width="400" height="400" alt="Protezione Civile Regione Lombardia" loading="lazy" decoding="async"></a>
+            <a href="https://www.facebook.com/ProtezioneCivileCastellucchio/" target="_blank" rel="noreferrer noopener" title="A.V. Protezione Civile Castellucchio OdV"><img src="/assets/loghi/avpc-castellucchio.webp" width="400" height="400" alt="Associazione Volontari Protezione Civile Castellucchio OdV" loading="lazy" decoding="async"></a>
+            <a href="https://www.comune.rodigo.mn.it/" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo"><img src="/assets/loghi/comune-rodigo.webp" width="382" height="500" alt="Stemma del Comune di Rodigo" loading="lazy" decoding="async"></a>
+            <a href="tel:112" title="Numero unico di emergenza 112"><img src="/assets/loghi/numero-112.webp" width="600" height="300" alt="Numero unico di emergenza 112" loading="lazy" decoding="async"></a>
           </div>
         </div></div>
       </div>
       <script>
-        (function (box) {
-          if (!box) return;
-          var quando = Date.parse(box.getAttribute("data-scade"));
-          if (quando && Date.now() >= quando) { box.remove(); return; }
-
-          var rimando = box.querySelector("a[href]");
-          var url = rimando ? rimando.getAttribute("href") : "";
-          var testa = box.querySelector("h3");
-          var titolo = testa ? testa.textContent.trim() : "";
-
-          function gemello() {
-            var carte = document.querySelectorAll(".sb-riv-news a.sb-riv-news-card");
-            for (var i = 0; i < carte.length; i++) {
-              var t = carte[i].querySelector(".sb-riv-news-title");
-              if (carte[i].getAttribute("href") === url || (titolo && t && t.textContent.trim() === titolo)) return carte[i];
-            }
-            return null;
-          }
-          function sincronizza() {
-            var doppio = gemello();
-            if (doppio) doppio.style.display = "none";
-            if (quando) setTimeout(function () {
-              box.remove();
-              if (doppio) doppio.style.display = "";
-            }, quando - Date.now());
-          }
-          if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", sincronizza);
-          else sincronizza();
-        })(document.currentScript.previousElementSibling);
+        /* La scadenza dell'allerta, per il nastro in testa e per questa
+           scheda insieme: al momento giusto spariscono tutti e due, anche in
+           una pagina rimasta aperta dalla sera prima. */
+        (function () {
+          var pezzi = document.querySelectorAll("[data-allerta][data-scade]");
+          if (!pezzi.length) return;
+          var quando = Date.parse(pezzi[0].getAttribute("data-scade"));
+          if (!quando) return;
+          function via() { for (var i = 0; i < pezzi.length; i++) pezzi[i].remove(); }
+          if (Date.now() >= quando) via();
+          else setTimeout(via, quando - Date.now());
+        })();
       </script>
 
       <!-- La camminata del 20 settembre, sopra la rassegna stampa: è la cosa

@@ -146,3 +146,22 @@ ogni volta che si fa un materiale nuovo.
 > e stanno in pagina finché l'accordo regge. Se un giorno cambia, cambiano insieme il logo e
 > la riga sotto: una striscia che dichiara un patrocinio che non c'è più è peggio di una
 > striscia vuota.
+
+
+## I tre dell'allerta meteo
+
+Non stanno in `FASCE_LOGHI` e non c'entrano con la Color Walk: li chiama a mano la scheda
+dell'allerta in fondo alla home ([`_build/index.body.html`](../../_build/index.body.html),
+`.sb-riv-allerta-loghi`), e ognuno è il collegamento a chi rappresenta.
+
+| File | Chi | Misura | Porta a |
+| :--- | :--- | :--- | :--- |
+| `protezione-civile-lombardia.webp` | Protezione Civile — Regione Lombardia | 400 × 400 | allertaLOM |
+| `avpc-castellucchio.webp` | A.V. Protezione Civile Castellucchio OdV — il gruppo che copre anche Rodigo | 400 × 400 | la loro pagina Facebook, che non hanno un sito |
+| `numero-112.webp` | Numero unico di emergenza | 600 × 300 | `tel:112` |
+
+Il quarto stemma della scheda è `comune-rodigo.webp`, che c'era già: è **lo stesso file**
+della striscia della Color Walk, e non se ne fa una seconda copia.
+
+Se un giorno l'allerta viene tolta dalla home, questi tre restano qui: sono i marchi giusti
+per la prossima, e la prossima arriva.

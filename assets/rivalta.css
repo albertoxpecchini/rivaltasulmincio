@@ -990,6 +990,210 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
   border-color: var(--sb-urg);
 }
 
+/* ── Il nastro dell'allerta, in testa alla home ──────────────────────────
+   Un telegiornale ha una riga che scorre mentre il resto va avanti: dice la
+   cosa grave senza aspettare che qualcuno scenda a cercarla. Qui sta sopra
+   al titolo ed è l'unico blocco del sito che si muove da sé.
+
+   Il colore è quello del codice — ARANCIONE — e vale la stessa regola del
+   rosso qui sopra: uno per volta, a tempo, e il colore non esce da questo
+   blocco. Rosso e arancione non stanno mai insieme in pagina: se c'è
+   l'allerta, l'avviso rosso o è finito o aspetta.
+
+   La fascia è larga quanto lo schermo, ma l'etichetta comincia dal margine
+   sinistro come tutto il resto: la banda è un fondo, non un blocco centrato.
+
+   Il movimento: due copie identiche del testo, il nastro trasla della metà
+   esatta e riparte — così non si vede mai il buco fra una passata e l'altra.
+   La seconda copia è aria-hidden, che a chi legge a orecchio la frase arrivi
+   una volta sola. Si ferma col mouse sopra e con la tabulazione dentro; per
+   chi ha chiesto meno movimento (prefers-reduced-motion, o il tasto «ferma
+   il movimento» — html.rsm-still) non parte mai: il testo resta fermo,
+   tagliato se è lungo, e sotto c'è la scheda con tutto per esteso. */
+.sb-home { --sb-alrt: #d97706; --sb-alrt-bg: #fff5e9; --sb-alrt-fg: #8f4c05; }
+html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13); --sb-alrt-fg: #fcd34d; }
+
+.sb-riv-tg {
+  background: var(--sb-alrt-bg);
+  border-top: 1px solid color-mix(in srgb, var(--sb-alrt) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sb-alrt) 40%, transparent);
+  overflow: hidden;
+}
+.sb-riv-tg-riga {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 2.6rem;
+}
+.sb-riv-tg-eti {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: stretch;
+  padding: 0.45rem 0.7rem;
+  background: var(--sb-alrt);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Il pallino che pulsa: è il solo modo in cui una banda ferma dice «adesso».
+   Si spegne insieme a tutto il resto del movimento. */
+.sb-riv-tg-pt {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+}
+.sb-riv-tg-pista {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 1.2rem, #000 calc(100% - 1.2rem), transparent);
+          mask-image: linear-gradient(to right, transparent, #000 1.2rem, #000 calc(100% - 1.2rem), transparent);
+}
+.sb-riv-tg-nastro {
+  display: flex;
+  width: max-content;
+  color: var(--sb-alrt-fg);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 2.6rem;
+  white-space: nowrap;
+}
+.sb-riv-tg-nastro > span { padding-right: 2.5rem; }
+.sb-riv-tg-nastro b { font-weight: 800; }
+.sb-riv-tg-sep { opacity: 0.45; padding: 0 0.55rem; }
+.sb-riv-tg-vai {
+  flex: none;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--sb-alrt) 55%, transparent);
+  border-radius: 999px;
+  color: var(--sb-alrt-fg);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sb-riv-tg-vai:hover { background: var(--sb-alrt); border-color: var(--sb-alrt); color: #fff; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.rsm-still) .sb-riv-tg-nastro { animation: sb-riv-tg-scorri 46s linear infinite; }
+  html:not(.rsm-still) .sb-riv-tg-pt { animation: sb-riv-tg-batte 1.8s ease-in-out infinite; }
+  html:not(.rsm-still) .sb-riv-tg:hover .sb-riv-tg-nastro,
+  html:not(.rsm-still) .sb-riv-tg:focus-within .sb-riv-tg-nastro { animation-play-state: paused; }
+}
+@keyframes sb-riv-tg-scorri {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes sb-riv-tg-batte {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* Sotto i 560px l'etichetta perde le parole e tiene il pallino e il codice, e
+   il tasto sparisce: in una riga sola da telefono il posto è tutto del testo
+   che scorre, e la scheda si raggiunge scendendo di due schermate. */
+@media (max-width: 559px) {
+  .sb-riv-tg-eti-lungo { display: none; }
+  .sb-riv-tg-vai { display: none; }
+}
+
+/* ── La scheda dell'allerta ──────────────────────────────────────────────
+   Quello che il nastro non può dire perché scorre: le date per esteso, cosa
+   fare e cosa non fare, i numeri da chiamare, chi l'ha emessa. È la stessa
+   lastra dell'avviso urgente, arancione invece che rossa. */
+.sb-riv-flash--allerta { margin-top: 1.4rem; scroll-margin-top: 5rem; }
+.sb-riv-flash--allerta .sb-panel-inner {
+  border-left: 3px solid var(--sb-alrt);
+  background: var(--sb-alrt-bg);
+}
+.sb-riv-flash--allerta h3 { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash--allerta p { color: var(--sb-fg-light); font-size: 0.95rem; }
+.sb-riv-flash-badge--allerta {
+  background: var(--sb-alrt);
+  border-color: var(--sb-alrt);
+  color: #fff;
+  box-shadow: none;
+}
+.sb-riv-flash--allerta .sb-link {
+  color: var(--sb-alrt-fg);
+  border-color: color-mix(in srgb, var(--sb-alrt) 45%, transparent);
+  font-weight: 600;
+}
+.sb-riv-flash--allerta .sb-link:hover {
+  color: var(--sb-alrt-fg);
+  background: color-mix(in srgb, var(--sb-alrt) 14%, transparent);
+  border-color: var(--sb-alrt);
+}
+
+/* Le due colonne del comportamento: una accanto all'altra dove c'è spazio,
+   una sotto l'altra dove non ce n'è. Non è una tabella — sono due elenchi
+   che si guardano. */
+.sb-riv-allerta-duo {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+@media (min-width: 680px) { .sb-riv-allerta-duo { grid-template-columns: 1fr 1fr; gap: 1.4rem; } }
+.sb-riv-allerta-duo h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sb-alrt-fg);
+}
+.sb-riv-allerta-duo ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.sb-riv-allerta-duo li {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--sb-fg-light);
+}
+.sb-riv-allerta-duo li span[aria-hidden] { color: var(--sb-alrt); font-weight: 700; }
+
+/* I due numeri. Sono la riga che uno cerca col telefono già in mano: grossi,
+   toccabili, e sono collegamenti tel: — non testo da ricopiare a memoria. */
+.sb-riv-allerta-tel { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.sb-riv-allerta-tel a {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--sb-alrt) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--sb-alrt) 8%, transparent);
+  text-decoration: none;
+}
+.sb-riv-allerta-tel a:hover { border-color: var(--sb-alrt); background: color-mix(in srgb, var(--sb-alrt) 16%, transparent); }
+.sb-riv-allerta-tel strong { font-size: 1.05rem; font-variant-numeric: tabular-nums; color: var(--sb-fg); }
+.sb-riv-allerta-tel small { font-size: 0.76rem; color: var(--sb-fg-muted); }
+
+/* Chi c'è dietro l'allerta: quattro stemmi, ognuno il collegamento a chi
+   rappresenta. Su fondo bianco anche col tema scuro, perché tre su quattro
+   ce l'hanno di suo dentro il file. */
+.sb-riv-allerta-loghi { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1.2rem; }
+.sb-riv-allerta-loghi a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0.35rem;
+  border: 1px solid var(--sb-border);
+  border-radius: 10px;
+  background: #fff;
+}
+.sb-riv-allerta-loghi a:hover { border-color: var(--sb-alrt); }
+.sb-riv-allerta-loghi img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+
 /* Testo fuori campo: sta nel DOM per la struttura e per chi legge a orecchio,
    non si vede. Stessa ricetta di .sb-riv-cerca-tit. */
 .sb-riv-vh {
