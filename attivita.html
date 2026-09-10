@@ -32,13 +32,23 @@
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
 
+     Insieme al tema si scrive anche l'ORA, e per la stessa ragione: le
+     stagioni ci appendono la temperatura della luce, e calcolarla dopo
+     vorrebbe dire entrare alle sette di sera in luce piena e vedere la
+     pagina virare al caldo un istante dopo. Quattro fasi appese ai due
+     confini che il sito ha già — alba (07), giorno, tramonto (19), notte —
+     e l'ora si scrive sempre, anche a tema manuale: chi ha schiarito il
+     sito a mezzanotte ha chiesto un fondo chiaro, non che fuori sia giorno.
+
      Stessa cosa per il movimento: la scelta fatta con il tasto vale da subito,
      prima che il foglio di stile decida. Senza scelta manuale non si scrive
      nessuna classe e comanda @media (prefers-reduced-motion). -->
 <script>
 (function(){try{var g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};
-var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((new Date().getHours()>=8&&new Date().getHours()<20)?"light":"dark");
+var h=new Date().getHours();
+var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((h>=8&&h<20)?"light":"dark");
 var d=document.documentElement;d.classList.toggle("dark",t==="dark");d.setAttribute("data-rsm-theme",t);
+d.setAttribute("data-ora",h===7?"alba":h===19?"tramonto":(h>=8&&h<20)?"giorno":"notte");
 d.style.setProperty("--ap-boot-bg",t==="dark"?"#141414":"#fcfcfc");
 var m=g("rsm-motion-mode")==="manual"?g("rsm-motion-manual"):null;
 if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm-still")}catch(e){}})();
@@ -145,7 +155,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
                che vuole sapere è «cambiato cosa?». -->
           <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-10" data-updated="2026-09-10">10 set</time>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-11" data-updated="2026-09-11">11 set</time>
           </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Sito ideato, scritto e costruito da Alberto Pecchini" title="Tutto questo sito — testi, dati, codice — è costruito da Alberto Pecchini">
@@ -201,7 +211,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-10" data-updated="2026-09-10">10 settembre 2026</time></a>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-11" data-updated="2026-09-11">11 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -711,7 +721,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by sb-riv-foot-fatto" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Ideato, scritto e costruito da <strong>Alberto Pecchini</strong></a>
       </div>
-      <span>Ultimo aggiornamento: <time datetime="2026-09-10" data-updated="2026-09-10">10 settembre 2026</time></span>
+      <span>Ultimo aggiornamento: <time datetime="2026-09-11" data-updated="2026-09-11">11 settembre 2026</time></span>
     </div>
   </div>
 </footer>

@@ -42,9 +42,79 @@
   var LIGHT_START_HOUR = 8;
   var LIGHT_END_HOUR = 20;
 
+  /* Il fondo del body e la barra del browser seguono l'ORA come la segue la
+     pagina, o si vede una riga d'altro colore in overscroll e una barra che
+     stona col sito che incornicia. Sono gli stessi valori che stagioni.css
+     dà a --sb-bg nelle quattro fasi: se cambiano lì, cambiano qui.
+
+     Fuori stagione questa tabella non si consulta nemmeno — comanda BG, e
+     il sito è quello di sempre. */
+  var BG_ORA = {
+    alba:     { light: "#fdfbf7", dark: "#181513" },
+    giorno:   { light: "#fcfbf9", dark: "#161413" },
+    tramonto: { light: "#fdfbf7", dark: "#181513" },
+    notte:    { light: "#fbfbfa", dark: "#131415" },
+  };
+  var inStagione = !!de.getAttribute("data-stagione");
+
+  function bgFor(theme, f) {
+    if (inStagione && BG_ORA[f] && BG_ORA[f][theme]) return BG_ORA[f][theme];
+    return BG[theme];
+  }
+
   function timeTheme(d) {
     var h = (d || new Date()).getHours();
     return h >= LIGHT_START_HOUR && h < LIGHT_END_HOUR ? "light" : "dark";
+  }
+
+  /* ── L'ora dentro il tema ──────────────────────────────────────────────────
+     Chiaro e scuro sono due, ma le ore non sono due. Fra le 8 e le 20 c'è la
+     mattina che si apre e il pomeriggio che si chiude, e sono luci diverse;
+     nella notte c'è la sera in cantina e c'è la notte fonda. Questo attributo
+     dice QUALE ora è, e i fogli di stagione lo usano per spostare la luce.
+
+     Le quattro fasi non sono quarti di giornata a caso: sono appese ai due
+     confini che il sito ha già. L'ora PRIMA di ogni confine è una fase per
+     conto suo — "alba" e "tramonto" — perché è lì che la luce cambia davvero,
+     ed è lì che il cambio di tema si deve vedere arrivare invece di scattare
+     addosso a chi sta leggendo.
+
+       07:00–07:59  alba      · l'ultima ora di scuro, che si sta scaldando
+       08:00–18:59  giorno    · piena luce
+       19:00–19:59  tramonto  · l'ultima ora di chiaro, che sta calando
+       20:00–06:59  notte     · buio pieno
+
+     Nessuno di questi nomi cambia il tema: il tema resta quello dell'orologio,
+     e alle 8 in punto è chiaro come è sempre stato. Cambia solo la temperatura
+     di quello che il tema di stagione ci mette sopra. */
+  function timePhase(d) {
+    var h = (d || new Date()).getHours();
+    if (h === LIGHT_START_HOUR - 1) return "alba";
+    if (h === LIGHT_END_HOUR - 1) return "tramonto";
+    return h >= LIGHT_START_HOUR && h < LIGHT_END_HOUR ? "giorno" : "notte";
+  }
+
+  /* La fase la scriviamo SEMPRE, anche a tema manuale: chi ha schiarito il
+     sito alle undici di sera ha chiesto un fondo chiaro, non ha chiesto che
+     fuori sia mezzogiorno. L'ora è un fatto, e il tasto non la sposta. */
+  var fase = null;
+  function applyPhase(f) {
+    if (f === fase) return;
+    fase = f;
+    de.setAttribute("data-ora", f);
+    // Il fondo del body e la barra del browser vanno rifatti anche quando
+    // cambia SOLO l'ora: alle 19 il tema resta chiaro, ma la carta sotto è
+    // un'altra e senza questo resterebbe indietro fino al confine delle 20.
+    if (corrente) paintBg(corrente);
+  }
+
+  /** Fondo del body e <meta theme-color>: le due superfici che il CSS della
+      pagina non raggiunge. Scritte insieme perché devono dire lo stesso. */
+  function paintBg(theme) {
+    var c = bgFor(theme, fase);
+    de.style.setProperty("--ap-boot-bg", c);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", c);
   }
   function isAuto() {
     return get(KEY_MODE) !== "manual";
@@ -61,14 +131,13 @@
   /** Scrive il tema. Nessuna animazione: quella è affare di transitionTo(). */
   function applyTheme(theme) {
     corrente = theme;
+    applyPhase(timePhase());
     de.classList.toggle("dark", theme === "dark");
     de.setAttribute("data-rsm-theme", theme);
     // Basta la custom property: in sb.css il fondo del body è var(--ap-boot-bg),
     // quindi scrivendo qui si tinge anche il body senza uno stile inline che
     // poi resterebbe a litigare con il foglio.
-    de.style.setProperty("--ap-boot-bg", BG[theme]);
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", BG[theme]);
+    paintBg(theme);
     render();
   }
 
@@ -126,7 +195,14 @@
     // in un angolo resterebbe una fetta di tema vecchio.
     var r = Math.sqrt(Math.pow(Math.max(x, w - x), 2) + Math.pow(Math.max(y, h - y), 2)) + 4;
 
-    velo.style.background = BG[next];
+    // Il velo è già tinto del tema in ARRIVO, e l'arrivo comprende l'ora.
+    // L'onda parte un secondo PRIMA del confine — alle 19:59:59 l'orologio
+    // dice ancora "tramonto" — quindi la fase si chiede all'istante in cui
+    // il velo avrà finito di correre, non a quello in cui parte: mezzo
+    // minuto avanti, che cade oltre qualunque confine e sotto qualunque
+    // altra cosa. Senza questo, al cambio delle 20 il velo sarebbe del
+    // grigio caldo del tramonto sopra una pagina che diventa notte.
+    velo.style.background = bgFor(next, timePhase(new Date(Date.now() + 30000)));
     velo.style.transition = "none";
     velo.style.opacity = "1";
     velo.style.clipPath = "circle(0px at " + x + "px " + y + "px)";
@@ -229,14 +305,37 @@
         setAutoMode();
         applyTheme(b.theme);
       }
+      // Il confine è anche un cambio d'ora, e l'onda è partita un secondo
+      // prima con l'orologio ancora indietro: qui la fase si riallinea a
+      // quello che l'ora è adesso, senza aspettare il passo successivo.
+      passoOra();
       pianifica();
     }, Math.max(0, b.at - ora) + 50);
+  }
+
+  /* ── Il passo dell'ora ─────────────────────────────────────────────────────
+     Il sensore qui sopra si sveglia due volte al giorno, ai confini del tema.
+     La fase invece cambia quattro volte — alle 7, alle 8, alle 19, alle 20 —
+     e le due di mezzo il sensore non le vedrebbe mai. Un timer allo scoccare
+     di ogni ora costa un risveglio l'ora e tiene allineate tutte e quattro.
+
+     Si riarma da sé sull'orologio vero e non su un intervallo fisso: un
+     setInterval di un'ora, in una scheda strozzata per mezza giornata, alla
+     fine è in ritardo di quanto è stato sospeso. */
+  var oraTimer = 0;
+  function passoOra() {
+    clearTimeout(oraTimer);
+    applyPhase(timePhase());
+    var p = new Date();
+    p.setHours(p.getHours() + 1, 0, 1, 0);
+    oraTimer = setTimeout(passoOra, Math.max(1000, p.getTime() - Date.now()));
   }
 
   // I timer di una scheda in secondo piano vengono strozzati o sospesi: al
   // risveglio non ci si fida di loro, si riguarda l'orologio.
   function risveglio() {
     if (isAuto() && currentTheme() !== timeTheme()) applyTheme(timeTheme());
+    passoOra();
     pianifica();
   }
   document.addEventListener("visibilitychange", risveglio);
@@ -360,5 +459,6 @@
 
   /* ── Avvio ─────────────────────────────────────────────────────────────── */
   applyTheme(resolveTheme());
+  passoOra();
   pianifica();
 })();

@@ -31,13 +31,23 @@
      entrando su una pagina che finirà scura. Scelta manuale se c'è,
      altrimenti l'ora: 08:00-19:59 chiaro, il resto scuro.
 
+     Insieme al tema si scrive anche l'ORA, e per la stessa ragione: le
+     stagioni ci appendono la temperatura della luce, e calcolarla dopo
+     vorrebbe dire entrare alle sette di sera in luce piena e vedere la
+     pagina virare al caldo un istante dopo. Quattro fasi appese ai due
+     confini che il sito ha già — alba (07), giorno, tramonto (19), notte —
+     e l'ora si scrive sempre, anche a tema manuale: chi ha schiarito il
+     sito a mezzanotte ha chiesto un fondo chiaro, non che fuori sia giorno.
+
      Stessa cosa per il movimento: la scelta fatta con il tasto vale da subito,
      prima che il foglio di stile decida. Senza scelta manuale non si scrive
      nessuna classe e comanda @media (prefers-reduced-motion). -->
 <script>
 (function(){try{var g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};
-var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((new Date().getHours()>=8&&new Date().getHours()<20)?"light":"dark");
+var h=new Date().getHours();
+var t=g("rsm-theme-mode")==="manual"?(g("rsm-theme-manual")==="dark"?"dark":"light"):((h>=8&&h<20)?"light":"dark");
 var d=document.documentElement;d.classList.toggle("dark",t==="dark");d.setAttribute("data-rsm-theme",t);
+d.setAttribute("data-ora",h===7?"alba":h===19?"tramonto":(h>=8&&h<20)?"giorno":"notte");
 d.style.setProperty("--ap-boot-bg",t==="dark"?"#141414":"#fcfcfc");
 var m=g("rsm-motion-mode")==="manual"?g("rsm-motion-manual"):null;
 if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm-still")}catch(e){}})();

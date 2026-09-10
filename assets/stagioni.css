@@ -85,6 +85,7 @@ html[data-stagione="uva"] .sb-home {
   --stag-oro: #7d6a1c;         /* il paglierino, leggibile come testo     */
   --stag-vite: #7c8a3e;        /* la foglia com'è a settembre             */
   --stag-vite-oro: #96702e;    /* la foglia che ha già girato             */
+  --stag-vite-radente: #8a7c34;/* la stessa, presa di taglio all'alba     */
   --stag-nervo: rgba(252, 251, 249, 0.55);
   --stag-luce: rgba(255, 255, 255, 0.34);
 }
@@ -131,6 +132,7 @@ html[data-stagione="uva"].dark .sb-home {
   --stag-oro: #d9bf6b;
   --stag-vite: #a3ad6f;
   --stag-vite-oro: #d2a660;
+  --stag-vite-radente: #bcae6a;
   --stag-nervo: rgba(22, 20, 19, 0.6);
   --stag-luce: rgba(255, 245, 240, 0.2);
 }
@@ -209,18 +211,200 @@ html[data-stagione="uva"] .sb-riv-rail { border-left-color: color-mix(in srgb, v
    sinistra, paglierino quello che scende da destra.
 
    Il footer resta fuori da sé: .sb-home.sb-foot::before ha già content:none
-   in sb.css, e qui si tocca solo lo sfondo. */
+   in sb.css, e qui si tocca solo lo sfondo.
+
+   ── E il sole si sposta ──────────────────────────────────────────────────
+   I due aloni non sono più fissi: sono scritti con sei variabili, e sono
+   quelle che l'ORA cambia. Il primo alone è il sole — di mattina entra
+   basso da sinistra, a mezzogiorno è alto e pallido, di sera cala a destra
+   e si accende, di notte non c'è e resta la vinaccia. Il secondo è il
+   controcampo, e fa la strada opposta.
+
+   La geometria del sito non si muove di un pixel: cambiano posizione,
+   tinta e forza di due sfumature che c'erano già. È il motivo per cui
+   tutto questo sta in sei numeri e non in uno strato nuovo. */
+html[data-stagione="uva"] .sb-home {
+  /* Il default è "giorno": se data-ora non c'è — JS spento, o una fascia
+     che non abbiamo previsto — il sito resta esattamente com'era. */
+  --sole-x: 16%;
+  --sole-y: -8%;
+  --sole-h: 344;
+  --sole-s: 46%;
+  --sole-l: 38%;
+  --sole-a: 0.15;
+  --contro-x: 88%;
+  --contro-y: 2%;
+  --contro-h: 44;
+  --contro-s: 58%;
+  --contro-l: 48%;
+  --contro-a: 0.13;
+}
 html[data-stagione="uva"] .sb-home::before {
-  background: radial-gradient(58rem 32rem at 16% -8%, hsla(344, 46%, 38%, 0.15), transparent 62%);
+  background: radial-gradient(58rem 32rem at var(--sole-x) var(--sole-y), hsla(var(--sole-h), var(--sole-s), var(--sole-l), var(--sole-a)), transparent 62%);
+  /* Il passaggio da un'ora all'altra non scatta. Quaranta secondi sono più
+     lunghi di qualunque cambio si guardi di proposito: alle 19 in punto la
+     luce comincia a calare e chi sta leggendo non vede un fotogramma
+     cambiare, vede che dopo un po' la pagina è un'altra. */
+  transition: background 40s linear;
 }
 html[data-stagione="uva"] .sb-home::after {
-  background: radial-gradient(52rem 30rem at 88% 2%, hsla(44, 58%, 48%, 0.13), transparent 60%);
+  background: radial-gradient(52rem 30rem at var(--contro-x) var(--contro-y), hsla(var(--contro-h), var(--contro-s), var(--contro-l), var(--contro-a)), transparent 60%);
+  transition: background 40s linear;
 }
-html[data-stagione="uva"].dark .sb-home::before {
-  background: radial-gradient(58rem 32rem at 16% -8%, hsla(344, 56%, 54%, 0.16), transparent 62%);
+html[data-stagione="uva"].dark .sb-home {
+  --sole-s: 56%;
+  --sole-l: 54%;
+  --sole-a: 0.16;
+  --contro-s: 62%;
+  --contro-l: 58%;
+  --contro-a: 0.11;
 }
-html[data-stagione="uva"].dark .sb-home::after {
-  background: radial-gradient(52rem 30rem at 88% 2%, hsla(44, 62%, 58%, 0.11), transparent 60%);
+
+/* ── ALBA · le sette del mattino ──────────────────────────────────────────
+   L'ultima ora di buio, quella in cui si vendemmia perché l'uva è fresca.
+   Il sole non è ancora sorto ma si sa da che parte sorgerà: l'alone entra
+   BASSO da sinistra — y positiva, cioè dentro la pagina e non sopra il suo
+   bordo — e vira dal vinaccia all'arancio caldo. Il controcampo resta il
+   blu che la notte non ha ancora finito di portare via. */
+html[data-stagione="uva"][data-ora="alba"] .sb-home {
+  --sole-x: 4%;
+  --sole-y: 14%;
+  --sole-h: 18;
+  --sole-s: 62%;
+  --sole-l: 46%;
+  --sole-a: 0.17;
+  --contro-x: 92%;
+  --contro-y: -6%;
+  --contro-h: 224;
+  --contro-s: 40%;
+  --contro-l: 42%;
+  --contro-a: 0.12;
+}
+html[data-stagione="uva"][data-ora="alba"].dark .sb-home {
+  --sole-h: 20;
+  --sole-s: 70%;
+  --sole-l: 52%;
+  --sole-a: 0.19;
+  --contro-h: 226;
+  --contro-s: 52%;
+  --contro-l: 46%;
+  --contro-a: 0.15;
+}
+
+/* ── TRAMONTO · le sette di sera ──────────────────────────────────────────
+   L'ora del rientro, e la sola in cui la luce viene da destra: il sole è
+   passato dall'altra parte del cielo, cala, e sul fondo si accende di
+   quello che il paglierino diventa quando il sole è basso. È la fase più
+   forte delle quattro, ed è giusto che lo sia — un tramonto smorto non è
+   un tramonto. Da sinistra entra il blu della sera che sta arrivando. */
+html[data-stagione="uva"][data-ora="tramonto"] .sb-home {
+  --sole-x: 96%;
+  --sole-y: 18%;
+  --sole-h: 26;
+  --sole-s: 78%;
+  --sole-l: 50%;
+  --sole-a: 0.26;
+  --contro-x: 6%;
+  --contro-y: -4%;
+  --contro-h: 320;
+  --contro-s: 44%;
+  --contro-l: 40%;
+  --contro-a: 0.17;
+}
+html[data-stagione="uva"][data-ora="tramonto"].dark .sb-home {
+  --sole-h: 24;
+  --sole-s: 78%;
+  --sole-l: 54%;
+  --sole-a: 0.22;
+  --contro-h: 318;
+  --contro-s: 50%;
+  --contro-l: 48%;
+  --contro-a: 0.16;
+}
+
+/* ── NOTTE ────────────────────────────────────────────────────────────────
+   Il sole non c'è. Resta la vinaccia in alto a sinistra — più cupa e più
+   profonda di quella del giorno — e da destra scende il blu, che di notte
+   prende il posto del paglierino. È la fase più smorzata: di notte una
+   pagina che brilla è una pagina che dà fastidio. */
+html[data-stagione="uva"][data-ora="notte"] .sb-home {
+  --sole-x: 14%;
+  --sole-y: -10%;
+  --sole-h: 340;
+  --sole-s: 44%;
+  --sole-l: 30%;
+  --sole-a: 0.15;
+  --contro-x: 88%;
+  --contro-y: 0%;
+  --contro-h: 232;
+  --contro-s: 42%;
+  --contro-l: 38%;
+  --contro-a: 0.11;
+}
+html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
+  --sole-h: 342;
+  --sole-s: 54%;
+  --sole-l: 46%;
+  --sole-a: 0.17;
+  --contro-h: 230;
+  --contro-s: 54%;
+  --contro-l: 48%;
+  --contro-a: 0.13;
+}
+
+/* ── E la carta sotto ─────────────────────────────────────────────────────
+   Gli aloni sono luce sopra il foglio; questa è la temperatura del FOGLIO.
+   Sono gli stessi due o tre punti per canale con cui settembre scalda i
+   grigi puri del sito — la stessa mano, spostata di un'altra ora.
+
+   Alba e tramonto scaldano, la notte raffredda, il giorno resta quello che
+   la stagione ha già scelto. Lo scarto è minuscolo di proposito: su una
+   superficie sola non si vede, sulla pagina intera si sente, e i rapporti
+   di contrasto del testo non si muovono perché il testo non lo tocca
+   nessuno. */
+html[data-stagione="uva"][data-ora="alba"] .sb-home,
+html[data-stagione="uva"][data-ora="tramonto"] .sb-home {
+  --sb-bg: #fdfbf7;
+  --sb-bg-alt: #f9f5ef;
+  --sb-surface-75: #fcf9f4;
+  --sb-surface-100: #f7f2ea;
+  --sb-surface-200: #f0e9df;
+}
+html[data-stagione="uva"][data-ora="notte"] .sb-home {
+  --sb-bg: #fbfbfa;
+  --sb-bg-alt: #f6f6f4;
+  --sb-surface-75: #fafaf8;
+  --sb-surface-100: #f4f4f1;
+  --sb-surface-200: #ecebe8;
+}
+html[data-stagione="uva"][data-ora="alba"].dark .sb-home,
+html[data-stagione="uva"][data-ora="tramonto"].dark .sb-home {
+  --sb-bg: #181513;
+  --sb-bg-alt: #1d1917;
+  --sb-surface-75: #211d1a;
+  --sb-surface-100: #282320;
+  --sb-surface-200: #2e2925;
+}
+/* La notte è l'unica fase che vira al freddo: il nero di settembre è caldo
+   perché è carta, ma alle tre di notte una carta calda non c'è più — c'è
+   uno schermo in una stanza buia. */
+html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
+  --sb-bg: #131415;
+  --sb-bg-alt: #171819;
+  --sb-surface-75: #1a1c1d;
+  --sb-surface-100: #212324;
+  --sb-surface-200: #272a2b;
+}
+
+/* Chi ha chiesto meno movimento non vede nemmeno la dissolvenza dei quaranta
+   secondi: l'ora cambia e il fondo è già l'altro. È un colore che si sposta,
+   non un'animazione, ma quaranta secondi di transizione su una superficie
+   grande quanto lo schermo restano movimento per chi ne ha chiesto meno. */
+html.rsm-still[data-stagione="uva"] .sb-home::before,
+html.rsm-still[data-stagione="uva"] .sb-home::after { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion)[data-stagione="uva"] .sb-home::before,
+  html:not(.rsm-motion)[data-stagione="uva"] .sb-home::after { transition: none; }
 }
 
 /* ═══ IL FESTONE ══════════════════════════════════════════════════════════
@@ -278,6 +462,41 @@ html[data-stagione="uva"].dark .sb-home::after {
 .sb-stag-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
 .sb-stag-acino { fill: var(--f-acino, var(--stag-granato)); }
 .sb-stag-luce { fill: var(--stag-luce); }
+
+/* ── La luce radente ──────────────────────────────────────────────────────
+   All'alba e al tramonto il sole è basso e arriva DI TAGLIO: un filare
+   preso di striscio non è più chiaro, è più caldo da un lato solo. Il
+   tralcio lo può dire con una cosa sola — da che parte viene la luce — e
+   la dice con la stessa maschera che già sfuma i due bordi.
+
+   Non è un secondo disegno né un filtro: è la maschera orizzontale che si
+   sbilancia. All'alba il sole è a sinistra, quindi a sinistra il tralcio è
+   pieno e a destra si perde; al tramonto l'esatto contrario. Di giorno e di
+   notte la maschera è simmetrica, com'era. */
+html[data-stagione="uva"][data-ora="alba"] .sb-stag-festone {
+  -webkit-mask-image: linear-gradient(90deg, #000, #000 46%, rgba(0, 0, 0, 0.72) 82%, transparent);
+  mask-image: linear-gradient(90deg, #000, #000 46%, rgba(0, 0, 0, 0.72) 82%, transparent);
+}
+html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-festone {
+  -webkit-mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72) 18%, #000 54%, #000);
+  mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72) 18%, #000 54%, #000);
+}
+
+/* E il verde del tralcio prende la temperatura dell'ora. Non cambia tinta —
+   resta la foglia di vite — ma all'alba e al tramonto una foglia presa di
+   sbieco tira all'oro.
+
+   La scrittura è indiretta di proposito: --f-tralcio e --f-lembo, che le
+   campate scrivono in `var(--stag-vite)`, restano quelle. Qui si sposta la
+   RISOLUZIONE di quel nome sotto di loro, e siccome il valore nuovo non
+   nomina --stag-vite — nominarlo sarebbe un ciclo, e un ciclo rende la
+   variabile invalida, cioè spegne il tralcio — si passa da
+   --stag-vite-radente, che le due palette definiscono già come valore
+   proprio, chiaro e scuro. */
+html[data-stagione="uva"][data-ora="alba"] .sb-stag-festone,
+html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-festone {
+  --stag-vite: var(--stag-vite-radente);
+}
 
 /* A settembre i filari non sono di un verde solo: una foglia su tre ha già
    girato, e i grappoli non sono tutti allo stesso punto di maturazione. La

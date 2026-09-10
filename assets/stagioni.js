@@ -44,6 +44,12 @@
   var de = document.documentElement;
   if (!de.getAttribute("data-stagione")) return;
 
+  /* Quale ora è. La scrive l'inline nell'<head> prima del primo paint e la
+     tiene aggiornata assets/controlbar.js; qui si legge una volta sola,
+     perché lo strato si rifà da capo a ogni cambio (vedi l'osservatore in
+     fondo, che guarda anche questo attributo). */
+  var ORA = de.getAttribute("data-ora");
+
   var host = document.querySelector("body > .sb-home");
   if (!host) return;
 
@@ -91,15 +97,25 @@
      durata della caduta — sotto 1 vuol dire «scende più in fretta».
      `tinte` sono le variabili del foglio, e non si mescolano fra specie. */
   var SPECIE = [
-    { n: "foglia", peso: 0.46, svg: FOGLIA, sventola: 1, zavorra: 1.12, volta: true, tinte: ["vite", "vite", "vite-oro", "vite-oro", "paglierino"] },
+    { n: "foglia", peso: 0.46, svg: FOGLIA, sventola: 1, zavorra: 1.12, volta: true, tinte: ["vite", "vite", "vite-oro", "vite-oro", "paglierino"], oro: ["vite", "vite-oro", "vite-oro", "paglierino", "paglierino"] },
     /* Un acino solo è un cerchio, e un cerchio pallido che scende sembra
        una bolla di sapone. Ne cade qualcuno, ma la parte del leone la fa il
        grappolino, che una forma ce l'ha. E il rosato — che è il colore del
        chiaretto, non di un acino — resta ai grappoli. */
     { n: "acino", peso: 0.16, svg: ACINO, sventola: 0.22, zavorra: 0.74, volta: false, tinte: ["granato", "rubino", "viola", "cerasuolo"] },
     { n: "grappolino", peso: 0.25, svg: GRAPPOLINO, sventola: 0.34, zavorra: 0.82, volta: false, tinte: ["granato", "rubino", "viola", "rosato", "cerasuolo"] },
-    { n: "viticcio", peso: 0.13, svg: VITICCIO, sventola: 0.86, zavorra: 1.04, volta: false, tinte: ["vite", "vite-oro"] },
+    { n: "viticcio", peso: 0.13, svg: VITICCIO, sventola: 0.86, zavorra: 1.04, volta: false, tinte: ["vite", "vite-oro"], oro: ["vite-oro", "vite-oro", "vite"] },
   ];
+
+  /* Nelle due ore di luce radente le foglie si scelgono da `oro` invece che
+     da `tinte`: le stesse variabili, pesate diversamente. Una foglia presa
+     di taglio dal sole basso tira all'oro, ed è la stessa cosa che succede
+     al tralcio in testa — che in quelle ore passa a --stag-vite-radente. Chi
+     non ha una lista `oro` (gli acini, i grappoli: il vino non cambia colore
+     con l'ora) tiene la sua e basta. */
+  function tinteDi(sp) {
+    return (ORA === "alba" || ORA === "tramonto") && sp.oro ? sp.oro : sp.tinte;
+  }
 
   /* Tre piani di profondità: [dimensione], [opacità], [secondi di caduta].
      `quota` è quanto spesso esce quel piano — il fondo è più popolato del
@@ -134,6 +150,20 @@
      fotogramma. Il segno è casuale: a ogni apertura l'aria tira da una parte
      o dall'altra, e non c'è un lato «giusto». */
   var VENTO = (Math.random() < 0.5 ? -1 : 1) * rnd(40, 130);
+
+  /* ── E l'ora decide da che parte ────────────────────────────────────────
+     Il segno del vento è casuale solo quando non c'è motivo perché sia una
+     cosa o l'altra. All'alba e al tramonto un motivo c'è: il fondale ha il
+     sole basso da una parte precisa — a sinistra la mattina, a destra la
+     sera — e il tralcio in testa è già mascherato di conseguenza. Se in
+     mezzo le foglie derivassero dall'altra parte, sarebbero tre cose che
+     dicono due versioni diverse della stessa luce.
+
+     Quindi in quelle due ore l'aria scende DAL sole, e resta casuale
+     l'intensità. Di giorno e di notte il sole non è basso da nessuna parte
+     e il segno torna a non voler dire niente. */
+  if (ORA === "alba") VENTO = Math.abs(VENTO);        // da sinistra, verso destra
+  else if (ORA === "tramonto") VENTO = -Math.abs(VENTO); // da destra, verso sinistra
 
   var cielo = null;
 
@@ -177,7 +207,7 @@
 
       p.style.setProperty("--sw", fra(pi.dim).toFixed(1) + "px");
       p.style.setProperty("--so", fra(pi.op).toFixed(3));
-      p.style.setProperty("--sc", "var(--stag-" + una(sp.tinte) + ")");
+      p.style.setProperty("--sc", "var(--stag-" + una(tinteDi(sp)) + ")");
 
       if (still) {
         /* Posate: sparse per la finestra e ferme. Non si congela una
@@ -212,14 +242,34 @@
 
   popola();
 
-  /* Se il tasto del movimento cambia la classe di <html> a pagina aperta, lo
-     strato si rifà con l'altra logica. Il foglio di stile da solo spegnerebbe
-     le animazioni, ma lascerebbe le foglie tutte in cima: qui si rimette
-     tutto al suo posto. */
-  var atteso = de.className;
+  /* Due cose fanno rifare lo strato da capo, e sono due attributi di <html>.
+
+     La CLASSE: se il tasto del movimento cambia idea a pagina aperta, il
+     foglio di stile da solo spegnerebbe le animazioni ma lascerebbe le
+     foglie tutte in cima. Qui si rimette tutto al suo posto.
+
+     L'ORA: alle 19 in punto le foglie devono cominciare a scendere dal sole
+     e a tirare all'oro, e a quel punto quelle già in aria sono state decise
+     con le regole dell'ora prima. Rifare lo strato è l'unico modo — sono
+     scelte fatte una volta alla nascita della particella, non proprietà che
+     si possono riscrivere addosso.
+
+     Il fondale, che è CSS, nel frattempo ci mette quaranta secondi a
+     cambiare; queste ripartono subito. Non è un disallineamento che si
+     nota: sono sei o quattordici cose piccole e semitrasparenti, e nessuno
+     le stava guardando nell'istante in cui è scoccata l'ora. */
+  var atteso = de.className + "|" + de.getAttribute("data-ora");
   new MutationObserver(function () {
-    if (de.className === atteso) return;
-    atteso = de.className;
+    var ora = de.className + "|" + de.getAttribute("data-ora");
+    if (ora === atteso) return;
+    atteso = ora;
+    ORA = de.getAttribute("data-ora");
+    /* Il vento si ripesca col segno dell'ora nuova: l'aria del mattino non
+       è quella della sera, e la sua direzione è la stessa cosa che dice il
+       fondale. La forza resta casuale. */
+    VENTO = (Math.random() < 0.5 ? -1 : 1) * rnd(40, 130);
+    if (ORA === "alba") VENTO = Math.abs(VENTO);
+    else if (ORA === "tramonto") VENTO = -Math.abs(VENTO);
     popola();
-  }).observe(de, { attributes: true, attributeFilter: ["class"] });
+  }).observe(de, { attributes: true, attributeFilter: ["class", "data-ora"] });
 })();

@@ -576,6 +576,24 @@ classi né script.
 - **I due aloni del fondale non sono un terzo strato**: `.sb-home::before` e `::after` esistono già
   in `sb.css` ed erano l'ultima superficie azzurra grande abbastanza da contraddire il resto. Si
   ritingono quelli — stessa geometria, stesse due derive in controfase, stessa opacità.
+- **E il sole si sposta con l'ora.** Chiaro e scuro sono due, ma le ore non sono due: un attributo
+  `data-ora` su `<html>` dice quale delle **quattro fasi** è, e sono appese ai due confini che il
+  sito ha già — `alba` (le 07, l'ultima ora di buio), `giorno`, `tramonto` (le 19, l'ultima ora di
+  luce), `notte`. Nessuna cambia il tema: alle 8 il sito è chiaro come è sempre stato. Cambia da
+  dove viene la luce. I due aloni diventano **sole e controcampo** e sono scritti con dodici
+  variabili, le sole cose che l'ora sposta: all'alba il sole entra basso da sinistra e vira
+  all'arancio, al tramonto passa a destra e si accende, di notte non c'è e resta la vinaccia col
+  blu. Il **tralcio in testa** prende la luce di taglio con la stessa maschera che già ne sfuma i
+  bordi — piena dalla parte del sole, in dissolvenza dall'altra — e il suo verde passa a
+  `--stag-vite-radente`. Anche **le foglie che scendono** derivano dal sole invece che a caso, e
+  tirano all'oro. La **carta sotto** si scalda di due o tre punti per canale all'alba e al tramonto
+  e vira al freddo di notte: i rapporti di contrasto del testo restano identici entro un centesimo,
+  perché il testo non lo tocca nessuno. Il passaggio da un'ora all'altra dura **quaranta secondi**,
+  più di quanto duri guardare: non si vede un fotogramma cambiare, si vede che dopo un po' la
+  pagina è un'altra. L'ora si scrive anche a tema manuale — chi ha schiarito il sito a mezzanotte
+  ha chiesto un fondo chiaro, non che fuori sia giorno — e si calcola **prima del primo paint**,
+  nello stesso inline che calcola il tema. Senza JavaScript l'attributo non c'è e comanda il
+  default, che è `giorno`: il sito di prima, esattamente.
 - **Solo quello che scende ha bisogno di JS** ([`assets/stagioni.js`](assets/stagioni.js), 199
   righe). Quattro specie — foglia, grappolino, acino, viticcio — e **non cadono uguale**: la foglia
   è larga e leggera, ondeggia molto e si volta mostrando il rovescio; l'acino è tondo e pieno,
