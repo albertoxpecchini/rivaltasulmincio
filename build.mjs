@@ -176,12 +176,42 @@ function renderFestone(s) {
      accanto si riconoscono subito come copie, tre scale diverse no. */
   const SCALE = [0.98, 0.86, 0.92];
 
+  /* ── Perché il colore passa da variabili e non da classi ────────────────
+     Dentro un <use> non si entra col selettore: il clone vive in un albero
+     d'ombra, e `.campata .sb-stag-verde` non trova niente perché quella
+     classe sta in <defs>, fuori dalla campata. Per un po' qui c'erano tre
+     regole di nth-of-type scritte proprio così, e non hanno mai tinto una
+     foglia — il festone era tredici copie identiche, e il commento accanto
+     diceva il contrario.
+
+     Quello che ATTRAVERSA il confine del clone è l'eredità. Quindi i
+     disegni in <defs> non nominano più una tinta: nominano una variabile
+     (--f-lembo, --f-tralcio, --f-acino), e ogni campata scrive la propria
+     sul <g> che la contiene. La variabile scende nel clone, e la stessa
+     foglia esce verde in una campata e già girata all'oro in quella dopo.
+
+     Le tre serie non tornano mai in fase — 3, 4 e 5 campate — così su
+     tredici campate non se ne ripete nessuna uguale a un'altra. */
+  const LEMBO = ["vite", "vite-oro", "vite"];
+  const ACINI = ["granato", "rubino", "granato", "cerasuolo"];
+  /* Una campata su cinque sta un passo indietro: in un filare vero non è
+     tutto sullo stesso piano, e su cinquanta pixel d'altezza la profondità
+     si legge dal tono, non dalla dimensione. */
+  const INDIETRO = 5;
+
   const campate = s.pendenti
     .map((p, i) => {
       const x = i * CAMPATA;
       const sc = SCALE[i % SCALE.length];
+      const lembo = LEMBO[i % LEMBO.length];
+      const acino = ACINI[i % ACINI.length];
+      const dietro = i % INDIETRO === 2;
+      const stile =
+        `--f-lembo: var(--stag-${lembo});` +
+        `--f-tralcio: var(--stag-${lembo});` +
+        `--f-acino: var(--stag-${acino})`;
       return (
-        `<g transform="translate(${x} 0)">` +
+        `<g transform="translate(${x} 0)" style="${stile}"${dietro ? ` class="sb-stag-dietro"` : ""}>` +
         `<use href="#stag-arco"/>` +
         `<g transform="translate(100 23.5) scale(${sc})">` +
         `<g class="sb-stag-pend" style="--i:${i}"><use href="#stag-${p}"/></g>` +

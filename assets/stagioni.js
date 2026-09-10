@@ -27,6 +27,12 @@
    parallasse ottenuta con tre numeri invece che con tre strati veri, e basta
    perché il fondale abbia una profondità.
 
+   ── E una sola aria ──────────────────────────────────────────────────────
+   Tutto il resto è per particella; il VENTO no. Direzione unica per tutta la
+   pagina, scelta al carico, e ognuna ci deriva dentro secondo il suo piano.
+   È l'unica cosa che tutte hanno in comune, ed è quella che le fa leggere
+   come un cielo invece che come sei animazioni indipendenti.
+
    ── Movimento ────────────────────────────────────────────────────────────
    Con prefers-reduced-motion o col tasto «ferma il movimento» non scende
    niente: restano sei cose posate dove sono, ferme. Se l'impostazione cambia
@@ -99,9 +105,9 @@
      `quota` è quanto spesso esce quel piano — il fondo è più popolato del
      davanti, come in qualunque cosa vista in prospettiva. */
   var PIANI = [
-    { quota: 0.42, dim: [12, 18], op: [0.12, 0.19], cad: [34, 48] },
-    { quota: 0.35, dim: [18, 26], op: [0.17, 0.25], cad: [25, 35] },
-    { quota: 0.23, dim: [26, 38], op: [0.21, 0.32], cad: [18, 26] },
+    { quota: 0.42, dim: [12, 18], op: [0.12, 0.19], cad: [34, 48], vento: 0.45 },
+    { quota: 0.35, dim: [18, 26], op: [0.17, 0.25], cad: [25, 35], vento: 0.75 },
+    { quota: 0.23, dim: [26, 38], op: [0.21, 0.32], cad: [18, 26], vento: 1.15 },
   ];
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -112,6 +118,22 @@
     for (var i = 0; i < l.length; i++) { s += l[i].peso !== undefined ? l[i].peso : l[i].quota; if (r <= s) return l[i]; }
     return l[l.length - 1];
   }
+
+  /* ── Il vento ───────────────────────────────────────────────────────────
+     Una direzione sola per tutta la pagina, decisa una volta al carico.
+     È la sola cosa che le particelle hanno in comune: ognuna ondeggia,
+     gira e scende per conto suo, ma tutte derivano dalla stessa parte,
+     perché sopra il Mincio l'aria una direzione ce l'ha. Sei foglie che
+     scendono ognuna sulla sua verticale non sono foglie al vento: sono
+     foglie in un ascensore.
+
+     Sta fra 40 e 130 px sull'intera caduta, e ogni piano ne prende la sua
+     quota — chi è davanti deriva di più, come si sposta di più ondeggiando:
+     la parallasse vale anche per l'aria. È una deriva che si legge seguendo
+     una foglia dall'alto in basso, non uno scivolamento che si nota in un
+     fotogramma. Il segno è casuale: a ogni apertura l'aria tira da una parte
+     o dall'altra, e non c'è un lato «giusto». */
+  var VENTO = (Math.random() < 0.5 ? -1 : 1) * rnd(40, 130);
 
   var cielo = null;
 
@@ -169,6 +191,10 @@
         var cad = fra(pi.cad) * sp.zavorra;
         p.style.setProperty("--sl", rnd(1, 95).toFixed(1) + "vw");
         p.style.setProperty("--sd", cad.toFixed(1) + "s");
+        /* La deriva del vento: comune a tutti nella direzione, propria di
+           ognuno nella misura. Il ±18% è quel tanto che basta perché due
+           foglie vicine non scendano parallele come su un binario. */
+        p.style.setProperty("--sk", (VENTO * pi.vento * rnd(0.82, 1.18)).toFixed(0) + "px");
         /* Ritardo negativo: al primo istante la finestra è già popolata a
            metà caduta, invece di partire da un cielo vuoto che si riempie. */
         p.style.setProperty("--sdl", (-rnd(0, cad)).toFixed(1) + "s");

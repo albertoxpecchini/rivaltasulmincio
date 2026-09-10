@@ -558,7 +558,21 @@ classi né script.
   conto suo: un festone in cui tutto oscilla nello stesso istante non è un festone, è una texture
   che trema. Tredici campate da 200 px si saldano fra loro (ogni arco parte e finisce a `y=4`), i
   disegni stanno una volta in `<defs>` e si ripetono con `<use>`, e lo sfasamento del dondolio è
-  `calc(var(--i) * -0.41s)`. Una foglia su tre ha già girato all'oro, un grappolo su due è più chiaro.
+  `calc(var(--i) * -0.41s)`. Una foglia su tre ha già girato all'oro, i grappoli non sono tutti allo
+  stesso punto, e una campata su cinque sta un passo indietro — su cinquanta pixel d'altezza la
+  profondità si legge dal tono, non dalla dimensione. Ai due lati il tralcio non finisce: **esce**,
+  con trenta pixel di dissolvenza, perché un festone che finisce dove finisce lo schermo è un adesivo.
+  La variazione la scrive `build.mjs` come **variabili sul `<g>` della campata**, non come selettori
+  nel foglio: dentro un `<use>` il selettore non entra — il clone vive in un albero d'ombra e le
+  classi del disegno stanno in `<defs>`, fuori da ogni campata — mentre l'**eredità** il confine lo
+  attraversa. Erano scritte come `nth-of-type` e non hanno mai tinto niente: il festone era tredici
+  copie identiche, e il commento accanto diceva il contrario.
+- **Le mille cose piccole**, che nessuno nomina e che tutti vedono: la selezione è una macchia di
+  vino e non un evidenziatore, il numero di sezione passa in paglierino e gli si appoggia sopra un
+  tratto corto di tralcio che sfuma (una linea che finisce netta in mezzo alla pagina si legge come
+  un errore di taglio), il filo della citazione e quello dell'indice a lato perdono il grigio freddo
+  di sistema, e i sei pastelli della nota prendono il riflesso che ha un vetro pieno — dimezzato al
+  buio, dove alla stessa forza sbiancherebbe la tinta, che di quella riga è il contenuto.
 - **I due aloni del fondale non sono un terzo strato**: `.sb-home::before` e `::after` esistono già
   in `sb.css` ed erano l'ultima superficie azzurra grande abbastanza da contraddire il resto. Si
   ritingono quelli — stessa geometria, stesse due derive in controfase, stessa opacità.
@@ -568,7 +582,10 @@ classi né script.
   scende quasi diritto e più svelto, e non si volta perché da qualunque parte lo guardi è lo stesso.
   Tre gusci annidati (cade · ondeggia · gira) perché tre movimenti non stanno in una trasformazione
   sola. Tre piani di profondità per la parallasse. Le tinte non si mescolano fra specie: un acino
-  verde a settembre non esiste.
+  verde a settembre non esiste. **Una sola aria per tutta la pagina**: la direzione del vento si
+  decide al carico ed è la sola cosa che le particelle hanno in comune — ognuna ci deriva dentro
+  secondo il suo piano, chi sta davanti di più. Sei foglie che scendono ognuna sulla sua verticale
+  non sono foglie al vento, sono foglie in un ascensore.
 - **Il movimento segue le regole di sempre**: con `prefers-reduced-motion` o col tasto «ferma il
   movimento» (`html.rsm-still`) non scende niente — restano sei cose posate dove sono, e il tralcio
   non cala. Se l'impostazione cambia a pagina aperta, un osservatore sulla classe di `<html>` rifà

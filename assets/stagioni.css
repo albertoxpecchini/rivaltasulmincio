@@ -163,6 +163,43 @@ html[data-stagione="uva"] .sb-chip-dot { animation-name: sb-stag-ping; }
    non un'informazione — ma è la coordinata della stagione. */
 html[data-stagione="uva"] .sb-riv-secnum { color: var(--stag-oro); }
 
+/* Il filo della citazione, e quello dell'indice a lato quando la voce è
+   quella in cui si sta leggendo. Sono due segni da due pixel che il tema
+   lasciava grigi e azzurri in mezzo a una pagina diventata di vino: non è
+   un colore in più, è lo stesso che c'è già, portato dove mancava.
+
+   La citazione tiene la sua regola — il filo NON è d'accento, o una
+   citazione varrebbe più delle altre: prende il verde del tralcio, che nel
+   tema è il tono neutro, non quello che chiama. */
+html[data-stagione="uva"] .sb-riv-cit { border-left-color: color-mix(in srgb, var(--stag-vite) 52%, var(--sb-border-stronger)); }
+
+/* ── I titoli di sezione ──────────────────────────────────────────────────
+   Un tratto corto sopra il numero di sezione: due centimetri di tralcio che
+   entrano da sinistra, dallo stesso margine da cui parte tutto il resto.
+   Non è un bordo attorno né una fascia piena — è un segno, e sfuma perché
+   una linea che finisce netta in mezzo alla pagina si legge come un errore
+   di taglio.
+
+   Sta su ::before del numero, che è già display:block e non ha decorazioni
+   proprie: nessun nodo in più nel documento, e dove il numero non c'è non
+   compare niente. */
+html[data-stagione="uva"] .sb-riv-secnum::before {
+  content: "";
+  display: block;
+  width: 2.2rem;
+  height: 2px;
+  margin-bottom: 0.65rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--stag-vite), color-mix(in srgb, var(--stag-oro) 60%, transparent) 62%, transparent);
+}
+
+/* L'indice a lato: la voce in cui si sta leggendo accende un filo, e quel
+   filo prende il token d'accento — che a settembre è già granato. Qui si
+   tocca solo il bordo di sinistra dell'indice intero, che resta grigio di
+   sistema e diventa il grigio caldo del mese: la colonna sta accanto alla
+   prosa e un filo freddo, di fianco a una pagina calda, si vede. */
+html[data-stagione="uva"] .sb-riv-rail { border-left-color: color-mix(in srgb, var(--stag-vite) 22%, var(--sb-border)); }
+
 /* ── I due aloni del fondale ──────────────────────────────────────────────
    Il fondale del sito è già fatto di due aloni che derivano lentamente in
    controfase (sb.css, .sb-home::before e ::after), ed erano l'ultima
@@ -205,6 +242,14 @@ html[data-stagione="uva"].dark .sb-home::after {
   pointer-events: none;
   opacity: 0.86;
   animation: sb-stag-cala 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  /* Ai due lati il tralcio non finisce: esce. Una campata tagliata di netto
+     sul bordo della finestra dice «qui l'immagine è finita», e un festone
+     che finisce dove finisce lo schermo è un adesivo. Trenta pixel di
+     dissolvenza per parte e il tralcio continua fuori, dove non si vede.
+     La maschera è sull'asse orizzontale soltanto: in basso i pendagli
+     devono restare netti, o le foglie sfumerebbero a mezz'aria. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
 }
 .sb-stag-festone svg { display: block; }
 @keyframes sb-stag-cala {
@@ -221,20 +266,36 @@ html[data-stagione="uva"].dark .sb-home::after {
 .sb-nav--scrolled + .sb-stag-festone { transition: opacity 0.25s ease; }
 
 /* I pezzi del tralcio. Il colore lo dà il foglio e non l'attributo, così
-   segue il tema chiaro/scuro senza duplicare il disegno. */
-.sb-stag-tralcio { fill: none; stroke: var(--stag-vite); stroke-width: 1.9; stroke-linecap: round; }
-.sb-stag-verde { fill: var(--stag-vite); }
+   segue il tema chiaro/scuro senza duplicare il disegno.
+
+   Ogni tinta passa da una variabile con un ripiego: --f-lembo la scrive la
+   campata (build.mjs la mette sul <g>, e l'eredità la porta dentro il
+   clone di <use>, dove un selettore non arriverebbe mai), e se non c'è —
+   una stagione futura che non le scrive — si torna al token del mese e
+   non cambia niente. */
+.sb-stag-tralcio { fill: none; stroke: var(--f-tralcio, var(--stag-vite)); stroke-width: 1.9; stroke-linecap: round; }
+.sb-stag-verde { fill: var(--f-lembo, var(--stag-vite)); }
 .sb-stag-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
-.sb-stag-acino { fill: var(--stag-granato); }
+.sb-stag-acino { fill: var(--f-acino, var(--stag-granato)); }
 .sb-stag-luce { fill: var(--stag-luce); }
 
 /* A settembre i filari non sono di un verde solo: una foglia su tre ha già
-   girato, e un grappolo su due è più chiaro dell'altro. Due righe di
-   nth-of-type e il tralcio smette di sembrare un timbro ripetuto.
-   (<defs> non è un <g>, quindi la numerazione conta solo le campate.) */
-.sb-stag-festone svg > g:nth-of-type(3n + 2) .sb-stag-verde { fill: var(--stag-vite-oro); }
-.sb-stag-festone svg > g:nth-of-type(3n + 2) .sb-stag-tralcio { stroke: var(--stag-vite-oro); }
-.sb-stag-festone svg > g:nth-of-type(2n) .sb-stag-acino { fill: var(--stag-rubino); }
+   girato, e i grappoli non sono tutti allo stesso punto di maturazione. La
+   variazione NON si scrive qui — sta in build.mjs, che dà a ogni campata le
+   sue tre variabili — per una ragione precisa: dentro un <use> il selettore
+   non entra, perché il clone vive in un albero d'ombra e le classi del
+   disegno stanno in <defs>, fuori da ogni campata. Qui c'erano tre regole
+   di nth-of-type scritte proprio così, e non hanno mai tinto niente: il
+   festone era tredici copie identiche.
+
+   Quello che passa il confine del clone è l'EREDITÀ, e quindi le variabili.
+   Vedi il commento in renderFestone.
+
+   Una campata su cinque sta un passo indietro: in un filare vero non è tutto
+   sullo stesso piano, e su cinquanta pixel d'altezza la profondità si legge
+   dal tono, non dalla dimensione. Questa sì può stare qui — la classe è sul
+   <g> della campata, che è markup vero e non un clone. */
+.sb-stag-dietro { opacity: 0.58; }
 
 /* Il dondolio. Il pendaglio ruota attorno al punto in cui è attaccato al
    tralcio — che nel suo sistema di coordinate è l'origine — di poco più di
@@ -289,9 +350,16 @@ html[data-stagione="uva"].dark .sb-home::after {
 .sb-stag-p svg { display: block; width: 100%; height: 100%; fill: currentColor; }
 .sb-stag-p--foglia svg { animation: sb-stag-volta var(--svd, 4.4s) ease-in-out infinite alternate; }
 
+/* Cadendo, tutto scivola anche DI LATO, e tutto dalla stessa parte: sopra
+   il Mincio l'aria non sta ferma, e sei foglie che scendono ognuna per la
+   sua verticale non sono foglie al vento, sono foglie in un ascensore.
+   Il vento è la sola cosa che le particelle hanno in comune — l'ampiezza
+   dell'ondeggio, la rotazione e la velocità restano di ognuna. --sk lo
+   scrive il JS, ed è più largo per chi sta davanti: la parallasse vale
+   anche per il vento. */
 @keyframes sb-stag-cade {
   from { transform: translate3d(0, -18vh, 0); }
-  to   { transform: translate3d(0, 118vh, 0); }
+  to   { transform: translate3d(var(--sk, 0px), 118vh, 0); }
 }
 @keyframes sb-stag-ondeggia {
   from { transform: translateX(calc(var(--sx, 24px) * -1)); }
@@ -408,9 +476,26 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
   grid-row: 1 / 3;
   width: 22px;
   height: 22px;
-  background: var(--q);
+  /* Il colore piatto sotto, e sopra un velo che scende da sinistra: è la
+     luce che prende un vetro pieno, la stessa che ha già il grappolo del
+     festone (.sb-stag-luce) e che arriva sempre da lì. Sei millimetri di
+     quadratino non hanno spazio per un riflesso disegnato — hanno spazio
+     per una diagonale appena più chiara, e basta a togliere l'aria di
+     campione stampato. */
+  background:
+    linear-gradient(148deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 52%),
+    var(--q);
   clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   box-shadow: inset 0 0 0 1px rgba(128, 116, 108, 0.28);
+}
+/* Al buio il velo si dimezza. Sul chiaro il riflesso si stacca dal fondo e
+   si legge come luce; sullo scuro, alla stessa forza, sbianca la tinta —
+   e la tinta è il contenuto di questa riga, non la sua cornice. */
+html[data-stagione="uva"].dark .sb-stag-tinta-q {
+  background:
+    linear-gradient(148deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0) 52%),
+    var(--q);
+  box-shadow: inset 0 0 0 1px rgba(255, 240, 232, 0.14);
 }
 .sb-stag-tinta-w {
   font-size: 0.86rem;
