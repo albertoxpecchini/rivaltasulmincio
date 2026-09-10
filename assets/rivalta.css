@@ -1451,34 +1451,24 @@ html.dark .sb-cw-vernice::after { opacity: calc(var(--cr-velo) * 0.5); }
   to   { transform: translate3d(0, -480px, 0); }
 }
 
-/* ── Come entrano i blocchi ───────────────────────────────────────────────
-   Questa è l'eccezione dichiarata alla regola del sito. Sul resto di
-   rivaltasulmincio.it scorrere una pagina non è un evento da annunciare e i
-   reveal allo scroll sono stati tolti apposta; sulla Color Walk ci sono, ed
-   è una scelta di chi fa la pagina: è il manifesto di una festa, non una
-   scheda anagrafica, e deve piacere prima di essere utile.
+/* ── I blocchi non entrano più ────────────────────────────────────────────
+   Qui c'era l'unica eccezione dichiarata alla regola del sito: sulla Color
+   Walk i blocchi comparivano scorrendo, mentre sul resto di
+   rivaltasulmincio.it i reveal allo scroll erano stati tolti apposta.
 
-   Le due cautele che la tengono onesta:
+   Adesso l'eccezione non c'è più, e la ragione non è la coerenza: è che su
+   questa pagina l'eccezione costava a chi la usa. Chi apre /color-walk non
+   sta guardando un manifesto, sta compilando un modulo per iscrivere dei
+   bambini — spesso in piedi, col pollice, su una connessione che va e viene.
+   Un modulo i cui pezzi si accendono a mano a mano che ci si arriva è un
+   modulo in cui non si sa mai se è finito, e cercare un campo scorrendo su e
+   giù faceva comparire ogni volta qualcosa che un attimo prima non c'era.
 
-   · lo stato nascosto lo scrive `html.cw-anim`, e quella classe la mette il
-     JavaScript soltanto quando il movimento è permesso. Senza script, con
-     l'impostazione di sistema su «meno movimento» o col tasto «ferma» della
-     barra in basso, la classe non c'è: il CSS qui sotto non si applica, e
-     tutto è già visibile al primo frame. Non esiste nessun modo di aprire
-     questa pagina e trovarci del contenuto invisibile.
-   · si muovono `opacity` e `transform`, di 16 pixel e per mezzo secondo. Il
-     blocco compare mentre l'occhio ci arriva, non fa un ingresso. */
-html.cw-anim .sb-cw-su {
-  opacity: 0;
-  transform: translate3d(0, 16px, 0);
-}
-html.cw-anim .sb-cw-su.sb-cw-dentro {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms),
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms);
-}
+   La pagina resta a colori: quello che se n'è andato è il ritardo, non la
+   vernice. Il fondale deriva, la polvere sale, il titolo cambia tinta — sono
+   decorazioni di sfondo, non contenuto che si nasconde. Nessun blocco di
+   questa pagina parte più invisibile, in nessuno stato, con o senza
+   JavaScript. */
 
 /* ── Meno movimento, e la carta ───────────────────────────────────────────
    Le derive si fermano nei due modi di sempre — l'impostazione di sistema, a
@@ -1493,20 +1483,15 @@ html.rsm-still .sb-cw-vernice::before,
 html.rsm-still .sb-cw-vernice::after,
 html.rsm-still .sb-cw-polvere { animation: none; }
 
-/* Su carta il fondale sparisce, e soprattutto sparisce lo stato «non ancora
-   entrato»: una pagina si stampa senza scorrerla, quindi l'osservatore non ha
-   mai visto passare quasi nessun blocco e senza queste due righe il foglio
-   uscirebbe con dentro dei buchi bianchi grandi come sezioni intere. Non è un
-   dettaglio estetico: il regolamento della Color Walk si stampa e si firma al
-   banchetto. */
+/* Su carta il fondale sparisce: è un velo colorato a tutta pagina, e su carta
+   sarebbe una gettata di toner intorno al testo. Il regolamento della Color
+   Walk si stampa e si firma al banchetto.
+
+   Le due righe che qui riaccendevano i blocchi «non ancora entrati» non
+   servono più: da quando i reveal non ci sono, non c'è più nessuno stato
+   nascosto da rimettere in vista prima di stampare. */
 @media print {
   .sb-cw-vernice { display: none !important; }
-  .sb-cw-su,
-  .sb-cw-tappa {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
 }
 /* ── Barra di navigazione fra sezioni, in coda a ogni pagina ──────────────
    Due tasti affiancati, dal margine sinistro. Prima erano due scritte con

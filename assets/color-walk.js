@@ -7,28 +7,39 @@
    Sulle altre undici pagine questo file non esiste.
 
    Le tre pagine ne usano quantità diverse, ed è normale: il modulo cartaceo
-   si serve del solo punto 1, e per il resto qui sotto non trova niente da
-   fare. Meglio un file solo che tre file quasi uguali.
+   qui dentro non trova più niente da fare, l'iscrizione usa i primi due punti
+   e il regolamento il terzo. Meglio un file solo che tre file quasi uguali —
+   e su /color-walk-modulo pesa quanto un'immagine piccola.
 
-   Quattro cose, tutte facoltative: ognuna guarda se il suo pezzo di pagina
-   c'è e, se non c'è, si toglie di mezzo senza dire niente.
+   Tre cose, tutte facoltative: ognuna guarda se il suo pezzo di pagina c'è
+   e, se non c'è, si toglie di mezzo senza dire niente.
 
-     1. i blocchi che entrano scorrendo
-     2. il filo del percorso che si riempie
-     3. il conto che pulsa quando cambia
-     4. la barra di lettura e l'indice che segue, sul regolamento
+     1. il filo del percorso che si riempie
+     2. il conto che pulsa quando cambia
+     3. la barra di lettura e l'indice che segue, sul regolamento
+
+   ── Quello che questo file non fa più ─────────────────────────────────────
+   Qui c'era anche l'ingresso dei blocchi allo scroll: un osservatore che
+   nascondeva ogni sezione e la riaccendeva quando l'occhio ci arrivava. Non
+   c'è più, e con lui se ne sono andati la classe `cw-anim`, i ritardi a
+   cascata di `data-cw-fila` e la rete di sicurezza che dopo un secondo e
+   mezzo rimetteva tutto in vista se l'osservatore non avesse consegnato
+   niente.
+
+   La ragione sta in che pagina è questa: /color-walk è un modulo con cui si
+   iscrivono dei bambini, non una vetrina. Del contenuto che si accende a mano
+   a mano che ci si arriva, su un modulo, vuol dire non sapere mai se è
+   finito. Adesso non c'è nessuno stato in cui un pezzo di queste pagine parta
+   invisibile — e quindi nemmeno più bisogno di una rete che lo rimetta in
+   vista.
 
    ── Il patto sul movimento ────────────────────────────────────────────────
-   Tutto quello che c'è qui dentro è in più. Lo stato di partenza di ogni
-   blocco è «visibile»: la classe che lo nasconde per farlo entrare — cw-anim
-   sulla radice — la scrive questo file e la scrive SOLO se il movimento è
-   permesso. Se il file non arriva, se JavaScript è spento, se chi legge ha
+   Quello che resta è tutto in più, e niente di quello che resta nasconde
+   qualcosa: sono un filo che si colora, un numero che batte e una barra che
+   avanza. Se il file non arriva, se JavaScript è spento, se chi legge ha
    chiesto meno movimento al sistema operativo o ha premuto «ferma» nella
-   barra in basso, la classe non compare e la pagina è quella di sempre, tutta
-   in vista dal primo frame.
-
-   È la stessa regola che il sito applica ovunque, scritta al contrario: qui
-   non si spegne un'animazione, si accende.
+   barra in basso, le pagine sono quelle di sempre — tutte in vista dal primo
+   frame, col filo del percorso colorato per intero e fermo.
    ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
@@ -51,65 +62,6 @@
     radice.classList.contains("rsm-motion") ||
     (!radice.classList.contains("rsm-still") &&
       !media("(prefers-reduced-motion: reduce)").matches);
-
-  var haObserver = typeof window.IntersectionObserver === "function";
-
-  /* ══ 1. I blocchi che entrano ════════════════════════════════════════════
-     Un osservatore solo per tutta la pagina. Ogni blocco si scopre quando ne
-     entra in vista un quinto, e poi l'osservatore lo lascia andare: entrare è
-     una cosa che succede una volta, e un blocco che si rinasconde risalendo
-     sarebbe un effetto da giostra.
-
-     Il ritardo a cascata non lo decide questo file: lo dichiara il markup con
-     data-cw-fila sul contenitore, che vale il passo in millisecondi. Così una
-     fila di quattro tessere entra come una fila e non come quattro cose
-     separate, e chi cambia la pagina non deve venire a cercare qui. */
-  if (dolce && haObserver) {
-    radice.classList.add("cw-anim");
-
-    document.querySelectorAll("[data-cw-fila]").forEach(function (fila) {
-      var passo = parseInt(fila.getAttribute("data-cw-fila"), 10) || 70;
-      var figli = fila.querySelectorAll(".sb-cw-su, .sb-cw-tappa");
-      for (var i = 0; i < figli.length; i++) {
-        /* Il ritardo si ferma a mezzo secondo: su diciassette tappe, un passo
-           che continua a crescere farebbe aspettare l'ultima due secondi
-           buoni dopo essere già stata guardata. */
-        figli[i].style.setProperty("--cw-d", Math.min(i * passo, 500) + "ms");
-      }
-    });
-
-    var arrivato = false;
-    var occhio = new window.IntersectionObserver(
-      function (voci) {
-        for (var i = 0; i < voci.length; i++) {
-          if (!voci[i].isIntersecting) continue;
-          arrivato = true;
-          voci[i].target.classList.add("sb-cw-dentro");
-          occhio.unobserve(voci[i].target);
-        }
-      },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.2 }
-    );
-    document.querySelectorAll(".sb-cw-su, .sb-cw-tappa").forEach(function (el) {
-      occhio.observe(el);
-    });
-
-    /* La rete sotto la rete. Nascondere del contenuto e riaccenderlo è la
-       cosa più pericolosa che questa pagina fa: se l'osservatore per una
-       ragione qualsiasi non consegnasse mai niente — un browser che si
-       comporta diversamente, un caso che non abbiamo previsto — resterebbe
-       una pagina con dentro dei buchi bianchi, e nessuno se ne accorgerebbe
-       finché non lo dice qualcuno che voleva iscriversi.
-
-       Quindi: se dopo un secondo e mezzo non è entrato NIENTE, si toglie la
-       classe che nasconde e tutta la pagina torna visibile in un colpo. Si
-       perde l'animazione, che è la cosa meno importante che c'è qui dentro.
-       Un secondo e mezzo perché il primo blocco, quello già in vista, entra
-       nei primi millisecondi: se a quel punto non è successo, non succederà. */
-    window.setTimeout(function () {
-      if (!arrivato) radice.classList.remove("cw-anim");
-    }, 1500);
-  }
 
   /* ══ Un solo ascolto dello scroll ════════════════════════════════════════
      Le due cose che seguono la pagina mentre scorre — il filo del percorso e
@@ -147,7 +99,7 @@
     return v < min ? min : v > max ? max : v;
   }
 
-  /* ══ 2. Il filo del percorso ═════════════════════════════════════════════
+  /* ══ 1. Il filo del percorso ═════════════════════════════════════════════
      La colonna delle vie ha un filo verticale a sinistra, e il filo si colora
      man mano che si scende: si parte in bianco e si arriva a colori, che è
      quello che fa la camminata.
@@ -165,7 +117,7 @@
     });
   }
 
-  /* ══ 3. Il conto che pulsa ═══════════════════════════════════════════════
+  /* ══ 2. Il conto che pulsa ═══════════════════════════════════════════════
      Quando la somma cambia — si aggiunge qualcuno, si toglie qualcuno — il
      numero fa un battito e torna com'era. Non riscrive niente: la cifra la
      scrive il modulo, qui si aggiunge e si toglie una classe. Un contatore
@@ -197,7 +149,7 @@
     }).observe(somma, { childList: true, characterData: true, subtree: true });
   }
 
-  /* ══ 4a. La barra di lettura ═════════════════════════════════════════════
+  /* ══ 3a. La barra di lettura ═════════════════════════════════════════════
      Sul regolamento, un filo azzurro sotto la barra di navigazione che dice
      quanto manca alla fine. Dieci punti di regolamento sono lunghi, e sapere
      di essere al terzo o al nono cambia il modo in cui si legge.
@@ -216,7 +168,7 @@
     });
   }
 
-  /* ══ 4b. L'indice che segue ══════════════════════════════════════════════
+  /* ══ 3b. L'indice che segue ══════════════════════════════════════════════
      Le pillole in cima al regolamento sanno qual è il punto che si sta
      leggendo. È lo stesso mestiere del filo azzurro sotto le voci della nav —
      dire «sei qui» senza aggiungere un secondo colore — e si scrive con

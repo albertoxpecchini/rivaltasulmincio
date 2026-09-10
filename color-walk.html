@@ -292,8 +292,8 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
    · il colore pieno è dichiarato PRIMA, e il ritaglio arriva solo dentro un
      @supports: dove non si può fare, la riga resta scritta e leggibile;
    · in forced-colors il ritaglio si toglie e torna il colore di sistema;
-   · la deriva lenta della sfumatura gira solo con html.cw-anim, cioè solo
-     quando il movimento è permesso.
+   · la deriva lenta della sfumatura si ferma dove è stato chiesto meno
+     movimento — la regola sta in fondo al foglio, con le altre.
    Il gradiente è largo il doppio della riga proprio perché ci sia qualcosa
    da far derivare. */
 .sb-cw-tinte { color: var(--sb-fg); }
@@ -316,7 +316,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     color: transparent;
   }
 }
-html.cw-anim .sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
+.sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
 @keyframes sb-cw-tinte {
   from { background-position: 0% 50%; }
   to   { background-position: 200% 50%; }
@@ -337,9 +337,88 @@ html.cw-anim .sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
 .sb-cw-fatti .sb-chip { gap: 0.5rem; white-space: normal; }
 .sb-cw-fatti .sb-chip svg { flex: none; }
 .sb-cw-fatti b { font-weight: 600; color: var(--sb-fg); }
+/* La sola icona di ogni pillola prende una polvere. È il posto in cui il
+   colore costa meno di tutti: l'icona è già muta — accanto ha sempre il
+   fatto scritto per esteso — quindi tingerla non carica di significato un
+   segno che qualcuno potrebbe non distinguere. La scritta resta grigia e il
+   contrasto del testo non si muove di un centesimo. */
+.sb-cw-fatti .sb-chip:nth-of-type(1) svg { color: var(--cr-magenta); }
+.sb-cw-fatti .sb-chip:nth-of-type(2) svg { color: var(--cr-ciano); }
+.sb-cw-fatti .sb-chip:nth-of-type(3) svg { color: var(--cr-verde); }
+.sb-cw-fatti .sb-chip:nth-of-type(4) svg { color: var(--cr-giallo); }
+.sb-cw-fatti .sb-chip:nth-of-type(5) svg { color: var(--cr-viola); }
+/* In forced-colors il sistema decide i colori e questi vanno tolti di mezzo,
+   o si finisce con un'icona invisibile sul fondo che il sistema ha scelto. */
+@media (forced-colors: active) {
+  .sb-cw-fatti .sb-chip svg,
+  .sb-cw-tappa--via .sb-cw-bollo { color: CanvasText; background: CanvasText; }
+}
 
 /* Il manifesto sotto la testata. Il bordo ce l'ha già .sb-riv-cwbanner. */
 .sb-cw-manifesto { margin-top: clamp(1.4rem, 3vw, 2rem); }
+
+/* ═══ Un po' più arcobaleno ══════════════════════════════════════════════════
+   Le polveri stavano in tre decorazioni: il fondale, la riga del titolo e il
+   filo del percorso. Adesso sono cinque — si aggiungono il filo sotto il
+   titolo di ogni sezione e il bordo della lastra dell'iscrizione — più la
+   riga delle scadenze qui sopra e i bollini del percorso più in basso.
+
+   La regola non si è spostata di un millimetro, ed è quella che tiene: le
+   sei tinte stanno SEMPRE e SOLO su decorazioni. Non toccano un tasto, un
+   fuoco, una barra di avanzamento, una spunta — quelli restano azzurro
+   brand qui come su /storia, perché sono gli stessi comandi. Una tinta viva
+   su un comando vuol dire «premi qui»; sei tinte vive su sei comandi non
+   vogliono dire più niente.
+
+   Il taglio sotto il titolo di sezione: un filo corto, non una riga da
+   bordo a bordo. Le sezioni del sito non hanno confini — è la regola del
+   fondale unico — e una linea piena qui sarebbe un bordo di sezione da un
+   altro sito. */
+.sb-cr .sb-sechead h2 { position: relative; }
+.sb-cr .sb-sechead h2::after {
+  content: "";
+  display: block;
+  width: 3.2rem;
+  height: 3px;
+  margin-top: 0.55rem;
+  background: linear-gradient(
+    90deg,
+    var(--cr-magenta),
+    var(--cr-viola) 30%,
+    var(--cr-ciano) 58%,
+    var(--cr-verde) 80%,
+    var(--cr-giallo)
+  );
+}
+
+/* La lastra dell'iscrizione porta le polveri sul filo alto: è la sola lastra
+   della pagina che si compila, ed è il modo di dire «è questa» senza
+   metterle un colore addosso né alzarla dal piano con un'ombra che le altre
+   non hanno. Tre pixel, e solo sul bordo superiore. */
+.sb-cw-lastra .sb-panel { position: relative; }
+.sb-cw-lastra .sb-panel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--cr-magenta),
+    var(--cr-viola) 22%,
+    var(--cr-ciano) 45%,
+    var(--cr-verde) 68%,
+    var(--cr-giallo) 88%,
+    var(--cr-magenta)
+  );
+  /* La lastra è tagliata a 45° in alto a sinistra: il filo deve fermarsi
+     dove comincia il taglio, o uscirebbe dalla sagoma e resterebbe appeso
+     nel vuoto sopra l'angolo. Lo stesso taglio della lastra, applicato al
+     filo, lo accorcia esattamente di quanto serve. */
+  clip-path: var(--sb-shape-lg);
+}
 
 /* ═══ La giornata ════════════════════════════════════════════════════════════
    Tre momenti e tre orari, che prima stavano dentro un paragrafo del
@@ -463,16 +542,31 @@ html.cw-anim .sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
 }
 .sb-cw-bollo svg { display: block; }
 /* Le tappe di servizio — le vie che si percorrono e basta — hanno il bollino
-   pieno e piccolo: sono il passo, non un evento. */
+   pieno e piccolo: sono il passo, non un evento.
+
+   Erano tutti grigi. Adesso ognuno porta una delle sei polveri, e il giro le
+   incontra nell'ordine in cui il titolo le nomina: scendendo la colonna si
+   vede la camminata prendere colore via dopo via, che è letteralmente quello
+   che succede alle sette postazioni. La tinta la sceglie la posizione con
+   :nth-of-type, quindi non c'è una classe in più da scrivere su diciassette
+   righe, e aggiungendo o togliendo una via i colori si ridistribuiscono da
+   sé. Restano decorazioni: un bollino non si preme e non dice niente che il
+   testo accanto non dica già. */
 .sb-cw-tappa--via .sb-cw-bollo {
   width: 0.7rem;
   height: 0.7rem;
   left: -2rem;
   top: 0.5rem;
   border-width: 2px;
-  background: var(--sb-border-stronger);
+  background: var(--cr-passo, var(--sb-border-stronger));
   border-color: var(--sb-bg);
 }
+.sb-cw-tappa--via:nth-of-type(6n + 1) { --cr-passo: var(--cr-magenta); }
+.sb-cw-tappa--via:nth-of-type(6n + 2) { --cr-passo: var(--cr-viola); }
+.sb-cw-tappa--via:nth-of-type(6n + 3) { --cr-passo: var(--cr-ciano); }
+.sb-cw-tappa--via:nth-of-type(6n + 4) { --cr-passo: var(--cr-verde); }
+.sb-cw-tappa--via:nth-of-type(6n + 5) { --cr-passo: var(--cr-giallo); }
+.sb-cw-tappa--via:nth-of-type(6n) { --cr-passo: var(--cr-magenta); }
 /* Partenza e arrivo: gli unici due bollini pieni d'azzurro, perché sono gli
    unici due punti della lista in cui bisogna trovarsi a un'ora precisa. */
 .sb-cw-tappa--capo .sb-cw-bollo {
@@ -487,25 +581,50 @@ html.cw-anim .sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
 .sb-cw-tappa--incrocio .sb-cw-bollo { background: var(--sb-surface-100); color: var(--sb-fg-light); }
 .sb-cw-tappa--incrocio strong { font-weight: 600; }
 
-/* Le tappe entrano una dietro l'altra scendendo. Il passo lo dichiara il
-   markup con data-cw-fila, e lo stato nascosto esiste solo sotto html.cw-anim
-   — cioè solo quando il movimento è permesso: vedi la nota in rivalta.css. */
-html.cw-anim .sb-cw-tappa {
-  opacity: 0;
-  transform: translate3d(-8px, 0, 0);
-}
-html.cw-anim .sb-cw-tappa.sb-cw-dentro {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms),
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--cw-d, 0ms);
-}
+/* Le tappe stavano nascoste e scendevano una dietro l'altra man mano che
+   l'occhio ci arrivava. Adesso l'elenco è scritto e fermo: diciassette vie in
+   colonna sono una cosa che si scorre col dito cercando la propria, e
+   cercarla fra righe che si accendono al passaggio vuol dire non sapere mai
+   se sotto è finito. Il filo colorato a lato continua a riempirsi scendendo:
+   quello è una decorazione, e non nasconde una riga. */
 
 /* ═══ Le sei contrade ════════════════════════════════════════════════════════
    La fila la genera renderContradeFila() in build.mjs e si veste da sé in
    rivalta.css. Qui si aggiunge solo il respiro sopra. */
 .sb-cw-contrade { margin-top: 1.2rem; }
+
+/* La riga delle scadenze, che ha preso il posto del riquadro «Tre modi».
+   Non è una nota in un riquadro: è una riga di prosa sotto la testata, e
+   pesa quanto pesa una riga. Il filo colorato a sinistra è la quarta delle
+   decorazioni a polveri — le stesse sei tinte del titolo e del percorso, in
+   verticale — e serve a farla trovare senza doverla incorniciare. */
+.sb-cw-scad {
+  position: relative;
+  margin: 1.1rem 0 0;
+  padding-left: 0.9rem;
+  max-width: 46rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--sb-fg-light);
+}
+.sb-cw-scad::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  bottom: 0.25em;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--cr-magenta),
+    var(--cr-viola) 30%,
+    var(--cr-ciano) 55%,
+    var(--cr-verde) 78%,
+    var(--cr-giallo)
+  );
+}
+.sb-cw-scad strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cw-scad a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ═══ L'iscrizione ═══════════════════════════════════════════════════════════
    Da schermo largo il modulo e la locandina stanno affiancati: il modulo
@@ -577,8 +696,8 @@ html.cw-anim .sb-cw-tappa.sb-cw-dentro {
 }
 /* Una luce che attraversa la parte già fatta, ogni due secondi e mezzo. È la
    stessa banda dei tasti e delle card — var(--sb-glass-sheen) — e gira solo
-   con html.cw-anim, cioè solo quando il movimento è permesso. */
-html.cw-anim .sb-cw-avanz-barra::after {
+   spenta dove è stato chiesto meno movimento, più in basso. */
+.sb-cw-avanz-barra::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -709,7 +828,7 @@ html.cw-anim .sb-cw-avanz-barra::after {
 .sb-cw-campo[data-stato="ok"] .sb-cw-segno .sb-cw-segno-ok { display: block; }
 .sb-cw-campo[data-stato="ko"] .sb-cw-segno { background: var(--cr-rosso); color: #fff; }
 .sb-cw-campo[data-stato="ko"] .sb-cw-segno .sb-cw-segno-ko { display: block; }
-html.cw-anim .sb-cw-campo[data-stato="ok"] .sb-cw-segno-ok path {
+.sb-cw-campo[data-stato="ok"] .sb-cw-segno-ok path {
   stroke-dasharray: 24;
   animation: sb-cw-tratto 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -1149,18 +1268,26 @@ a.sb-cw-logo:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--sb
 .sb-cw-logo--ap .sb-cw-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
 
 /* ═══ Meno movimento ═════════════════════════════════════════════════════════
-   Le derive del fondale e gli ingressi allo scroll si fermano da sé: i primi
-   per la regola in rivalta.css, i secondi perché la classe che li accende non
-   viene nemmeno scritta. Qui restano le animazioni che nascono da un tasto
-   premuto — la riga che si apre, la spunta che si disegna, il conto che batte
-   — e le due luci in giro: sono micro-movimenti, ma sono movimenti, e chi ha
-   chiesto di non vederne non ne ha chiesti «pochi». */
+   Le derive del fondale si fermano da sé, per la regola in rivalta.css. Gli
+   ingressi allo scroll non ci sono più da fermare: sono stati tolti, e la
+   classe che li accendeva non esiste in nessuno dei tre file.
+
+   Qui resta tutto il resto, e adesso l'elenco deve essere completo: prima le
+   tre animazioni di decorazione — la riga del titolo che deriva, la luce che
+   attraversa la barra, la spunta che si disegna — erano appese a `cw-anim`,
+   cioè si spegnevano da sé insieme agli ingressi. Adesso girano sempre, e
+   sono queste due regole a doverle fermare. Con le altre: la riga che si
+   apre, il conto che batte, il punto che pulsa mentre si aspetta.
+
+   Sono micro-movimenti, ma sono movimenti, e chi ha chiesto di non vederne
+   non ne ha chiesti «pochi». */
 @media (prefers-reduced-motion: reduce) {
   html:not(.rsm-motion) .sb-cw-min,
   html:not(.rsm-motion) .sb-cw-esito,
   html:not(.rsm-motion) .sb-cw-esito--attesa::before,
   html:not(.rsm-motion) .sb-cw-conto-s,
   html:not(.rsm-motion) .sb-cw-segno-ok path,
+  html:not(.rsm-motion) .sb-cw-avanz-barra::after,
   html:not(.rsm-motion) .sb-cw-tinte { animation: none !important; }
   html:not(.rsm-motion) .sb-cw-avanz-fill,
   html:not(.rsm-motion) .sb-cw-segno,
@@ -1171,6 +1298,8 @@ html.rsm-still .sb-cw-min,
 html.rsm-still .sb-cw-esito,
 html.rsm-still .sb-cw-esito--attesa::before,
 html.rsm-still .sb-cw-conto-s,
+html.rsm-still .sb-cw-segno-ok path,
+html.rsm-still .sb-cw-avanz-barra::after,
 html.rsm-still .sb-cw-tinte { animation: none; }
 html.rsm-still .sb-cw-avanz-fill,
 html.rsm-still .sb-cw-segno { transition: none; }
@@ -1204,15 +1333,15 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
        I pezzi sono quelli della home del sito: .sb-hero, .sb-hero-title,
        .sb-hero-copy, .sb-hero-actions. Niente di disegnato apposta. -->
-  <section class="sb-container sb-hero sb-cw-testata" data-cw-fila="90">
-    <span class="sb-riv-eyebrow sb-cw-su">Camminata a colori · Rivalta sul Mincio</span>
+  <section class="sb-container sb-hero sb-cw-testata">
+    <span class="sb-riv-eyebrow">Camminata a colori · Rivalta sul Mincio</span>
 
-    <h1 class="sb-hero-title sb-cw-su">
+    <h1 class="sb-hero-title">
       <span>Color Walk</span>
       <span class="sb-cw-tinte">si torna a colori</span>
     </h1>
 
-    <div class="sb-hero-copy sb-cw-su">
+    <div class="sb-hero-copy">
       <p>Domenica <strong>20 settembre</strong>, per le vie del paese. Si cammina a passo libero: <strong>non c'è cronometro e non c'è classifica</strong>. Lungo il giro ci sono sette postazioni dove si viene coperti di polveri colorate, e si finisce dove si è partiti — in Piazza della Chiesa, con l'aperitivo.</p>
       <p>Si va in <strong>maglia bianca</strong>, che è su quella che i colori si vedono. Se piove, si rinvia a domenica 27 settembre.</p>
     </div>
@@ -1220,7 +1349,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
     <!-- I cinque fatti che servono prima di tutto il resto. Sono .sb-chip,
          le pillole tagliate del sito, con l'icona disegnata dentro la
          pagina: nessun carattere usato come simbolo. -->
-    <div class="sb-chiprow sb-cw-fatti sb-cw-su">
+    <div class="sb-chiprow sb-cw-fatti">
       <span class="sb-chip">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>
         <span>Domenica <b>20 settembre 2026</b></span>
@@ -1243,7 +1372,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
       </span>
     </div>
 
-    <div class="sb-hero-actions sb-cw-su">
+    <div class="sb-hero-actions">
       <a class="sb-btn sb-btn--primary" href="#iscrizione">
         <span>Iscriviti alla camminata</span>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
@@ -1258,7 +1387,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
     </div>
   </section>
 
-  <div class="sb-container sb-cw-manifesto sb-cw-su">
+  <div class="sb-container sb-cw-manifesto">
     <img class="sb-riv-cwbanner" src="assets/foto/color-walk-banner.webp" width="2400" height="900" decoding="async"
       alt="Color Walk, Rivalta sul Mincio — una camminata per tutti, senza cronometro e senza classifica, lungo le vie del paese. Domenica 20 settembre 2026: ritrovo alle 15:30, partenza alle 16:00, Piazza della Chiesa. Quote 5 € dai 6 ai 17 anni e 10 € adulti, aperitivo incluso nella quota. Iscrizioni anche il giorno stesso, maglia bianca consigliata. In caso di pioggia si rinvia a domenica 27 settembre. Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo.">
   </div>
@@ -1288,20 +1417,22 @@ html.rsm-still .sb-cw-segno { transition: none; }
        nell'indirizzo c'è un esito, lo script porta da sé la pagina
        quaggiù, dove l'esito comparirà un istante dopo. -->
   <section class="sb-container sb-riv-sec" id="iscrizione">
-    <div class="sb-sechead sb-cw-su">
+    <!-- Due righe, non quattro. Qui c'erano tre capoversi di testata più un
+         riquadro da sei righe sulle tre strade e le loro scadenze: in tutto
+         una schermata di telefono piena di roba da leggere prima di poter
+         scrivere il proprio nome.
+
+         Quello che è rimasto è ciò che serve a decidere di compilare: chi si
+         iscrive, quanto costa, quanto ci vuole. Il resto non è sparito — le
+         scadenze e il banchetto stanno nella riga qui sotto, le quote per
+         esteso nel conto e nella nota sopra al tasto, e a cosa ci si iscrive
+         nelle tre sezioni che seguono. -->
+    <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
-      <p>Dati e pagamento in un passaggio solo, e ci vuole un minuto. Si iscrive un maggiorenne, che può portare con sé <strong>altri maggiorenni</strong> — ognuno responsabile di sé — e i <strong>minori a suo carico</strong>.</p>
-      <p><strong>10 €</strong> per chi ha 18 anni o più, <strong>5 €</strong> dai 6 ai 17, e <strong>sotto i 6 anni non serve iscriversi</strong>. Le età si contano al giorno della camminata. L'aperitivo di fine giro è compreso nella quota per tutti: non si prenota, ci si ferma e si brinda.</p>
-      <p>Se prima vuoi sapere a cosa ti iscrivi, sta tutto qui sotto: <a href="#giornata">com'è fatta la giornata</a>, <a href="#percorso">il percorso via per via</a> e <a href="#contrade">le sei contrade</a>.</p>
+      <p>Un maggiorenne iscrive sé stesso e <strong>i bambini che accompagna</strong>, e può portare con sé altri adulti. <strong>10 €</strong> dai 18 anni, <strong>5 €</strong> dai 6 ai 17, <strong>sotto i 6 anni si cammina gratis</strong> e non serve iscriverli. Ci vuole un minuto, e si paga adesso o al ritrovo.</p>
     </div>
 
-    <!-- Le tre strade per iscriversi, in tre righe invece che dentro un
-         paragrafo: sono tre, hanno tre scadenze diverse, e chi legge deve
-         poter trovare la propria senza rileggere. -->
-    <div class="sb-riv-note sb-cw-su">
-      <span class="sb-riv-note-t">Tre modi, e quando scadono</span>
-      <p><strong>Online, pagando subito</strong> o <strong>scegliendo i contanti al ritrovo</strong>: qui sotto, fino alle <strong>23:59 di venerdì 18 settembre</strong>. <strong>Di persona al banchetto in piazza</strong>, davanti alla chiesa, col <a href="/color-walk-modulo">modulo cartaceo</a> e in contanti: <strong>martedì 15 settembre dalle 17:30</strong>, e di nuovo <strong>domenica 20 dalle 15:30</strong>, prima della partenza. Il materiale basta per <strong>300 partecipanti</strong>.</p>
-    </div>
+    <p class="sb-cw-scad">Le iscrizioni online chiudono <strong>venerdì 18 settembre alle 23:59</strong>. Dopo, e per chi preferisce la carta, c'è il banchetto in piazza: <a href="/color-walk-modulo">modulo cartaceo</a> e contanti, <strong>martedì 15 dalle 17:30</strong> e <strong>domenica 20 dalle 15:30</strong>. In tutto ci sono <strong>300 posti</strong>.</p>
 
     <!-- Da schermo largo il modulo e la locandina stanno affiancati: la
          locandina a destra, più grande che si può. Da telefono la locandina
@@ -1309,7 +1440,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
          solo il modulo. -->
     <div class="sb-cw-iscr">
 
-    <div class="sb-cw-lastra sb-cw-su"><div class="sb-panel"><div class="sb-panel-inner">
+    <div class="sb-cw-lastra"><div class="sb-panel"><div class="sb-panel-inner">
 
       <div id="cr-esito" class="sb-cw-esito" role="status" aria-live="polite"></div>
 
@@ -1382,24 +1513,37 @@ html.rsm-still .sb-cw-segno { transition: none; }
              compila qui sopra, ogni altro maggiorenne risponde di sé, ed è la
              differenza che tiene separate le due file. Le righe si clonano
              dai due <template> più in basso: nel documento non ci sono finché
-             non le si chiede. -->
+             non le si chiede.
+
+             I bambini vengono PRIMA degli altri adulti, e non è un dettaglio
+             di impaginazione: questa è una camminata per bambini, e chi apre
+             il modulo quasi sempre è un genitore che ne iscrive uno o due.
+             Prima la fila dei minori stava sotto quella dei maggiorenni, cioè
+             sotto un paragrafo su responsabilità e consensi che a un genitore
+             non serve per fare la cosa per cui è venuto. Il gesto principale
+             adesso è il primo che si incontra.
+
+             Anche le due frasi sono state riscritte più corte: quello che
+             dicevano sulla responsabilità non è sparito, sta per intero nella
+             dichiarazione da spuntare qui sotto, che è il posto in cui vale
+             davvero qualcosa. -->
         <div class="sb-cw-gruppo" id="cr-gruppo">
           <p class="sb-cw-gruppo-t">Chi cammina con te <span class="sb-cw-facolt">facoltativo</span></p>
 
-          <p class="sb-cw-gruppo-s">Altri maggiorenni</p>
-          <p class="sb-cw-gruppo-p">Chi ha 18 anni o più e cammina con te — 10 € ciascuno, fino a quattro per iscrizione contando anche te. Ognuno partecipa <strong>sotto la propria responsabilità</strong>, e iscrivendoli dichiari di <strong>averne il consenso</strong>. Serve il codice fiscale di ognuno.</p>
-          <div id="cr-adulti"></div>
-          <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu-adulto">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Aggiungi un maggiorenne</span>
-          </button>
-
-          <p class="sb-cw-gruppo-s">Minori a tuo carico</p>
-          <p class="sb-cw-gruppo-p">I minori dai 6 ai 17 anni che iscrivi insieme a te e accompagni per tutto il percorso — 5 € ciascuno, fino a otto per iscrizione. Sotto i 6 anni non serve iscriverli.</p>
+          <p class="sb-cw-gruppo-s">I bambini che accompagni</p>
+          <p class="sb-cw-gruppo-p">Dai 6 ai 17 anni, <strong>5 € ciascuno</strong>, fino a otto. <strong>Sotto i 6 anni non serve iscriverli</strong>: camminano gratis con te.</p>
           <div id="cr-minori"></div>
           <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Aggiungi un minore</span>
+            <span>Aggiungi un bambino</span>
+          </button>
+
+          <p class="sb-cw-gruppo-s">Altri adulti</p>
+          <p class="sb-cw-gruppo-p">Chi ha 18 anni o più e cammina con te — <strong>10 € ciascuno</strong>, fino a tre oltre a te. Serve anche il loro codice fiscale, perché ognuno risponde di sé.</p>
+          <div id="cr-adulti"></div>
+          <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu-adulto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Aggiungi un adulto</span>
           </button>
         </div>
 
@@ -1414,7 +1558,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
         <!-- Il conto, appena sopra la dichiarazione: si vede cambiare mentre
              si aggiungono persone, e si rilegge un attimo prima di pagare. -->
         <div class="sb-cw-conto">
-          <span class="sb-cw-conto-v" id="cr-conto-voci">1 maggiorenne · 10 €</span>
+          <span class="sb-cw-conto-v" id="cr-conto-voci">1 adulto 10 €</span>
           <span class="sb-cw-conto-s" id="cr-conto-somma">10 €</span>
         </div>
 
@@ -1542,7 +1686,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
       <template id="cr-modello-minore">
         <div class="sb-cw-min" data-minore>
           <div class="sb-cw-min-testa">
-            <span class="sb-cw-min-n" data-etichetta>Minore</span>
+            <span class="sb-cw-min-n" data-etichetta>Bambino</span>
             <button type="button" class="sb-cw-min-via" data-togli>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
               <span>Togli</span>
@@ -1595,7 +1739,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
     </div></div></div>
 
-      <aside class="sb-cw-loc-lato sb-cw-su" aria-label="La locandina da stampare">
+      <aside class="sb-cw-loc-lato" aria-label="La locandina da stampare">
         <p class="sb-cw-loc-lato-t">La locandina</p>
         <p class="sb-cw-loc-lato-p">Scaricala, stampala e attaccala dove può servire.</p>
         <figure class="sb-riv-cwloc">
@@ -1618,13 +1762,13 @@ html.rsm-still .sb-cw-segno { transition: none; }
        paese vuole sapere per prime, e che prima stavano dentro la settima
        riga di un capoverso del regolamento. Tre lastre del sito. -->
   <section class="sb-container sb-riv-sec" id="giornata">
-    <div class="sb-sechead sb-cw-su">
+    <div class="sb-sechead">
       <h2>Com'è fatta la giornata</h2>
       <p>Tre momenti, tutti nella stessa piazza. Non serve prenotare niente: chi è iscritto si presenta al ritrovo, ritira la sacca e parte con gli altri.</p>
     </div>
 
-    <div class="sb-cw-giornata" data-cw-fila="110">
-      <div class="sb-cw-momento sb-cw-su">
+    <div class="sb-cw-giornata">
+      <div class="sb-cw-momento">
         <div class="sb-panel sb-panel--hover"><div class="sb-panel-inner">
           <span class="sb-cw-momento-o">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -1634,7 +1778,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
           <p class="sb-cw-momento-p">Davanti alla chiesa. Si ritira la sacca con il sacchetto di polveri, e chi ha scelto di pagare al ritrovo salda qui.</p>
         </div></div>
       </div>
-      <div class="sb-cw-momento sb-cw-su">
+      <div class="sb-cw-momento">
         <div class="sb-panel sb-panel--hover"><div class="sb-panel-inner">
           <span class="sb-cw-momento-o">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 5h11l-1.6 3.2L16 11.5H5z"/></svg>
@@ -1644,7 +1788,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
           <p class="sb-cw-momento-p">Si parte tutti insieme da Piazza della Chiesa e si gira il paese. Sette postazioni di colore lungo la strada.</p>
         </div></div>
       </div>
-      <div class="sb-cw-momento sb-cw-su">
+      <div class="sb-cw-momento">
         <div class="sb-panel sb-panel--hover"><div class="sb-panel-inner">
           <span class="sb-cw-momento-o">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10l-1.2 6.4a4 4 0 0 1-7.6 0z"/><path d="M12 15v4"/><path d="M8.5 19h7"/></svg>
@@ -1669,12 +1813,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
        qualcuno ad aspettare in un posto sbagliato, e la pagina dice quello
        che si sa — che è sempre meglio di un numero inventato. -->
   <section class="sb-container sb-riv-sec" id="percorso">
-    <div class="sb-sechead sb-cw-su">
+    <div class="sb-sechead">
       <h2>Il percorso</h2>
       <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Diciassette passaggi, tre dei quali attraversano una strada aperta al traffico.</p>
     </div>
 
-    <ol class="sb-cw-giro" data-cw-giro data-cw-fila="55">
+    <ol class="sb-cw-giro" data-cw-giro>
       <li class="sb-cw-tappa sb-cw-tappa--capo">
         <span class="sb-cw-bollo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 5h11l-1.6 3.2L17 11.5H6z"/></svg></span>
         <strong>Piazza della Chiesa</strong>
@@ -1714,12 +1858,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
       </li>
     </ol>
 
-    <div class="sb-riv-note sb-cw-su">
+    <div class="sb-riv-note">
       <span class="sb-riv-note-t">Le sette postazioni di colore</span>
       <p>Lungo il giro ci sono <strong>sette postazioni</strong> dove si viene coperti di polveri colorate. Dove stanno esattamente lo diciamo agli iscritti <strong>per email nei giorni prima</strong>, insieme alla lunghezza del percorso: sono due cose che non sono ancora fissate, e scriverne una a caso vorrebbe dire mandare qualcuno ad aspettare nel posto sbagliato.</p>
     </div>
 
-    <div class="sb-riv-note sb-cw-su">
+    <div class="sb-riv-note">
       <span class="sb-riv-note-t">Come ci si comporta per strada</span>
       <p>I tre attraversamenti si fanno con la strada <strong>chiusa temporaneamente</strong>, il tempo di far passare la camminata, con il supporto della <strong>Polizia Locale</strong>. Per il resto si cammina su strade urbane aperte: si tiene la destra, si seguono le indicazioni dei volontari e si dà sempre precedenza ai mezzi di soccorso.</p>
     </div>
@@ -1730,12 +1874,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
        paese è quelle sei. In fila e senza descrizioni — qui non è questo il
        discorso: per esteso stanno in /eventi. -->
   <section class="sb-container sb-riv-sec" id="contrade">
-    <div class="sb-sechead sb-cw-su">
+    <div class="sb-sechead">
       <h2>Le sei contrade</h2>
       <p>Il paese si divide in sei contrade, ognuna col suo colore e il suo stemma. Sono quelle del Palio, e quest'anno la camminata prende il posto dei tornei.</p>
     </div>
 
-    <div class="sb-cw-contrade sb-cw-su">
+    <div class="sb-cw-contrade">
       <div class="sb-riv-contrade sb-riv-contrade--fila">
       <div class="sb-riv-contrada" data-contrada="filanda"><span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/filanda.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma della Filanda: la filanda con la ciminiera e il bozzolo del baco da seta"></span><span class="sb-riv-contrada-n">la Filanda</span></div>
       <div class="sb-riv-contrada" data-contrada="roccolo"><span class="sb-riv-stemma sb-riv-stemma--arte"><img src="assets/icone/roccolo.webp" width="256" height="256" loading="lazy" decoding="async" alt="Lo stemma del Roccolo: il boschetto di alberi verdi"></span><span class="sb-riv-contrada-n">il Roccolo</span></div>
@@ -1746,36 +1890,36 @@ html.rsm-still .sb-cw-segno { transition: none; }
     </div>
     </div>
 
-    <div class="sb-riv-note sb-cw-su">
+    <div class="sb-riv-note">
       <span class="sb-riv-note-t">Porta i colori della tua contrada</span>
       <p>Se sei di una contrada, <strong>portane i colori</strong>: basta un dettaglio — un fazzoletto, un cappello, una fascia. Sulla maglia bianca ci sta benissimo, e camminare con la propria squadra è un pezzo del divertimento. È un invito, non un obbligo: non c'è nessuna gara fra contrade, e chi non ne ha una parte esattamente come gli altri.</p>
     </div>
 
-    <p class="sb-riv-cap sb-cw-su">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-inline" href="/eventi#contrade">le contrade in /eventi</a></p>
+    <p class="sb-riv-cap">Una per una, con quello che hanno dipinto sul cartello: <a class="sb-inline" href="/eventi#contrade">le contrade in /eventi</a></p>
   </section>
 
   <section class="sb-container sb-riv-sec" id="dietro">
-    <div class="sb-sechead sb-cw-su">
+    <div class="sb-sechead">
       <h2>Chi c'è dietro</h2>
       <p>Chi organizza, chi dà il patrocinio e chi mette il cibo sono tre cose diverse: qui stanno separate, ognuna con quello che fa scritto sopra ai suoi marchi.</p>
     </div>
 
-    <div class="sb-cw-enti" data-cw-fila="90">
-    <div class="sb-cw-ente sb-cw-su">
+    <div class="sb-cw-enti">
+    <div class="sb-cw-ente">
       <p class="sb-cw-ente-t">Organizzano la <strong>Parrocchia Santi Vigilio e Donato</strong> di Rivalta sul Mincio e l'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, circolo affiliato ad ANSPI, a cui va per intero la quota di iscrizione.</p>
       <div class="sb-cw-loghi">
         <a class="sb-cw-logo sb-cw-logo--quadro" href="https://sites.google.com/site/parrocchiadirivaltasm/" target="_blank" rel="noreferrer noopener" title="Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio"><img src="assets/loghi/parrocchia.svg" alt="Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio" loading="lazy" decoding="async"></a>
         <a class="sb-cw-logo sb-cw-logo--anspi" href="https://www.anspi.it" target="_blank" rel="noreferrer noopener" title="Associazione Nazionale San Paolo Italia — oratori e circoli"><img src="assets/loghi/anspi.png" alt="Associazione Nazionale San Paolo Italia — oratori e circoli" loading="lazy" decoding="async"></a>
       </div>
     </div>
-    <div class="sb-cw-ente sb-cw-su">
+    <div class="sb-cw-ente">
       <p class="sb-cw-ente-t"><strong>Con il patrocinio del Comune di Rodigo</strong> e la collaborazione della <strong>Polizia Locale Mantova Ovest</strong>, che presidia gli attraversamenti.</p>
       <div class="sb-cw-loghi">
         <a class="sb-cw-logo sb-cw-logo--rodigo" href="https://comune.rodigo.mn.it" target="_blank" rel="noreferrer noopener" title="Comune di Rodigo — con il patrocinio del Comune"><img src="assets/loghi/comune-rodigo.webp" alt="Comune di Rodigo — con il patrocinio del Comune" loading="lazy" decoding="async"></a>
         <a class="sb-cw-logo sb-cw-logo--quadro" href="https://www.comune.rodigo.mn.it/amministrazione/unita_organizzativa/polizia_locale/" target="_blank" rel="noreferrer noopener" title="Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti"><img src="assets/loghi/polizia-locale.webp" alt="Corpo Intercomunale di Polizia Locale Mantova Ovest — presidia gli attraversamenti" loading="lazy" decoding="async"></a>
       </div>
     </div>
-    <div class="sb-cw-ente sb-cw-su">
+    <div class="sb-cw-ente">
       <p class="sb-cw-ente-t"><strong>Con il sostegno delle attività di Rivalta</strong>, che offrono l'aperitivo di fine camminata e quello che ci sta intorno — tutto compreso nella quota.</p>
       <div class="sb-cw-loghi">
         <a class="sb-cw-logo " href="https://www.facebook.com/avisrsm/" target="_blank" rel="noreferrer noopener" title="AVIS Rivalta sul Mincio — offre l'aperitivo"><img src="assets/loghi/avis-rivalta.webp" alt="AVIS Rivalta sul Mincio — offre l'aperitivo" loading="lazy" decoding="async"></a>
@@ -1787,7 +1931,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
         <a class="sb-cw-logo sb-cw-logo--quadro" href="https://www.facebook.com/nonsololady/" target="_blank" rel="noreferrer noopener" title="Non Solo Lady — parrucchiere di Marco Marazzi"><img src="assets/loghi/non-solo-lady.webp" alt="Non Solo Lady — parrucchiere di Marco Marazzi" loading="lazy" decoding="async"></a>
       </div>
     </div>
-    <div class="sb-cw-ente sb-cw-su sb-cw-ente--minuta">
+    <div class="sb-cw-ente sb-cw-ente--minuta">
       <p class="sb-cw-ente-t">Sito e materiali di <strong>Alberto Pecchini</strong> — <span class="sb-cw-ente-luogo">Rivalta sul Mincio, frazione del Comune di Rodigo (MN)</span></p>
       <div class="sb-cw-loghi">
         <a class="sb-cw-logo sb-cw-logo--ap" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener" title="Alberto Pecchini"><img src="assets/loghi/ap.png" alt="Alberto Pecchini" loading="lazy" decoding="async"></a>
@@ -2084,7 +2228,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
     specAdulto("nascita", true, function (v) { return dataValida(v) && etaAllEvento(v) >= 18 && etaAllEvento(v) < 120; },
       function (v) {
         if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
-        if (etaAllEvento(v) < 18) return "Per iscriversi bisogna essere maggiorenni il giorno della camminata. Se stai iscrivendo un minore, mettilo fra chi cammina con te, sotto i tuoi dati.";
+        if (etaAllEvento(v) < 18) return "Per iscriversi bisogna essere maggiorenni il giorno della camminata. Se stai iscrivendo un bambino, mettilo fra chi cammina con te, sotto i tuoi dati.";
         return "Questa data di nascita non è plausibile: controllala.";
       }),
     specAdulto("cf", true, cfAdulto.prova, cfAdulto.errore, { maiuscolo: true }),
@@ -2226,12 +2370,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
   function numeraRighe() {
     for (var i = 0; i < righe.length; i++) {
-      testo(righe[i].etichetta, "Minore " + (i + 1));
+      testo(righe[i].etichetta, "Bambino " + (i + 1));
     }
     tastoPiu.disabled = righe.length >= MAX_MINORI;
     testo(etichettaPiu, righe.length >= MAX_MINORI
       ? "Massimo " + MAX_MINORI + " per iscrizione"
-      : (righe.length ? "Aggiungi un altro minore" : "Aggiungi un minore"));
+      : (righe.length ? "Aggiungi un altro bambino" : "Aggiungi un bambino"));
   }
 
   function aggiungiMinore(colFuoco, valori) {
@@ -2365,8 +2509,8 @@ html.rsm-still .sb-cw-segno { transition: none; }
     var pieno = righeA.length >= MAX_ADULTI - 1;
     tastoPiuA.disabled = pieno;
     testo(etichettaPiuA, pieno
-      ? "Massimo " + MAX_ADULTI + " maggiorenni per iscrizione"
-      : (righeA.length ? "Aggiungi un altro maggiorenne" : "Aggiungi un maggiorenne"));
+      ? "Massimo " + MAX_ADULTI + " adulti per iscrizione"
+      : (righeA.length ? "Aggiungi un altro adulto" : "Aggiungi un adulto"));
   }
 
   function aggiungiAdulto(colFuoco, valori) {
@@ -2510,12 +2654,12 @@ html.rsm-still .sb-cw-segno { transition: none; }
        in mezzo separa le due fasce — prima separava anche il nome dal
        prezzo, e con due fasce vere quel doppio mestiere non regge. */
     var vociConto = [quantiA === 1
-      ? "1 maggiorenne " + QUOTA_ADULTO + " €"
-      : quantiA + " maggiorenni " + QUOTA_ADULTO + " € ciascuno"];
+      ? "1 adulto " + QUOTA_ADULTO + " €"
+      : quantiA + " adulti " + QUOTA_ADULTO + " € ciascuno"];
     if (quanti) {
       vociConto.push(quanti === 1
-        ? "1 ragazzo " + QUOTA_MINORE + " €"
-        : quanti + " ragazzi " + QUOTA_MINORE + " € ciascuno");
+        ? "1 bambino " + QUOTA_MINORE + " €"
+        : quanti + " bambini " + QUOTA_MINORE + " € ciascuno");
     }
     testo(contoVoci, vociConto.join(" · "));
     testo(contoSomma, somma + " €");

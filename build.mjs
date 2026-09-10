@@ -1278,13 +1278,16 @@ ${loghi.map(renderPiastrella).join("\n")}
 
 /* Una disposizione sola: la frase, e sotto i marchi che descrive. L'ordine
    nel documento è quello in cui si legge — anche a fogli di stile spenti,
-   anche a voce. .sb-cw-su fa entrare la fascia scorrendo, quando il
-   movimento è permesso: la classe è quella della pelle della Color Walk in
-   rivalta.css, e senza html.cw-anim non fa niente. */
+   anche a voce.
+
+   Le fasce non entrano più scorrendo: portavano .sb-cw-su e il passo della
+   cascata in data-cw-fila, e sono andati via con tutti gli altri ingressi
+   della Color Walk. Chi arriva in fondo alla pagina sta cercando chi ha
+   organizzato, non uno spettacolo. */
 const renderLoghi = () =>
-  `<div class="sb-cw-enti" data-cw-fila="90">
+  `<div class="sb-cw-enti">
 ${FASCE_LOGHI.map((f) => {
-  const classe = "sb-cw-ente sb-cw-su" + (f.minuta ? " sb-cw-ente--minuta" : "");
+  const classe = "sb-cw-ente" + (f.minuta ? " sb-cw-ente--minuta" : "");
   return `    <div class="${classe}">
       <p class="sb-cw-ente-t">${f.testo}</p>
 ${gruppoLoghi(f.loghi)}
