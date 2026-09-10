@@ -15,11 +15,32 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
+import { watch } from "node:fs";
+import { spawn } from "node:child_process";
 import { extname, join, normalize } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
-const PORT = Number(process.env.PORT || process.argv[2] || 8080);
+const PORT = Number(process.env.PORT || process.argv.find((a) => /^\d+$/.test(a)) || 8080);
+
+/* `node serve.mjs --guarda` accende anche il build in sorveglianza, come
+   figlio di questo processo. È il motivo per cui il terminale torna a essere
+   uno solo: finora il giro era cambia il frammento, vai nell'altro terminale,
+   rilancia il build, torna nel browser, ricarica. Di quattro gesti, tre erano
+   sempre gli stessi. */
+const GUARDA = process.argv.includes("--guarda");
+if (GUARDA) {
+  const figlio = spawn(process.execPath, ["build.mjs", "--guarda"], { stdio: "inherit" });
+  // Se il guardiano muore, muore anche l'anteprima: un server che mostra
+  // pagine che non si aggiornano più è peggio di un server spento, perché
+  // sembra che funzioni.
+  figlio.on("exit", (codice) => {
+    console.log(`\nIl build in sorveglianza è uscito (${codice}). Chiudo anche l'anteprima.`);
+    process.exit(codice ?? 0);
+  });
+  for (const segnale of ["SIGINT", "SIGTERM"]) process.on(segnale, () => (figlio.kill(), process.exit(0)));
+}
+
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -69,8 +90,65 @@ const apiPreview = async (nome, req, res) => {
   return true;
 };
 
+/* ── Il ricarico ──────────────────────────────────────────────────────────
+   Il build riscrive le pagine in radice; questo se ne accorge e lo dice al
+   browser, che si ricarica da sé. Sono venti righe e un `EventSource`, che i
+   browser hanno da sempre: niente WebSocket, niente pacchetti, niente che
+   debba essere installato per guardare una pagina.
+
+   Lo script si inietta al momento di servire, non si scrive nei file: quello
+   che sta su disco resta identico a quello che va in produzione. Un'anteprima
+   che modifica i file che mostra è un'anteprima di cui non ci si può fidare.
+
+   Solo `assets/` e le pagine in radice: assets/foto/_w/ no, perché ci scrive
+   il build a ogni ritocco e ricaricare a ogni derivata tagliata vorrebbe dire
+   ricaricare settanta volte di fila. */
+const ascoltatori = new Set();
+let annuncio = null;
+
+const annuncia = () => {
+  clearTimeout(annuncio);
+  // Un build tocca più file di fila: si aspetta che abbia finito, o il browser
+  // si ricarica una volta per pagina riscritta.
+  annuncio = setTimeout(() => {
+    for (const r of ascoltatori) r.write("data: ricarica\n\n");
+  }, 120);
+};
+
+const rilevante = (f) => {
+  const p = String(f || "").replace(/\\/g, "/");
+  if (!p || p.includes("_w/") || /~$/.test(p) || /\.tmp$/i.test(p)) return false;
+  return /\.(html|css|js)$/i.test(p);
+};
+
+for (const d of [".", "assets"]) {
+  try {
+    watch(d, { recursive: d !== "." }, (_, f) => rilevante(f) && annuncia());
+  } catch {}
+}
+
+const SCRIPT_RICARICO = `<script>
+/* Solo in anteprima: lo inietta serve.mjs, non sta in nessun file. */
+(function(){var s=new EventSource("/__ricarica");
+s.onmessage=function(){location.reload()};
+s.onerror=function(){/* il server e' giu': EventSource riprova da se' */}})();
+</script>
+`;
+
 createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split("?")[0]);
+
+  if (url === "/__ricarica") {
+    res.writeHead(200, {
+      "content-type": "text/event-stream; charset=utf-8",
+      "cache-control": "no-store",
+      connection: "keep-alive",
+    });
+    res.write("retry: 500\n\n");
+    ascoltatori.add(res);
+    req.on("close", () => ascoltatori.delete(res));
+    return;
+  }
 
   /* Tutto ciò che sta sotto /api/ finisce qui e non prosegue: se il nome non
      corrisponde a una funzione è un 404, mai il sorgente servito come file. */
@@ -113,11 +191,21 @@ createServer(async (req, res) => {
     return;
   }
 
+  const tipo = TYPES[extname(file)] || "application/octet-stream";
   res.writeHead(200, {
-    "content-type": TYPES[extname(file)] || "application/octet-stream",
+    "content-type": tipo,
     // In anteprima la cache è solo un modo per guardare la versione di ieri.
     "cache-control": "no-store",
   });
-  res.end(await readFile(file));
+  const corpo = await readFile(file);
+  // Lo script del ricarico entra qui, all'ultimo momento, e solo nell'HTML.
+  res.end(
+    tipo === TYPES[".html"] ? String(corpo).replace(/<\/body>/i, `${SCRIPT_RICARICO}</body>`) : corpo
+  );
   console.log(`200 ${url}`);
-}).listen(PORT, () => console.log(`Anteprima su http://localhost:${PORT}  (Ctrl+C per fermare)`));
+}).listen(PORT, () =>
+  console.log(
+    `Anteprima su http://localhost:${PORT}  (Ctrl+C per fermare)` +
+      (GUARDA ? "" : `\nCon «node serve.mjs --guarda» il build si rifà da sé e la pagina si ricarica.`)
+  )
+);

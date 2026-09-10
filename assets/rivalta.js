@@ -94,9 +94,12 @@
       }
     });
     // Tornando al layout largo il foglio non deve restare "aperto" e riaprirsi
-    // da solo la volta dopo che si stringe la finestra.
+    // da solo la volta dopo che si stringe la finestra. La misura è la stessa
+    // a cui il CSS fa comparire la fila di voci e sparire l'hamburger: era
+    // 1180, che non corrispondeva più a niente da quando le voci in barra
+    // sono cinque e la soglia è scesa a 1024.
     window.addEventListener("resize", function () {
-      if (window.innerWidth >= 1180) setOpen(false);
+      if (window.innerWidth >= 1024) setOpen(false);
     });
   }
 
@@ -197,6 +200,170 @@
     });
   }
 
+
+  /* ── Dove sono, su una pagina lunga ──────────────────────────────────────
+     /paese sono settecento righe e sette sezioni: l'indice sta in cima, e da
+     lì in poi non serve più a niente perché non si vede più.
+
+     Da qui in avanti tre superfici dicono la stessa cosa, tutte alimentate da
+     un elenco solo — le pillole dell'indice, che il build scrive e che ci
+     sono anche a script spenti:
+       · le pillole stesse, segnate mentre si scorre;
+       · la colonna a lato (.sb-riv-rail), che su schermo largo sta ferma
+         accanto al testo;
+       · una scheda che si apre dal tasto in basso, che su telefono è l'unico
+         posto dove un indice non costa spazio a nessuno.
+
+     Questo NON è un «reveal allo scroll», che questo sito rifiuta e continua
+     a rifiutare: non compare e non svanisce niente: si sposta un segno su una
+     voce. È orientamento, non annuncio. */
+  var pillole = [].slice.call(document.querySelectorAll(".sb-riv-toc a"));
+
+  if (pillole.length > 2) {
+    var voci = pillole
+      .map(function (a) {
+        var id = (a.getAttribute("href") || "").slice(1);
+        return { id: id, nome: a.textContent, sez: document.getElementById(id), eco: [a] };
+      })
+      .filter(function (v) {
+        return v.sez;
+      });
+
+    // La colonna a lato è una copia scritta dal build: si aggancia alle stesse
+    // voci invece di tenere un secondo elenco che può divergere.
+    [].forEach.call(document.querySelectorAll(".sb-riv-rail-nav a"), function (a) {
+      var href = a.getAttribute("href") || "";
+      voci.forEach(function (v) {
+        if (href === "#" + v.id) v.eco.push(a);
+      });
+    });
+
+    /* ── La scheda su schermo stretto ─────────────────────────────────────
+       Si costruisce qui e non nel frammento perché senza JavaScript non si
+       aprirebbe: un tasto che non fa niente è peggio di un tasto che non c'è.
+       Il suo contenuto è lo stesso elenco, non una terza copia. */
+    var wrap = document.querySelector(".sb-riv-top-wrap");
+    var apri = null;
+    var scheda = null;
+
+    if (wrap && tastoSu) {
+      apri = document.createElement("button");
+      apri.type = "button";
+      apri.className = "sb-riv-top sb-riv-ind-apri";
+      apri.setAttribute("aria-label", "Sezioni di questa pagina");
+      apri.setAttribute("aria-expanded", "false");
+      apri.title = "Sezioni di questa pagina";
+      apri.innerHTML =
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">' +
+        '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>';
+
+      scheda = document.createElement("div");
+      scheda.className = "sb-riv-ind";
+      scheda.hidden = true;
+      scheda.innerHTML =
+        '<div class="sb-riv-ind-scrim" data-ind-chiudi></div>' +
+        '<div class="sb-riv-ind-box" role="dialog" aria-modal="true" aria-label="Sezioni di questa pagina">' +
+        '<p class="sb-riv-ind-t">In questa pagina</p><nav class="sb-riv-ind-nav"></nav></div>';
+
+      var lista = scheda.querySelector(".sb-riv-ind-nav");
+      voci.forEach(function (v) {
+        var a = document.createElement("a");
+        a.href = "#" + v.id;
+        a.textContent = v.nome;
+        lista.appendChild(a);
+        v.eco.push(a);
+      });
+
+      var mostra = function (aperta) {
+        scheda.hidden = !aperta;
+        apri.setAttribute("aria-expanded", aperta ? "true" : "false");
+        if (aperta) lista.querySelector("a").focus();
+        else apri.focus();
+      };
+
+      apri.addEventListener("click", function () {
+        mostra(scheda.hidden);
+      });
+      scheda.addEventListener("click", function (e) {
+        // Un tocco su una voce porta alla sezione: la scheda ha finito.
+        if (e.target.closest("[data-ind-chiudi]") || e.target.closest("a")) mostra(false);
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !scheda.hidden) mostra(false);
+      });
+
+      wrap.insertBefore(apri, tastoSu);
+      document.body.appendChild(scheda);
+    }
+
+    /* Quale sezione. Quella che ha superato la testata per ultima: è la
+       sezione che si sta leggendo, non quella che si intravede in fondo.
+
+       Non è un IntersectionObserver ma un conto dentro il rAF dello scroll che
+       già c'era: un osservatore in più per una cosa che si sa leggendo una
+       coordinata sarebbe un secondo meccanismo da tenere d'accordo col primo. */
+    var attiva = null;
+    var segna = function () {
+      /* La soglia è appena sotto la testata appiccicata (64 px) più un po'
+         d'aria: una sezione conta come «quella che si sta leggendo» quando il
+         suo titolo è passato di lì, non quando spunta in fondo allo schermo.
+
+         Si misura con getBoundingClientRect e non con offsetTop: offsetTop è
+         la distanza dal genitore posizionato — qui .sb-main, che comincia
+         sotto la testata — e le sezioni risulterebbero tutte più in alto di
+         dove sono, facendo scattare l'evidenza con un'intera testata di
+         ritardo. Il rettangolo è in coordinate di schermo, e non ha genitori. */
+      var scelta = voci[0];
+      for (var i = 0; i < voci.length; i++) {
+        if (voci[i].sez.getBoundingClientRect().top <= 96) scelta = voci[i];
+      }
+      // In fondo alla pagina vince sempre l'ultima: le sezioni corte in coda,
+      // altrimenti, non si accenderebbero mai perché non arrivano alla soglia.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) scelta = voci[voci.length - 1];
+      if (scelta === attiva) return;
+      if (attiva) attiva.eco.forEach(function (e) { e.removeAttribute("aria-current"); });
+      scelta.eco.forEach(function (e) { e.setAttribute("aria-current", "true"); });
+      attiva = scelta;
+    };
+
+    var attesa = false;
+    var alloScroll = function () {
+      if (attesa) return;
+      attesa = true;
+      requestAnimationFrame(function () {
+        segna();
+        // Il tasto dell'indice compare quando compare quello per tornare in
+        // cima: sono la stessa domanda — «sono lontano, dove sono finito?» —
+        // e devono comparire insieme o l'angolo si popola a scatti.
+        if (apri) apri.classList.toggle("sb-riv-top--visibile", window.scrollY > window.innerHeight * 1.5);
+        attesa = false;
+      });
+    };
+    window.addEventListener("scroll", alloScroll, { passive: true });
+    window.addEventListener("resize", alloScroll, { passive: true });
+    segna();
+  }
+
+  /* ── «Continua di là» ────────────────────────────────────────────────────
+     Le tabelle più larghe dello schermo scorrono di lato, ma la lastra taglia
+     il bordo di netto e sembrano finite. Qui si accende il velo sul bordo
+     destro solo quando c'è davvero altro da vedere, e si spegne arrivati in
+     fondo: a script spenti non compare, e va bene così — meglio nessuna
+     promessa che una promessa che non si può mantenere.
+
+     Il riquadro prende il fuoco perché glielo scrive build.mjs (tabindex e
+     role): qui si aggiunge solo quello che il CSS non sa, cioè a che punto
+     dello scorrimento si è. */
+  [].forEach.call(document.querySelectorAll(".sb-riv-scroll"), function (box) {
+    var wrap = box.closest(".sb-riv-tablewrap");
+    if (!wrap) return;
+    var guarda = function () {
+      wrap.classList.toggle("sb-riv-tablewrap--altro", box.scrollWidth - box.clientWidth - box.scrollLeft > 4);
+    };
+    box.addEventListener("scroll", guarda, { passive: true });
+    window.addEventListener("resize", guarda, { passive: true });
+    guarda();
+  });
 
   /* ── Le tendine della barra ───────────────────────────────────────────────
      Aprirle è compito del CSS: :hover e :focus-within bastano, e bastano

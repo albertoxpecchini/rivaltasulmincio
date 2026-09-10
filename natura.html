@@ -246,9 +246,20 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#ciclabili">Ciclabili e sentieri</a>
     <a href="#navigazione">Navigazione</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#parchi" tabindex="-1">Parchi e verde</a>
+      <a href="#fontanelle" tabindex="-1">Fontanelle e arredo</a>
+      <a href="#ambiente" tabindex="-1">Uso del suolo</a>
+      <a href="#acque" tabindex="-1">Corsi d'acqua</a>
+      <a href="#ciclabili" tabindex="-1">Ciclabili e sentieri</a>
+      <a href="#navigazione" tabindex="-1">Navigazione</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="parchi">
+<section class="sb-container sb-riv-sec" id="parchi" data-indice="Parchi e verde">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">14 — Verde pubblico</span>
     <h2>Parchi pubblici</h2>
@@ -261,7 +272,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Parco</th><th scope="col">Ubicazione</th><th scope="col">Orario</th></tr></thead>
         <tbody>
@@ -290,7 +301,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </ul>
 </section>
 
-<section class="sb-container sb-riv-sec" id="fontanelle">
+<section class="sb-container sb-riv-sec" id="fontanelle" data-indice="Fontanelle e arredo">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">14 — Acqua e arredo</span>
     <h2>Fontanelle e arredo urbano</h2>
@@ -298,7 +309,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="fontanelle-d-acqua-potabile-5">Fontanelle d'acqua potabile — 5</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Posizione</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -345,7 +356,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Uso del suolo</th><th scope="col" class="num">Ettari</th></tr></thead>
         <tbody>
@@ -419,7 +430,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Corso d'acqua</th><th scope="col">Tipo</th><th scope="col" class="num">Lunghezza mappata</th></tr></thead>
         <tbody>
@@ -450,7 +461,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Percorso</th><th scope="col">Tipo</th><th scope="col">Lunghezza mappata</th></tr></thead>
         <tbody>
@@ -480,7 +491,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="navigazione">
+<section class="sb-container sb-riv-sec" id="navigazione" data-indice="Navigazione">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">15 — Sul fiume</span>
     <h2>Navigazione sul Mincio</h2>

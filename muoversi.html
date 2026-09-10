@@ -246,9 +246,20 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#parcheggi">Parcheggi</a>
     <a href="#trasporti">Trasporti pubblici</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#strade" tabindex="-1">Strade e vie</a>
+      <a href="#civici" tabindex="-1">Civici mappati</a>
+      <a href="#sicurezza" tabindex="-1">Dossi e autovelox</a>
+      <a href="#incroci" tabindex="-1">Incroci</a>
+      <a href="#parcheggi" tabindex="-1">Parcheggi</a>
+      <a href="#trasporti" tabindex="-1">Trasporti pubblici</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="strade">
+<section class="sb-container sb-riv-sec" id="strade" data-indice="Strade e vie">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">11 — Viabilità</span>
     <h2>Strade, vicoli, piazze</h2>
@@ -268,7 +279,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="viabilita-principale">Viabilità principale</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Strada</th><th scope="col">Ruolo</th></tr></thead>
         <tbody>
@@ -284,7 +295,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <h3 class="sb-riv-subhead" id="elenco-completo-delle-vie-mappate">Elenco completo delle vie mappate</h3>
   <p class="sb-riv-p">Ordinate per distanza dal centro. <strong>SU</strong> = senso unico.</p>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Via</th><th scope="col">Tipo</th><th scope="col">Fondo</th><th scope="col">Limite</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -381,14 +392,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="civici">
+<section class="sb-container sb-riv-sec" id="civici" data-indice="Civici mappati">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">11 — Numerazione</span>
     <h2>Civici mappati per via</h2>
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Via</th><th scope="col" class="num">N° civici</th><th scope="col">Numeri</th></tr></thead>
         <tbody>
@@ -420,7 +431,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-cap"><strong>177 civici</strong> distribuiti su 21 vie. L'elenco completo, via per via, è in <a href="data/rivalta_dataset.json">rivalta_dataset.json</a> alla chiave <code>civici_mappati</code>.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="sicurezza">
+<section class="sb-container sb-riv-sec" id="sicurezza" data-indice="Dossi e autovelox">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">12 — Sicurezza stradale</span>
     <h2>Dossi, attraversamenti, autovelox</h2>
@@ -428,7 +439,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="dossi-e-rallentatori-14-in-totale">Dossi e rallentatori — 14 in totale</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Tipo</th><th scope="col" class="num">N°</th><th scope="col">Dove</th></tr></thead>
         <tbody>
@@ -443,7 +454,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="autovelox-e-controlli-di-velocita">Autovelox e controlli di velocità</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Posizione</th><th scope="col">Limite associato</th></tr></thead>
         <tbody>
@@ -470,7 +481,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p">Cinquanta barriere sul territorio, prevalentemente accessi a fondi agricoli e argini: <strong>34 cancelli</strong>, <strong>10 dissuasori</strong> (bollard), <strong>3 cancelli a battente</strong>, <strong>2 catene</strong>, <strong>1 sbarra</strong>.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="incroci">
+<section class="sb-container sb-riv-sec" id="incroci" data-indice="Incroci">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">12 — Nodi</span>
     <h2>Incroci fra vie denominate</h2>
@@ -478,7 +489,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col" class="num">Dist.</th><th scope="col">Incrocio</th></tr></thead>
         <tbody>
@@ -522,7 +533,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Nome / posizione</th><th scope="col" class="num">Posti</th><th scope="col" class="num">Disabili</th><th scope="col">Fondo</th></tr></thead>
         <tbody>
@@ -552,7 +563,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-cap">Le due colonnine di <strong>ricarica veicoli elettrici Enel X</strong> sono in zona Via Francesca, 1 posto ciascuna, a pagamento, ad accesso libero. I parcheggi interrati privati sono in Via delle Arellaie e Via Andrea Costa.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="trasporti">
+<section class="sb-container sb-riv-sec" id="trasporti" data-indice="Trasporti pubblici">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">16 — Trasporto pubblico</span>
     <h2>Autobus, carburante, storia</h2>
@@ -560,7 +571,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Fermata</th><th scope="col">Rif.</th><th scope="col">Dotazioni</th></tr></thead>
         <tbody>

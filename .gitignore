@@ -12,3 +12,8 @@ design/*/tema-*.html
 .env
 .env.local
 
+
+# Il numero del processo che sorveglia i frammenti (`node build.mjs --guarda`).
+# Serve a impedire che due guardiani ricostruiscano lo stesso repository
+# ognuno per conto suo; nasce e muore col processo, non è roba da versionare.
+_build/.guardiano

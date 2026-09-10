@@ -2,18 +2,10 @@
 <!--desc: Anagrafica, etimologia, dati ISTAT e demografia, tessuto edificato, monumenti, luoghi di culto e orari delle S. Messe di Rivalta sul Mincio (Rodigo, MN).-->
 
 <section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Sezioni 1 · 2 · 8 · 21</span>
+  <span class="sb-riv-eyebrow">{{sezioni}}</span>
   <h1>Il paese</h1>
   <p class="sb-riv-lede">Chi è Rivalta prima di essere un elenco di servizi: da dove viene il nome, quante persone ci vivono davvero, com'è fatto il tessuto delle case, cosa resta del passato.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
-    <a href="#anagrafica">Anagrafica</a>
-    <a href="#demografia">Demografia</a>
-    <a href="#edificato">Edificato e urbanistica</a>
-    <a href="#novecento">Rivalta nel '900</a>
-    <a href="#monumenti">Monumenti</a>
-    <a href="#chiese">Luoghi di culto</a>
-    <a href="#messe">Orari delle Messe</a>
-  </nav>
+  {{indice}}
 </section>
 
 <!-- ── 1. ANAGRAFICA ─────────────────────────────────────────────────────── -->
@@ -371,7 +363,7 @@
 </section>
 
 <!-- ── 21. EDIFICATO ─────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="edificato">
+<section class="sb-container sb-riv-sec" id="edificato" data-indice="Edificato e urbanistica">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">21 — Urbanistica</span>
     <h2>Edificato e caratteri urbanistici</h2>
@@ -440,7 +432,7 @@
   <h3 class="sb-riv-subhead">Le due sale</h3>
   <p class="sb-riv-p">Nel Novecento in paese si andava al cinema e alla festa in due posti: il <strong>Teatro Rossini</strong>, verso il fiume, e il <strong>Teatro Italia</strong> — «dla Pina», dai nomi di Secondo Villagrossi e Giuseppina Tosi che lo tenevano — in centro. Alla fine del secolo non ne restava nessuno.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/teatro-rossini-1994-la-demolizione.jpg" alt="Un edificio in mattoni sventrato, il tetto squarciato con le travi scoperte e un grande cumulo di calcinacci che invade la strada in primo piano; dietro, le case del paese e rami spogli." loading="lazy" decoding="async" width="1600" height="1067">
@@ -455,7 +447,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/teatro-italia-1980.jpg" alt="Un edificio a due piani intonacato che fa angolo con la strada, con una fascia dipinta scolorita lungo il primo piano e una parte bassa rifatta di bianco; accanto una casa in mattoni con un passaggio ad arco, la strada che curva vuota, cielo coperto." loading="lazy" decoding="async" width="1600" height="1067">
@@ -473,7 +465,7 @@
   <h3 class="sb-riv-subhead">«La pisiun granda»</h3>
   <p class="sb-riv-p">La <strong>«pisiun granda»</strong> — la <em>possessione</em> grande, nel dialetto del posto — è il grande complesso rurale lungo {{luogo:strada-settefrati|via Settefrati}}. Il Circolo l'ha fotografata tre volte: dalla strada, all'incrocio e nella corte. È una delle corti che il paese ha tenuto.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/pisiun-granda-1981-via-settefrati.jpg" alt="Una strada di campagna fiancheggiata a sinistra da una massa fitta e scura di siepe e alberi che nasconde gli edifici; in fondo affiora una casa colonica a due piani, lampioni sulla destra, strada vuota." loading="lazy" decoding="async" width="1600" height="1067">
@@ -488,7 +480,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/pisiun-granda-1983-incrocio.jpg" alt="Una strada sterrata che si allontana diritta; a sinistra un palo del semaforo e un cartello con un telo «MOSTRA», a destra le lunghe stalle basse della corte con il tetto in coppi avvallato e pioppi alti dietro." loading="lazy" decoding="async" width="1600" height="1067">
@@ -503,7 +495,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/pisiun-granda-1989-la-corte.jpg" alt="Il cortile di una corte rurale con una casa colonica a due piani e un grande portone ad arco carraio, l'intonaco scrostato; in primo piano una bassa costruzione con il tetto in coppi sfondato, a destra un muro cieco di mattoni, aia sterrata, un'auto piccola." loading="lazy" decoding="async" width="1600" height="1067">
@@ -521,7 +513,7 @@
   <h3 class="sb-riv-subhead">Le cascine</h3>
   <p class="sb-riv-p">Attorno al paese le cascine hanno fatto strade diverse. Quella di <strong>Amadio Cantoni</strong>, in via Settefrati, non c'è più; il retro di un'altra corte è diventato la sede del {{luogo:centro-visita-parco-mincio|Centro Parco}}; «<strong>al dòs</strong>» è rimasto in piedi.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/cascina-cantoni-1981.jpg" alt="Un cascinale con una casa colonica a due piani a destra e un portone ad arco, e un lungo porticato basso di fienile con pilastri in muratura che si allunga a sinistra sotto grandi alberi; erba incolta in primo piano." loading="lazy" decoding="async" width="1600" height="1067">
@@ -536,7 +528,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/centro-parco-1980-il-retro.jpg" alt="Il fronte posteriore di un complesso rurale: una casa a due piani e lunghe ali più basse con portico, i tetti in coppi avvallati; davanti attrezzi agricoli e un'intelaiatura metallica, campo aperto." loading="lazy" decoding="async" width="1600" height="1067">
@@ -551,7 +543,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/al-dos-1985.jpg" alt="In primo piano a destra un basso fabbricato agricolo con il tetto in coppi rotto e l'intonaco che cade; una stradina sterrata in salita ne costeggia il muro, dietro una casa a due piani, sulla destra uno steccato di pali." loading="lazy" decoding="async" width="1600" height="1067">
@@ -569,7 +561,7 @@
   <h3 class="sb-riv-subhead">Il dopolavoro di via Gramsci</h3>
   <p class="sb-riv-p">In <strong>via Gramsci</strong> stava il <strong>dopolavoro</strong>. È stato fotografato due volte a pochi anni di distanza, sempre prima del recupero, e poi rifatto: una parte è tornata a essere case e botteghe, il resto è un centro commerciale e finanziario.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/dopolavoro-gramsci-1987.jpg" alt="Un edificio a due piani che corre lungo la strada, con l'intonaco molto degradato e striato, le finestre a piano terra con inferriate e una porta; una cancellata di ferro e un pilastro intonacato all'angolo vicino, marciapiede vuoto." loading="lazy" decoding="async" width="1600" height="1067">
@@ -584,7 +576,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/dopolavoro-gramsci-1986.jpg" alt="Una parete a due piani con l'intonaco caduto a chiazze e una scala esterna che sale a una porta al primo piano; panni scuri stesi su un filo teso lungo il muro, una cancellata di ferro davanti, una scritta a vernice vicino alla porta." loading="lazy" decoding="async" width="1600" height="1067">
@@ -602,7 +594,7 @@
   <h3 class="sb-riv-subhead">Le case e le botteghe</h3>
   <p class="sb-riv-p">E poi le case singole, quelle che in paese si nominano ancora con il soprannome di chi ci stava: la <strong>casa Sarzi Sartori</strong> — «Pèpo e Gigeto» — in via Tezzone, la <strong>casa Storti</strong> che era «<strong>Al Bacanin</strong>» dla Olga e Tarabin, la <strong>trattoria «Al Pescatore»</strong> dei Pezzini. E in via Francesca, dove c'era l'officina dei Bellini, adesso si vendono fiori.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/via-tezzone-1998-casa-sarzi-sartori.jpg" alt="Una casa a due piani intonacata con le finestre senza infissi e il tetto in coppi rado, in mezzo a un prato incolto; a destra una rete metallica la separa da una casa più recente, alberi sul fondo a sinistra." loading="lazy" decoding="async" width="1600" height="1067">
@@ -617,7 +609,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/al-bacanin-1986.jpg" alt="Una casa di paese a due piani con l'intonaco scrostato e chiazzato e le persiane malandate, una piccola tettoia addossata a destra; un cassone dei rifiuti all'angolo e un po' di neve per terra, luce invernale." loading="lazy" decoding="async" width="1600" height="1067">
@@ -632,7 +624,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/al-pescatore-1992.jpg" alt="Una casa a due piani semplice sull'angolo di una strada, intonaco ocra sbiadito e persiane, una piccola tettoia e un edificio basso bianco a sinistra; un'auto piccola ferma sullo sterrato, foglie di palma e una conifera a destra, strada larga e vuota." loading="lazy" decoding="async" width="1600" height="1067">
@@ -647,7 +639,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/via-francesca-1982-officina-bellini.jpg" alt="Un fabbricato basso e semplice intonacato con un grande portone a saracinesca, su un angolo; dietro una casa vecchia più bassa, in primo piano un palo con un lampione, la strada che curva, luce invernale radente, un cartello bianco sul ciglio." loading="lazy" decoding="async" width="1600" height="1067">
@@ -665,7 +657,7 @@
   <h3 class="sb-riv-subhead">La chiesa e il monumento</h3>
   <p class="sb-riv-p">Nello stesso giro d'anni sono stati rimessi a posto anche i due luoghi della memoria del paese: l'interno della {{luogo:chiesa-santi-vigilio-donato|parrocchiale}} e il {{luogo:monumento-caduti-guerre|Monumento ai Caduti delle Guerre}}, ripulito e sistemato nel viale alberato.</p>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/chiesa-interno-1980.jpg" alt="La navata di una chiesa verso l'altare, con volta a botte, pilastri e altari laterali; banchi di legno, lampadari appesi, un pulpito a sinistra e composizioni di fiori lungo la navata centrale. Luce bassa." loading="lazy" decoding="async" width="1600" height="1067">
@@ -680,7 +672,7 @@
     </figure>
   </div>
 
-  <div class="sb-riv-foto-grid sb-riv-foto-grid--due">
+  <div class="sb-riv-foto-grid sb-riv-foto-grid--coppia">
     <figure class="sb-riv-foto">
       <div class="sb-panel"><div class="sb-panel-inner">
         <img src="assets/foto/archivio/monumento-caduti-1994.jpg" alt="Un'alta stele di pietra con una lunga lesione verticale, chiusa da una bassa ringhiera di ferro su un terreno di ghiaia; alberi capitozzati e spogli ai lati, un edificio rotondo dietro a sinistra, un'auto bianca in sosta, una cordicella tesa in primo piano." loading="lazy" decoding="async" width="1600" height="1067">
@@ -700,7 +692,7 @@
 </section>
 
 <!-- ── MONUMENTI ─────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="monumenti">
+<section class="sb-container sb-riv-sec" id="monumenti" data-indice="Monumenti">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">21 — Memorie</span>
     <h2>Monumenti e memorie</h2>
@@ -768,7 +760,7 @@
 </section>
 
 <!-- ── 8. LUOGHI DI CULTO ────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="chiese">
+<section class="sb-container sb-riv-sec" id="chiese" data-indice="Luoghi di culto">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">08 — Culto</span>
     <h2>Chiese e luoghi di culto</h2>
@@ -804,7 +796,7 @@
      Rivalta non fa parrocchia a sé: gli orari veri sono quelli dell'unità
      pastorale, ed è lì che vanno letti. Le righe di Rivalta sono in
      grassetto perché è quello che il lettore di questa pagina cerca. -->
-<section class="sb-container sb-riv-sec" id="messe">
+<section class="sb-container sb-riv-sec" id="messe" data-indice="Orari delle Messe">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">08 — Culto</span>
     <h2>Orari delle S. Messe</h2>

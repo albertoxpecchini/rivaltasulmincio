@@ -245,16 +245,26 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#luccio">Il piatto identitario</a>
     <a href="#aggiornamenti">Aggiornamenti</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#calendario" tabindex="-1">Calendario ricorrente</a>
+      <a href="#dettaglio2026" tabindex="-1">Dettaglio 2026</a>
+      <a href="#contrade" tabindex="-1">Le sei contrade</a>
+      <a href="#luccio" tabindex="-1">Il piatto identitario</a>
+      <a href="#aggiornamenti" tabindex="-1">Aggiornamenti</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="calendario">
+<section class="sb-container sb-riv-sec" id="calendario" data-indice="Calendario ricorrente">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">19 — Ricorrenze</span>
     <h2>Calendario ricorrente annuale</h2>
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Periodo</th><th scope="col">Evento</th><th scope="col">Luogo</th></tr></thead>
         <tbody>
@@ -422,7 +432,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p">La ricetta per esteso — in salsa e in bianco — e i locali che lo tengono in carta stanno in <a href="/mangiare#luccio-alla-rivaltese">Cosa vuoi mangiare?</a>.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="aggiornamenti">
+<section class="sb-container sb-riv-sec" id="aggiornamenti" data-indice="Aggiornamenti">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">19 — Fonti</span>
     <h2>Dove seguire gli aggiornamenti</h2>

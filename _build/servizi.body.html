@@ -4,20 +4,14 @@
 <!--freq: monthly-->
 
 <section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Sezioni 3 · 6 · 7 · 17 · 18</span>
+  <span class="sb-riv-eyebrow">{{sezioni}}</span>
   <h1>Servizi</h1>
   <p class="sb-riv-lede">Dove si va per una pratica, una medicina, un bonifico o un ingombrante da smaltire — e come verificare davvero la copertura di rete al proprio civico.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
-    <a href="#amministrazione">Amministrazione</a>
-    <a href="#salute">Farmacie e salute</a>
-    <a href="#banche">Banche e poste</a>
-    <a href="#rifiuti">Rifiuti 2026</a>
-    <a href="#connettivita">Fibra e 5G</a>
-  </nav>
+  {{indice}}
 </section>
 
 <!-- ── 3. AMMINISTRAZIONE ────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="amministrazione">
+<section class="sb-container sb-riv-sec" id="amministrazione" data-indice="Amministrazione">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">03 — Pubblica amministrazione</span>
     <h2>Amministrazione e servizi pubblici</h2>
@@ -102,7 +96,7 @@
 </section>
 
 <!-- ── 7. BANCHE ─────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="banche">
+<section class="sb-container sb-riv-sec" id="banche" data-indice="Banche e poste">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">07 — Denaro</span>
     <h2>Banche e bancomat</h2>
@@ -123,7 +117,7 @@
 </section>
 
 <!-- ── 17. RIFIUTI ───────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="rifiuti">
+<section class="sb-container sb-riv-sec" id="rifiuti" data-indice="Rifiuti 2026">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">17 — Ambiente</span>
     <h2>Rifiuti — calendario 2026</h2>
@@ -218,7 +212,7 @@
 </section>
 
 <!-- ── 18. CONNETTIVITÀ ──────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="connettivita">
+<section class="sb-container sb-riv-sec" id="connettivita" data-indice="Fibra e 5G">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">18 — Reti</span>
     <h2>Connettività: Wi-Fi, fibra, 5G</h2>

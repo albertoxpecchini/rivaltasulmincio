@@ -244,9 +244,17 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#elenco">Elenco dei luoghi</a>
     <a href="#nota">Come leggerla</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#mappa-sec" tabindex="-1">La mappa</a>
+      <a href="#elenco" tabindex="-1">Elenco dei luoghi</a>
+      <a href="#nota" tabindex="-1">Come leggerla</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="mappa-sec">
+<section class="sb-container sb-riv-sec" id="mappa-sec" data-indice="La mappa">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">Geodati — OpenStreetMap</span>
     <h2>Dove sono le cose</h2>
@@ -317,7 +325,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="elenco">
+<section class="sb-container sb-riv-sec" id="elenco" data-indice="Elenco dei luoghi">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">Il registro</span>
     <h2>I luoghi, uno per uno</h2>

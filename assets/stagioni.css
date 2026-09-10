@@ -351,7 +351,7 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 
 .sb-stag-nota-t {
   margin: 0 0 0.9rem;
-  max-width: 46rem;
+  max-width: var(--sb-misura);
   font-size: clamp(1.35rem, 2.6vw, 1.8rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -360,7 +360,7 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 }
 .sb-stag-nota-p {
   margin: 0 0 0.7rem;
-  max-width: 46rem;
+  max-width: var(--sb-misura);
   font-size: 0.94rem;
   line-height: 1.65;
   color: var(--sb-fg-light);

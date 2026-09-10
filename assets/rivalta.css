@@ -80,6 +80,15 @@ h2[id],
 h3[id] {
   scroll-margin-top: 84px;
 }
+
+/* Nei mesi in cui il festone è appeso, la testata non è alta 64 px ma 114:
+   un'ancora che atterrava a 84 metteva il titolo sotto il tralcio. */
+html[data-stagione] .sb-riv-sec,
+html[data-stagione] h2[id],
+html[data-stagione] h3[id] {
+  scroll-margin-top: 124px;
+}
+
 .sb-riv-sec {
   padding-top: clamp(2.5rem, 5vw, 3.5rem);
 }
@@ -109,8 +118,8 @@ h3[id] {
 
 .sb-riv-p {
   margin: 0 0 0.9rem;
-  max-width: 46rem;
-  font-size: 0.95rem;
+  max-width: var(--sb-misura);
+  font-size: var(--sb-testo);
   line-height: 1.65;
   color: var(--sb-fg-lighter);
 }
@@ -119,14 +128,21 @@ h3[id] {
 .sb-riv-p a, .sb-riv-li a, .sb-riv-table a { color: var(--sb-brand-text); text-decoration: none; }
 .sb-riv-p a:hover, .sb-riv-li a:hover, .sb-riv-table a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-.sb-riv-ul { margin: 0 0 1rem; padding-left: 1.1rem; max-width: 46rem; }
-.sb-riv-li { margin: 0 0 0.45rem; font-size: 0.92rem; line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-riv-ul { margin: 0 0 1rem; padding-left: 1.1rem; max-width: var(--sb-misura); }
+.sb-riv-li { margin: 0 0 0.45rem; font-size: var(--sb-testo-min); line-height: 1.6; color: var(--sb-fg-lighter); }
 .sb-riv-li strong { font-weight: 600; color: var(--sb-fg); }
 .sb-riv-li::marker { color: var(--sb-fg-muted); }
 
 /* ── Indice della pagina ──────────────────────────────────────────────────
-   Una fila di pillole, non un menu laterale: la pagina è una sola colonna e
-   un indice che galleggia a lato ruberebbe larghezza alle tabelle. */
+   Una fila di pillole in cima alla pagina. C'è sempre, è HTML vero, e
+   funziona a script spenti: è l'indice, e le due cose qui sotto sono copie.
+
+   Diceva, questo commento, che un indice a lato «ruberebbe larghezza alle
+   tabelle». Era vero finché la colonna a lato doveva stare dentro la pagina.
+   Da 1180 px in su non deve: il testo si ferma a 46rem dentro una fascia da
+   72rem, e a destra restano duecentosettanta pixel che non erano di nessuno.
+   L'indice va lì, in .sb-riv-rail, e non toglie un pixel a niente. Sotto quel
+   limite non esiste, e queste pillole restano l'unico indice. */
 .sb-riv-toc { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1.4rem 0 0; }
 .sb-riv-toc a {
   display: inline-flex;
@@ -152,6 +168,102 @@ h3[id] {
   color: var(--sb-fg);
   border-color: var(--sb-border-stronger);
   background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-surface-100) 72%, transparent);
+}
+
+/* La sezione in cui si sta, segnata anche fra le pillole: chi torna in cima
+   ritrova il punto da cui era partito invece di ricominciare a cercarlo.
+   La scrive rivalta.js con aria-current, che è la stessa cosa che dice la
+   voce attiva in testata — non si inventa un attributo nuovo per una cosa
+   che ne ha già uno giusto. */
+.sb-riv-toc a[aria-current] {
+  color: var(--sb-brand-text);
+  border-color: color-mix(in srgb, var(--sb-brand) 45%, var(--sb-border-strong));
+}
+
+/* ── L'indice che segue, su schermo largo ─────────────────────────────────
+   Dove la fascia avanza, l'indice si stacca dalla testata della pagina e
+   resta fermo a fianco del testo mentre si scorre. Su una pagina come /paese
+   — settecento righe, sette sezioni, sessantadue fotografie — sapere dove si
+   è senza risalire in cima è la differenza fra leggere e cercare.
+
+   È FISSO e non appiccicato, e sta apposta fuori dal flusso: le sezioni sono
+   diciotto .sb-container indipendenti, e per farci scorrere accanto una
+   colonna appiccicata bisognerebbe avvolgerle tutte in una griglia — cioè
+   rifare l'impaginato di undici pagine per una colonna che, sotto i 1180 px,
+   non c'è. Fissa non tocca niente.
+
+   Il conto del `left` è quello della fascia, rifatto: metà del vuoto ai lati,
+   più il margine interno del contenitore, più la colonna di lettura, più due
+   rem d'aria. Se un giorno cambia --sb-misura, la colonna si sposta con lei. */
+.sb-riv-rail { display: none; }
+
+@media (min-width: 1180px) {
+  .sb-riv-rail {
+    display: block;
+    position: fixed;
+    top: 84px;
+    /* Il festone di stagione è fisso a 64px ed è alto 50: senza questo, nei
+       mesi in cui c'è, il tralcio passa sopra al titolo dell'indice. Si è
+       visto alla prima prova a schermo largo, in settembre, con l'uva. */
+    left: calc((100vw - min(72rem, 100vw)) / 2 + clamp(1.5rem, 5vw, 6rem) + var(--sb-misura) + 2rem);
+    z-index: 5;
+    width: 11rem;
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* Nessuna lastra e nessun bordo attorno: è un indice, non una scheda. Una
+       cornice a lato della prosa diventerebbe una seconda colonna da leggere
+       invece di un riferimento da consultare con la coda dell'occhio. */
+    padding-left: 0.9rem;
+    border-left: 1px solid var(--sb-border);
+  }
+
+  .sb-riv-rail-t {
+    margin: 0 0 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sb-fg-muted);
+  }
+
+  .sb-riv-rail-nav { display: flex; flex-direction: column; gap: 0.1rem; }
+
+  .sb-riv-rail-nav a {
+    /* Il filo a sinistra è dentro il link e non è un ::before: così la voce
+       attiva lo accende senza che niente si sposti di un pixel. */
+    padding: 0.3rem 0 0.3rem 0.7rem;
+    margin-left: -0.9rem;
+    border-left: 2px solid transparent;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--sb-fg-muted);
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .sb-riv-rail-nav a:hover { color: var(--sb-fg); }
+
+  .sb-riv-rail-nav a[aria-current] {
+    border-left-color: var(--sb-brand);
+    color: var(--sb-fg);
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 1180px) {
+  html[data-stagione] .sb-riv-rail { top: 124px; }
+
+  /* Le pillole non hanno una misura loro: sono una fila che avvolge, e si
+     prendono tutta la larghezza del contenitore — sessanta rem, non
+     quarantasei. Dove c'è la colonna a lato, l'ultima ci finiva sotto. Qui si
+     fermano alla misura del testo, che è dove finisce tutto il resto. */
+  .sb-riv-toc { max-width: var(--sb-misura); }
+}
+
+/* Sopra i 1500 px la fascia ha finito di crescere e il vuoto a destra cresce
+   ancora: la colonna può respirare senza avvicinarsi al testo. */
+@media (min-width: 1500px) {
+  .sb-riv-rail { width: 13rem; }
 }
 
 /* ── Riquadri di sintesi ──────────────────────────────────────────────────
@@ -202,7 +314,7 @@ h3[id] {
   margin: 0 0 0.9rem;
 }
 .sb-riv-prossima-d {
-  max-width: 46rem;
+  max-width: var(--sb-misura);
   padding-top: 0.12rem;
   font-size: 0.8rem;
   line-height: 1.5;
@@ -415,12 +527,48 @@ h3[id] {
 
    Lo scorrimento orizzontale sta nel contenitore, mai nella pagina: su
    telefono una tabella a sei colonne non deve poter spingere il body. */
-.sb-riv-tablewrap { margin: 0 0 1rem; }
+.sb-riv-tablewrap { position: relative; margin: 0 0 1rem; }
 .sb-riv-tablewrap .sb-panel-inner { overflow: hidden; }
 .sb-riv-scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
+}
+
+/* ── «Continua di là» ─────────────────────────────────────────────────────
+   Nove tabelle su nove, su /paese, sono più larghe dello schermo di un
+   telefono: la più stretta chiede 32rem contro i 342 px utili di un 390, e
+   tre ne chiedono il doppio. Scorrevano già — ma .sb-panel-inner taglia il
+   bordo di netto, e una tabella tagliata dritto sul filo della lastra sembra
+   una tabella finita. Chi legge gli orari delle Messe si perdeva la terza
+   colonna senza sapere che c'era.
+
+   Il velo sta SOPRA la lastra, non dentro il riquadro che scorre: dentro
+   scorrerebbe via col contenuto proprio mentre serve. È spento di suo e lo
+   accende rivalta.js quando c'è davvero altro a destra — quindi a script
+   spenti non compare un velo che promette una colonna che nessuno può
+   raggiungere, e arrivati in fondo si spegne da sé. */
+.sb-riv-tablewrap::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 2.6rem;
+  border-radius: 0 0 var(--sb-cut-lg) 0;
+  background: linear-gradient(to left, var(--sb-bg), color-mix(in srgb, var(--sb-bg) 55%, transparent) 45%, transparent);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+.sb-riv-tablewrap--altro::after { opacity: 1; }
+
+/* Il riquadro che scorre prende il fuoco (glielo scrive build.mjs): senza,
+   una tabella più larga dello schermo era raggiungibile solo col dito. Il
+   filo è quello del sito, non quello di sistema. */
+.sb-riv-scroll:focus-visible {
+  outline: 2px solid var(--sb-brand);
+  outline-offset: -2px;
 }
 .sb-riv-table {
   width: 100%;
@@ -428,7 +576,7 @@ h3[id] {
   font-size: 0.875rem;
   min-width: 32rem;
 }
-.sb-riv-table--wide { min-width: 46rem; }
+.sb-riv-table--wide { min-width: var(--sb-misura); }
 /* L'intestazione resta appiccicata in cima mentre la tabella scorre, ma su
    una lastra trasparente una fascia opaca sarebbe l'unica cosa piena della
    pagina. Diventa quindi vetro anch'essa, con una sfocatura più corta: deve
@@ -485,7 +633,7 @@ h3[id] {
 /* Didascalia sotto la tabella */
 .sb-riv-cap {
   margin: 0.55rem 0 1.6rem;
-  font-size: 0.78rem;
+  font-size: var(--sb-testo-cap);
   line-height: 1.5;
   color: var(--sb-fg-muted);
 }
@@ -497,7 +645,7 @@ h3[id] {
 .sb-riv-note {
   margin: 1.2rem 0;
   padding: 0.9rem 1.1rem;
-  max-width: 46rem;
+  max-width: var(--sb-misura);
   border-left: 2px solid var(--sb-brand);
   border-radius: 0 8px 8px 0;
   background: var(--sb-surface-100);
@@ -526,7 +674,7 @@ h3[id] {
 .sb-riv-cit {
   margin: 1.3rem 0;
   padding: 0.15rem 0 0.15rem 1.1rem;
-  max-width: 46rem;
+  max-width: var(--sb-misura);
   border-left: 2px solid var(--sb-border-stronger);
 }
 .sb-riv-cit p {
@@ -579,7 +727,7 @@ h3[id] {
   list-style: none;
   margin: 1.5rem 0 0;
   padding: 0;
-  max-width: 46rem;
+  max-width: var(--sb-misura);
 }
 .sb-riv-crono-riga {
   position: relative;
@@ -782,7 +930,7 @@ h3[id] {
   letter-spacing: -0.02em;
   color: var(--sb-fg);
 }
-.sb-riv-flash p { margin: 0; max-width: 46rem; font-size: 0.92rem; line-height: 1.65; color: var(--sb-fg-lighter); }
+.sb-riv-flash p { margin: 0; max-width: var(--sb-misura); font-size: 0.92rem; line-height: 1.65; color: var(--sb-fg-lighter); }
 .sb-riv-flash p strong { font-weight: 600; color: var(--sb-fg); }
 .sb-riv-flash-meta {
   display: flex;
@@ -1144,7 +1292,9 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 .sb-riv-lede {
   margin: 1rem 0 0;
   max-width: 44rem;
-  font-size: 1.02rem;
+  /* L'occhiello sta un gradino sopra il corpo del testo, e ci resta a ogni
+     larghezza: la forcella è la stessa spostata in su. */
+  font-size: clamp(1.02rem, 0.97rem + 0.18vw, 1.12rem);
   line-height: 1.65;
   color: var(--sb-fg-lighter);
 }
@@ -1173,12 +1323,12 @@ html.rsm-still .sb-cw-polvere { animation: none; }
    Vivono in una lastra come tutto il resto. L'immagine riempie il taglio
    fino al bordo: una foto con un margine dentro il pannello sembrerebbe
    incollata sopra invece che incassata. */
-.sb-riv-foto { margin: 1.4rem 0 1.6rem; max-width: 46rem; }
+.sb-riv-foto { margin: 1.4rem 0 1.6rem; max-width: var(--sb-misura); }
 .sb-riv-foto .sb-panel-inner { padding: 0; }
 .sb-riv-foto img { display: block; width: 100%; height: auto; }
 .sb-riv-foto figcaption {
   margin-top: 0.55rem;
-  font-size: 0.78rem;
+  font-size: var(--sb-testo-cap);
   line-height: 1.5;
   color: var(--sb-fg-muted);
 }
@@ -1206,6 +1356,33 @@ html.rsm-still .sb-cw-polvere { animation: none; }
    per ordine — sono due classi contro una. */
 @media (min-width: 640px) {
   .sb-riv-foto-grid--due { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ── Com'era, com'è ───────────────────────────────────────────────────────
+   Le coppie del Novecento non sono due fotografie vicine: sono un confronto,
+   e un confronto esiste solo se le due metà si vedono insieme. Sotto i 640 px
+   la griglia --due le impila, e sedici volte di fila la lettura diventava
+   foto, didascalia, settecento pixel di scorrimento, l'altra foto — cioè non
+   più un confronto ma due immagini che si somigliano.
+
+   Quindi --coppia resta a due colonne a QUALSIASI larghezza. A 342 px ogni
+   metà sta in centosessantacinque pixel: piccola, e va bene che lo sia — a
+   quella misura non si studia una fotografia, si vede che il teatro c'era e
+   adesso non c'è. Chi vuole guardarla la apre.
+
+   Il vuoto fra le due si stringe sul telefono: due immagini che si
+   confrontano devono stare vicine, o il confronto si allenta. */
+.sb-riv-foto-grid--coppia {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+@media (min-width: 640px) { .sb-riv-foto-grid--coppia { gap: 0.9rem; } }
+
+/* Le didascalie di una coppia sono due frasi corte affiancate, e su schermo
+   stretto starebbero su tre righe ciascuna a misura piena: qui scendono di un
+   gradino, così la coppia resta un blocco e non una colonna di testo. */
+@media (max-width: 639.98px) {
+  .sb-riv-foto-grid--coppia figcaption { font-size: 0.72rem; line-height: 1.4; }
 }
 
 /* ── Il libro, e la scheda della fonte ────────────────────────────────────
@@ -1715,7 +1892,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 
 /* ── Tasto di ricerca in testata ─────────────────────────────────────────
    Due forme sotto lo stesso tasto: da schermo stretto è un'icona sola come
-   l'hamburger accanto; da 1080px in su — dove le voci sono già in fila —
+   l'hamburger accanto; da 1024px in su — dove le voci sono già in fila —
    diventa un campo finto, smussato come le pillole del sito, con l'etichetta
    e il tasto rapido «/».
 
@@ -1748,7 +1925,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
    viene dopo. Il selettore discendente la supera senza ambiguità. */
 .sb-riv-search-open .sb-riv-search-open-t,
 .sb-riv-search-open .sb-riv-search-open-kbd { display: none; }
-@media (min-width: 1080px) {
+@media (min-width: 1024px) {
   .sb-riv-search-open.sb-ready {
     width: auto;
     min-width: 9.5rem;
@@ -1775,43 +1952,6 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   }
   .sb-riv-search-open.sb-ready .sb-riv-search-open-t { display: inline; margin-right: auto; }
   .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: inline-flex; }
-}
-
-/* ── L'undicesima voce ───────────────────────────────────────────────────
-   sb.css fa comparire la fila di voci a 1080px, misura tarata su nove. Con
-   /storia erano dieci e il cambio si era già spostato a 1160px; con
-   /mangiare sono undici, e undici a 1160px non ci stanno: 1280px. Invece di
-   accorciare le etichette — che sono i nomi delle pagine, non didascalie —
-   nella fascia in mezzo restano l'hamburger e la ricerca in forma d'icona,
-   esattamente come sotto i 1080. Le regole di sb.css non si toccano: sono un
-   estratto fedele della fonte, e questo è un vincolo di questo sito soltanto.
-
-   La stessa misura è scritta una seconda volta in rivalta.js, dove il foglio
-   del menu si richiude tornando al layout largo: se si sposta qui, si sposta
-   anche lì. */
-@media (min-width: 1080px) and (max-width: 1279.98px) {
-  .sb-nav-links { display: none; }
-  .sb-burger[data-menu-toggle] { display: inline-flex; }
-  .sb-riv-search-open.sb-ready {
-    width: 34px;
-    height: 34px;
-    min-width: 0;
-    padding: 0;
-    justify-content: center;
-    clip-path: none;
-    border-color: transparent;
-    background: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-  .sb-riv-search-open.sb-ready:hover { background: var(--sb-overlay); }
-  .sb-riv-search-open.sb-ready:focus-visible {
-    outline: 2px solid var(--sb-brand);
-    outline-offset: 2px;
-    box-shadow: none;
-  }
-  .sb-riv-search-open.sb-ready .sb-riv-search-open-t,
-  .sb-riv-search-open.sb-ready .sb-riv-search-open-kbd { display: none; }
 }
 
 /* ── Il tastino ──────────────────────────────────────────────────────────
@@ -2231,7 +2371,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
    e restava scalzato rispetto ai capoversi che introduce. Non è un margine
    automatico — le colonne del sito partono tutte dal margine sinistro e
    nessuna si centra: è solo la stessa misura del testo che gli sta sotto. */
-.sb-riv-subhead { max-width: 46rem; }
+.sb-riv-subhead { max-width: var(--sb-misura); }
 
 /* ═════════════════════════════════════════════════════════════════════════
    APERTO ADESSO · ANCORE SUI TITOLI · TORNA IN CIMA
@@ -2345,6 +2485,70 @@ h3:hover > .sb-riv-anchor,
   transition: opacity 0.2s ease, transform 0.2s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .sb-riv-top--visibile { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ── L'indice, dal basso ──────────────────────────────────────────────────
+   Su telefono lo spazio è l'unica valuta e un indice appiccicato in cima se
+   ne mangerebbe una fetta per tutta la lettura. Qui non costa niente: sta nel
+   tasto accanto a «torna in cima», nell'angolo dove il pollice arriva, e si
+   apre solo quando lo si chiede.
+
+   Da 1180 px in su sparisce: lì l'indice è già a lato e sempre visibile, e
+   due indici per la stessa pagina sono un indice di troppo. */
+.sb-riv-top-wrap { display: flex; gap: 0.5rem; }
+@media (min-width: 1180px) { .sb-riv-ind-apri { display: none; } }
+
+.sb-riv-ind {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+}
+.sb-riv-ind-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--sb-bg) 62%, transparent);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+/* Si apre da dove è stata chiamata — l'angolo in basso a destra — e non dal
+   centro dello schermo: un pannello che compare lontano dal dito che l'ha
+   aperto sembra un'altra cosa, non la risposta a quel tocco. */
+.sb-riv-ind-box {
+  position: absolute;
+  right: clamp(0.9rem, 2.5vw, 1.6rem);
+  bottom: calc(clamp(0.9rem, 2.5vw, 1.6rem) + 52px);
+  left: clamp(0.9rem, 2.5vw, 1.6rem);
+  max-width: 22rem;
+  margin-left: auto;
+  max-height: min(70vh, 30rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.9rem 1rem 1rem;
+  clip-path: var(--sb-shape-lg);
+  border: 1px solid var(--sb-border-strong);
+  background: var(--sb-shape-edge), var(--sb-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
+  box-shadow: inset 0 1px 0 var(--sb-glass-spec), var(--sb-glass-shadow);
+}
+.sb-riv-ind-t {
+  margin: 0 0 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-riv-ind-nav { display: flex; flex-direction: column; }
+.sb-riv-ind-nav a {
+  padding: 0.62rem 0.2rem;
+  border-bottom: 1px solid var(--sb-border);
+  font-size: 0.95rem;
+  color: var(--sb-fg-light);
+  text-decoration: none;
+}
+.sb-riv-ind-nav a:last-child { border-bottom: 0; }
+.sb-riv-ind-nav a[aria-current] { color: var(--sb-brand-text); font-weight: 600; }
+.sb-riv-ind-nav a:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
 .sb-riv-top:hover { color: var(--sb-fg); border-color: var(--sb-border-stronger); }
 .sb-riv-top:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 3px; }
 html.rsm-still .sb-riv-top { transition: none; }
@@ -2540,7 +2744,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
   gap: clamp(1.8rem, 4vw, 3rem);
   align-items: start;
 }
-.sb-riv-open-testo { min-width: 0; max-width: 46rem; }
+.sb-riv-open-testo { min-width: 0; max-width: var(--sb-misura); }
 
 @media (min-width: 1024px) {
   .sb-riv-open {

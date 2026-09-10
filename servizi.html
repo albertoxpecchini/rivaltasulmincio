@@ -245,9 +245,19 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#rifiuti">Rifiuti 2026</a>
     <a href="#connettivita">Fibra e 5G</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#amministrazione" tabindex="-1">Amministrazione</a>
+      <a href="#salute" tabindex="-1">Farmacie e salute</a>
+      <a href="#banche" tabindex="-1">Banche e poste</a>
+      <a href="#rifiuti" tabindex="-1">Rifiuti 2026</a>
+      <a href="#connettivita" tabindex="-1">Fibra e 5G</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="amministrazione">
+<section class="sb-container sb-riv-sec" id="amministrazione" data-indice="Amministrazione">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">03 — Pubblica amministrazione</span>
     <h2>Amministrazione e servizi pubblici</h2>
@@ -255,7 +265,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="comune-di-rodigo">Comune di Rodigo</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <tbody>
           <tr><th scope="row">Sindaco</th><td>Gianni Grassi — lista «Uniti per Rodigo, Rivalta, Fossato»</td></tr>
@@ -273,7 +283,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="sportelli-a-rivalta">Sportelli a Rivalta</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Servizio</th><th scope="col">Indirizzo</th><th scope="col">Contatti</th></tr></thead>
         <tbody>
@@ -306,7 +316,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Servizio</th><th scope="col">Indirizzo</th><th scope="col">Contatti e note</th></tr></thead>
         <tbody>
@@ -330,14 +340,14 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="banche">
+<section class="sb-container sb-riv-sec" id="banche" data-indice="Banche e poste">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">07 — Denaro</span>
     <h2>Banche e bancomat</h2>
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Banca</th><th scope="col">Indirizzo</th><th scope="col">ATM</th></tr></thead>
         <tbody>
@@ -350,7 +360,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-cap">L'ufficio postale di Via Sette Frati 9 permette le usuali operazioni Poste Italiane; la presenza di uno sportello Postamat è da verificare in loco.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="rifiuti">
+<section class="sb-container sb-riv-sec" id="rifiuti" data-indice="Rifiuti 2026">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">17 — Ambiente</span>
     <h2>Rifiuti — calendario 2026</h2>
@@ -359,7 +369,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="calendario-porta-a-porta">Calendario porta a porta</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Giorno</th><th scope="col">Raccolta</th><th scope="col">Frequenza</th></tr></thead>
         <tbody>
@@ -394,7 +404,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="centri-di-raccolta">Centri di raccolta</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Sito</th><th scope="col">Cosa si conferisce</th><th scope="col">1 apr – 31 ott</th><th scope="col">1 nov – 31 mar</th></tr></thead>
         <tbody>
@@ -425,7 +435,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="contenitori-sul-territorio">Contenitori sul territorio</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Cosa</th><th scope="col">Dove</th></tr></thead>
         <tbody>
@@ -444,7 +454,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="connettivita">
+<section class="sb-container sb-riv-sec" id="connettivita" data-indice="Fibra e 5G">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">18 — Reti</span>
     <h2>Connettività: Wi-Fi, fibra, 5G</h2>
@@ -473,7 +483,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <h3 class="sb-riv-subhead" id="come-verificare-copertura-fibra-e-5g-indirizzo-per-indirizzo">Come verificare copertura fibra e 5G, indirizzo per indirizzo</h3>
   <p class="sb-riv-p">Non esiste una fonte pubblica affidabile «già pronta» a livello di frazione. Gli strumenti giusti sono questi.</p>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Cosa verificare</th><th scope="col">Dove</th></tr></thead>
         <tbody>

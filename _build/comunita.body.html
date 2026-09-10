@@ -2,17 +2,10 @@
 <!--desc: Scuole dell'infanzia e primaria, Museo Etnografico dei Mestieri del Fiume, biblioteca, Pro Loco e associazioni, palazzetto e impianti sportivi di Rivalta sul Mincio.-->
 
 <section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Sezioni 9 · 10</span>
+  <span class="sb-riv-eyebrow">{{sezioni}}</span>
   <h1>Comunità</h1>
   <p class="sb-riv-lede">Dove i rivaltesi si istruiscono, si trovano e giocano: due plessi scolastici e un asilo nido, tre istituzioni culturali che stanno tutte allo stesso indirizzo, sette associazioni e una dozzina di impianti.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
-    <a href="#colorwalk">Color Walk</a>
-    <a href="#scuole">Scuole</a>
-    <a href="#cultura">Cultura</a>
-    <a href="#associazioni">Associazioni</a>
-    <a href="#sport">Sport e impianti</a>
-    <a href="#piscine">Piscine</a>
-  </nav>
+  {{indice}}
 </section>
 
 <!-- ── IN EVIDENZA ──────────────────────────────────────────────────────────
@@ -20,7 +13,7 @@
      chiudono col 20 settembre, il resto della pagina vale tutto l'anno.
      Quando la Color Walk sarà passata, questo blocco si toglie e la pagina
      torna com'era. -->
-<section class="sb-container sb-riv-sec" id="colorwalk">
+<section class="sb-container sb-riv-sec" id="colorwalk" data-indice="Color Walk">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-eyebrow">Iscrizioni aperte</span>
     <h2>Color Walk — domenica 20 settembre</h2>
@@ -189,7 +182,7 @@
 </section>
 
 <!-- ── 10. SPORT ─────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="sport">
+<section class="sb-container sb-riv-sec" id="sport" data-indice="Sport e impianti">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">10 — Sport</span>
     <h2>Sport e tempo libero</h2>

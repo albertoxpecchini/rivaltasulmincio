@@ -20,6 +20,7 @@
    Come build.mjs e serve.mjs, questo file resta a casa: sta in .vercelignore.
    ═══════════════════════════════════════════════════════════════════════════ */
 import { stat } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import { extname, join, normalize } from "node:path";
 import { pathToFileURL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
@@ -85,6 +86,17 @@ const anteprimaVercel = () => ({
      quello che serve, perché l'indirizzo va riscritto (`/paese` →
      `/paese.html`) prima che Vite si metta a cercare il file. */
   configureServer(server) {
+    /* Vite guarda i file in radice — le pagine GENERATE — e non sa che
+       esistono i frammenti da cui nascono: senza questo, modificare
+       _build/paese.body.html non produce niente e si torna a rilanciare il
+       build a mano in un altro terminale.
+
+       Il guardiano è lo stesso di `node build.mjs --guarda`: quando riscrive
+       paese.html, Vite se ne accorge da sé e ricarica. Non serve altro. */
+    const guardiano = spawn(process.execPath, ["build.mjs", "--guarda"], { stdio: "inherit" });
+    server.httpServer?.on("close", () => guardiano.kill());
+    process.on("exit", () => guardiano.kill());
+
     server.middlewares.use(async (req, res, next) => {
       const [percorso, query] = req.url.split("?");
       const url = decodeURIComponent(percorso);

@@ -248,16 +248,29 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#ricettivita">Dormire</a>
     <a href="#economia">Economia</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#negozi" tabindex="-1">Negozi</a>
+      <a href="#persona" tabindex="-1">Cura della persona</a>
+      <a href="#uffici" tabindex="-1">Uffici e professionisti</a>
+      <a href="#mercato" tabindex="-1">Mercato</a>
+      <a href="#locali" tabindex="-1">Bar e ristoranti</a>
+      <a href="#tavola" tabindex="-1">Cosa si mangia</a>
+      <a href="#ricettivita" tabindex="-1">Dormire</a>
+      <a href="#economia" tabindex="-1">Economia</a>
+    </nav>
+  </aside>
 </section>
 
-<section class="sb-container sb-riv-sec" id="negozi">
+<section class="sb-container sb-riv-sec" id="negozi" data-indice="Negozi">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">04 — Commercio</span>
     <h2>Alimentari e supermercati</h2>
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Attività</th><th scope="col">Indirizzo</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -278,7 +291,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="tabaccheria-edicola-servizi">Tabaccheria, edicola, servizi</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Attività</th><th scope="col">Indirizzo</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -292,7 +305,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="altri-negozi-e-servizi">Altri negozi e servizi</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Attività</th><th scope="col">Indirizzo</th><th scope="col">Settore</th></tr></thead>
         <tbody>
@@ -321,7 +334,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Attività</th><th scope="col">Indirizzo e note</th></tr></thead>
         <tbody>
@@ -343,7 +356,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Attività</th><th scope="col">Indirizzo</th><th scope="col">Settore</th></tr></thead>
         <tbody>
@@ -358,7 +371,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="mercato">
+<section class="sb-container sb-riv-sec" id="mercato" data-indice="Mercato">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">04 — Mercato</span>
     <h2>Mercato settimanale</h2>
@@ -368,7 +381,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="locali">
+<section class="sb-container sb-riv-sec" id="locali" data-indice="Bar e ristoranti">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">05 — Ristorazione</span>
     <h2>Bar, ristoranti, locali</h2>
@@ -377,7 +390,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Locale</th><th scope="col">Tipo</th><th scope="col">Indirizzo / distanza</th><th scope="col">Dettagli</th></tr></thead>
         <tbody>
@@ -414,7 +427,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-p"><strong>Pasta Gioiosa</strong> è nata qui. La storia che l'azienda racconta di sé parte da un negozio di alimentari di Rivalta; nel <strong>1989</strong> la famiglia comincia a produrre agnoli di carne e tortelli di zucca artigianali, e li presenta alla <strong>fiera agroalimentare di Rivalta</strong>. È il motivo per cui, parlando di pasta fresca mantovana, il paese non è un posto qualsiasi.</p>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Piatto</th><th scope="col">Cos'è</th><th scope="col">Dove, in paese</th></tr></thead>
         <tbody>
@@ -436,7 +449,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <p class="sb-riv-cap">I locali che li propongono stanno qui sopra, in <a href="#locali">Bar e ristoranti</a>; gli agriturismi con cucina tipica sono <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.194537&amp;mlon=10.6839938#map=18/45.194537/10.6839938" target="_blank" rel="noreferrer noopener" title="Agriturismo Germano Reale — apri su OpenStreetMap">Germano Reale<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a> e <a class="sb-riv-geo" href="https://www.openstreetmap.org/?mlat=45.1627768&amp;mlon=10.6660732#map=18/45.1627768/10.6660732" target="_blank" rel="noreferrer noopener" title="Azienda Agrituristica Corte Panicella — apri su OpenStreetMap">Corte Panicella<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>. Dove la colonna è vuota, il prodotto è mantovano ma in paese non risulta un punto vendita dedicato.</p>
 </section>
 
-<section class="sb-container sb-riv-sec" id="ricettivita">
+<section class="sb-container sb-riv-sec" id="ricettivita" data-indice="Dormire">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">05 — Dormire</span>
     <h2>Ricettività</h2>
@@ -465,7 +478,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="economia">
+<section class="sb-container sb-riv-sec" id="economia" data-indice="Economia">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">20 — Economia</span>
     <h2>Economia e aziende</h2>
@@ -486,7 +499,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <h3 class="sb-riv-subhead" id="aziende-e-attivita-produttive-mappate">Aziende e attività produttive mappate</h3>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Azienda</th><th scope="col">Settore</th><th scope="col">Note</th></tr></thead>
         <tbody>
@@ -519,7 +532,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   <h3 class="sb-riv-subhead" id="registri-ufficiali-delle-imprese">Registri ufficiali delle imprese</h3>
   <p class="sb-riv-p">Per visure, codici ATECO e dati camerali delle imprese con sede a Rivalta, le fonti istituzionali sono queste:</p>
   <div class="sb-riv-tablewrap">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Fonte</th><th scope="col">Cosa fornisce</th></tr></thead>
         <tbody>

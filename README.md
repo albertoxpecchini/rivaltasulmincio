@@ -44,10 +44,11 @@ tema chiaro/scuro nativo.
 | :--- | :--- | :--- |
 | **Pagine pubblicate** | **14** | HTML **generato**, indirizzi senza estensione |
 | **Sorgenti in `_build/`** | 16 frammenti di contenuto + guscio (`head.html` · `foot.html`) | |
-| **Design system** | **4.566 righe CSS** | `rivalta.css` (2.829) · `sb.css` (1.053) · `stagioni.css` (498) · `controlbar.css` (186) |
-| **JavaScript nel browser** | **2.571 righe**, 11 file | `controlbar.js` (364) · `glass.js` (341) · `ricerca.js` (267) · `rivalta.js` (267) · `color-walk.js` (249) · `visite.js` (221) · `meteo.js` (214) · `mappa.js` (200) · `stagioni.js` (199) · `orari.js` (159) · `gusto.js` (90) |
+| **Design system** | **4.802 righe CSS** | `rivalta.css` (3.039) · `sb.css` (1.077) · `stagioni.css` (499) · `controlbar.css` (187) |
+| **JavaScript nel browser** | **2.741 righe**, 11 file | `rivalta.js` (427) · `controlbar.js` (365) · `glass.js` (342) · `ricerca.js` (268) · `color-walk.js` (250) · `visite.js` (222) · `meteo.js` (215) · `mappa.js` (201) · `stagioni.js` (200) · `orari.js` (160) · `gusto.js` (91) |
 | **JavaScript su server** | **383 righe**, 2 file | `api/meteo.mjs` (221) e `api/visite.mjs` (162): la stazione meteo e il contatore delle bandiere, le sole due cose sempre accese che non girino nel browser di chi legge |
-| **Build** | **2.054 righe**, `build.mjs` | zero dipendenze, solo la libreria standard di Node |
+| **Build** | **2.750 righe**, `build.mjs` | libreria standard di Node per costruire; `sharp` solo per tagliare le derivate delle fotografie, e solo quando ne arriva una nuova |
+| **Derivate delle fotografie** | **182 file WebP**, 7,4 MB | 480 · 720 · 960 · 1600, generate solo dove servono. `/paese` da telefono: da 11,5 MB a **2,3 MB** |
 | **Dipendenze** | **0** dev, **1** a runtime | Leaflet 1.9.4 ospitato in locale, caricato solo su `/mappa`, più 253 bandiere SVG in `assets/vendor/bandiere/` (174 kB). Il solo servizio esterno è [Abacus](#-il-contatore-delle-bandiere), che tiene il conto delle visite |
 | **Cose da mangiare** | **18** | 9 voglie, 18 piatti e 15 locali in `_build/gusto.json` |
 | **Luoghi censiti** | **152** | 65 luoghi + 87 attività in `_build/luoghi.json`, 123 con coordinate OSM |
@@ -77,11 +78,30 @@ indicizzato non si rompono. I link interni si scrivono root-assoluti (`/paese`, 
 Le dodici pagine `.html` in radice sono **generate**: le modifiche vanno fatte in [`_build/`](_build/), poi
 
 ```bash
-node build.mjs
+node build.mjs          # una volta e basta
+npm start               # oppure: sorveglia, ricostruisce e ricarica il browser
 ```
 
 Dodici pagine condividono la stessa nav e lo stesso footer. Tenerne dodici copie a mano significa che
 prima o poi undici sono aggiornate e una no, ed è sempre quella che qualcuno apre.
+
+**Il build dice solo quello che è cambiato.** Non più diciotto righe `✓` identiche a ogni giro: i
+file che non cambiano non si riscrivono nemmeno, così `git status` distingue una modifica vera dal
+rumore e l'anteprima ricarica la pagina che hai toccato invece di tutte.
+
+```
+  paese.html                    143,7 kB    +1,2 kB
+  · 21 file invariati
+✓ fatto in 214 ms
+```
+
+**E controlla il lavoro.** Alla fine di ogni build una pagella guarda tutte le pagine insieme —
+è l'unico momento in cui si può, perché un collegamento a `/storia#mestieri` si giudica solo quando
+anche `/storia` è stata montata. Cerca sette cose che prima non guardava nessuno: segnaposto
+`{{…}}` rimasti in chiaro, indirizzi verso pagine che non esistono, ancore che non rispondono,
+immagini citate e mai arrivate, `id` usati due volte, pagine in radice rimaste orfane del loro
+frammento, e pagine che dai menu non si raggiungono. Gli errori (`✗`) fanno uscire il build con
+codice 1; gli avvisi (`⚠`) no. Vanno tutti su **stderr**, quindi si possono leggere da soli.
 
 Titolo e descrizione di ogni pagina stanno in testa al rispettivo frammento, come due commenti —
 così il contenuto e i suoi metadati non possono separarsi:
@@ -92,7 +112,37 @@ così il contenuto e i suoi metadati non possono separarsi:
 ```
 
 Per aggiungere una pagina basta creare `_build/nuova.body.html` con quei due commenti e rilanciare
-il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/head.html) e [`_build/foot.html`](_build/foot.html).
+il build; la voce nella nav va aggiunta a mano in [`_build/head.html`](_build/head.html) e [`_build/foot.html`](_build/foot.html)
+— e se ci si dimentica, la pagella lo dice.
+
+### L'indice non si scrive più
+
+In cima a ogni pagina lunga c'è l'indice delle sezioni. Era battuto a mano in undici frammenti, e
+poteva divergere da quello che elencava: è successo a `/paese`, dove l'occhiello ha continuato a
+dire «Sezioni 1 · 2 · 8 · 21» per settimane dopo che era arrivato il Novecento, che è il 22.
+
+Adesso ci sono due segnaposto, e si ricavano dalla pagina stessa:
+
+```html
+{{indice}}      <!-- le sezioni: le pillole in cima e la colonna a lato -->
+{{sezioni}}     <!-- «Sezioni 1 · 2 · 8 · 21 · 22» -->
+```
+
+Le voci dell'indice erano **più corte** dei titoli, ed era voluto: «Fibra e 5G» è una pillola,
+«Connettività: Wi-Fi, fibra, 5G» è un titolo, e il secondo in una fila di pillole su un telefono va
+a capo tre volte. Quell'etichetta breve non si è persa — è andata a stare **addosso alla sezione**,
+dove non può più restare indietro:
+
+```html
+<section class="sb-container sb-riv-sec" id="connettivita" data-indice="Fibra e 5G">
+```
+
+Senza l'attributo vale il titolo, che il più delle volte è già giusto. Un `<h3>` con un `id` scritto
+a mano può entrare in indice allo stesso modo, se è una cosa che si cerca per nome.
+
+Fa eccezione [`/mangiare`](_build/mangiare.body.html), che tiene il suo indice scritto a mano: una
+delle sue voci punta a una scheda che nasce da `{{VOGLIE}}`, non a una sezione del frammento. Adesso
+però quell'ancora la controlla la pagella, che prima non faceva nessuno.
 
 ---
 
@@ -129,6 +179,15 @@ Due conseguenze che vale la pena sapere prima di rimetterci le mani:
 
 Con cinque voci al posto di tredici la fila ci sta molto prima: si passa al menu **sotto i 1024px**
 (prima 1080), e la stessa soglia sta in `rivalta.js` per la chiusura del menu al ridimensionamento.
+
+Di soglie, per un po', ce ne sono state **quattro**, e una si contraddiceva. `sb.css` diceva 1080;
+un blocco di `rivalta.css` nascondeva le voci fra 1080 e 1280 — scritto quando le voci erano undici
+— ed era **codice morto**, perché il blocco a 1024 più in basso lo batteva a pari specificità; ma il
+tasto della ricerca quel blocco lo sentiva ancora, e fra 1080 e 1280 px si vedeva la fila completa
+accanto a una lupa senza etichetta. `rivalta.js`, intanto, chiudeva il menu a 1180, un quarto numero
+che non corrispondeva a niente. Adesso è **1024** ovunque, CSS e JS, e il blocco morto non c'è più.
+Le regole di `sb.css` restano com'erano: sono un estratto fedele della fonte, e `rivalta.css` le
+copre.
 
 | Indirizzo | Frammento | Priorità | Cosa c'è |
 | :--- | :--- | :---: | :--- |
@@ -331,6 +390,70 @@ numeri) e tutto ciò che è centrato per scelta.
 Non esiste una classe unica per il testo corrente — le pagine sono nate una alla volta e ogni
 contesto si è portato dietro la sua — quindi il gruppo di selettori è elencato per esteso in cima a
 `assets/rivalta.css`. **Se nasce una classe nuova che contiene un paragrafo, va aggiunta lì.**
+
+### La misura, e il testo che cresce
+
+`46rem` era battuto a mano in **quattordici punti** di `rivalta.css`: quattordici occasioni di
+cambiarne tredici e dimenticarne uno, e nessun modo di sapere, leggendo, che quei quattordici numeri
+erano lo stesso numero. Adesso è `--sb-misura`, dichiarata una volta in [`assets/sb.css`](assets/sb.css).
+
+E il corpo del testo era **fisso a 0,95rem a qualunque larghezza**, mentre l'`h1` sopra passava da
+1,9 a 3rem: su un ventisette pollici il titolo gridava e il testo bisbigliava. Adesso è una forcella,
+`--sb-testo`, il cui **minimo è esattamente il valore di prima**:
+
+```css
+--sb-testo: clamp(0.95rem, 0.9rem + 0.18vw, 1.05rem);
+```
+
+Sul telefono — che è l'ottanta per cento delle visite — non si muove un pixel. Cresce solo dove
+c'era spazio sprecato.
+
+### Sapere dove si è, su una pagina lunga
+
+`/paese` sono settecento righe e sette sezioni. L'indice stava in cima, e da lì in poi non serviva
+più a niente perché non si vedeva più. Adesso lo stesso elenco — uno solo, quello di `{{indice}}` —
+si affaccia da tre parti:
+
+- **le pillole in cima**, che ci sono sempre, sono HTML vero e funzionano a script spenti. Mentre si
+  scorre, quella della sezione corrente si accende;
+- **una colonna a lato** (`.sb-riv-rail`), da **1180 px** in su. Il testo si ferma a `--sb-misura`
+  dentro una fascia da 72rem, e a destra restavano duecentosettanta pixel che non erano di nessuno:
+  la colonna va lì, e non toglie un pixel a niente. È `position: fixed` e sta apposta fuori dal
+  flusso — le sezioni sono `.sb-container` indipendenti, e per farci scorrere accanto una colonna
+  appiccicata bisognerebbe rifare l'impaginato di undici pagine. È una copia, quindi è `aria-hidden`
+  **e** fuori dal giro del tab: un elemento nascosto al lettore di schermo che però prende il fuoco è
+  la peggiore delle due cose insieme;
+- **una scheda dal tasto in basso**, sotto i 1180 px. Su telefono lo spazio è l'unica valuta e un
+  indice fisso se ne mangerebbe una fetta per tutta la lettura: qui non costa niente, sta accanto a
+  «torna in cima» dove il pollice arriva già, e si apre solo quando lo si chiede.
+
+Non è un «reveal allo scroll», che questo sito rifiuta e continua a rifiutare: non compare e non
+svanisce niente, si sposta un segno su una voce. È orientamento, non annuncio.
+
+### Le tabelle dicono che scorrono
+
+Nove tabelle su nove, su `/paese`, sono più larghe dello schermo di un telefono: la più stretta
+chiede 32rem contro i 342 px utili di un 390, e tre ne chiedono il doppio. Scorrevano già — ma
+`.sb-panel-inner` taglia il bordo di netto, e una tabella tagliata dritto sul filo della lastra
+sembra una tabella **finita**. Chi leggeva gli orari delle Messe si perdeva la terza colonna senza
+sapere che c'era.
+
+Adesso un velo sul bordo destro dice che continua, e si spegne arrivati in fondo. Lo accende
+`rivalta.js` solo quando c'è davvero altro da vedere: a script spenti non compare, ed è giusto così
+— meglio nessuna promessa che una promessa che non si può mantenere. Il riquadro prende anche il
+fuoco (`tabindex`, `role`, `aria-label` glieli scrive il build su tutte le pagine), così si scorre
+da tastiera e non solo col dito.
+
+### Com'era, com'è
+
+Le sedici coppie del Novecento su `/paese` non sono due fotografie vicine: sono un confronto, e un
+confronto esiste solo se le due metà si vedono insieme. Sotto i 640 px la griglia `--due` le
+impilava, e sedici volte di fila la lettura diventava foto, didascalia, settecento pixel di
+scorrimento, l'altra foto — cioè non più un confronto, ma due immagini che si somigliano.
+
+`.sb-riv-foto-grid--coppia` resta a **due colonne a qualunque larghezza**. A 342 px ogni metà sta in
+centosessantacinque pixel: piccola, e va bene che lo sia — a quella misura non si studia una
+fotografia, si vede che il teatro c'era e adesso non c'è.
 
 ---
 
@@ -1121,8 +1244,55 @@ Il build dice a ogni giro a che punto siamo:
   parco-campino.jpg  parco-la-platana.jpg  fontana-della-madonna.jpg  …
 ```
 
-**Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB. Le misure sono scritte
-nell'attributo `width`/`height` dell'immagine, così la pagina non sobbalza mentre carica.
+**Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB. Le misure non si scrivono più a
+mano: le legge il build dal file vero e le mette in `width`/`height`, così la pagina non sobbalza
+mentre carica — e una fotografia che non fosse in tre a due non porta più con sé le misure di
+un'altra.
+
+### Le derivate — perché una pagina non pesa più dieci megabyte
+
+Un JPEG da 1600 px è la misura giusta per l'archivio e quella sbagliata per un telefono che lo mostra
+in uno slot da 165. Su `/paese` sono sessantasette fotografie: chi scorreva tutta la pagina si portava
+a casa **11,5 MB** per vederne una frazione, e l'ottanta per cento delle visite arriva da telefono.
+
+Il build genera, per ogni originale, le derivate **WebP** che servono davvero, e riscrive ogni
+`<img src="assets/foto/…">` in un `<picture>` con `srcset` e `sizes`. Misurato su `/paese`, con la
+scheda Rete a cache vuota:
+
+| Chi guarda | Prima | Adesso | |
+| :--- | ---: | ---: | ---: |
+| Telefono 390 px, densità doppia | 11,49 MB | **2,33 MB** | −80% |
+| Telefono 390 px, densità tripla | 11,49 MB | 3,66 MB | −68% |
+| PC 1440 px, densità doppia | 11,49 MB | 3,06 MB | −73% |
+
+**Non c'è niente da ricordarsi.** Vale per le settantuno figure scritte a mano nei frammenti, per le
+ventisette del segnaposto `{{foto:…}}`, per tutte le pagine, e per quelle che si scriveranno domani:
+si continua a scrivere `<img src="assets/foto/…">` e la si riceve responsiva.
+
+I gradini sono **480 · 720 · 960 · 1600**, e non si generano tutti per tutte. Una figura dentro una
+griglia non passa mai i 480 px di lato, e darle un file da 1600 vuol dire tenersi in repository un
+megabyte che nessun browser scaricherà mai: le fasce si decidono dal contesto in cui la figura sta,
+che il build vede perché lavora sull'HTML già montato. A tappeto sarebbero 15 MB di derivate; così
+sono **7,9 MB**. Il gradino da 720 esiste per una ragione precisa: una figura a piena colonna su un
+telefono da 390 px chiede 684 px veri, e senza quel gradino il browser saltava a 960 — ventotto per
+cento di pixel scaricati e mai mostrati, su trentaquattro fotografie.
+
+Le derivate stanno in **`assets/foto/_w/`**, si committano come si committano le pagine (in
+produzione non gira niente, e non deve cominciare adesso), e il nome porta dentro l'**impronta**
+dell'originale:
+
+```
+assets/foto/_w/archivio/al-dos-1985-a1b2c3d4-960.webp
+```
+
+È quell'impronta che rende onesto l'`immutable` in [`vercel.json`](vercel.json): se un giorno la
+fotografia si sostituisce, il nome cambia con lei e nessuna cache può servire quella di prima. Senza,
+`immutable` sarebbe una bugia che dura un anno. Le derivate rimaste orfane le butta il build.
+
+**`sharp` serve solo a generarle.** Chi clona il repository e lancia `node build.mjs` senza aver
+installato niente ottiene le stesse identiche pagine, perché le misure stanno in
+`assets/foto/_w/misure.json` e le derivate sono già lì: la promessa del «niente `npm install`» regge.
+Se sharp manca e c'è una fotografia nuova, il build lo dice e quella resta un `<img>` semplice.
 
 ### Le immagini che non sono un posto
 
@@ -1310,12 +1480,43 @@ Niente `npm install`: non c'è niente da installare.
 ```bash
 git clone https://github.com/albertoxpecchini/rivaltasulmincio.git
 cd rivaltasulmincio
-node build.mjs    # rigenera le 9 pagine + sitemap.xml
-node serve.mjs    # http://localhost:8080 — Ctrl+C per fermare
+npm start         # http://localhost:8080 — costruisce, sorveglia, ricarica
 ```
+
+Un terminale solo. `npm start` è [`serve.mjs`](serve.mjs) con `--guarda`: costruisce il sito, tiene
+d'occhio `_build/`, `assets/` e `data/`, e a ogni salvataggio ricostruisce **solo quello che cambia**
+e ricarica la pagina nel browser. Prima il giro era: cambia il frammento, vai nell'altro terminale,
+rilancia il build, torna nel browser, ricarica. Di quattro gesti, tre erano sempre gli stessi.
+
+I due pezzi si usano anche da soli:
+
+```bash
+node build.mjs             # costruisce una volta e finisce
+node build.mjs --guarda    # costruisce e resta a sorvegliare
+node serve.mjs             # solo l'anteprima, senza sorveglianza
+```
+
+La sorveglianza non ricostruisce dentro il proprio processo: **rilancia sé stessa come figlio**.
+Metà di `build.mjs` è stato a livello di modulo — le JSON lette una volta, gli elenchi degli avvisi
+che si riempiono via via — e riusarlo due volte vorrebbe dire portarsi dietro le briciole del giro
+prima; un processo nuovo parte pulito per costruzione, e costa quaranta millisecondi. Le due cose
+che costano davvero — la data dell'ultimo commit e il conto dei commit, due sottoprocessi `git` che
+su Windows sono la parte lenta del build — le risolve il padre una volta e le passa in ambiente.
+
+C'è un **lucchetto**, `_build/.guardiano`, con dentro il numero del processo. I guardiani si
+moltiplicano da soli se nessuno lo impedisce: Vite riavvia il suo server ogni volta che
+`vite.config.mjs` cambia e ne genera uno nuovo, e uno che sopravvive al padre resta acceso a
+ricostruire per conto suo. Due guardiani non rompono niente, ma ricostruiscono ognuno per sé e il
+terminale comincia a dire cose che non tornano. Se il lucchetto c'è ed è vivo, il secondo saluta e
+se ne va.
 
 [`serve.mjs`](serve.mjs) è l'anteprima locale: come `build.mjs`, sola libreria standard di Node e
 niente da installare. La porta si cambia con `node serve.mjs 3000` (o `PORT=3000`).
+
+Il ricarico è un `EventSource` su `/__ricarica` — venti righe, nessun pacchetto, niente WebSocket —
+e lo script che lo apre **si inietta al momento di servire**, non si scrive nei file: quello che sta
+su disco resta identico a quello che va in produzione. Un'anteprima che modifica i file che mostra è
+un'anteprima di cui non ci si può fidare.
 
 Un server ci vuole per forza: aprire i file con `file://` **non** funziona più, perché da quando i
 link interni sono root-assoluti (`/paese`) con `file://` puntano alla radice del disco. E deve

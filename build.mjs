@@ -10,8 +10,57 @@
    Il risultato è HTML statico puro: niente build step in produzione, niente
    runtime, si serve così com'è. Lo script serve solo a chi modifica il sito.
    ═══════════════════════════════════════════════════════════════════════════ */
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
-import { execSync } from "node:child_process";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, mkdirSync, rmSync, watch } from "node:fs";
+import { execSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+
+/* ── Come si lancia ───────────────────────────────────────────────────────
+   `node build.mjs` costruisce una volta e finisce: è il modo di sempre.
+
+   `node build.mjs --guarda` costruisce, poi resta ad ascoltare _build/ e
+   assets/ e ricostruisce da sé a ogni salvataggio. Non ricostruisce dentro
+   questo processo: rilancia sé stesso come figlio. Metà di questo file è
+   stato a livello di modulo — le JSON lette una volta sola, gli elenchi degli
+   avvisi che si riempiono via via — e riusarlo due volte vorrebbe dire
+   portarsi dietro le briciole del giro prima. Un processo nuovo parte pulito
+   per costruzione, e costa quaranta millisecondi.
+
+   Al figlio si passano in ambiente le due cose che costano davvero: la data
+   dell'ultimo commit e il conto dei commit. Sono due sottoprocessi git — su
+   Windows la parte lenta di tutto il build — e fra un salvataggio e l'altro
+   non cambiano mai. */
+const GUARDA = process.argv.includes("--guarda");
+const FIGLIO = process.argv.includes("--figlio");
+const PARTITO = Date.now();
+
+/* ── Si scrive solo quello che cambia ─────────────────────────────────────
+   Finora ogni giro riscriveva tutti e diciotto i file, identici a sé stessi.
+   Tre conseguenze, tutte fastidiose: `git status` non sapeva più distinguere
+   una modifica vera dal rumore del build, l'anteprima ricaricava diciotto
+   volte per una parola cambiata, e il registro in console diceva diciotto
+   volte la stessa cosa senza dire l'unica che interessa — cos'è cambiato.
+
+   Qui si confronta prima di scrivere. Chi non è cambiato non si tocca. */
+const cambiati = [];
+const invariati = [];
+
+/* Gli avvisi che nascono mentre le pagine si montano non si stampano lì:
+   uscirebbero in mezzo all'elenco dei file, e verrebbero spinti via dalle
+   righe che arrivano dopo. Si mettono da parte e si dicono tutti insieme in
+   fondo, dove si guarda. */
+const avvisiRimandati = [];
+
+const scriviSeCambia = (percorso, contenuto) => {
+  const prima = existsSync(percorso) ? readFileSync(percorso, "utf8") : null;
+  if (prima === contenuto) {
+    invariati.push(percorso);
+    return false;
+  }
+  writeFileSync(percorso, contenuto);
+  cambiati.push({ percorso, kB: contenuto.length / 1024, delta: prima === null ? null : (contenuto.length - prima.length) / 1024 });
+  return true;
+};
+
 
 /* Dominio di produzione. Serve per due cose che DEVONO dire la stessa identica
    riga, o Search Console le tratta come pagine diverse: l'URL canonico nella
@@ -234,6 +283,9 @@ const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "lug
 const MESI_BREVI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 
 const dataUltimoCommit = () => {
+  // Sotto sorveglianza la data arriva già risolta dal padre: git non si
+  // scomoda a ogni salvataggio per ripetere quello che ha appena detto.
+  if (FIGLIO && /^\d{4}-\d{2}-\d{2}$/.test(process.env.RSM_AGG || "")) return process.env.RSM_AGG;
   try {
     const iso = execSync("git log -1 --format=%cI", {
       encoding: "utf8",
@@ -251,9 +303,11 @@ const AGG_BREVE = `${AGG_G} ${MESI_BREVI[AGG_M - 1]}`;
 
 // Titolo e descrizione stanno in testa al frammento, come due commenti: così
 // il contenuto e i suoi metadati non possono separarsi.
-const meta = (src, key) => {
+const meta = (src, key, dove) => {
   const m = src.match(new RegExp(`^<!--\\s*${key}:\\s*([\\s\\S]*?)-->`, "m"));
-  if (!m) throw new Error(`manca <!--${key}: ...--> nel frammento`);
+  // Il nome del frammento fa la differenza fra un errore che si corregge in
+  // dieci secondi e uno che si cerca aprendo diciotto file a caso.
+  if (!m) throw new Error(`manca <!--${key}: ...--> in cima a _build/${dove || "?"}`);
   return m[1].trim();
 };
 
@@ -510,6 +564,7 @@ const renderAggiornamenti = () => {
    destra, e le celle del numero partono un po' dopo — così il numero emerge
    dal rumore invece di nascerci dentro già acceso. */
 const COMMITS = (() => {
+  if (FIGLIO && process.env.RSM_COMMITS) return Number(process.env.RSM_COMMITS) || 0;
   try {
     return Number(execSync("git rev-list --count HEAD", { encoding: "utf8" }).trim()) || 0;
   } catch {
@@ -762,8 +817,9 @@ const renderMappa = () => {
   punti.sort((a, b) => (a.n ? 0 : 1) - (b.n ? 0 : 1) || a.d - b.d);
 
   if (ignoti.size) {
-    console.log(`\n⚠ tipi OSM non ancora tradotti (esclusi dalla mappa): ${[...ignoti].join(", ")}`);
-    console.log(`  Aggiungerli a _build/tipi.json con etichetta e gruppo.`);
+    avvisiRimandati.push(
+      `tipi OSM non ancora tradotti (esclusi dalla mappa): ${[...ignoti].join(", ")}\n  Aggiungerli a _build/tipi.json con etichetta e gruppo.`
+    );
   }
 
   const conta = (g) => punti.filter((p) => p.g === g).length;
@@ -1580,6 +1636,294 @@ const parolePagina = (html) => {
   return senzaTag((lede || primo || [, ""])[1]).slice(0, 240).replace(/\s+\S*$/, "");
 };
 
+/* ══════════════════════════════════════════════════════════════════════════
+   LE FOTOGRAFIE, RIDOTTE ALLA MISURA DELLO SCHERMO
+
+   Le foto d'archivio sono JPEG da 1600 px: giuste per l'archivio, sbagliate
+   per un telefono che le mostra in uno slot da 165 px. Su /paese sono
+   sessantadue, e chi scorre tutta la pagina si porta a casa dieci megabyte e
+   mezzo per vederne una frazione.
+
+   Qui ogni originale genera tre derivate WebP — 480, 960, 1600 — e il markup
+   se le prende da sé (vedi `figureResponsive`). Misurato sulle foto vere:
+   a 960 px si risparmia il 62%, a 480 px l'89%.
+
+   Il nome della derivata porta dentro l'impronta dell'originale:
+   `al-dos-1985-a1b2c3d4-960.webp`. È quella che rende onesto l'`immutable`
+   in vercel.json — se un giorno la fotografia si sostituisce, il nome cambia
+   con lei e nessuna cache può servire quella di prima. Senza impronta,
+   `immutable` sarebbe una bugia che dura un anno.
+
+   Sharp serve solo a GENERARE. Il sito continua a costruirsi senza, perché
+   le misure stanno scritte in _w/misure.json e le derivate sono committate:
+   chi clona il repo e lancia `node build.mjs` senza aver installato niente
+   ottiene le stesse pagine. È la promessa del README, e non si rompe. */
+/* I gradini della scala. Non sono scelti a occhio: sono le misure che i
+   telefoni chiedono davvero.
+
+   Una figura a piena colonna su un telefono da 390 px occupa 342 px, che a
+   densità doppia fanno 684 px veri. Con la scala 480 · 960 il browser saltava
+   a 960 — ventotto per cento di pixel scaricati e mai mostrati, su
+   trentaquattro fotografie di /paese. Il 720 è quel gradino lì, e da solo
+   vale un megabyte a visita. */
+const FOTO_LARGHEZZE = [480, 720, 960, 1600];
+const FOTO_QUALITA = 72;
+const MISURE_FILE = "assets/foto/_w/misure.json";
+
+let sharp = null;
+try {
+  sharp = (await import("sharp")).default;
+} catch {
+  sharp = null;
+}
+
+const misure = existsSync(MISURE_FILE) ? JSON.parse(readFileSync(MISURE_FILE, "utf8")) : {};
+
+// Tutti i file immagine sotto assets/foto/, esclusa la cartella delle derivate.
+const fotoOriginali = (dir = "assets/foto") => {
+  const out = [];
+  for (const voce of readdirSync(dir, { withFileTypes: true })) {
+    if (voce.name === "_w") continue;
+    const p = `${dir}/${voce.name}`;
+    if (voce.isDirectory()) out.push(...fotoOriginali(p));
+    else if (/\.(jpe?g|png)$/i.test(voce.name)) out.push(p);
+  }
+  return out;
+};
+
+const impronta = (p) => createHash("sha1").update(readFileSync(p)).digest("hex").slice(0, 8);
+const derivata = (p, imp, w) =>
+  `assets/foto/_w/${p.replace(/^assets\/foto\//, "").replace(/\.[^.]+$/, "")}-${imp}-${w}.webp`;
+
+/* Prima si misura soltanto. Leggere l'intestazione di un JPEG costa niente —
+   non si decodifica l'immagine — e serve per due cose: le dimensioni vere da
+   scrivere nel markup, e l'impronta che finisce nel nome delle derivate.
+
+   Le derivate NON si generano qui. Si generano dopo, quando le pagine sono
+   montate e si sa quali servono davvero: vedi «Adesso si taglia». */
+const derivateSenzaSharp = [];
+
+for (const p of fotoOriginali()) {
+  const imp = impronta(p);
+  if (misure[p] && misure[p].imp === imp) continue;
+  if (!sharp) {
+    // Senza sharp non si misura e non si genera, ma non si rompe niente: la
+    // figura resta un <img> semplice finché qualcuno non rifà il build con
+    // sharp installato. È la promessa del README, e regge.
+    derivateSenzaSharp.push(p);
+    continue;
+  }
+  const mis = await sharp(p).metadata();
+  misure[p] = { imp, w: mis.width, h: mis.height };
+}
+
+// Le misure di fotografie che non esistono più non servono a nessuno.
+for (const p of Object.keys(misure)) if (!existsSync(p)) delete misure[p];
+
+/* ── Da <img> a <picture> ─────────────────────────────────────────────────
+   Le figure del sito sono scritte in due modi: settantuno a mano dentro i
+   frammenti e ventisette dal segnaposto {{foto:}}. Aggiornarle tutte a mano
+   vorrebbe dire ricordarsene ogni volta che se ne scrive una nuova.
+
+   Quindi non si tocca niente: si riscrive qui, sul corpo già montato. Chi
+   scrive una fotografia domani continua a scrivere <img src="assets/foto/…">
+   e la riceve responsiva senza doverlo sapere.
+
+   `sizes` dice al browser quanto sarà larga la figura PRIMA che il foglio di
+   stile esista: se si sbaglia, si scarica il file sbagliato. Si ricava dal
+   contenitore, che qui si vede perché si lavora sull'HTML montato. */
+/* Le tre fasce non si danno a tutte le fotografie. La più grande, 1600, serve
+   a una cosa sola: una figura a piena colonna — 46rem, cioè 736 px — su uno
+   schermo a doppia densità. Una figura dentro una griglia non passa mai i 480
+   px di lato, e darle un file da 1600 vuol dire tenersi in repository un
+   megabyte che nessun browser scaricherà mai.
+
+   Misurato: generarle tutte a tappeto faceva 15 MB di derivate, di cui 8,3
+   nella sola fascia da 1600. Deciderle dal contesto le porta a metà. */
+const SIZES_SOLA = "(min-width: 52rem) 46rem, calc(100vw - 3rem)";
+const SIZES_GRIGLIA = "(min-width: 1024px) 20rem, (min-width: 640px) 46vw, calc(100vw - 3rem)";
+const SIZES_DUE = "(min-width: 1024px) 30rem, (min-width: 640px) 46vw, calc(100vw - 3rem)";
+const SIZES_COPPIA = "(min-width: 1024px) 30rem, 46vw";
+
+const FASCE = new Map([
+  // A piena colonna, e su schermo grande a densità doppia: 46rem × 2 = 1472.
+  [SIZES_SOLA, [480, 720, 960, 1600]],
+  // Su telefono queste vanno a tutta larghezza come le sole; su schermo largo
+  // si fermano a metà o a un terzo, e il 1600 non lo chiede mai nessuno.
+  [SIZES_DUE, [480, 720, 960]],
+  [SIZES_GRIGLIA, [480, 720, 960]],
+  // Le coppie del '900 stanno a due colonne anche sul telefono: 46vw di 390
+  // fanno 179 px, che a densità tripla sono 537. Non arrivano mai a 960.
+  [SIZES_COPPIA, [480, 720]],
+]);
+
+/* Quali derivate servono davvero. Si riempie mentre le pagine si montano, e
+   si legge quando è ora di tagliare: una fotografia che compare due volte in
+   contesti diversi si prende l'unione delle due fasce, non l'ultima vista. */
+const servono = new Map();
+
+const figureResponsive = (html) => {
+  /* Per ogni figura serve sapere dentro che cosa sta. Un'espressione regolare
+     che guardi indietro fin dove comincia il contenitore non esiste; guardare
+     il testo che precede, sì — ed è leggibile. */
+  const contesto = (prima) => {
+    const apre = prima.lastIndexOf('class="sb-riv-foto-grid');
+    if (apre === -1) return SIZES_SOLA;
+    const dentro = prima.slice(apre);
+    // Se da lì in poi i </div> hanno già superato i <div>, quella griglia è
+    // chiusa e la figura sta fuori.
+    const aperti = (dentro.match(/<div\b/g) || []).length;
+    const chiusi = (dentro.match(/<\/div>/g) || []).length;
+    if (chiusi > aperti) return SIZES_SOLA;
+    const classe = (dentro.match(/^class="([^"]*)"/) || [, ""])[1];
+    if (classe.includes("--coppia")) return SIZES_COPPIA;
+    if (classe.includes("--due")) return SIZES_DUE;
+    return SIZES_GRIGLIA;
+  };
+
+  let da = 0;
+  return html.replace(/<img\s([^>]*?)src="(assets\/foto\/[^"]+)"([^>]*?)>/g, (tutto, prima, src, dopo, pos) => {
+    da = pos;
+    const m = misure[src];
+    if (!m) return tutto; // fotografia senza misure note: resta com'era.
+
+    const sizes = contesto(html.slice(0, da));
+    /* Mai più larghe dell'originale: una foto da 900 px non guadagna niente a
+       essere chiesta a 1600, e la fascia doppia si eviterebbe da sé al momento
+       di tagliare, lasciando però un srcset che promette una misura che non
+       esiste. Si toglie qui, dove la promessa si scrive. */
+    const fasce = FASCE.get(sizes).filter((w, i, a) => w <= m.w || a[i - 1] === undefined || a[i - 1] < m.w);
+    for (const w of fasce) servono.set(derivata(src, m.imp, w), { src, w: Math.min(w, m.w) });
+
+    const set = fasce.map((w) => `${derivata(src, m.imp, w)} ${Math.min(w, m.w)}w`).join(", ");
+
+    /* Le dimensioni vere, lette da sharp, al posto di quelle scritte a mano:
+       il 1600×1067 del segnaposto era giusto per tutte le foto di oggi e
+       sarebbe stato sbagliato per la prima che non fosse in tre a due. */
+    const attr = `${prima}${dopo}`
+      .replace(/\s*\bwidth="[^"]*"/g, "")
+      .replace(/\s*\bheight="[^"]*"/g, "")
+      .trim();
+    return (
+      `<picture><source type="image/webp" srcset="${set}" sizes="${sizes}">` +
+      `<img ${attr} src="${src}" width="${m.w}" height="${m.h}"></picture>`
+    );
+  });
+};
+
+/* ── Le tabelle dicono che scorrono ───────────────────────────────────────
+   Nove tabelle su nove, su /paese, sono più larghe dello schermo di un
+   telefono: la più stretta chiede 32rem contro i 342 px utili di un 390.
+   Scorrono già, ma .sb-panel-inner taglia il bordo di netto e sembrano
+   finite — chi legge gli orari delle Messe si perde la terza colonna.
+
+   La sfumatura sul bordo la mette il foglio di stile. Qui si mette quello che
+   il foglio non può: un riquadro che prende il fuoco, così la tabella si
+   scorre anche da tastiera e non solo col dito. Si fa dal build e non a mano
+   perché sono ventiquattro riquadri su undici pagine, e domani di più. */
+const tabelleScorrevoli = (html) =>
+  html.replace(
+    /<div class="sb-riv-scroll">/g,
+    '<div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">'
+  );
+
+/* ── L'indice si scrive da sé ─────────────────────────────────────────────
+   Finora l'indice era battuto a mano in cima a ogni frammento, e poteva
+   divergere dalle sezioni che elencava. È già successo: su /paese l'occhiello
+   parlava di quattro sezioni quando erano sette, e il numero 21 era usato due
+   volte. Nessuno se n'era accorto perché nessuno guardava.
+
+   Adesso {{indice}} lo ricava dalle sezioni della pagina stessa: divergere
+   non è più possibile, perché non c'è più niente da tenere allineato.
+
+   Ma NON lo ricava dagli <h2>, e questa è la parte che conta. Le voci
+   dell'indice erano più corte dei titoli, e lo erano apposta: «Fibra e 5G» è
+   una pillola, «Connettività: Wi-Fi, fibra, 5G» è un titolo, e infilare il
+   secondo in una fila di pillole su un telefono le manda a capo tre volte.
+   Quelle etichette erano informazione, non una copia sciatta del titolo.
+
+   Quindi l'etichetta breve resta, ma va a stare ADDOSSO alla sezione:
+
+     <section class="sb-container sb-riv-sec" id="connettivita" data-indice="Fibra e 5G">
+
+   Senza l'attributo vale il titolo, che il più delle volte è già giusto.
+   L'etichetta sta accanto alla cosa che etichetta, e una sezione rinominata
+   si porta dietro la sua voce invece di lasciarla indietro in cima al file.
+
+   Due superfici da una verità sola:
+     · le pillole in cima, che ci sono sempre e funzionano a script spenti;
+     · la colonna a destra, che su PC riempie la fascia oggi vuota.
+   La colonna è una copia, quindi è aria-hidden: chi legge con uno screen
+   reader sente l'indice una volta, non due. Su telefono la stessa colonna
+   non si mostra: lì l'indice lo apre il tasto in basso, che se lo costruisce
+   da solo leggendo le pillole (assets/rivalta.js). */
+const sezioniIndice = (html) => {
+  const out = [];
+  for (const blocco of html.split(/<section\b/).slice(1)) {
+    const testa = blocco.slice(0, blocco.indexOf(">"));
+    if (!/sb-riv-sec\b/.test(testa)) continue;
+    const id = (testa.match(/\bid="([^"]+)"/) || [])[1];
+    if (!id) continue;
+    const breve = (testa.match(/\bdata-indice="([^"]*)"/) || [])[1];
+    const h2 = blocco.match(/<h2\b[^>]*>([\s\S]*?)<\/h2>/);
+    if (!breve && !h2) continue;
+    out.push({ id, nome: breve || senzaTag(h2[1]).trim() });
+
+    /* Un sotto-titolo può chiedere di entrare in indice, se è una cosa che si
+       cerca per nome — «Il Luccio alla Rivaltese» dentro una sezione che si
+       chiama altrimenti. Deve avere un id scritto a mano: quelli che scrive
+       `ancore()` non esistono ancora, a questo punto del giro. */
+    for (const m of blocco.matchAll(/<h3\b([^>]*)>([\s\S]*?)<\/h3>/g)) {
+      const sub = (m[1].match(/\bdata-indice="([^"]*)"/) || [])[1];
+      const subId = (m[1].match(/\bid="([^"]+)"/) || [])[1];
+      if (sub === undefined || !subId) continue;
+      out.push({ id: subId, nome: sub || senzaTag(m[2]).trim() });
+    }
+  }
+  return out;
+};
+
+/* ── I capitoli che questa pagina copre ───────────────────────────────────
+   L'occhiello sopra il titolo dice da quali capitoli del dossier viene la
+   pagina: «Sezioni 1 · 2 · 8 · 21». Era scritto a mano su sei pagine, e su
+   sei stava giusto finché nessuno aggiungeva niente. Poi a /paese è arrivato
+   il Novecento — capitolo 22 — e l'occhiello ha continuato a dire quattro
+   numeri per una pagina che ne copriva cinque.
+
+   Nessuno lo aveva notato, e non c'era ragione perché qualcuno lo notasse:
+   è una riga piccola in cima, e chi aggiunge una sezione sta guardando il
+   fondo del file. Adesso si conta da sé, dai numeri delle sezioni. */
+const renderSezioni = (html) => {
+  const numeri = [...new Set([...html.matchAll(/sb-riv-secnum">\s*(\d+)/g)].map((m) => Number(m[1])))];
+  if (!numeri.length) return "";
+  return `Sezioni ${numeri.sort((a, b) => a - b).join(" · ")}`;
+};
+
+const renderIndice = (html) => {
+  const sez = sezioniIndice(html);
+  if (!sez.length) return "";
+  const voci = (sp, extra = "") => sez.map((s) => `<a href="#${s.id}"${extra}>${escape(s.nome)}</a>`).join(`\n${sp}`);
+
+  /* La colonna a lato è aria-hidden perché è una copia: chi legge con uno
+     screen reader deve sentire l'indice una volta, non due.
+
+     E allora i suoi link devono anche uscire dal giro del tab. Un elemento
+     dentro un aria-hidden che però prende il fuoco è la peggiore delle due
+     cose insieme: il lettore di schermo non lo annuncia, e intanto il fuoco
+     ci finisce dentro e chi naviga da tastiera si trova da nessuna parte.
+     L'indice vero — le pillole qui sopra — si tabula tutto, e ha le stesse
+     identiche voci. */
+  return `<nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
+    ${voci("    ")}
+  </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      ${voci("      ", ' tabindex="-1"')}
+    </nav>
+  </aside>`;
+};
+
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
@@ -1617,11 +1961,12 @@ function nomiRaddoppiati(html) {
 
 const sitemap = [];
 const ricerca = [];
+const pagine = [];
 
 for (const file of bodies) {
   const page = file.replace(".body.html", "");
   const src = readFileSync(`_build/${file}`, "utf8");
-  const body = shortcodes(
+  let body = shortcodes(
     src
       .replace(/^<!--[\s\S]*?-->\s*/gm, "")
       .trim()
@@ -1643,8 +1988,17 @@ for (const file of bodies) {
       .replace("{{CONTRADE}}", renderContrade)
   );
 
-  const title = meta(src, "title");
-  const desc = meta(src, "desc");
+  /* Tre passaggi sul corpo già montato. L'indice legge le sezioni; le figure
+     e le tabelle riscrivono markup che esiste già, e non si accorgono l'una
+     dell'altra. Stanno qui e non nei frammenti perché valgono per tutte le
+     pagine, comprese quelle che nessuno ha ancora scritto. */
+  body = body.replace("{{indice}}", () => renderIndice(body));
+  body = body.replace("{{sezioni}}", () => renderSezioni(body));
+  body = figureResponsive(body);
+  body = tabelleScorrevoli(body);
+
+  const title = meta(src, "title", file);
+  const desc = meta(src, "desc", file);
 
   /* Leaflet pesa 160 kB fra script e foglio: caricarlo sulle nove pagine che
      una mappa non ce l'hanno sarebbe farlo scaricare per niente otto volte su
@@ -1757,7 +2111,12 @@ for (const file of bodies) {
      errore del sito, senza niente da configurare. */
   if (page === "404") out = out.split('="assets/').join('="/assets/');
 
-  writeFileSync(`${page}.html`, out);
+  /* Non si scrive ancora. Prima si montano tutte le pagine, poi la pagella le
+     guarda insieme — un collegamento a /storia#mestieri si può giudicare solo
+     quando anche /storia esiste — e solo alla fine si scrive. Così un build
+     che si ferma a metà non lascia mezze pagine sul disco, come faceva finora
+     il controllo dei nomi raddoppiati qui sotto. */
+  pagine.push({ page, out, noindex });
 
   if (!noindex) {
     ricerca.push({
@@ -1790,8 +2149,174 @@ for (const file of bodies) {
     );
   }
 
-  console.log(`✓ ${page}.html  (${(out.length / 1024).toFixed(1)} kB)`);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LA PAGELLA
+
+   Il build sapeva già fermarsi su tredici errori — uno slug inventato, un
+   orario che non esiste, un nome usato due volte nello stesso script. Ma di
+   tutto quello che si rompe scrivendo una pagina non vedeva niente: un
+   collegamento a una sezione che non c'è più, una fotografia citata e mai
+   arrivata, un indirizzo verso una pagina cancellata, un segnaposto scritto
+   storto che finisce in chiaro sotto gli occhi di chi legge.
+
+   Sono errori che non fanno rumore. La pagina si costruisce, si pubblica, e
+   il primo che se ne accorge è chi ci sbatte contro.
+
+   Qui si guardano tutte le pagine insieme, perché è l'unico momento in cui
+   si può: un collegamento a /storia#mestieri si giudica solo quando anche
+   /storia è stata montata.
+
+   Gli errori (✗) fanno uscire il build con codice 1 — su una macchina che
+   pubblica da sola, è quello che ferma la pubblicazione. Gli avvisi (⚠) no:
+   dicono una cosa che vale la pena sapere e lasciano lavorare. Ognuno dice
+   cosa fare, come fanno già gli avvisi che c'erano prima. */
+const errori = [];
+const avvisi = [];
+
+// Gli indirizzi che esistono senza essere pagine: le cartelle servite così
+// come sono, e i file con un'estensione vera in fondo.
+const nonEPagina = (u) => /^\/(assets|data|api)\//.test(u) || /\.[a-z0-9]{2,5}$/i.test(u);
+
+/* Gli <script> in fondo ai frammenti sono pieni di stringhe che assomigliano
+   a markup — `id="' + chiave + '"`, indirizzi costruiti a pezzi — e non sono
+   markup: sono codice. Guardarli come se fossero HTML vuol dire inventarsi
+   errori che non esistono. Si tolgono prima di guardare, e con loro i
+   commenti, che dicono cose che non finiscono in pagina. */
+const soloMarkup = (html) =>
+  html.replace(/<script\b[\s\S]*?<\/script>/gi, "").replace(/<!--[\s\S]*?-->/g, "");
+
+// `\sid=` e non `\bid=`: fra il trattino e la «i» di data-id c'è un confine
+// di parola, e senza lo spazio ogni data-id passerebbe per un id vero.
+const idsDi = (html) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+const indirizzi = new Set(pagine.map((p) => (p.page === "index" ? "/" : `/${p.page}`)));
+const idsPerPagina = new Map(
+  pagine.map((p) => [p.page === "index" ? "/" : `/${p.page}`, idsDi(soloMarkup(p.out))])
+);
+
+for (const { page, out: grezzo } of pagine) {
+  const dove = `${page}.html`;
+  const out = soloMarkup(grezzo);
+
+  // 1. Un segnaposto rimasto in chiaro. Finora si controllava solo nelle due
+  //    mail della Color Walk: una pagina poteva spedirlo a chi legge.
+  for (const m of new Set([...out.matchAll(/\{\{[A-Za-z_][^}\n]{0,60}\}\}/g)].map((m) => m[0]))) {
+    errori.push(`${dove}: ${m} è rimasto scritto in chiaro. O il segnaposto non esiste, o è finito in una pagina che non lo scioglie.`);
+  }
+
+  // 2. e 3. Collegamenti interni e ancore. Un href="/storia#mestieri" chiede
+  //    due cose insieme: che /storia esista e che quell'ancora ci sia dentro.
+  for (const m of out.matchAll(/href="(\/[^"#]*)?(#[^"]*)?"/g)) {
+    const [, percorso, frammento] = m;
+    const bersaglio = percorso === undefined ? (page === "index" ? "/" : `/${page}`) : percorso === "" ? "/" : percorso;
+    if (percorso !== undefined && !nonEPagina(bersaglio) && !indirizzi.has(bersaglio)) {
+      errori.push(`${dove}: porta a ${bersaglio}, che non è una pagina del sito. Un frammento cancellato lascia in giro i link che ci andavano.`);
+      continue;
+    }
+    if (!frammento || frammento === "#" || nonEPagina(bersaglio)) continue;
+    const ids = idsPerPagina.get(bersaglio);
+    if (ids && !ids.has(frammento.slice(1))) {
+      errori.push(`${dove}: ${bersaglio}${frammento} non risponde — quell'ancora in pagina non c'è. Se la sezione è stata rinominata, il link va rifatto.`);
+    }
+  }
+
+  // 4. Una fotografia citata e mai arrivata. Il segnaposto {{foto:}} lo
+  //    controllava già; le settantuno figure scritte a mano no.
+  for (const m of out.matchAll(/<img[^>]*\ssrc="\/?(assets\/[^"]+)"/g)) {
+    if (!existsSync(m[1])) {
+      errori.push(`${dove}: manca il file ${m[1]}. Va messo lì con quel nome esatto, e al prossimo build compare da sé.`);
+    }
+  }
+
+  // 5. Due elementi con lo stesso id: il secondo è irraggiungibile, e un
+  //    collegamento che ci punta arriva sempre e solo sul primo.
+  const visti = new Set();
+  for (const m of out.matchAll(/\sid="([^"]+)"/g)) {
+    if (visti.has(m[1])) errori.push(`${dove}: l'id "${m[1]}" è usato due volte. Un'ancora sola può rispondere: la seconda non la raggiunge nessuno.`);
+    visti.add(m[1]);
+  }
+}
+
+/* Il numero di sezione ripetuto NON è un controllo, ed è bene sia scritto
+   perché a prima vista sembra che dovrebbe esserlo. I numeri vengono dai
+   capitoli di data/rivalta-sul-mincio-dossier.md, e un capitolo si spezza in
+   più sezioni per come è fatta la pagina: «04 — Commercio», «04 — Mercato» e
+   «04 — Professioni» sono tutte e tre il capitolo 4. Succede su sette pagine
+   su undici. Un controllo che lo chiamasse errore avrebbe torto ventuno volte
+   su ventidue, e un avviso che ha quasi sempre torto insegna solo a non
+   leggere gli avvisi. */
+
+// 6. Una pagina in radice che non ha più il suo frammento: cancellare
+//    _build/x.body.html non cancella x.html, che resta online per sempre.
+for (const f of readdirSync(".").filter((f) => f.endsWith(".html"))) {
+  if (!existsSync(`_build/${f.replace(".html", ".body.html")}`)) {
+    avvisi.push(`${f} non ha più un frammento in _build/: è rimasta orfana e continua a essere pubblicata. Se non serve più, si cancella a mano.`);
+  }
+}
+
+/* 7. Una pagina che esiste e che dalla nav non si raggiunge. Aggiungere un
+      frammento non aggiunge la voce in testata, e finora nessuno lo diceva.
+
+      Le pagine `noindex` restano fuori: sono bozze e zone riservate — la
+      /iscritti degli organizzatori, il modulo da stampare — e il fatto che
+      dai menu non si raggiungano è il motivo per cui esistono così. */
+for (const { page, noindex } of pagine) {
+  if (page === "404" || page === "index" || noindex) continue;
+  if (!head.includes(`href="/${page}"`) && !foot.includes(`href="/${page}"`)) {
+    avvisi.push(`/${page} non è raggiungibile da nessun menu: la voce va aggiunta a mano in _build/head.html e _build/foot.html.`);
+  }
+}
+
+/* ── Adesso si taglia ─────────────────────────────────────────────────────
+   Le pagine sono montate, quindi `servono` sa esattamente quali derivate
+   qualche srcset ha promesso. Si generano quelle e nient'altro: chiedere a
+   sharp settantaquattro fotografie per tre misure ognuna vorrebbe dire fare
+   il doppio del lavoro per tenersi il doppio dei file.
+
+   Quello che c'è già non si rifà — il nome porta dentro l'impronta
+   dell'originale, quindi un file col nome giusto è per costruzione il taglio
+   giusto di quella fotografia lì. */
+const derivateNuove = [];
+if (sharp) {
+  for (const [f, { src, w }] of servono) {
+    if (existsSync(f)) continue;
+    mkdirSync(f.replace(/\/[^/]+$/, ""), { recursive: true });
+    // Non si ingrandisce mai: una foto da 900 px non diventa da 1600
+    // guadagnando pixel che non ha, diventa solo un file più grosso.
+    await sharp(src).resize({ width: w, withoutEnlargement: true }).webp({ quality: FOTO_QUALITA }).toFile(f);
+    derivateNuove.push(f);
+  }
+  mkdirSync("assets/foto/_w", { recursive: true });
+  const ordinate = Object.fromEntries(Object.keys(misure).sort().map((k) => [k, misure[k]]));
+  scriviSeCambia(MISURE_FILE, JSON.stringify(ordinate, null, 2) + "\n");
+}
+
+/* E si butta quello che non serve più: la derivata di una fotografia
+   sostituita resta lì col vecchio nome e nessuna pagina la apre. Senza questo
+   la cartella cresce a ogni ritocco e nessuno saprebbe più cosa serve.
+
+   Si butta solo quando sharp c'è: senza, `servono` è mezzo vuoto perché le
+   misure mancano, e si cancellerebbero derivate buone credendole orfane. */
+const derivateOrfane = [];
+if (sharp && existsSync("assets/foto/_w")) {
+  const gira = (dir) => {
+    for (const voce of readdirSync(dir, { withFileTypes: true })) {
+      const f = `${dir}/${voce.name}`;
+      if (voce.isDirectory()) gira(f);
+      else if (f.endsWith(".webp") && !servono.has(f)) {
+        rmSync(f);
+        derivateOrfane.push(f);
+      }
+    }
+  };
+  gira("assets/foto/_w");
+}
+
+/* Adesso si scrive. Le pagine sono tutte montate e tutte guardate: quello che
+   finisce sul disco è un sito intero o è quello di prima, mai una via di
+   mezzo. */
+for (const { page, out } of pagine) scriviSeCambia(`${page}.html`, out);
 
 /* ── Sitemap ──────────────────────────────────────────────────────────────
    Generata dalla stessa lista che genera le pagine: una pagina nuova entra in
@@ -1809,17 +2334,16 @@ const urls = sitemap
   )
   .join("\n");
 
-writeFileSync(
+scriviSeCambia(
   "sitemap.xml",
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
 );
-console.log(`✓ sitemap.xml  (${sitemap.length} URL)`);
 
 /* ── Dati della ricerca ──────────────────────────────────────────────────
    Lo stesso elenco che genera le pagine genera l'indice: una pagina nuova
    entra nella ricerca da sé. Va in assets/ (che il browser scarica), non in
    _build/ (che resta a casa), e si committa già pronto come sitemap.xml. */
-writeFileSync(
+scriviSeCambia(
   "assets/ricerca-dati.js",
   `/* Generato da build.mjs — NON modificare a mano.
    Indice della ricerca: nome, indirizzo, descrizione e sezioni ancorate di
@@ -1829,7 +2353,6 @@ window.RSM_RICERCA = ${JSON.stringify(ricerca)};
 `
 );
 const nSezioni = ricerca.reduce((n, p) => n + p.h.length, 0);
-console.log(`✓ assets/ricerca-dati.js  (${ricerca.length} pagine, ${nSezioni} sezioni)`);
 
 /* ── Le mail della Color Walk ───────────────────────────────────────────
    Due mail — la ricevuta e l'avviso a chi non è arrivato in fondo al
@@ -2005,73 +2528,222 @@ export const MODELLO_FALLITA = ${stringa(fallita)};
 /* La sostituzione passa da una funzione e non da una stringa: dentro
    `generato` c'è HTML, e String.replace legge $& $1 $` come istruzioni
    proprie anche quando sono capitate lì per caso. */
-writeFileSync(
-  FUNZIONE,
-  sorgente.replace(marcatori, (_, apri, chiudi) => apri + generato + chiudi)
-);
-console.log(
-  `✓ ${FUNZIONE}  (2 mail, ${((ricevuta.length + fallita.length) / 1024).toFixed(1)} kB)`
-);
+scriviSeCambia(FUNZIONE, sorgente.replace(marcatori, (_, apri, chiudi) => apri + generato + chiudi));
 
-/* Le sezioni saltate non sono un errore — la mail funziona lo stesso — ma non
-   devono passare inosservate: sono le cose che il gruppo del Palio non ha
-   ancora deciso, e finché non le decide chi si iscrive non le legge. */
-/* Le due qui sotto non si compilano: le decide il build guardando le altre,
-   e una delle due c'è sempre. Non sono cose che manchino. */
-const dedotte = ["dettagli-in-arrivo", "ancora-da-dire"];
-/* E «banner» non manca per una decisione che non è stata presa: manca un
-   file. Se ne parla da sé più sotto, dove si parla degli altri pezzi
-   grafici che non si trovano. */
-const saltate = Object.entries(sezioni).filter(
-  ([k, v]) => !v && !dedotte.includes(k) && k !== "banner"
-);
-if (saltate.length) {
-  const vuoti = Object.keys(campiMail).filter(
-    (k) => String(campiMail[k] ?? "").trim() === ""
+/* Gli avvisi di sempre — le sezioni della mail non compilate, i loghi e le
+   fotografie che non sono ancora arrivate — stanno in una funzione e non
+   in linea per una ragione sola: l'ordine in cui si leggono. Prima si dice
+   cos'e' cambiato, che e' la domanda con cui si guarda il terminale, poi si
+   dice cosa manca. Al contrario gli avvisi scorrono via sopra l'elenco. */
+const avvisiDiSempre = () => {
+  /* Le sezioni saltate non sono un errore — la mail funziona lo stesso — ma non
+     devono passare inosservate: sono le cose che il gruppo del Palio non ha
+     ancora deciso, e finché non le decide chi si iscrive non le legge. */
+  /* Le due qui sotto non si compilano: le decide il build guardando le altre,
+     e una delle due c'è sempre. Non sono cose che manchino. */
+  const dedotte = ["dettagli-in-arrivo", "ancora-da-dire"];
+  /* E «banner» non manca per una decisione che non è stata presa: manca un
+     file. Se ne parla da sé più sotto, dove si parla degli altri pezzi
+     grafici che non si trovano. */
+  const saltate = Object.entries(sezioni).filter(
+    ([k, v]) => !v && !dedotte.includes(k) && k !== "banner"
   );
-  console.log(`\n⚠ mail Color Walk: ${saltate.length} sezioni non entrano — ${saltate.map(([k]) => k).join(", ")}.`);
-  console.log(`  Campi vuoti in _build/email/evento.json: ${vuoti.join(", ")}`);
-  if (!sezioni.contatto) {
-    console.log(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
+  if (saltate.length) {
+    const vuoti = Object.keys(campiMail).filter(
+      (k) => String(campiMail[k] ?? "").trim() === ""
+    );
+    console.error(`\n⚠ mail Color Walk: ${saltate.length} sezioni non entrano — ${saltate.map(([k]) => k).join(", ")}.`);
+    console.error(`  Campi vuoti in _build/email/evento.json: ${vuoti.join(", ")}`);
+    if (!sezioni.contatto) {
+      console.error(`  Senza "organizzatori" le mail partono senza indirizzo a cui rispondere.`);
+    }
+    console.error(`  Si compilano lì e si rifà il build: le sezioni tornano da sé.`);
   }
-  console.log(`  Si compilano lì e si rifà il build: le sezioni tornano da sé.`);
+
+  if (!sezioni.banner) {
+    console.error(`
+  ⚠ testata delle mail: manca ${BANNER_MAIL}.`);
+    console.error(`  Si ricava dal banner con «npm run render:banner-mail».`);
+    console.error(`  Finché non c'è, le due mail partono senza immagine in cima.`);
+  }
+
+  if (loghiMancanti.length) {
+    console.error(`
+  ⚠ loghi: ne mancano ${loghiMancanti.length} — ${loghiMancanti.join("  ")}`);
+    console.error(`  Vanno in assets/loghi/ con quel nome esatto (svg, png, webp o jpg).`);
+    console.error(`  Finché non ci sono, su /color-walk al loro posto si legge il nome.`);
+  }
+
+  if (!bannerTrovato) {
+    console.error(`
+  ⚠ banner Color Walk: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
+    console.error(`  L'originale è la tela in design/color-walk/: si riesporta e ricompare.`);
+  }
+
+  if (!locandinaTrovata) {
+    console.error(`
+  ⚠ locandina Color Walk: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
+    console.error(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
+  }
+
+  /* ── La lista della spesa ─────────────────────────────────────────────────
+     Le fotografie si aggiungono una alla volta, nel tempo. Perché "quali
+     mancano" non diventi una domanda a cui si risponde aprendo la cartella e
+     confrontandola a occhio con le pagine, il build lo dice ogni volta. */
+  if (mancanti.length) {
+    const unici = [...new Set(mancanti)];
+    const fatte = luoghi.length - unici.length;
+    console.error(`\n⚠ fotografie: ${fatte} su ${luoghi.length}. Ne mancano ${unici.length}.`);
+    console.error(`  ${unici.slice(0, 6).map((s) => perSlug.get(s).foto).join("  ")}`);
+    if (unici.length > 6) console.error(`  …e altre ${unici.length - 6}. L'elenco completo dei nomi file è in _build/luoghi.json`);
+    console.error(`  Vanno in assets/foto/ con quel nome esatto: al prossimo build compaiono da sé.`);
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════════════
+   COS'È CAMBIATO
+
+   Il registro di prima stampava diciotto righe ✓ tutte uguali, una per
+   pagina, a ogni giro: diceva che il build era andato, che è la cosa che si
+   sa già, e non diceva l'unica che serve — cos'è cambiato. Su diciotto righe
+   identiche un avviso in fondo non lo legge nessuno.
+
+   Qui si nominano solo i file toccati davvero, col peso e con quanto sono
+   cresciuti o calati. Chi non si è mosso vale una riga sola in coda. */
+const kB = (n) => n.toFixed(1).replace(".", ",") + " kB";
+
+for (const c of cambiati.sort((a, b) => a.percorso.localeCompare(b.percorso))) {
+  const delta =
+    c.delta === null ? "  nuovo" : c.delta === 0 ? "" : `  ${c.delta > 0 ? "+" : "−"}${kB(Math.abs(c.delta))}`;
+  console.log(`  ${c.percorso.padEnd(28)}${kB(c.kB).padStart(10)}${delta}`);
+}
+if (invariati.length) console.log(`  · ${invariati.length} file invariati`);
+if (!cambiati.length) console.log(`  · niente da riscrivere`);
+
+if (derivateNuove.length || derivateOrfane.length) {
+  const pezzi = [];
+  if (derivateNuove.length) pezzi.push(`${derivateNuove.length} generate`);
+  if (derivateOrfane.length) pezzi.push(`${derivateOrfane.length} orfane buttate`);
+  console.log(`  · fotografie: ${pezzi.join(", ")}`);
 }
 
-if (!sezioni.banner) {
-  console.log(`
-⚠ testata delle mail: manca ${BANNER_MAIL}.`);
-  console.log(`  Si ricava dal banner con «npm run render:banner-mail».`);
-  console.log(`  Finché non c'è, le due mail partono senza immagine in cima.`);
+if (derivateSenzaSharp.length) {
+  console.error(`
+⚠ ${derivateSenzaSharp.length} fotografie sono senza derivate e sharp non c'è.`);
+  console.error(`  Restano <img> semplici: si vedono, ma un telefono se le scarica intere.`);
+  console.error(`  Si sistemano con «npm install» e un altro build.`);
 }
 
-if (loghiMancanti.length) {
-  console.log(`
-⚠ loghi: ne mancano ${loghiMancanti.length} — ${loghiMancanti.join("  ")}`);
-  console.log(`  Vanno in assets/loghi/ con quel nome esatto (svg, png, webp o jpg).`);
-  console.log(`  Finché non ci sono, su /color-walk al loro posto si legge il nome.`);
+/* La pagella parla per ultima, e su stderr. Gli avvisi finora finivano nello
+   stesso rivolo delle righe normali e non si potevano separare: chi lancia il
+   build da uno script non aveva modo di leggere solo quello che non va. */
+avvisiDiSempre();
+for (const a of [...avvisiRimandati, ...avvisi]) console.error(`\n⚠ ${a}`);
+for (const e of errori) console.error(`\n✗ ${e}`);
+
+if (errori.length) {
+  console.error(`\n✗ ${errori.length} error${errori.length === 1 ? "e" : "i"}: le pagine sono scritte, ma così non si pubblicano.`);
+  process.exitCode = 1;
 }
 
-if (!bannerTrovato) {
-  console.log(`
-⚠ banner Color Walk: manca assets/foto/${BANNER}.webp (o .png/.jpg/.avif/.svg).`);
-  console.log(`  L'originale è la tela in design/color-walk/: si riesporta e ricompare.`);
-}
+console.log(`${errori.length ? "" : "✓"} fatto in ${Date.now() - PARTITO} ms`.trim());
 
-if (!locandinaTrovata) {
-  console.log(`
-⚠ locandina Color Walk: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
-  console.log(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
-}
+/* ══════════════════════════════════════════════════════════════════════════
+   LA SORVEGLIANZA
 
-/* ── La lista della spesa ─────────────────────────────────────────────────
-   Le fotografie si aggiungono una alla volta, nel tempo. Perché "quali
-   mancano" non diventi una domanda a cui si risponde aprendo la cartella e
-   confrontandola a occhio con le pagine, il build lo dice ogni volta. */
-if (mancanti.length) {
-  const unici = [...new Set(mancanti)];
-  const fatte = luoghi.length - unici.length;
-  console.log(`\n⚠ fotografie: ${fatte} su ${luoghi.length}. Ne mancano ${unici.length}.`);
-  console.log(`  ${unici.slice(0, 6).map((s) => perSlug.get(s).foto).join("  ")}`);
-  if (unici.length > 6) console.log(`  …e altre ${unici.length - 6}. L'elenco completo dei nomi file è in _build/luoghi.json`);
-  console.log(`  Vanno in assets/foto/ con quel nome esatto: al prossimo build compaiono da sé.`);
+   Finora il giro era: cambio una parola nel frammento, non succede niente,
+   passo all'altro terminale, rilancio il build, torno nel browser e ricarico.
+   Quattro gesti per una parola, e tre sono sempre gli stessi.
+
+   Da qui in poi il build resta acceso e li fa lui. Il ricarico del browser lo
+   fa serve.mjs, che guarda le pagine in radice cambiare (vedi lì).
+
+   Le due cartelle che il build SCRIVE — assets/foto/_w/ e il file dell'indice
+   di ricerca — sono escluse apposta: sorvegliare quello che si scrive da sé
+   è il modo più diretto per costruire all'infinito. */
+if (GUARDA) {
+  /* ── Uno solo ────────────────────────────────────────────────────────────
+     I guardiani si moltiplicano da soli se nessuno lo impedisce. Vite riavvia
+     il proprio server ogni volta che vite.config.mjs cambia, e a ogni riavvio
+     ne genera uno nuovo senza che il vecchio se ne accorga; e un guardiano
+     che sopravvive al padre — succede quando il padre viene ucciso invece che
+     chiuso — resta acceso a ricostruire per conto suo. Due guardiani sullo
+     stesso repository non rompono niente, ma ricostruiscono ognuno per sé, e
+     il terminale comincia a dire cose che non tornano.
+
+     Il lucchetto è un file col numero del processo. Se c'è ed è vivo, questo
+     saluta e se ne va: il guardiano acceso continua a fare il suo lavoro.
+     Se c'è ma il processo è morto, il lucchetto era rimasto lì da un'uscita
+     brutta e si sostituisce senza dire niente. */
+  const LUCCHETTO = "_build/.guardiano";
+  const vivo = (pid) => {
+    try {
+      process.kill(pid, 0);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  if (existsSync(LUCCHETTO)) {
+    const altro = Number(readFileSync(LUCCHETTO, "utf8").trim());
+    if (altro && altro !== process.pid && vivo(altro)) {
+      console.log(`\n👁  c'è già un guardiano acceso su questa cartella (pid ${altro}): questo si ferma qui.`);
+      process.exit(0);
+    }
+  }
+  writeFileSync(LUCCHETTO, String(process.pid));
+  const sganciaLucchetto = () => {
+    try {
+      if (existsSync(LUCCHETTO) && readFileSync(LUCCHETTO, "utf8").trim() === String(process.pid)) rmSync(LUCCHETTO);
+    } catch {}
+  };
+  process.on("exit", sganciaLucchetto);
+  for (const segnale of ["SIGINT", "SIGTERM", "SIGHUP", "SIGBREAK"]) {
+    process.on(segnale, () => {
+      sganciaLucchetto();
+      process.exit(0);
+    });
+  }
+
+  const ignora = (f) => {
+    const p = String(f || "").replace(/\\/g, "/");
+    return (
+      !p ||
+      p.startsWith("_w/") ||
+      p.includes("/_w/") ||
+      p.endsWith("ricerca-dati.js") ||
+      p.endsWith(".guardiano") ||
+      p.endsWith("~") ||
+      /\.tmp$/i.test(p)
+    );
+  };
+
+  let timer = null;
+  let giro = 0;
+
+  const rifai = () => {
+    timer = null;
+    const n = ++giro;
+    process.stdout.write(`\n── ricostruisco (${n}) ──\n`);
+    const esito = spawnSync(process.execPath, ["build.mjs", "--figlio"], {
+      stdio: "inherit",
+      env: { ...process.env, RSM_AGG: AGG_ISO, RSM_COMMITS: String(COMMITS) },
+    });
+    if (esito.status !== 0) process.stdout.write(`   (il build è uscito con ${esito.status}: la pagina è ancora quella di prima)\n`);
+  };
+
+  // Antirimbalzo: un salvataggio da un editor arriva spesso come tre eventi
+  // ravvicinati, e ricostruire tre volte di fila non serve a nessuno.
+  const programma = (f) => {
+    if (ignora(f)) return;
+    clearTimeout(timer);
+    timer = setTimeout(rifai, 80);
+  };
+
+  for (const d of ["_build", "assets", "data"]) {
+    if (existsSync(d)) watch(d, { recursive: true }, (_, f) => programma(f));
+  }
+
+  console.log(`\n👁  sorveglianza accesa su _build/, assets/ e data/. Ctrl+C per smettere.`);
 }

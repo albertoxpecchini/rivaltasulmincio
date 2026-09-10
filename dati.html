@@ -244,6 +244,15 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
     <a href="#rigenerare">Rigenerare i geodati</a>
     <a href="#licenza">Licenza</a>
   </nav>
+  <aside class="sb-riv-rail" aria-hidden="true">
+    <p class="sb-riv-rail-t">In questa pagina</p>
+    <nav class="sb-riv-rail-nav">
+      <a href="#fonti" tabindex="-1">Fonti utilizzate</a>
+      <a href="#dataset" tabindex="-1">Il dataset</a>
+      <a href="#rigenerare" tabindex="-1">Rigenerare i geodati</a>
+      <a href="#licenza" tabindex="-1">Licenza</a>
+    </nav>
+  </aside>
 </section>
 
 <section class="sb-container sb-riv-sec" id="fonti">
@@ -253,7 +262,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table sb-riv-table--wide">
         <thead><tr><th scope="col">Fonte</th><th scope="col">Uso</th></tr></thead>
         <tbody>
@@ -285,7 +294,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   </div>
 
   <div class="sb-riv-tablewrap" style="margin-top:1.4rem">
-    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll">
+    <div class="sb-panel"><div class="sb-panel-inner"><div class="sb-riv-scroll" tabindex="0" role="region" aria-label="Tabella, scorrevole in orizzontale">
       <table class="sb-riv-table">
         <thead><tr><th scope="col">Chiave</th><th scope="col">Contenuto</th></tr></thead>
         <tbody>
@@ -332,7 +341,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 <span class="kw">out</span> tags center;</code></div>
 </section>
 
-<section class="sb-container sb-riv-sec" id="licenza">
+<section class="sb-container sb-riv-sec" id="licenza" data-indice="Licenza">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">22 — Diritti</span>
     <h2>Licenza e attribuzione</h2>

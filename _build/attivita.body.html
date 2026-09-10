@@ -4,23 +4,14 @@
 <!--freq: monthly-->
 
 <section class="sb-container sb-riv-pagehead">
-  <span class="sb-riv-eyebrow">Sezioni 4 · 5 · 20</span>
+  <span class="sb-riv-eyebrow">{{sezioni}}</span>
   <h1>Attività</h1>
   <p class="sb-riv-lede">Dove si compra, dove si mangia, chi lavora in paese: alimentari e panifici, bar e ristoranti, professionisti, il mercato del venerdì e le aziende del territorio.</p>
-  <nav class="sb-riv-toc" aria-label="Sezioni di questa pagina">
-    <a href="#negozi">Negozi</a>
-    <a href="#persona">Cura della persona</a>
-    <a href="#uffici">Uffici e professionisti</a>
-    <a href="#mercato">Mercato</a>
-    <a href="#locali">Bar e ristoranti</a>
-    <a href="#tavola">Cosa si mangia</a>
-    <a href="#ricettivita">Dormire</a>
-    <a href="#economia">Economia</a>
-  </nav>
+  {{indice}}
 </section>
 
 <!-- ── 4. NEGOZI ─────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="negozi">
+<section class="sb-container sb-riv-sec" id="negozi" data-indice="Negozi">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">04 — Commercio</span>
     <h2>Alimentari e supermercati</h2>
@@ -131,7 +122,7 @@
 </section>
 
 <!-- ── MERCATO ──────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="mercato">
+<section class="sb-container sb-riv-sec" id="mercato" data-indice="Mercato">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">04 — Mercato</span>
     <h2>Mercato settimanale</h2>
@@ -142,7 +133,7 @@
 </section>
 
 <!-- ── 5. LOCALI ─────────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="locali">
+<section class="sb-container sb-riv-sec" id="locali" data-indice="Bar e ristoranti">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">05 — Ristorazione</span>
     <h2>Bar, ristoranti, locali</h2>
@@ -212,7 +203,7 @@
 </section>
 
 <!-- ── RICETTIVITÀ ──────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="ricettivita">
+<section class="sb-container sb-riv-sec" id="ricettivita" data-indice="Dormire">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">05 — Dormire</span>
     <h2>Ricettività</h2>
@@ -242,7 +233,7 @@
 </section>
 
 <!-- ── 20. ECONOMIA ──────────────────────────────────────────────────────── -->
-<section class="sb-container sb-riv-sec" id="economia">
+<section class="sb-container sb-riv-sec" id="economia" data-indice="Economia">
   <div class="sb-sechead sb-sechead--start">
     <span class="sb-riv-secnum">20 — Economia</span>
     <h2>Economia e aziende</h2>
