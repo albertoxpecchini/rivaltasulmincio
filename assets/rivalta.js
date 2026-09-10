@@ -293,7 +293,15 @@
       });
 
       wrap.insertBefore(apri, tastoSu);
-      document.body.appendChild(scheda);
+      /* Dentro .sb-home, non in fondo al body. I token del design system —
+         --sb-surface-100, --sb-border-strong, --sb-shape-lg e tutti gli altri —
+         non stanno su :root ma su .sb-home, che è il contenitore di pagina.
+         Appesa al body la scheda restava fuori da quella discendenza: ogni
+         var() si risolveva nel vuoto e la scheda finiva senza fondo, senza
+         bordo e senza smusso — trasparente, col testo della pagina che le
+         passava attraverso. Da qui dentro eredita il tema come tutto il resto,
+         e segue anche il passaggio da chiaro a scuro senza saperne niente. */
+      (document.querySelector(".sb-home") || document.body).appendChild(scheda);
     }
 
     /* Quale sezione. Quella che ha superato la testata per ultima: è la
@@ -326,85 +334,14 @@
       attiva = scelta;
     };
 
-    /* ── La colonna si fa da parte ────────────────────────────────────────
-       La colonna a lato sta ferma dove finisce la misura del testo, ma non
-       tutto il contenuto sta dentro quella misura: le coppie di fotografie e
-       le tabelle larghe arrivano al bordo del contenitore, e a schermo largo le
-       passavano dietro — l'indice finiva sopra le immagini mentre si scorreva.
-
-       Qui, a ogni giro dello scroll, si guarda se qualcosa di più largo della
-       colonna di lettura sta attraversando la fascia dell'indice. Se sì,
-       l'indice si sposta a destra quel tanto che basta a stargli fuori; quando
-       l'ingombro è passato torna esattamente dov'era. Lo spostamento è una
-       transizione CSS su transform: qui si scrive solo il numero.
-
-       Durante lo scorrimento non si misura NIENTE: né gli ingombri né la
-       colonna. Le coordinate di pagina degli uni non cambiano scorrendo, e la
-       colonna è fissa, quindi la sua altezza sullo schermo è sempre la stessa —
-       basta sommarci lo scroll. Leggere un rettangolo dentro il rAF dello
-       scroll costringerebbe il browser a ricalcolare il layout sessanta volte
-       al secondo, e per giunta rifarebbe partire da capo la transizione. Si
-       misura al caricamento, al resize e quando le immagini arrivano. */
-    var rail = document.querySelector(".sb-riv-rail");
-    var fermo = null;      // dov'è la colonna quando non scansa niente
-    var ingombri = [];
-    var scartoOra = -1;
-
-    var misura = function () {
-      ingombri = [];
-      fermo = null;
-      if (!rail || !rail.offsetParent) return;
-      // Si misura da ferma: con lo scarto addosso la colonna inseguirebbe se
-      // stessa, misurando ogni volta una posizione già spostata.
-      rail.style.setProperty("--sb-rail-scarto", "0px");
-      var r = rail.getBoundingClientRect();
-      fermo = { sinistra: r.left, destra: r.right, alto: r.top, altezza: r.height };
-      var y = window.scrollY;
-      var bordo = r.left - 16; // un filo d'aria fra il contenuto e l'indice
-      [].forEach.call(document.querySelectorAll(".sb-riv-sec > *"), function (el) {
-        var b = el.getBoundingClientRect();
-        if (b.width < 1 || b.height < 1 || b.right <= bordo) return;
-        ingombri.push({ cima: b.top + y, fondo: b.bottom + y, destra: b.right });
-      });
-      scartoOra = 0;
-      scansa();
-    };
-
-    var scansa = function () {
-      if (!fermo) return;
-      var y = window.scrollY;
-      var cima = fermo.alto + y;
-      var fondo = cima + fermo.altezza;
-
-      var serve = 0;
-      for (var i = 0; i < ingombri.length; i++) {
-        var g = ingombri[i];
-        if (g.fondo <= cima || g.cima >= fondo) continue;
-        var q = g.destra + 16 - fermo.sinistra;
-        if (q > serve) serve = q;
-      }
-
-      // Più in là del bordo destro non si va: se lo spazio non basta, si scosta
-      // di quel che c'è e il CSS la smorza per il tempo del passaggio.
-      var spazio = Math.max(0, window.innerWidth - 16 - fermo.destra);
-      var scarto = Math.min(serve, spazio);
-      if (Math.abs(scarto - scartoOra) < 1) return;
-      scartoOra = scarto;
-      rail.style.setProperty("--sb-rail-scarto", Math.round(scarto) + "px");
-      if (serve > spazio + 1) rail.setAttribute("data-scansa", "stretto");
-      else rail.removeAttribute("data-scansa");
-    };
-
-    if (rail) {
-      var rimisura = null;
-      var piuTardi = function () {
-        clearTimeout(rimisura);
-        rimisura = setTimeout(misura, 150);
-      };
-      window.addEventListener("load", piuTardi);
-      window.addEventListener("resize", piuTardi, { passive: true });
-      misura();
-    }
+    /* La colonna a lato non scansa più niente, e non c'è più codice che la
+       sposti: sta oltre il bordo del contenitore, in un vuoto che è suo, e sopra
+       il contenuto non ci passa per costruzione. Si era provato a farla scansare
+       gli ingombri uno per uno — ma su /paese le fotografie a coppie e le tabelle
+       larghe sono quasi tutta la pagina, e una colonna che scansa sempre è una
+       colonna che vive appiccicata al bordo destro, smorzata, dove non la legge
+       nessuno. Dove il vuoto non c'è, adesso, non c'è nemmeno la colonna: sotto i
+       1440px l'indice è il tasto in basso a destra. */
 
     var attesa = false;
     var alloScroll = function () {
@@ -412,7 +349,6 @@
       attesa = true;
       requestAnimationFrame(function () {
         segna();
-        scansa();
         // Il tasto dell'indice compare quando compare quello per tornare in
         // cima: sono la stessa domanda — «sono lontano, dove sono finito?» —
         // e devono comparire insieme o l'angolo si popola a scatti.

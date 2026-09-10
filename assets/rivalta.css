@@ -189,15 +189,32 @@ html[data-stagione] h3[id] {
    È FISSO e non appiccicato, e sta apposta fuori dal flusso: le sezioni sono
    diciotto .sb-container indipendenti, e per farci scorrere accanto una
    colonna appiccicata bisognerebbe avvolgerle tutte in una griglia — cioè
-   rifare l'impaginato di undici pagine per una colonna che, sotto i 1180 px,
+   rifare l'impaginato di undici pagine per una colonna che, sotto la soglia,
    non c'è. Fissa non tocca niente.
 
-   Il conto del `left` è quello della fascia, rifatto: metà del vuoto ai lati,
-   più il margine interno del contenitore, più la colonna di lettura, più due
-   rem d'aria. Se un giorno cambia --sb-misura, la colonna si sposta con lei. */
+   DOVE STA. Non dove finisce la colonna di lettura, ma dove finisce il
+   CONTENITORE: la misura del testo è 46rem, però le fotografie a coppie e le
+   tabelle larghe si prendono tutte le 72rem della fascia, e su /paese quei
+   blocchi sono la norma, non l'eccezione. Un indice piazzato a 46rem sta
+   quindi sopra al contenuto quasi sempre — che è esattamente il difetto che
+   si vedeva scorrendo.
+
+   Ancorata al bordo del contenitore, invece, la colonna non passa mai sopra
+   niente e non deve scansare nessuno: sta in un vuoto che è suo. Prima si
+   provava a scansare gli ingombri uno per uno, ma quando gli ingombri sono
+   dappertutto lo scansamento diventa lo stato normale e la colonna passa la
+   vita appiccicata al bordo destro, smorzata, dove nessuno la legge. */
 .sb-riv-rail { display: none; }
 
-@media (min-width: 1180px) {
+/* La soglia è misurata, non scelta. Il vuoto oltre il contenitore vale 216px
+   a 1440 e 264 a 1500: la colonna ci sta per un soffio, ma le etichette lunghe
+   («Edificato e urbanistica») ci arrivano contro e vanno a capo. A 1600 il
+   vuoto è 184 di colonna piena più aria, e le voci stanno tutte su una riga.
+
+   Sotto, l'indice è il tasto in basso a destra — che c'è già, e a portata di
+   pollice. Meglio nessuna colonna che una colonna sopra il testo, o una
+   colonna in cui le voci si spezzano in due righe. */
+@media (min-width: 1600px) {
   .sb-riv-rail {
     display: block;
     position: fixed;
@@ -205,9 +222,15 @@ html[data-stagione] h3[id] {
     /* Il festone di stagione è fisso a 64px ed è alto 50: senza questo, nei
        mesi in cui c'è, il tralcio passa sopra al titolo dell'indice. Si è
        visto alla prima prova a schermo largo, in settembre, con l'uva. */
-    left: calc((100vw - min(72rem, 100vw)) / 2 + clamp(1.5rem, 5vw, 6rem) + var(--sb-misura) + 2rem);
+    /* Metà del vuoto ai lati, più tutta la fascia, più un filo d'aria: cioè
+       subito dopo il bordo destro del contenitore. Il `right` è la garanzia
+       che manca al `left`: fissando anche il bordo destro, la colonna occupa
+       lo spazio che avanza invece di una larghezza propria, e non può finire
+       oltre la finestra — che è quello che succedeva appena sopra la soglia,
+       dove il vuoto basta al `left` ma non alle 11rem che gli venivano dietro. */
+    left: calc((100vw - min(72rem, 100vw)) / 2 + min(72rem, 100vw) + 1.5rem);
+    right: 1rem;
     z-index: 5;
-    width: 11rem;
     max-height: calc(100vh - 10rem);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -216,24 +239,8 @@ html[data-stagione] h3[id] {
        invece di un riferimento da consultare con la coda dell'occhio. */
     padding-left: 0.9rem;
     border-left: 1px solid var(--sb-border);
-
-    /* Il conto del `left` guarda la colonna di lettura, non quello che c'è
-       davvero sotto: le fotografie a coppie e le tabelle larghe arrivano a
-       sessanta rem e passerebbero dietro all'indice. Quando succede, rivalta.js
-       scrive in --sb-rail-scarto quanti pixel servono, e la colonna si fa da
-       parte per il tempo in cui l'ingombro le scorre accanto — poi torna al
-       suo posto. Non è un'apparizione: è la stessa colonna che si sposta. */
-    transform: translateX(var(--sb-rail-scarto, 0px));
-    transition: transform 0.34s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.34s ease;
+    transition: opacity 0.34s ease;
   }
-
-  /* Dove a destra non c'è abbastanza vuoto per scansare del tutto, la colonna
-     si scosta di quel che può e intanto si smorza: davanti resta il testo, che
-     è quello che si sta guardando. Se ci si passa sopra torna piena, perché
-     smorzata è un'indicazione, non una sparizione. */
-  .sb-riv-rail[data-scansa="stretto"] { opacity: 0.2; }
-  .sb-riv-rail:hover,
-  .sb-riv-rail:focus-within { opacity: 1; }
 
   @media (prefers-reduced-motion: reduce) {
     html:not(.rsm-motion) .sb-riv-rail { transition: none; }
@@ -271,20 +278,17 @@ html[data-stagione] h3[id] {
   }
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 1600px) {
   html[data-stagione] .sb-riv-rail { top: 124px; }
-
-  /* Le pillole non hanno una misura loro: sono una fila che avvolge, e si
-     prendono tutta la larghezza del contenitore — sessanta rem, non
-     quarantasei. Dove c'è la colonna a lato, l'ultima ci finiva sotto. Qui si
-     fermano alla misura del testo, che è dove finisce tutto il resto. */
-  .sb-riv-toc { max-width: var(--sb-misura); }
 }
 
-/* Sopra i 1500 px la fascia ha finito di crescere e il vuoto a destra cresce
-   ancora: la colonna può respirare senza avvicinarsi al testo. */
-@media (min-width: 1500px) {
-  .sb-riv-rail { width: 13rem; }
+/* Nessuna larghezza per fascia di schermo: la colonna è tenuta ai due bordi e
+   cresce da sé man mano che il vuoto a destra si allarga. Oltre le 13rem però
+   non serve che cresca — un indice largo quanto una colonna di lettura si
+   mette a competere col testo invece di affiancarlo — e il di più resta aria
+   fra la colonna e il bordo della finestra. */
+@media (min-width: 1600px) {
+  .sb-riv-rail { max-width: 13rem; }
 }
 
 /* ── Riquadri di sintesi ──────────────────────────────────────────────────
@@ -2732,10 +2736,14 @@ h3:hover > .sb-riv-anchor,
    tasto accanto a «torna in cima», nell'angolo dove il pollice arriva, e si
    apre solo quando lo si chiede.
 
-   Da 1180 px in su sparisce: lì l'indice è già a lato e sempre visibile, e
-   due indici per la stessa pagina sono un indice di troppo. */
+   Da 1520 px in su sparisce: lì l'indice è già a lato e sempre visibile, e
+   due indici per la stessa pagina sono un indice di troppo. Sotto quella
+   soglia resta lui l'unico indice consultabile mentre si legge — la colonna
+   a lato non c'è, perché non c'è il vuoto in cui starebbe. La soglia è la
+   stessa della colonna: se cambia una, cambia l'altra, o restano un pezzo di
+   pagina senza indice o due indici insieme. */
 .sb-riv-top-wrap { display: flex; gap: 0.5rem; }
-@media (min-width: 1180px) { .sb-riv-ind-apri { display: none; } }
+@media (min-width: 1600px) { .sb-riv-ind-apri { display: none; } }
 
 .sb-riv-ind {
   position: fixed;
