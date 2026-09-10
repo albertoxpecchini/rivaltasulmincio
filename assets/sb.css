@@ -156,7 +156,21 @@ html.dark .sb-home {
   padding-left: clamp(1.5rem, 5vw, 6rem);
   padding-right: clamp(1.5rem, 5vw, 6rem);
 }
-.sb-section { padding-top: clamp(4rem, 8vw, 6rem); padding-bottom: clamp(4rem, 8vw, 6rem); }
+/* Lo spazio fra due sezioni è UNO, non due sommati.
+
+   Erano 4–6rem sopra e altrettanti sotto: fra la fine di una sezione e il
+   titolo della successiva ci finivano fino a 12rem, quasi duecento pixel di
+   niente, e su un dossier lungo si passava metà scroll a scavalcare vuoto.
+   Il respiro serve — è quello che dice «qui finisce un discorso e ne comincia
+   un altro» — ma per dirlo basta una volta.
+
+   Quindi la spaziatura sta tutta SOPRA, e il margin collapse non c'entra:
+   sono padding, e i padding non si fondono. Sotto resta il minimo che tiene
+   l'ultima riga staccata dal bordo. */
+.sb-section { padding-top: clamp(2.6rem, 5.2vw, 4rem); padding-bottom: clamp(0.6rem, 1.2vw, 1rem); }
+/* Due sezioni di fila non raddoppiano mai: la seconda porta il suo stacco e
+   la prima non aggiunge il proprio. */
+.sb-section + .sb-section { padding-top: clamp(2.2rem, 4.4vw, 3.4rem); }
 
 /* ── Fondale continuo ──────────────────────────────────────────────────────
    UN SOLO fondale per tutta la pagina, non uno per sezione: è position:fixed,
@@ -297,7 +311,30 @@ html.rsm-still .sb-btn--secondary::after { content: none; }
    Compare solo quando c'è del contenuto che le scorre sotto. */
 .sb-nav--scrolled { border-bottom-color: var(--sb-border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
 html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
-.sb-nav-inner { display: flex; align-items: center; gap: 1rem; height: 64px; }
+/* ── La barra si stringe scorrendo ────────────────────────────────────────
+   In cima la barra è alta 64: c'è tutto lo spazio del mondo e il nome del
+   sito deve stare comodo. Appena la pagina scorre non c'è più tutto quello
+   spazio — ci sono otto pixel di titolo in meno che si leggono — e la barra
+   scende a 54. Dieci pixel non sembrano niente detti così; su un telefono
+   in orizzontale sono il quattro per cento di quello che si vede.
+
+   L'altezza è UNA variabile perché non è solo la barra a saperla: il
+   festone di stagione ci si appende sotto, e le ancore dei titoli devono
+   atterrare più giù di lei. Erano tre numeri scritti in tre file, e sarebbe
+   bastato cambiarne uno per far passare il tralcio sopra un titolo. */
+.sb-home { --sb-nav-h: 64px; }
+.sb-nav--scrolled { --sb-nav-h: 54px; }
+.sb-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: var(--sb-nav-h);
+  transition: height 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.rsm-still .sb-nav-inner { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-nav-inner { transition: none; }
+}
 .sb-nav-brand {
   display: inline-flex;
   align-items: center;
@@ -543,10 +580,14 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
    Niente fondale proprio e niente overflow:hidden: il fondo della hero è il
    fondale continuo della pagina. Così scendendo non si vede nessuna riga dove
    "finisce la hero e comincia il resto". */
+/* Il titolo entrava a otto centimetri e mezzo dalla barra: su un portatile
+   vuol dire aprire la home e vedere, sopra la piega, quasi solo aria. Il
+   respiro in testa serve a far entrare il titolo con calma, non a farlo
+   aspettare — e a 5.5rem ci entra ancora con la stessa calma. */
 .sb-hero {
   position: relative;
-  padding-top: clamp(3rem, 9vw, 8.5rem);
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(2.2rem, 6vw, 5.5rem);
+  padding-bottom: clamp(1.8rem, 3.4vw, 2.8rem);
 }
 .sb-hero-title {
   margin: 0;
@@ -1073,4 +1114,150 @@ html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
   border: 1px solid var(--sb-border-strong);
   color: var(--sb-fg);
   text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   QUELLO CHE ENTRA, E QUELLO CHE RIFLETTE
+
+   Il sito aveva un solo momento di vita: il riflesso che attraversa una card
+   quando ci passi sopra col mouse. Bello, ma sta dietro a tre condizioni —
+   (hover:hover), (pointer:fine), e che qualcosa sia cliccabile — e su un
+   telefono non succede mai niente.
+
+   Qui sotto ci sono le cose che si vedono SEMPRE, e sono tre. Tutte e tre
+   costano poco: nessuna anima un colore o una geometria che obblighi il
+   browser a rifare il layout — solo opacità e trasformazioni, che il
+   compositore fa per conto suo.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Le cose entrano invece di esserci già ─────────────────────────────
+   Scorrendo, ogni blocco sale di dodici pixel e si scopre. Non è una
+   comparsa a effetto: è la differenza fra una pagina che si sfoglia e una
+   che scatta da un fermo all'altro.
+
+   Fatto con animation-timeline: view(), che è la versione senza JavaScript
+   di un IntersectionObserver — la posizione nel viewport guida direttamente
+   l'animazione, e non c'è un solo listener di scroll in mezzo. Dove non è
+   supportato (Safari, a oggi) non succede niente e le cose stanno dove sono
+   sempre state: è per questo che lo stato a riposo è quello VISIBILE e
+   l'animazione va all'indietro, invece di partire da opacity:0 — così una
+   mancata animazione lascia la pagina leggibile, non vuota.
+
+   La finestra è stretta di proposito — entro il 18% dell'altezza è già
+   finita — perché quello che si sta guardando dev'essere fermo. Un blocco
+   che continua a muoversi mentre lo leggi è un blocco che non si legge. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes sb-entra {
+      from { opacity: 0; transform: translate3d(0, 12px, 0); }
+      to   { opacity: 1; transform: none; }
+    }
+    html:not(.rsm-still) :is(
+      .sb-section > .sb-sechead,
+      .sb-riv-sec > .sb-sechead,
+      .sb-pages > .sb-page-card,
+      .sb-riv-news > .sb-card,
+      .sb-riv-stats > .sb-riv-stat
+    ) {
+      animation: sb-entra linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 18%;
+    }
+  }
+}
+
+/* ── 2. Il filo di luce che scorre sul bordo ──────────────────────────────
+   Le lastre hanno già un filo chiaro sul bordo alto (inset 0 1px 0), ed è
+   fermo. Qui quel filo, sulle lastre cliccabili, si accende passandoci
+   sopra: non una cornice che compare — una cornice che compare è una
+   scatola dentro una scatola — ma la stessa luce che c'era, più forte, e
+   una goccia di colore del sito nell'ombra sotto.
+
+   Vale anche col dito, perché :hover su touch scatta al tocco e :active
+   subito dopo: chi preme una card la vede rispondere. */
+:is(a.sb-card, a.sb-page-card) .sb-panel-inner,
+.sb-panel--hover > .sb-panel-inner {
+  transition: box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:is(a.sb-card, a.sb-page-card):hover .sb-panel-inner,
+:is(a.sb-card, a.sb-page-card):focus-visible .sb-panel-inner,
+.sb-panel--hover:hover > .sb-panel-inner {
+  box-shadow:
+    inset 0 1px 0 var(--sb-glass-rim),
+    0 0 0 1px color-mix(in srgb, var(--sb-brand) 22%, transparent),
+    0 10px 30px -16px color-mix(in srgb, var(--sb-brand) 40%, transparent);
+}
+/* Premuto, il pannello scende di un pixel. È l'unico modo che ha una
+   superficie piatta di dire «ti ho sentito» prima che la pagina cambi. */
+:is(a.sb-card, a.sb-page-card):active .sb-panel { transform: translate3d(0, 1px, 0); }
+
+/* ── 3. Il numero grande respira quando lo raggiungi ──────────────────────
+   I riquadri di sintesi sono la cosa più «cruscotto» del sito, ed erano
+   inchiostro fermo. Adesso la cifra sale dal basso mentre entra in vista,
+   una frazione dopo la sua lastra: prima arriva il riquadro, poi il numero
+   ci si posa dentro.
+
+   Solo la cifra, non l'etichetta: se si muovessero entrambe sarebbe il
+   riquadro intero a muoversi, e quello lo fa già. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes sb-cifra {
+      from { opacity: 0; transform: translate3d(0, 6px, 0); }
+      to   { opacity: 1; transform: none; }
+    }
+    html:not(.rsm-still) .sb-riv-stat-v {
+      animation: sb-cifra linear both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 22%;
+    }
+  }
+}
+
+/* ── E il link di testo ───────────────────────────────────────────────────
+   Nel corpo del testo i collegamenti si sottolineano al passaggio, e la
+   sottolineatura appariva tutta insieme. Adesso si scrive da sinistra, come
+   fa già quella del footer (.sb-foot-by) da sempre: è lo stesso gesto, e
+   non c'era motivo perché valesse solo laggiù.
+
+   text-decoration non si può animare, quindi la riga è un ::after alto un
+   pixel. Le due righe di transizione sostituiscono la sottolineatura, non
+   si aggiungono: chi la vuole spenta la spegne dove la accendeva. */
+@media (hover: hover) and (pointer: fine) {
+  :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a {
+    position: relative;
+    text-decoration: none;
+  }
+  :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a:hover::after,
+  :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a:focus-visible::after {
+    transform: scaleX(1);
+  }
+  /* Un link che va a capo diventa due rettangoli, e un ::after solo li
+     attraverserebbe tutti e due con una riga sola in mezzo al vuoto. Lì la
+     sottolineatura torna quella di prima, che il browser sa spezzare. */
+  :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a:hover {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+  }
+}
+
+/* Chi ha fermato il movimento col tasto non vede niente di tutto questo: le
+   tre animazioni sono appese a html:not(.rsm-still), e le due transizioni
+   qui sotto si azzerano. Il colore e la luce restano — quelli non si
+   muovono. */
+html.rsm-still :is(a.sb-card, a.sb-page-card) .sb-panel-inner,
+html.rsm-still :is(.sb-riv-p, .sb-riv-li, .sb-riv-cit-fonte, .sb-stag-nota-p) a::after {
+  transition: none;
 }

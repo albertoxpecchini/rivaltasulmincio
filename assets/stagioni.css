@@ -417,6 +417,11 @@ html.rsm-still[data-stagione="uva"] .sb-home::after { transition: none; }
    scorre. pointer-events:none: non intercetta niente, non è un ostacolo. */
 .sb-stag-festone {
   position: fixed;
+  /* Appeso sotto la barra, e la barra si stringe scorrendo. La variabile
+     --sb-nav-h non serve qui: il festone è FRATELLO della nav, non figlio,
+     e quello che .sb-nav--scrolled ridefinisce su di sé non lo raggiunge.
+     Si usa lo stesso selettore di fratellanza con cui poco sotto cambia
+     opacità — che è già lì e già funziona. */
   top: 64px;
   left: 0;
   right: 0;
@@ -445,9 +450,12 @@ html.rsm-still[data-stagione="uva"] .sb-home::after { transition: none; }
    appoggiato; appena qualcosa le scorre sotto, la barra prende ombra e il
    tralcio si scurisce un filo — così si legge appeso alla barra e non
    sospeso per aria. */
-.sb-nav--scrolled + .sb-stag-festone { opacity: 1; }
+.sb-nav--scrolled + .sb-stag-festone { opacity: 1; top: 54px; }
 .sb-stag-festone,
-.sb-nav--scrolled + .sb-stag-festone { transition: opacity 0.25s ease; }
+.sb-nav--scrolled + .sb-stag-festone {
+  transition: opacity 0.25s ease, top 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.rsm-still .sb-stag-festone { transition: none; }
 
 /* I pezzi del tralcio. Il colore lo dà il foglio e non l'attributo, così
    segue il tema chiaro/scuro senza duplicare il disegno.

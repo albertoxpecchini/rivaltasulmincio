@@ -90,9 +90,9 @@ html[data-stagione] h3[id] {
 }
 
 .sb-riv-sec {
-  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: clamp(1.9rem, 3.6vw, 2.6rem);
 }
-.sb-riv-sec:first-of-type { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.sb-riv-sec:first-of-type { padding-top: clamp(1.1rem, 2.2vw, 1.7rem); }
 
 /* Numero di sezione: sta accanto al titolo come riferimento al dossier
    originale, in tono muto — è una coordinata, non un'informazione. */
@@ -108,7 +108,7 @@ html[data-stagione] h3[id] {
 
 /* Sottotitolo interno alla sezione */
 .sb-riv-subhead {
-  margin: clamp(2rem, 4vw, 2.6rem) 0 0.9rem;
+  margin: clamp(1.4rem, 2.8vw, 1.8rem) 0 0.7rem;
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -116,11 +116,15 @@ html[data-stagione] h3[id] {
 }
 .sb-riv-subhead:first-child { margin-top: 0; }
 
+/* L'interlinea era 1.65, che su una colonna di 46rem è aria fra le righe più
+   che respiro: a 1.58 la riga si legge uguale — resta sopra il minimo che
+   serve a non far incollare le maiuscole della riga sotto — e su ventitremila
+   pixel di dossier sono centinaia di pixel di scroll in meno. */
 .sb-riv-p {
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.75rem;
   max-width: var(--sb-misura);
   font-size: var(--sb-testo);
-  line-height: 1.65;
+  line-height: 1.58;
   color: var(--sb-fg-lighter);
 }
 .sb-riv-p:last-child { margin-bottom: 0; }
@@ -128,8 +132,8 @@ html[data-stagione] h3[id] {
 .sb-riv-p a, .sb-riv-li a, .sb-riv-table a { color: var(--sb-brand-text); text-decoration: none; }
 .sb-riv-p a:hover, .sb-riv-li a:hover, .sb-riv-table a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-.sb-riv-ul { margin: 0 0 1rem; padding-left: 1.1rem; max-width: var(--sb-misura); }
-.sb-riv-li { margin: 0 0 0.45rem; font-size: var(--sb-testo-min); line-height: 1.6; color: var(--sb-fg-lighter); }
+.sb-riv-ul { margin: 0 0 0.85rem; padding-left: 1.1rem; max-width: var(--sb-misura); }
+.sb-riv-li { margin: 0 0 0.32rem; font-size: var(--sb-testo-min); line-height: 1.55; color: var(--sb-fg-lighter); }
 .sb-riv-li strong { font-weight: 600; color: var(--sb-fg); }
 .sb-riv-li::marker { color: var(--sb-fg-muted); }
 
@@ -619,17 +623,22 @@ html[data-stagione] h3[id] {
   background: color-mix(in srgb, var(--sb-surface-100) 72%, transparent);
   -webkit-backdrop-filter: blur(8px) saturate(var(--sb-glass-sat));
   backdrop-filter: blur(8px) saturate(var(--sb-glass-sat));
-  padding: 0.7rem 0.9rem;
+  padding: 0.55rem 0.85rem;
   white-space: nowrap;
   border-bottom: 1px solid var(--sb-border-strong);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .sb-riv-table thead th { background: var(--sb-surface-100); }
 }
+/* Una riga di tabella costava 0.65rem sopra e sotto più un'interlinea a 1.5:
+   su una pagina che di righe ne ha centinaia, è il singolo numero che pesa di
+   più su quanto si scrolla. A 0.5 e 1.45 la griglia resta arieggiata — le
+   celle non si toccano e il bordo continua a separarle — e la tabella si
+   legge tutta con meno viaggi di rotellina. */
 .sb-riv-table tbody td {
-  padding: 0.65rem 0.9rem;
+  padding: 0.5rem 0.85rem;
   vertical-align: top;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--sb-fg-lighter);
   border-bottom: 1px solid var(--sb-border);
 }
@@ -644,7 +653,7 @@ html[data-stagione] h3[id] {
 }
 .sb-riv-table tbody th {
   text-align: left;
-  padding: 0.65rem 0.9rem;
+  padding: 0.5rem 0.85rem;
   vertical-align: top;
   font-weight: 500;
   border-bottom: 1px solid var(--sb-border);
@@ -1516,7 +1525,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 }
 
 /* ── Intestazione di pagina ───────────────────────────────────────────── */
-.sb-riv-pagehead { padding-top: clamp(2.5rem, 6vw, 4.5rem); padding-bottom: clamp(1rem, 2vw, 1.5rem); }
+.sb-riv-pagehead { padding-top: clamp(1.7rem, 3.8vw, 2.8rem); padding-bottom: clamp(0.7rem, 1.4vw, 1.1rem); }
 .sb-riv-pagehead h1 {
   margin: 0;
   font-size: clamp(1.9rem, 4.4vw, 3rem);
