@@ -1809,11 +1809,23 @@ const figureResponsive = (html) => {
     const apre = prima.lastIndexOf('class="sb-riv-foto-grid');
     if (apre === -1) return SIZES_SOLA;
     const dentro = prima.slice(apre);
-    // Se da lì in poi i </div> hanno già superato i <div>, quella griglia è
-    // chiusa e la figura sta fuori.
-    const aperti = (dentro.match(/<div\b/g) || []).length;
-    const chiusi = (dentro.match(/<\/div>/g) || []).length;
-    if (chiusi > aperti) return SIZES_SOLA;
+
+    /* La griglia è ancora aperta? Si contano i tag scorrendoli in ordine, con
+       un saldo che parte da uno — il <div> della griglia, che sta appena prima
+       del punto in cui `dentro` comincia. Appena il saldo torna a zero quella
+       griglia si è chiusa, e tutto quello che viene dopo sta fuori.
+
+       Contare invece i <div> e i </div> di tutto il blocco e confrontarne il
+       totale non funziona: ogni figura del segnaposto ne apre due e ne chiude
+       due, il saldo resta in pari, e una figura scritta da sola dopo una
+       griglia continuava a sembrarci dentro. Si prendeva un file da 480 px e
+       lo si stirava su una colonna da 730: era quella la sfocatura. */
+    let saldo = 1;
+    for (const t of dentro.match(/<\/?div\b/g) || []) {
+      saldo += t[1] === "/" ? -1 : 1;
+      if (saldo === 0) return SIZES_SOLA;
+    }
+
     const classe = (dentro.match(/^class="([^"]*)"/) || [, ""])[1];
     if (classe.includes("--coppia")) return SIZES_COPPIA;
     if (classe.includes("--due")) return SIZES_DUE;
