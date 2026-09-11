@@ -6,7 +6,12 @@ Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattament
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
 segnaposto nella pagina non produce niente — nessun buco, nessuna immagine rotta.
 
-**Formato:** 1600 × 1067 (3:2), JPEG qualità ~82, sotto i 250 kB.
+**Formato:** 2600 × 1733 (3:2), JPEG qualità ~82.
+
+È il master, non quello che il browser scarica: da qui `build.mjs` ricava da sé
+le derivate `.webp` (480 · 720 · 960 · 1440 · 1600 · 2200) e serve a ognuno la
+misura che gli serve. Il master sta largo perché le derivate non possono essere
+più grandi di lui: a 1600 un monitor a densità doppia restava senza margine.
 
 I luoghi stanno in questa cartella, le attività in `attivita/`. In `storia/` ci sono invece le
 immagini d'archivio della pagina `/storia` — carte, affreschi, reperti: non passano da

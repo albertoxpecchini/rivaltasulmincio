@@ -1699,7 +1699,7 @@ const parolePagina = (html) => {
    a 960 — ventotto per cento di pixel scaricati e mai mostrati, su
    trentaquattro fotografie di /paese. Il 720 è quel gradino lì, e da solo
    vale un megabyte a visita. */
-const FOTO_LARGHEZZE = [480, 720, 960, 1600];
+const FOTO_LARGHEZZE = [480, 720, 960, 1440, 1600, 2200];
 const FOTO_QUALITA = 72;
 const MISURE_FILE = "assets/foto/_w/misure.json";
 
@@ -1780,14 +1780,20 @@ const SIZES_COPPIA = "(min-width: 1024px) 30rem, 46vw";
 
 const FASCE = new Map([
   // A piena colonna, e su schermo grande a densità doppia: 46rem × 2 = 1472.
-  [SIZES_SOLA, [480, 720, 960, 1600]],
+  // Il 2200 è il gradino sopra, per gli schermi che quel 1472 lo superano.
+  [SIZES_SOLA, [480, 720, 960, 1440, 1600, 2200]],
   // Su telefono queste vanno a tutta larghezza come le sole; su schermo largo
-  // si fermano a metà o a un terzo, e il 1600 non lo chiede mai nessuno.
-  [SIZES_DUE, [480, 720, 960]],
-  [SIZES_GRIGLIA, [480, 720, 960]],
+  // si fermano a metà o a un terzo. 30rem × 2 = 960, e il gradino dopo serve
+  // a chi ha il monitor a densità tripla.
+  [SIZES_DUE, [480, 720, 960, 1440]],
+  /* Le griglie si fermavano a 960 e si vedeva: una scheda da 20rem su un
+     monitor a densità doppia ne chiede 640, ma a tripla 960 li tocca esatti —
+     e il browser, dovendo scegliere l'ultimo gradino, mostrava un file che
+     stava al limite. Il 1440 è il margine che mancava. */
+  [SIZES_GRIGLIA, [480, 720, 960, 1440]],
   // Le coppie del '900 stanno a due colonne anche sul telefono: 46vw di 390
-  // fanno 179 px, che a densità tripla sono 537. Non arrivano mai a 960.
-  [SIZES_COPPIA, [480, 720]],
+  // fanno 179 px, che a densità tripla sono 537.
+  [SIZES_COPPIA, [480, 720, 960]],
 ]);
 
 /* Quali derivate servono davvero. Si riempie mentre le pagine si montano, e
