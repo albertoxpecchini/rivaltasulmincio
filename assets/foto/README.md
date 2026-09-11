@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **152** in tutto.
+Elenco completo dei file da produrre: **162** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -108,7 +108,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `lavatoio-via-porto.jpg` | Lavatoio storico | Via Porto |
 | `panchina-terroni.jpg` | «Panchina dei Terroni» | ~895 m dal centro |
 
-## Luoghi di culto — 7
+## Luoghi di culto — 8
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -119,6 +119,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `santella-votiva-corte-mincio.jpg` | Santella votiva | zona Corte Mincio |
 | `chiesa-canova.jpg` | Chiesa di Canova | località Canova — ~1,66 km |
 | `cimitero-rivalta.jpg` | Cimitero di Rivalta sul Mincio | — |
+| `chiesetta-via-madonnina.jpg` | Chiesetta di Via Madonnina | Via Madonnina |
 
 ## Corti e centro storico — 3
 
@@ -128,7 +129,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `via-porto-centro-storico.jpg` | Via Porto e il centro storico | Via Porto |
 | `la-dana.jpg` | La Dana | 231 m dal centro |
 
-## Parchi e verde — 8
+## Parchi e verde — 11
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -140,6 +141,9 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `campino-oratorio.jpg` | Campino Oratorio | Vicolo Gilberto Pagliari |
 | `area-gioco-via-madonnina.jpg` | Aree gioco di Via Madonnina | zona Via Madonnina |
 | `boschetto-della-chiesa.jpg` | Boschetto della Chiesa | dietro Piazza Chiesa |
+| `antica-platana.jpg` | L'antica platana | Piazza Platana |
+| `gelse-secolari-via-costa.jpg` | Le gelse secolari di Via Costa | Via Andrea Costa |
+| `centro-feste-platana.jpg` | Centro feste dell'area Platana | Piazza Platana |
 
 ## Fiume e navigazione — 9
 
@@ -184,7 +188,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `arcieri-gonzaga-campo-tiro.jpg` | Arcieri Gonzaga — campo di tiro con l'arco | Via Pilota |
 | `rivalta-green-village.jpg` | Rivalta Green Village | Strada Vedusino 5 |
 
-## Piazze e vie — 6
+## Piazze e vie — 9
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -194,14 +198,18 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `piazza-milite-ignoto.jpg` | Piazza Milite Ignoto | già Piazza della Lira |
 | `piazza-platana.jpg` | Piazza Platana | — |
 | `strada-settefrati.jpg` | Strada Settefrati (SP23) | SP23 |
+| `cartello-ingresso-paese.jpg` | Il cartello d'ingresso del paese | Via Francesca (SP1), lato sud |
+| `incrocio-ovest-garibaldi.jpg` | L'incrocio ovest di Via Garibaldi | Via Giuseppe Garibaldi (SP1) |
+| `incrocio-sud-francesca.jpg` | L'incrocio sud di Via Francesca | Via Francesca (SP1) |
 
-## Ciclabili e sentieri — 3
+## Ciclabili e sentieri — 4
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `ciclabile-rivalta-grazie.jpg` | Ciclabile Rivalta – Grazie | — |
 | `ciclopedonale-rivalta-rodigo.jpg` | Ciclopedonale Rivalta – Rodigo | — |
 | `capezzagne-strade-bianche.jpg` | Capezzagne e strade bianche | ~17 km |
+| `sottopassaggio-via-costa.jpg` | Il sottopassaggio di Via Costa | verso Strada Vedusino |
 
 ## Arredo e dettagli — 3
 
@@ -226,7 +234,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/macelleria-mambrini.jpg` | Macelleria Mambrini | Via Filippo Turati 56 |
 | `attivita/copelli-formaggi.jpg` | Copelli Formaggi | Strada Francesca Est 137/139 |
 
-## Negozi — 14
+## Negozi — 15
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -244,6 +252,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/borgoflora.jpg` | Borgoflora | Strada Camignana 19 |
 | `attivita/eurogiardini.jpg` | Eurogiardini | Strada Francesca Est 127/C |
 | `attivita/bosio-carrozzeria.jpg` | Bosio Giuseppe — carrozzeria | Strada Francesca Est 112 |
+| `attivita/bassoli-cashmere.jpg` | Bassoli Cashmere | Strada Francesca Est |
 
 ## Cura della persona — 5
 
@@ -267,7 +276,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/margot-manifacture.jpg` | Margot Manifacture | Piazza Silvio Arrivabene 7 |
 | `attivita/officina-colore-naturale.jpg` | Officina del Colore Naturale | Via Papa Giovanni Paolo II 17 |
 
-## Locali e ristoranti — 16
+## Locali e ristoranti — 17
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -287,6 +296,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/corte-mincio-osteria.jpg` | Corte Mincio Osteria con Pizzeria | Via Porto 43 |
 | `attivita/agriturismo-germano-reale.jpg` | Agriturismo Germano Reale | Strada Camignana 6 |
 | `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | Strada Pilone |
+| `attivita/break-time-cafe.jpg` | Break Time Café | Strada Francesca Est |
 
 ## Servizi — 12
 

@@ -13,6 +13,16 @@ design/*/tema-*.html
 .env.local
 
 
+# I negativi. Le fotografie del paese escono dalla macchina in RAW (.CR2): un
+# file da 25 MB l'uno, 1,7 GB in tutto — più di quanto pesi tutto il resto del
+# sito messo insieme, e nessun browser saprebbe cosa farsene.
+#
+# Quello che il sito serve è il .jpg da 1600 px ricavato da lì, e quello sì è
+# versionato. I RAW restano sul disco di chi scatta: sono l'originale da cui
+# si può sempre ritagliare di nuovo, non un file del sito.
+*.CR2
+*.cr2
+
 # Il numero del processo che sorveglia i frammenti (`node build.mjs --guarda`).
 # Serve a impedire che due guardiani ricostruiscano lo stesso repository
 # ognuno per conto suo; nasce e muore col processo, non è roba da versionare.
