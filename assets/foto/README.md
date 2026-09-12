@@ -1,6 +1,6 @@
 # Le fotografie di Rivalta
 
-Elenco completo dei file da produrre: **162** in tutto.
+Elenco completo dei file da produrre: **166** in tutto.
 
 Il nome file **non è una proposta, è la chiave**: `build.mjs` cerca esattamente questo nome, e
 la figura compare da sé al primo build dopo che il file è entrato qui. Finché manca, il
@@ -100,7 +100,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 > Le vetrine delle attività vogliono il permesso del titolare prima di finire online.
 > Il registro ha i campi `credito` e `consenso` per tenerne traccia.
 
-## Monumenti e memorie — 8
+## Monumenti e memorie — 9
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
@@ -109,6 +109,7 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `monumento-marinaio.jpg` | Monumento al Marinaio | Via Porto |
 | `mausoleo-arrivabene.jpg` | Mausoleo Arrivabene | zona Via Giovanni Arrivabene |
 | `monumento-piazza-chiesa.jpg` | Madonnina di Piazza Chiesa | Piazza Chiesa |
+| `parco-fondo-mincio-targa.jpg` | Targa del Parco Fondo Mincio | Via Porto |
 | `ponte-ferradina.jpg` | Ponte della Ferradina | ~1,3 km dal centro |
 | `lavatoio-via-porto.jpg` | Lavatoio storico | Via Porto |
 | `panchina-terroni.jpg` | «Panchina dei Terroni» | ~895 m dal centro |
@@ -134,11 +135,12 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `via-porto-centro-storico.jpg` | Via Porto e il centro storico | Via Porto |
 | `la-dana.jpg` | La Dana | 231 m dal centro |
 
-## Parchi e verde — 11
+## Parchi e verde — 12
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `parco-campino.jpg` | Parco Pubblico Campino | zona Via Madonnina |
+| `parco-fondo-mincio.jpg` | Parco Fondo Mincio | Via Porto |
 | `parco-fabrizio-quattrocchi.jpg` | Parco Fabrizio Quattrocchi | Via Renzo Regattieri |
 | `parco-villa-arrivabene.jpg` | Parco Villa Arrivabene | Via Giovanni Arrivabene / Via Mazzini |
 | `parco-la-platana.jpg` | Parco «La Platana» | Piazza Platana |
@@ -303,12 +305,13 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `attivita/corte-panicella.jpg` | Azienda Agrituristica Corte Panicella | Strada Pilone |
 | `attivita/break-time-cafe.jpg` | Break Time Café | Strada Francesca Est |
 
-## Servizi — 12
+## Servizi — 13
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `attivita/municipio-rodigo.jpg` | Municipio di Rodigo | Piazza Ippolito Nievo 3, Rodigo |
 | `attivita/servizi-demografici-rivalta.jpg` | Servizi Demografici di Rivalta | 45.18104, 10.67676 |
+| `attivita/polizia-locale-coc-protezione-civile.jpg` | Polizia Locale e C.O.C. Protezione Civile | — |
 | `attivita/ufficio-postale.jpg` | Ufficio Postale | Via Sette Frati 9 |
 | `attivita/farmacia-tona.jpg` | Farmacia Tona | Via Panicella 2 |
 | `attivita/monte-dei-paschi-di-siena.jpg` | Monte dei Paschi di Siena | Via Sette Frati 2 |
@@ -340,12 +343,13 @@ fotografia racconta il posto diversamente da come dice `alt`, si corregge lì.
 | `fosso-scudler.jpg` | Fosso scudler | 728 m dal centro |
 | `fossa-del-gioco.jpg` | Fossa del gioco | 790 m dal centro |
 
-## Aziende — 7
+## Aziende — 8
 
 | File | Luogo | Dove |
 | :--- | :--- | :--- |
 | `attivita/fuji-seal-italy.jpg` | Fuji Seal Italy S.r.l. | Via Enzo Ferrari 33 |
 | `attivita/ondabox.jpg` | Ondabox S.r.l. | Via Enzo Ferrari 25/27 |
+| `attivita/luigi-motori.jpg` | Luigi Motori | Via Enzo Ferrari 5 |
 | `attivita/rpl-lubrificanti.jpg` | RPL Lubrificanti S.r.l. | Via Enzo Ferrari 3 |
 | `attivita/italiana-distribuzione-lubrificanti.jpg` | Italiana Distribuzione Lubrificanti S.r.l. | Via Enzo Ferrari 1/3 |
 | `attivita/al-so-manufatti-cemento.jpg` | AL.SO. S.r.l. | Strada Settefrati 40 |
