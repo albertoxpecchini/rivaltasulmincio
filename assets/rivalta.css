@@ -99,7 +99,7 @@ html[data-stagione] h3[id] {
 .sb-riv-secnum {
   display: block;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -110,7 +110,7 @@ html[data-stagione] h3[id] {
 .sb-riv-subhead {
   margin: clamp(1.4rem, 2.8vw, 1.8rem) 0 0.7rem;
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
 }
@@ -128,13 +128,13 @@ html[data-stagione] h3[id] {
   color: var(--sb-fg-lighter);
 }
 .sb-riv-p:last-child { margin-bottom: 0; }
-.sb-riv-p strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-p strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-p a, .sb-riv-li a, .sb-riv-table a { color: var(--sb-brand-text); text-decoration: none; }
 .sb-riv-p a:hover, .sb-riv-li a:hover, .sb-riv-table a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .sb-riv-ul { margin: 0 0 0.85rem; padding-left: 1.1rem; max-width: var(--sb-misura); }
 .sb-riv-li { margin: 0 0 0.32rem; font-size: var(--sb-testo-min); line-height: 1.55; color: var(--sb-fg-lighter); }
-.sb-riv-li strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-li strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-li::marker { color: var(--sb-fg-muted); }
 
 /* ── Indice della pagina ──────────────────────────────────────────────────
@@ -253,7 +253,7 @@ html[data-stagione] h3[id] {
   .sb-riv-rail-t {
     margin: 0 0 0.6rem;
     font-size: 0.68rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--sb-fg-muted);
@@ -278,7 +278,7 @@ html[data-stagione] h3[id] {
   .sb-riv-rail-nav a[aria-current] {
     border-left-color: var(--sb-brand);
     color: var(--sb-fg);
-    font-weight: 600;
+    font-weight: 700;
   }
 }
 
@@ -616,7 +616,7 @@ html[data-stagione] h3[id] {
   z-index: 1;
   text-align: left;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -655,7 +655,7 @@ html[data-stagione] h3[id] {
   text-align: left;
   padding: 0.5rem 0.85rem;
   vertical-align: top;
-  font-weight: 500;
+  font-weight: 400;
   border-bottom: 1px solid var(--sb-border);
 }
 .sb-riv-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -689,12 +689,12 @@ html[data-stagione] h3[id] {
 }
 .sb-riv-note > :first-child { margin-top: 0; }
 .sb-riv-note > :last-child { margin-bottom: 0; }
-.sb-riv-note strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-note strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-note-t {
   display: block;
   margin-bottom: 0.3rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -794,13 +794,13 @@ html[data-stagione] h3[id] {
   white-space: nowrap;
   color: var(--sb-fg-muted);
 }
-.sb-riv-crono-riga--chiave .sb-riv-crono-anno { color: var(--sb-fg); font-weight: 500; }
+.sb-riv-crono-riga--chiave .sb-riv-crono-anno { color: var(--sb-fg); font-weight: 400; }
 .sb-riv-crono-fatto {
   font-size: 0.92rem;
   line-height: 1.6;
   color: var(--sb-fg-lighter);
 }
-.sb-riv-crono-fatto strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-crono-fatto strong { font-weight: 700; color: var(--sb-fg); }
 
 /* ── Schede chiave/valore ─────────────────────────────────────────────── */
 .sb-riv-kv { margin: 0; }
@@ -829,7 +829,7 @@ html[data-stagione] h3[id] {
 .sb-riv-cardpad h4 {
   margin: 0;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
 }
@@ -847,7 +847,7 @@ html[data-stagione] h3[id] {
   border: 1px solid var(--sb-border-strong);
   background: var(--sb-surface-100);
   overflow-x: auto;
-  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--sb-font-mono);
   font-size: 0.8rem;
   line-height: 1.65;
   color: var(--sb-fg-light);
@@ -888,7 +888,7 @@ html[data-stagione] h3[id] {
 }
 .sb-riv-news-src {
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-light);
@@ -897,7 +897,7 @@ html[data-stagione] h3[id] {
 .sb-riv-news-title {
   margin: 0.1rem 0 0;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
@@ -953,19 +953,19 @@ html[data-stagione] h3[id] {
   box-shadow: inset 0 1px 0 var(--sb-glass-spec);
   color: var(--sb-btn-fg);
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .sb-riv-flash h3 {
   margin: 0;
   font-size: clamp(1.15rem, 2.4vw, 1.45rem);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.02em;
   color: var(--sb-fg);
 }
 .sb-riv-flash p { margin: 0; max-width: var(--sb-misura); font-size: 0.92rem; line-height: 1.65; color: var(--sb-fg-lighter); }
-.sb-riv-flash p strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash p strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-flash-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1005,7 +1005,7 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
   border-left: 3px solid var(--sb-urg);
   background: var(--sb-urg-bg);
 }
-.sb-riv-flash--urgente h3 { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash--urgente h3 { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-flash--urgente p { color: var(--sb-fg-light); font-size: 0.95rem; }
 .sb-riv-flash-badge--urgente {
   background: var(--sb-urg);
@@ -1016,7 +1016,7 @@ html.dark .sb-home { --sb-urg: #ff6b6b; --sb-urg-bg: rgba(255, 107, 107, 0.12); 
 .sb-riv-flash--urgente .sb-link {
   color: var(--sb-urg-fg);
   border-color: color-mix(in srgb, var(--sb-urg) 45%, transparent);
-  font-weight: 600;
+  font-weight: 700;
 }
 .sb-riv-flash--urgente .sb-link:hover {
   color: var(--sb-urg-fg);
@@ -1094,12 +1094,12 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
   width: max-content;
   color: var(--sb-alrt-fg);
   font-size: 0.86rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 2.6rem;
   white-space: nowrap;
 }
 .sb-riv-tg-nastro > span { padding-right: 2.5rem; }
-.sb-riv-tg-nastro b { font-weight: 800; }
+.sb-riv-tg-nastro b { font-weight: 700; }
 .sb-riv-tg-sep { opacity: 0.45; padding: 0 0.55rem; }
 .sb-riv-tg-vai {
   flex: none;
@@ -1157,7 +1157,7 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
   border-left: 3px solid var(--sb-alrt);
   background: var(--sb-alrt-bg);
 }
-.sb-riv-flash--allerta h3 { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-flash--allerta h3 { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-flash--allerta p { color: var(--sb-fg-light); font-size: 0.95rem; }
 .sb-riv-flash-badge--allerta {
   background: var(--sb-alrt);
@@ -1168,7 +1168,7 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
 .sb-riv-flash--allerta .sb-link {
   color: var(--sb-alrt-fg);
   border-color: color-mix(in srgb, var(--sb-alrt) 45%, transparent);
-  font-weight: 600;
+  font-weight: 700;
 }
 .sb-riv-flash--allerta .sb-link:hover {
   color: var(--sb-alrt-fg);
@@ -1522,7 +1522,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   display: block;
   margin-bottom: 0.7rem;
   font-size: 0.74rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -1665,7 +1665,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -1676,7 +1676,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   line-height: 1.45;
   color: var(--sb-fg-lighter);
 }
-.sb-riv-fonte-titolo strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-fonte-titolo strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-fonte-titolo .sb-riv-na { font-size: 0.85rem; }
 /* Il ringraziamento è piccolo di proposito: chi ha donato il libro non ha
    chiesto un'insegna, e una riga in fondo è il modo in cui si dice grazie
@@ -1687,7 +1687,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   line-height: 1.55;
   color: var(--sb-fg-muted);
 }
-.sb-riv-fonte-grazie strong { font-weight: 600; color: var(--sb-fg-light); }
+.sb-riv-fonte-grazie strong { font-weight: 700; color: var(--sb-fg-light); }
 
 .sb-riv-libro {
   --sp: 13px; /* lo spessore del volume */
@@ -1860,7 +1860,7 @@ html.dark .sb-riv-stemma--arte { background: color-mix(in srgb, var(--ctr) 12%, 
 .sb-riv-contrada-t h4 {
   margin: 0;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
 }
@@ -1984,10 +1984,10 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 .sb-riv-map .leaflet-popup-content { margin: 0.8rem 0.95rem; font-size: 0.84rem; line-height: 1.5; }
 .sb-riv-map .leaflet-popup-close-button { color: var(--sb-fg-muted); }
 .sb-riv-pop { display: flex; flex-direction: column; gap: 0.15rem; }
-.sb-riv-pop strong { font-size: 0.95rem; font-weight: 500; color: var(--sb-fg); }
+.sb-riv-pop strong { font-size: 0.95rem; font-weight: 400; color: var(--sb-fg); }
 .sb-riv-pop-t {
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2067,7 +2067,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 .sb-riv-luogo-testo h3 {
   margin: 0;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
 }
@@ -2095,7 +2095,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   background: var(--sb-bg-alt);
   color: var(--sb-fg);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 400;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 .sb-riv-luogo-links .sb-riv-geo:hover {
@@ -2206,7 +2206,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
   border: 1px solid var(--sb-border-strong);
   background: var(--sb-surface-100);
   color: var(--sb-fg-muted);
-  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--sb-font-mono);
   font-size: 0.72rem;
   line-height: 1;
 }
@@ -2513,7 +2513,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   display: block;
   margin-bottom: 0.4rem;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -2521,7 +2521,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 .sb-riv-mang-pad h3 {
   margin: 0 0 0.7rem;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
 }
@@ -2542,7 +2542,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 .sb-riv-mang-quando > span:first-child {
   flex: none;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2554,7 +2554,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   padding-top: 0.9rem;
   border-top: 1px solid var(--sb-border);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2576,7 +2576,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   font-size: 0.92rem;
   color: var(--sb-fg);
 }
-.sb-riv-mang-locale-t strong { font-weight: 600; }
+.sb-riv-mang-locale-t strong { font-weight: 700; }
 /* La cifra è indicativa e lo deve sembrare: sta in tono muto accanto al nome,
    non in evidenza come farebbe un listino. */
 .sb-riv-mang-fascia {
@@ -2591,7 +2591,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   line-height: 1.6;
   color: var(--sb-fg-lighter);
 }
-.sb-riv-mang-come strong { font-weight: 600; color: var(--sb-fg); }
+.sb-riv-mang-come strong { font-weight: 700; color: var(--sb-fg); }
 .sb-riv-mang-locale .sb-link { margin-top: 0.55rem; font-size: 0.8rem; }
 
 .sb-riv-mang-vedi {
@@ -2629,7 +2629,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   align-items: baseline;
   gap: 0.34rem;
   margin-right: 0.35rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--sb-fg-muted);
   white-space: nowrap;
 }
@@ -2781,7 +2781,7 @@ h3:hover > .sb-riv-anchor,
 .sb-riv-ind-t {
   margin: 0 0 0.6rem;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2795,7 +2795,7 @@ h3:hover > .sb-riv-anchor,
   text-decoration: none;
 }
 .sb-riv-ind-nav a:last-child { border-bottom: 0; }
-.sb-riv-ind-nav a[aria-current] { color: var(--sb-brand-text); font-weight: 600; }
+.sb-riv-ind-nav a[aria-current] { color: var(--sb-brand-text); font-weight: 700; }
 .sb-riv-ind-nav a:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: -2px; }
 .sb-riv-top:hover { color: var(--sb-fg); border-color: var(--sb-border-stronger); }
 .sb-riv-top:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 3px; }
@@ -2949,7 +2949,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
 .sb-riv-tendina a:hover,
 .sb-riv-tendina a:focus-visible { background: var(--sb-overlay); }
 .sb-riv-tendina a[aria-current="page"] { background: var(--sb-overlay); }
-.sb-riv-tendina-t { font-size: 0.9rem; font-weight: 500; color: var(--sb-fg); }
+.sb-riv-tendina-t { font-size: 0.9rem; font-weight: 400; color: var(--sb-fg); }
 .sb-riv-tendina-d { font-size: 0.78rem; line-height: 1.45; color: var(--sb-fg-muted); }
 
 /* Le stesse cinque sottosezioni, scritte, nel menu su schermo stretto. */
@@ -2957,7 +2957,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
   margin: 1rem 0 0.2rem;
   padding: 0 0.7rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3012,7 +3012,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
   gap: 0.45rem;
   margin-bottom: 0.9rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3082,7 +3082,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
 .sb-riv-open-nome {
   display: block;
   font-size: 0.98rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--sb-fg);
   text-decoration: none;
 }
@@ -3094,7 +3094,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
   line-height: 1.65;
   color: var(--sb-fg-lighter);
 }
-.sb-riv-open-bio strong { color: var(--sb-fg); font-weight: 600; }
+.sb-riv-open-bio strong { color: var(--sb-fg); font-weight: 700; }
 .sb-riv-open-repo {
   display: flex;
   align-items: center;
@@ -3136,7 +3136,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
   align-items: center;
   gap: 0.45rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3189,7 +3189,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
 .sb-riv-visite-tit {
   margin: 0;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3200,7 +3200,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
   color: var(--sb-fg-lighter);
 }
 .sb-riv-visite-conto strong {
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--sb-fg);
 }
@@ -3282,7 +3282,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
   flex: none;
   padding: 0.05rem 0.4rem;
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -3299,10 +3299,55 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
 .sb-riv-visite-nota a:hover { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── La firma in fondo ───────────────────────────────────────────────── */
-.sb-riv-foot-fatto strong { color: var(--sb-fg-light); font-weight: 600; }
+.sb-riv-foot-fatto strong { color: var(--sb-fg-light); font-weight: 700; }
 
 @media print {
   .sb-riv-cwall-wrap,
   .sb-riv-visite,
   .sb-riv-aggban { display: none !important; }
 }
+
+
+/* ── Il paese a caratteri ─────────────────────────────────────────────────
+   Sotto al titolo della home: il profilo di Rivalta — la torre, il castello,
+   le case del borgo, i pioppi verso le valli, e il Mincio davanti — disegnato
+   con i segni di una tastiera, che si ricompongono di continuo.
+
+   Il disegno lo fa assets/ascii.js; qui c'è solo come sta nella pagina.
+   Monospaziato obbligatorio: con un carattere a larghezza variabile le
+   colonne non sarebbero colonne e il profilo si sfalderebbe.
+
+   La misura è in ch — la larghezza di uno zero — così il blocco è alto
+   quanto le righe che contiene, e non balla mentre il testo arriva.
+
+   Il colore è quello del testo tenue, non il nero: è un fondale, sta dietro
+   a quello che si legge. In chiaro è grigio, in scuro schiarisce da sé
+   perché il token cambia col tema. */
+.sb-riv-ascii {
+  margin: 1.8rem 0 0;
+  font-family: var(--sb-font-mono);
+  font-size: clamp(0.38rem, 0.28rem + 0.55vw, 0.62rem);
+  line-height: 1.02;
+  letter-spacing: 0;
+  white-space: pre;
+  overflow: hidden;
+  color: var(--sb-fg-muted);
+  opacity: 0.85;
+  user-select: none;
+  /* Il blocco non deve mai allargare la pagina: se le colonne calcolate non
+     ci stessero (una rotazione, uno zoom), si taglia invece di spingere. */
+  max-width: 100%;
+  /* Niente bordo, niente fondo, niente cornice: è inchiostro sulla pagina.
+     La sensazione di minimalismo si rovina appena ci si mette una scatola
+     attorno. */
+}
+
+/* Sotto i 560 px il disegno si stringe troppo per leggersi: resta, ma più
+   corto — ascii.js taglia le righe da solo, qui si dà solo un po' meno aria. */
+@media (max-width: 560px) {
+  .sb-riv-ascii { margin-top: 1.2rem; opacity: 0.75; }
+}
+
+/* Chi ha chiesto di non vedere movimento riceve il disegno fermo: ascii.js
+   non avvia nessun ciclo. Qui non serve altro — non c'è nessuna animazione
+   CSS da spegnere, il movimento è tutto nel carattere che cambia. */

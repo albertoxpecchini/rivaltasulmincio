@@ -1,3 +1,65 @@
+/* ── Helvetica ────────────────────────────────────────────────────────────
+   Il sito è scritto in Helvetica, e la si vede uguale su ogni schermo.
+
+   Helvetica vera è installata su Mac e su iPhone e basta: su Windows e su
+   Android non c'è, e il browser ripiegherebbe su un carattere qualsiasi —
+   la stessa riga andrebbe a capo in un punto sul telefono e in un altro sul
+   portatile. Per questo il carattere lo serve il sito, invece di sperare che
+   ci sia: i quattro file qui sotto partono da assets/font/ e arrivano a
+   chiunque apra la pagina, che sia su un iPhone o su un PC dell'ufficio.
+
+   È TeX Gyre Heros: la Helvetica del mondo TeX, disegnata sulle stesse
+   misure — stesse larghezze di ogni lettera, stesse proporzioni, stesso
+   taglio orizzontale dei terminali. È libera (licenza GUST, come le altre
+   TeX Gyre): si può ridistribuire, ed è il motivo per cui sta in questo
+   repository invece di essere linkata da un sito terzo.
+
+   local() prima di url(): chi ha Helvetica installata — i Mac, gli iPhone —
+   usa la sua e non scarica niente. Gli altri ricevono i 52 KB del file.
+
+   font-display: swap — il testo si legge subito col carattere di sistema e
+   passa a Helvetica appena è arrivata. L'alternativa è una pagina bianca
+   per mezzo secondo su connessione lenta.
+
+   Quattro file e non di più: tondo e nero, con i rispettivi corsivi. Sono i
+   pesi che Helvetica ha, e sono quelli che il sito usa. */
+
+@font-face {
+  font-family: "Helvetica Sito";
+  src: local("Helvetica"), local("Helvetica Neue"), local("HelveticaNeue"),
+       url("font/heros-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Sito";
+  src: local("Helvetica Bold"), local("Helvetica-Bold"), local("Helvetica Neue Bold"),
+       url("font/heros-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Sito";
+  src: local("Helvetica Oblique"), local("Helvetica-Oblique"),
+       url("font/heros-400i.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Sito";
+  src: local("Helvetica Bold Oblique"), local("Helvetica-BoldOblique"),
+       url("font/heros-700i.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    DESIGN SYSTEM .sb- — estratto fedele da albertopecchini.it
    (src/app/home.css, blocco .sb-home e html.dark .sb-home).
@@ -79,6 +141,26 @@ img { max-width: 100%; height: auto; }
      sbaglia riga. */
   --sb-misura: 46rem;
 
+  /* ── Il carattere ───────────────────────────────────────────────────────
+     Helvetica, e dove Helvetica non c'è una che ne ha le misure esatte.
+
+     Helvetica sta su Mac e su iPhone e basta. Su Windows e su Android non è
+     installata, e non lo sarebbe nemmeno comprandola: lì il browser ripiega
+     su un carattere qualsiasi, con larghezze sue, e la stessa riga andrebbe
+     a capo in un punto sul telefono e in un altro sul portatile. Arimo ha le
+     larghezze identiche ad Arial, e Arial quelle di Helvetica: il testo
+     occupa lo stesso spazio dappertutto, va a capo negli stessi punti, e i
+     titoli non cambiano ingombro da uno schermo all'altro.
+
+     local("Helvetica") sta per primo apposta: chi ce l'ha usa la sua, presa
+     dal proprio sistema, e non scarica niente. Arimo parte solo dove manca.
+
+     Due pesi, e sono quelli che Helvetica ha: Regular e Bold. Il sito ne
+     usava cinque — 400, 500, 600, 700, 800 — e cinque gradazioni di enfasi
+     sono una gerarchia che nessuno legge. Il grassetto o c'è o non c'è. */
+  --sb-font: "Helvetica Sito", Helvetica, Arial, sans-serif;
+  --sb-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
   /* ── Il corpo del testo ─────────────────────────────────────────────────
      Fisso a 0,95rem, il testo era identico su un telefono da 375 px e su un
      monitor da 27 pollici, mentre il titolo sopra passava da 1,9 a 3rem: sul
@@ -94,7 +176,7 @@ img { max-width: 100%; height: auto; }
   min-height: 100vh;
   background: var(--sb-bg);
   color: var(--sb-fg);
-  font-family: "Titillium Web", Geneva, Tahoma, sans-serif;
+  font-family: var(--sb-font);
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -343,7 +425,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
   color: var(--sb-fg);
   flex-shrink: 0;
 }
-.sb-nav-brand-name { font-size: 0.98rem; font-weight: 500; white-space: nowrap; letter-spacing: -0.01em; }
+.sb-nav-brand-name { font-size: 0.98rem; font-weight: 400; white-space: nowrap; letter-spacing: -0.01em; }
 .sb-nav-links { position: relative; display: none; align-items: center; gap: 0.15rem; }
 @media (min-width: 1080px) { .sb-nav-links { display: flex; } }
 .sb-nav-link {
@@ -552,7 +634,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
   color: var(--sb-fg);
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.35;
   text-align: center;
   text-decoration: none;
@@ -570,7 +652,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
    da qualche parte. Grassetto e tinta d'accento — si vede subito senza
    spezzare la riga in cui sta. */
 .sb-inline {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--sb-brand-text);
   text-decoration: none;
 }
@@ -870,7 +952,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
 .sb-card { display: block; text-decoration: none; color: inherit; }
 .sb-card-head { padding: 1.4rem 1.4rem 0; display: flex; flex-direction: column; gap: 0.6rem; }
 .sb-card-title { display: flex; align-items: center; gap: 0.55rem; color: var(--sb-fg-light); }
-.sb-card-title h3 { margin: 0; font-size: 0.98rem; font-weight: 500; letter-spacing: -0.01em; }
+.sb-card-title h3 { margin: 0; font-size: 0.98rem; font-weight: 400; letter-spacing: -0.01em; }
 .sb-card-desc { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--sb-fg-lighter); }
 .sb-card-desc strong { font-weight: 400; color: var(--sb-fg); }
 
@@ -885,7 +967,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
 .sb-page-card:hover .go { opacity: 1; transform: none; color: var(--sb-fg); }
 .sb-page-card .sb-page-top > svg { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease; }
 .sb-page-card:hover .sb-page-top > svg { transform: scale(1.15) rotate(-8deg); color: var(--sb-brand-text); }
-.sb-page-inner h4 { margin: 0; font-size: 0.95rem; font-weight: 500; color: var(--sb-fg); }
+.sb-page-inner h4 { margin: 0; font-size: 0.95rem; font-weight: 400; color: var(--sb-fg); }
 .sb-page-inner p { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--sb-fg-lighter); }
 
 /* ── Pillole / badge (angolo tagliato + vetro) ─────────────────────────────
@@ -1007,7 +1089,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
 .sb-foot-name {
   display: inline-block;
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--sb-fg);
   text-decoration: none;
@@ -1045,7 +1127,7 @@ html.rsm-still .sb-nav-inner { transition: none; }
 .sb-foot-col h3 {
   margin: 0 0 0.6rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);

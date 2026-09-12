@@ -2084,13 +2084,19 @@ for (const file of bodies) {
      frammento: il segnaposto {{aperto:}} a quel punto è diventato markup. */
   const conOrari = body.includes("sb-riv-ap");
 
+  /* E il paese disegnato a caratteri, in testata alla home. Stessa domanda
+     delle altre: se nel corpo c'è il blocco, si scarica il file che lo fa
+     muovere; le altre dodici pagine non lo vedono nemmeno. */
+  const conAscii = body.includes("data-ascii-paese");
+
   const scriptExtra =
     (conMappa ? `<script src="assets/vendor/leaflet/leaflet.js"></script>\n<script src="assets/mappa.js"></script>\n` : "") +
     (conMeteo ? `<script src="assets/meteo.js"></script>\n` : "") +
     (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
     (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "") +
     (conOrari ? `<script src="assets/orari.js"></script>\n` : "") +
-    (conStagione ? `<script src="assets/stagioni.js"></script>\n` : "");
+    (conStagione ? `<script src="assets/stagioni.js"></script>\n` : "") +
+    (conAscii ? `<script src="assets/ascii.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che
      punta a un'immagine assente fa sì che l'anteprima non compaia affatto:
