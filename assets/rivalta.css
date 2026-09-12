@@ -99,7 +99,7 @@ html[data-stagione] h3[id] {
 .sb-riv-secnum {
   display: block;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -253,7 +253,7 @@ html[data-stagione] h3[id] {
   .sb-riv-rail-t {
     margin: 0 0 0.6rem;
     font-size: 0.68rem;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--sb-fg-muted);
@@ -310,9 +310,12 @@ html[data-stagione] h3[id] {
 .sb-riv-stat .sb-panel-inner { padding: 1rem 1.1rem; gap: 0.15rem; }
 .sb-riv-stat-v {
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  /* I numeri del paese — 2.984 abitanti, 954 edifici — sono la cosa che si
+     guarda per prima in quelle schede: vanno in Black, e l'etichetta sotto
+     resta leggera per contrasto. */
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   color: var(--sb-fg);
 }
 .sb-riv-stat-v small { font-size: 0.55em; color: var(--sb-fg-lighter); margin-left: 0.15em; }
@@ -616,7 +619,7 @@ html[data-stagione] h3[id] {
   z-index: 1;
   text-align: left;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -694,7 +697,7 @@ html[data-stagione] h3[id] {
   display: block;
   margin-bottom: 0.3rem;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -888,7 +891,7 @@ html[data-stagione] h3[id] {
 }
 .sb-riv-news-src {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-light);
@@ -953,7 +956,7 @@ html[data-stagione] h3[id] {
   box-shadow: inset 0 1px 0 var(--sb-glass-spec);
   color: var(--sb-btn-fg);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1069,7 +1072,7 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
   background: var(--sb-alrt);
   color: #fff;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1188,7 +1191,7 @@ html.dark .sb-home { --sb-alrt: #f59e0b; --sb-alrt-bg: rgba(245, 158, 11, 0.13);
 .sb-riv-allerta-duo h4 {
   margin: 0 0 0.4rem;
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-alrt-fg);
@@ -1514,15 +1517,18 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 .sb-riv-pagehead h1 {
   margin: 0;
   font-size: clamp(1.9rem, 4.4vw, 3rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
+  /* Black, come il titolo della home: e il nome della pagina, e deve stare
+     sopra alle sue sezioni — che sono a 800. Un titolo di pagina piu leggero
+     delle sezioni che contiene capovolge la gerarchia. */
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
 }
 .sb-riv-eyebrow {
   display: block;
   margin-bottom: 0.7rem;
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -1665,7 +1671,7 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -1987,7 +1993,7 @@ html.dark .sb-riv-map { background: var(--sb-surface-100); }
 .sb-riv-pop strong { font-size: 0.95rem; font-weight: 400; color: var(--sb-fg); }
 .sb-riv-pop-t {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2513,7 +2519,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   display: block;
   margin-bottom: 0.4rem;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
@@ -2542,7 +2548,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
 .sb-riv-mang-quando > span:first-child {
   flex: none;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2554,7 +2560,7 @@ html.rsm-still .sb-riv-cerca:not([hidden]) .sb-riv-cerca-box { animation: none; 
   padding-top: 0.9rem;
   border-top: 1px solid var(--sb-border);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2781,7 +2787,7 @@ h3:hover > .sb-riv-anchor,
 .sb-riv-ind-t {
   margin: 0 0 0.6rem;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -2957,7 +2963,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
   margin: 1rem 0 0.2rem;
   padding: 0 0.7rem;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3012,7 +3018,7 @@ html.rsm-still .sb-riv-tendina { transition: none; }
   gap: 0.45rem;
   margin-bottom: 0.9rem;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3136,7 +3142,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
   align-items: center;
   gap: 0.45rem;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
@@ -3189,7 +3195,7 @@ html.rsm-still .sb-riv-cwall g { animation: none; }
 .sb-riv-visite-tit {
   margin: 0;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--sb-fg-muted);
