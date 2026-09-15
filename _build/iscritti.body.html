@@ -416,10 +416,76 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   line-height: 1.4;
   color: var(--sb-fg-muted);
 }
-/* «Deve ancora pagare» non è un'emergenza da semaforo, ma è l'unica cosa di
-   questa pagina che cambia il comportamento di chi la legge: prende l'azzurro
-   del sito, che è l'unico colore acceso ammesso, e nient'altro. */
-.sb-is-meta em { font-style: normal; font-weight: 600; color: var(--sb-brand-text); }
+/* ── I tre colori dello stato ──────────────────────────────────────────────
+   Qui il semaforo ci vuole, ed è l'eccezione alla regola del colore che vale
+   su tutto il resto del sito. Il motivo è il posto in cui questa pagina si
+   usa: in piedi, davanti alla chiesa, col telefono in una mano, una fila di
+   gente davanti e trecento nomi da scorrere. Chi guarda non legge «contanti,
+   da incassare»: guarda di che colore è la riga e sa se deve chiedere dei
+   soldi. Una parola in grigio, in quelle condizioni, è una parola che non si
+   legge.
+
+     verde   ha pagato in contanti — i soldi sono in cassa
+     rosso   deve pagare al ritrovo — è l'unica riga che chiede un gesto
+     blu     ha pagato online — è a posto, e non è passato di qui
+
+   Non sono le sei polveri della Color Walk, che stanno nel fondale delle
+   pagine pubbliche e sui comandi non arrivano mai: sono tre tinte di servizio
+   che vivono in questa pagina e basta. Il rosso resta il colore di una cosa
+   che manca, che è esattamente quello che vuol dire qui.
+
+   Il colore non è mai da solo: ogni riga porta anche la sua parola scritta,
+   perché chi non distingue il rosso dal verde deve poter usare questa pagina
+   come chiunque altro. */
+.sb-is-elenco {
+  --is-verde: #1a7f4b;
+  --is-rosso: #c0392b;
+  --is-blu: var(--sb-brand-text);
+}
+html.dark .sb-is-elenco {
+  --is-verde: #4ecb8b;
+  --is-rosso: #ff7a6b;
+}
+
+/* La riga di colore sta a sinistra della scheda, dove l'occhio scende
+   scorrendo l'elenco: è la cosa che si vede prima del nome. */
+.sb-is-card { border-left: 4px solid transparent; }
+.sb-is-card[data-stato="incassato"] { border-left-color: var(--is-verde); }
+.sb-is-card[data-stato="da-incassare"] { border-left-color: var(--is-rosso); }
+.sb-is-card[data-stato="online"] { border-left-color: var(--is-blu); }
+
+/* E la parola, nel suo colore, dentro una pastiglia tenue. La pastiglia
+   serve sul telefono: un testo colorato su fondo chiaro a 0.76rem si perde,
+   un fondo colorato no. */
+.sb-is-stato {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.42rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-style: normal;
+  white-space: nowrap;
+}
+.sb-is-stato--incassato {
+  color: var(--is-verde);
+  background: color-mix(in srgb, var(--is-verde) 14%, transparent);
+}
+.sb-is-stato--da-incassare {
+  color: var(--is-rosso);
+  background: color-mix(in srgb, var(--is-rosso) 14%, transparent);
+}
+.sb-is-stato--online {
+  color: var(--is-blu);
+  background: color-mix(in srgb, var(--is-blu) 14%, transparent);
+}
+
+/* In stampa il colore non c'è: il foglio del banco esce da una laser in
+   bianco e nero. Lì la parola basta da sé, e la riga di sinistra diventa un
+   filo grigio che separa le schede invece di sparire. */
+@media print {
+  .sb-is-card[data-stato] { border-left-color: #999 !important; }
+  .sb-is-stato { background: none !important; color: #000 !important; padding-left: 0; padding-right: 0; }
+}
 
 /* La cifra non ha un colore suo: è l'unico numero in fondo alla riga del
    nome, in cifre a larghezza fissa, e scendendo lungo l'elenco si leggono
@@ -1104,13 +1170,31 @@ html.rsm-still .sb-is-frec { transition: none; }
     var meta = document.createElement("span");
     meta.className = "sb-is-meta";
     meta.appendChild(document.createTextNode(persone === 1 ? "1 persona · " : persone + " persone · "));
-    if (i.pagato) {
-      meta.appendChild(document.createTextNode(i.pagamento === "contanti" ? "contanti, incassati" : "PayPal, pagato"));
+
+    /* I tre stati, che sono anche i tre colori. `stato` va sulla scheda e
+       tinge la riga a sinistra; la pastiglia porta la parola nello stesso
+       colore, perché il colore da solo non basta a chi non lo distingue.
+
+       Un cartaceo è sempre già pagato — al banchetto i soldi si prendono lì,
+       prima di ricopiare il foglio — quindi finisce sempre in verde: la sua
+       fattura nasce già saldata dalla funzione che lo riporta. */
+    var stato, parola;
+    if (!i.pagato) {
+      stato = "da-incassare";
+      parola = "contanti, da incassare";
+    } else if (i.pagamento === "contanti") {
+      stato = "incassato";
+      parola = "contanti, incassati";
     } else {
-      var em = document.createElement("em");
-      em.textContent = "contanti, da incassare";
-      meta.appendChild(em);
+      stato = "online";
+      parola = "PayPal, pagato";
     }
+    card.setAttribute("data-stato", stato);
+
+    var pastiglia = document.createElement("em");
+    pastiglia.className = "sb-is-stato sb-is-stato--" + stato;
+    pastiglia.textContent = parola;
+    meta.appendChild(pastiglia);
     /* L'etichetta di chi viene dalla carta. Sta sulla testata, dove si vede
        senza aprire la scheda: al banco delle sacche la differenza fra un
        iscritto online e uno del banchetto non conta niente, ma quando si
