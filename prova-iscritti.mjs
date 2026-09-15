@@ -720,12 +720,77 @@ function verifica(nome, ok, extra) {
     `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
 }
 
+/* — Il foglio di carta scritto a metà —
+   Qui la carta si stacca dall'online, ed è voluto. Sul foglio firmato in
+   piazza la riga di chi cammina con te arriva quasi sempre col solo nome e
+   cognome: si firma in piedi, e nessuno tira fuori la tessera sanitaria della
+   moglie. Un foglio rifiutato è un'iscrizione che manca in elenco e una quota
+   che non risulta incassata, e l'incasso è la cosa che conta.
+
+   Quello che di quelle persone è stato scritto, però, si controlla come
+   sempre: una data impossibile o un codice storto è un errore di
+   trascrizione, e va corretto mentre il foglio è ancora in mano. */
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi" }],
+  });
+  const voci = (creata?.items || []).map((v) => v.description);
+  verifica("un accompagnato col solo nome e cognome: entra, e i 25 € si incassano",
+    res.codice === 200 &&
+    res.corpo?.persone === 3 &&
+    res.corpo?.totaleCent === 2500 &&
+    voci[1] === "B|Giorgio|Bianchi|—|—",
+    `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
+}
+
 {
   const res = await riporta({
     ...FOGLIO,
     adulti: [{ nome: "Giorgio", cognome: "Bianchi", dataNascita: "1982-11-08", codiceFiscale: "" }],
   });
-  verifica("il secondo maggiorenne senza codice fiscale: no, come sul sito",
+  verifica("un accompagnato con la data ma senza codice fiscale: entra lo stesso",
+    res.codice === 200 && res.corpo?.totaleCent === 2500,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi", dataNascita: "1982-11-08", codiceFiscale: "BNCGRG90S08F205Z" }],
+  });
+  verifica("un accompagnato col codice che non torna con la data scritta: no",
+    res.codice === 400 && /non corrisponde/.test(res.corpo?.errore || "") && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi", dataNascita: "2015-01-01" }],
+  });
+  verifica("un accompagnato che con la data scritta è minorenne: no",
+    res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Due accompagnati senza codice fiscale non sono la stessa persona: le due
+   stringhe vuote si assomigliano, e il controllo dei doppioni non deve
+   cascarci. */
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi" }, { nome: "Elena", cognome: "Verdi" }],
+  });
+  verifica("due accompagnati senza codice fiscale: non sono un doppione",
+    res.codice === 200 && res.corpo?.persone === 4 && res.corpo?.totaleCent === 3500,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Chi firma per primo, invece, i suoi dati li dà sempre: è la reperibilità
+   del foglio, ed è a lui che si telefona il 20 mattina. */
+{
+  const res = await riporta({ ...FOGLIO, dataNascita: "", codiceFiscale: "" });
+  verifica("chi firma il foglio senza data né codice fiscale: no, quello resta obbligato",
     res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
 

@@ -1117,8 +1117,12 @@ html.rsm-still .sb-is-frec { transition: none; }
       <!-- Un altro maggiorenne del foglio. Al banchetto una coppia riempie un
            foglio solo, e fino al 15 settembre da qui non si poteva riportare:
            chi ricopiava doveva inventarsi due iscrizioni per una firma sola.
-           Il codice fiscale è obbligatorio come nel modulo online, perché
-           ognuno di loro risponde di sé. -->
+
+           Data e codice fiscale qui sono facoltativi, e non è una sciatteria:
+           sul foglio firmato in piazza la riga di chi cammina con te arriva
+           quasi sempre col solo nome e cognome, e chiederli lo stesso
+           vorrebbe dire non riportare quel foglio. La reperibilità del foglio
+           è il primo nome, che i suoi dati li dà sempre. -->
       <template id="is-cart-modello-adulto">
         <div class="sb-is-cart-min" data-min>
           <div class="sb-is-cart-min-testa">
@@ -1135,11 +1139,11 @@ html.rsm-still .sb-is-frec { transition: none; }
               <input class="sb-is-campo" type="text" data-id="cognome" autocomplete="off" autocapitalize="words" maxlength="80">
             </div>
             <div class="sb-is-cart-c">
-              <label data-per="nascita">Data di nascita</label>
+              <label data-per="nascita">Data di nascita <i>— se sul foglio c'è</i></label>
               <input class="sb-is-campo" type="date" data-id="nascita" min="1900-01-01" max="2008-09-20">
             </div>
             <div class="sb-is-cart-c">
-              <label data-per="cf">Codice fiscale</label>
+              <label data-per="cf">Codice fiscale <i>— se sul foglio c'è</i></label>
               <input class="sb-is-campo" type="text" data-id="cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off">
             </div>
           </div>

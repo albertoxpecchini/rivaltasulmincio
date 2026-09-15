@@ -430,9 +430,14 @@ const FASCIA_PICCOLO = "sotto i 6 anni — gratis";
    dice che quello zero è voluto. */
 const FASCIA = { A: FASCIA_ADULTO, B: FASCIA_ADULTO, M: FASCIA_MINORE, P: FASCIA_PICCOLO };
 
+/* Il trattino al posto del campo vuoto vale per la data come per il codice
+   fiscale: sul foglio di carta un maggiorenne che cammina con altri può aver
+   lasciato in bianco l'uno, l'altro o tutti e due, e una descrizione che
+   finisse con due barre attaccate si leggerebbe come un dato perso invece che
+   come un dato mai dato. `personeDa` rimette la stringa vuota rileggendo. */
 const voce = (persona, ruolo, quotaCent) => ({
   name: `${persona.nome} ${persona.cognome} — ${FASCIA[ruolo] || FASCIA_MINORE}`.slice(0, 200),
-  description: [ruolo, persona.nome, persona.cognome, persona.dataNascita, persona.codiceFiscale || "—"]
+  description: [ruolo, persona.nome, persona.cognome, persona.dataNascita || "—", persona.codiceFiscale || "—"]
     .join("|")
     .slice(0, 1000),
   quantity: "1",
@@ -526,7 +531,7 @@ export function personeDa(fattura) {
     const persona = {
       nome: maiuscole(nome.trim()),
       cognome: maiuscole(cognome.trim()),
-      dataNascita: dataNascita.trim(),
+      dataNascita: dataNascita.trim() === "—" ? "" : dataNascita.trim(),
       codiceFiscale: codiceFiscale.trim() === "—" ? "" : codiceFiscale.trim(),
       importoCent: centesimi(v.unit_amount?.value) * (Number(v.quantity) || 1),
     };

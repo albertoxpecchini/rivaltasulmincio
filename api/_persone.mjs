@@ -104,7 +104,7 @@ export function etaAllEvento(iso) {
    18-120 per chi si iscrive, 6-17 per i minori a carico, 0-5 per i bambini
    che camminano gratis. L'errore torna come stringa in italiano, pronto da
    mostrare. */
-export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, capofila = false }) {
+export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, capofila = false, dataObbligatoria = true }) {
   /* La maiuscola si mette qui, all'ingresso, così è già a posto sulla
      fattura, nella mail e in elenco — e non in tre posti diversi che prima o
      poi non si assomigliano più. */
@@ -114,10 +114,33 @@ export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, cap
   const codiceFiscale = pulisci(grezza?.codiceFiscale, 16).toUpperCase();
 
   if (!nome || !cognome) return { errore: `${chi}: nome o cognome mancanti` };
-  if (!dataValida(dataNascita)) return { errore: `${chi}: data di nascita mancante o non valida` };
 
-  const eta = etaAllEvento(dataNascita);
-  if (eta < minimo) {
+  /* La data di nascita è obbligatoria dappertutto tranne che in un posto: i
+     maggiorenni che camminano con chi si iscrive, quando il modulo è di
+     carta. Al banchetto si firma in piedi, e su quel foglio la riga del
+     marito o dell'amica arriva spesso col solo nome e cognome. Rifiutare quel
+     foglio non produce un dato migliore: produce un'iscrizione che non entra
+     in elenco e una quota che non risulta incassata, che è il danno vero.
+
+     La reperibilità non si perde, perché resta attaccata a chi firma per
+     primo — lui la data e il codice fiscale li dà sempre, ed è a lui che si
+     telefona. Chi cammina con lui è un nome sulla lista delle sacche.
+
+     Quello che si scrive, però, dev'essere giusto lo stesso: una data scritta
+     a metà o impossibile è un errore di trascrizione, e va corretta adesso
+     che il foglio è ancora in mano. */
+  const senzaData = !dataNascita && !dataObbligatoria;
+  if (!senzaData && !dataValida(dataNascita)) {
+    return { errore: `${chi}: data di nascita mancante o non valida` };
+  }
+
+  /* Senza data non c'è età, e senza età non c'è fascia da controllare: di
+     questa persona si sa soltanto che chi ha compilato il foglio l'ha messa
+     fra i maggiorenni, e si sta a quello. Il codice fiscale, se c'è, si
+     controlla comunque nella forma più sotto — ma non potendolo confrontare
+     con una data non dichiarata, quel confronto salta. */
+  const eta = senzaData ? null : etaAllEvento(dataNascita);
+  if (eta !== null && eta < minimo) {
     /* Tre casi e non due. A chi sta compilando si spiega come funziona; a un
        maggiorenne che non lo è si dice dove va messo, perché il posto giusto
        nello stesso modulo c'è già e nessuno deve ricominciare da capo. */
@@ -138,7 +161,7 @@ export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, cap
         : `${chi}: il giorno della camminata non ha ancora 18 anni — va messo fra i minori che cammini con te`,
     };
   }
-  if (eta > massimo) {
+  if (eta !== null && eta > massimo) {
     /* Ogni fascia manda chi sfora al posto in cui deve stare, invece di dirgli
        soltanto che quella data non va bene: il posto giusto è nello stesso
        modulo, e nessuno deve ricominciare da capo per un compleanno. */
@@ -157,7 +180,10 @@ export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, cap
 
   if (codiceFiscale || cfObbligatorio) {
     if (!CF_RE.test(codiceFiscale)) return { errore: `${chi}: codice fiscale mancante o non valido` };
-    if (!codiceCombaciaConData(codiceFiscale, dataNascita)) {
+    /* Il confronto con la data si fa solo se una data c'è. Quando manca —
+       l'accompagnato del foglio di carta che ha scritto il codice ma non la
+       data — il codice resta un dato in più che si conserva così com'è. */
+    if (!senzaData && !codiceCombaciaConData(codiceFiscale, dataNascita)) {
       return { errore: `${chi}: il codice fiscale non corrisponde alla data di nascita` };
     }
   }

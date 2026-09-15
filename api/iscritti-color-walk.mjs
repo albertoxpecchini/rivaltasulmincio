@@ -415,11 +415,18 @@ async function riporta(req, res) {
     return res.status(400).json({ errore: "l'email scritta sul foglio non si legge come un indirizzo: correggila o lasciala vuota" });
   }
 
-  /* Gli altri maggiorenni del foglio. Stessa regola del modulo online — il
-     codice fiscale è obbligatorio, perché ognuno di loro risponde di sé — e
-     stesso tetto. Che fino al 15 settembre questa porta non li accettasse era
-     il difetto: al banchetto una coppia riempie un foglio solo, e chi lo
-     ricopiava doveva inventarsi due iscrizioni per una firma sola. */
+  /* Gli altri maggiorenni del foglio, e qui la carta si stacca dall'online.
+     Sul foglio firmato al banchetto la riga di chi cammina con te arriva
+     quasi sempre col solo nome e cognome: si firma in piedi, in dieci minuti,
+     e nessuno tira fuori la tessera sanitaria della moglie. Pretendere data e
+     codice fiscale qui vorrebbe dire rifiutare quel foglio — e un foglio
+     rifiutato è un'iscrizione che manca in elenco e una quota che non risulta
+     incassata. L'incasso è la cosa che conta, ed è quella che si salva.
+
+     Chi risponde per tutti resta il primo nome, che i suoi dati li dà sempre:
+     è lui la reperibilità del foglio. Gli altri sono nomi per la lista delle
+     sacche, e quello che di loro è stato scritto — la data, il codice, o
+     tutti e due — si controlla come sempre. Il tetto non cambia. */
   const grezziA = Array.isArray(c.adulti) ? c.adulti : [];
   if (grezziA.length > MAX_ADULTI - 1) {
     return res.status(400).json({ errore: `su un foglio ci stanno al massimo ${MAX_ADULTI} maggiorenni` });
@@ -428,14 +435,24 @@ async function riporta(req, res) {
   const codiciVisti = [adulto.codiceFiscale];
   for (let i = 0; i < grezziA.length; i++) {
     const chi = `Adulto ${i + 2}`;
-    const esito = leggiPersona(grezziA[i], { minimo: 18, massimo: 120, chi, cfObbligatorio: true });
+    const esito = leggiPersona(grezziA[i], {
+      minimo: 18,
+      massimo: 120,
+      chi,
+      cfObbligatorio: false,
+      dataObbligatoria: false,
+    });
     if (esito.errore) return res.status(400).json({ errore: esito.errore });
-    if (codiciVisti.includes(esito.persona.codiceFiscale)) {
+    /* Il doppione si cerca solo fra i codici che ci sono davvero: adesso che
+       il campo può restare vuoto, senza questo guardia due accompagnati senza
+       codice fiscale sarebbero «la stessa persona» perché sono due stringhe
+       vuote uguali. */
+    if (esito.persona.codiceFiscale && codiciVisti.includes(esito.persona.codiceFiscale)) {
       return res.status(400).json({
         errore: `${chi}: questo codice fiscale è già su questo foglio — ogni persona si iscrive una volta sola`,
       });
     }
-    codiciVisti.push(esito.persona.codiceFiscale);
+    if (esito.persona.codiceFiscale) codiciVisti.push(esito.persona.codiceFiscale);
     adulti.push(esito.persona);
   }
 
