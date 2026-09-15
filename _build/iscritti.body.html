@@ -507,6 +507,48 @@ html.dark .sb-is-elenco {
 /* Il tasto del contante sta FUORI dalla testata premibile — un bottone dentro
    un bottone non è HTML valido, e soprattutto non si potrebbe premere. Largo
    quanto la scheda, perché è il gesto che si fa di corsa. */
+/* Il pannello per correggere un'iscrizione. Si apre dentro la scheda, sotto
+   i comandi, e deve sembrare una cosa sola con lei: stesso fondo scuro, un
+   bordo che lo stacca appena. */
+.sb-is-corr {
+  margin-top: .8rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .03);
+}
+.sb-is-corr-t {
+  margin: 0 0 .8rem;
+  font-weight: 600;
+  font-size: .95rem;
+}
+.sb-is-corr-fila { margin-top: 1rem; }
+.sb-is-corr-st {
+  margin: 0 0 .45rem;
+  font-size: .85rem;
+  opacity: .75;
+}
+/* Una riga di persona: i campi in fila, e sotto i 700px uno sull'altro,
+   perché al banchetto si corregge dal telefono. */
+.sb-is-corr-riga {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .4rem;
+}
+.sb-is-corr-riga .sb-is-campo {
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+.sb-is-corr-cash {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1rem;
+  font-size: .95rem;
+  cursor: pointer;
+}
+
 /* L'esito del modulo cartaceo: sta dentro il modulo, dove guarda chi lo sta
    compilando. Rosso quando qualcosa non va, perché è lì che si corregge. */
 .sb-is-cart-esito {
@@ -1579,6 +1621,17 @@ html.rsm-still .sb-is-frec { transition: none; }
 
     var chi = (i.nome + " " + i.cognome).trim() || "questa iscrizione";
 
+    /* Correggere viene prima di tutto il resto perché è quello che serve più
+       spesso: al banchetto si scrive a penna e di corsa, e mezz'ora dopo
+       arriva il cugino che cammina anche lui o si scopre un cognome
+       sbagliato. Prima l'unica strada era annullare e riscrivere da capo. */
+    var correggi = document.createElement("button");
+    correggi.type = "button";
+    correggi.className = "sb-btn sb-btn--secondary sb-btn--sm sb-is-piu-t";
+    correggi.textContent = "Correggi";
+    correggi.addEventListener("click", function () { apriCorreggi(i, riga); });
+    riga.appendChild(correggi);
+
     var rimanda = document.createElement("button");
     rimanda.type = "button";
     rimanda.className = "sb-btn sb-btn--secondary sb-btn--sm sb-is-piu-t";
@@ -1600,6 +1653,236 @@ html.rsm-still .sb-is-frec { transition: none; }
     }
 
     return riga;
+  }
+
+  /* ══ Correggere un'iscrizione ═══════════════════════════════════════════
+     Un pannello che si apre dentro la scheda, con dentro quello che si
+     sbaglia o si scopre dopo: i dati di chi si è iscritto, le persone che
+     camminano con lui, le note, e se il contante è stato preso davvero.
+
+     Le tre file si mandano INTERE, non come differenza: la pagina spedisce
+     l'elenco completo dei maggiorenni, dei minori e dei piccoli come sono
+     nel pannello in quel momento. Una fila che non si tocca non viene
+     nominata affatto, e il server tiene quella di prima — così aprire il
+     pannello per cambiare una nota non rischia di cancellare tre bambini. */
+  function apriCorreggi(i, dove) {
+    /* Già aperto: si chiude, che è il modo di ripensarci. */
+    var esistente = dove.parentNode.querySelector(".sb-is-corr");
+    if (esistente) { esistente.parentNode.removeChild(esistente); return; }
+
+    var p = document.createElement("div");
+    p.className = "sb-is-corr";
+
+    var t = document.createElement("p");
+    t.className = "sb-is-corr-t";
+    t.textContent = "Correggi questa iscrizione";
+    p.appendChild(t);
+
+    /* I campi di chi si è iscritto. Si riempiono con quello che c'è già:
+       correggere vuol dire ritoccare, non ribattere tutto da capo. */
+    var griglia = document.createElement("div");
+    griglia.className = "sb-is-cart-griglia";
+    var campi = {};
+    [
+      ["nome", "Nome", "text", i.nome],
+      ["cognome", "Cognome", "text", i.cognome],
+      ["dataNascita", "Data di nascita", "date", i.dataNascita],
+      ["codiceFiscale", "Codice fiscale", "text", i.codiceFiscale],
+      ["email", "Email", "email", i.email],
+      ["telefono", "Telefono", "tel", i.telefono],
+    ].forEach(function (c) {
+      var box = document.createElement("div");
+      box.className = "sb-is-cart-c";
+      var eti = document.createElement("label");
+      eti.textContent = c[1];
+      var inp = document.createElement("input");
+      inp.className = "sb-is-campo";
+      inp.type = c[2];
+      inp.value = c[3] || "";
+      if (c[0] === "codiceFiscale") { inp.maxLength = 16; inp.autocapitalize = "characters"; }
+      eti.htmlFor = inp.id = "is-corr-" + c[0] + "-" + i.id;
+      box.appendChild(eti); box.appendChild(inp);
+      griglia.appendChild(box);
+      campi[c[0]] = inp;
+    });
+    p.appendChild(griglia);
+
+    /* Le note: è il campo che manca di più: «paga domenica», «ha il cane»,
+       «la sacca l'ha già presa». */
+    var boxNote = document.createElement("div");
+    boxNote.className = "sb-is-cart-c sb-is-cart-largo";
+    var etiNote = document.createElement("label");
+    etiNote.textContent = "Note";
+    var note = document.createElement("input");
+    note.className = "sb-is-campo";
+    note.type = "text";
+    note.maxLength = 300;
+    note.value = i.note || "";
+    etiNote.htmlFor = note.id = "is-corr-note-" + i.id;
+    boxNote.appendChild(etiNote); boxNote.appendChild(note);
+    p.appendChild(boxNote);
+
+    /* Le tre file di chi cammina con lui. Ognuna parte da com'è adesso e si
+       aggiungono o si tolgono righe. */
+    var file = {};
+    [
+      ["adulti", "Maggiorenni che camminano con lui", i.adulti || [], 3, true],
+      ["minori", "Minori dai 6 ai 17 anni", i.minori || [], 8, true],
+      ["piccoli", "Bambini sotto i 6 anni", i.piccoli || [], 8, false],
+    ].forEach(function (f) {
+      var sez = document.createElement("div");
+      sez.className = "sb-is-corr-fila";
+      var st = document.createElement("p");
+      st.className = "sb-is-corr-st";
+      st.textContent = f[1];
+      sez.appendChild(st);
+      var dentro = document.createElement("div");
+      sez.appendChild(dentro);
+      var righe = [];
+      file[f[0]] = { righe: righe, dove: dentro, cf: f[4] };
+
+      function aggiungi(p0) {
+        if (righe.length >= f[3]) return;
+        var r = document.createElement("div");
+        r.className = "sb-is-corr-riga";
+        var dentroR = {};
+        var elenco = [["nome", "Nome", "text"], ["cognome", "Cognome", "text"], ["dataNascita", "Nato il", "date"]];
+        if (f[4]) elenco.push(["codiceFiscale", "Cod. fisc.", "text"]);
+        elenco.forEach(function (c) {
+          var inp = document.createElement("input");
+          inp.className = "sb-is-campo";
+          inp.type = c[2];
+          inp.placeholder = c[1];
+          inp.setAttribute("aria-label", c[1]);
+          inp.value = (p0 && p0[c[0]]) || "";
+          if (c[0] === "codiceFiscale") { inp.maxLength = 16; inp.autocapitalize = "characters"; }
+          r.appendChild(inp);
+          dentroR[c[0]] = inp;
+        });
+        var via = document.createElement("button");
+        via.type = "button";
+        via.className = "sb-is-cart-via";
+        via.textContent = "Togli";
+        via.addEventListener("click", function () {
+          dentro.removeChild(r);
+          righe.splice(righe.indexOf(rigaFila), 1);
+        });
+        r.appendChild(via);
+        var rigaFila = { nodo: r, campi: dentroR };
+        righe.push(rigaFila);
+        dentro.appendChild(r);
+      }
+
+      f[2].forEach(aggiungi);
+
+      var piu = document.createElement("button");
+      piu.type = "button";
+      piu.className = "sb-btn sb-btn--secondary sb-btn--sm";
+      piu.textContent = "+ Aggiungi";
+      piu.addEventListener("click", function () { aggiungi(null); });
+      sez.appendChild(piu);
+      p.appendChild(sez);
+    });
+
+    /* Il contante preso o non preso. Su un cartaceo non si tocca: la carta è
+       pagata per definizione, e offrire di dire il contrario vorrebbe dire
+       offrire di scrivere una cosa falsa. */
+    var cash = null;
+    if (!i.modulo && i.pagamento === "contanti") {
+      var boxCash = document.createElement("label");
+      boxCash.className = "sb-is-corr-cash";
+      cash = document.createElement("input");
+      cash.type = "checkbox";
+      cash.checked = !!i.pagato;
+      boxCash.appendChild(cash);
+      boxCash.appendChild(document.createTextNode(" I contanti sono stati incassati"));
+      p.appendChild(boxCash);
+    }
+
+    var esitoC = document.createElement("p");
+    esitoC.className = "sb-is-cart-esito";
+    esitoC.hidden = true;
+    p.appendChild(esitoC);
+
+    var barra = document.createElement("div");
+    barra.className = "sb-is-barra";
+    var salva = document.createElement("button");
+    salva.type = "button";
+    salva.className = "sb-btn sb-btn--primary sb-btn--sm";
+    salva.textContent = "Salva le correzioni";
+    var chiudi = document.createElement("button");
+    chiudi.type = "button";
+    chiudi.className = "sb-btn sb-btn--secondary sb-btn--sm";
+    chiudi.textContent = "Lascia stare";
+    chiudi.addEventListener("click", function () { p.parentNode.removeChild(p); });
+    barra.appendChild(salva); barra.appendChild(chiudi);
+    p.appendChild(barra);
+
+    function personeDa(fila) {
+      var fuori = [];
+      fila.righe.forEach(function (v) {
+        var uno = {
+          nome: (v.campi.nome.value || "").trim(),
+          cognome: (v.campi.cognome.value || "").trim(),
+          dataNascita: (v.campi.dataNascita.value || "").trim(),
+          codiceFiscale: v.campi.codiceFiscale ? (v.campi.codiceFiscale.value || "").toUpperCase().replace(/\s/g, "").trim() : "",
+        };
+        /* Le righe lasciate in bianco non sono persone: sono un «+ Aggiungi»
+           premuto per sbaglio, e mandarle farebbe respingere tutto. */
+        if (!uno.nome && !uno.cognome && !uno.dataNascita && !uno.codiceFiscale) return;
+        fuori.push(uno);
+      });
+      return fuori;
+    }
+
+    salva.addEventListener("click", function () {
+      var m = {
+        fattura: i.id,
+        nome: campi.nome.value.trim(),
+        cognome: campi.cognome.value.trim(),
+        dataNascita: campi.dataNascita.value.trim(),
+        codiceFiscale: campi.codiceFiscale.value.toUpperCase().replace(/\s/g, "").trim(),
+        email: campi.email.value.trim(),
+        telefono: campi.telefono.value.trim(),
+        note: note.value.trim(),
+        adulti: personeDa(file.adulti),
+        minori: personeDa(file.minori),
+        piccoli: personeDa(file.piccoli),
+      };
+      if (cash) m.pagatoCash = cash.checked;
+
+      var quante = 1 + m.adulti.length + m.minori.length + m.piccoli.length;
+      var somma = QUOTA_ADULTO * (1 + m.adulti.length) + m.minori.length * QUOTA_MINORE;
+      if (!confirm("Salvare le correzioni?\n\n" + (m.nome + " " + m.cognome).trim() + "\n" +
+        quante + (quante === 1 ? " persona" : " persone") + " · " + somma + " €")) return;
+
+      salva.disabled = true;
+      salva.textContent = "Un momento…";
+      esitoC.hidden = true;
+
+      fetch("/api/iscritti-color-walk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-chiave": chiave },
+        body: JSON.stringify({ modifica: m }),
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (!res.ok || !res.d.modificata) throw new Error((res.d && res.d.errore) || "non è andata");
+          mostra("ok", "Corretta: " + res.d.nome + ", " + res.d.persone +
+            (res.d.persone === 1 ? " persona" : " persone") + ", " + euro(res.d.totaleCent) +
+            (res.d.vecchiaVia ? "" : " — attenzione: la versione vecchia non si è tolta, controlla che non sia in elenco due volte"));
+          return carica();
+        })
+        .catch(function (err) {
+          esitoC.hidden = false;
+          esitoC.textContent = "Non è stato possibile correggere: " + err.message;
+          salva.disabled = false;
+          salva.textContent = "Salva le correzioni";
+        });
+    });
+
+    dove.parentNode.insertBefore(p, dove.nextSibling);
+    campi.nome.focus();
   }
 
   /* L'indirizzo si può correggere al volo, e il predefinito è quello scritto

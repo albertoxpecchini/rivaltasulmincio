@@ -407,6 +407,39 @@ export const numeroCartaceo = (modulo) =>
 
 export const daCartaceo = (numero) => String(numero || "").startsWith("CW-CART-");
 
+/* Il numero della prossima versione di un foglio corretto.
+
+   Correggere un'iscrizione vuol dire crearne una nuova e annullare quella
+   di prima — PayPal non lascia riscrivere una fattura già pagata — e la
+   nuova ha bisogno di un numero suo, perché due fatture non possono
+   portare lo stesso. Ma il numero del foglio è quello scritto a penna in
+   cima alla carta nel raccoglitore, e se lo si buttasse via la riga in
+   elenco non si potrebbe più far corrispondere al foglio firmato.
+
+   Quindi si tiene, e gli si attacca una lettera: CW-CART-42 corretto
+   diventa CW-CART-42B, poi 42C, poi 42D. Il foglio resta il 42 per
+   chiunque lo legga — `moduloDi` restituisce «42B», che al banco si
+   riconosce ancora — e le correzioni non si pestano i piedi fra loro.
+
+   Dopo la Z si passa a doppia lettera (42AA), che non succederà mai: sono
+   venticinque correzioni sullo stesso foglio. Ma una funzione che a un
+   certo punto ricomincia a dare numeri già usati è peggio di una riga in
+   più scritta adesso. */
+export function prossimoCartaceo(numero) {
+  const base = String(numero || "");
+  const coda = base.match(/([A-Z]*)$/)[1];
+  const senzaCoda = coda ? base.slice(0, -coda.length) : base;
+
+  /* Nessuna lettera ancora: è la prima correzione. */
+  if (!coda) return `${base}B`;
+
+  /* L'ultima lettera avanza di uno; se era una Z si aggiunge una lettera
+     invece di tornare ad A, che darebbe un numero già preso. */
+  const ultima = coda[coda.length - 1];
+  if (ultima === "Z") return `${senzaCoda}${coda}A`;
+  return `${senzaCoda}${coda.slice(0, -1)}${String.fromCharCode(ultima.charCodeAt(0) + 1)}`;
+}
+
 /* Il numero del foglio, riletto dal numero della fattura. Stringa vuota se
    quella fattura dalla carta non ci è mai passata. */
 export const moduloDi = (numero) => (daCartaceo(numero) ? String(numero).slice("CW-CART-".length) : "");

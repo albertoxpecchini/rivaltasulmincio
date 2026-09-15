@@ -708,6 +708,20 @@ async function riporta(foglio, { chiave = CHIAVE, pagine = [[]], invioRifiutato 
   return res;
 }
 
+/* Correggere un'iscrizione: la stessa porta, con `modifica` nel corpo. */
+async function correggi(m, { chiave = CHIAVE, pagine = [[]] } = {}) {
+  process.env.PAYPAL_CLIENT_ID = "finto";
+  process.env.PAYPAL_CLIENT_SECRET = "finto";
+  process.env.ISCRITTI_CHIAVE = CHIAVE;
+  scritte = [];
+  creata = null;
+  mandata = null;
+  global.fetch = stubFetch(pagine);
+  const res = finestra();
+  await handler({ method: "POST", query: { chiave }, headers: {}, body: { modifica: m } }, res);
+  return res;
+}
+
 function verifica(nome, ok, extra) {
   if (ok) { passate++; console.log(`  ok   ${nome}`); }
   else { fallite++; console.log(`  NO   ${nome}\n       ${extra}`); }
@@ -1148,6 +1162,149 @@ async function scrivi(corpo, pagine) {
   verifica("senza dire quale iscrizione, non si annulla niente",
     res.codice === 400 && !scritte.some((s) => s.url.includes("/cancel")),
     `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+console.log("\n── Correggere un'iscrizione già in elenco ─────────────────────");
+
+/* Al banchetto si scrive a penna e di corsa: mezz'ora dopo arriva il cugino
+   che cammina anche lui, o si scopre che il cognome è sbagliato. Prima
+   l'unica strada era annullare tutto e riscrivere da capo otto campi.
+
+   PayPal non lascia riscrivere una fattura già pagata — è lo stesso muro del
+   `/send` — quindi si crea una fattura nuova col contenuto giusto e si
+   annulla la vecchia. In quest'ordine: se fallisse la creazione, invertendo
+   si sarebbe persa l'iscrizione e i soldi con lei. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", adulti: [{ nome: "Giorgio", cognome: "Bianchi" }] },
+    { pagine: [[inContanti(2, { detail: { invoice_number: "CW-CART-42", memo: "contanti|333|2026-08-25T10:00:00.000Z|—" } })]] }
+  );
+  const voci = (creata?.items || []).map((v) => v.description);
+  verifica("si aggiunge un maggiorenne a un cartaceo: nuova fattura, 25 €, ruoli A B M",
+    res.codice === 200 && res.corpo?.modificata === true && res.corpo?.totaleCent === 2500 &&
+    voci.length === 3 && voci[1].startsWith("B|Giorgio|Bianchi"),
+    `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
+}
+
+/* Il numero del foglio non si butta via: è quello scritto a penna sulla carta
+   nel raccoglitore, e la riga in elenco gli deve corrispondere per sempre. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", note: "paga domenica" },
+    { pagine: [[inContanti(2, { detail: { invoice_number: "CW-CART-42", memo: "contanti|333|2026-08-25T10:00:00.000Z|—" } })]] }
+  );
+  verifica("un cartaceo corretto tiene il numero del suo foglio, con una lettera in coda",
+    res.codice === 200 && res.corpo?.numero === "CW-CART-42B" && res.corpo?.modulo === "42B",
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* La vecchia si toglie di mezzo, o si finisce con due righe uguali. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", note: "due" },
+    { pagine: [[inContanti(2, { detail: { invoice_number: "CW-CART-42", memo: "contanti|333|2026-08-25T10:00:00.000Z|—" } })]] }
+  );
+  const tolta = scritte.some((c) => c.url.includes("/cancel") || (c.url.includes("INV2-2") && !c.url.includes("/payments")));
+  verifica("e la versione vecchia viene annullata, così non resta in elenco due volte",
+    res.codice === 200 && res.corpo?.vecchiaVia === true && tolta,
+    `${res.codice} — scritte ${JSON.stringify(scritte.map((c) => c.url))}`);
+}
+
+/* Le note: il campo che manca di più al banco. «Paga domenica», «ha il cane»,
+   «la sacca l'ha già presa». Finiscono nel memo, che è dove l'elenco le legge. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", note: "la sacca l'ha già presa" },
+    { pagine: [[inContanti(2)]] }
+  );
+  verifica("si scrive una nota, e finisce nel memo della nuova fattura",
+    res.codice === 200 && /la sacca l'ha già presa/.test(creata?.detail?.memo || ""),
+    `${res.codice} — memo ${creata?.detail?.memo}`);
+}
+
+/* Quello che non si nomina non si tocca. Una correzione che cambia solo la
+   nota non deve far sparire il minore a carico. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", note: "solo la nota" },
+    { pagine: [[inContanti(2)]] }
+  );
+  const voci = (creata?.items || []).map((v) => v.description);
+  verifica("correggendo solo la nota, chi cammina con lui resta dov'era",
+    res.codice === 200 && voci.length === 2 && voci[1].startsWith("M|"),
+    `voci ${JSON.stringify(voci)}`);
+}
+
+/* I bambini sotto i 6 anni si aggiungono, e non pagano. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", piccoli: [{ nome: "Sara", cognome: "Rossi", dataNascita: "2022-07-19" }] },
+    { pagine: [[inContanti(2)]] }
+  );
+  const zero = (creata?.items || []).find((v) => String(v.description).startsWith("P|"));
+  verifica("si aggiunge un bambino sotto i 6: tre persone, e la sua voce vale zero",
+    res.codice === 200 && res.corpo?.persone === 3 && res.corpo?.totaleCent === 1500 &&
+    zero?.unit_amount?.value === "0.00",
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Lo stesso metro di sempre: un minorenne fra i maggiorenni non passa da qui
+   solo perché si sta correggendo invece di iscrivere. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", adulti: [{ nome: "Luca", cognome: "Verdi", dataNascita: "2015-01-01" }] },
+    { pagine: [[inContanti(2)]] }
+  );
+  verifica("un minorenne messo fra i maggiorenni: no, come dappertutto",
+    res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Il contante che non era stato preso davvero. Su un'iscrizione in contanti
+   non ancora incassata si può dire di sì, e diventa incassata. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", pagatoCash: true },
+    { pagine: [[inContanti(2)]] }
+  );
+  const pagamento = scritte.find((c) => c.url.includes("/payments"));
+  verifica("si segna il contante incassato correggendo, e il pagamento parte",
+    res.codice === 200 && res.corpo?.pagata === true && pagamento?.corpo?.method === "CASH",
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* E il contrario: un'iscrizione segnata pagata per sbaglio torna da incassare,
+   senza nessun pagamento scritto sulla nuova fattura. */
+{
+  const res = await correggi(
+    { fattura: "INV2-2", pagatoCash: false },
+    { pagine: [[inContanti(2, { status: "MARKED_AS_PAID" })]] }
+  );
+  const pagamenti = scritte.filter((c) => c.url.includes("/payments"));
+  verifica("si toglie l'incasso segnato per sbaglio: torna da incassare",
+    res.codice === 200 && res.corpo?.pagata === false && pagamenti.length === 0,
+    `${res.codice} ${JSON.stringify(res.corpo)} — pagamenti ${pagamenti.length}`);
+}
+
+/* Le porte chiuse restano chiuse. */
+{
+  const res = await correggi({ fattura: "INV2-2", note: "x" }, { chiave: "sbagliata", pagine: [[inContanti(2)]] });
+  verifica("senza la chiave giusta non si corregge niente",
+    res.codice === 401 && creata === null, `${res.codice}`);
+}
+
+{
+  const res = await correggi({ note: "x" }, { pagine: [[inContanti(2)]] });
+  verifica("senza dire quale iscrizione, non si corregge niente",
+    res.codice === 400 && creata === null, `${res.codice}`);
+}
+
+{
+  const res = await correggi(
+    { fattura: "INV2-9", note: "x" },
+    { pagine: [[fattura(9, { detail: { reference: "un-altro-evento" } })]] }
+  );
+  verifica("un'iscrizione di un altro evento non si tocca",
+    res.codice === 404 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);

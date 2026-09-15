@@ -79,6 +79,7 @@ import {
   daCartaceo,
   moduloDi,
   numeroCartaceo,
+  prossimoCartaceo,
   spedisciFattura,
   tutteLeFatture,
   leggiFattura,
@@ -176,6 +177,7 @@ export default async function handler(req, res) {
        è quello che si fa cento volte la mattina del 20. */
     if (req.method === "POST") {
       if (req.body?.cartaceo) return await riporta(req, res);
+      if (req.body?.modifica) return await modifica(req, res);
       if (req.body?.annulla) return await annulla(req, res);
       if (req.body?.ricevuta) return await rimanda(req, res);
       return await incassa(req, res);
@@ -361,6 +363,195 @@ async function elenco(res) {
     daIncassareCent: daIncassare.reduce((s, i) => s + i.importoCent, 0),
     daIncassare: daIncassare.length,
     aggiornatoISO: new Date().toISOString(),
+  });
+}
+
+/* ── Correggere un'iscrizione già in elenco ───────────────────────────────
+   Il banchetto non è un modulo web: si scrive a penna, di corsa, e mezz'ora
+   dopo arriva il cugino che cammina anche lui, o si scopre che il cognome è
+   sbagliato, o che quei dieci euro non erano stati davvero messi nel
+   cassetto. Fino a oggi l'unica strada era annullare l'iscrizione e
+   riscriverla da capo, il che vuol dire ribattere otto campi con la coda di
+   gente davanti.
+
+   — Perché si rifà la fattura invece di correggerla —
+   PayPal ha un PUT che sostituisce una fattura, ma su una fattura già
+   saldata lo rifiuta: è lo stesso muro contro cui sbatte il `/send`. E una
+   correzione che funziona solo finché nessuno ha pagato non serve a niente,
+   perché qui è pagato tutto — la carta lo è per definizione.
+
+   Quindi si fa la cosa che non dipende dal loro permesso: si crea una
+   fattura NUOVA col contenuto giusto, e si annulla la vecchia. Il numero
+   resta lo stesso nella sostanza — un modulo cartaceo tiene il suo numero di
+   foglio, con una lettera in coda che dice quante volte è stato corretto —
+   così il foglio di carta nel raccoglitore continua a corrispondere alla
+   riga in elenco, che è la cosa che deve restare vera.
+
+   L'ordine conta: prima si crea la nuova, poi si annulla la vecchia. Se si
+   invertisse e la creazione fallisse, l'iscrizione sarebbe sparita e i soldi
+   con lei. Così invece il caso peggiore è due righe uguali per qualche
+   secondo, che si vede e si aggiusta. */
+async function modifica(req, res) {
+  const m = req.body?.modifica || {};
+  const id = pulisci(m.fattura, 40);
+  if (!id) return res.status(400).json({ errore: "manca l'iscrizione da correggere" });
+
+  const vecchia = await leggiFattura(id).catch(() => null);
+  if (!vecchia) return res.status(404).json({ errore: "iscrizione non trovata" });
+
+  /* La stessa guardia dell'incasso: questa chiave apre la Color Walk, non il
+     permesso di riscrivere una fattura qualunque che sia sul conto. */
+  if (String(vecchia?.detail?.reference || "") !== EVENTO) {
+    return res.status(404).json({ errore: "iscrizione non trovata" });
+  }
+  if (annullata(vecchia)) {
+    return res.status(400).json({ errore: "questa iscrizione è già stata annullata: non c'è più niente da correggere" });
+  }
+
+  const numeroVecchio = String(vecchia?.detail?.invoice_number || "");
+  const memoVecchio = leggiMemo(vecchia?.detail?.memo);
+  const daCarta = daCartaceo(numeroVecchio);
+
+  /* Quello che c'era prima, per i campi che chi corregge non tocca. Una
+     correzione parziale non deve cancellare quello che non nomina. */
+  const prima = personeDa(vecchia);
+  if (!prima.adulto) {
+    return res.status(400).json({ errore: "questa iscrizione non si riesce a leggere: correggerla da qui la rovinerebbe" });
+  }
+
+  /* Chi si è iscritto. Se non arriva niente resta com'era, campo per campo:
+     si corregge un cognome senza dover ribattere la data di nascita. */
+  const capofilaGrezzo = {
+    nome: m.nome ?? prima.adulto.nome,
+    cognome: m.cognome ?? prima.adulto.cognome,
+    dataNascita: m.dataNascita ?? prima.adulto.dataNascita,
+    codiceFiscale: m.codiceFiscale ?? prima.adulto.codiceFiscale,
+  };
+  const letto = leggiPersona(capofilaGrezzo, {
+    minimo: 18,
+    massimo: 120,
+    chi: "Chi si iscrive",
+    cfObbligatorio: !daCarta,
+    dataObbligatoria: !daCarta,
+    capofila: true,
+  });
+  if (letto.errore) return res.status(400).json({ errore: letto.errore });
+  const adulto = letto.persona;
+
+  /* Le tre file. Chi non le nomina se le tiene come stanno; chi le nomina le
+     sostituisce per intero, perché è così che la pagina le manda — l'elenco
+     completo di quella fila, non una differenza da applicare. */
+  const fila = async (chiave, vecchi, { minimo, massimo, eti, max }) => {
+    if (!Array.isArray(m[chiave])) return { persone: vecchi };
+    if (m[chiave].length > max) return { errore: `su un'iscrizione ci stanno al massimo ${max} ${eti}` };
+    const fuori = [];
+    for (let i = 0; i < m[chiave].length; i++) {
+      const esito = leggiPersona(m[chiave][i], {
+        minimo,
+        massimo,
+        chi: `${eti} ${i + 1}`,
+        cfObbligatorio: false,
+        dataObbligatoria: !daCarta && minimo === 18 ? true : minimo !== 18,
+      });
+      if (esito.errore) return { errore: esito.errore };
+      fuori.push(esito.persona);
+    }
+    return { persone: fuori };
+  };
+
+  const esitoA = await fila("adulti", prima.adulti, { minimo: 18, massimo: 120, eti: "Maggiorenne", max: MAX_ADULTI - 1 });
+  if (esitoA.errore) return res.status(400).json({ errore: esitoA.errore });
+  const esitoM = await fila("minori", prima.minori, { minimo: 6, massimo: 17, eti: "Minore", max: MAX_MINORI });
+  if (esitoM.errore) return res.status(400).json({ errore: esitoM.errore });
+  const esitoP = await fila("piccoli", prima.piccoli, { minimo: 0, massimo: 5, eti: "Bambino", max: MAX_PICCOLI });
+  if (esitoP.errore) return res.status(400).json({ errore: esitoP.errore });
+
+  const adulti = esitoA.persone;
+  const minori = esitoM.persone;
+  const piccoli = esitoP.persone;
+
+  const email = m.email === undefined
+    ? String(vecchia?.primary_recipients?.[0]?.billing_info?.email_address || "")
+    : pulisci(m.email, 200);
+  if (email && email !== ORGANIZZATORI && !EMAIL_RE.test(email)) {
+    return res.status(400).json({ errore: "l'email non si legge come un indirizzo: correggila o lasciala vuota" });
+  }
+
+  const totaleCent = QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
+
+  /* Il numero della nuova fattura. Per un cartaceo si tiene il numero del
+     foglio e gli si attacca una lettera: CW-CART-42 corretto una volta
+     diventa CW-CART-42B, poi 42C. Così il foglio nel raccoglitore si trova
+     sempre, e due correzioni non si pestano i piedi. Per le altre si riparte
+     dall'orologio, come una qualsiasi iscrizione nuova. */
+  const numero = daCarta ? prossimoCartaceo(numeroVecchio) : `${numeroVecchio}-C${Date.now().toString(36).toUpperCase().slice(-3)}`;
+
+  /* Come risulta pagata. `pagatoCash` è il campo che chiede la pagina quando
+     si corregge lo stato del contante: vero vuol dire «i soldi ci sono»,
+     falso «non ancora». Chi non lo nomina tiene quello che c'era. */
+  const eraPagata = daCarta || saldata(vecchia);
+  const pagata = m.pagatoCash === undefined ? eraPagata : m.pagatoCash === true;
+
+  const note = m.note === undefined ? memoVecchio.note : pulisci(m.note, 300);
+  const telefono = m.telefono === undefined ? memoVecchio.telefono : pulisci(m.telefono, 40);
+
+  const corpo = componiFattura({
+    numero,
+    adulto,
+    adulti,
+    minori,
+    piccoli,
+    email: email || ORGANIZZATORI,
+    modalita: memoVecchio.modalita || "contanti",
+    telefono,
+    note,
+    /* Il consenso è quello di allora: è il momento in cui quella persona ha
+       detto di sì, e una correzione fatta da noi non lo sposta. */
+    consenso: memoVecchio.consenso || new Date().toISOString(),
+  });
+
+  const creata = await creaFattura(corpo);
+  const idNuovo = creata?.id || String(creata?.href || "").split("/").pop();
+  if (!idNuovo) {
+    return res.status(502).json({ errore: "PayPal non ha creato la nuova versione: l'iscrizione è rimasta com'era" });
+  }
+
+  /* Segnarla pagata, se lo era o se lo si sta dicendo adesso. Per un cartaceo
+     non è obbligatorio che PayPal riesca a scriverlo: la carta è pagata
+     perché è di carta, e l'elenco lo sa dal numero della fattura. */
+  let segnata = null;
+  if (pagata) {
+    const segno = await portaAPagata(idNuovo, {
+      metodo: "CASH",
+      nota: daCarta ? `Contanti al banchetto — modulo cartaceo n. ${moduloDi(numero)}` : "Contanti incassati",
+      obbligatorio: false,
+    });
+    segnata = segno.segnata;
+  }
+
+  /* E solo adesso si toglie di mezzo la vecchia. Se questo fallisce restano
+     due righe: è brutto da vedere ed è l'unico esito che non perde niente,
+     quindi si dice e si va avanti. */
+  let vecchiaVia = true;
+  try {
+    if (String(vecchia?.status || "") === "DRAFT") await cancellaFattura(id);
+    else await annullaFattura(id);
+  } catch (errore) {
+    vecchiaVia = false;
+    console.error(`correzione di ${numeroVecchio}: nuova fattura ${numero} creata ma la vecchia non si è tolta:`, errore.message);
+  }
+
+  return res.status(200).json({
+    modificata: true,
+    id: idNuovo,
+    numero,
+    modulo: moduloDi(numero),
+    nome: `${adulto.nome} ${adulto.cognome}`,
+    persone: 1 + adulti.length + minori.length + piccoli.length,
+    totaleCent,
+    pagata,
+    segnata,
+    vecchiaVia,
   });
 }
 
