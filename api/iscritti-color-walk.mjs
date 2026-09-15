@@ -572,6 +572,20 @@ async function incassa(req, res) {
     return res.status(200).json({ incassata: true, gia: true, id: fattura.id });
   }
 
+  /* Una bozza non accetta pagamenti, e qui ne arrivano: le iscrizioni
+     riportate dalla carta mentre `spedisciFattura` tollerava lo stato
+     sbagliato sono rimaste bozze con i soldi già presi al banchetto, e su
+     quelle questo tasto falliva ogni volta senza via d'uscita — la fattura
+     era bozza allora e bozza restava, e premere di nuovo non cambiava niente.
+
+     Rispedirla costa una chiamata e la porta fuori dalla bozza. Su una
+     fattura già spedita PayPal risponde `ALREADY_SENT`, che `spedisciFattura`
+     tollera: per tutte le altre è un giro a vuoto innocuo, e per queste è
+     l'unica strada. Se non esce dalla bozza nemmeno adesso, l'errore sale
+     e chi sta al banco lo legge invece di ripremere un tasto che non può
+     funzionare. */
+  await spedisciFattura(fattura.id);
+
   const esito = await registraPagamento(fattura.id, {
     metodo: "CASH",
     nota: "Contanti incassati al ritrovo, prima della partenza",

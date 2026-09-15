@@ -111,7 +111,7 @@ let scritte;
 let creata;
 let mandata;
 
-function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false } = {}) {
+function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false, invioRifiutato = false } = {}) {
   let i = 0;
   return async (url, o = {}) => {
     const u = String(url);
@@ -163,6 +163,16 @@ function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false } = {}) {
     }
     if (u.includes("/send") && o.method === "POST") {
       scritte.push({ url: u, corpo: {} });
+      /* La fattura che non esce dalla bozza. È il guasto del 15 settembre:
+         `spedisciFattura` lo tollerava, il riporto tirava dritto, e il
+         foglio finiva in elenco «da incassare» coi soldi già in cassetta. */
+      if (invioRifiutato) {
+        return risposta(422, {
+          name: "UNPROCESSABLE_ENTITY",
+          message: "Invoice is not in a state to be sent",
+          details: [{ issue: "INVOICE_STATE_NOT_ALLOWED" }],
+        });
+      }
       return risposta(200, {});
     }
     if (u.includes("resend")) {
@@ -208,7 +218,7 @@ function finestra() {
 let passate = 0;
 let fallite = 0;
 
-async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = {}, pagine = [], rotto = false, pagamentoRifiutato = false, atteso }) {
+async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = {}, pagine = [], rotto = false, pagamentoRifiutato = false, invioRifiutato = false, atteso }) {
   process.env.PAYPAL_CLIENT_ID = "finto";
   process.env.PAYPAL_CLIENT_SECRET = "finto";
   process.env.ISCRITTI_CHIAVE = CHIAVE;
@@ -220,7 +230,7 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   scritte = [];
   creata = null;
   mandata = null;
-  global.fetch = stubFetch(pagine, { rotto, pagamentoRifiutato });
+  global.fetch = stubFetch(pagine, { rotto, pagamentoRifiutato, invioRifiutato });
 
   const req = {
     method: metodo,
@@ -259,8 +269,16 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   if (atteso.scritte !== undefined && scritte.length !== atteso.scritte) {
     problemi.push(`${scritte.length} scritture, attese ${atteso.scritte}`);
   }
-  if (atteso.metodoPagamento && scritte[0]?.corpo?.method !== atteso.metodoPagamento) {
-    problemi.push(`metodo ${scritte[0]?.corpo?.method}, atteso ${atteso.metodoPagamento}`);
+  /* Il pagamento si cerca per quello che è, non per la posizione: segnare
+     un incasso adesso rispedisce prima la fattura, e `scritte[0]` è quel
+     `/send`. */
+  const pagamento = scritte.find((c) => c.url.includes("/payments"));
+  if (atteso.metodoPagamento && pagamento?.corpo?.method !== atteso.metodoPagamento) {
+    problemi.push(`metodo ${pagamento?.corpo?.method}, atteso ${atteso.metodoPagamento}`);
+  }
+  if (atteso.pagamenti !== undefined) {
+    const quanti = scritte.filter((c) => c.url.includes("/payments")).length;
+    if (quanti !== atteso.pagamenti) problemi.push(`${quanti} pagamenti, attesi ${atteso.pagamenti}`);
   }
 
   if (problemi.length) {
@@ -416,12 +434,15 @@ await prova("PayPal giù → 502, e nessun mezzo elenco spacciato per intero", {
 
 console.log("\n── Il contante che arriva al banchetto ────────────────────────");
 
-await prova("segna incassato → una scrittura sola, metodo contanti", {
+/* Due scritture e un pagamento solo: prima la fattura esce dalla bozza —
+   serve alle bozze rimaste indietro, e sulle altre PayPal dice soltanto
+   `ALREADY_SENT` — e poi si segnano i contanti, una volta. */
+await prova("segna incassato → un pagamento solo, metodo contanti", {
   chiave: CHIAVE,
   metodo: "POST",
   corpo: { fattura: "INV2-2" },
   pagine: [[inContanti(2)]],
-  atteso: { codice: 200, scritte: 1, metodoPagamento: "CASH" },
+  atteso: { codice: 200, scritte: 2, pagamenti: 1, metodoPagamento: "CASH" },
 });
 
 /* Il guasto del 15 settembre: il tasto «segna incassati» non segnava
@@ -442,6 +463,7 @@ await prova("PayPal rifiuta l'incasso — non si risponde «fatto»", {
   atteso: { codice: 502, incassata: undefined },
 });
 
+
 await prova("segnare due volte non scrive due volte", {
   chiave: CHIAVE,
   metodo: "POST",
@@ -449,6 +471,27 @@ await prova("segnare due volte non scrive due volte", {
   pagine: [[fattura(1)]],
   atteso: { codice: 200, scritte: 0 },
 });
+
+/* E le bozze rimaste in giro da prima della correzione: il tasto «segna
+   incassati» le deve saper recuperare, perché quei soldi sono stati presi
+   davvero. Si rispedisce prima di pagare — su una fattura già spedita PayPal
+   dice `ALREADY_SENT` e non succede niente. */
+await prova("segnando l'incasso si rispedisce, così anche una bozza rimasta indietro si salva", {
+  chiave: CHIAVE,
+  metodo: "POST",
+  corpo: { fattura: "INV2-2" },
+  pagine: [[inContanti(2)]],
+  atteso: { codice: 200, incassata: true },
+});
+
+{
+  const invii = scritte.filter((c) => c.url.includes("/send"));
+  const pagamenti = scritte.filter((c) => c.url.includes("/payments"));
+  verifica("e l'ordine è quello giusto: prima fuori dalla bozza, poi il pagamento",
+    invii.length === 1 && pagamenti.length === 1 &&
+    scritte.indexOf(invii[0]) < scritte.indexOf(pagamenti[0]),
+    `scritte ${JSON.stringify(scritte.map((c) => c.url))}`);
+}
 
 await prova("una fattura che non esiste → 404, e non si scrive niente", {
   chiave: CHIAVE,
@@ -619,14 +662,14 @@ const FOGLIO = {
   minori: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }],
 };
 
-async function riporta(foglio, { chiave = CHIAVE, pagine = [[]] } = {}) {
+async function riporta(foglio, { chiave = CHIAVE, pagine = [[]], invioRifiutato = false } = {}) {
   process.env.PAYPAL_CLIENT_ID = "finto";
   process.env.PAYPAL_CLIENT_SECRET = "finto";
   process.env.ISCRITTI_CHIAVE = CHIAVE;
   scritte = [];
   creata = null;
   mandata = null;
-  global.fetch = stubFetch(pagine);
+  global.fetch = stubFetch(pagine, { invioRifiutato });
   const res = finestra();
   await handler({ method: "POST", query: { chiave }, headers: {}, body: { cartaceo: foglio } }, res);
   return res;
@@ -831,6 +874,32 @@ function verifica(nome, ok, extra) {
   verifica("un bambino di undici anni messo fra i piccoli: no, e gli si dice dove va",
     res.codice === 400 && /6 ai 17/.test(res.corpo?.errore || "") && creata === null,
     `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* Ogni modulo cartaceo si riporta già pagato in contanti: al banchetto i
+   soldi si prendono lì, e il foglio ha «Totale versato» compilato con la
+   firma sotto. Questa prova tiene ferma la regola. */
+{
+  await riporta(FOGLIO);
+  const pagamento = scritte.find((c) => c.url.includes("/payments"));
+  verifica("un foglio riportato è già pagato cash, sempre",
+    pagamento?.corpo?.method === "CASH" && pagamento?.corpo?.type === "EXTERNAL",
+    `pagamento ${JSON.stringify(pagamento?.corpo)}`);
+}
+
+/* E il passo che lo rende possibile. Una fattura che non esce dalla bozza
+   non accetta pagamenti: se `spedisciFattura` tollera lo stato sbagliato, il
+   riporto tira dritto fino a `registraPagamento`, che su una bozza non scrive
+   niente — e il foglio entra in elenco «da incassare» coi soldi già in
+   cassetta, col tasto «segna incassati» che fallirà per sempre. È il guasto
+   visto sul modulo n. 2. Adesso è un errore, e si legge mentre il foglio è
+   ancora in mano. */
+{
+  const res = await riporta(FOGLIO, { invioRifiutato: true });
+  const pagamenti = scritte.filter((c) => c.url.includes("/payments"));
+  verifica("un foglio che non esce dalla bozza: errore, e non si finge di aver incassato",
+    res.codice >= 400 && res.corpo?.riportato !== true && pagamenti.length === 0,
+    `${res.codice} ${JSON.stringify(res.corpo)} — pagamenti ${pagamenti.length}`);
 }
 
 /* La porta: la chiave vale anche per questa azione, non solo per l'elenco. */

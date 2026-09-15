@@ -603,12 +603,27 @@ export const creaFattura = (corpo, tentativo = "") =>
    fuori dalla bozza: una bozza non accetta pagamenti, e senza questo
    passaggio non si potrebbe segnare né l'incasso online né il contante.
    `send_to_recipient: false` è la riga che impedisce a PayPal di scrivere a
-   chi si è iscritto — le mail sono le nostre, e una sola. */
+   chi si è iscritto — le mail sono le nostre, e una sola.
+
+   — Cosa si tollera, e cosa no —
+   `ALREADY_SENT` e `ALREADY_PAID` dicono «l'avevi già fatto», ed è vero:
+   la fattura è già fuori dalla bozza, che è tutto quello che serve.
+
+   `INVOICE_STATE_NOT_ALLOWED` NON sta in questo elenco, e ci stava fino
+   al 15 settembre — lo stesso sbaglio già tolto da `registraPagamento`,
+   rimasto qui. Vuol dire il contrario di «era già fatto»: vuol dire che la
+   fattura è in uno stato da cui non esce, e che quindi è RIMASTA bozza.
+   Tollerarlo faceva tirare dritto il riporto di un modulo cartaceo fino a
+   `registraPagamento`, che su una bozza non può scrivere niente: il foglio
+   entrava in elenco come «da incassare» con i soldi già in cassetta, e il
+   tasto «segna incassati» falliva ogni volta, perché la fattura era bozza
+   allora e bozza restava. Adesso sale come errore, e chi riporta il foglio
+   lo legge subito — mentre il foglio è ancora in mano. */
 export const spedisciFattura = (id) =>
   paypal(`/v2/invoicing/invoices/${encodeURIComponent(id)}/send`, {
     metodo: "POST",
     corpo: { send_to_invoicer: false, send_to_recipient: false },
-    tollera: ["INVOICE_STATE_NOT_ALLOWED", "ALREADY_SENT", "ALREADY_PAID"],
+    tollera: ["ALREADY_SENT", "ALREADY_PAID"],
   });
 
 /* Segnare il pagamento. `EXTERNAL` è la verità in tutti e due i casi: i soldi
