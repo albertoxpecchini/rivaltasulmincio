@@ -1312,13 +1312,83 @@ const LOCANDINA = "color-walk-locandina";
 let bannerTrovato = null;
 let locandinaTrovata = null;
 
-const renderBanner = () => {
-  bannerTrovato = ["webp", "avif", "png", "jpg", "svg"]
-    .map((est) => `assets/foto/${BANNER}.${est}`)
-    .find((p) => existsSync(p));
-  if (!bannerTrovato) return "";
-  return `<img class="sb-riv-cwbanner" src="${bannerTrovato}" width="2400" height="900" decoding="async"
-      alt="Color Walk, Rivalta sul Mincio — una camminata per tutti, senza cronometro e senza classifica, lungo le vie del paese. Domenica 20 settembre 2026: ritrovo alle 15:30, partenza alle 16:00, Piazza della Chiesa. Quote 5 € dai 6 ai 17 anni e 10 € adulti, aperitivo incluso nella quota. Iscrizioni anche il giorno stesso, maglia bianca consigliata. In caso di pioggia si rinvia a domenica 27 settembre. Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo.">`;
+/* ── Gli altri eventi che hanno un banner e una locandina ─────────────────
+   La Color Walk è stata la prima, e per un po' l'unica: per questo i due
+   pezzi qui sopra portano il suo nome addosso e {{BANNER}} vuol dire «il
+   banner della camminata». Da settembre ce ne sono altri due — il Palio e la
+   sagra — e non ha senso ricopiare due volte le stesse quindici righe.
+
+   Qui c'è un'anagrafe per evento: il nome del file, il testo alternativo
+   dell'immagine e i tasti che vanno sotto il banner. I frammenti chiamano
+   {{BANNER:palio}} e {{LOCANDINA:sagra}} — la chiave è quella di questa
+   tabella — e prendono la loro roba. La Color Walk non cambia di una virgola:
+   {{BANNER}} e {{LOCANDINA}} senza chiave restano i suoi.
+
+   Il testo alternativo non è un riassunto: è la locandina letta a voce. Chi
+   non vede l'immagine deve sapere le stesse cose di chi la guarda — che il
+   ritrovo è al parcheggio delle scuole, che il pranzo si prenota e a quali
+   numeri — perché quelle cose sul foglio ci sono e da nessun'altra parte. */
+const EVENTI_GRAFICA = {
+  palio: {
+    banner: "palio-delle-contrade-banner",
+    locandina: "sagra-patroni-locandina",
+    pagina: "/palio-delle-contrade",
+    bannerAlt:
+      "Palio delle Contrade, Rivalta sul Mincio — sabato 26 settembre 2026: " +
+      "sfilata, giochi e regata sul Mincio. Sei contrade, una regata.",
+  },
+  sagra: {
+    banner: "sagra-patroni-banner",
+    locandina: "sagra-patroni-locandina",
+    pagina: "/sagra-patroni",
+    bannerAlt:
+      "Sagra dei Patroni, festa patronale di Rivalta sul Mincio — sabato 26 " +
+      "e domenica 27 settembre 2026. Programma e prenotazioni; il pranzo di " +
+      "domenica è su prenotazione.",
+  },
+};
+
+/* La locandina è una sola per tutti e due: il foglio porta in cima «Sagra dei
+   Patroni · Festa patronale» e sotto il titolo «Palio delle Contrade», perché
+   è la stessa festa guardata da due lati. Un file solo, due pagine che lo
+   mostrano — non due copie identiche da tenere allineate. */
+const LOCANDINA_ALT =
+  "Locandina A4 della Sagra dei Patroni e del Palio delle Contrade a Rivalta " +
+  "sul Mincio, sabato 26 e domenica 27 settembre 2026. Sabato 26: alle 15:00 " +
+  "ritrovo al parcheggio delle scuole in Via Tezzone 34, poi sfilata coi " +
+  "tamburini per il paese; alle 16:00 giochi di una volta a Fondo Mincio; " +
+  "alle 18:00 regata finale sul Mincio; a seguire risotto per tutti, offerto " +
+  "dall'AVIS di Rivalta. Bancarelle per tutta la giornata, e alla sera un po' " +
+  "di musica dal vivo con Anna & Max (Massimo Minotti). Domenica 27: alle " +
+  "11:00 Santa Messa in chiesa parrocchiale, alle 12:00 il Pranzo dei " +
+  "Patroni. Per il Pranzo dei Patroni di domenica 27 la prenotazione è " +
+  "obbligatoria: Sabrina 348 275 2442, Paola 338 459 4771. In fondo gli " +
+  "stemmi delle sei contrade — la Filanda, il Roccolo, le Colonie, i " +
+  "Piasaröi, la Plàtana, le Fanfane — il patrocinio del Comune di Rodigo e " +
+  "la collaborazione di Parrocchia, ANSPI e AVIS di Rivalta.";
+
+/* Quali file mancano davvero: si riempie strada facendo e il build lo dice in
+   fondo, come già fa per il banner e la locandina della camminata. */
+const graficaMancante = [];
+
+const trovaFile = (nome, ests) =>
+  ests.map((est) => `assets/foto/${nome}.${est}`).find((p) => existsSync(p));
+
+const renderBanner = (chiave) => {
+  const ev = chiave ? EVENTI_GRAFICA[chiave] : null;
+  if (chiave && !ev) throw new Error(`{{BANNER:${chiave}}}: evento sconosciuto`);
+  const nome = ev ? ev.banner : BANNER;
+  const trovato = trovaFile(nome, ["webp", "avif", "png", "jpg", "svg"]);
+  if (!ev) bannerTrovato = trovato;
+  if (!trovato) {
+    if (ev) graficaMancante.push(`assets/foto/${nome}.webp`);
+    return "";
+  }
+  const alt = ev
+    ? ev.bannerAlt
+    : "Color Walk, Rivalta sul Mincio — una camminata per tutti, senza cronometro e senza classifica, lungo le vie del paese. Domenica 20 settembre 2026: ritrovo alle 15:30, partenza alle 16:00, Piazza della Chiesa. Quote 5 € dai 6 ai 17 anni e 10 € adulti, aperitivo incluso nella quota. Iscrizioni anche il giorno stesso, maglia bianca consigliata. In caso di pioggia si rinvia a domenica 27 settembre. Organizzano la Parrocchia Santi Vigilio e Donato di Rivalta sul Mincio e l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo, con il patrocinio del Comune di Rodigo.";
+  return `<img class="sb-riv-cwbanner" src="${trovato}" width="2400" height="900" decoding="async"
+      alt="${alt}">`;
 };
 
 /* ── Il blocco «Color Walk come in home» ────────────────────────────────
@@ -1354,15 +1424,21 @@ const renderBannerHome = (page) => {
    sotto un tasto che apre il PDF A4 già pronto per la stampa. Il clic
    sull'anteprima apre anch'esso il PDF, nel visore del browser (Ctrl+P e via).
    Se il PDF non c'è, resta la sola anteprima che si apre a dimensione piena. */
-const renderLocandina = () => {
-  locandinaTrovata = ["webp", "avif", "png", "jpg"]
-    .map((est) => `assets/foto/${LOCANDINA}.${est}`)
-    .find((p) => existsSync(p));
-  if (!locandinaTrovata) return "";
-  const pdf = `assets/${LOCANDINA}.pdf`;
+const renderLocandina = (chiave) => {
+  const ev = chiave ? EVENTI_GRAFICA[chiave] : null;
+  if (chiave && !ev) throw new Error(`{{LOCANDINA:${chiave}}}: evento sconosciuto`);
+  const nome = ev ? ev.locandina : LOCANDINA;
+  const trovata = trovaFile(nome, ["webp", "avif", "png", "jpg"]);
+  if (!ev) locandinaTrovata = trovata;
+  if (!trovata) {
+    if (ev) graficaMancante.push(`assets/foto/${nome}.webp`);
+    return "";
+  }
+  const pdf = `assets/${nome}.pdf`;
   const conPdf = existsSync(pdf);
-  const alt =
-    "Locandina A4 della Color Walk, con in cima un disegno di gente coperta " +
+  const alt = ev
+    ? LOCANDINA_ALT
+    : "Locandina A4 della Color Walk, con in cima un disegno di gente coperta " +
     "di colori che corre per il paese. Camminata a colori per tutti a Rivalta " +
     "sul Mincio, senza cronometro e senza classifica: domenica 20 settembre " +
     "2026, ritrovo alle 15:30 e partenza alle 16:00, partenza e arrivo in " +
@@ -1379,16 +1455,16 @@ const renderLocandina = () => {
     "l'Associazione San Filippo Neri ANSPI APS-ETS di Rodigo.";
   const anteprima = conPdf
     ? ` href="${pdf}" target="_blank" rel="noopener" aria-label="Apri la locandina in PDF (A4, pronta da stampare)"`
-    : ` href="${locandinaTrovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;
+    : ` href="${trovata}" target="_blank" rel="noopener" aria-label="Apri la locandina a dimensione piena"`;
   const stampa = conPdf
-    ? `\n      <a class="sb-btn sb-btn--primary sb-riv-cwloc-print" href="${pdf}" download="${LOCANDINA}.pdf" target="_blank" rel="noopener">
+    ? `\n      <a class="sb-btn sb-btn--primary sb-riv-cwloc-print" href="${pdf}" download="${nome}.pdf" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
         <span>Stampa la locandina — PDF A4</span>
       </a>`
     : "";
   return `<figure class="sb-riv-cwloc">
       <a class="sb-riv-cwloc-a"${anteprima}>
-        <img src="${locandinaTrovata}" width="1240" height="1754" loading="lazy" decoding="async"
+        <img src="${trovata}" width="1240" height="1754" loading="lazy" decoding="async"
           alt="${alt}">
       </a>${stampa}
     </figure>`;
@@ -2032,9 +2108,15 @@ for (const file of bodies) {
       .replace("{{METEO_ORA}}", renderMeteoOra)
       .replace("{{METEO}}", renderMeteo)
       .replace("{{LOGHI}}", renderLoghi)
-      .replace("{{BANNER}}", renderBanner)
+      /* Prima le forme con la chiave — {{BANNER:palio}}, {{LOCANDINA:sagra}} —
+         poi quelle nude, che restano della Color Walk. Se si facesse il
+         contrario, «{{BANNER}}» dentro «{{BANNER:palio}}» non c'è, ma tenere
+         quest'ordine rende evidente quale vince. */
+      .replaceAll(/\{\{BANNER:([a-z-]+)\}\}/g, (_, k) => renderBanner(k))
+      .replaceAll(/\{\{LOCANDINA:([a-z-]+)\}\}/g, (_, k) => renderLocandina(k))
+      .replace("{{BANNER}}", () => renderBanner())
       .replace("{{CW_HOME}}", () => renderBannerHome(page))
-      .replace("{{LOCANDINA}}", renderLocandina)
+      .replace("{{LOCANDINA}}", () => renderLocandina())
       .replace("{{CONTRADE_FILA}}", renderContradeFila)
       .replace("{{CONTRADE}}", renderContrade)
   );
@@ -2645,6 +2727,16 @@ const avvisiDiSempre = () => {
     console.error(`
   ⚠ locandina Color Walk: manca assets/foto/${LOCANDINA}.webp (o .png/.jpg/.avif).`);
     console.error(`  L'anteprima e il link al PDF su /color-walk compaiono col file.`);
+  }
+
+  /* E lo stesso per gli altri eventi che hanno un banner o una locandina: il
+     segnaposto senza il file non lascia un buco in pagina, quindi la mancanza
+     non si vede guardando il sito — si vede solo qui. */
+  if (graficaMancante.length) {
+    const unici = [...new Set(graficaMancante)];
+    console.error(`
+  ⚠ grafica eventi: ${unici.length} file mancanti — ${unici.join("  ")}`);
+    console.error(`  Si esportano dalla tela e ricompaiono al primo build.`);
   }
 
   /* ── La lista della spesa ─────────────────────────────────────────────────
