@@ -76,6 +76,12 @@ const inContanti = (n, { detail, ...extra } = {}) =>
     detail: { memo: "contanti|3331234567|2026-08-25T10:00:00.000Z|—", ...detail },
   });
 
+/* Un cartaceo rimasto in bozza: è com'erano finite le iscrizioni riportate
+   mentre `spedisciFattura` tollerava lo stato sbagliato. I soldi presi al
+   banchetto, e la fattura mai uscita dalla bozza — quindi nessun pagamento
+   scrivibile sopra, e il tasto «segna incassati» che falliva per sempre. */
+const bozzaCartacea = (n) => inContanti(n, { status: "DRAFT" });
+
 /* Chi ha aperto il pagamento online e non è arrivato in fondo. */
 const abbandonata = (n) => fattura(n, { status: "UNPAID" });
 /* Due maggiorenni e un minore in una sola iscrizione: la `B` è il secondo
@@ -111,7 +117,7 @@ let scritte;
 let creata;
 let mandata;
 
-function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false, invioRifiutato = false } = {}) {
+function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false, invioRifiutato = false, postaRotta = false } = {}) {
   let i = 0;
   return async (url, o = {}) => {
     const u = String(url);
@@ -178,6 +184,10 @@ function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false, invioRif
     if (u.includes("resend")) {
       mandata = JSON.parse(o.body);
       scritte.push({ url: u, corpo: mandata });
+      /* Il servizio di posta che dice di no. Il mittente non verificato è il
+         caso vero: si sposta il dominio in Resend e ci si dimentica di
+         POSTA_MITTENTE, e da lì in poi nessuna ricevuta parte più. */
+      if (postaRotta) return risposta(403, { message: "The from address domain is not verified" });
       return risposta(200, { id: "email_1" });
     }
 
@@ -434,15 +444,14 @@ await prova("PayPal giù → 502, e nessun mezzo elenco spacciato per intero", {
 
 console.log("\n── Il contante che arriva al banchetto ────────────────────────");
 
-/* Due scritture e un pagamento solo: prima la fattura esce dalla bozza —
-   serve alle bozze rimaste indietro, e sulle altre PayPal dice soltanto
-   `ALREADY_SENT` — e poi si segnano i contanti, una volta. */
+/* Una fattura già fuori dalla bozza si paga e basta: nessun `/send` mandato
+   a caso, perché adesso lo stato si guarda prima di muoversi. */
 await prova("segna incassato → un pagamento solo, metodo contanti", {
   chiave: CHIAVE,
   metodo: "POST",
   corpo: { fattura: "INV2-2" },
   pagine: [[inContanti(2)]],
-  atteso: { codice: 200, scritte: 2, pagamenti: 1, metodoPagamento: "CASH" },
+  atteso: { codice: 200, scritte: 1, pagamenti: 1, metodoPagamento: "CASH" },
 });
 
 /* Il guasto del 15 settembre: il tasto «segna incassati» non segnava
@@ -482,6 +491,23 @@ await prova("segnando l'incasso si rispedisce, così anche una bozza rimasta ind
   corpo: { fattura: "INV2-2" },
   pagine: [[inContanti(2)]],
   atteso: { codice: 200, incassata: true },
+});
+
+{
+  const invii = scritte.filter((c) => c.url.includes("/send"));
+  verifica("e a una già spedita non si manda nessun invio inutile",
+    invii.length === 0, `scritte ${JSON.stringify(scritte.map((c) => c.url))}`);
+}
+
+/* Il recupero delle bozze rimaste indietro: quei soldi sono stati presi
+   davvero al banchetto, e su una bozza questo tasto falliva ogni volta.
+   Adesso la si tira fuori dalla bozza e POI la si paga, in quest'ordine. */
+await prova("una bozza rimasta indietro si recupera: esce dalla bozza e poi si paga", {
+  chiave: CHIAVE,
+  metodo: "POST",
+  corpo: { fattura: "INV2-2" },
+  pagine: [[bozzaCartacea(2)]],
+  atteso: { codice: 200, incassata: true, pagamenti: 1, metodoPagamento: "CASH" },
 });
 
 {
@@ -662,14 +688,14 @@ const FOGLIO = {
   minori: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }],
 };
 
-async function riporta(foglio, { chiave = CHIAVE, pagine = [[]], invioRifiutato = false } = {}) {
+async function riporta(foglio, { chiave = CHIAVE, pagine = [[]], invioRifiutato = false, postaRotta = false } = {}) {
   process.env.PAYPAL_CLIENT_ID = "finto";
   process.env.PAYPAL_CLIENT_SECRET = "finto";
   process.env.ISCRITTI_CHIAVE = CHIAVE;
   scritte = [];
   creata = null;
   mandata = null;
-  global.fetch = stubFetch(pagine, { invioRifiutato });
+  global.fetch = stubFetch(pagine, { invioRifiutato, postaRotta });
   const res = finestra();
   await handler({ method: "POST", query: { chiave }, headers: {}, body: { cartaceo: foglio } }, res);
   return res;
@@ -722,6 +748,28 @@ function verifica(nome, ok, extra) {
   const res = await riporta({ ...FOGLIO, email: "" });
   verifica("senza email sul foglio non parte nessuna mail, e l'iscrizione entra lo stesso",
     res.codice === 200 && res.corpo?.gia === false && res.corpo?.spedita === null && mandata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* La ricevuta parte da sé alla conferma del foglio: nessun secondo gesto,
+   nessun tasto in più. Questa prova tiene ferma la promessa — e che vada
+   proprio all'indirizzo scritto sul foglio. */
+{
+  const res = await riporta(FOGLIO);
+  verifica("alla conferma del cartaceo la ricevuta parte da sé, a chi l'ha lasciata",
+    res.codice === 200 && res.corpo?.spedita === true &&
+    res.corpo?.email === FOGLIO.email && mandata?.to?.[0] === FOGLIO.email,
+    `spedita ${res.corpo?.spedita} — a ${JSON.stringify(mandata?.to)}`);
+}
+
+/* E quando la posta dice di no: l'iscrizione resta — i soldi sono presi e la
+   riga c'è — ma il MOTIVO torna indietro, perché «non è partita» da solo non
+   dice se è l'indirizzo, la chiave o il mittente non verificato. */
+{
+  const res = await riporta(FOGLIO, { postaRotta: true });
+  verifica("se la ricevuta non parte l'iscrizione resta, e si dice perché",
+    res.codice === 200 && res.corpo?.riportato === true && res.corpo?.spedita === false &&
+    /verified/i.test(res.corpo?.perche || ""),
     `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
 

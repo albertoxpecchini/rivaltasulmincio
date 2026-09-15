@@ -1991,8 +1991,17 @@ html.rsm-still .sb-is-frec { transition: none; }
         if (res.d.gia) {
           mostra("errore", res.d.messaggio || "Quel modulo era già in elenco: non è stato riportato due volte.");
         } else {
-          var coda = res.d.spedita === true ? " La ricevuta è partita." : res.d.spedita === false ? " La ricevuta NON è partita: l'iscrizione però c'è." : "";
-          mostra("ok", "Modulo n. " + res.d.modulo + " riportato: " + res.d.nome + ", " + res.d.persone +
+          /* La ricevuta parte da sé appena il foglio è confermato. Le tre
+             code dicono tre cose diverse, e la differenza conta: partita,
+             non partita e perché, oppure nessun indirizzo sul foglio — che
+             non è un guasto, è un foglio senza email. */
+          var coda = res.d.spedita === true
+            ? " La ricevuta è partita a " + (res.d.email || "chi l'ha lasciata") + "."
+            : res.d.spedita === false
+              ? " Ma la ricevuta NON è partita" + (res.d.perche ? " (" + res.d.perche + ")" : "") + ": l'iscrizione però c'è."
+              : " Sul foglio non c'era nessuna email, quindi nessuna ricevuta.";
+          mostra(res.d.spedita === false ? "errore" : "ok",
+            "Modulo n. " + res.d.modulo + " riportato: " + res.d.nome + ", " + res.d.persone +
             (res.d.persone === 1 ? " persona" : " persone") + ", " + euro(res.d.totaleCent) + " già incassati." + coda);
           svuotaCart();
           campoCart("modulo").focus();

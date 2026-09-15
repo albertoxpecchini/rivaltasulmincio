@@ -353,6 +353,38 @@ async function elenco(res) {
    preme un bottone e passa l'identificativo, ma il numero è quello che si
    legge in elenco, ed è più facile da ridire a voce se qualcosa va storto. */
 
+/* ── Portare una fattura fino a «pagata» ──────────────────────────────────
+   Segnare un pagamento su PayPal richiede che la fattura sia fuori dalla
+   bozza, e fin qui si mandava un `/send` alla cieca sperando che bastasse.
+   Non bastava: il 15 settembre il modulo n. 2 è entrato in elenco «da
+   incassare» con i soldi già in cassetta, e nei log `/send` e `/payments`
+   venivano rifiutati tutti e due sulla stessa fattura, all'infinito.
+
+   Qui invece si guarda lo stato vero prima di muoversi, e si fa solo quello
+   che quello stato consente:
+
+     · già saldata → non c'è niente da fare, e non è un errore;
+     · ancora bozza → si spedisce, e POI si paga;
+     · già spedita → si paga e basta, senza rispedirla.
+
+   Una lettura in più per ogni incasso, che su una camminata di paese non si
+   sente, e in cambio niente più chiamate mandate a caso. Se la lettura non
+   riesce si prova la strada di prima — spedire e pagare — perché un incasso
+   non si perde per una GET andata storta. */
+async function portaAPagata(idFattura, { metodo, nota }) {
+  const prima = await leggiFattura(idFattura).catch(() => null);
+
+  if (prima && saldata(prima)) return { gia: true };
+
+  /* Senza lo stato sotto gli occhi si torna al comportamento di prima: il
+     `/send` su una fattura già spedita PayPal lo perdona con `ALREADY_SENT`. */
+  const stato = String(prima?.status || "");
+  if (!prima || stato === "DRAFT") await spedisciFattura(idFattura);
+
+  const esito = await registraPagamento(idFattura, { metodo, nota });
+  return { gia: esito?.giaFatto === true };
+}
+
 /* ── Un modulo cartaceo riportato a mano ──────────────────────────────────
    Chi si iscrive al banchetto lascia un foglio firmato e paga in contanti lì.
    Quel foglio poi va ricopiato in elenco, o il tetto dei 300 si conta su metà
@@ -514,19 +546,32 @@ async function riporta(req, res) {
     });
   }
 
-  await spedisciFattura(idFattura);
-
   /* Al banco i soldi sono già stati presi: il foglio ha «Totale versato»
-     compilato e la firma sotto. Si segna pagato subito, così non finisce nel
-     conto di quello che resta da incassare la mattina del 20. */
-  await registraPagamento(idFattura, {
+     compilato e la firma sotto. OGNI modulo cartaceo si riporta già pagato in
+     contanti — è la regola, non un caso particolare — così non finisce nel
+     conto di quello che resta da incassare la mattina del 20.
+
+     Se questo passo non riesce, l'errore sale e il foglio NON risulta
+     riportato: meglio riprovare col foglio in mano che una riga in elenco
+     che dice «da incassare» con i soldi già nel cassetto. */
+  await portaAPagata(idFattura, {
     metodo: "CASH",
     nota: `Contanti al banchetto — modulo cartaceo n. ${modulo}`,
   });
 
-  /* La ricevuta parte solo se sul foglio un indirizzo c'era. Chi non l'ha
-     lasciato ha già il suo foglio in mano, ed è quella la sua ricevuta. */
+  /* La ricevuta parte SUBITO, appena il foglio è confermato, e parte da sé:
+     non c'è nessun secondo gesto da fare. L'unica condizione è che sul foglio
+     un indirizzo ci fosse — chi non l'ha lasciato ha il suo foglio in mano, ed
+     è quella la sua ricevuta.
+
+     Se la spedizione fallisce l'iscrizione resta buona: i soldi sono presi e
+     la riga c'è, e buttare via tutto per una mail sarebbe il danno peggiore.
+     Ma il MOTIVO torna indietro insieme alla risposta, non solo nel log:
+     «non è partita» da solo non dice se l'indirizzo era sbagliato, se manca
+     la chiave del servizio di posta o se il mittente non è verificato, e chi
+     sta al banchetto quella differenza la deve poter leggere. */
   let spedita = null;
+  let perche = "";
   if (email) {
     const mail = ricevuta({ fattura: corpo, pagato: true, cartaceo: modulo });
     try {
@@ -534,6 +579,7 @@ async function riporta(req, res) {
       spedita = true;
     } catch (errore) {
       spedita = false;
+      perche = errore.message;
       console.error(`modulo cartaceo ${modulo} riportato ma mail non spedita:`, errore.message);
     }
   }
@@ -548,6 +594,8 @@ async function riporta(req, res) {
     persone: 1 + adulti.length + minori.length + piccoli.length,
     totaleCent,
     spedita,
+    ...(email ? { email } : {}),
+    ...(perche ? { perche } : {}),
   });
 }
 async function incassa(req, res) {
@@ -572,21 +620,11 @@ async function incassa(req, res) {
     return res.status(200).json({ incassata: true, gia: true, id: fattura.id });
   }
 
-  /* Una bozza non accetta pagamenti, e qui ne arrivano: le iscrizioni
-     riportate dalla carta mentre `spedisciFattura` tollerava lo stato
-     sbagliato sono rimaste bozze con i soldi già presi al banchetto, e su
-     quelle questo tasto falliva ogni volta senza via d'uscita — la fattura
-     era bozza allora e bozza restava, e premere di nuovo non cambiava niente.
-
-     Rispedirla costa una chiamata e la porta fuori dalla bozza. Su una
-     fattura già spedita PayPal risponde `ALREADY_SENT`, che `spedisciFattura`
-     tollera: per tutte le altre è un giro a vuoto innocuo, e per queste è
-     l'unica strada. Se non esce dalla bozza nemmeno adesso, l'errore sale
-     e chi sta al banco lo legge invece di ripremere un tasto che non può
-     funzionare. */
-  await spedisciFattura(fattura.id);
-
-  const esito = await registraPagamento(fattura.id, {
+  /* La fattura è già in mano — l'ha letta il chiamante — ma il pagamento lo
+     porta `portaAPagata`, che guarda lo stato e fa solo le chiamate che quello
+     stato consente. Serve alle bozze rimaste indietro: quei soldi sono stati
+     presi davvero, e su una bozza questo tasto falliva ogni volta. */
+  const esito = await portaAPagata(fattura.id, {
     metodo: "CASH",
     nota: "Contanti incassati al ritrovo, prima della partenza",
   });
@@ -601,7 +639,7 @@ async function incassa(req, res) {
      del chiamante. Qui si risponde `gia` con sincerità, perché la pagina
      possa dire «era già segnata» invece di far credere a chi sta al banco
      di essere stato lui a incassarla adesso. */
-  return res.status(200).json({ incassata: true, gia: esito?.giaFatto === true, id: fattura.id });
+  return res.status(200).json({ incassata: true, gia: esito.gia, id: fattura.id });
 }
 
 /* ── Trovare l'iscrizione su cui si sta per scrivere ──────────────────────

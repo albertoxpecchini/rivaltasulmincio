@@ -240,7 +240,14 @@ export async function paypal(percorso, { metodo = "GET", corpo, tollera = [], in
         return [];
       });
     try {
-      console.error(`PayPal ha rifiutato ${metodo} ${percorso} — lunghezze dei campi: ${misura(corpo).join(" ")}`);
+      /* Il MOTIVO va scritto qui dentro, non solo nell'eccezione. Un log che
+         dice soltanto le lunghezze dei campi racconta cosa avevamo mandato e
+         non cosa PayPal ne pensa: davanti a un `/send` rifiutato — corpo di
+         due booleani, tutte lunghezze vuote — quella riga non dice niente, e
+         il motivo vero resta nell'errore che magari qualcuno ha inghiottito.
+         Gli `issue` sono codici di PayPal, non dati di nessuno. */
+      const perche = problemi.length ? ` — ${problemi.join(", ")}` : "";
+      console.error(`PayPal ha rifiutato ${metodo} ${percorso}${perche} — lunghezze dei campi: ${misura(corpo).join(" ")}`);
     } catch {}
   }
 
