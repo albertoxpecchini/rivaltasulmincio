@@ -276,6 +276,13 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   if (atteso.nonInCache && res.testate["cache-control"] !== "no-store, max-age=0") {
     problemi.push(`Cache-Control «${res.testate["cache-control"]}»`);
   }
+  if (atteso.primoPagato !== undefined) {
+    const primo = res.corpo?.iscritti?.[0];
+    if (!primo) problemi.push("nessun iscritto in elenco");
+    else if (primo.pagato !== atteso.primoPagato) {
+      problemi.push(`pagato ${primo.pagato}, atteso ${atteso.primoPagato}`);
+    }
+  }
   if (atteso.scritte !== undefined && scritte.length !== atteso.scritte) {
     problemi.push(`${scritte.length} scritture, attese ${atteso.scritte}`);
   }
@@ -935,20 +942,33 @@ function verifica(nome, ok, extra) {
     `pagamento ${JSON.stringify(pagamento?.corpo)}`);
 }
 
-/* E il passo che lo rende possibile. Una fattura che non esce dalla bozza
-   non accetta pagamenti: se `spedisciFattura` tollera lo stato sbagliato, il
-   riporto tira dritto fino a `registraPagamento`, che su una bozza non scrive
-   niente — e il foglio entra in elenco «da incassare» coi soldi già in
-   cassetta, col tasto «segna incassati» che fallirà per sempre. È il guasto
-   visto sul modulo n. 2. Adesso è un errore, e si legge mentre il foglio è
-   ancora in mano. */
+/* E qui sta la regola, nella sua forma più dura: PayPal può anche rifiutarsi
+   di annotare quei soldi, ma i soldi sono nel cassetto lo stesso.
+
+   Il `/send` rifiutato è successo davvero, e non solo alla carta. Finché il
+   riporto ne dipendeva, il risultato era il peggiore possibile: l'iscrizione
+   NON entrava — una persona vera e dei soldi veri persi per un capriccio di
+   un servizio — oppure entrava dicendo «da incassare» con la quota già
+   presa. Adesso l'iscrizione entra, e l'elenco la conta pagata perché è di
+   carta, non perché PayPal è riuscito a scriverlo. */
 {
   const res = await riporta(FOGLIO, { invioRifiutato: true });
-  const pagamenti = scritte.filter((c) => c.url.includes("/payments"));
-  verifica("un foglio che non esce dalla bozza: errore, e non si finge di aver incassato",
-    res.codice >= 400 && res.corpo?.riportato !== true && pagamenti.length === 0,
-    `${res.codice} ${JSON.stringify(res.corpo)} — pagamenti ${pagamenti.length}`);
+  verifica("se PayPal rifiuta di segnare il contante, il foglio entra lo stesso",
+    res.codice === 200 && res.corpo?.riportato === true && res.corpo?.totaleCent === 1500,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
+
+/* E in elenco quella riga è verde, non rossa: la carta è pagata perché è di
+   carta. Se questa prova cade, al banchetto ricompare una riga «da
+   incassare» per una quota che è già nel cassetto. */
+await prova("in elenco un cartaceo è pagato anche se PayPal non l'ha mai segnato", {
+  chiave: CHIAVE,
+  pagine: [[inContanti(2, {
+    status: "DRAFT",
+    detail: { invoice_number: "CW-CART-42", memo: "contanti|3331234567|2026-08-25T10:00:00.000Z|—" },
+  })]],
+  atteso: { codice: 200, primoPagato: true },
+});
 
 /* La porta: la chiave vale anche per questa azione, non solo per l'elenco. */
 {

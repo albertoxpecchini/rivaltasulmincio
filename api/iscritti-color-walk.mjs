@@ -76,6 +76,7 @@ import {
   cancellaFattura,
   componiFattura,
   creaFattura,
+  daCartaceo,
   moduloDi,
   numeroCartaceo,
   spedisciFattura,
@@ -194,7 +195,27 @@ async function elenco(res) {
   let riletture = 0;
 
   for (const f of fatture) {
-    const pagata = saldata(f);
+    /* LA CARTA È GIÀ PAGATA, SEMPRE.
+
+       Un modulo cartaceo esiste solo perché qualcuno si è presentato al
+       banchetto, ha firmato un foglio e ha messo i soldi nel cassetto. Non
+       c'è un modulo cartaceo «da incassare»: se è di carta, è pagato — e
+       quei soldi li ha contati una persona, non PayPal.
+
+       Fino al 15 settembre questa verità dipendeva da PayPal: lo stato della
+       fattura. Ma per arrivare a scrivere «pagata» su una fattura PayPal
+       pretende che prima esca dalla bozza, e quando quel passaggio veniva
+       rifiutato — è successo, e non solo alla carta — il foglio restava lì a
+       dire «da incassare» con i soldi già in cassetta, e nessun tasto poteva
+       più rimediare.
+
+       Adesso la regola sta qui, dove nessuna chiamata di rete la può
+       smentire: il numero della fattura comincia per CW-CART-, quindi è un
+       foglio di carta, quindi è pagato. Quello che PayPal pensa si continua a
+       guardare per tutte le altre — online e contanti prenotati dal sito —
+       dove è l'unica fonte che sa se i soldi sono arrivati davvero. */
+    const diCarta = daCartaceo(f?.detail?.invoice_number);
+    const pagata = diCarta || saldata(f);
     const memo = leggiMemo(f?.detail?.memo);
 
     /* Annullata vuol dire che non c'è più, e non importa chi l'ha annullata:
@@ -371,18 +392,36 @@ async function elenco(res) {
    sente, e in cambio niente più chiamate mandate a caso. Se la lettura non
    riesce si prova la strada di prima — spedire e pagare — perché un incasso
    non si perde per una GET andata storta. */
-async function portaAPagata(idFattura, { metodo, nota }) {
+async function portaAPagata(idFattura, { metodo, nota, obbligatorio = true }) {
   const prima = await leggiFattura(idFattura).catch(() => null);
 
-  if (prima && saldata(prima)) return { gia: true };
+  if (prima && saldata(prima)) return { gia: true, segnata: true };
 
-  /* Senza lo stato sotto gli occhi si torna al comportamento di prima: il
-     `/send` su una fattura già spedita PayPal lo perdona con `ALREADY_SENT`. */
+  /* Senza lo stato sotto gli occhi si prova comunque: il `/send` su una
+     fattura già spedita PayPal lo perdona con `ALREADY_SENT`. */
   const stato = String(prima?.status || "");
-  if (!prima || stato === "DRAFT") await spedisciFattura(idFattura);
 
-  const esito = await registraPagamento(idFattura, { metodo, nota });
-  return { gia: esito?.giaFatto === true };
+  try {
+    if (!prima || stato === "DRAFT") await spedisciFattura(idFattura);
+    const esito = await registraPagamento(idFattura, { metodo, nota });
+    return { gia: esito?.giaFatto === true, segnata: true };
+  } catch (errore) {
+    /* `obbligatorio` distingue i due mondi, e la differenza è tutta qui.
+
+       Per un'iscrizione ONLINE questo passo è la verità stessa: se PayPal non
+       registra il pagamento, non si sa se quei soldi esistono. L'errore sale.
+
+       Per un modulo CARTACEO no. Quei soldi sono nel cassetto — li ha contati
+       una persona al banchetto, c'è un foglio firmato che lo dice — e la
+       fattura è soltanto il posto dove li stiamo annotando. Se PayPal si
+       rifiuta di annotarli, il fatto non cambia: l'iscrizione entra lo stesso,
+       e l'elenco la conta pagata perché è di carta, non perché PayPal è
+       riuscito a scriverlo. Far fallire il riporto qui vorrebbe dire perdere
+       una persona vera e dei soldi veri per un capriccio di un servizio. */
+    if (obbligatorio) throw errore;
+    console.error(`fattura ${idFattura}: contante non segnato su PayPal (${errore.message}) — l'iscrizione resta, la carta è pagata comunque`);
+    return { gia: false, segnata: false, perche: errore.message };
+  }
 }
 
 /* ── Un modulo cartaceo riportato a mano ──────────────────────────────────
@@ -554,9 +593,10 @@ async function riporta(req, res) {
      Se questo passo non riesce, l'errore sale e il foglio NON risulta
      riportato: meglio riprovare col foglio in mano che una riga in elenco
      che dice «da incassare» con i soldi già nel cassetto. */
-  await portaAPagata(idFattura, {
+  const segno = await portaAPagata(idFattura, {
     metodo: "CASH",
     nota: `Contanti al banchetto — modulo cartaceo n. ${modulo}`,
+    obbligatorio: false,
   });
 
   /* La ricevuta parte SUBITO, appena il foglio è confermato, e parte da sé:
@@ -624,9 +664,15 @@ async function incassa(req, res) {
      porta `portaAPagata`, che guarda lo stato e fa solo le chiamate che quello
      stato consente. Serve alle bozze rimaste indietro: quei soldi sono stati
      presi davvero, e su una bozza questo tasto falliva ogni volta. */
+  /* Su un modulo cartaceo questo tasto non dovrebbe nemmeno comparire — la
+     carta è già pagata — ma se qualcuno ci arriva lo stesso, da una scheda
+     aperta prima, non deve trovare un errore: il fatto che vuole ottenere è
+     già vero. Si prova a scriverlo su PayPal per tenere le due cose allineate,
+     e se PayPal dice di no pazienza, perché l'elenco non gliel'ha mai chiesto. */
   const esito = await portaAPagata(fattura.id, {
     metodo: "CASH",
     nota: "Contanti incassati al ritrovo, prima della partenza",
+    obbligatorio: !daCartaceo(fattura?.detail?.invoice_number),
   });
 
   /* Che PayPal non abbia gridato non vuol dire che abbia scritto. Le scuse

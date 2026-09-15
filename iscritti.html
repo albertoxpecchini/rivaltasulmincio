@@ -1477,8 +1477,17 @@ html.rsm-still .sb-is-frec { transition: none; }
     inner.appendChild(corpo);
 
     /* Il tasto del contante: fuori dalla testata premibile, e visibile senza
-       aprire niente. È il gesto che si fa di corsa. */
-    if (!i.pagato) {
+       aprire niente. È il gesto che si fa di corsa.
+
+       Sui moduli cartacei non compare mai, e non è una svista: la carta è già
+       pagata per definizione — al banchetto i soldi si prendono lì, e il
+       foglio ha «Totale versato» compilato con la firma sotto. Un tasto che
+       chiede di incassare qualcosa che è già stato incassato può solo
+       confondere chi sta al banco, o fallire. La condizione è doppia apposta:
+       `i.pagato` lo copre già, perché l'elenco conta pagata ogni riga di
+       carta, ma scriverlo anche qui vuol dire che il tasto non può tornare da
+       nessuna strada. */
+    if (!i.pagato && !i.modulo) {
       var tasto = document.createElement("button");
       tasto.type = "button";
       tasto.className = "sb-btn sb-btn--secondary sb-is-incassa";
