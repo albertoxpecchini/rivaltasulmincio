@@ -111,7 +111,7 @@ let scritte;
 let creata;
 let mandata;
 
-function stubFetch(pagine, { rotto = false } = {}) {
+function stubFetch(pagine, { rotto = false, pagamentoRifiutato = false } = {}) {
   let i = 0;
   return async (url, o = {}) => {
     const u = String(url);
@@ -137,6 +137,17 @@ function stubFetch(pagine, { rotto = false } = {}) {
 
     if (u.includes("/payments") && o.method === "POST") {
       scritte.push({ url: u, corpo: JSON.parse(o.body) });
+      /* PayPal che dice di no. Il caso da cui nasce la prova qui sotto:
+         una fattura in uno stato che non accetta pagamenti. Prima il
+         banco rispondeva 200 sempre, e così il rifiuto vero non lo
+         provava nessuno. */
+      if (pagamentoRifiutato) {
+        return risposta(422, {
+          name: "UNPROCESSABLE_ENTITY",
+          message: "Invoice is not in a state to record payment",
+          details: [{ issue: "INVOICE_STATE_NOT_ALLOWED" }],
+        });
+      }
       return risposta(200, {});
     }
 
@@ -197,7 +208,7 @@ function finestra() {
 let passate = 0;
 let fallite = 0;
 
-async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = {}, pagine = [], rotto = false, atteso }) {
+async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = {}, pagine = [], rotto = false, pagamentoRifiutato = false, atteso }) {
   process.env.PAYPAL_CLIENT_ID = "finto";
   process.env.PAYPAL_CLIENT_SECRET = "finto";
   process.env.ISCRITTI_CHIAVE = CHIAVE;
@@ -209,7 +220,7 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   scritte = [];
   creata = null;
   mandata = null;
-  global.fetch = stubFetch(pagine, { rotto });
+  global.fetch = stubFetch(pagine, { rotto, pagamentoRifiutato });
 
   const req = {
     method: metodo,
@@ -230,6 +241,7 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   chiedi("codice", res.codice);
   chiedi("incompleti", res.corpo?.incompleti);
   chiedi("incassatoCent", res.corpo?.incassatoCent);
+  chiedi("incassata", res.corpo?.incassata);
   chiedi("daIncassareCent", res.corpo?.daIncassareCent);
   chiedi("persone", res.corpo?.persone);
   chiedi("illeggibili", res.corpo?.illeggibili);
@@ -410,6 +422,24 @@ await prova("segna incassato → una scrittura sola, metodo contanti", {
   corpo: { fattura: "INV2-2" },
   pagine: [[inContanti(2)]],
   atteso: { codice: 200, scritte: 1, metodoPagamento: "CASH" },
+});
+
+/* Il guasto del 15 settembre: il tasto «segna incassati» non segnava
+   niente. PayPal rifiutava la scrittura, `registraPagamento` tornava
+   indietro con la sua scusa in mano, e `incassa` non la guardava nemmeno:
+   rispondeva `incassata: true` lo stesso. La pagina diceva fatto, si
+   ricaricava, e la riga era ancora lì da incassare — senza che niente,
+   da nessuna parte, dicesse perchè.
+
+   Questa prova tiene chiusa quella porta: se PayPal dice di no, chi sta al
+   banchetto lo deve leggere. */
+await prova("PayPal rifiuta l'incasso — non si risponde «fatto»", {
+  chiave: CHIAVE,
+  metodo: "POST",
+  corpo: { fattura: "INV2-2" },
+  pagine: [[inContanti(2)]],
+  pagamentoRifiutato: true,
+  atteso: { codice: 502, incassata: undefined },
 });
 
 await prova("segnare due volte non scrive due volte", {
@@ -667,6 +697,74 @@ function verifica(nome, ok, extra) {
   const res = await riporta({ ...FOGLIO, modulo: "" });
   verifica("senza il numero del modulo non si riporta niente",
     res.codice === 400 && /numero del modulo/.test(res.corpo?.errore || "") && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* — Il foglio con più maggiorenni, e i bambini che non pagano —
+   Il difetto del 15 settembre: al banchetto una coppia riempie un foglio
+   solo, e questa porta accettava un maggiorenne soltanto. Chi ricopiava
+   doveva inventarsi due iscrizioni per una firma sola — e il modulo online,
+   intanto, i quattro adulti li accettava già da nove giorni. */
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi", dataNascita: "1982-11-08", codiceFiscale: "BNCGRG82S08F205Z" }],
+  });
+  const voci = (creata?.items || []).map((v) => v.description);
+  verifica("un foglio con due maggiorenni: 25 €, tre persone, ruoli A B M",
+    res.codice === 200 &&
+    res.corpo?.persone === 3 &&
+    res.corpo?.totaleCent === 2500 &&
+    voci.length === 3 &&
+    voci[0].startsWith("A|") && voci[1].startsWith("B|") && voci[2].startsWith("M|"),
+    `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
+}
+
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Giorgio", cognome: "Bianchi", dataNascita: "1982-11-08", codiceFiscale: "" }],
+  });
+  verifica("il secondo maggiorenne senza codice fiscale: no, come sul sito",
+    res.codice === 400 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "Rebecca", cognome: "Rossi", dataNascita: "1985-03-11", codiceFiscale: "RSSRCC85C51F205X" }],
+  });
+  verifica("la stessa persona due volte sullo stesso foglio: no",
+    res.codice === 400 && /già/.test(res.corpo?.errore || "") && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
+/* I bambini sotto i 6 anni: prima non si potevano scrivere da nessuna parte,
+   né qui né sul sito. Adesso entrano, valgono zero euro e si contano fra le
+   persone — che è tutto il punto: al banco delle sacche sono facce vere. */
+{
+  const res = await riporta({
+    ...FOGLIO,
+    piccoli: [{ nome: "Sara", cognome: "Rossi", dataNascita: "2022-07-19" }],
+  });
+  const voci = (creata?.items || []).map((v) => v.description);
+  const zero = (creata?.items || []).find((v) => String(v.description).startsWith("P|"));
+  verifica("un bambino sotto i 6 anni: tre persone, 15 €, la sua voce vale zero",
+    res.codice === 200 &&
+    res.corpo?.persone === 3 &&
+    res.corpo?.totaleCent === 1500 &&
+    voci.length === 3 &&
+    zero?.unit_amount?.value === "0.00",
+    `${res.codice} ${JSON.stringify(res.corpo)} — voci ${JSON.stringify(voci)}`);
+}
+
+{
+  const res = await riporta({
+    ...FOGLIO,
+    piccoli: [{ nome: "Luca", cognome: "Rossi", dataNascita: "2015-04-02" }],
+  });
+  verifica("un bambino di undici anni messo fra i piccoli: no, e gli si dice dove va",
+    res.codice === 400 && /6 ai 17/.test(res.corpo?.errore || "") && creata === null,
     `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
 

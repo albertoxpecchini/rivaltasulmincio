@@ -757,8 +757,8 @@
 /* I contenitori delle righe. Vuoti non occupano niente — un modulo appena
    aperto avrebbe altrimenti due buchi dove non c'è ancora nessuno — e pieni
    tengono le righe distanziate invece di farle toccare bordo a bordo. */
-#cr-adulti, #cr-minori { display: grid; gap: 0.8rem; }
-#cr-adulti:empty, #cr-minori:empty { display: none; }
+#cr-adulti, #cr-minori, #cr-piccoli { display: grid; gap: 0.8rem; }
+#cr-adulti:empty, #cr-minori:empty, #cr-piccoli:empty { display: none; }
 
 /* Il riquadro di una persona in più. Si chiama «min» perché all'inizio i
    minori erano gli unici che si potevano aggiungere; adesso lo porta anche
@@ -1293,7 +1293,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
          nelle tre sezioni che seguono. -->
     <div class="sb-sechead">
       <h2>Iscriviti alla camminata</h2>
-      <p>Un maggiorenne iscrive sé stesso e <strong>i bambini che accompagna</strong>, e può portare con sé altri adulti. <strong>10 €</strong> dai 18 anni, <strong>5 €</strong> dai 6 ai 17, <strong>sotto i 6 anni si cammina gratis</strong> e non serve iscriverli. Ci vuole un minuto, e si paga adesso o al ritrovo.</p>
+      <p>Un maggiorenne iscrive sé stesso e <strong>i bambini che accompagna</strong>, e può portare con sé altri adulti. <strong>10 €</strong> dai 18 anni, <strong>5 €</strong> dai 6 ai 17, <strong>sotto i 6 anni si cammina gratis</strong>. Ci vuole un minuto, e si paga adesso o al ritrovo.</p>
     </div>
 
     <p class="sb-cw-scad">Le iscrizioni online chiudono <strong>venerdì 18 settembre alle 23:59</strong>. Dopo, e per chi preferisce la carta, c'è il banchetto in piazza: <a href="/color-walk-modulo">modulo cartaceo</a> e contanti, <strong>martedì 15 dalle 17:30</strong> e <strong>domenica 20 dalle 15:30</strong>. In tutto ci sono <strong>300 posti</strong>.</p>
@@ -1395,11 +1395,25 @@ html.rsm-still .sb-cw-segno { transition: none; }
           <p class="sb-cw-gruppo-t">Chi cammina con te <span class="sb-cw-facolt">facoltativo</span></p>
 
           <p class="sb-cw-gruppo-s">I bambini che accompagni</p>
-          <p class="sb-cw-gruppo-p">Dai 6 ai 17 anni, <strong>5 € ciascuno</strong>, fino a otto. <strong>Sotto i 6 anni non serve iscriverli</strong>: camminano gratis con te.</p>
+          <p class="sb-cw-gruppo-p">Dai 6 ai 17 anni, <strong>5 € ciascuno</strong>, fino a otto.</p>
           <div id="cr-minori"></div>
           <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
             <span>Aggiungi un bambino</span>
+          </button>
+
+          <!-- I più piccoli. Non pagano, e fino al 15 settembre non si potevano
+               nemmeno scrivere: una data sotto i 6 anni veniva respinta, chi
+               compilava toglieva la riga, e di quel bambino non restava traccia
+               da nessuna parte — ma alla camminata ci veniva lo stesso. Adesso
+               hanno la loro fila, gratis, e al banco delle sacche si sa quanti
+               sono davvero. -->
+          <p class="sb-cw-gruppo-s">I bambini sotto i 6 anni</p>
+          <p class="sb-cw-gruppo-p"><strong>Camminano gratis</strong>, e non serve il loro codice fiscale. Scrivili lo stesso: così sappiamo quanti siete al ritrovo.</p>
+          <div id="cr-piccoli"></div>
+          <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu-piccolo">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Aggiungi un bambino sotto i 6 anni</span>
           </button>
 
           <p class="sb-cw-gruppo-s">Altri adulti</p>
@@ -1593,6 +1607,51 @@ html.rsm-still .sb-cw-segno { transition: none; }
               <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
             </div>
             <p class="sb-cw-aiuto" data-aiuto="m-cf">Se ce l'hai sottomano. Chi risponde di lui sei tu, e il tuo lo abbiamo già.</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Un bambino sotto i 6 anni. Tre campi e non quattro: il codice fiscale
+           non si chiede a chi non paga e di cui risponde comunque l'adulto che
+           lo porta. La data serve lo stesso, ed è l'unica cosa che distingue un
+           bambino gratis da un ragazzo da 5 €. -->
+      <template id="cr-modello-piccolo">
+        <div class="sb-cw-min" data-piccolo>
+          <div class="sb-cw-min-testa">
+            <span class="sb-cw-min-n" data-etichetta>Bambino</span>
+            <button type="button" class="sb-cw-min-via" data-togli>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              <span>Togli</span>
+            </button>
+          </div>
+
+          <div class="sb-cw-min-due">
+            <div class="sb-cw-campo" data-campo="p-nome">
+              <label data-per="p-nome">Nome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="p-nome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="p-nome"></p>
+            </div>
+
+            <div class="sb-cw-campo" data-campo="p-cognome">
+              <label data-per="p-cognome">Cognome</label>
+              <div class="sb-cw-box">
+                <input type="text" data-id="p-cognome" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="80" required>
+                <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
+              </div>
+              <p class="sb-cw-aiuto" data-aiuto="p-cognome"></p>
+            </div>
+          </div>
+
+          <div class="sb-cw-campo" data-campo="p-nascita">
+            <label data-per="p-nascita">Data di nascita</label>
+            <div class="sb-cw-box">
+              <input type="date" data-id="p-nascita" required min="2008-09-21" max="2026-09-20">
+              <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
+            </div>
+            <p class="sb-cw-aiuto" data-aiuto="p-nascita">Chi il 20 settembre non ha ancora 6 anni.</p>
           </div>
         </div>
       </template>
@@ -1823,6 +1882,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
   var QUOTA_MINORE = 5;
   var MAX_MINORI = 8;
   var MAX_ADULTI = 4; // capofila compreso: gli accompagnati sono tre
+  var MAX_PICCOLI = 8; // sotto i 6 anni: non pagano, ma si contano
   var GIORNO_EVENTO = "2026-09-20";
   /* Le iscrizioni chiudono alle 23:59 del 18 settembre, ora italiana: la
      stessa riga che taglia in /api/iscrizione-color-walk. Qui serve solo a
@@ -2091,6 +2151,11 @@ html.rsm-still .sb-cw-segno { transition: none; }
   var righeA = [];
   var semeA = 0;
 
+  /* E le righe dei bambini sotto i 6 anni, per la stessa ragione: `ordine()`
+     qui sotto le legge insieme alle altre due. */
+  var righeP = [];
+  var semeP = 0;
+
   /* L'ordine in cui si cammina fra i campi con il tasto invio, e in cui si
      cerca il primo sbagliato all'invio: quello del documento. Le note stanno
      in fondo perché in fondo stanno nel modulo.
@@ -2107,6 +2172,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
     fila = CAMPI.slice();
     for (var i = 0; i < righeA.length; i++) fila = fila.concat(righeA[i].campi);
     for (var k = 0; k < righe.length; k++) fila = fila.concat(righe[k].campi);
+    for (var z = 0; z < righeP.length; z++) fila = fila.concat(righeP[z].campi);
     fila.push(CAMPO_NOTE);
     return fila;
   }
@@ -2422,6 +2488,117 @@ html.rsm-still .sb-cw-segno { transition: none; }
     }
   });
 
+  /* ══ E i bambini sotto i 6 anni ═════════════════════════════════════════
+     La terza copia della stessa macchina, per la stessa ragione detta sopra:
+     si duplica invece di generalizzare, finché la gente si sta iscrivendo.
+
+     Le differenze sono tre: gli id partono per «p-», i campi sono tre invece
+     di quattro — niente codice fiscale a chi non paga — e la data vuole meno
+     di 6 anni compiuti il 20 settembre. Non entrano in nessun totale: la loro
+     quota è zero, e uno zero non si somma. */
+  var modelloP = document.getElementById("cr-modello-piccolo");
+  var contenitoreP = document.getElementById("cr-piccoli");
+  var tastoPiuP = document.getElementById("cr-piu-piccolo");
+  var etichettaPiuP = tastoPiuP.querySelector("span");
+
+  function numeraRigheP() {
+    for (var i = 0; i < righeP.length; i++) {
+      testo(righeP[i].etichetta, "Bambino " + (i + 1));
+    }
+    tastoPiuP.disabled = righeP.length >= MAX_PICCOLI;
+    testo(etichettaPiuP, righeP.length >= MAX_PICCOLI
+      ? "Massimo " + MAX_PICCOLI + " per iscrizione"
+      : (righeP.length ? "Aggiungi un altro bambino sotto i 6 anni" : "Aggiungi un bambino sotto i 6 anni"));
+  }
+
+  function aggiungiPiccolo(colFuoco, valori) {
+    if (righeP.length >= MAX_PICCOLI) return null;
+
+    var frammento = modelloP.content.cloneNode(true);
+    var nodo = frammento.querySelector("[data-piccolo]");
+    var n = ++semeP;
+
+    var campiDom = nodo.querySelectorAll("[data-id]");
+    for (var i = 0; i < campiDom.length; i++) {
+      var el = campiDom[i];
+      var chiave = el.getAttribute("data-id");
+      el.id = "cr-" + chiave + "-" + n;
+      var label = nodo.querySelector('[data-per="' + chiave + '"]');
+      if (label) label.setAttribute("for", el.id);
+      var aiuto = nodo.querySelector('[data-aiuto="' + chiave + '"]');
+      if (aiuto) {
+        aiuto.id = "cr-" + chiave + "-" + n + "-aiuto";
+        el.setAttribute("aria-describedby", aiuto.id);
+      }
+    }
+
+    function campoRigaP(chiave, obbl, prova, errore, extra) {
+      var s = {
+        id: chiave,
+        obbl: obbl,
+        prova: prova,
+        errore: errore,
+        el: nodo.querySelector('[data-id="' + chiave + '"]'),
+        campo: nodo.querySelector('[data-campo="' + chiave + '"]'),
+        aiuto: nodo.querySelector('[data-aiuto="' + chiave + '"]')
+      };
+      if (extra) for (var k in extra) s[k] = extra[k];
+      return campoDa(s);
+    }
+
+    var riga = {
+      nodo: nodo,
+      etichetta: nodo.querySelector("[data-etichetta]"),
+      campi: [
+        campoRigaP("p-nome", true, function (v) { return v.length >= 2; }, "Scrivi il nome."),
+        campoRigaP("p-cognome", true, function (v) { return v.length >= 2; }, "Scrivi il cognome."),
+        campoRigaP("p-nascita", true,
+          function (v) { return dataValida(v) && etaAllEvento(v) < 6; },
+          function (v) {
+            if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
+            return "Il 20 settembre ha già 6 anni: va messo fra i bambini dai 6 ai 17, con la quota da 5 €.";
+          })
+      ]
+    };
+
+    for (var j = 0; j < riga.campi.length; j++) collega(riga.campi[j]);
+
+    nodo.querySelector("[data-togli]").addEventListener("click", function () {
+      var dove = righeP.indexOf(riga);
+      if (dove > -1) righeP.splice(dove, 1);
+      nodo.parentNode && nodo.parentNode.removeChild(nodo);
+      rimescola();
+      numeraRigheP();
+      programma();
+      segnaBozza();
+    });
+
+    contenitoreP.appendChild(nodo);
+    righeP.push(riga);
+    rimescola();
+
+    if (valori) {
+      riga.campi[0].el.value = valori.nome || "";
+      riga.campi[1].el.value = valori.cognome || "";
+      riga.campi[2].el.value = valori.nascita || "";
+    }
+
+    numeraRigheP();
+    programma();
+    if (colFuoco) vaiA(riga.campi[0]);
+    return riga;
+  }
+
+  tastoPiuP.addEventListener("click", function () {
+    try {
+      aggiungiPiccolo(true);
+      segnaBozza();
+    } catch (guaio) {
+      mostra("errore", "Non è stato possibile aggiungere la riga. Puoi mandare l'iscrizione e scrivere a color-walk@rivaltasulmincio.it per aggiungere chi cammina con te.");
+      if (window.console && window.console.error) window.console.error("piccolo:", guaio);
+    }
+  });
+
   /* Come ha scelto di pagare. Il valore che conta è quello che arriva alla
      funzione: qui serve solo a cambiare la scritta del tasto. */
   var sceltePag = form.querySelectorAll('input[name="pagamento"]');
@@ -2475,6 +2652,14 @@ html.rsm-still .sb-cw-segno { transition: none; }
       vociConto.push(quanti === 1
         ? "1 bambino " + QUOTA_MINORE + " €"
         : quanti + " bambini " + QUOTA_MINORE + " € ciascuno");
+    }
+    /* I più piccoli si scrivono nel conto e non nella somma: chi legge deve
+       vedere che li abbiamo presi — è per questo che li ha scritti — senza
+       che compaia un euro in più da nessuna parte. */
+    if (righeP.length) {
+      vociConto.push(righeP.length === 1
+        ? "1 bambino sotto i 6 anni gratis"
+        : righeP.length + " bambini sotto i 6 anni gratis");
     }
     testo(contoVoci, vociConto.join(" · "));
     testo(contoSomma, somma + " €");
@@ -2596,7 +2781,8 @@ html.rsm-still .sb-cw-segno { transition: none; }
         p: comePaga(),
         c: consenso.checked,
         b: [],
-        m: []
+        m: [],
+        k: []
       };
       var vuoto = true;
       for (var i = 0; i < CAMPI.length; i++) {
@@ -2620,6 +2806,15 @@ html.rsm-still .sb-cw-segno { transition: none; }
           cognome: righe[j].campi[1].el.value,
           nascita: righe[j].campi[2].el.value,
           cf: righe[j].campi[3].el.value
+        });
+        vuoto = false;
+      }
+      /* I piccoli hanno tre campi e non quattro: niente codice fiscale. */
+      for (var z = 0; z < righeP.length; z++) {
+        d.k.push({
+          nome: righeP[z].campi[0].el.value,
+          cognome: righeP[z].campi[1].el.value,
+          nascita: righeP[z].campi[2].el.value
         });
         vuoto = false;
       }
@@ -2660,6 +2855,10 @@ html.rsm-still .sb-cw-segno { transition: none; }
     for (var h = 0; h < altriAdulti.length && h < MAX_ADULTI - 1; h++) aggiungiAdulto(false, altriAdulti[h]);
     var minori = d.m || [];
     for (var j = 0; j < minori.length && j < MAX_MINORI; j++) aggiungiMinore(false, minori[j]);
+    /* E `k` è nata dopo `b`, per la stessa ragione e con la stessa cautela:
+       una bozza salvata prima di oggi non ce l'ha. */
+    var piccoli = d.k || [];
+    for (var z = 0; z < piccoli.length && z < MAX_PICCOLI; z++) aggiungiPiccolo(false, piccoli[z]);
     return true;
   }
 
@@ -3021,6 +3220,16 @@ html.rsm-still .sb-cw-segno { transition: none; }
       });
     }
 
+    var piccoli = [];
+    for (var z = 0; z < righeP.length; z++) {
+      piccoli.push({
+        nome: righeP[z].campi[0].el.value,
+        cognome: righeP[z].campi[1].el.value,
+        dataNascita: righeP[z].campi[2].el.value,
+        codiceFiscale: ""
+      });
+    }
+
     var dati = {
       nome: PER_ID.nome.el.value,
       cognome: PER_ID.cognome.el.value,
@@ -3033,7 +3242,8 @@ html.rsm-still .sb-cw-segno { transition: none; }
       pagamento: comePaga(),
       sito: trappola ? trappola.value : "",
       adulti: adulti,
-      minori: minori
+      minori: minori,
+      piccoli: piccoli
     };
     /* La sigla si calcola qui, sull'oggetto già pronto: sessione più impronta
        di quello che si sta mandando. Rimandare lo stesso modulo dà la stessa

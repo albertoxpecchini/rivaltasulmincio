@@ -2533,6 +2533,10 @@ const compilaMail = (nome) => {
     "{{IMPORTO_ADULTI}}",
     "{{VOCE_RAGAZZI}}",
     "{{IMPORTO_RAGAZZI}}",
+    /* I bambini sotto i 6 anni. La cifra accanto non è un segnaposto: dice
+       «gratis», ed è scritta nel modello perché uno zero in euro in mezzo a
+       una ricevuta si legge come un conto sbagliato. */
+    "{{VOCE_PICCOLI}}",
     "{{IMPORTO}}",
     "{{MOTIVO}}",
     /* Il numero del foglio, quando l'iscrizione è stata ricopiata da un modulo

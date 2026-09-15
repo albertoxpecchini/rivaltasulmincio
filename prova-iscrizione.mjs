@@ -329,9 +329,9 @@ await prova(
 await prova("data che non esiste — 31 febbraio", { ...BASE, dataNascita: "1985-02-31" }, (r) => r.codice === 400);
 
 await prova(
-  "minore sotto i 6 anni: non si iscrive, si viene e basta",
+  "un bambino sotto i 6 anni messo fra i 6-17: gli si dice dove va",
   { ...BASE, minori: [{ nome: "Bea", cognome: "Rossi", dataNascita: "2021-05-01" }] },
-  (r) => r.codice === 400 && /gratis/.test(r.corpo.errore)
+  (r) => r.codice === 400 && /sotto i 6 anni/.test(r.corpo.errore)
 );
 
 await prova(
@@ -378,7 +378,48 @@ await prova(
 await prova(
   "minore che li compie il giorno dopo: no",
   { ...BASE, minori: [{ nome: "Bea", cognome: "Rossi", dataNascita: "2020-09-21" }] },
-  (r) => r.codice === 400 && /gratis/.test(r.corpo.errore)
+  (r) => r.codice === 400 && /sotto i 6 anni/.test(r.corpo.errore)
+);
+
+console.log("\n── I bambini sotto i 6 anni ───────────────────────────────────");
+
+/* Fino al 15 settembre una data sotto i 6 anni si poteva solo togliere: chi
+   compilava cancellava la riga, e di quel bambino non restava traccia da
+   nessuna parte — ma alla camminata ci veniva lo stesso. */
+await prova(
+  "un bambino sotto i 6 anni: passa, vale zero euro e ha la sua voce",
+  { ...BASE, piccoli: [{ nome: "Sara", cognome: "Rossi", dataNascita: "2022-07-19" }] },
+  (r, i) => {
+    const v = voci(i);
+    return r.codice === 200 && v.length === 2 && v[1].startsWith("P|") &&
+      i.fattura.items[1].unit_amount.value === "0.00";
+  }
+);
+
+await prova(
+  "un bambino sotto i 6 anni non sposta il totale: 10 € e basta",
+  { ...BASE, pagamento: "contanti", piccoli: [{ nome: "Sara", cognome: "Rossi", dataNascita: "2022-07-19" }] },
+  (r) => r.codice === 200 && r.corpo.totaleCent === 1000 && r.corpo.persone === 2
+);
+
+await prova(
+  "chi ha già 6 anni messo fra i piccoli: no, e gli si dice dove va",
+  { ...BASE, piccoli: [{ nome: "Bea", cognome: "Rossi", dataNascita: "2020-09-20" }] },
+  (r) => r.codice === 400 && /6 ai 17/.test(r.corpo.errore)
+);
+
+await prova(
+  "nove bambini sotto i 6 anni in un colpo solo",
+  { ...BASE, piccoli: Array.from({ length: 9 }, (_, i) => ({ nome: "P" + i, cognome: "Rossi", dataNascita: "2022-07-19" })) },
+  (r) => r.codice === 400 && /massimo 8/.test(r.corpo.errore)
+);
+
+/* `piccoli` che arriva storto non deve buttare giù la funzione: il corpo
+   della richiesta lo scrive chi vuole, non solo il nostro modulo. */
+await prova(
+  "un «piccoli» che non è un elenco si ignora, non rompe niente",
+  { ...BASE, piccoli: "due bambini" },
+  (r) => r.codice === 200
 );
 
 console.log("\n── Due maggiorenni in una sola iscrizione ─────────────────────");

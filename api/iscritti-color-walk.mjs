@@ -66,7 +66,9 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import {
   EVENTO,
+  MAX_ADULTI,
   MAX_MINORI,
+  MAX_PICCOLI,
   QUOTA_ADULTO_CENT,
   QUOTA_MINORE_CENT,
   annullata,
@@ -215,7 +217,7 @@ async function elenco(res) {
       continue;
     }
 
-    let { adulto, adulti, minori } = personeDa(f);
+    let { adulto, adulti, minori, piccoli } = personeDa(f);
 
     /* Le voci sono la fattura: senza, non si sa chi è iscritto. La ricerca
        dovrebbe restituirle — gliele chiediamo — ma se per qualsiasi ragione
@@ -229,7 +231,7 @@ async function elenco(res) {
     if (!adulto && riletture < MAX_RILETTURE) {
       riletture++;
       const piena = await leggiFattura(f.id).catch(() => null);
-      if (piena) ({ adulto, adulti, minori } = personeDa(piena));
+      if (piena) ({ adulto, adulti, minori, piccoli } = personeDa(piena));
     }
 
     /* E se ancora non si legge, la riga compare lo stesso. Una fattura che
@@ -257,6 +259,7 @@ async function elenco(res) {
            esiste apposta per dire che qualcosa non va. */
         adulti: [],
         minori: [],
+        piccoli: [],
         quandoISO: quandoDi(f),
         importoCent: Math.round(Number(f?.amount?.value || 0) * 100),
         pagato: pagata,
@@ -296,6 +299,7 @@ async function elenco(res) {
         dataNascita,
         codiceFiscale,
       })),
+      piccoli: piccoli.map(({ nome, cognome, dataNascita }) => ({ nome, cognome, dataNascita })),
       quandoISO: quandoDi(f),
       importoCent: importoDi(f, [adulto, ...adulti, ...minori]),
       pagato: pagata,
@@ -324,7 +328,10 @@ async function elenco(res) {
     /* Due numeri diversi e tutti e due veri: quante volte è stato compilato
        il modulo, e quante persone cammineranno. È il secondo a doversi
        fermare sotto il tetto. */
-    persone: iscritti.reduce((n, i) => n + 1 + (i.adulti || []).length + i.minori.length, 0),
+    persone: iscritti.reduce(
+      (n, i) => n + 1 + (i.adulti || []).length + i.minori.length + (i.piccoli || []).length,
+      0
+    ),
     tetto: TETTO_PARTECIPANTI,
     /* Quello che è già sul conto, e quello che si raccoglie al banchetto la
        mattina del 20: due cifre separate perché sono due cose separate, e
@@ -408,6 +415,30 @@ async function riporta(req, res) {
     return res.status(400).json({ errore: "l'email scritta sul foglio non si legge come un indirizzo: correggila o lasciala vuota" });
   }
 
+  /* Gli altri maggiorenni del foglio. Stessa regola del modulo online — il
+     codice fiscale è obbligatorio, perché ognuno di loro risponde di sé — e
+     stesso tetto. Che fino al 15 settembre questa porta non li accettasse era
+     il difetto: al banchetto una coppia riempie un foglio solo, e chi lo
+     ricopiava doveva inventarsi due iscrizioni per una firma sola. */
+  const grezziA = Array.isArray(c.adulti) ? c.adulti : [];
+  if (grezziA.length > MAX_ADULTI - 1) {
+    return res.status(400).json({ errore: `su un foglio ci stanno al massimo ${MAX_ADULTI} maggiorenni` });
+  }
+  const adulti = [];
+  const codiciVisti = [adulto.codiceFiscale];
+  for (let i = 0; i < grezziA.length; i++) {
+    const chi = `Adulto ${i + 2}`;
+    const esito = leggiPersona(grezziA[i], { minimo: 18, massimo: 120, chi, cfObbligatorio: true });
+    if (esito.errore) return res.status(400).json({ errore: esito.errore });
+    if (codiciVisti.includes(esito.persona.codiceFiscale)) {
+      return res.status(400).json({
+        errore: `${chi}: questo codice fiscale è già su questo foglio — ogni persona si iscrive una volta sola`,
+      });
+    }
+    codiciVisti.push(esito.persona.codiceFiscale);
+    adulti.push(esito.persona);
+  }
+
   const grezzi = Array.isArray(c.minori) ? c.minori : [];
   if (grezzi.length > MAX_MINORI) {
     return res.status(400).json({ errore: `su un foglio ci stanno al massimo ${MAX_MINORI} minori` });
@@ -419,7 +450,20 @@ async function riporta(req, res) {
     minori.push(esito.persona);
   }
 
-  const totaleCent = QUOTA_ADULTO_CENT + minori.length * QUOTA_MINORE_CENT;
+  /* E i bambini sotto i 6 anni, che sul foglio ci sono e non pagano. */
+  const grezziP = Array.isArray(c.piccoli) ? c.piccoli : [];
+  if (grezziP.length > MAX_PICCOLI) {
+    return res.status(400).json({ errore: `su un foglio ci stanno al massimo ${MAX_PICCOLI} bambini sotto i 6 anni` });
+  }
+  const piccoli = [];
+  for (let i = 0; i < grezziP.length; i++) {
+    const esito = leggiPersona(grezziP[i], { minimo: 0, massimo: 5, chi: `Bambino ${i + 1}`, cfObbligatorio: false });
+    if (esito.errore) return res.status(400).json({ errore: esito.errore });
+    piccoli.push(esito.persona);
+  }
+
+  const totaleCent =
+    QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
 
   /* L'ora che si registra è quella in cui il foglio è stato ricopiato, non
      quella della firma: è l'unica delle due che questa funzione sa per certo.
@@ -428,8 +472,9 @@ async function riporta(req, res) {
   const corpo = componiFattura({
     numero,
     adulto,
-    adulti: [],
+    adulti,
     minori,
+    piccoli,
     email: email || ORGANIZZATORI,
     modalita: "contanti",
     telefono: pulisci(c.telefono, 40),
@@ -483,7 +528,7 @@ async function riporta(req, res) {
     numero,
     id: idFattura,
     nome: `${adulto.nome} ${adulto.cognome}`,
-    persone: 1 + minori.length,
+    persone: 1 + adulti.length + minori.length + piccoli.length,
     totaleCent,
     spedita,
   });
@@ -510,12 +555,22 @@ async function incassa(req, res) {
     return res.status(200).json({ incassata: true, gia: true, id: fattura.id });
   }
 
-  await registraPagamento(fattura.id, {
+  const esito = await registraPagamento(fattura.id, {
     metodo: "CASH",
     nota: "Contanti incassati al ritrovo, prima della partenza",
   });
 
-  return res.status(200).json({ incassata: true, gia: false, id: fattura.id });
+  /* Che PayPal non abbia gridato non vuol dire che abbia scritto. Le scuse
+     che `paypal()` tollera tornano indietro come `giaFatto`, e per due di
+     loro — «era già pagata» — va benissimo così: chi ha premuto il tasto
+     voleva quei soldi segnati, e segnati sono.
+
+     Il controllo vero lo fa `registraPagamento`, che da oggi NON tollera
+     più lo stato sbagliato: quello sale come errore e lo prende il catch
+     del chiamante. Qui si risponde `gia` con sincerità, perché la pagina
+     possa dire «era già segnata» invece di far credere a chi sta al banco
+     di essere stato lui a incassarla adesso. */
+  return res.status(200).json({ incassata: true, gia: esito?.giaFatto === true, id: fattura.id });
 }
 
 /* ── Trovare l'iscrizione su cui si sta per scrivere ──────────────────────

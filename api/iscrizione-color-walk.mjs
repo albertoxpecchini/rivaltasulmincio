@@ -46,6 +46,7 @@
 import {
   MAX_ADULTI,
   MAX_MINORI,
+  MAX_PICCOLI,
   MODALITA,
   annullata,
   QUOTA_ADULTO_CENT,
@@ -148,12 +149,15 @@ async function verifica(req, res) {
     const ordine = incassato?.giaFatto ? await leggiOrdine(id) : incassato;
 
     const voci = ordine?.purchase_units?.[0]?.items || [];
-    const { adulto, adulti, minori } = personeDa({ items: voci });
+    const { adulto, adulti, minori, piccoli } = personeDa({ items: voci });
 
     return res.status(200).json({
       pagato: ordine?.status === "COMPLETED",
       nome: adulto?.nome || "",
-      persone: adulto ? 1 + adulti.length + minori.length : 0,
+      /* I bambini sotto i 6 anni si contano come tutti gli altri: non hanno
+         pagato, ma camminano, e «siete iscritti in 4» deve dire quante
+         persone si presentano al ritrovo. */
+      persone: adulto ? 1 + adulti.length + minori.length + piccoli.length : 0,
     });
   } catch (errore) {
     return res.status(502).json({ errore: String(errore.message || errore) });
@@ -289,6 +293,35 @@ async function iscrivi(req, res) {
     minori.push(esito.persona);
   }
 
+  /* I bambini sotto i 6 anni. Non pagano niente e il codice fiscale non glielo
+     si chiede — di loro risponde l'adulto, già identificato — ma il nome e la
+     data ci vogliono, perché è per averli che questa riga esiste.
+
+     Prima non c'erano affatto: una data sotto i 6 anni veniva respinta e chi
+     compilava toglieva la riga, così il bambino spariva dal sito e alla
+     camminata ci veniva lo stesso. La mattina del 20, al banco delle sacche,
+     erano nomi che l'elenco non conosceva. */
+  const grezziP = Array.isArray(req.body?.piccoli) ? req.body.piccoli : [];
+  if (grezziP.length > MAX_PICCOLI) {
+    return res.status(400).json({
+      errore: `si possono iscrivere al massimo ${MAX_PICCOLI} bambini sotto i 6 anni per volta: per gli altri, compila di nuovo il modulo`,
+    });
+  }
+
+  const piccoli = [];
+  for (let i = 0; i < grezziP.length; i++) {
+    const esito = leggiPersona(grezziP[i], {
+      minimo: 0,
+      massimo: 5,
+      chi: `Bambino ${i + 1}`,
+      cfObbligatorio: false,
+    });
+    if (esito.errore) return res.status(400).json({ errore: esito.errore });
+    piccoli.push(esito.persona);
+  }
+
+  /* I piccoli non entrano nel totale: valgono zero, e sommare zero volte il
+     loro numero sarebbe un modo elaborato di non fare niente. */
   const totaleCent =
     QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
 
@@ -327,6 +360,7 @@ async function iscrivi(req, res) {
       adulto,
       adulti,
       minori,
+      piccoli,
       email,
       modalita,
       telefono,
@@ -398,6 +432,7 @@ async function iscrivi(req, res) {
     const insieme = [
       adulti.length ? `${adulti.length} ${adulti.length === 1 ? "adulto" : "adulti"}` : "",
       minori.length ? `${minori.length} ${minori.length === 1 ? "minore" : "minori"}` : "",
+      piccoli.length ? `${piccoli.length} sotto i 6` : "",
     ]
       .filter(Boolean)
       .join(" + ");
@@ -407,6 +442,7 @@ async function iscrivi(req, res) {
       adulto,
       adulti,
       minori,
+      piccoli,
       descrizione: `Color Walk 20 settembre — ${adulto.nome} ${adulto.cognome}${quante}`,
       /* L'identificativo dell'ordine non si mette qui: ce lo aggiunge PayPal
          al momento di rimandare indietro il browser, come `?token=…`. È

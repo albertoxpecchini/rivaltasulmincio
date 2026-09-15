@@ -1004,8 +1004,14 @@ html.rsm-still .sb-is-frec { transition: none; }
             </div>
           </div>
 
+          <div id="is-cart-adulti"></div>
+          <button type="button" class="sb-btn sb-btn--secondary" id="is-cart-piu-adulto">+ Aggiungi un maggiorenne del foglio</button>
+
           <div id="is-cart-minori"></div>
           <button type="button" class="sb-btn sb-btn--secondary" id="is-cart-piu">+ Aggiungi un minore del foglio</button>
+
+          <div id="is-cart-piccoli"></div>
+          <button type="button" class="sb-btn sb-btn--secondary" id="is-cart-piu-piccolo">+ Aggiungi un bambino sotto i 6 anni</button>
 
           <div class="sb-is-barra">
             <button class="sb-btn sb-btn--primary" type="submit" id="is-cart-manda">Riporta in elenco</button>
@@ -1038,6 +1044,64 @@ html.rsm-still .sb-is-frec { transition: none; }
               <label data-per="cf">Codice fiscale <i>— facoltativo</i></label>
               <input class="sb-is-campo" type="text" data-id="cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off">
             </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Un altro maggiorenne del foglio. Al banchetto una coppia riempie un
+           foglio solo, e fino al 15 settembre da qui non si poteva riportare:
+           chi ricopiava doveva inventarsi due iscrizioni per una firma sola.
+           Il codice fiscale è obbligatorio come nel modulo online, perché
+           ognuno di loro risponde di sé. -->
+      <template id="is-cart-modello-adulto">
+        <div class="sb-is-cart-min" data-min>
+          <div class="sb-is-cart-min-testa">
+            <span class="sb-is-cart-min-n" data-eti>Maggiorenne</span>
+            <button type="button" class="sb-is-cart-via" data-togli>Togli</button>
+          </div>
+          <div class="sb-is-cart-griglia">
+            <div class="sb-is-cart-c">
+              <label data-per="nome">Nome</label>
+              <input class="sb-is-campo" type="text" data-id="nome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="cognome">Cognome</label>
+              <input class="sb-is-campo" type="text" data-id="cognome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="nascita">Data di nascita</label>
+              <input class="sb-is-campo" type="date" data-id="nascita" min="1900-01-01" max="2008-09-20">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="cf">Codice fiscale</label>
+              <input class="sb-is-campo" type="text" data-id="cf" maxlength="16" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Un bambino sotto i 6 anni. Tre campi: non paga, e di lui risponde
+           l'adulto che lo porta. -->
+      <template id="is-cart-modello-piccolo">
+        <div class="sb-is-cart-min" data-min>
+          <div class="sb-is-cart-min-testa">
+            <span class="sb-is-cart-min-n" data-eti>Bambino</span>
+            <button type="button" class="sb-is-cart-via" data-togli>Togli</button>
+          </div>
+          <div class="sb-is-cart-griglia">
+            <div class="sb-is-cart-c">
+              <label data-per="nome">Nome</label>
+              <input class="sb-is-campo" type="text" data-id="nome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="cognome">Cognome</label>
+              <input class="sb-is-campo" type="text" data-id="cognome" autocomplete="off" autocapitalize="words" maxlength="80">
+            </div>
+            <div class="sb-is-cart-c">
+              <label data-per="nascita">Data di nascita</label>
+              <input class="sb-is-campo" type="date" data-id="nascita" min="2020-09-21" max="2026-09-20">
+            </div>
+            <div class="sb-is-cart-c"></div>
           </div>
         </div>
       </template>
@@ -1168,7 +1232,7 @@ html.rsm-still .sb-is-frec { transition: none; }
     inner.className = "sb-panel-inner sb-is-riga";
     card.appendChild(inner);
 
-    var persone = 1 + (i.adulti || []).length + (i.minori || []).length;
+    var persone = 1 + (i.adulti || []).length + (i.minori || []).length + (i.piccoli || []).length;
 
     /* La testata: tutta premibile, apre e chiude il corpo. */
     var capo = document.createElement("button");
@@ -1287,7 +1351,8 @@ html.rsm-still .sb-is-frec { transition: none; }
        identici, e chi consegna dovrebbe fare il conto sulla data di nascita.
        Sono le stesse due parole del CSV, così le due viste dicono uguale. */
     var compagni = (i.adulti || []).map(function (a) { return { p: a, fascia: "maggiorenne" }; })
-      .concat((i.minori || []).map(function (m) { return { p: m, fascia: "6-17 anni" }; }));
+      .concat((i.minori || []).map(function (m) { return { p: m, fascia: "6-17 anni" }; }))
+      .concat((i.piccoli || []).map(function (b) { return { p: b, fascia: "sotto i 6" }; }));
 
     if (compagni.length) {
       var ul = document.createElement("ul");
@@ -1336,7 +1401,7 @@ html.rsm-still .sb-is-frec { transition: none; }
 
     /* Il testo su cui si cerca, preparato una volta sola. Cercare vuol dire
        un indexOf su questa stringa: niente concatenazioni a ogni tasto. */
-    var accompagnati = (i.adulti || []).concat(i.minori || [])
+    var accompagnati = (i.adulti || []).concat(i.minori || []).concat(i.piccoli || [])
       .map(function (p) { return p.nome + " " + p.cognome + " " + (p.codiceFiscale || ""); })
       .join(" ");
 
@@ -1420,7 +1485,8 @@ html.rsm-still .sb-is-frec { transition: none; }
       if (schede[k].nodo.hidden === ok) schede[k].nodo.hidden = !ok;
       if (ok) {
         visti++;
-        persone += 1 + (schede[k].dato.adulti || []).length + (schede[k].dato.minori || []).length;
+        persone += 1 + (schede[k].dato.adulti || []).length + (schede[k].dato.minori || []).length +
+          (schede[k].dato.piccoli || []).length;
       }
     }
 
@@ -1602,7 +1668,7 @@ html.rsm-still .sb-is-frec { transition: none; }
      l'iscrizione sbagliata di una famiglia che si presenta al ritrovo è un
      guaio che non si scopre fino a quel giorno. */
   function annullaIscrizione(i, tasto, chi) {
-    var quante = 1 + (i.adulti || []).length + (i.minori || []).length;
+    var quante = 1 + (i.adulti || []).length + (i.minori || []).length + (i.piccoli || []).length;
     if (!confirm(
       "Annullare l'iscrizione di " + chi + " — " + quante + (quante === 1 ? " persona" : " persone") +
       ", " + euro(i.importoCent) + " da incassare?\n\n" +
@@ -1660,6 +1726,48 @@ html.rsm-still .sb-is-frec { transition: none; }
   var cartModello = document.getElementById("is-cart-modello");
   var righeCart = [];
 
+  /* Le tre file del foglio: maggiorenni accompagnati, minori dai 6 ai 17, e
+     bambini sotto i 6 anni. Una macchina sola con tre configurazioni, e non
+     tre copie: qui — a differenza del modulo online — le righe non hanno né
+     validazione né ordine di tabulazione né bozza, sono quattro campi e un
+     tasto «togli», e tenerne tre copie vorrebbe dire correggere tre volte lo
+     stesso refuso. */
+  var FILE_CART = {
+    adulti: {
+      righe: [],
+      eti: "Maggiorenne",
+      tetto: 3, // MAX_ADULTI meno chi ha firmato il foglio
+      dove: document.getElementById("is-cart-adulti"),
+      modello: document.getElementById("is-cart-modello-adulto"),
+      tasto: document.getElementById("is-cart-piu-adulto"),
+      piu: "+ Aggiungi un maggiorenne del foglio",
+      pieno: "Tre accompagnati è il massimo per foglio",
+      cf: true
+    },
+    minori: {
+      righe: righeCart,
+      eti: "Minore",
+      tetto: 8,
+      dove: cartMinori,
+      modello: cartModello,
+      tasto: cartPiu,
+      piu: "+ Aggiungi un minore del foglio",
+      pieno: "Otto è il massimo per foglio",
+      cf: true
+    },
+    piccoli: {
+      righe: [],
+      eti: "Bambino",
+      tetto: 8,
+      dove: document.getElementById("is-cart-piccoli"),
+      modello: document.getElementById("is-cart-modello-piccolo"),
+      tasto: document.getElementById("is-cart-piu-piccolo"),
+      piu: "+ Aggiungi un bambino sotto i 6 anni",
+      pieno: "Otto è il massimo per foglio",
+      cf: false
+    }
+  };
+
   function campoCart(id) { return document.getElementById("is-cart-" + id); }
 
   function apriCart(aperto) {
@@ -1669,35 +1777,41 @@ html.rsm-still .sb-is-frec { transition: none; }
     if (aperto) campoCart("modulo").focus();
   }
 
-  function numeraCart() {
-    for (var i = 0; i < righeCart.length; i++) righeCart[i].eti.textContent = "Minore " + (i + 1);
-    cartPiu.disabled = righeCart.length >= 8;
-    cartPiu.textContent = righeCart.length >= 8 ? "Otto è il massimo per foglio" : "+ Aggiungi un minore del foglio";
+  function numeraFila(f) {
+    for (var i = 0; i < f.righe.length; i++) f.righe[i].eti.textContent = f.eti + " " + (i + 1);
+    f.tasto.disabled = f.righe.length >= f.tetto;
+    f.tasto.textContent = f.righe.length >= f.tetto ? f.pieno : f.piu;
   }
 
-  function aggiungiMinoreCart() {
-    if (righeCart.length >= 8) return;
-    var nodo = cartModello.content.cloneNode(true).querySelector("[data-min]");
-    var n = righeCart.length + 1 + "-" + Date.now().toString(36);
+  function numeraCart() {
+    for (var k in FILE_CART) numeraFila(FILE_CART[k]);
+  }
+
+  function aggiungiRigaCart(f, chiave) {
+    if (f.righe.length >= f.tetto) return;
+    var nodo = f.modello.content.cloneNode(true).querySelector("[data-min]");
+    var n = chiave + "-" + (f.righe.length + 1) + "-" + Date.now().toString(36);
     var campi = nodo.querySelectorAll("[data-id]");
     for (var i = 0; i < campi.length; i++) {
-      var chiave = campi[i].getAttribute("data-id");
-      campi[i].id = "is-cart-m-" + chiave + "-" + n;
-      var eti = nodo.querySelector('[data-per="' + chiave + '"]');
+      var c = campi[i].getAttribute("data-id");
+      campi[i].id = "is-cart-" + n + "-" + c;
+      var eti = nodo.querySelector('[data-per="' + c + '"]');
       if (eti) eti.setAttribute("for", campi[i].id);
     }
     var riga = { nodo: nodo, eti: nodo.querySelector("[data-eti]"), campi: campi };
     nodo.querySelector("[data-togli]").addEventListener("click", function () {
-      var dove = righeCart.indexOf(riga);
-      if (dove > -1) righeCart.splice(dove, 1);
+      var dove = f.righe.indexOf(riga);
+      if (dove > -1) f.righe.splice(dove, 1);
       nodo.parentNode && nodo.parentNode.removeChild(nodo);
       numeraCart();
     });
-    cartMinori.appendChild(nodo);
-    righeCart.push(riga);
+    f.dove.appendChild(nodo);
+    f.righe.push(riga);
     numeraCart();
     riga.campi[0].focus();
   }
+
+  function aggiungiMinoreCart() { aggiungiRigaCart(FILE_CART.minori, "m"); }
 
   function valoreCart(riga, chiave) {
     var el = riga.nodo.querySelector('[data-id="' + chiave + '"]');
@@ -1708,22 +1822,38 @@ html.rsm-still .sb-is-frec { transition: none; }
     ["modulo", "nome", "cognome", "nascita", "cf", "email", "telefono", "note"].forEach(function (k) {
       campoCart(k).value = "";
     });
-    righeCart.slice().forEach(function (r) { r.nodo.parentNode && r.nodo.parentNode.removeChild(r.nodo); });
-    righeCart = [];
+    for (var k in FILE_CART) {
+      var f = FILE_CART[k];
+      f.righe.slice().forEach(function (r) { r.nodo.parentNode && r.nodo.parentNode.removeChild(r.nodo); });
+      /* Si svuota in posto, non riassegnando: `righeCart` è lo stesso array a
+         cui punta FILE_CART.minori, e sostituirlo qui lascerebbe la fila con
+         l'array vecchio e il conto sbagliato. */
+      f.righe.length = 0;
+    }
     numeraCart();
   }
 
-  function foglio() {
-    var minori = [];
-    for (var i = 0; i < righeCart.length; i++) {
-      minori.push({
-        nome: valoreCart(righeCart[i], "nome"),
-        cognome: valoreCart(righeCart[i], "cognome"),
-        dataNascita: valoreCart(righeCart[i], "nascita"),
-        codiceFiscale: valoreCart(righeCart[i], "cf").toUpperCase().replace(/\s/g, ""),
-      });
+  function personeDaFila(f) {
+    var fuori = [];
+    for (var i = 0; i < f.righe.length; i++) {
+      var p = {
+        nome: valoreCart(f.righe[i], "nome"),
+        cognome: valoreCart(f.righe[i], "cognome"),
+        dataNascita: valoreCart(f.righe[i], "nascita"),
+        codiceFiscale: f.cf ? valoreCart(f.righe[i], "cf").toUpperCase().replace(/\s/g, "") : "",
+      };
+      fuori.push(p);
     }
+    return fuori;
+  }
+
+  function foglio() {
+    var minori = personeDaFila(FILE_CART.minori);
+    var adulti = personeDaFila(FILE_CART.adulti);
+    var piccoli = personeDaFila(FILE_CART.piccoli);
     return {
+      adulti: adulti,
+      piccoli: piccoli,
       modulo: campoCart("modulo").value.trim(),
       nome: campoCart("nome").value.trim(),
       cognome: campoCart("cognome").value.trim(),
@@ -1738,15 +1868,23 @@ html.rsm-still .sb-is-frec { transition: none; }
 
   function mandaCartaceo() {
     var f = foglio();
-    var quanti = 1 + f.minori.length;
-    var somma = QUOTA_ADULTO + f.minori.length * QUOTA_MINORE;
+    var quanti = 1 + f.adulti.length + f.minori.length + f.piccoli.length;
+    var somma = QUOTA_ADULTO * (1 + f.adulti.length) + f.minori.length * QUOTA_MINORE;
     var chi = (f.nome + " " + f.cognome).trim() || "questa persona";
+
+    /* Chi c'è sul foglio, fascia per fascia. I piccoli si nominano anche se
+       non costano niente: sono persone che si presentano al ritrovo, e chi
+       conferma deve poterle contare sul foglio che ha in mano. */
+    var insieme = [];
+    if (f.adulti.length) insieme.push(f.adulti.length + (f.adulti.length === 1 ? " maggiorenne" : " maggiorenni"));
+    if (f.minori.length) insieme.push(f.minori.length + (f.minori.length === 1 ? " minore" : " minori"));
+    if (f.piccoli.length) insieme.push(f.piccoli.length + (f.piccoli.length === 1 ? " bambino" : " bambini") + " sotto i 6");
 
     /* La frase per esteso, e non «confermi?»: chi la legge deve poter
        riconoscere il foglio che ha in mano senza rigirarlo. */
     var domanda =
       "Riportare in elenco il modulo n. " + (f.modulo || "(senza numero)") + "?\n\n" +
-      chi + (f.minori.length ? " con " + f.minori.length + (f.minori.length === 1 ? " minore" : " minori") : ", da solo") +
+      chi + (insieme.length ? " con " + insieme.join(", ") : ", da solo") +
       "\n" + quanti + (quanti === 1 ? " persona" : " persone") + " · " + somma + " € già pagati in contanti" +
       (f.email ? "\n\nLa ricevuta parte a " + f.email : "\n\nNessuna email sul foglio: non parte nessuna ricevuta.");
     if (!confirm(domanda)) return;
@@ -1785,6 +1923,8 @@ html.rsm-still .sb-is-frec { transition: none; }
   cartApri.addEventListener("click", function () { apriCart(cart.hidden); });
   cartChiudi.addEventListener("click", function () { apriCart(false); });
   cartPiu.addEventListener("click", aggiungiMinoreCart);
+  FILE_CART.adulti.tasto.addEventListener("click", function () { aggiungiRigaCart(FILE_CART.adulti, "a"); });
+  FILE_CART.piccoli.tasto.addEventListener("click", function () { aggiungiRigaCart(FILE_CART.piccoli, "p"); });
   cart.addEventListener("submit", function (e) { e.preventDefault(); mandaCartaceo(); });
   numeraCart();
   function carica() {
@@ -1977,6 +2117,18 @@ html.rsm-still .sb-is-frec { transition: none; }
       (i.minori || []).forEach(function (m) {
         righe.push(rigaCsv([
           "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",
+          (i.nome + " " + i.cognome).trim(), "",
+          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
+        ]));
+      });
+      /* I bambini sotto i 6 anni: una riga come tutti, importo vuoto come i
+         minori — non hanno pagato niente — e il responsabile scritto accanto.
+         Al banco delle sacche si spuntano come gli altri, perché come gli
+         altri si presentano. */
+      (i.piccoli || []).forEach(function (b) {
+        righe.push(rigaCsv([
+          "sotto i 6", b.nome, b.cognome, data(b.dataNascita), "", "", "",
           (i.nome + " " + i.cognome).trim(), "",
           quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
           i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id

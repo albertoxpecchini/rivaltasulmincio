@@ -75,6 +75,11 @@ export const MAX_MINORI = 8;
    due volte — la stessa misura dei minori, per la stessa ragione. */
 export const MAX_ADULTI = 4;
 
+/* E quanti bambini sotto i 6 anni. Stesso tetto dei minori e per la stessa
+   ragione: non è una regola dell'evento, è il punto oltre il quale un modulo
+   compilato col pollice diventa impraticabile. */
+export const MAX_PICCOLI = 8;
+
 export const VALUTA = "EUR";
 
 /* Le due quote. Stanno qui e non nella funzione dell'iscrizione perché non
@@ -83,6 +88,20 @@ export const VALUTA = "EUR";
    continuare a dire quello che è stato davvero pagato. */
 export const QUOTA_ADULTO_CENT = 1000; // 10,00 €
 export const QUOTA_MINORE_CENT = 500; //  5,00 € — dai 6 ai 17 anni
+
+/* E i bambini sotto i 6 anni: zero. Non è una quota scontata, è l'assenza di
+   quota — camminano gratis, e da sempre è così. La cifra esiste lo stesso,
+   invece di essere uno zero scritto a mano dentro le voci, perché è da qui
+   che passano tutti i conti: chi somma un totale non deve sapere che quella
+   fascia è gratis, gli basta sommare la sua quota come per le altre due.
+
+   Il motivo per cui questi bambini stanno sulla fattura, gratis, invece di
+   non esserci affatto: prima una data sotto i 6 anni veniva respinta, e
+   allora chi compilava toglieva la riga — il bambino spariva dal sito, ma
+   alla camminata ci veniva lo stesso. La mattina del 20, al banco delle
+   sacche, erano nomi che l'elenco non conosceva. Adesso ci sono, valgono
+   zero euro, e si contano fra le persone. */
+export const QUOTA_PICCOLO_CENT = 0; //  gratis — sotto i 6 anni
 
 /* I due modi di pagare. Chi sceglie i contanti non passa da nessun
    pagamento online: si iscrive e basta, e paga davanti alla chiesa il
@@ -344,14 +363,21 @@ export const moduloDi = (numero) => (daCartaceo(numero) ? String(numero).slice("
    dalla barra verticale, nella stessa forma in cui li rilegge `personeDa`. */
 const FASCIA_ADULTO = "maggiorenne";
 const FASCIA_MINORE = "dai 6 ai 17 anni";
+const FASCIA_PICCOLO = "sotto i 6 anni — gratis";
 
-/* I ruoli sono tre e le fasce due: `A` è chi compila il modulo, `B` ogni
-   altro maggiorenne che cammina con lui, `M` i minori. `A` e `B` si
-   chiamano tutti e due «maggiorenne» perché quello è il nome che si legge
-   nel pannello di PayPal e sulla ricevuta, e lì la differenza non serve a
-   nessuno. La differenza sta nella lettera, e la lettera la legge il codice:
-   chi ha in carico i minori, e chi risponde soltanto di sé. */
-const FASCIA = { A: FASCIA_ADULTO, B: FASCIA_ADULTO, M: FASCIA_MINORE };
+/* I ruoli sono quattro e le fasce tre: `A` è chi compila il modulo, `B` ogni
+   altro maggiorenne che cammina con lui, `M` i minori dai 6 ai 17, `P` i
+   bambini sotto i 6 anni. `A` e `B` si chiamano tutti e due «maggiorenne»
+   perché quello è il nome che si legge nel pannello di PayPal e sulla
+   ricevuta, e lì la differenza non serve a nessuno. La differenza sta nella
+   lettera, e la lettera la legge il codice: chi ha in carico i minori, e chi
+   risponde soltanto di sé.
+
+   `P` invece una fascia sua ce l'ha, e si legge: la sua voce vale zero euro,
+   e una riga da zero euro in mezzo alle altre, senza niente scritto accanto,
+   sembrerebbe uno sbaglio a chi apre la fattura. «Sotto i 6 anni — gratis»
+   dice che quello zero è voluto. */
+const FASCIA = { A: FASCIA_ADULTO, B: FASCIA_ADULTO, M: FASCIA_MINORE, P: FASCIA_PICCOLO };
 
 const voce = (persona, ruolo, quotaCent) => ({
   name: `${persona.nome} ${persona.cognome} — ${FASCIA[ruolo] || FASCIA_MINORE}`.slice(0, 200),
@@ -384,7 +410,7 @@ export function leggiMemo(memo) {
 /* Il corpo della fattura, pronto da mandare a PayPal. Gli importi non si
    sommano qui: li somma PayPal dalle voci, ed è meglio così — un totale
    calcolato due volte è un totale che prima o poi non combacia. */
-export function componiFattura({ numero, adulto, adulti = [], minori, email, modalita, telefono, note, consenso }) {
+export function componiFattura({ numero, adulto, adulti = [], minori, piccoli = [], email, modalita, telefono, note, consenso }) {
   const oggi = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(new Date());
 
   return {
@@ -405,13 +431,15 @@ export function componiFattura({ numero, adulto, adulti = [], minori, email, mod
       },
     ],
     /* L'ordine delle voci è l'ordine in cui si rileggono: prima il
-       capofila, poi i maggiorenni che camminano con lui, poi i minori. Non è
-       un vezzo — `personeDa` prende come capofila il primo maggiorenne che
-       incontra, e questa è la riga che glielo garantisce. */
+       capofila, poi i maggiorenni che camminano con lui, poi i minori, e in
+       fondo i bambini sotto i 6 anni. Non è un vezzo — `personeDa` prende
+       come capofila il primo maggiorenne che incontra, e questa è la riga
+       che glielo garantisce. */
     items: [
       voce(adulto, "A", QUOTA_ADULTO_CENT),
       ...adulti.map((a) => voce(a, "B", QUOTA_ADULTO_CENT)),
       ...minori.map((m) => voce(m, "M", QUOTA_MINORE_CENT)),
+      ...piccoli.map((p) => voce(p, "P", QUOTA_PICCOLO_CENT)),
     ],
     configuration: { allow_tip: false, tax_inclusive: false },
   };
@@ -426,15 +454,18 @@ export function componiFattura({ numero, adulto, adulti = [], minori, email, mod
    ha in carico i minori, e resta il nome che aveva prima perché i punti del
    sito che lo leggono continuino a funzionare senza sapere niente di questa
    modifica. `adulti` sono i maggiorenni che camminano con lui e rispondono
-   di sé, ed è un elenco anche quando è vuoto. `minori` come sempre. */
+   di sé, ed è un elenco anche quando è vuoto. `minori` come sempre, e
+   `piccoli` i bambini sotto i 6 anni: non pagano, ma ci sono, e chi conta le
+   persone al banco delle sacche deve poterli contare. */
 export function personeDa(fattura) {
   let adulto = null;
   const adulti = [];
   const minori = [];
+  const piccoli = [];
 
   for (const v of fattura?.items || []) {
     const [ruolo, nome = "", cognome = "", dataNascita = "", codiceFiscale = ""] = String(v.description || "").split("|");
-    if (ruolo !== "A" && ruolo !== "B" && ruolo !== "M") continue;
+    if (ruolo !== "A" && ruolo !== "B" && ruolo !== "M" && ruolo !== "P") continue;
     if (!nome.trim() && !cognome.trim()) continue;
 
     /* Le maiuscole si rimettono anche in lettura, non solo in scrittura: le
@@ -456,12 +487,13 @@ export function personeDa(fattura) {
        mai è il contrario di prima — raccattare in mezzo ai minori tutto
        quello che non si è riconosciuto: è così che un secondo maggiorenne
        diventerebbe un ragazzino di dieci anni. */
-    if (ruolo === "M") minori.push(persona);
+    if (ruolo === "P") piccoli.push(persona);
+    else if (ruolo === "M") minori.push(persona);
     else if (!adulto) adulto = persona;
     else adulti.push(persona);
   }
 
-  return { adulto, adulti, minori };
+  return { adulto, adulti, minori, piccoli };
 }
 
 /* ── Pagata o no ──────────────────────────────────────────────────────────
@@ -526,7 +558,22 @@ export const spedisciFattura = (id) =>
 /* Segnare il pagamento. `EXTERNAL` è la verità in tutti e due i casi: i soldi
    non sono passati per questa fattura — sono passati per il checkout, o per
    una mano davanti alla chiesa — e la fattura ne prende atto. Il metodo dice
-   quale delle due. */
+   quale delle due.
+
+   — Cosa si tollera, e cosa no —
+   Qui dentro si tollera una cosa sola: che quei soldi risultino già
+   incassati. `ALREADY_PAID` e `PAYMENT_AMOUNT_EXCEEDS_DUE_AMOUNT` dicono
+   esattamente quello — qualcuno ha già segnato, o il webhook è arrivato
+   prima — e chi ha premuto il tasto ha ottenuto quello che voleva.
+
+   `INVOICE_STATE_NOT_ALLOWED` NON sta in questo elenco, e ci stava fino al
+   15 settembre. Vuol dire il contrario di «era già fatto»: vuol dire che
+   la fattura è in uno stato che il pagamento non lo accetta — una bozza
+   mai spedita, una annullata — e che quindi NON è stato scritto niente.
+   Tollerarlo faceva rispondere «incassato» a chi non aveva incassato: il
+   tasto al banchetto si spegneva, la pagina si ricaricava, e la riga era
+   ancora lì da incassare senza che niente dicesse perché. Adesso sale
+   come errore, e chi sta al banco lo legge. */
 export const registraPagamento = (id, { metodo, nota }) =>
   paypal(`/v2/invoicing/invoices/${encodeURIComponent(id)}/payments`, {
     metodo: "POST",
@@ -536,7 +583,7 @@ export const registraPagamento = (id, { metodo, nota }) =>
       payment_date: new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(new Date()),
       ...(nota ? { note: nota.slice(0, 2000) } : {}),
     },
-    tollera: ["ALREADY_PAID", "INVOICE_STATE_NOT_ALLOWED", "PAYMENT_AMOUNT_EXCEEDS_DUE_AMOUNT"],
+    tollera: ["ALREADY_PAID", "PAYMENT_AMOUNT_EXCEEDS_DUE_AMOUNT"],
   });
 
 /* Cercare. Il filtro lo applica PayPal — `reference` è il marchio dell'evento
@@ -640,7 +687,7 @@ export async function cercaFatture(filtro = {}) {
    `user_action: PAY_NOW` toglie di mezzo la schermata di riepilogo di
    PayPal: il riepilogo l'ha già fatto il nostro modulo, e farlo due volte
    perde per strada chi si è già deciso. */
-export async function creaOrdine({ numero, adulto, adulti = [], minori, descrizione, ritorno, annulla }) {
+export async function creaOrdine({ numero, adulto, adulti = [], minori, piccoli = [], descrizione, ritorno, annulla }) {
   /* L'unico totale del sistema che non lo somma PayPal dalle voci: qui serve
      prima, per dire all'ordine quanto vale. Deve combaciare con le voci qui
      sotto o PayPal rifiuta l'ordine — ed è meglio così, perché è un rifiuto
@@ -662,6 +709,10 @@ export async function creaOrdine({ numero, adulto, adulti = [], minori, descrizi
             voce(adulto, "A", QUOTA_ADULTO_CENT),
             ...adulti.map((a) => voce(a, "B", QUOTA_ADULTO_CENT)),
             ...minori.map((m) => voce(m, "M", QUOTA_MINORE_CENT)),
+            /* Valgono zero, e vanno nell'ordine lo stesso: `item_total` è la
+               somma delle voci, quindi uno zero non sposta niente e chi paga
+               si vede scritto chi sta portando. */
+            ...piccoli.map((p) => voce(p, "P", QUOTA_PICCOLO_CENT)),
           ],
         },
       ],

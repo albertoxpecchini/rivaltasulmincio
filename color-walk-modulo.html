@@ -273,6 +273,9 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
   text-transform: uppercase;
   color: var(--sb-fg);
 }
+/* La seconda intestazione dentro lo stesso blocco: le due tabelle dei minori
+   e dei più piccoli non si devono toccare, o a penna sembrano una sola. */
+.sb-cwm-h--dopo { margin-top: 1rem; }
 .sb-cwm-h span {
   font-size: 0.72rem;
   font-weight: 500;
@@ -670,7 +673,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <!-- ── 2. I MINORI ────────────────────────────────────────────────────── -->
   <div class="sb-cwm-blocco">
-    <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni il 20 settembre, a tuo carico — 5 € ciascuno · sotto i 6 anni non ci si iscrive · oltre il quinto, un secondo modulo</span></p>
+    <p class="sb-cwm-h">2 · Chi cammina con te <span>dai 6 ai 17 anni il 20 settembre, a tuo carico — 5 € ciascuno · oltre il quinto, un secondo modulo</span></p>
     <table class="sb-cwm-tab">
       <thead>
         <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th><th scope="col">Codice fiscale <span>facoltativo</span></th></tr>
@@ -683,6 +686,21 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
         <tr><td>5</td><td></td><td></td><td></td><td></td></tr>
       </tbody>
     </table>
+
+    <!-- I più piccoli: non pagano, e il nome si scrive lo stesso. Serve al
+         banco delle sacche, dove quello che conta è quante persone arrivano —
+         non quante hanno pagato. -->
+    <p class="sb-cwm-h sb-cwm-h--dopo">I bambini sotto i 6 anni <span>il 20 settembre — camminano gratis, ma scrivi il nome: ci dice quanti siete</span></p>
+    <table class="sb-cwm-tab">
+      <thead>
+        <tr><th scope="col"></th><th scope="col">Nome</th><th scope="col">Cognome</th><th scope="col">Data di nascita</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td></td><td></td><td></td></tr>
+        <tr><td>2</td><td></td><td></td><td></td></tr>
+        <tr><td>3</td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- ── 3. IL CONTO ────────────────────────────────────────────────────── -->
@@ -692,6 +710,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
       <p class="sb-cwm-quote">
         Maggiorenne · <strong>10 €</strong> — chi firma qui sotto<br>
         Dai 6 ai 17 anni · <strong>5 €</strong> ciascuno · n. ______<br>
+        Sotto i 6 anni · <strong>gratis</strong> · n. ______<br>
         Comprende sacca, polveri colorate e aperitivo: non c'è altro da pagare. Chi si iscrive il 15 ritira la sacca domenica 20, al ritrovo.
       </p>
       <div class="sb-cwm-tot">

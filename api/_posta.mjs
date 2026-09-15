@@ -128,7 +128,7 @@ export function riempi(modello, valori) {
    tutto il resto della mail è già giusto; quello che non è vero è che il
    pagamento lo abbia gestito PayPal. */
 export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
-  const { adulto, adulti, minori } = personeDa(fattura);
+  const { adulto, adulti, minori, piccoli } = personeDa(fattura);
   const nome = adulto?.nome || "";
 
   /* Il capofila e chi cammina con lui stanno sulla stessa riga della
@@ -148,13 +148,18 @@ export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
 
   const voceAdulti = `Iscrizione — ${quanti} ${quanti === 1 ? "maggiorenne" : "maggiorenni"}`;
   const voceRagazzi = `Iscrizione — ${minori.length} ${minori.length === 1 ? "ragazzo" : "ragazzi"} dai 6 ai 17 anni`;
+  /* I piccoli hanno la loro riga anche se non spostano il totale: senza, chi
+     legge la ricevuta non trova il nome del figlio che ha appena iscritto e
+     non sa se è passato. La cifra a destra la scrive il modello — «gratis» —
+     perché «0,00 €» in mezzo a una ricevuta sembra un conto sbagliato. */
+  const vocePiccoli = `${piccoli.length} ${piccoli.length === 1 ? "bambino" : "bambini"} sotto i 6 anni`;
 
   const importoAdulti = importoItaliano(centAdulto);
   const importoRagazzi = importoItaliano(centRagazzi);
   const importo = importoItaliano(totale);
   const data = dataItaliana(quando);
 
-  const partecipanti = [adulto, ...adulti, ...minori]
+  const partecipanti = [adulto, ...adulti, ...minori, ...piccoli]
     .filter(Boolean)
     .map((p) => `${p.nome} ${p.cognome}`.trim())
     .filter(Boolean)
@@ -163,6 +168,7 @@ export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
   const html = riempi(
     condiziona(MODELLO_RICEVUTA, {
       ragazzi: minori.length > 0,
+      piccoli: piccoli.length > 0,
       /* Le due strade dentro «pagato». Non si annidano — chi scioglie i
          marcatori non saprebbe dove finisce quello di dentro — quindi sono
          due condizioni sorelle che si escludono da sé. */
@@ -184,6 +190,7 @@ export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
       IMPORTO_ADULTI: importoAdulti,
       VOCE_RAGAZZI: voceRagazzi,
       IMPORTO_RAGAZZI: importoRagazzi,
+      VOCE_PICCOLI: vocePiccoli,
       IMPORTO: importo,
       MODULO: cartaceo,
     }
@@ -200,6 +207,7 @@ export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
         "LA QUOTA NON È ANCORA PAGATA: hai scelto di pagarla in contanti al ritrovo, prima della partenza.\n\n") +
     `${voceAdulti}: ${importoAdulti}\n` +
     (minori.length ? `${voceRagazzi}: ${importoRagazzi}\n` : "") +
+    (piccoli.length ? `${vocePiccoli}: gratis\n` : "") +
     (cartaceo
       ? `Totale, già pagato in contanti al banchetto il ${data}: ${importo}\n\n` +
         `Iscrizione presa con il modulo cartaceo n. ${cartaceo}, che resta firmato all'associazione. ` +
@@ -227,7 +235,7 @@ export function ricevuta({ fattura, pagato, quando, cartaceo = "" }) {
     html,
     testo,
     nome,
-    persone: quanti + minori.length,
+    persone: quanti + minori.length + piccoli.length,
     totaleCent: totale,
   };
 }
@@ -385,6 +393,18 @@ export const MODELLO_RICEVUTA = `<!DOCTYPE html>
                 </td>
                 <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
                   {{IMPORTO_RAGAZZI}}
+                </td>
+                </tr>
+              </table>
+<!--/se-->
+<!--se:piccoli-->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+                <tr>
+                <td class="e-stack e-fg-l" style="font-family:'Titillium Web',Geneva,Tahoma,sans-serif; font-size:15px; line-height:1.5; color:#525252;">
+                  {{VOCE_PICCOLI}}
+                </td>
+                <td class="e-stack e-stack-r e-fg-l" align="right" style="font-family:'Roboto Mono','Courier New',monospace; font-size:15px; color:#525252; white-space:nowrap;">
+                  gratis
                 </td>
                 </tr>
               </table>

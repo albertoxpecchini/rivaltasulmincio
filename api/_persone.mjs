@@ -31,6 +31,10 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const CF_RE = /^[A-Z0-9]{16}$/;
 const DATA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+/* Il simbolo, scritto una volta: dentro un template literal un euro attaccato
+   a una graffa si legge male, e a forza di sfuggirlo si sbaglia. */
+const EURO = "€";
+
 /* ── Età e codice fiscale ─────────────────────────────────────────────────
    Il codice fiscale non serve alla polizza — non c'è polizza. Serve a dare
    una certezza in più su chi si sta assumendo delle responsabilità: un nome
@@ -97,8 +101,9 @@ export function etaAllEvento(iso) {
 
 /* Un partecipante letto dal modulo, controllato e restituito pulito.
    `minimo`/`massimo` sono la fascia d'età ammessa per il posto che occupa:
-   18-120 per chi si iscrive, 6-17 per chi porta con sé. L'errore torna
-   come stringa in italiano, pronto da mostrare. */
+   18-120 per chi si iscrive, 6-17 per i minori a carico, 0-5 per i bambini
+   che camminano gratis. L'errore torna come stringa in italiano, pronto da
+   mostrare. */
 export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, capofila = false }) {
   /* La maiuscola si mette qui, all'ingresso, così è già a posto sulla
      fattura, nella mail e in elenco — e non in tre posti diversi che prima o
@@ -117,7 +122,15 @@ export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, cap
        maggiorenne che non lo è si dice dove va messo, perché il posto giusto
        nello stesso modulo c'è già e nessuno deve ricominciare da capo. */
     if (minimo !== 18) {
-      return { errore: `${chi}: sotto i 6 anni non serve iscriversi, si partecipa gratis` };
+      /* Sotto i 6 anni non è più un rifiuto: c'è la sua riga, gratis, e chi
+         legge questo messaggio ha messo un bambino di quattro anni fra i
+         6-17 invece che fra i piccoli. Gli si dice dove va, non che non
+         esiste. */
+      return {
+        errore:
+          `${chi}: il 20 settembre non ha ancora 6 anni — va messo fra i bambini ` +
+          "sotto i 6 anni, che camminano gratis",
+      };
     }
     return {
       errore: capofila
@@ -126,12 +139,20 @@ export function leggiPersona(grezza, { minimo, massimo, chi, cfObbligatorio, cap
     };
   }
   if (eta > massimo) {
-    return {
-      errore:
-        massimo === 17
-          ? `${chi}: ha 18 anni o più il giorno della camminata, va iscritto con la quota intera`
-          : `${chi}: data di nascita non plausibile`,
-    };
+    /* Ogni fascia manda chi sfora al posto in cui deve stare, invece di dirgli
+       soltanto che quella data non va bene: il posto giusto è nello stesso
+       modulo, e nessuno deve ricominciare da capo per un compleanno. */
+    if (massimo === 5) {
+      return {
+        errore:
+          `${chi}: il 20 settembre ha già 6 anni — va messo fra i minori dai 6 ` +
+          `ai 17 anni, con la quota da 5 ${EURO}`,
+      };
+    }
+    if (massimo === 17) {
+      return { errore: `${chi}: ha 18 anni o più il giorno della camminata, va iscritto con la quota intera` };
+    }
+    return { errore: `${chi}: data di nascita non plausibile` };
   }
 
   if (codiceFiscale || cfObbligatorio) {
