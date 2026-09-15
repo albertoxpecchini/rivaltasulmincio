@@ -1419,6 +1419,46 @@ const renderBannerHome = (page) => {
       </div>`;
 };
 
+/* Lo stesso blocco per gli altri eventi: {{HOME:palio}} e {{HOME:sagra}}.
+   Il banner dentro la cornice coi tasti che portano dove serve — sul Palio
+   al programma, sulla sagra alla prenotazione, che è la cosa che si viene a
+   fare. I tasti stanno nell'anagrafe accanto al resto, così una pagina che
+   mostra l'evento non decide da sé come si chiama il suo tasto.
+
+   Come per la camminata: senza il file del banner sparisce tutto il blocco,
+   cornice compresa. Una cornice vuota in home è peggio del niente. */
+const AZIONI_HOME = {
+  palio: [
+    ["primary", "/palio-delle-contrade", "Il Palio e le sei contrade"],
+    ["secondary", "/sagra-patroni", "Il programma dei due giorni"],
+  ],
+  sagra: [
+    ["primary", "/sagra-patroni#prenotazione", "Prenotare il pranzo"],
+    ["secondary", "/sagra-patroni", "Il programma"],
+  ],
+};
+
+const renderHome = (chiave) => {
+  const azioni = AZIONI_HOME[chiave];
+  if (!azioni) throw new Error(`{{HOME:${chiave}}}: evento sconosciuto`);
+  const img = renderBanner(chiave);
+  if (!img) return "";
+  const tasti = azioni
+    .map(
+      ([tipo, href, testo]) =>
+        `            <a class="sb-btn sb-btn--${tipo}" href="${href}"><span>${testo}</span></a>`
+    )
+    .join("\n");
+  return `<div class="sb-riv-cwhome">
+        <div class="sb-panel"><div class="sb-panel-inner">
+          ${img}
+          <div class="sb-riv-cwhome-azioni">
+${tasti}
+          </div>
+        </div></div>
+      </div>`;
+};
+
 /* La locandina si guarda come un foglio in un lettore di documenti: l'anteprima
    (l'immagine, .webp leggera ma nitida — è ricavata dallo stesso PNG del PDF) e
    sotto un tasto che apre il PDF A4 già pronto per la stampa. Il clic
@@ -2114,6 +2154,7 @@ for (const file of bodies) {
          quest'ordine rende evidente quale vince. */
       .replaceAll(/\{\{BANNER:([a-z-]+)\}\}/g, (_, k) => renderBanner(k))
       .replaceAll(/\{\{LOCANDINA:([a-z-]+)\}\}/g, (_, k) => renderLocandina(k))
+      .replaceAll(/\{\{HOME:([a-z-]+)\}\}/g, (_, k) => renderHome(k))
       .replace("{{BANNER}}", () => renderBanner())
       .replace("{{CW_HOME}}", () => renderBannerHome(page))
       .replace("{{LOCANDINA}}", () => renderLocandina())
