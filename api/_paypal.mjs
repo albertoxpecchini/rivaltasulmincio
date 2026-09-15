@@ -86,6 +86,43 @@ export const VALUTA = "EUR";
    le scrive soltanto lei: la ricevuta le rilegge dalla fattura, e il giorno
    che una delle due cambiasse a metà iscrizioni le vecchie fatture devono
    continuare a dire quello che è stato davvero pagato. */
+/* ── Quanto ne resta all'associazione ────────────────────────────────────
+   PayPal trattiene una commissione su ogni pagamento che passa da lui, e
+   quello che arriva sul conto non è la quota che la persona ha versato. Chi
+   tiene la cassa deve poter leggere tutti e due i numeri: il lordo è quello
+   che è stato incassato, il netto è quello che ci sarà davvero.
+
+   La tariffa è quella dei pagamenti da conto estero UE — 0,35 € fissi più il
+   3,4% — ricavata dai movimenti veri del conto:
+
+     10,00 € → 0,69 € di commissione → 9,31 € netti
+     25,00 € → 1,20 € di commissione → 23,80 € netti
+     30,00 € → 1,37 € di commissione → 28,63 € netti
+
+   Torna esatta al centesimo su tutti e tre, e per questo si scrive come
+   formula e non come tabella: le quote cambiano, le iscrizioni si sommano in
+   cifre che nessuna tabella avrebbe previsto.
+
+   Vale SOLO per i soldi passati da PayPal. Il contante preso al banchetto
+   arriva intero — nessuno trattiene niente su una banconota — ed è il motivo
+   per cui le due cifre vanno tenute separate invece che in un totale solo.
+
+   La commissione si applica a OGNI pagamento, non alla somma: due iscrizioni
+   da 10 € pagano due volte i 35 centesimi fissi. Chi somma il netto di un
+   elenco deve quindi sommare i netti, non nettare la somma — e per questo
+   questa funzione prende un importo solo. */
+const PAYPAL_FISSA_CENT = 35;
+const PAYPAL_PERCENTUALE = 0.034;
+
+/* La commissione su un singolo pagamento, arrotondata al centesimo come fa
+   PayPal. Su zero è zero: un bambino sotto i 6 anni non paga commissioni
+   perché non paga niente. */
+export const commissioneCent = (lordoCent) =>
+  lordoCent > 0 ? Math.round(lordoCent * PAYPAL_PERCENTUALE) + PAYPAL_FISSA_CENT : 0;
+
+/* Quanto ne resta dopo la commissione. */
+export const nettoCent = (lordoCent) => lordoCent - commissioneCent(lordoCent);
+
 export const QUOTA_ADULTO_CENT = 1000; // 10,00 €
 export const QUOTA_MINORE_CENT = 500; //  5,00 € — dai 6 ai 17 anni
 

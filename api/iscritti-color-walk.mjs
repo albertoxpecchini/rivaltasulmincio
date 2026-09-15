@@ -78,6 +78,7 @@ import {
   creaFattura,
   daCartaceo,
   moduloDi,
+  nettoCent,
   numeroCartaceo,
   prossimoCartaceo,
   spedisciFattura,
@@ -335,6 +336,28 @@ async function elenco(res) {
 
   const daIncassare = iscritti.filter((i) => !i.pagato);
 
+  /* ── La cassa, spaccata in due ──────────────────────────────────────
+       «Incassato» da solo non basta a chi tiene i conti, perché mette
+       insieme due cose che non si assomigliano: i soldi arrivati sul conto
+       PayPal, su cui PayPal ha già trattenuto la sua commissione, e le
+       banconote prese al banchetto, che sono intere e stanno in un cassetto.
+
+       Chi deve versare all'associazione ha bisogno di sapere quale delle due
+       cifre ha in mano e quale è già in banca, e quanto ne resta davvero
+       dopo le commissioni. Quindi si contano separate, e di quella che passa
+       da PayPal si dice anche il netto.
+
+       Il netto si somma iscrizione per iscrizione, non nettando il totale:
+       la commissione ha una parte fissa di 35 centesimi che PayPal trattiene
+       a ogni pagamento, e due iscrizioni da 10 € la pagano due volte. */
+  const pagati = iscritti.filter((i) => i.pagato);
+  const online = pagati.filter((i) => i.pagamento !== "contanti");
+  const contanti = pagati.filter((i) => i.pagamento === "contanti");
+
+  const onlineLordoCent = online.reduce((s, i) => s + i.importoCent, 0);
+  const onlineNettoCent = online.reduce((s, i) => s + nettoCent(i.importoCent), 0);
+  const contantiCent = contanti.reduce((s, i) => s + i.importoCent, 0);
+
   return res.status(200).json({
     evento: EVENTO,
     iscritti,
@@ -356,10 +379,14 @@ async function elenco(res) {
       0
     ),
     tetto: TETTO_PARTECIPANTI,
-    /* Quello che è già sul conto, e quello che si raccoglie al banchetto la
-       mattina del 20: due cifre separate perché sono due cose separate, e
-       chi tiene la cassa deve sapere quanti soldi aspettarsi. */
-    incassatoCent: iscritti.filter((i) => i.pagato).reduce((s, i) => s + i.importoCent, 0),
+    /* La cassa in cinque cifre. `incassatoCent` resta quello di prima — il
+       totale di tutto quello che è stato incassato — perché è il numero che
+       la pagina mostrava e che chi legge conosce; le altre lo spiegano. */
+    incassatoCent: onlineLordoCent + contantiCent,
+    onlineLordoCent,
+    onlineNettoCent,
+    onlineCommissioniCent: onlineLordoCent - onlineNettoCent,
+    contantiCent,
     daIncassareCent: daIncassare.reduce((s, i) => s + i.importoCent, 0),
     daIncassare: daIncassare.length,
     aggiornatoISO: new Date().toISOString(),

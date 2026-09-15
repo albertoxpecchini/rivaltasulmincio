@@ -276,6 +276,14 @@ async function prova(nome, { chiave, headerChiave, metodo = "GET", corpo, env = 
   if (atteso.nonInCache && res.testate["cache-control"] !== "no-store, max-age=0") {
     problemi.push(`Cache-Control «${res.testate["cache-control"]}»`);
   }
+  /* I conti della cassa, uno per uno: il nome del campo e quanto deve
+     valere, in centesimi. */
+  for (const campo of ["onlineLordoCent", "onlineNettoCent", "onlineCommissioniCent", "contantiCent", "incassatoCent"]) {
+    if (atteso[campo] !== undefined && res.corpo?.[campo] !== atteso[campo]) {
+      problemi.push(`${campo} ${res.corpo?.[campo]}, atteso ${atteso[campo]}`);
+    }
+  }
+
   if (atteso.primoPagato !== undefined) {
     const primo = res.corpo?.iscritti?.[0];
     if (!primo) problemi.push("nessun iscritto in elenco");
@@ -1306,6 +1314,71 @@ console.log("\n── Correggere un'iscrizione già in elenco ──────
   verifica("un'iscrizione di un altro evento non si tocca",
     res.codice === 404 && creata === null, `${res.codice} ${JSON.stringify(res.corpo)}`);
 }
+
+console.log("\n── La cassa, spaccata in due ──────────────────────────────────");
+
+/* «Incassato» da solo metteva insieme due cose che non si assomigliano: i
+   soldi sul conto PayPal, su cui la commissione è già stata trattenuta, e le
+   banconote al banchetto, che sono intere e stanno in un cassetto. Chi deve
+   versare all'associazione ha bisogno di sapere quale delle due ha in mano.
+
+   La commissione è quella vera del conto — 0,35 € fissi più il 3,4% — e
+   torna al centesimo sui movimenti veri: 10 € danno 9,31 € netti, 25 € ne
+   danno 23,80, 30 € ne danno 28,63. */
+await prova("PayPal e contanti si contano separati, e il netto sta sotto il lordo", {
+  chiave: CHIAVE,
+  pagine: [[fattura(1), inContanti(2, { status: "MARKED_AS_PAID" })]],
+  atteso: {
+    codice: 200,
+    /* La 1 è pagata online e vale 15 € (un adulto e un minore); la 2 è in
+       contanti, stessa cifra, ma incassata al banchetto. */
+    onlineLordoCent: 1500,
+    onlineNettoCent: 1414,
+    onlineCommissioniCent: 86,
+    contantiCent: 1500,
+    /* E il totale di prima resta quello che era: la somma delle due. */
+    incassatoCent: 3000,
+  },
+});
+
+/* La parte fissa della commissione si paga a ogni pagamento, non una volta
+   sulla somma: due iscrizioni da 15 € pagano due volte i 35 centesimi. Se un
+   giorno qualcuno nettasse il totale invece di sommare i netti, questa prova
+   cade: due da 15 € pagano 1,72 € di commissioni, non 1,37 € come farebbe
+   una sola da 30, e quei 35 centesimi di differenza sono soldi veri. */
+await prova("il netto si somma iscrizione per iscrizione, non nettando il totale", {
+  chiave: CHIAVE,
+  pagine: [[fattura(1), fattura(4)]],
+  atteso: { codice: 200, onlineLordoCent: 3000, onlineCommissioniCent: 172, onlineNettoCent: 2828 },
+});
+
+/* Il contante non paga commissioni: nessuno trattiene niente su una
+   banconota, e il netto della cassa in mano è la cassa in mano. */
+await prova("sul contante non si calcola nessuna commissione", {
+  chiave: CHIAVE,
+  pagine: [[inContanti(2, { status: "MARKED_AS_PAID" })]],
+  atteso: { codice: 200, contantiCent: 1500, onlineLordoCent: 0, onlineCommissioniCent: 0 },
+});
+
+/* Un cartaceo è contante, e finisce nel cassetto anche se PayPal non ha mai
+   saputo di lui: la carta è pagata perché è di carta. */
+await prova("un cartaceo entra fra i contanti in mano, non fra i soldi di PayPal", {
+  chiave: CHIAVE,
+  pagine: [[inContanti(2, {
+    status: "DRAFT",
+    detail: { invoice_number: "CW-CART-9", memo: "contanti|333|2026-08-25T10:00:00.000Z|—" },
+  })]],
+  atteso: { codice: 200, contantiCent: 1500, onlineLordoCent: 0 },
+});
+
+/* Chi non ha ancora pagato non conta in nessuna delle due casse: quei soldi
+   non esistono, e scriverli in mezzo agli altri vorrebbe dire contare due
+   volte la stessa quota il giorno che arriva. */
+await prova("chi deve ancora pagare non entra in nessuna delle due casse", {
+  chiave: CHIAVE,
+  pagine: [[inContanti(2)]],
+  atteso: { codice: 200, contantiCent: 0, onlineLordoCent: 0, incassatoCent: 0, daIncassareCent: 1500 },
+});
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);
 process.exit(fallite ? 1 : 0);

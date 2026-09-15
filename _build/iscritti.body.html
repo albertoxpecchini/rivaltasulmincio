@@ -193,29 +193,52 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 .sb-is .sb-btn { min-height: var(--is-h); }
 .sb-is .sb-btn:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 
-/* ── I quattro conti ───────────────────────────────────────────────────────
-   Una lastra sola divisa in quattro, non quattro lastre. Lo smusso del design
-   system è 18px fissi: su un riquadro largo 150px si mangia un quinto del
-   lato, e quattro di fila sembrano quattro pezzi rotti invece di una
-   striscia. Dentro una lastra sola lo smusso torna a essere quello che è —
-   l'angolo di una lastra — e i numeri li separano dei capelli grigi.
+/* ── I sei conti ───────────────────────────────────────────────────────────
+   Una lastra sola divisa in sei, non sei lastre. Lo smusso del design system
+   è 18px fissi: su un riquadro largo 150px si mangia un quinto del lato, e
+   sei di fila sembrerebbero sei pezzi rotti invece di una striscia. Dentro
+   una lastra sola lo smusso torna a essere quello che è — l'angolo di una
+   lastra — e i numeri li separano dei capelli grigi.
 
-   Due per riga sul telefono, quattro in fila quando c'è spazio: quattro
-   numeri affiancati su uno schermo stretto diventano quattro colonne di
-   cifre spezzate a metà. */
+   Erano quattro, e «incassato» era uno solo. Ma quel numero metteva insieme
+   due cose che non si assomigliano: i soldi sul conto PayPal, su cui la
+   commissione è già stata trattenuta, e le banconote nel cassetto, che sono
+   intere. Chi deve versare all'associazione ha bisogno di sapere quale delle
+   due ha in mano — quindi adesso sono due riquadri, e quello di PayPal porta
+   sotto anche il netto.
+
+   Due per riga sul telefono, tre quando c'è spazio: sei numeri affiancati su
+   uno schermo stretto diventano sei colonne di cifre spezzate a metà, e a
+   tre per riga le due righe restano piene invece di lasciarne una spaiata. */
 .sb-is-conti { margin: 0 0 0.7rem; }
 .sb-is-conti-in { display: grid; grid-template-columns: repeat(2, 1fr); }
 .sb-is-conto { padding: 0.9rem 0.5rem; }
 /* I fili di separazione seguono l'impaginazione, non l'ordine dei figli: a due
    colonne il filo verticale sta solo fra le coppie e quello orizzontale
-   divide le due righe. Un `+ .sb-is-conto` secco disegnerebbe un filo a
-   sinistra del terzo riquadro, che a capo riga è appeso al nulla. */
+   divide le righe. Un `+ .sb-is-conto` secco disegnerebbe un filo a sinistra
+   del terzo riquadro, che a capo riga è appeso al nulla. */
 .sb-is-conto:nth-child(2n) { border-left: 1px solid var(--sb-border); }
 .sb-is-conto:nth-child(n + 3) { border-top: 1px solid var(--sb-border); }
 @media (min-width: 34rem) {
-  .sb-is-conti-in { grid-template-columns: repeat(4, 1fr); }
+  .sb-is-conti-in { grid-template-columns: repeat(3, 1fr); }
+  /* A tre colonne il filo orizzontale torna, ma solo sotto la prima riga, e
+     quello verticale salta il primo di ogni riga invece del solo primo in
+     assoluto — altrimenti il quarto riquadro, che va a capo, se lo
+     porterebbe appeso a sinistra. */
   .sb-is-conto:nth-child(n + 3) { border-top: 0; }
+  .sb-is-conto:nth-child(n + 4) { border-top: 1px solid var(--sb-border); }
   .sb-is-conto:not(:first-child) { border-left: 1px solid var(--sb-border); }
+  .sb-is-conto:nth-child(3n + 1) { border-left: 0; }
+}
+/* Il netto sotto il lordo: più piccolo e più spento, perché è una
+   precisazione del numero grande, non un secondo numero da confrontare. */
+.sb-is-conto i {
+  display: block;
+  margin-top: 0.15rem;
+  font-style: normal;
+  font-size: 0.72rem;
+  opacity: 0.6;
+  letter-spacing: 0;
 }
 .sb-is-conto b {
   display: block;
@@ -881,8 +904,13 @@ html.rsm-still .sb-is-frec { transition: none; }
       <div class="sb-panel sb-is-conti">
         <div class="sb-panel-inner sb-is-conti-in">
           <div class="sb-is-conto"><b id="is-n">0</b><span id="is-n-et">persone</span></div>
-          <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato</span></div>
+          <div class="sb-is-conto"><b id="is-tot">0 €</b><span>incassato in tutto</span></div>
           <div class="sb-is-conto"><b id="is-att">0 €</b><span>da incassare</span></div>
+          <!-- La cassa spaccata in due: quello che è già in banca e quello
+               che sta nel cassetto. Il netto di PayPal va sotto il lordo,
+               perché è la stessa cifra detta meglio, non un'altra. -->
+          <div class="sb-is-conto"><b id="is-pp">0 €</b><span>sul conto PayPal</span><i id="is-pp-netto"></i></div>
+          <div class="sb-is-conto"><b id="is-cash">0 €</b><span>contanti in mano</span></div>
           <div class="sb-is-conto"><b id="is-inc">0</b><span>a metà</span></div>
         </div>
       </div>
@@ -2237,6 +2265,17 @@ html.rsm-still .sb-is-frec { transition: none; }
         document.getElementById("is-att").textContent = euro(dati.daIncassareCent);
         document.getElementById("is-inc").textContent = String(dati.incompleti);
 
+        /* La cassa in due cifre separate, e sotto PayPal il netto. Le tre
+           chiavi possono mancare — una pagina aperta da prima che l'API le
+           mandasse — e in quel caso i riquadri restano a zero invece di
+           scrivere «undefined» addosso a un totale di soldi. */
+        document.getElementById("is-pp").textContent = euro(dati.onlineLordoCent || 0);
+        document.getElementById("is-cash").textContent = euro(dati.contantiCent || 0);
+        var netto = document.getElementById("is-pp-netto");
+        netto.textContent = dati.onlineNettoCent
+          ? euro(dati.onlineNettoCent) + " netti · " + euro(dati.onlineCommissioniCent || 0) + " di commissioni"
+          : "";
+
         porta.hidden = true;
         zona.hidden = false;
         mostra(null, "");
@@ -2379,15 +2418,39 @@ html.rsm-still .sb-is-frec { transition: none; }
   /* Da dove viene un'iscrizione, in una parola sola per il foglio di calcolo.
      Il numero del modulo ci sta dentro perché è quello che permette di andare
      a ripescare il foglio di carta dal raccoglitore. */
+  /* La commissione che PayPal trattiene su un pagamento: 0,35 € fissi più il
+     3,4%, che è la tariffa dei pagamenti da conto estero UE. Gli stessi due
+     numeri stanno in api/_paypal.mjs, ed è una ripetizione voluta: il CSV si
+     costruisce qui nel telefono senza chiedere niente a nessuno, e farsi
+     mandare il netto riga per riga vorrebbe dire gonfiare ogni risposta
+     dell'elenco per una colonna che si guarda una volta.
+
+     Sul contante è zero: nessuno trattiene niente su una banconota. */
+  function commissione(cent, pagamento) {
+    if (!cent || pagamento === "contanti") return 0;
+    return Math.round(cent * 0.034) + 35;
+  }
+
+  /* Una cifra in euro come la scrive un foglio di calcolo italiano: la
+     virgola decimale, e niente simbolo. */
+  function cifra(cent) { return (cent / 100).toFixed(2).replace(".", ","); }
+
   function origine(i) { return i.modulo ? "cartaceo n. " + i.modulo : "online"; }
 
   function csv() {
-    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Consenso", "Pagamento", "Stato", "Origine", "Fattura"])];
+    /* Tre colonne di soldi e non una: il lordo è quello che la persona ha
+       versato, la commissione è quello che PayPal si tiene, il netto è quello
+       che resta all'associazione. Sul contante commissione zero e netto
+       uguale al lordo, così sommando la colonna del netto viene fuori il
+       numero che serve davvero — quanto c'è da versare. */
+    var righe = [rigaCsv(["Fascia", "Nome", "Cognome", "Data di nascita", "Codice fiscale", "Email", "Telefono", "Responsabile", "Note", "Iscritto il", "Importo €", "Commissione €", "Netto €", "Consenso", "Pagamento", "Stato", "Origine", "Fattura"])];
     dati.iscritti.forEach(function (i) {
       righe.push(rigaCsv([
         "maggiorenne", i.nome, i.cognome, data(i.dataNascita), i.codiceFiscale, i.email, i.telefono, "", i.note,
         quando(i.quandoISO),
-        (i.importoCent / 100).toFixed(2).replace(".", ","),
+        cifra(i.importoCent),
+        cifra(commissione(i.importoCent, i.pagamento)),
+        cifra(i.importoCent - commissione(i.importoCent, i.pagamento)),
         i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
         i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
       ]));
@@ -2398,7 +2461,7 @@ html.rsm-still .sb-is-frec { transition: none; }
         righe.push(rigaCsv([
           "maggiorenne", a.nome, a.cognome, data(a.dataNascita), a.codiceFiscale, "", "",
           "", "",
-          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          quando(i.quandoISO), "", "", "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
           i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
         ]));
       });
@@ -2406,7 +2469,7 @@ html.rsm-still .sb-is-frec { transition: none; }
         righe.push(rigaCsv([
           "6-17 anni", m.nome, m.cognome, data(m.dataNascita), m.codiceFiscale, "", "",
           (i.nome + " " + i.cognome).trim(), "",
-          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          quando(i.quandoISO), "", "", "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
           i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
         ]));
       });
@@ -2418,7 +2481,7 @@ html.rsm-still .sb-is-frec { transition: none; }
         righe.push(rigaCsv([
           "sotto i 6", b.nome, b.cognome, data(b.dataNascita), "", "", "",
           (i.nome + " " + i.cognome).trim(), "",
-          quando(i.quandoISO), "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
+          quando(i.quandoISO), "", "", "", i.consenso, i.pagamento === "contanti" ? "contanti" : "PayPal",
           i.pagato ? "pagato" : "da incassare", origine(i), i.numero || i.id
         ]));
       });
