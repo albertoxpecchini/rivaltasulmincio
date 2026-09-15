@@ -4,9 +4,9 @@ Questo file contiene **il prompt da copiare** (il blocco qui sotto) e, in coda, 
 cosa è confermato e cosa no. Il prompt è scritto per un'AI che genera immagini o per un
 grafico: dice cosa deve esserci, con che gerarchia, e in che stile.
 
-> **Prima di usarlo, leggi «Cosa manca ancora» in fondo.** Tre dati non sono confermati
-> (luogo del ritrovo, luogo dei giochi, contatto per la prenotazione del risotto) e uno di
-> questi **deve** essere risolto, perché sulla locandina ci va un recapito.
+> **Prima di usarlo, leggi «Cosa manca ancora» in fondo.** Per il risotto si prenota da
+> [`/sagra-patroni`](../../sagra-patroni.html), che è già online — ma il modulo vero non c'è
+> ancora. Restano da confermare il luogo del ritrovo e quello dei giochi.
 
 ---
 
@@ -43,11 +43,12 @@ Blocco «DOMENICA 27 SETTEMBRE»:
 
 Riquadro in evidenza, staccato dal programma:
   Per il risotto è gradita la prenotazione
-  [QUI VA IL RECAPITO — vedi nota sotto]
+  Si prenota su rivaltasulmincio.it/sagra-patroni
+  (metti anche un codice QR che punta lì, come sulla locandina della Color Walk)
 
 Piede:
   Le sei contrade: la Filanda · il Roccolo · le Colonie · i Piasaröi · la Plàtana · le Fanfane
-  rivaltasulmincio.it/eventi
+  rivaltasulmincio.it/sagra-patroni
 
 GERARCHIA
 1. «SAGRA DEI PATRONI» domina il foglio.
@@ -104,10 +105,26 @@ dall'AVIS di Rivalta, la prenotazione gradita.
 
 | Cosa | Stato | Perché conta per la locandina |
 | :--- | :--- | :--- |
-| **Recapito per la prenotazione** | **manca** | Sulla locandina «gradita la prenotazione» senza un numero o un contatto non serve a niente. Questo va risolto prima di stampare. |
+| **Recapito per la prenotazione** | **deciso: la pagina** | Si prenota da [`/sagra-patroni`](../../sagra-patroni.html), che è già online col programma. Il modulo vero e la mail di conferma arrivano dopo, sul modello di `/color-walk`. Sulla locandina va l'indirizzo della pagina più un QR che punta lì. |
 | Luogo del ritrovo delle 15:00 | non confermato | Nel prompt è scritto «Piazza Chiesa», che è l'ipotesi presa dal sito. Rebecca non l'ha detto: ha solo scritto «ore 15:00 ritrovo». Se i tamburini partono da altrove, la riga cambia. |
 | Luogo dei giochi delle 16:00 | non confermato | Rebecca scrive «giù a fondo Mincio», ma anche «il parco non si può usare». Sul sito è scritto «da confermare». Sulla locandina, che è definitiva, o si conferma o si scrive solo «Fondo Mincio» senza nominare il parco. |
 | Loghi e patrocini | da decidere | La locandina della Color Walk porta gli stemmi delle sei contrade, quello del Comune di Rodigo, la Polizia Locale Mantova Ovest e i marchi degli sponsor. Qui almeno l'AVIS di Rivalta ci va, visto che offre il risotto. Chiedere a Rebecca chi altro. |
+
+## La pagina della sagra
+
+Il 15 settembre 2026 è nata [`/sagra-patroni`](../../sagra-patroni.html): programma dei due
+giorni, orari incolonnati, il Palio e la sezione della prenotazione. È lì che la locandina
+manda per il risotto, ed è lì che punta il QR.
+
+> **Il modulo di prenotazione non c'è ancora.** Oggi quella sezione dice che si aprirà, e non
+> finge di essere aperta. Se la locandina esce prima che il modulo sia pronto, il QR porta a una
+> pagina che annuncia la prenotazione invece di raccoglierla: va bene per il programma, meno per
+> chi vuole prenotare subito. Meglio far uscire il modulo prima della stampa.
+
+La prenotazione, quando si fa, si ricalca su `/color-walk`: `api/iscrizione-color-walk.mjs`
+per il modulo, `api/_posta.mjs` per la mail di conferma. Con una differenza: il risotto lo
+offre l'AVIS, quindi non c'è una quota — niente incasso, niente PayPal, niente ricevuta. Solo
+la conta dei coperti.
 
 ## Se invece la locandina si disegna come le altre
 
