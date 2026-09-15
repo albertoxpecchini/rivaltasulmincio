@@ -220,6 +220,30 @@ export async function paypal(percorso, { metodo = "GET", corpo, tollera = [], in
   const problemi = [dati?.name, ...(dati?.details || []).map((d) => d.issue)].filter(Boolean);
   if (tollera.some((t) => problemi.includes(t))) return { giaFatto: true, ...dati };
 
+  /* Cosa gli avevamo mandato. Senza questa riga, un rifiuto come
+     `REQUEST_REJECTED` — che PayPal dà senza dire quale campo non gli va giù —
+     è un'indagine a mani nude: si sa che ha detto di no e non si sa a cosa.
+     Con il corpo nel registro, il campo storto si trova leggendo.
+
+     Non ci finiscono dati di nessuno: si stampano i nomi dei campi e la
+     LUNGHEZZA dei valori, non i valori. Le lunghezze sono quello che serve
+     davvero, perché i rifiuti muti di PayPal sono quasi sempre un limite
+     sforato; i nomi e i codici fiscali di chi si iscrive non hanno niente da
+     fare in un registro di errori. */
+  if (corpo && typeof corpo === "object") {
+    const misura = (o, prefisso = "") =>
+      Object.entries(o).flatMap(([k, v]) => {
+        const dove = prefisso ? `${prefisso}.${k}` : k;
+        if (typeof v === "string") return [`${dove}=${v.length}`];
+        if (Array.isArray(v)) return [`${dove}[]=${v.length}`];
+        if (v && typeof v === "object") return misura(v, dove);
+        return [];
+      });
+    try {
+      console.error(`PayPal ha rifiutato ${metodo} ${percorso} — lunghezze dei campi: ${misura(corpo).join(" ")}`);
+    } catch {}
+  }
+
   /* Il rifiuto che non si legge da sé, e che ferma tutto: le credenziali sono
      giuste, il gettone arriva, e la chiamata alle fatture torna comunque
      «permessi insufficienti». Non è un errore di codice — è che l'app PayPal
@@ -315,10 +339,37 @@ export const numeroFattura = () =>
    «non c'è niente» tutte e tre. Il numero unico invece vale nell'istante in
    cui PayPal scrive, perché è lui a garantirlo.
 
-   Venticinque caratteri esatti: `CW-T-` più venti di sigla. */
+   Ventitré caratteri: `CW-T-` più diciotto di sigla, e non i venticinque
+   esatti che erano scritti qui prima.
+
+   Il tetto di PayPal per `invoice_number` è venticinque, e ci stavamo dentro
+   per il pelo di zero. Il 15 settembre un'iscrizione in contanti — un adulto
+   solo, niente di strano — è tornata indietro con un `REQUEST_REJECTED` sul
+   campo `invoiceId`: il rifiuto generico che PayPal dà quando un valore non
+   gli va giù senza dire quale sia il problema. Stare esattamente sul limite
+   di una regola scritta da qualcun altro, per un numero che non deve essere
+   bello ma solo unico, è un rischio che non paga niente.
+
+   E soprattutto: si taglia dalla TESTA, non dalla coda. La sigla che manda la
+   pagina è dodici caratteri di sessione più otto di impronta del modulo, e
+   l'impronta è l'unico pezzo che cambia quando cambia quello che si sta
+   mandando. Tagliando in fondo — com'era la prima versione di questa
+   correzione — si buttano via proprio quei caratteri: due moduli DIVERSI
+   dalla stessa sessione, una famiglia che si iscrive e poi corregge una data
+   e rimanda, finirebbero sullo stesso numero. E una collisione qui non è un
+   numero doppio qualunque: è il secondo modulo che si sente rispondere «eri
+   già iscritto» e sparisce senza che nessuno se ne accorga, cioè esattamente
+   il guasto che la sigla esiste per impedire.
+
+   Quindi: gli ultimi otto caratteri — l'impronta, intera — e davanti quanta
+   sessione ci sta. Chi rimanda lo STESSO modulo ottiene lo stesso numero, che
+   è tutto il punto, e due moduli diversi restano diversi. */
+const SIGLA_NEL_NUMERO = 18;
 export const numeroDaTentativo = (tentativo) => {
   const pulita = String(tentativo || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();
-  return pulita.length >= 8 ? `CW-T-${pulita.slice(0, 20)}` : "";
+  if (pulita.length < 8) return "";
+  const corta = pulita.length > SIGLA_NEL_NUMERO ? pulita.slice(-SIGLA_NEL_NUMERO) : pulita;
+  return `CW-T-${corta}`;
 };
 
 /* L'indirizzo a cui una fattura è intestata. Serve in un punto solo: quando

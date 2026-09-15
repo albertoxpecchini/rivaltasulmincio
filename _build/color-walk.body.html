@@ -3322,6 +3322,24 @@ html.rsm-still .sb-cw-segno { transition: none; }
           programma();
           return;
         }
+        /* PayPal ha detto di no prima che si scrivesse qualunque cosa. La
+           funzione lo sa con certezza — non era ancora nata nessuna fattura —
+           e allora si dice chiaro: non sei iscritto, riprova. Senza questo si
+           finiva nel messaggio degli errori imprevisti, che dice «potrebbe
+           essere comunque registrata, guarda la posta»: vero quando la
+           risposta si perde per strada, falso qui, e chi lo legge aspetta una
+           mail che non arriverà mai credendosi iscritto. */
+        if (res.d && res.d.nessunaScrittura) {
+          annuncia("errore",
+            "Non è stato possibile registrare l'iscrizione, e non è stato scritto niente: " +
+            "NON sei iscritto e non è partita nessuna mail. " +
+            "Riprova fra un minuto — se succede ancora, scrivi a color-walk@rivaltasulmincio.it " +
+            "e ti iscriviamo noi. (" + maiuscola(res.d.errore || "errore") + ")");
+          inviando = false;
+          bottone.disabled = false;
+          programma();
+          return;
+        }
         if (!res.ok || !res.d || !res.d.url) throw new Error((res.d && res.d.errore) || "errore imprevisto");
 
         /* Si va su PayPal. La bozza NON si cancella: chi annulla il pagamento

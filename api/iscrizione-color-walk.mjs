@@ -325,6 +325,12 @@ async function iscrivi(req, res) {
   const totaleCent =
     QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
 
+  /* Se la fattura è arrivata a esistere. Serve al `catch` in fondo, che
+     altrimenti non sa distinguere le due cose che contano per chi sta
+     compilando: «non è stato scritto niente, rimanda pure» e «l'iscrizione
+     c'è, non rimandare». */
+  let fatturaNata = false;
+
   try {
     /* Quante ne ha già aperte e non pagate questo indirizzo. Se la domanda
        non si riesce a farla non si blocca nessuno: il tetto è una misura
@@ -368,6 +374,10 @@ async function iscrivi(req, res) {
       consenso: new Date().toISOString(),
     });
     let creata = await creaFattura(corpo, tentativo);
+    /* Da qui in poi qualcosa su PayPal c'è: o l'abbiamo appena scritta, o
+       c'era già (`giaFatto`, cioè il numero era preso). In tutti e due i casi
+       un guasto più avanti NON è «non è successo niente». */
+    fatturaNata = true;
 
     /* Numero già preso SENZA che ci fosse una sigla. Non è il caso di sopra:
        qui il numero veniva dall'orologio, e due iscrizioni nello stesso
@@ -460,7 +470,22 @@ async function iscrivi(req, res) {
        lasciava traccia da nessuna parte. Un errore che il browser vede e il
        server non scrive è un errore che non si aggiusta. */
     console.error("iscrizione non riuscita:", errore?.stack || errore?.message || errore);
-    return res.status(502).json({ errore: String(errore.message || errore) });
+
+    /* Se è saltata PRIMA che la fattura esistesse, non è stato scritto niente
+       — e allora va detto, perché il messaggio del browser per gli errori
+       imprevisti dice l'opposto: «potrebbe essere comunque registrata, guarda
+       la posta». Quella frase è giusta quando la risposta si perde per
+       strada, ed è una presa in giro quando PayPal ha rifiutato in faccia:
+       chi la legge aspetta una mail che non arriverà mai, e intanto crede di
+       essere iscritto.
+
+       `nessunaScrittura` lo dice alla pagina in un campo suo invece che a
+       parole dentro l'errore: il testo di PayPal resta quello che è, e la
+       pagina sceglie la frase giusta da mettergli intorno. */
+    return res.status(502).json({
+      errore: String(errore.message || errore),
+      nessunaScrittura: !fatturaNata,
+    });
   }
 }
 

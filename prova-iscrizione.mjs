@@ -34,6 +34,16 @@ global.fetch = async (url, o = {}) => {
        già mandato». Non è un guasto da simulare per completezza: è la sola
        cosa che tiene fuori i doppioni, e va provata. */
     if (inviato.doppione) return rifiuto(400, { name: "DUPLICATE_INVOICE_NUMBER", message: "Duplicate Invoice Number" });
+    /* Il rifiuto secco: PayPal dice di no e non dice perche. E quello che
+       ha fermato un'iscrizione vera il 15 settembre. */
+    if (inviato.rifiutaFattura) {
+      return rifiuto(400, {
+        name: "INVALID_REQUEST",
+        message: "The requested action could not be performed, semantically incorrect, or failed business validation.",
+        details: [{ field: "invoiceId", issue: "REQUEST_REJECTED", description: "Could not process the request." }],
+        debug_id: "905f50e2bfd03",
+      });
+    }
     inviato.fattura = corpo;
     return risposta({ id: "INV2-PROVA" });
   }
@@ -89,8 +99,8 @@ const BASE = {
 let passate = 0;
 let fallite = 0;
 
-async function prova(nome, corpo, atteso, { gia = [], doppione = false, ritrovata = null } = {}) {
-  inviato = { fattura: null, ordine: null, mail: null, chiamate: [], gia, doppione, ritrovata, creazioni: 0, richiestaId: "" };
+async function prova(nome, corpo, atteso, { gia = [], doppione = false, ritrovata = null, rifiutaFattura = false } = {}) {
+  inviato = { fattura: null, ordine: null, mail: null, chiamate: [], gia, doppione, ritrovata, rifiutaFattura, creazioni: 0, richiestaId: "" };
   const res = finestra();
   await handler({ method: "POST", body: corpo }, res);
   const ok = atteso(res, inviato);
@@ -147,11 +157,52 @@ await prova(
     i.ordine.purchase_units[0].amount.value === "10.00"
 );
 
+/* Venticinque è il tetto di PayPal, e starci per il pelo di zero non è
+   starci: il 15 settembre un'iscrizione in contanti — un adulto solo — è
+   tornata indietro con un REQUEST_REJECTED sul campo `invoiceId`, che è il
+   rifiuto generico di PayPal quando un valore non gli va giù. Adesso il
+   numero ne usa ventitré in tutto, e questa prova tiene il margine dove sta.
+   Non si accorcia oltre: sotto i diciotto caratteri di sigla si perderebbero
+   pezzi dell'impronta del modulo, e due moduli diversi finirebbero sullo
+   stesso numero. */
 await prova(
-  "il numero della fattura sta nei 25 caratteri che PayPal concede",
+  "il numero della fattura resta ben dentro i 25 caratteri di PayPal",
   BASE,
-  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number.length <= 25
+  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number.length <= 23
 );
+
+await prova(
+  "e anche quando scende da una sigla lunga",
+  { ...BASE, tentativo: "abcdefghijkl12345678" },
+  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number.length <= 23
+);
+
+/* Il taglio va fatto in testa e non in coda, e questa è la prova che lo
+   inchioda. La sigla è dodici caratteri di sessione più otto di impronta:
+   l'impronta è l'unica parte che cambia quando cambia il modulo, quindi è
+   l'unica che NON si può buttare via. Due moduli diversi dalla stessa
+   sessione — chi corregge una data e rimanda — devono restare due numeri
+   diversi, o il secondo si sente dire «eri già iscritto» e sparisce. */
+{
+  const sessione = "abcdefghijkl";
+  let uno = "";
+  await prova(
+    "due moduli diversi dalla stessa sessione: due numeri diversi (1/2)",
+    { ...BASE, tentativo: sessione + "aaaaaaaa" },
+    (r, i) => {
+      uno = i.fattura?.detail?.invoice_number || "";
+      return r.codice === 200 && uno.endsWith("AAAAAAAA");
+    }
+  );
+  await prova(
+    "due moduli diversi dalla stessa sessione: due numeri diversi (2/2)",
+    { ...BASE, tentativo: sessione + "aaaaaaab" },
+    (r, i) => {
+      const due = i.fattura?.detail?.invoice_number || "";
+      return r.codice === 200 && due.endsWith("AAAAAAAB") && due !== uno;
+    }
+  );
+}
 
 await prova(
   "telefono, note e ora del consenso nel memo riservato, non nelle voci",
@@ -361,6 +412,25 @@ await prova(
   (r, i) => r.codice === 200 && voci(i)[0].split("|").length === 5
 );
 
+/* ── Quando PayPal dice di no e non ha scritto niente ──────────────────────
+   Il messaggio che si vedeva prima diceva «l'iscrizione potrebbe essere
+   comunque registrata, guarda la posta». È vero quando la risposta si perde
+   per strada; è una presa in giro quando PayPal ha rifiutato in faccia,
+   perché chi legge aspetta una mail che non arriverà mai e intanto si crede
+   iscritto. La funzione sa distinguere i due casi, e lo dice. */
+await prova(
+  "PayPal rifiuta la fattura: si dice che non è stato scritto niente",
+  { ...BASE, pagamento: "contanti" },
+  (r, i) => r.codice === 502 && r.corpo.nessunaScrittura === true && i.mail === null,
+  { rifiutaFattura: true }
+);
+
+await prova(
+  "quando invece la fattura era nata, non si dice che non è stato scritto niente",
+  { ...BASE, pagamento: "contanti" },
+  (r) => r.codice === 200 && !r.corpo.nessunaScrittura
+);
+
 console.log("\n── I casi limite dell'età, contati al 20 settembre ────────────");
 
 await prova(
@@ -560,8 +630,8 @@ await prova(
   { ...BASE, pagamento: "contanti", tentativo: SIGLA },
   (r, i) =>
     r.codice === 200 &&
-    i.fattura.detail.invoice_number === "CW-T-ABCDEFGHIJKL1234ABCD" &&
-    i.fattura.detail.invoice_number.length === 25
+    i.fattura.detail.invoice_number === "CW-T-CDEFGHIJKL1234ABCD" &&
+    i.fattura.detail.invoice_number.length === 23
 );
 
 await prova(
@@ -593,7 +663,7 @@ await prova(
     r.codice === 200 &&
     r.corpo.url.includes("paypal.com") &&
     i.creazioni === 1 &&
-    i.ordine.purchase_units[0].invoice_id === "CW-T-ABCDEFGHIJKL1234ABCD",
+    i.ordine.purchase_units[0].invoice_id === "CW-T-CDEFGHIJKL1234ABCD",
   { doppione: true }
 );
 
@@ -606,10 +676,10 @@ await prova(
   (r, i) => r.codice === 409 && i.fattura === null && i.mail === null,
   {
     doppione: true,
-    gia: [{ id: "INV2-ALTRUI", detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-ABCDEFGHIJKL1234ABCD" } }],
+    gia: [{ id: "INV2-ALTRUI", detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-CDEFGHIJKL1234ABCD" } }],
     ritrovata: {
       id: "INV2-ALTRUI",
-      detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-ABCDEFGHIJKL1234ABCD" },
+      detail: { reference: "color-walk-2026-09-20", invoice_number: "CW-T-CDEFGHIJKL1234ABCD" },
       primary_recipients: [{ billing_info: { email_address: "qualcunaltro@example.com" } }],
     },
   }
@@ -636,7 +706,7 @@ await prova(
 await prova(
   "due sigle diverse sono due iscrizioni diverse",
   { ...BASE, pagamento: "contanti", tentativo: "zzzzzzzzzzzz9999zzzz" },
-  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number === "CW-T-ZZZZZZZZZZZZ9999ZZZZ"
+  (r, i) => r.codice === 200 && i.fattura.detail.invoice_number === "CW-T-ZZZZZZZZZZ9999ZZZZ"
 );
 
 console.log(`\n${passate} passate, ${fallite} fallite\n`);
