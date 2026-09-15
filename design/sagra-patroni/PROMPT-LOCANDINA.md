@@ -60,24 +60,56 @@ GERARCHIA
    Uno deve poter leggere solo la colonna delle ore e capire la giornata.
 5. La prenotazione del risotto è l'unica «chiamata all'azione»: staccata, riconoscibile.
 
-STILE
+STILE — la vendemmia, non l'azzurro
 Carattere Titillium Web (o un grottesco umanista simile), titoli in tondo con crenatura
 stretta, mai tutto maiuscolo tranne il titolo e le intestazioni dei due giorni.
-Palette: fondo neutro chiaro (bianco sporco #fbfbfb, grigi #f6f6f6 e #f0f0f0), testo
-quasi nero #171717, e UN SOLO colore di sistema, l'azzurro #00A6EB, usato con parsimonia
-sui fili e sulle intestazioni. Niente rosso: nel design di questo paese vuol dire
-«errore».
+
+La palette è quella d'autunno del sito, il tema «uva» di settembre. NON usare l'azzurro:
+è il colore del sito fuori stagione e delle pagine della Color Walk, non di questa.
+
+  Carta e grigi — caldi, non neutri. I grigi del sito sono puri (R=G=B); qui si
+  scaldano di due o tre punti per canale, perché la carta di una pagina d'autunno non
+  è bianco di schermo.
+    fondo          #fcfbf9
+    fondo alt      #f8f6f2
+    lastre         #f6f3ef  e  #efebe5
+    fili           #e9e4dc  ·  #dcd5c9  ·  #c8bfb0
+    testo          #1a1614   (chiaro: #554d46, #726960, smorzato #948a7d)
+
+  L'unica tinta di sistema — GRANATO, il rosso del vino invecchiato:
+    accento        #8c2438
+    testo accento  #7a1f34   (quasi 10:1 sul fondo chiaro)
+  Va sui fili, sulle intestazioni dei due giorni e sull'occhiello. Con parsimonia:
+  è un accento, non una campitura.
+
+  Le sei tinte della vendemmia, se serve un tocco di colore in più. NON sono scelte a
+  occhio: sono le parole con cui l'articolo 6 dei disciplinari descrive quei vini.
+    #9b1b30  rubino      «rosso rubino più o meno intenso»   Lambrusco Mantovano DOC
+    #6b2029  granato     «…o granato»                        Lambrusco Mantovano DOC
+    #b8323f  cerasuolo   «tendente al cerasuolo»             Garda Colli Mantovani DOC
+    #e2879b  rosato      «rosato brillante»                  Garda Colli Mantovani DOC
+    #d8bd60  paglierino  «giallo paglierino»                 Garda Colli Mantovani DOC
+    #6d4a8c  viola       «sentore di viola o ribes»          Lambrusco Mantovano DOC
+  Più due verdi della foglia di vite: #7c8a3e com'è a settembre, #96702e quella che ha
+  già girato. Le tinte stanno sul fondale e sui dettagli, MAI sotto il testo.
+
+  Ombre calde, mai grigie: un'ombra grigia sotto una lastra su carta calda si legge
+  come sporco.
+
 Angoli tagliati a 45° in alto a sinistra e in basso a destra sui riquadri — mai
-stondati. Lastre di grigio chiarissimo con un filo di luce sul bordo alto. Una griglia
-tecnica leggera che sfuma verso il fondo.
-Deve sembrare parte della stessa famiglia della locandina della Color Walk dello stesso
-mese: stesso carattere, stessi angoli tagliati, stessa sobrietà.
+stondati. Lastre di carta calda con un filo di luce sul bordo alto. Una griglia tecnica
+leggera che sfuma verso il fondo.
+
+Il rosso qui NON vuol dire errore: il granato è il colore della stagione. L'unico rosso
+da evitare è il rosso-semaforo acceso (#e00, #ff0000), che sul sito è il segnale
+d'errore.
 
 IMMAGINE
 Se serve un elemento figurativo, la cosa giusta è il fiume: il Mincio, le barche della
 regata, i canneti. In alternativa i tamburini in corteo. Va come fascia a pieno taglio
-in cima al foglio, con un filo azzurro sotto, e il testo sotto su fondo chiaro — mai
-testo sopra la fotografia.
+in cima al foglio, con un filo granato sotto, e il testo sotto su carta chiara — mai
+testo sopra la fotografia. Se la stagione si vede nell'immagine — vigna, foglie girate,
+la luce bassa di fine settembre — tanto meglio.
 NON mettere: grafica da sagra anni '80, caratteri calligrafici, ghirlande, festoni,
 bandierine triangolari, gradienti accesi, ombre morbide.
 
@@ -109,6 +141,24 @@ dall'AVIS di Rivalta, la prenotazione gradita.
 | Luogo del ritrovo delle 15:00 | non confermato | Nel prompt è scritto «Piazza Chiesa», che è l'ipotesi presa dal sito. Rebecca non l'ha detto: ha solo scritto «ore 15:00 ritrovo». Se i tamburini partono da altrove, la riga cambia. |
 | Luogo dei giochi delle 16:00 | non confermato | Rebecca scrive «giù a fondo Mincio», ma anche «il parco non si può usare». Sul sito è scritto «da confermare». Sulla locandina, che è definitiva, o si conferma o si scrive solo «Fondo Mincio» senza nominare il parco. |
 | Loghi e patrocini | da decidere | La locandina della Color Walk porta gli stemmi delle sei contrade, quello del Comune di Rodigo, la Polizia Locale Mantova Ovest e i marchi degli sponsor. Qui almeno l'AVIS di Rivalta ci va, visto che offre il risotto. Chiedere a Rebecca chi altro. |
+
+## Da dove viene la palette
+
+Da [`assets/stagioni.css`](../../assets/stagioni.css), tema `uva` — quello che il sito porta
+da settembre. La pagina [`/sagra-patroni`](../../sagra-patroni.html) lo indossa già
+(`data-stagione="uva"` sull'`<html>`), quindi la locandina e la pagina si somigliano invece
+di litigare.
+
+Le sei tinte non sono decorative: sono le parole con cui l'**articolo 6** dei disciplinari del
+**Garda Colli Mantovani DOC** e del **Lambrusco Mantovano DOC** descrive quei vini. Rivalta non
+ha vigne — la sua terra fa cereali e meloni — ma il Mincio che le passa davanti scende
+dall'anfiteatro morenico del Garda, e lassù il vino c'è. Ogni pagina di stagione porta in fondo
+la nota con le sei parole e la loro denominazione.
+
+> **Le locandine della Color Walk NON seguono questo tema.** Le tre pagine della camminata
+> hanno una vernice loro (`.sb-cr`) e restano fuori dalla stagione, con l'azzurro del design
+> system. È il motivo per cui questa locandina e quella non sono gemelle: stesso carattere,
+> stessi angoli tagliati, ma un'altra tinta. Va bene così — sono due eventi diversi.
 
 ## La pagina della sagra
 
