@@ -666,6 +666,24 @@ html.dark .sb-is-elenco {
 /* Il tasto del contante sta FUORI dalla testata premibile — un bottone dentro
    un bottone non è HTML valido, e soprattutto non si potrebbe premere. Largo
    quanto la scheda, perché è il gesto che si fa di corsa. */
+/* L'esito del modulo cartaceo: sta dentro il modulo, dove guarda chi lo sta
+   compilando. Rosso quando qualcosa non va, perché è lì che si corregge. */
+.sb-is-cart-esito {
+  margin: 0 0 1rem;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(220, 38, 38, .45);
+  background: rgba(220, 38, 38, .10);
+  color: #fca5a5;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+.sb-is-cart-esito--ok {
+  border-color: rgba(34, 197, 94, .45);
+  background: rgba(34, 197, 94, .10);
+  color: #86efac;
+}
+
 .sb-is-incassa {
   width: 100%;
   margin-top: 0.6rem;
@@ -1078,6 +1096,14 @@ html.rsm-still .sb-is-frec { transition: none; }
 
           <div id="is-cart-piccoli"></div>
           <button type="button" class="sb-btn sb-btn--secondary" id="is-cart-piu-piccolo">+ Aggiungi un bambino sotto i 6 anni</button>
+
+          <!-- L'esito del riporto, QUI dentro e non solo in cima alla pagina.
+               Il riquadro in testa esiste da sempre, ma chi riporta un foglio
+               sta in fondo al modulo, col pollice sul tasto: un errore scritto
+               tre schermate più su non lo legge nessuno, e il tasto sembra
+               rotto — si preme, non succede niente, e il motivo c'era ma era
+               fuori campo. -->
+          <p class="sb-is-cart-esito" id="is-cart-esito" role="alert" hidden></p>
 
           <div class="sb-is-barra">
             <button class="sb-btn sb-btn--primary" type="submit" id="is-cart-manda">Riporta in elenco</button>
@@ -1814,6 +1840,21 @@ html.rsm-still .sb-is-frec { transition: none; }
   var QUOTA_ADULTO = 10;
   var QUOTA_MINORE = 5;
 
+  /* L'esito scritto dove sta l'occhio di chi compila. Il riquadro grande in
+     cima alla pagina continua a ricevere lo stesso messaggio — serve a chi
+     legge l'elenco — ma questo è quello che si vede davvero col modulo
+     aperto, e senza di lui un 400 restituito da PayPal o dalla validazione
+     era un tasto che non faceva niente. */
+  var cartEsito = document.getElementById("is-cart-esito");
+
+  function esitoCart(tipo, testo) {
+    if (!cartEsito) return;
+    cartEsito.hidden = !testo;
+    cartEsito.textContent = testo || "";
+    cartEsito.className = "sb-is-cart-esito" + (tipo === "ok" ? " sb-is-cart-esito--ok" : "");
+    if (testo) cartEsito.scrollIntoView({ block: "nearest" });
+  }
+
   var cart = document.getElementById("is-cart");
   var cartApri = document.getElementById("is-cart-apri");
   var cartChiudi = document.getElementById("is-cart-chiudi");
@@ -1870,6 +1911,7 @@ html.rsm-still .sb-is-frec { transition: none; }
   function apriCart(aperto) {
     cart.hidden = !aperto;
     cartApri.setAttribute("aria-expanded", aperto ? "true" : "false");
+    if (!aperto) esitoCart("", "");
     cartApri.textContent = aperto ? "Chiudi il modulo" : "+ Modulo cartaceo";
     if (aperto) campoCart("modulo").focus();
   }
@@ -1939,6 +1981,17 @@ html.rsm-still .sb-is-frec { transition: none; }
         dataNascita: valoreCart(f.righe[i], "nascita"),
         codiceFiscale: f.cf ? valoreCart(f.righe[i], "cf").toUpperCase().replace(/\s/g, "") : "",
       };
+      /* Una riga aperta per sbaglio e lasciata in bianco non è una persona:
+         è un click di troppo su «+ Aggiungi». Spedirla vuol dire farsi
+         respingere tutto il foglio con «nome o cognome mancanti» — un errore
+         vero, per una riga che chi compila non sta nemmeno guardando, in un
+         riquadro che fino a oggi stava tre schermate più su. Si lascia fuori
+         qui, e il foglio passa.
+
+         Vuota vuol dire vuota davvero: se c'è anche solo il nome, la riga
+         parte e il server dirà cosa manca, perché quella è una persona
+         scritta a metà e va corretta, non ignorata. */
+      if (!p.nome && !p.cognome && !p.dataNascita && !p.codiceFiscale) continue;
       fuori.push(p);
     }
     return fuori;
@@ -1998,7 +2051,9 @@ html.rsm-still .sb-is-frec { transition: none; }
       .then(function (res) {
         if (!res.ok || !res.d.riportato) throw new Error((res.d && res.d.errore) || "non è andata");
         if (res.d.gia) {
-          mostra("errore", res.d.messaggio || "Quel modulo era già in elenco: non è stato riportato due volte.");
+          var gia = res.d.messaggio || "Quel modulo era già in elenco: non è stato riportato due volte.";
+          mostra("errore", gia);
+          esitoCart("errore", gia);
         } else {
           /* La ricevuta parte da sé appena il foglio è confermato. Le tre
              code dicono tre cose diverse, e la differenza conta: partita,
@@ -2009,9 +2064,10 @@ html.rsm-still .sb-is-frec { transition: none; }
             : res.d.spedita === false
               ? " Ma la ricevuta NON è partita" + (res.d.perche ? " (" + res.d.perche + ")" : "") + ": l'iscrizione però c'è."
               : " Sul foglio non c'era nessuna email, quindi nessuna ricevuta.";
-          mostra(res.d.spedita === false ? "errore" : "ok",
-            "Modulo n. " + res.d.modulo + " riportato: " + res.d.nome + ", " + res.d.persone +
-            (res.d.persone === 1 ? " persona" : " persone") + ", " + euro(res.d.totaleCent) + " già incassati." + coda);
+          var detto = "Modulo n. " + res.d.modulo + " riportato: " + res.d.nome + ", " + res.d.persone +
+            (res.d.persone === 1 ? " persona" : " persone") + ", " + euro(res.d.totaleCent) + " già incassati." + coda;
+          mostra(res.d.spedita === false ? "errore" : "ok", detto);
+          esitoCart(res.d.spedita === false ? "errore" : "ok", detto);
           svuotaCart();
           campoCart("modulo").focus();
         }
@@ -2020,7 +2076,9 @@ html.rsm-still .sb-is-frec { transition: none; }
         return carica();
       })
       .catch(function (err) {
-        mostra("errore", "Non è stato possibile riportare il modulo (" + err.message + "). Niente è stato scritto: correggi e riprova.");
+        var male = "Non è stato possibile riportare il modulo: " + err.message + ". Niente è stato scritto: correggi e riprova.";
+        mostra("errore", male);
+        esitoCart("errore", male);
         cartManda.disabled = false;
         cartManda.textContent = "Riporta in elenco";
       });

@@ -942,6 +942,22 @@ function verifica(nome, ok, extra) {
     `pagamento ${JSON.stringify(pagamento?.corpo)}`);
 }
 
+/* La riga aperta per sbaglio. Al banchetto si preme «+ Aggiungi» una volta di
+   troppo, la riga resta in bianco, e il foglio intero veniva respinto con
+   «Adulto 2: nome o cognome mancanti» — un errore giusto, per una riga che
+   nessuno stava guardando. La pagina adesso le righe vuote non le manda
+   nemmeno; questa prova tiene fermo che il server, se una gli arriva lo
+   stesso, continui a dire chiaramente cosa manca invece di inghiottirla. */
+{
+  const res = await riporta({
+    ...FOGLIO,
+    adulti: [{ nome: "", cognome: "", dataNascita: "", codiceFiscale: "" }],
+  });
+  verifica("una riga di accompagnato vuota che arriva al server: lo dice, e non scrive niente",
+    res.codice === 400 && /nome o cognome/.test(res.corpo?.errore || "") && creata === null,
+    `${res.codice} ${JSON.stringify(res.corpo)}`);
+}
+
 /* E qui sta la regola, nella sua forma più dura: PayPal può anche rifiutarsi
    di annotare quei soldi, ma i soldi sono nel cassetto lo stesso.
 
