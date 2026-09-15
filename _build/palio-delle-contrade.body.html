@@ -1,0 +1,150 @@
+<!--title: Palio delle Contrade — le sei contrade di Rivalta sul Mincio-->
+<!--prio: 0.8-->
+<!--freq: weekly-->
+<!--desc: Il Palio delle Contrade di Rivalta sul Mincio: le sei contrade — la Filanda, il Roccolo, le Colonie, i Piasaröi, la Plàtana, le Fanfane — i loro stemmi e i loro colori, e le prove che lo decidono, dalla regata sul Mincio ai giochi di una volta.-->
+
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     La pagina del Palio delle Contrade.
+
+     ── Perché si separa dalla sagra ───────────────────────────────────────
+     Il Palio e la Sagra dei Patroni finiscono insieme — la regata di sabato
+     è l'ultima prova, e si corre dentro la sagra — ma non sono la stessa
+     cosa, e tenerli in una pagina sola li faceva sembrare tali.
+
+     La sagra è una data: due giorni, un programma a orari, un risotto da
+     prenotare. Passato il 27 settembre non c'è più niente da leggere fino
+     all'anno prossimo.
+
+     Il Palio è una cosa che il paese ce l'ha addosso tutto l'anno. Le sei
+     contrade non nascono a settembre e non finiscono a settembre: uno è
+     della Plàtana o delle Fanfane anche a febbraio, e i nomi sono rimasti
+     nelle vie e nelle insegne del paese. Chi cerca «di che contrada sono»
+     o «che vuol dire Piasaröi» non sta cercando il programma di una sagra.
+
+     Da qui in poi: gli stemmi, i colori e cosa c'è dipinto stanno QUI; il
+     programma dei due giorni sta in /sagra-patroni; il calendario dell'anno
+     resta in /eventi. Ognuna manda alle altre due, nessuna le ricopia.
+
+     ── Cosa NON c'è ──────────────────────────────────────────────────────
+     Un albo d'oro, e nessuna classifica. Nessuno ha dato al sito l'elenco
+     di chi ha vinto negli anni, e inventarlo sarebbe il peggior modo di
+     riempire una pagina sul paese: le contrade quei risultati li sanno a
+     memoria, e una riga sbagliata la vedrebbero tutti. La sezione non c'è
+     affatto — meglio una pagina più corta che una tabella finta.
+
+     Quando l'albo d'oro arriva, il posto è dopo #prove, e la forma è quella
+     di .sb-riv-tablewrap: una colonna per l'anno, una per la contrada.
+
+     ── Le sei stanno in build.mjs ────────────────────────────────────────
+     Nomi, colori, stemmi e note: la tabella CONTRADE in build.mjs, resa qui
+     da {{CONTRADE}} — la stessa che rende /eventi#contrade. Questa pagina
+     non li riscrive: il giorno che arriva l'artwork ufficiale si cambia la
+     tabella e si aggiornano tutte e tre le pagine insieme.
+
+     ── Lo stile è quello del sito ────────────────────────────────────────
+     Nessuna classe nuova e nessun colore in più: .sb-riv-pagehead per la
+     testata, .sb-riv-sec e .sb-panel per le sezioni, .sb-riv-contrade per
+     gli stemmi. Il Palio non ha una tinta sua come la Color Walk — i colori
+     sono quelli delle sei contrade, che il foglio di stile dà già a partire
+     dallo slug. -->
+
+<section class="sb-container sb-riv-pagehead">
+  <span class="sb-riv-eyebrow">Palio · Rivalta sul Mincio</span>
+  <h1>Il Palio delle Contrade</h1>
+  <p class="sb-riv-lede">Rivalta si divide in <strong>sei contrade</strong>, ognuna col suo colore e il suo stemma. Si sfidano durante l'anno e si chiude a settembre, con la <strong>regata sul Mincio</strong> dentro la <a href="/sagra-patroni">Sagra dei Patroni</a>.</p>
+  {{indice}}
+</section>
+
+<!-- ── Le sei ──────────────────────────────────────────────────────────────
+     La sezione per cui la pagina esiste: prima di tutto il resto, perché è
+     quello che si viene a cercare. {{CONTRADE}} le rende da build.mjs. -->
+<section class="sb-container sb-riv-sec" id="contrade" data-indice="Le sei contrade">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">01 — Le sei</span>
+    <h2>Le sei contrade</h2>
+    <p>Sono sei, e non cambiano: ognuna ha un colore e uno stemma. Sotto ogni stemma c'è scritto cosa ci sta dipinto sopra.</p>
+  </div>
+
+  {{CONTRADE}}
+
+  <p class="sb-riv-cap">Gli stemmi qui sopra sono la versione a colori dei cartelli che stanno in mostra alle giornate del Palio: ridisegnati, non fotografati. Sono gli stessi che tornano nella fila in fondo a <a href="/color-walk">/color-walk</a> e sulla locandina.</p>
+</section>
+
+<!-- ── I nomi nel paese di oggi ────────────────────────────────────────────
+     Tre dei sei nomi sono rimasti nella toponomastica, e il dato il sito lo
+     ha già in /paese: qui si dice quali e si manda lì. Degli altri tre non
+     si sa, e si scrive che non si sa — è il genere di buco che qualcuno in
+     paese può chiudere, e dirlo apertamente è il modo di farselo dire. -->
+<section class="sb-container sb-riv-sec" id="nomi" data-indice="I nomi nel paese">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">02 — Toponomastica</span>
+    <h2>I nomi che sono rimasti in paese</h2>
+  </div>
+
+  <p class="sb-riv-p">Tre dei sei nomi non stanno soltanto sugli stemmi: sono ancora scritti sulle targhe e sulle insegne. <strong>Il Roccolo</strong> è rimasto a <strong>Via Roccolo</strong>; <strong>la Plàtana</strong> dà il nome a <strong>Piazza Platana</strong>, al suo parco e all'<strong>Area Feste</strong> dove il paese si raduna; <strong>le Colonie</strong> tornano nell'insegna del pub <strong>«Le Antiche Colonie»</strong>.</p>
+
+  <p class="sb-riv-p">Di <strong>Filanda</strong>, <strong>Piasaröi</strong> e <strong>Fanfane</strong> il sito non dice l'origine, perché non la sa: sugli stemmi ci sono una filanda col bozzolo del baco da seta, una torre col tetto rosso e un'anfora, e quello è tutto ciò che se ne può dire con certezza. Se qualcuno in paese conosce la storia di quei tre nomi, è il genere di cosa che vale la pena scrivere.</p>
+
+  <div class="sb-riv-evento-azioni">
+    <a class="sb-btn sb-btn--secondary" href="/paese#edificato"><span>Le contrade nella toponomastica</span></a>
+  </div>
+</section>
+
+<!-- ── Le prove ────────────────────────────────────────────────────────────
+     Cosa si gioca. Il dato delicato è che quest'anno i tre tornei NON si
+     fanno: al loro posto c'è la Color Walk. Detto qui una volta, chiaro,
+     senza farne un annuncio a parte. -->
+<section class="sb-container sb-riv-sec" id="prove" data-indice="Le prove">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">03 — Come si vince</span>
+    <h2>Le prove che lo decidono</h2>
+    <p>Il Palio si gioca su più prove, non su una sola giornata.</p>
+  </div>
+
+  <div class="sb-riv-grid sb-riv-grid--2">
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>La regata sul Mincio</h4>
+      <p>La prova che chiude il Palio, <strong>sabato 26 settembre alle 18:00</strong>, sul fiume. È l'ultima, e quella che lo decide.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>I giochi di una volta</h4>
+      <p>Il pomeriggio di sabato, <strong>dalle 16:00</strong>, giù verso Fondo Mincio. Il luogo quest'anno è <strong>da confermare</strong>: il parco non si può usare.</p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>Calcetto, bocce, pallavolo</h4>
+      <p>I tre tornei che negli anni scorsi facevano le prove della bella stagione. <strong>Quest'anno non si giocano.</strong></p>
+    </div></div>
+    <div class="sb-panel"><div class="sb-panel-inner sb-riv-cardpad">
+      <h4>La sfilata coi tamburini</h4>
+      <p>Non è una prova, ma è come si apre la giornata grande: <strong>sabato alle 15:00</strong>, per le vie del paese.</p>
+    </div></div>
+  </div>
+
+  <div class="sb-riv-note">
+    <span class="sb-riv-note-t">Quest'anno al posto dei tornei c'è la Color Walk</span>
+    <p class="sb-riv-p">I tornei di calcetto, bocce e pallavolo hanno lasciato il posto alla <a href="/color-walk">Color Walk</a> di <strong>domenica 20 settembre</strong>: una camminata a colori non competitiva, senza cronometro e senza classifica. Restano la sfilata, i giochi di una volta e la regata.</p>
+  </div>
+</section>
+
+<!-- ── Dove finisce ────────────────────────────────────────────────────────
+     Il rimando alla sagra, che è l'altra metà della cosa. Non si ricopia il
+     programma: si dice che c'è e si manda lì. -->
+<section class="sb-container sb-riv-sec" id="sagra" data-indice="Dove si chiude">
+  <div class="sb-sechead sb-sechead--start">
+    <span class="sb-riv-secnum">04 — Settembre</span>
+    <h2>Dove si chiude il Palio</h2>
+  </div>
+
+  <p class="sb-riv-p">Il Palio finisce dentro la <strong>Sagra dei Patroni</strong>, <strong>sabato 26 e domenica 27 settembre</strong>: la regata delle 18:00 è la sua ultima prova, e a seguire c'è il <strong>risotto per tutti</strong> offerto dall'AVIS di Rivalta. Il programma dei due giorni, ora per ora, sta nella pagina della sagra.</p>
+
+  <div class="sb-riv-evento-azioni">
+    <a class="sb-btn sb-btn--primary" href="/sagra-patroni"><span>Il programma della sagra</span></a>
+    <a class="sb-btn sb-btn--secondary" href="/eventi"><span>Gli altri eventi dell'anno</span></a>
+  </div>
+
+  <div class="sb-riv-pager">
+    <a class="sb-link" href="/sagra-patroni">Sagra dei Patroni</a>
+    <a class="sb-link" href="/eventi">Eventi</a>
+  </div>
+</section>

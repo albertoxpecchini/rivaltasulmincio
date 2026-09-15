@@ -28,7 +28,7 @@ node -e "require('sharp')('assets/icone/<slug>.png').resize(256,256,{fit:'contai
 ## Dove finiscono
 
 In due punti, generati tutti e due da `build.mjs`: la scheda grande di
-[`/eventi#contrade`](../../_build/eventi.body.html), dove la piastrella è 4 rem, e la fila in
+[`/palio-delle-contrade`](../../_build/palio-delle-contrade.body.html), dove la piastrella è 4 rem, e la fila in
 fondo a [`/color-walk`](../../_build/color-walk.body.html), dove è 2,8 rem. La classe è la
 stessa, `.sb-riv-stemma--arte`.
 
