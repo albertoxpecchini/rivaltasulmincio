@@ -431,8 +431,39 @@ async function iscrivi(req, res) {
 
     /* Fuori dalla bozza, senza che PayPal scriva a nessuno: una bozza non
        accetta pagamenti, e senza questo passaggio né l'incasso online né il
-       contante potrebbero mai essere segnati. */
-    if (idFattura) await spedisciFattura(idFattura);
+       contante potrebbero mai essere segnati.
+
+       E se PayPal rifiuta di spedirla, l'iscrizione va avanti lo stesso.
+
+       Il 16 settembre, quattro giorni prima della camminata, `/send` ha
+       cominciato a rifiutare OGNI fattura con un `REQUEST_REJECTED` muto —
+       corpo di due booleani, niente da sbagliare da parte nostra, fatture
+       diverse di persone diverse tutte respinte al primo colpo. Un guasto
+       dal lato di PayPal, non nostro. Ma stando qui, in mezzo alla strada,
+       si portava dietro tutto: chi si iscriveva prendeva un 502, e intanto
+       la sua fattura era già nata. Iscritto per noi, respinto per lui.
+
+       Spedire la fattura NON è quello che fa incassare online. Il checkout è
+       un ordine a sé, che della fattura porta solo il numero: i soldi
+       arrivano e la ricevuta parte anche se la fattura è rimasta bozza.
+       L'unica cosa che una bozza non accetta è che ci si SEGNI sopra il
+       pagamento — l'ultimo passo del webhook, e il tasto «segna incassati»
+       dei contanti. Roba che si rimette a posto dopo, a mente fredda,
+       spedendo la fattura quando PayPal torna a volerlo.
+
+       Quindi: si prova, e se non va si scrive nel registro e si tira dritto.
+       Fra un'iscrizione che entra con la fattura da sistemare e una persona
+       che non riesce a iscriversi, la prima si aggiusta e la seconda no. */
+    if (idFattura) {
+      try {
+        await spedisciFattura(idFattura);
+      } catch (errore) {
+        console.error(
+          `iscrizione ${numero}: fattura ${idFattura} rimasta bozza (${errore.message}) — ` +
+            `l'iscrizione vale, il pagamento non potrà essere segnato finché non viene spedita`
+        );
+      }
+    }
 
     if (modalita === "contanti") return contanti(res, { fattura: corpo, idFattura, numero, email, totaleCent, ripetuta });
 
