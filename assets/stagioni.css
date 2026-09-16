@@ -312,20 +312,19 @@ html[data-stagione="uva"] .sb-home {
   --contro-l: 50%;
   --contro-a: 0.17;
 
-  /* ── Il disco, i raggi, la luna ─────────────────────────────────────
+  /* ── Il disco e i raggi ─────────────────────────────────────────────
      L'alone era la luce del sole; questo è il SOLE. Un disco piccolo e
      netto nello stesso punto dell'alone, che di giorno sta sopra il bordo
      della pagina — il sole a mezzogiorno è alto, non lo si vede, si vede
      solo la sua luce — e all'alba e al tramonto scende dove lo si può
      guardare. I raggi sono un ventaglio di bande chiarissime che parte
      dal disco: solo nelle due ore di luce radente, perché a mezzogiorno
-     la luce non ha direzione. Di notte il disco non c'è e al suo posto,
-     dall'altra parte, c'è la luna. Tutto a zero per default: di giorno il
-     fondale è quello di prima. */
+     la luce non ha direzione. Di notte il disco non c'è e basta: c'era
+     una luna, ed era una macchia bianca sotto la testata. Tutto a zero
+     per default: di giorno il fondale è quello di prima. */
   --disco-a: 0;
   --raggi-a: 0;
   --raggi-da: 60deg;
-  --luna-a: 0;
 }
 html[data-stagione="uva"] .sb-home::before {
   background:
@@ -353,10 +352,7 @@ html[data-stagione="uva"] .sb-home::before {
   transition: background 40s linear;
 }
 html[data-stagione="uva"] .sb-home::after {
-  background:
-    radial-gradient(4.2rem 4.2rem at 84% 9%, hsla(216, 40%, 94%, var(--luna-a)), hsla(216, 40%, 90%, calc(var(--luna-a) * 0.55)) 42%, transparent 68%),
-    radial-gradient(22rem 22rem at 84% 9%, hsla(216, 50%, 80%, calc(var(--luna-a) * 0.22)), transparent 70%),
-    radial-gradient(52rem 30rem at var(--contro-x) var(--contro-y), hsla(var(--contro-h), var(--contro-s), var(--contro-l), var(--contro-a)), transparent 60%);
+  background: radial-gradient(52rem 30rem at var(--contro-x) var(--contro-y), hsla(var(--contro-h), var(--contro-s), var(--contro-l), var(--contro-a)), transparent 60%);
   transition: background 40s linear;
 }
 html[data-stagione="uva"].dark .sb-home {
@@ -458,7 +454,6 @@ html[data-stagione="uva"][data-ora="notte"] .sb-home {
   --contro-s: 42%;
   --contro-l: 38%;
   --contro-a: 0.11;
-  --luna-a: 0.3;
 }
 html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
   --sole-h: 342;
@@ -469,7 +464,6 @@ html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
   --contro-s: 54%;
   --contro-l: 48%;
   --contro-a: 0.13;
-  --luna-a: 0.55;
 }
 
 /* ── E la carta sotto ─────────────────────────────────────────────────────
@@ -631,11 +625,53 @@ html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-vigna { --stag-vite: var
    tralcio: verde, non granato. */
 html[data-stagione="uva"] .sb-nav--scrolled { background-image: linear-gradient(90deg, var(--stag-vite), var(--stag-vite-oro) 42%, transparent 86%); }
 
-/* ── I tasti a foglia ────────────────────────────────────────────────────
-   Le cinque voci portano una foglia di vite davanti al nome — verde, e
-   rossa quando la voce è quella della pagina aperta: la foglia che ha
-   girato. La pillola che scivola fra le voci e il filo sotto prendono il
-   verde della vigna: qui in testata comanda la foglia, non il vino. */
+/* ── I tasti di foglie ───────────────────────────────────────────────────
+   Ogni voce è un cespo: una pastiglia fatta di foglie fittissime, una
+   sull'altra, con la parola sopra. È l'::after della voce — che nel
+   sistema era il filo sottile del «sei qui», e qui non serve più: il «sei
+   qui» lo dice la foglia rossa davanti al nome e la pastiglia più piena.
+
+   La forma è una maschera: una piastrella di cinque foglioline che si
+   ripete, con opacità diverse perché un cespo non è una tinta unita. Il
+   colore lo dà lo sfondo sotto la maschera, e cambia da voce a voce — tre
+   sfumature che si alternano, verde, verde-oro, verde-rosso — così cinque
+   cespi non sono cinque copie. La pillola che scivolava fra le voci non
+   c'è più: con un cespo per voce sarebbe una pastiglia sotto una pastiglia. */
+html[data-stagione="uva"] .sb-riv-nav-trigger {
+  position: relative;
+  isolation: isolate;
+  padding: 0.38rem 0.85rem;
+  border-radius: 999px;
+}
+html[data-stagione="uva"] .sb-riv-nav-trigger::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: -4px;
+  bottom: -4px;
+  height: auto;
+  z-index: -1;
+  border-radius: 999px;
+  transform: none;
+  opacity: 0.62;
+  background: linear-gradient(135deg, var(--stag-vite), var(--stag-vite-oro));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2030%2026%27%3E%3Cg%20fill%3D%27%23000%27%3E%3Cpath%20transform%3D%27translate%287%20-3%29%20rotate%28-30%29%20scale%28.62%29%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2822%20-2%29%20rotate%2825%29%20scale%28.62%29%27%20opacity%3D%270.85%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2815%209%29%20rotate%285%29%20scale%28.62%29%27%20opacity%3D%270.95%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%281%2011%29%20rotate%2840%29%20scale%28.62%29%27%20opacity%3D%270.8%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2829%2010%29%20rotate%28-45%29%20scale%28.62%29%27%20opacity%3D%270.8%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%289%2020%29%20rotate%28-10%29%20scale%28.62%29%27%20opacity%3D%270.9%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2824%2019%29%20rotate%2835%29%20scale%28.62%29%27%20opacity%3D%270.85%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%28-3%2022%29%20rotate%2815%29%20scale%28.62%29%27%20opacity%3D%270.75%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0 / 30px 26px repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2030%2026%27%3E%3Cg%20fill%3D%27%23000%27%3E%3Cpath%20transform%3D%27translate%287%20-3%29%20rotate%28-30%29%20scale%28.62%29%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2822%20-2%29%20rotate%2825%29%20scale%28.62%29%27%20opacity%3D%270.85%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2815%209%29%20rotate%285%29%20scale%28.62%29%27%20opacity%3D%270.95%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%281%2011%29%20rotate%2840%29%20scale%28.62%29%27%20opacity%3D%270.8%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2829%2010%29%20rotate%28-45%29%20scale%28.62%29%27%20opacity%3D%270.8%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%289%2020%29%20rotate%28-10%29%20scale%28.62%29%27%20opacity%3D%270.9%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%2824%2019%29%20rotate%2835%29%20scale%28.62%29%27%20opacity%3D%270.85%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3Cpath%20transform%3D%27translate%28-3%2022%29%20rotate%2815%29%20scale%28.62%29%27%20opacity%3D%270.75%27%20d%3D%27M0%202C4%202%208%203%2010%205.6%2011%207.5%208.5%208.5%206.6%2010.2%209.6%2010.6%2012%2012%2012.2%2014.4%2012.4%2016.4%208%2016.8%205.2%2017.8%204.4%2021%202.6%2023%200%2025.4-2.6%2023-4.4%2021-5.2%2017.8-8%2016.8-12.4%2016.4-12.2%2014.4-12%2012-9.6%2010.6-6.6%2010.2-8.5%208.5-11%207.5-10%205.6-8%203-4%202%200%202Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0 / 30px 26px repeat;
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[data-stagione="uva"] .sb-riv-nav-item:nth-child(3n+2) .sb-riv-nav-trigger::after { background: linear-gradient(135deg, var(--stag-vite-oro), var(--stag-gelso) 60%, var(--stag-vite)); }
+html[data-stagione="uva"] .sb-riv-nav-item:nth-child(3n) .sb-riv-nav-trigger::after { background: linear-gradient(135deg, var(--stag-vite), var(--stag-vigna) 70%, var(--stag-vite-oro)); }
+html[data-stagione="uva"] .sb-riv-nav-trigger:hover::after,
+html[data-stagione="uva"] .sb-riv-nav-item:focus-within .sb-riv-nav-trigger::after,
+html[data-stagione="uva"] .sb-riv-nav-item.sb-open .sb-riv-nav-trigger::after { opacity: 0.9; transform: scale(1.05); }
+html[data-stagione="uva"] .sb-riv-nav-trigger[data-attiva]::after { opacity: 0.85; background: linear-gradient(135deg, var(--stag-vigna), var(--stag-rubino) 55%, var(--stag-vite-oro)); }
+html[data-stagione="uva"] .sb-nav-pill { display: none; }
+html[data-stagione="uva"] .sb-nav-link:hover { background: transparent; }
+html[data-stagione="uva"] .sb-nav-links--pill .sb-nav-link:hover { background: transparent; }
+
+/* Davanti al nome, la foglia: verde, e rossa quando la voce è quella
+   della pagina aperta — la foglia che ha girato. */
 html[data-stagione="uva"] .sb-riv-nav-trigger::before {
   content: "";
   flex: none;
@@ -650,9 +686,9 @@ html[data-stagione="uva"] .sb-riv-nav-trigger::before {
 }
 html[data-stagione="uva"] .sb-riv-nav-trigger:hover::before { transform: rotate(-12deg) scale(1.15); background: var(--stag-vite-oro); }
 html[data-stagione="uva"] .sb-riv-nav-trigger[data-attiva]::before { background: var(--stag-vigna); }
-html[data-stagione="uva"] .sb-nav-pill { background: color-mix(in srgb, var(--stag-vite) 18%, var(--sb-overlay)); }
-html[data-stagione="uva"] .sb-nav-link::after { background: var(--stag-vite); }
-html[data-stagione="uva"] .sb-nav-link:hover { background: color-mix(in srgb, var(--stag-vite) 12%, transparent); }
+/* Sul cespo il testo va al colore pieno: mezzo tono sopra un fondo di
+   foglie non si legge. */
+html[data-stagione="uva"] .sb-riv-nav-trigger { color: var(--sb-fg); }
 
 /* ── Le api ──────────────────────────────────────────────────────────────
    Attorno a un grappolo ogni due ronza un'ape: un giro piccolo e
@@ -1242,7 +1278,12 @@ html[data-stagione="uva"].dark .sb-stag-volo-stormo { opacity: 0.4; }
    testo, e ognuno entra — sale e si scopre — quando arriva nella finestra,
    con la stessa animazione guidata dallo scorrimento che usa il resto del
    sito. Dietro a tutto (z-index 0, prima di .sb-bg), davanti all'orizzonte. */
-html[data-stagione="uva"] .sb-home { position: relative; }
+/* SOLO il contenitore di pagina, non ogni .sb-home: la barra delle
+   preferenze e il tasto «torna su» portano la stessa classe per i token, e
+   sono position:fixed. Con un .sb-home generico diventavano relative,
+   cadevano in fondo al flusso e allungavano la pagina di ottanta pixel
+   sotto il footer — con l'orizzonte che ci sbucava sotto. */
+html[data-stagione="uva"] body > .sb-home:first-child { position: relative; }
 .sb-fiaba {
   position: absolute;
   top: 0;
