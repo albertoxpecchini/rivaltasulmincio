@@ -117,7 +117,7 @@ const PAYPAL_PERCENTUALE = 0.034;
 /* La commissione su un singolo pagamento, arrotondata al centesimo come fa
    PayPal. Su zero è zero: un bambino sotto i 6 anni non paga commissioni
    perché non paga niente. */
-export const commissioneCent = (lordoCent) =>
+const commissioneCent = (lordoCent) =>
   lordoCent > 0 ? Math.round(lordoCent * PAYPAL_PERCENTUALE) + PAYPAL_FISSA_CENT : 0;
 
 /* Quanto ne resta dopo la commissione. */
@@ -451,7 +451,6 @@ export const numeroDaTentativo = (tentativo) => {
    scrivere qualunque cosa. */
 export const emailFattura = (fattura) =>
   String(fattura?.primary_recipients?.[0]?.billing_info?.email_address || "").trim().toLowerCase();
-
 
 /* ── Il modulo cartaceo riportato a mano ──────────────────────────────────
    Chi si iscrive al banchetto compila un foglio, e quel foglio porta in cima
@@ -1020,12 +1019,6 @@ export const incassaOrdine = (id) =>
     intestazioni: { "PayPal-Request-Id": `incasso-${id}` },
     tollera: ["ORDER_ALREADY_CAPTURED"],
   });
-
-/* L'incasso dentro un ordine già letto: l'identificativo serve alla nota che
-   finisce sulla fattura, ed è il filo che lega la riga dell'elenco al
-   movimento vero sul conto PayPal. */
-export const incassoDi = (ordine) =>
-  ordine?.purchase_units?.[0]?.payments?.captures?.find((c) => c.status === "COMPLETED") || null;
 
 /* Annullare. È il modo di dire «questa iscrizione non è andata in porto» a
    una fattura che non sarà mai pagata, e insieme il segno che l'avviso a chi
