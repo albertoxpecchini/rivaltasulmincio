@@ -288,6 +288,25 @@ export async function paypal(percorso, { metodo = "GET", corpo, tollera = [], in
     } catch {}
   }
 
+  /* E la risposta di PayPal per intero, che è l'unica cosa che dice DAVVERO
+     cosa non gli va bene.
+
+     La riga qui sopra stampa i codici — `REQUEST_REJECTED` e compagnia — e
+     quelli, da soli, sono ambigui per costruzione: `invoiceId` è il nome che
+     PayPal dà ad almeno tre campi diversi, e un rifiuto che nomina quello si
+     può leggere in tre modi, tutti plausibili e due sbagliati. La sera del 16
+     settembre, con la camminata a quattro giorni, ho tirato a indovinare tre
+     volte da quei codici: ogni volta un'ipotesi elegante, ogni volta falsa.
+     Il `description` e i `links` che PayPal manda insieme all'errore — e che
+     questa riga fino ad allora buttava via — dicono il motivo in inglese e
+     mandano alla pagina che lo spiega.
+
+     Non ci finiscono dati di nessuno: è la risposta di PayPal sul nostro
+     rifiuto, fatta di codici e di prosa loro, non del contenuto del modulo. */
+  try {
+    console.error(`PayPal, risposta intera su ${metodo} ${percorso}: ${JSON.stringify(dati)}`);
+  } catch {}
+
   /* Il rifiuto che non si legge da sé, e che ferma tutto: le credenziali sono
      giuste, il gettone arriva, e la chiamata alle fatture torna comunque
      «permessi insufficienti». Non è un errore di codice — è che l'app PayPal
