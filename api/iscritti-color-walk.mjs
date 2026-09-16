@@ -643,8 +643,11 @@ async function modifica(req, res) {
    sente, e in cambio niente più chiamate mandate a caso. Se la lettura non
    riesce si prova la strada di prima — spedire e pagare — perché un incasso
    non si perde per una GET andata storta. */
-async function portaAPagata(idFattura, { metodo, nota, obbligatorio = true }) {
-  const prima = await leggiFattura(idFattura).catch(() => null);
+async function portaAPagata(idFattura, { metodo, nota, obbligatorio = true, gia = null }) {
+  /* `gia` è la fattura che il chiamante ha già in mano. Passarla risparmia un
+     viaggio a PayPal, e chi incassa al banchetto ce l'ha sempre: l'ha appena
+     letta per controllare che fosse della Color Walk. Senza, si legge qui. */
+  const prima = gia || (await leggiFattura(idFattura).catch(() => null));
 
   if (prima && saldata(prima)) return { gia: true, segnata: true };
 
@@ -961,25 +964,62 @@ async function incassa(req, res) {
     giaSegnato = segno.gia;
   }
 
-  /* E poi PayPal, per tenere le due cose allineate — ma senza che il banco
-     dipenda dal suo umore. Se il registro ha preso l'incasso, un rifiuto qui
-     non ferma niente e resta scritto nel log: quei soldi sono già al sicuro.
+  /* E poi PayPal — ma DOPO aver risposto, non prima.
 
-     Se invece il registro non c'è (Supabase non configurato), allora PayPal
-     torna a essere l'unico posto dove l'incasso può essere scritto, e un suo
-     rifiuto è di nuovo un errore vero — tranne per la carta, che è pagata
-     comunque perché è di carta. */
-  let esito = { gia: giaSegnato };
-  try {
-    esito = await portaAPagata(fattura.id, {
+     Qui si decide quanto dura un incasso al banchetto, e la misura è venuta
+     dal collaudo: cinque secondi a spunta. Davanti alla chiesa, con la fila
+     che aspetta e cento contanti da segnare, cinque secondi per volta sono
+     un'ora di coda.
+
+     Se ne andavano tutti in PayPal: leggere la fattura, rileggerla, spedirla,
+     segnarla. Quattro viaggi di rete, ognuno coi suoi secondi, prima che chi
+     ha premuto vedesse qualcosa — e nessuno dei quattro cambiava la risposta,
+     perché la verità sul contante ormai la tiene il registro.
+
+     Quindi l'ordine giusto è: il registro ha scritto, la persona è pagata,
+     RISPONDI. PayPal lo si allinea dopo, mentre chi sta al banco è già
+     passato al prossimo. Se rifiuta resta nel log, e i soldi sono comunque
+     al sicuro nel registro — che è tutto il senso di averlo fatto.
+
+     Quando invece il registro NON c'è (Supabase non configurato), PayPal
+     torna a essere l'unico posto dove l'incasso può essere scritto: lì si
+     aspetta, perché rispondere «fatto» senza aver scritto da nessuna parte
+     sarebbe una bugia. */
+  if (nelRegistro) {
+    /* La risposta parte adesso. `gia` viene dal registro, che è la fonte:
+       dice il vero anche senza aspettare PayPal. */
+    res.status(200).json({ incassata: true, gia: giaSegnato, id: fattura.id });
+
+    /* Su Vercel un lavoro lasciato indietro dopo la risposta può non arrivare
+       in fondo: l'istanza viene congelata, e riprende solo se le capita
+       un'altra richiesta. Quindi questo allineamento è un di più, non una
+       promessa — e il codice è scritto perché quel di più possa mancare
+       senza che nessuno ci rimetta: l'incasso è già nel registro, e l'elenco
+       legge da lì. Al peggio la fattura su PayPal resta indietro, ed è
+       esattamente la cosa che `_build/fatture-in-bozza.mjs` rimette in riga
+       con calma, a camminata finita. */
+
+    /* E questo continua da solo. Non si aspetta e non si `await`a: l'unico
+       esito che interessa è una riga di log, e chi ha premuto è già altrove. */
+    portaAPagata(fattura.id, {
       metodo: "CASH",
       nota: "Contanti incassati al ritrovo, prima della partenza",
-      obbligatorio: !nelRegistro && !daCartaceo(numeroFattura),
+      obbligatorio: false,
+      gia: fattura,
+    }).catch((errore) => {
+      console.error(`incasso ${numeroFattura}: registrato da noi, ma PayPal non l'ha preso (${errore.message})`);
     });
-  } catch (errore) {
-    if (!nelRegistro) throw errore;
-    console.error(`incasso ${numeroFattura}: registrato da noi, ma PayPal non l'ha preso (${errore.message})`);
+    return;
   }
+
+  /* Senza registro si aspetta PayPal, perché è rimasto l'unico posto dove
+     scrivere. La carta resta l'eccezione: è pagata perché è di carta. */
+  const esito = await portaAPagata(fattura.id, {
+    metodo: "CASH",
+    nota: "Contanti incassati al ritrovo, prima della partenza",
+    obbligatorio: !daCartaceo(numeroFattura),
+    gia: fattura,
+  });
 
   /* Che PayPal non abbia gridato non vuol dire che abbia scritto. Le scuse
      che `paypal()` tollera tornano indietro come `giaFatto`, e per due di
