@@ -89,6 +89,18 @@ html[data-stagione="uva"] .sb-home {
   --stag-nervo: rgba(252, 251, 249, 0.55);
   --stag-luce: rgba(255, 255, 255, 0.34);
 
+  /* ── Gli alberi di Rivalta ──────────────────────────────────────────────
+     Non tutto quello che cade a settembre è vite. In paese ci sono l'antica
+     platana e le gelse secolari di via Costa (sono in /natura), e sono le
+     prime a girare: il platano al color ruggine, il gelso al giallo pieno.
+     Due tinte in più che non vengono da un disciplinare — vengono da due
+     alberi che si possono andare a guardare. */
+  --stag-platano: #a85a2e;
+  --stag-gelso: #c9a227;
+  /* L'acqua del Mincio, sul fondo dell'orizzonte: fredda, per contrasto con
+     tutto il resto. Di notte prende il blu del controcampo. */
+  --stag-acqua: hsl(202, 34%, 58%);
+
   /* ── La tinta che scorre, detta con le parole del mese ─────────────────
      sb.css scrive l'accento a gradiente con la scala dell'azzurro; qui la
      riga va dal granato al rubino e finisce nell'oro della foglia che ha
@@ -146,6 +158,9 @@ html[data-stagione="uva"].dark .sb-home {
   --stag-vite-radente: #bcae6a;
   --stag-nervo: rgba(22, 20, 19, 0.6);
   --stag-luce: rgba(255, 245, 240, 0.2);
+  --stag-platano: #d4855a;
+  --stag-gelso: #e6c45c;
+  --stag-acqua: hsl(208, 42%, 52%);
 
   /* Al buio la riga parte dal rosato — che qui è il testo d'accento — passa
      dal cerasuolo e finisce nel paglierino. Stesse tre parole, un tono su. */
@@ -206,11 +221,16 @@ html[data-stagione="uva"] .sb-riv-cit { border-left-color: color-mix(in srgb, va
 html[data-stagione="uva"] .sb-riv-secnum::before {
   content: "";
   display: block;
-  width: 2.2rem;
-  height: 2px;
-  margin-bottom: 0.65rem;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--stag-vite), color-mix(in srgb, var(--stag-oro) 60%, transparent) 62%, transparent);
+  width: 2.9rem;
+  height: 13px;
+  margin-bottom: 0.5rem;
+  /* Non più un tratto dritto: un viticcio — il filo che corre e si
+     arriccia in punta, lo stesso che pende dal festone. Il disegno è una
+     maschera e il colore lo dà il fondo, così segue il tema e l'ora senza
+     un secondo SVG. */
+  background: linear-gradient(90deg, var(--stag-vite), var(--stag-vite-oro) 70%, var(--stag-oro));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 13'%3E%3Cpath d='M1 9c8 0 14-.2 22 0 5 .2 8-1.6 10-4.6 1.4-2.2 4.6-2.4 5.2.2.6 2.4-2.6 3.6-4 1.6' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") left center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 13'%3E%3Cpath d='M1 9c8 0 14-.2 22 0 5 .2 8-1.6 10-4.6 1.4-2.2 4.6-2.4 5.2.2.6 2.4-2.6 3.6-4 1.6' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") left center / contain no-repeat;
 }
 
 /* L'indice a lato: la voce in cui si sta leggendo accende un filo, e quel
@@ -256,9 +276,41 @@ html[data-stagione="uva"] .sb-home {
   --contro-s: 58%;
   --contro-l: 48%;
   --contro-a: 0.13;
+
+  /* ── Il disco, i raggi, la luna ─────────────────────────────────────
+     L'alone era la luce del sole; questo è il SOLE. Un disco piccolo e
+     netto nello stesso punto dell'alone, che di giorno sta sopra il bordo
+     della pagina — il sole a mezzogiorno è alto, non lo si vede, si vede
+     solo la sua luce — e all'alba e al tramonto scende dove lo si può
+     guardare. I raggi sono un ventaglio di bande chiarissime che parte
+     dal disco: solo nelle due ore di luce radente, perché a mezzogiorno
+     la luce non ha direzione. Di notte il disco non c'è e al suo posto,
+     dall'altra parte, c'è la luna. Tutto a zero per default: di giorno il
+     fondale è quello di prima. */
+  --disco-a: 0;
+  --raggi-a: 0;
+  --raggi-da: 60deg;
+  --luna-a: 0;
 }
 html[data-stagione="uva"] .sb-home::before {
-  background: radial-gradient(58rem 32rem at var(--sole-x) var(--sole-y), hsla(var(--sole-h), var(--sole-s), var(--sole-l), var(--sole-a)), transparent 62%);
+  background:
+    conic-gradient(
+      from var(--raggi-da) at var(--sole-x) var(--sole-y),
+      transparent 0deg,
+      hsla(var(--sole-h), 85%, 62%, var(--raggi-a)) 5deg,
+      transparent 11deg,
+      hsla(var(--sole-h), 85%, 62%, calc(var(--raggi-a) * 0.7)) 19deg,
+      transparent 27deg,
+      hsla(var(--sole-h), 85%, 62%, var(--raggi-a)) 38deg,
+      transparent 49deg,
+      hsla(var(--sole-h), 85%, 62%, calc(var(--raggi-a) * 0.6)) 60deg,
+      transparent 72deg,
+      hsla(var(--sole-h), 85%, 62%, calc(var(--raggi-a) * 0.8)) 86deg,
+      transparent 100deg,
+      transparent 360deg
+    ),
+    radial-gradient(11rem 11rem at var(--sole-x) var(--sole-y), hsla(var(--sole-h), 92%, 74%, var(--disco-a)), hsla(var(--sole-h), 90%, 66%, calc(var(--disco-a) * 0.5)) 34%, transparent 70%),
+    radial-gradient(58rem 32rem at var(--sole-x) var(--sole-y), hsla(var(--sole-h), var(--sole-s), var(--sole-l), var(--sole-a)), transparent 62%);
   /* Il passaggio da un'ora all'altra non scatta. Quaranta secondi sono più
      lunghi di qualunque cambio si guardi di proposito: alle 19 in punto la
      luce comincia a calare e chi sta leggendo non vede un fotogramma
@@ -266,7 +318,10 @@ html[data-stagione="uva"] .sb-home::before {
   transition: background 40s linear;
 }
 html[data-stagione="uva"] .sb-home::after {
-  background: radial-gradient(52rem 30rem at var(--contro-x) var(--contro-y), hsla(var(--contro-h), var(--contro-s), var(--contro-l), var(--contro-a)), transparent 60%);
+  background:
+    radial-gradient(4.2rem 4.2rem at 84% 9%, hsla(216, 40%, 94%, var(--luna-a)), hsla(216, 40%, 90%, calc(var(--luna-a) * 0.55)) 42%, transparent 68%),
+    radial-gradient(22rem 22rem at 84% 9%, hsla(216, 50%, 80%, calc(var(--luna-a) * 0.22)), transparent 70%),
+    radial-gradient(52rem 30rem at var(--contro-x) var(--contro-y), hsla(var(--contro-h), var(--contro-s), var(--contro-l), var(--contro-a)), transparent 60%);
   transition: background 40s linear;
 }
 html[data-stagione="uva"].dark .sb-home {
@@ -290,7 +345,10 @@ html[data-stagione="uva"][data-ora="alba"] .sb-home {
   --sole-h: 18;
   --sole-s: 62%;
   --sole-l: 46%;
-  --sole-a: 0.17;
+  --sole-a: 0.22;
+  --disco-a: 0.58;
+  --raggi-a: 0.085;
+  --raggi-da: 40deg;
   --contro-x: 92%;
   --contro-y: -6%;
   --contro-h: 224;
@@ -302,7 +360,9 @@ html[data-stagione="uva"][data-ora="alba"].dark .sb-home {
   --sole-h: 20;
   --sole-s: 70%;
   --sole-l: 52%;
-  --sole-a: 0.19;
+  --sole-a: 0.24;
+  --disco-a: 0.62;
+  --raggi-a: 0.075;
   --contro-h: 226;
   --contro-s: 52%;
   --contro-l: 46%;
@@ -317,11 +377,14 @@ html[data-stagione="uva"][data-ora="alba"].dark .sb-home {
    un tramonto. Da sinistra entra il blu della sera che sta arrivando. */
 html[data-stagione="uva"][data-ora="tramonto"] .sb-home {
   --sole-x: 96%;
-  --sole-y: 18%;
+  --sole-y: 22%;
   --sole-h: 26;
   --sole-s: 78%;
   --sole-l: 50%;
-  --sole-a: 0.26;
+  --sole-a: 0.32;
+  --disco-a: 0.72;
+  --raggi-a: 0.1;
+  --raggi-da: 200deg;
   --contro-x: 6%;
   --contro-y: -4%;
   --contro-h: 320;
@@ -333,7 +396,9 @@ html[data-stagione="uva"][data-ora="tramonto"].dark .sb-home {
   --sole-h: 24;
   --sole-s: 78%;
   --sole-l: 54%;
-  --sole-a: 0.22;
+  --sole-a: 0.28;
+  --disco-a: 0.75;
+  --raggi-a: 0.09;
   --contro-h: 318;
   --contro-s: 50%;
   --contro-l: 48%;
@@ -358,6 +423,7 @@ html[data-stagione="uva"][data-ora="notte"] .sb-home {
   --contro-s: 42%;
   --contro-l: 38%;
   --contro-a: 0.11;
+  --luna-a: 0.3;
 }
 html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
   --sole-h: 342;
@@ -368,6 +434,7 @@ html[data-stagione="uva"][data-ora="notte"].dark .sb-home {
   --contro-s: 54%;
   --contro-l: 48%;
   --contro-a: 0.13;
+  --luna-a: 0.55;
 }
 
 /* ── E la carta sotto ─────────────────────────────────────────────────────
@@ -557,9 +624,21 @@ html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-festone {
   animation-delay: calc(var(--i, 0) * -0.41s);
 }
 
-/* Sotto i 700px il tralcio non compare: in testa lo spazio è poco e
-   ruberebbe la prima riga di quello che si è venuti a leggere. */
-@media (max-width: 699.98px) { .sb-stag-festone { display: none; } }
+/* Sotto i 700px il tralcio c'è, ma a due terzi: in testa lo spazio è poco,
+   e un festone da cinquanta pixel ruberebbe la prima riga di quello che si
+   è venuti a leggere. A trentadue è un filo con qualche foglia, e il
+   contenuto scende di altrettanto (vedi .sb-main più sotto) invece di
+   passargli sotto. */
+@media (max-width: 699.98px) {
+  .sb-stag-festone { height: 32px; opacity: 0.8; }
+  .sb-nav--scrolled + .sb-stag-festone { opacity: 0.92; }
+  .sb-stag-festone svg { transform: scale(0.64); transform-origin: 0 0; }
+  html[data-stagione] .sb-main { padding-top: 26px; }
+  @keyframes sb-stag-cala {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 0.8; transform: none; }
+  }
+}
 
 /* ═══ LE FOGLIE CHE SCENDONO ══════════════════════════════════════════════
    Lo strato lo riempie assets/stagioni.js. Sta dietro al contenuto — .sb-main
@@ -673,11 +752,26 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 .sb-stag-nota-t {
   margin: 0 0 0.9rem;
   max-width: var(--sb-misura);
-  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
   color: var(--sb-fg);
+  text-wrap: balance;
+}
+/* Il titolo della nota è scritto con la tinta che scorre, come la seconda
+   riga del titolo della home: è la sola frase del sito che parla dei
+   colori, ed è giusto che sia fatta di quelli. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .sb-stag-nota-t {
+    width: fit-content;
+    padding-right: 0.06em;
+    background: var(--sb-accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 .sb-stag-nota-p {
   margin: 0 0 0.7rem;
@@ -709,6 +803,9 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 }
 @media (min-width: 620px) { .sb-stag-tinte { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .sb-stag-tinte { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Dove ci stanno, le sei parole stanno in UNA riga: una tavolozza, non un
+   elenco a capo. */
+@media (min-width: 1240px) { .sb-stag-tinte { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.85rem 1.2rem; } }
 .sb-stag-tinta {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -719,8 +816,8 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
 }
 .sb-stag-tinta-q {
   grid-row: 1 / 3;
-  width: 22px;
-  height: 22px;
+  width: 34px;
+  height: 34px;
   /* Il colore piatto sotto, e sopra un velo che scende da sinistra: è la
      luce che prende un vetro pieno, la stessa che ha già il grappolo del
      festone (.sb-stag-luce) e che arriva sempre da lì. Sei millimetri di
@@ -730,7 +827,7 @@ html[data-stagione] .sb-home.sb-stag-nota::after { content: none; }
   background:
     linear-gradient(148deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 52%),
     var(--q);
-  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   box-shadow: inset 0 0 0 1px rgba(128, 116, 108, 0.28);
 }
 /* Al buio il velo si dimezza. Sul chiaro il riflesso si stacca dal fondo e
@@ -806,12 +903,91 @@ html[data-stagione="uva"].dark .sb-stag-tinta-q {
   .sb-stag-zona-d { text-align: left; }
 }
 
+/* ═══ L'ORIZZONTE ═════════════════════════════════════════════════════════
+   In fondo alla finestra, fisso, dietro a tutto: le colline dell'anfiteatro
+   morenico con i filari, i pioppi verso le valli, e davanti l'acqua del
+   Mincio. È il paesaggio da cui la nota in fondo dice che vengono i colori,
+   messo dove si può guardare mentre si legge.
+
+   Lo disegna build.mjs (renderOrizzonte) e lo mette una volta per pagina;
+   qui ci sono le tinte e la misura. NON sta a z-index -1 come i due aloni:
+   un figlio vero con indice negativo finisce sotto il fondo di .sb-home e
+   non si vede (provato). Sta a zero, come il fondale e le foglie, e
+   l'ordine nel documento fa il resto: viene prima di .sb-bg, quindi grana
+   e punti gli passano sopra, e stagioni.js mette le foglie subito dopo di
+   lui, quindi gli scendono davanti.
+
+   È pallido di proposito: quello che sta sotto una colonna di prosa deve
+   sparire quando si legge e tornare quando si alza lo sguardo. La maschera
+   in cima lo dissolve, così non c'è una riga dove «comincia il paesaggio». */
+.sb-stag-orizzonte {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(110px, 24vh, 250px);
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.62;
+  -webkit-mask-image: linear-gradient(to top, #000 55%, transparent);
+  mask-image: linear-gradient(to top, #000 55%, transparent);
+  animation: sb-stag-sorge 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+@keyframes sb-stag-sorge {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 0.62; transform: none; }
+}
+.sb-stag-orizzonte svg { display: block; width: 100%; height: 100%; }
+.sb-stag-oriz-lontano { fill: var(--stag-viola); opacity: 0.2; }
+.sb-stag-oriz-medio { fill: var(--stag-vite); opacity: 0.22; }
+/* I filari: pali e fili tesi, un motivo che riempie la collina di mezzo.
+   Le righe seguono la collina perché il motivo è ritagliato dalla stessa
+   forma, e sono un po' inclinate perché un filare visto dalla pianura non
+   è mai perfettamente orizzontale. */
+.sb-stag-oriz-filo { stroke: var(--stag-vite); fill: none; stroke-linecap: round; }
+.sb-stag-oriz-filari { opacity: 0.42; }
+.sb-stag-oriz-vicino { fill: var(--stag-vite-oro); opacity: 0.2; }
+.sb-stag-oriz-pioppo { fill: var(--stag-vite); opacity: 0.4; }
+.sb-stag-oriz-acqua { fill: var(--stag-acqua); opacity: 0.16; }
+.sb-stag-oriz-riflesso { fill: var(--stag-luce); opacity: 0.5; }
+
+html[data-stagione="uva"].dark .sb-stag-orizzonte { opacity: 0.55; }
+html[data-stagione="uva"].dark .sb-stag-oriz-lontano { opacity: 0.24; }
+html[data-stagione="uva"].dark .sb-stag-oriz-medio { opacity: 0.2; }
+html[data-stagione="uva"].dark .sb-stag-oriz-vicino { opacity: 0.18; }
+html[data-stagione="uva"].dark .sb-stag-oriz-acqua { opacity: 0.2; }
+
+/* All'alba e al tramonto anche le colline prendono la luce di taglio: lo
+   stesso giro del festone, la stessa variabile. Di notte l'acqua prende il
+   blu della notte e le colline si fanno più scure e più lontane. */
+html[data-stagione="uva"][data-ora="alba"] .sb-stag-orizzonte,
+html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-orizzonte { --stag-vite: var(--stag-vite-radente); }
+html[data-stagione="uva"][data-ora="notte"] .sb-stag-orizzonte { --stag-vite: var(--stag-viola); --stag-vite-oro: var(--stag-viola); }
+html[data-stagione="uva"][data-ora="notte"] .sb-stag-oriz-acqua { opacity: 0.26; }
+
+/* Sotto i 700px l'orizzonte si abbassa: su un telefono un quarto dello
+   schermo di paesaggio sotto il testo è troppo paesaggio. */
+@media (max-width: 699.98px) {
+  .sb-stag-orizzonte { height: 96px; opacity: 0.5; }
+  @keyframes sb-stag-sorge {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 0.5; transform: none; }
+  }
+}
+
+/* ═══ QUELLO CHE RESTA DELL'AZZURRO ═══════════════════════════════════════
+   La pillola che scivola fra le voci della barra era grigia, e il grigio
+   in mezzo a una pagina di vino è un buco. Prende un velo della tinta. */
+html[data-stagione="uva"] .sb-nav-pill { background: color-mix(in srgb, var(--sb-brand) 9%, var(--sb-overlay)); }
+
 /* ═══ MOVIMENTO E STAMPA ══════════════════════════════════════════════════
    Chi ha chiesto meno movimento — al sistema operativo o col tasto nella
    barra — tiene il colore e perde la deriva. Le foglie restano dove il JS le
    ha posate, il tralcio smette di dondolare e non cala più: è appeso e
    basta. */
 html.rsm-still .sb-stag-festone,
+html.rsm-still .sb-stag-orizzonte,
 html.rsm-still .sb-stag-pend,
 html.rsm-still .sb-stag-p,
 html.rsm-still .sb-stag-x,
@@ -819,6 +995,7 @@ html.rsm-still .sb-stag-r,
 html.rsm-still .sb-stag-p svg { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   html:not(.rsm-motion) .sb-stag-festone,
+  html:not(.rsm-motion) .sb-stag-orizzonte,
   html:not(.rsm-motion) .sb-stag-pend,
   html:not(.rsm-motion) .sb-stag-p,
   html:not(.rsm-motion) .sb-stag-x,
@@ -831,6 +1008,7 @@ html.rsm-still .sb-stag-p svg { animation: none; }
    nota invece è testo, e resta. */
 @media print {
   .sb-stag-festone,
+  .sb-stag-orizzonte,
   .sb-stag-cielo { display: none; }
   .sb-stag-nota { border-top: 1px solid #ccc; }
 }

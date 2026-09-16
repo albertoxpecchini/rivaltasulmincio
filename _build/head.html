@@ -53,6 +53,13 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 </head>
 <body>
 <div class="sb-home">
+  <!-- L'orizzonte di stagione: colline, filari, pioppi e il Mincio in fondo
+       alla finestra, dietro a tutto. Lo mette build.mjs solo sulle pagine di
+       stagione; altrove il segnaposto diventa vuoto. Sta PRIMA del fondale
+       perché, a parità di livello, vince chi viene dopo: così la grana e i
+       punti gli passano sopra, e le foglie (stagioni.js le mette subito dopo
+       di lui) gli scendono davanti. -->
+{{STAGIONE_ORIZZONTE}}
   <div class="sb-bg" aria-hidden="true"><div class="sb-bg-grid"></div></div>
   <a class="sb-skip" href="#main">Salta al contenuto</a>
   <!-- La barra di lettura: un filo in cima che si allunga scendendo. È solo

@@ -90,6 +90,31 @@
     "<path d='M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round'/>" +
     "</svg>";
 
+  /* ── E gli alberi del paese ─────────────────────────────────────────────
+     La vite è la citazione; questi due sono Rivalta. Il platano — l'antica
+     platana del centro feste — ha la foglia a cinque punte, larga quanto
+     una mano, e a settembre è la prima a girare al color ruggine. Il gelso
+     — le gelse secolari di via Costa — ha la foglia a cuore, seghettata,
+     che ingiallisce tutta insieme. Tinte loro (--stag-platano, --stag-gelso)
+     e non del vino: un platano granato non esiste. */
+  var PLATANO =
+    "<svg viewBox='-13 0 26 27' aria-hidden='true'>" +
+    "<path d='M0 1.5 2.4 7 7.2 3.6 6.4 9.6 12.4 10.4 7.8 14.2 11.2 19.4 5.2 17.6 4.2 23.4 0 20 -4.2 23.4 -5.2 17.6 -11.2 19.4 -7.8 14.2 -12.4 10.4 -6.4 9.6 -7.2 3.6 -2.4 7Z'/>" +
+    "<path d='M0 4V21M0 8.6 7 5.4M0 8.6-7 5.4M0 13.2 10.4 11.2M0 13.2-10.4 11.2' fill='none' stroke='#fff' stroke-width='.8' opacity='.3'/>" +
+    "</svg>";
+
+  var GELSO =
+    "<svg viewBox='-13 0 26 27' aria-hidden='true'>" +
+    "<path d='M0 3.2C4.6-.6 12 2.4 12 9c0 6.6-6 11.4-12 17C-6 20.4-12 15.6-12 9c0-6.6 7.4-9.6 12-5.8Z'/>" +
+    "<path d='M0 4.6V24.4M0 9.6 6.8 7.4M0 9.6-6.8 7.4M0 15.4 6.2 14M0 15.4-6.2 14' fill='none' stroke='#fff' stroke-width='.8' opacity='.3'/>" +
+    "</svg>";
+
+  /* Il pulviscolo: quello che si vede nell'aria solo quando il sole è basso
+     e la luce arriva di taglio. Punti minuscoli, chiari, che scendono
+     lentissimi. Esiste solo all'alba e al tramonto (vedi specieDi). */
+  var PULVISCOLO =
+    "<svg viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='7'/></svg>";
+
   /* ── Chi cade, e come ───────────────────────────────────────────────────
      `peso` è la probabilità che esca quella specie. `sventola` è quanto
      ondeggia di lato e quanto svelto si volta: alto per ciò che è largo e
@@ -97,15 +122,32 @@
      durata della caduta — sotto 1 vuol dire «scende più in fretta».
      `tinte` sono le variabili del foglio, e non si mescolano fra specie. */
   var SPECIE = [
-    { n: "foglia", peso: 0.46, svg: FOGLIA, sventola: 1, zavorra: 1.12, volta: true, tinte: ["vite", "vite", "vite-oro", "vite-oro", "paglierino"], oro: ["vite", "vite-oro", "vite-oro", "paglierino", "paglierino"] },
+    { n: "foglia", peso: 0.3, svg: FOGLIA, sventola: 1, zavorra: 1.12, volta: true, tinte: ["vite", "vite", "vite-oro", "vite-oro", "paglierino"], oro: ["vite", "vite-oro", "vite-oro", "paglierino", "paglierino"] },
+    /* Le due foglie del paese: più larghe della vite, quindi ondeggiano di
+       più e scendono più piano. Il platano è quasi sempre ruggine, con
+       qualche foglia ancora d'oro; il gelso è giallo e basta. */
+    { n: "platano", peso: 0.15, svg: PLATANO, sventola: 1.1, zavorra: 1.2, volta: true, tinte: ["platano", "platano", "platano", "vite-oro"], oro: ["platano", "platano", "gelso"] },
+    { n: "gelso", peso: 0.12, svg: GELSO, sventola: 0.95, zavorra: 1.16, volta: true, tinte: ["gelso", "gelso", "paglierino"], oro: ["gelso", "gelso", "paglierino"] },
     /* Un acino solo è un cerchio, e un cerchio pallido che scende sembra
        una bolla di sapone. Ne cade qualcuno, ma la parte del leone la fa il
        grappolino, che una forma ce l'ha. E il rosato — che è il colore del
        chiaretto, non di un acino — resta ai grappoli. */
-    { n: "acino", peso: 0.16, svg: ACINO, sventola: 0.22, zavorra: 0.74, volta: false, tinte: ["granato", "rubino", "viola", "cerasuolo"] },
-    { n: "grappolino", peso: 0.25, svg: GRAPPOLINO, sventola: 0.34, zavorra: 0.82, volta: false, tinte: ["granato", "rubino", "viola", "rosato", "cerasuolo"] },
-    { n: "viticcio", peso: 0.13, svg: VITICCIO, sventola: 0.86, zavorra: 1.04, volta: false, tinte: ["vite", "vite-oro"], oro: ["vite-oro", "vite-oro", "vite"] },
+    { n: "acino", peso: 0.1, svg: ACINO, sventola: 0.22, zavorra: 0.74, volta: false, tinte: ["granato", "rubino", "viola", "cerasuolo"] },
+    { n: "grappolino", peso: 0.21, svg: GRAPPOLINO, sventola: 0.34, zavorra: 0.82, volta: false, tinte: ["granato", "rubino", "viola", "rosato", "cerasuolo"] },
+    { n: "viticcio", peso: 0.12, svg: VITICCIO, sventola: 0.86, zavorra: 1.04, volta: false, tinte: ["vite", "vite-oro"], oro: ["vite-oro", "vite-oro", "vite"] },
   ];
+
+  /* Il pulviscolo ha misure sue (`dim`, `op`), non quelle del piano: è
+     sempre minuscolo e sempre chiaro, a qualunque distanza. Scende quasi
+     dritto e lentissimo — è polvere nell'aria ferma, non una foglia. */
+  var PULVISCOLO_SP = { n: "pulviscolo", peso: 0.22, svg: PULVISCOLO, sventola: 0.5, zavorra: 1.9, volta: false, dim: [3, 6], op: [0.3, 0.55], tinte: ["paglierino", "paglierino", "oro", "gelso"] };
+
+  /* Chi cade dipende dall'ora: il pulviscolo si vede solo con la luce di
+     taglio, quindi entra nella lista solo all'alba e al tramonto. I pesi
+     non devono fare uno — pesata() li normalizza da sé. */
+  function specieDi() {
+    return (ORA === "alba" || ORA === "tramonto") ? SPECIE.concat([PULVISCOLO_SP]) : SPECIE;
+  }
 
   /* Nelle due ore di luce radente le foglie si scelgono da `oro` invece che
      da `tinte`: le stesse variabili, pesate diversamente. Una foglia presa
@@ -130,8 +172,10 @@
   function fra(v) { return rnd(v[0], v[1]); }
   function una(l) { return l[(Math.random() * l.length) | 0]; }
   function pesata(l) {
-    var r = Math.random(), s = 0;
-    for (var i = 0; i < l.length; i++) { s += l[i].peso !== undefined ? l[i].peso : l[i].quota; if (r <= s) return l[i]; }
+    var tot = 0, i;
+    for (i = 0; i < l.length; i++) tot += l[i].peso !== undefined ? l[i].peso : l[i].quota;
+    var r = Math.random() * tot, s = 0;
+    for (i = 0; i < l.length; i++) { s += l[i].peso !== undefined ? l[i].peso : l[i].quota; if (r <= s) return l[i]; }
     return l[l.length - 1];
   }
 
@@ -181,14 +225,19 @@
        Su stretto se ne fanno meno, e non si vede la differenza perché la
        finestra è meno di un terzo. */
     var stretto = (window.innerWidth || 1024) < 700;
-    var n = still ? 6 : stretto ? 8 : 14;
+    /* Erano quattordici, e quattordici cose su uno schermo da 1440 erano un
+       accenno. Ventiquattro è un cielo di settembre: si vede che scende
+       qualcosa senza doverlo cercare, e resta dietro al testo. Su stretto
+       la metà, e con il movimento fermo nove foglie posate. */
+    var n = still ? 9 : stretto ? 12 : 24;
+    var lista = specieDi();
 
     cielo = document.createElement("div");
     cielo.className = "sb-stag-cielo";
     cielo.setAttribute("aria-hidden", "true");
 
     for (var i = 0; i < n; i++) {
-      var sp = pesata(SPECIE);
+      var sp = pesata(lista);
       var pi = pesata(PIANI);
 
       /* Tre gusci annidati: uno cade, uno ondeggia di lato, uno gira. Tre
@@ -205,8 +254,8 @@
       x.appendChild(r);
       p.appendChild(x);
 
-      p.style.setProperty("--sw", fra(pi.dim).toFixed(1) + "px");
-      p.style.setProperty("--so", fra(pi.op).toFixed(3));
+      p.style.setProperty("--sw", fra(sp.dim || pi.dim).toFixed(1) + "px");
+      p.style.setProperty("--so", fra(sp.op || pi.op).toFixed(3));
       p.style.setProperty("--sc", "var(--stag-" + una(tinteDi(sp)) + ")");
 
       if (still) {
@@ -237,7 +286,12 @@
       }
       cielo.appendChild(p);
     }
-    host.insertBefore(cielo, host.firstChild);
+    /* Subito DOPO l'orizzonte, se c'è: stanno tutti e due a z-index 0, e a
+       parità vince chi viene dopo nel documento — così le foglie scendono
+       davanti alle colline e non dietro. Senza orizzonte, in cima come
+       prima. */
+    var oriz = host.querySelector(":scope > .sb-stag-orizzonte");
+    host.insertBefore(cielo, oriz ? oriz.nextSibling : host.firstChild);
   }
 
   popola();

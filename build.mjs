@@ -254,6 +254,51 @@ function renderFestone(s) {
   );
 }
 
+/* ── L'orizzonte ─────────────────────────────────────────────────────────
+   Il paesaggio da cui vengono i colori, in fondo alla finestra: due file di
+   colline — le morene del Garda, da cui il Mincio scende — con i filari
+   sulla collina di mezzo, un gruppo di pioppi verso le valli, e davanti
+   l'acqua. Fisso e dietro a tutto (stagioni.css, .sb-stag-orizzonte).
+
+   È SVG in pagina per la stessa ragione del festone: il colore lo dà il
+   foglio, e quindi il tema e l'ora. I filari sono un <pattern> — pali e
+   fili — ritagliato dalla forma della collina: le righe seguono il
+   pendio da sole, senza disegnarle una per una.
+
+   preserveAspectRatio="xMinYMax slice": ancorato a sinistra e in basso.
+   Su uno schermo stretto si vede la parte sinistra del paesaggio, non il
+   centro — come tutto il resto del sito, che parte dal margine sinistro. */
+function renderOrizzonte() {
+  const pioppo = (x, y, s) => `<use href="#stag-pioppo" transform="translate(${x} ${y}) scale(${s})"/>`;
+  const pioppi = [
+    pioppo(1140, 176, 1), pioppo(1162, 178, 0.82), pioppo(1186, 175, 1.1), pioppo(1214, 179, 0.7), pioppo(1236, 177, 0.92),
+    pioppo(1470, 182, 0.78), pioppo(1490, 181, 0.96),
+    pioppo(300, 186, 0.66), pioppo(318, 185, 0.84),
+  ].join("");
+  return (
+    `  <div class="sb-stag-orizzonte" aria-hidden="true">\n` +
+    `    <svg viewBox="0 0 1600 250" preserveAspectRatio="xMinYMax slice" focusable="false">\n` +
+    `      <defs>\n` +
+    `        <pattern id="stag-filare" width="18" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">` +
+    `<path class="sb-stag-oriz-filo" d="M4 13V5.5M13 13V6.5" stroke-width="1.5"/>` +
+    `<path class="sb-stag-oriz-filo" d="M0 7.4H18" stroke-width="0.7"/>` +
+    `</pattern>\n` +
+    /* Il pioppo: un fuso stretto e alto, la punta in cima. L'origine è alla
+       base, così basta dire dove appoggia. */
+    `        <path id="stag-pioppo" class="sb-stag-oriz-pioppo" d="M0 0C-7-14-7.5-46-4-66 -2.5-75-1-80 0-84 1-80 2.5-75 4-66 7.5-46 7-14 0 0Z"/>\n` +
+    `      </defs>\n` +
+    `      <path class="sb-stag-oriz-lontano" d="M0 152C120 118 260 112 420 132S700 108 880 126 1160 104 1320 128 1520 112 1600 130V250H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-medio" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-filari" fill="url(#stag-filare)" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>\n` +
+    `      <g>${pioppi}</g>\n` +
+    `      <path class="sb-stag-oriz-vicino" d="M0 216C200 200 380 212 560 206S900 196 1100 210 1420 198 1600 212V250H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-acqua" d="M0 232C300 222 560 240 860 230S1360 236 1600 228V250H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-riflesso" d="M0 238C300 230 560 246 860 236S1360 242 1600 234V250H0Z"/>\n` +
+    `    </svg>\n` +
+    `  </div>`
+  );
+}
+
 /* ── La nota di stagione ─────────────────────────────────────────────────
    Sopra il footer, su tutte le pagine di stagione: cosa c'entra l'uva con
    Rivalta, e da dove vengono esattamente i sei colori. Senza questa nota il
@@ -2099,6 +2144,7 @@ if (!bodies.length) throw new Error("nessun frammento in _build/");
    del ciclo. Fuori stagione restano stringhe vuote e i due segnaposto si
    sciolgono nel nulla. */
 const FESTONE = stag ? renderFestone(stag) : "";
+const ORIZZONTE = stag ? renderOrizzonte() : "";
 const NOTA = stag ? renderNota(stag) : "";
 
 /* ── Un nome, due cose ────────────────────────────────────────────────────
@@ -2265,6 +2311,7 @@ for (const file of bodies) {
       .replace('<html lang="it">', conStagione ? `<html lang="it" data-stagione="${stagione}">` : '<html lang="it">')
       .replace('<meta name="theme-color" content="#fcfcfc">', conStagione ? '<meta name="theme-color" content="#fcfbf9">' : '<meta name="theme-color" content="#fcfcfc">')
       .replace(/[ \t]*\{\{STAGIONE_FESTONE\}\}\r?\n/, conStagione ? `${FESTONE}\r\n` : "")
+      .replace(/[ \t]*\{\{STAGIONE_ORIZZONTE\}\}\r?\n/, conStagione ? `${ORIZZONTE}\r\n` : "")
       .replace("{{HEAD}}", headExtra) +
     `  <main class="sb-main" id="main">\n${ancore(body)}\n  </main>\n` +
     foot

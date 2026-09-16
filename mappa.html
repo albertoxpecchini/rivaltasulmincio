@@ -55,6 +55,27 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 </head>
 <body>
 <div class="sb-home">
+  <!-- L'orizzonte di stagione: colline, filari, pioppi e il Mincio in fondo
+       alla finestra, dietro a tutto. Lo mette build.mjs solo sulle pagine di
+       stagione; altrove il segnaposto diventa vuoto. Sta PRIMA del fondale
+       perché, a parità di livello, vince chi viene dopo: così la grana e i
+       punti gli passano sopra, e le foglie (stagioni.js le mette subito dopo
+       di lui) gli scendono davanti. -->
+  <div class="sb-stag-orizzonte" aria-hidden="true">
+    <svg viewBox="0 0 1600 250" preserveAspectRatio="xMinYMax slice" focusable="false">
+      <defs>
+        <pattern id="stag-filare" width="18" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)"><path class="sb-stag-oriz-filo" d="M4 13V5.5M13 13V6.5" stroke-width="1.5"/><path class="sb-stag-oriz-filo" d="M0 7.4H18" stroke-width="0.7"/></pattern>
+        <path id="stag-pioppo" class="sb-stag-oriz-pioppo" d="M0 0C-7-14-7.5-46-4-66 -2.5-75-1-80 0-84 1-80 2.5-75 4-66 7.5-46 7-14 0 0Z"/>
+      </defs>
+      <path class="sb-stag-oriz-lontano" d="M0 152C120 118 260 112 420 132S700 108 880 126 1160 104 1320 128 1520 112 1600 130V250H0Z"/>
+      <path class="sb-stag-oriz-medio" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>
+      <path class="sb-stag-oriz-filari" fill="url(#stag-filare)" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>
+      <g><use href="#stag-pioppo" transform="translate(1140 176) scale(1)"/><use href="#stag-pioppo" transform="translate(1162 178) scale(0.82)"/><use href="#stag-pioppo" transform="translate(1186 175) scale(1.1)"/><use href="#stag-pioppo" transform="translate(1214 179) scale(0.7)"/><use href="#stag-pioppo" transform="translate(1236 177) scale(0.92)"/><use href="#stag-pioppo" transform="translate(1470 182) scale(0.78)"/><use href="#stag-pioppo" transform="translate(1490 181) scale(0.96)"/><use href="#stag-pioppo" transform="translate(300 186) scale(0.66)"/><use href="#stag-pioppo" transform="translate(318 185) scale(0.84)"/></g>
+      <path class="sb-stag-oriz-vicino" d="M0 216C200 200 380 212 560 206S900 196 1100 210 1420 198 1600 212V250H0Z"/>
+      <path class="sb-stag-oriz-acqua" d="M0 232C300 222 560 240 860 230S1360 236 1600 228V250H0Z"/>
+      <path class="sb-stag-oriz-riflesso" d="M0 238C300 230 560 246 860 236S1360 242 1600 234V250H0Z"/>
+    </svg>
+  </div>
   <div class="sb-bg" aria-hidden="true"><div class="sb-bg-grid"></div></div>
   <a class="sb-skip" href="#main">Salta al contenuto</a>
   <!-- La barra di lettura: un filo in cima che si allunga scendendo. È solo
