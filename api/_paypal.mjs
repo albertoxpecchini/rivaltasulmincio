@@ -394,6 +394,15 @@ export const numeroFattura = () =>
    di una regola scritta da qualcun altro, per un numero che non deve essere
    bello ma solo unico, è un rischio che non paga niente.
 
+   Ma il 16 settembre lo stesso rifiuto è tornato, e da lì si è capito che
+   quella diagnosi era sbagliata: la lunghezza non c'entrava. `invoiceId` è
+   il nome che PayPal dà a DUE campi diversi — `invoice_number` sulla
+   fattura, e `invoice_id` sull'ordine — e quello che rifiutava era il
+   secondo, che PayPal tiene unico per conto su tutti gli ordini. Il numero
+   accorciato qui sopra non ha guastato niente e resta com'è, ma la cosa da
+   sapere sta in `numeroPerOrdine`, più sotto: sull'ordine il numero ci va una
+   volta sola, e dal secondo checkout in poi vuole un contrassegno in coda.
+
    E soprattutto: si taglia dalla TESTA, non dalla coda. La sigla che manda la
    pagina è dodici caratteri di sessione più otto di impronta del modulo, e
    l'impronta è l'unico pezzo che cambia quando cambia quello che si sta
@@ -751,11 +760,34 @@ export const registraPagamento = (id, { metodo, nota }) =>
 const PER_PAGINA = 100;
 const PAGINE_MAX = 10;
 
+/* Il numero della fattura, ripulito dal contrassegno del tentativo.
+
+   Sull'ORDINE il numero non può ripetersi: PayPal tiene `invoice_id` unico
+   per conto, su tutti gli ordini, per sempre. Un secondo checkout sulla
+   stessa iscrizione — che è la cosa che succede ogni volta che il primo non
+   torna indietro — chiederebbe un numero già bruciato dal primo, e PayPal lo
+   rifiuta con un `REQUEST_REJECTED` sul campo `invoiceId` che non spiega
+   niente. Quindi dal secondo tentativo in poi l'ordine porta il numero con
+   un `-2`, `-3` in coda (lo mette `numeroPerOrdine`, più sotto).
+
+   Sulla FATTURA invece il numero deve restare quello di sempre, perché è lui
+   l'identità dell'iscrizione: è quello che si ripete a chiedere di nuovo la
+   stessa risposta invece di iscrivere due volte la stessa persona.
+
+   Da qui questa riga. Il webhook il numero lo legge dall'ORDINE — col
+   contrassegno — e deve arrivare alla FATTURA, che ce l'ha senza. Toglierlo
+   qui dentro, e non nei sei punti che chiamano questa funzione, è la
+   differenza fra una regola sola e sei posti dove dimenticarsela: sbagliarne
+   uno vuol dire un incasso che non trova la sua fattura, cioè qualcuno che
+   ha pagato e che l'elenco degli iscritti non conosce. */
+const senzaTentativo = (numero) => String(numero || "").replace(/-\d+$/, "");
+
 /* Una sola fattura, per numero. Torna `null` se non c'è: chi chiama deve
    poter distinguere «non l'ho trovata» da «è andato storto qualcosa», perché
    nel webhook le due cose portano a risposte opposte — un 200 che chiude la
    partita, o un 500 che chiede a PayPal di riprovare. */
-export async function trovaFattura(numero) {
+export async function trovaFattura(numeroGrezzo) {
+  const numero = senzaTentativo(numeroGrezzo);
   const trovate = await cercaFatture({ invoice_number: numero });
   const scheda = trovate.find((f) => String(f?.detail?.invoice_number || "") === numero);
   if (!scheda) return null;
@@ -822,6 +854,22 @@ export async function cercaFatture(filtro = {}) {
    L'ordine: il pagamento online, e nient'altro
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* Il numero come lo porta l'ORDINE, che non è quello della fattura.
+
+   `invoice_id` PayPal lo tiene unico per conto su tutti gli ordini, quindi il
+   numero della fattura ci sta una volta sola: al primo checkout. Dal secondo
+   in poi — cioè ogni volta che il primo non è tornato indietro e si ripreme —
+   ci vuole un valore che non sia mai stato usato, e insieme che riporti alla
+   stessa fattura. Da qui il contrassegno in coda: `-2` al secondo tentativo,
+   `-3` al terzo. `trovaFattura` lo toglie, e l'incasso ritrova la sua.
+
+   Il conto delle volte non lo teniamo noi: è quante fatture con quel numero
+   PayPal ha già visto passare in un ordine, e non lo sappiamo. Si prova, e se
+   PayPal dice di no si riprova col successivo — chi conta è lui, che è
+   l'unico che sa davvero quali numeri ha già bruciato. */
+const numeroPerOrdine = (numero, tentativo) => (tentativo <= 1 ? numero : `${numero}-${tentativo}`);
+const TENTATIVI_ORDINE = 6;
+
 /* L'ordine non porta i dati di nessuno. Porta il numero della fattura
    (`invoice_id`), il marchio dell'evento (`custom_id`) e le voci, che
    servono solo perché chi sta pagando riconosca cosa sta pagando: «Mario
@@ -843,13 +891,11 @@ export async function creaOrdine({ numero, adulto, adulti = [], minori, piccoli 
   const totaleCent = QUOTA_ADULTO_CENT * (1 + adulti.length) + minori.length * QUOTA_MINORE_CENT;
   const importo = { currency_code: VALUTA, value: euro(totaleCent) };
 
-  const ordine = await paypal("/v2/checkout/orders", {
-    metodo: "POST",
-    corpo: {
+  const corpoOrdine = (volta) => ({
       intent: "CAPTURE",
       purchase_units: [
         {
-          invoice_id: numero,
+          invoice_id: numeroPerOrdine(numero, volta),
           custom_id: EVENTO,
           description: descrizione.slice(0, 127),
           amount: { ...importo, breakdown: { item_total: importo } },
@@ -876,8 +922,30 @@ export async function creaOrdine({ numero, adulto, adulti = [], minori, piccoli 
           },
         },
       },
-    },
   });
+
+  /* Si prova col numero nudo, e se PayPal lo rifiuta si riprova col
+     contrassegno successivo. Il rifiuto che ci interessa è muto — un
+     `REQUEST_REJECTED` che non dice quale campo — quindi non lo si può
+     distinguere da un altro guasto leggendolo: si riprova e basta, e se anche
+     l'ultimo giro non passa l'errore esce così com'è, che è quello che deve
+     succedere quando il problema non era il numero.
+
+     Sei giri sono più di quanti tentativi faccia una persona sola prima di
+     scrivere una mail, e restano pochi abbastanza da non tenere in ballo
+     nessuno: quando il numero è davvero il problema, a passare è il secondo. */
+  let ordine = null;
+  let ultimo = null;
+  for (let volta = 1; volta <= TENTATIVI_ORDINE; volta++) {
+    try {
+      ordine = await paypal("/v2/checkout/orders", { metodo: "POST", corpo: corpoOrdine(volta) });
+      if (volta > 1) console.warn(`ordine ${numero}: numero già usato, passato al tentativo ${volta}`);
+      break;
+    } catch (errore) {
+      ultimo = errore;
+    }
+  }
+  if (!ordine) throw ultimo;
 
   /* L'indirizzo a cui mandare il browser non sta in un campo suo: sta
      nell'elenco dei link, riconoscibile dal ruolo. `payer-action` è quello
