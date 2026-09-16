@@ -140,7 +140,7 @@ const STAGIONI = {
     /* Il ritmo del festone: cosa pende da ogni campata. Scritto a mano e
        non tirato a caso — il build deve dare lo stesso file a ogni giro,
        o quindici pagine cambiano a ogni `node build.mjs` senza motivo. */
-    pendenti: ["foglia", "grappolo", "viticcio", "foglia", "grappolo", "foglia", "viticcio", "grappolo", "foglia", "viticcio", "grappolo", "foglia", "grappolo"],
+    pendenti: ["grappolo", "foglia", "grappolo", "grappolo", "viticcio", "grappolo", "foglia", "grappolo", "grappolo", "viticcio", "grappolo", "foglia", "grappolo"],
   },
 };
 const STAGIONE = "uva";
@@ -202,7 +202,9 @@ function renderFestone(s) {
   const campate = s.pendenti
     .map((p, i) => {
       const x = i * CAMPATA;
-      const sc = SCALE[i % SCALE.length];
+      /* I grappoli pendono più grandi delle foglie: sono loro che si
+         vengono a guardare sotto la vigna. */
+      const sc = SCALE[i % SCALE.length] * (p === "grappolo" ? 1.32 : 1);
       const lembo = LEMBO[i % LEMBO.length];
       const acino = ACINI[i % ACINI.length];
       const dietro = i % INDIETRO === 2;
@@ -210,19 +212,26 @@ function renderFestone(s) {
         `--f-lembo: var(--stag-${lembo});` +
         `--f-tralcio: var(--stag-${lembo});` +
         `--f-acino: var(--stag-${acino})`;
+      /* Un'ape ogni due grappoli, che ronza attorno al suo. Il <g>
+         esterno porta la posizione, quello interno il volo: un attributo
+         transform e un'animazione CSS su transform non convivono. */
+      const ape =
+        p === "grappolo" && i % 2 === 0
+          ? `<g transform="translate(${100 + (i % 4 ? 11 : -11)} ${23.5 + 13 * sc})"><g class="sb-stag-ape" style="--i:${i}"><use href="#stag-ape" transform="scale(1.35)"/></g></g>`
+          : "";
       return (
         `<g transform="translate(${x} 0)" style="${stile}"${dietro ? ` class="sb-stag-dietro"` : ""}>` +
         `<use href="#stag-arco"/>` +
         `<g transform="translate(100 23.5) scale(${sc})">` +
         `<g class="sb-stag-pend" style="--i:${i}"><use href="#stag-${p}"/></g>` +
-        `</g></g>`
+        `</g>${ape}</g>`
       );
     })
     .join("");
 
   return (
     `    <div class="sb-stag-festone" aria-hidden="true">\n` +
-    `      <svg width="${W}" height="50" viewBox="0 0 ${W} 50" fill="none" focusable="false">\n` +
+    `      <svg width="${W}" height="64" viewBox="0 0 ${W} 64" fill="none" focusable="false">\n` +
     `        <defs>\n` +
     `          <path id="stag-arco" class="sb-stag-tralcio" d="M0 4C50 30 150 30 200 4"/>\n` +
     /* Foglia di vite: picciolo, lembo a cinque lobi, cinque nervature. */
@@ -247,10 +256,77 @@ function renderFestone(s) {
     `          <g id="stag-viticcio">` +
     `<path class="sb-stag-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/>` +
     `</g>\n` +
+    /* L'ape: corpo a righe, due ali che frullano (stagioni.css), la testa
+       davanti. Centrata sull'origine, perché è l'origine che vola. */
+    `          <g id="stag-ape">` +
+    `<g class="sb-stag-ape-ali"><ellipse cx="-1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(-28 -1.4 -2.6)"/><ellipse cx="1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(28 1.4 -2.6)"/></g>` +
+    `<ellipse class="sb-stag-ape-corpo" rx="3.2" ry="1.9"/>` +
+    `<path class="sb-stag-ape-riga" d="M-1.3-1.8v3.6M.3-1.9v3.8M1.8-1.5v3"/>` +
+    `<circle class="sb-stag-ape-testa" cx="-3.6" cy="-.2" r="1.15"/>` +
+    `</g>\n` +
     `        </defs>\n` +
     `        ${campate}\n` +
     `      </svg>\n` +
     `    </div>`
+  );
+}
+
+/* ── La vigna in testata ─────────────────────────────────────────────────
+   La barra di navigazione è una vigna fitta: dietro alle voci, da un capo
+   all'altro, tre tralci che ondeggiano e qualche centinaio di foglie una
+   sull'altra, verdi, già girate all'oro, qualcuna rossa. Sta DENTRO la
+   barra (assoluta, sotto .sb-nav-inner) e non sotto: è la barra stessa a
+   essere fatta di foglie. I grappoli le pendono sotto — sono il festone,
+   che ne ha di più e più grandi — e attorno ai grappoli ronzano le api.
+
+   Le posizioni vengono da un generatore con seme fisso: lo stesso file a
+   ogni build, come per tutto il resto, o quindici pagine cambierebbero a
+   ogni giro senza motivo. Il colore passa da --v-lembo, scritto sul <use>
+   e ereditato dentro il clone, per lo stesso motivo del festone. */
+function renderVigna() {
+  const W = 3200;
+  const H = 64;
+  let seme = 20260917;
+  const caso = () => {
+    seme = (seme * 1103515245 + 12345) % 2147483648;
+    return seme / 2147483648;
+  };
+  const TINTE = ["vite", "vite", "vite", "vite-oro", "vite", "vigna", "vite-oro", "vite", "gelso", "vite"];
+  const foglie = [];
+  for (let i = 0; i < 260; i++) {
+    const x = caso() * W;
+    const y = 4 + caso() * (H - 8);
+    const r = -70 + caso() * 140;
+    const s = 0.7 + caso() * 0.8;
+    const t = TINTE[(caso() * TINTE.length) | 0];
+    foglie.push(`<use href="#vigna-foglia" transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${r.toFixed(0)}) scale(${s.toFixed(2)})" style="--v-lembo:var(--stag-${t})"/>`);
+  }
+  const tralci = [12, 32, 52]
+    .map((y, k) => {
+      let d = `M0 ${y}`;
+      for (let x = 0; x < W; x += 120) d += `Q${x + 60} ${y + (k % 2 ? -16 : 16)} ${x + 120} ${y}`;
+      return `<path class="sb-stag-vigna-tralcio" d="${d}"/>`;
+    })
+    .join("");
+  const viticci = [];
+  for (let i = 0; i < 40; i++) {
+    const x = caso() * W;
+    const y = caso() * (H - 20);
+    const r = -40 + caso() * 80;
+    viticci.push(`<use href="#vigna-viticcio" transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${r.toFixed(0)})"/>`);
+  }
+  return (
+    `      <div class="sb-stag-vigna" aria-hidden="true">\n` +
+    `        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMid slice" focusable="false">\n` +
+    `          <defs>\n` +
+    `            <g id="vigna-foglia"><path class="sb-stag-vigna-lembo" d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/><path class="sb-stag-vigna-nervo" d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6"/></g>\n` +
+    `            <path id="vigna-viticcio" class="sb-stag-vigna-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/>\n` +
+    `          </defs>\n` +
+    `          ${tralci}\n` +
+    `          ${foglie.join("")}\n` +
+    `          ${viticci.join("")}\n` +
+    `        </svg>\n` +
+    `      </div>`
   );
 }
 
@@ -270,17 +346,21 @@ function renderFestone(s) {
    <pattern> ritagliati dalla forma del campo: le righe seguono il pendio
    da sole, senza disegnarle una per una.
 
-   ── Un attributo transform e un'animazione CSS non convivono ───────────
-   Se un elemento ha transform="translate(…)" come attributo E una
-   animazione CSS su transform, vince il CSS e la traslazione sparisce:
-   l'anatra si anima al punto (0,0). Quindi tutto ciò che si muove sta o
-   in un <use x= y=> — x e y non sono trasformazioni — o dentro un <g>
-   esterno che porta solo la posizione, con il movimento sul figlio.
+   ── Ogni cosa che si muove ha il suo perno ─────────────────────────────
+   Un attributo transform e un'animazione CSS su transform non convivono:
+   vince il CSS e la posizione sparisce. E un <use x= y=> animato ruota
+   attorno all'origine del disegno, non attorno a sé — le ruote del
+   trattore giravano per aria. Quindi ogni cosa che si muove è fatta di
+   due <g>: quello esterno porta SOLO la posizione (translate), quello
+   interno porta SOLO l'animazione, e il disegno dentro è centrato sul
+   proprio perno (0,0). Il foglio dice transform-origin: 0 0.
 
    preserveAspectRatio="xMinYMax slice": ancorato a sinistra e in basso.
    Su uno schermo stretto si vede la parte sinistra del paesaggio, non il
    centro — come tutto il resto del sito, che parte dal margine sinistro. */
 function renderOrizzonte() {
+  const mosso = (x, y, cls, dentro, stile) =>
+    `<g transform="translate(${x} ${y})"><g class="${cls}"${stile ? ` style="${stile}"` : ""}>${dentro}</g></g>`;
   const pioppo = (x, y, s) => `<use href="#stag-pioppo" transform="translate(${x} ${y}) scale(${s})"/>`;
   const pioppi = [
     pioppo(296, 210, 0.7), pioppo(316, 209, 0.9), pioppo(334, 211, 0.62),
@@ -291,16 +371,18 @@ function renderOrizzonte() {
   const spoglio = (x, y, s, w) =>
     `<g transform="translate(${x} ${y}) scale(${s})"><path class="sb-stag-oriz-spoglio" stroke-width="${w}" d="M0 0v-40M0-26l-12-14M0-32l14-12M0-18l-9-6M0-22l10-7M-12-40l-6-4M-12-40l-2-7M14-44l6-5M14-44l1-7M-9-24l-5-1M10-29l5-3"/></g>`;
   const rotoballa = (x, y, s) => `<use href="#stag-rotoballa" transform="translate(${x} ${y}) scale(${s})"/>`;
-  const canne = (x, y) => `<use class="sb-stag-oriz-canne" href="#stag-canne" x="${x}" y="${y}"/>`;
-  const foglia = (x, y, ritardo, durata) =>
-    `<use class="sb-stag-oriz-galleggia" href="#stag-fogliolina" x="${x}" y="${y}" style="animation-delay:${ritardo}s;animation-duration:${durata}s"/>`;
+  const canne = (x, y, ritardo, durata) =>
+    mosso(x, y, "sb-stag-oriz-canne", `<use href="#stag-canne"/>`, `animation-delay:${ritardo}s;animation-duration:${durata}s`);
+  const foglia = (x, y, ritardo, durata, tinta) =>
+    mosso(x, y, "sb-stag-oriz-galleggia", `<use href="#stag-fogliolina"/>`, `animation-delay:${ritardo}s;animation-duration:${durata}s;--gf:var(--stag-${tinta})`);
+  const ruota = (x, y, grande) => mosso(x, y, "sb-stag-oriz-ruota-g", `<use href="#stag-ruota-${grande ? "grande" : "piccola"}"/>`);
   const legna = (x, y) =>
     `<g style="fill:var(--stag-legno)" opacity=".85">` +
     [0, 1, 2, 3].map((i) => `<circle cx="${x + i * 5.2}" cy="${y}" r="2.5"/>`).join("") +
     [0, 1, 2].map((i) => `<circle cx="${x + 2.6 + i * 5.2}" cy="${y - 4.4}" r="2.5"/>`).join("") +
     `<circle cx="${x + 7.8}" cy="${y - 8.8}" r="2.5"/></g>`;
-  /* Il trattore, che guarda a sinistra perché va a sinistra. Le ruote sono
-     <use> con la classe che gira; il rimorchio dietro è pieno d'uva. */
+  /* Il trattore, che guarda a sinistra perché va a sinistra. Le ruote
+     girano attorno al proprio centro; il rimorchio dietro è pieno d'uva. */
   const trattore =
     `<g class="sb-stag-oriz-trattore"><g transform="translate(0 270)">` +
     `<rect class="sb-stag-oriz-trattore-corpo" x="-30" y="-16" width="40" height="12" rx="2"/>` +
@@ -309,16 +391,16 @@ function renderOrizzonte() {
     `<rect x="-11" y="-27" width="10" height="8" style="fill:var(--stag-nebbia)" opacity=".7"/>` +
     `<path class="sb-stag-oriz-tronco" stroke-width="2" d="M-40-10v-14"/>` +
     `<path class="sb-stag-oriz-tronco" stroke-width="1.6" d="M-50-6h-6"/>` +
-    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-grande" x="0" y="0"/>` +
-    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="-40" y="3"/>` +
+    ruota(0, 0, true) +
+    ruota(-40, 3, false) +
     `<path class="sb-stag-oriz-tronco" stroke-width="2" d="M10-7h12"/>` +
     `<rect class="sb-stag-oriz-rimorchio" x="22" y="-14" width="56" height="12"/>` +
     `<g class="sb-stag-oriz-carico">` +
     [26, 33, 40, 47, 54, 61, 68, 75].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? -18 : -16}" r="3.4"/>`).join("") +
     `<circle cx="37" cy="-21" r="3"/><circle cx="51" cy="-22" r="3"/><circle cx="65" cy="-21" r="3"/>` +
     `</g>` +
-    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="34" y="3"/>` +
-    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="66" y="3"/>` +
+    ruota(34, 3, false) +
+    ruota(66, 3, false) +
     `</g></g>`;
   const casa =
     `<g>` +
@@ -328,7 +410,7 @@ function renderOrizzonte() {
     `<path class="sb-stag-oriz-tronco" stroke-width="1" d="M534.5 206v10M530 211h9" opacity=".5"/>` +
     `<path class="sb-stag-oriz-tetto" d="M512 198L547 174L582 198Z"/>` +
     `<rect class="sb-stag-oriz-tetto" x="562" y="180" width="7" height="12"/>` +
-    `<g class="sb-stag-oriz-fumo"><circle cx="565.5" cy="176" r="3.4"/><circle cx="565.5" cy="176" r="3"/><circle cx="565.5" cy="176" r="4"/></g>` +
+    mosso(565.5, 176, "sb-stag-oriz-fumo", `<circle r="3.4"/><circle r="3"/><circle r="4"/>`) +
     `<rect class="sb-stag-oriz-tetto" x="574" y="204" width="24" height="4" opacity=".7"/>` +
     `<path class="sb-stag-oriz-tronco" stroke-width="1.5" d="M578 208v18M594 208v18"/>` +
     legna(600, 224) +
@@ -345,7 +427,7 @@ function renderOrizzonte() {
     `</g>`;
   const barca =
     `<path class="sb-stag-oriz-tronco" stroke-width="2.2" d="M1546 298v-30"/>` +
-    `<use class="sb-stag-oriz-barca-g" href="#stag-barca" x="1500" y="296"/>`;
+    mosso(1500, 296, "sb-stag-oriz-barca-g", `<use href="#stag-barca"/>`);
 
   const orizzonte =
     `  <div class="sb-stag-orizzonte" aria-hidden="true">\n` +
@@ -395,30 +477,31 @@ function renderOrizzonte() {
     `<path class="sb-stag-oriz-tronco" stroke-width="3" d="M1380 292c0-14 2-26 4-38"/><use href="#stag-salice-chioma" x="1384" y="254"/>${spoglio(1500, 290, 0.7, 2)}` +
     `</g>\n` +
     `      <path class="sb-stag-oriz-tronco" stroke-width="3" d="M1380 292c0-14 2-26 4-38"/>\n` +
-    `      <use class="sb-stag-oriz-salice-chioma" href="#stag-salice-chioma" x="1384" y="254"/>\n` +
+    `      ${mosso(1384, 254, "sb-stag-oriz-salice-chioma", `<use href="#stag-salice-chioma"/>`)}\n` +
     `      ${spoglio(1500, 290, 0.7, 2)}\n` +
-    `      <g>${foglia(240, 300, -3, 46)}${foglia(620, 306, -12, 58)}${foglia(980, 298, -27, 40)}${foglia(1300, 304, -35, 63)}</g>\n` +
-    `      <g><use class="sb-stag-oriz-anatra-g" href="#stag-anatra" x="430" y="298"/><use class="sb-stag-oriz-anatra-g" href="#stag-anatra" x="462" y="305" style="animation-delay:-1.7s"/></g>\n` +
+    `      ${foglia(240, 300, -3, 46, "platano")}${foglia(620, 306, -12, 58, "gelso")}${foglia(980, 298, -27, 40, "rubino")}${foglia(1300, 304, -35, 63, "platano")}\n` +
+    `      ${mosso(430, 298, "sb-stag-oriz-anatra-g", `<use href="#stag-anatra"/>`)}${mosso(462, 305, "sb-stag-oriz-anatra-g", `<use href="#stag-anatra"/>`, "animation-delay:-1.7s")}\n` +
     `      ${barca}\n` +
     `      ${airone}\n` +
-    `      <g>${canne(70, 296)}${canne(600, 298)}${canne(1330, 294)}${canne(1580, 296)}</g>\n` +
+    `      ${canne(70, 296, 0, 5.2)}${canne(600, 298, -2.1, 6.1)}${canne(1330, 294, -3.4, 5.6)}${canne(1580, 296, -1.2, 6.4)}\n` +
     `    </svg>\n` +
     `    <div class="sb-stag-nebbia"></div><div class="sb-stag-nebbia"></div><div class="sb-stag-nebbia"></div>\n` +
     `  </div>\n`;
 
-  /* Il cielo che vola: sopra l'orizzonte, sotto il contenuto. */
+  /* Il cielo che vola: sopra l'orizzonte, sotto il contenuto. Le ali
+     ruotano attorno alla spalla, che è l'origine del loro <g>. */
   const volo =
     `  <div class="sb-stag-volo" aria-hidden="true">\n` +
     `    <div class="sb-stag-volo-airone"><svg viewBox="0 0 92 40" focusable="false"><g class="sb-stag-oriz-airone">` +
-    `<path class="sb-stag-volo-ala sb-stag-volo-ala--sx" d="M44 22C34 12 20 8 4 12c10 3 20 8 30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>` +
-    `<path class="sb-stag-volo-ala" d="M48 22c10-10 24-14 40-10-10 3-20 8-30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>` +
+    mosso(44, 22, "sb-stag-volo-ala sb-stag-volo-ala--sx", `<path d="M0 0C-10-10-24-14-40-10c10 3 20 8 30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>`) +
+    mosso(48, 22, "sb-stag-volo-ala", `<path d="M0 0c10-10 24-14 40-10-10 3-20 8-30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>`) +
     `<path stroke-width="2.4" d="M38 21c6-2 12-2 18 0"/>` +
     `<path stroke-width="1.8" d="M56 21c5-2 9-6 12-11l9 1-9 2"/>` +
     `<path stroke-width="1.4" d="M40 22l-14 6"/>` +
     `</g></svg></div>\n` +
     `    <div class="sb-stag-volo-stormo"><svg viewBox="0 0 150 46" focusable="false"><defs><path id="stag-uccello" d="M-6 3q6-6 12 0" style="stroke:var(--stag-spoglio)" stroke-width="1.5" fill="none" stroke-linecap="round"/></defs>` +
     [[75, 4], [62, 10], [88, 10], [49, 16], [101, 16], [36, 22], [114, 22], [23, 28], [127, 28]]
-      .map(([x, y]) => `<use class="sb-stag-volo-uccello" href="#stag-uccello" x="${x}" y="${y}"/>`)
+      .map(([x, y], i) => mosso(x, y, "sb-stag-volo-uccello", `<use href="#stag-uccello"/>`, `animation-delay:${(-0.15 * i).toFixed(2)}s`))
       .join("") +
     `</svg></div>\n` +
     `  </div>`;
@@ -2272,6 +2355,7 @@ if (!bodies.length) throw new Error("nessun frammento in _build/");
    sciolgono nel nulla. */
 const FESTONE = stag ? renderFestone(stag) : "";
 const ORIZZONTE = stag ? renderOrizzonte() : "";
+const VIGNA = stag ? renderVigna() : "";
 const NOTA = stag ? renderNota(stag) : "";
 
 /* ── Un nome, due cose ────────────────────────────────────────────────────
@@ -2439,6 +2523,7 @@ for (const file of bodies) {
       .replace('<meta name="theme-color" content="#fcfcfc">', conStagione ? '<meta name="theme-color" content="#fcfbf9">' : '<meta name="theme-color" content="#fcfcfc">')
       .replace(/[ \t]*\{\{STAGIONE_FESTONE\}\}\r?\n/, conStagione ? `${FESTONE}\r\n` : "")
       .replace(/[ \t]*\{\{STAGIONE_ORIZZONTE\}\}\r?\n/, conStagione ? `${ORIZZONTE}\r\n` : "")
+      .replace(/[ \t]*\{\{STAGIONE_VIGNA\}\}\r?\n/, conStagione ? `${VIGNA}\r\n` : "")
       .replace("{{HEAD}}", headExtra) +
     `  <main class="sb-main" id="main">\n${ancore(body)}\n  </main>\n` +
     foot

@@ -22,12 +22,26 @@
    niente, e sotto i 1000px di larghezza non si posa nessun quadro. Lì la
    fiaba resta quella in fondo alla finestra, che è a tutta larghezza.
 
+   E NIENTE SOTTO LE COSE LARGHE. Le tabelle, le fotografie a coppie, i
+   banner degli eventi, le file di pillole si prendono tutta la fascia da
+   72rem e passavano sopra ai quadri di destra. Prima di posare un quadro
+   si guarda che cosa, in quella fascia, occupa quelle altezze: se c'è
+   qualcosa, il quadro prova l'altro lato, e se anche lì c'è qualcosa
+   scende sotto l'ingombro. Un quadro mezzo coperto da una tabella non è
+   un quadro: è un errore di stampa.
+
    ── Come sono disegnati ──────────────────────────────────────────────────
    SVG in linea, forme piatte, quattro o cinque tinte per quadro. Il colore
    lo prendono dalle variabili della stagione (--stag-*), con uno stile in
    linea: così seguono il tema chiaro/scuro senza un foglio in più, e il
    quadro è tutto in un posto solo. Nessun tratto nero pieno: il tratto
    scuro è --stag-ink, che al buio diventa chiaro.
+
+   Ogni pezzo che si muove — l'orecchio della lepre, le fronde, il becco,
+   il fumo, il vapore, le anatre — è disegnato attorno alla propria origine
+   e messo al suo posto da un <g> che porta SOLO la posizione: un attributo
+   transform e un'animazione CSS su transform non convivono, e il perno
+   dev'essere (0,0) del disegno (stagioni.css, transform-origin: 0 0).
 
    ── Movimento ────────────────────────────────────────────────────────────
    L'entrata segue lo scorrimento (stagioni.css, animation-timeline); i
@@ -48,9 +62,22 @@
   function s(t, w, o) { return 'style="fill:none;stroke:var(--stag-' + t + ");stroke-width:" + (w || 2) + ";stroke-linecap:round;stroke-linejoin:round" + (o ? ";opacity:" + o : "") + '"'; }
   function fs(t, st, w) { return 'style="fill:var(--stag-' + t + ");stroke:var(--stag-" + st + ");stroke-width:" + (w || 1.5) + ';stroke-linejoin:round"'; }
   function svg(vb, dentro) { return "<svg viewBox='" + vb + "' aria-hidden='true' focusable='false'>" + dentro + "</svg>"; }
+  /* Il perno: un <g> che porta la posizione, dentro un <g> che porta il
+     movimento, dentro il disegno centrato sull'origine. */
+  function mosso(x, y, cls, dentro, stile) {
+    return "<g transform='translate(" + x + " " + y + ")'><g class='" + cls + "'" + (stile ? " style='" + stile + "'" : "") + ">" + dentro + "</g></g>";
+  }
   var ombra = "<ellipse cx='60' cy='106' rx='50' ry='6' " + f("terra", 0.14) + "/>";
   var fogliaTerra = function (x, y, t, o) {
     return "<g transform='translate(" + x + " " + y + ")'><path d='M0 0c6-8 16-8 22-2-8 4-14 6-22 2z' " + f(t, o || 0.75) + "/></g>";
+  };
+  var anatra = function (corpo, testa, x, y, sc, ritardo) {
+    return "<g transform='translate(" + x + " " + y + ") scale(" + sc + ")'><g class='sb-fb-nuota' style='animation-delay:" + ritardo + "s'>" +
+      "<path d='M-22 6c0-8 10-12 22-12 6 0 10 2 14 6l8-2-4 6c0 6-8 10-20 10-10 0-20-2-20-8z' " + f(corpo) + "/>" +
+      "<path d='M-4 0c6 2 12 2 18 0-2 6-14 6-18 0z' " + f("platano", 0.9) + "/>" +
+      "<path d='M12-4v-6' " + s(testa, 5) + "/><circle cx='14' cy='-12' r='7' " + f(testa) + "/>" +
+      "<path d='M8-6c4 2 8 2 12 0' " + s("muro", 2) + "/><path d='M20-12l10 2-10 3z' " + f("zucca") + "/><circle cx='16' cy='-14' r='1.4' " + f("ink") + "/>" +
+      "</g></g>";
   };
 
   /* ── I quadri, nell'ordine in cui si incontrano scendendo ──────────────
@@ -118,8 +145,8 @@
       "<g " + f("zucca") + "><circle cx='30' cy='36' r='11'/><circle cx='66' cy='50' r='12'/><circle cx='96' cy='60' r='10'/><circle cx='52' cy='72' r='9'/></g>" +
       "<g " + f("rosato", 0.5) + "><circle cx='26' cy='32' r='2.5'/><circle cx='62' cy='45' r='2.5'/><circle cx='93' cy='56' r='2'/><circle cx='49' cy='69' r='2'/></g>" +
       "<g " + f("vite") + "><path d='M24 28l6-4 6 4-6 2z'/><path d='M60 41l6-4 6 4-6 2z'/><path d='M91 53l5-4 5 4-5 2z'/><path d='M47 66l5-4 5 4-5 2z'/></g>" +
-      "<g class='sb-fb-fronda'><path d='M44 24c10-14 26-14 30-4-10 2-20 6-30 4z' " + f("platano") + "/></g>" +
-      "<g class='sb-fb-fronda'><path d='M78 44c10-12 26-10 30-2-10 4-20 6-30 2z' " + f("vite") + "/></g>"
+      mosso(44, 24, "sb-fb-fronda", "<path d='M0 0c10-14 26-14 30-4-10 2-20 6-30 4z' " + f("platano") + "/>") +
+      mosso(78, 44, "sb-fb-fronda", "<path d='M0 0c10-12 26-10 30-2-10 4-20 6-30 2z' " + f("vite") + "/>", "animation-delay:-2.4s;animation-duration:5.6s")
     ) },
     { n: "tavola", w: 250, svg: svg("0 0 120 120",
       "<rect x='6' y='70' width='108' height='8' rx='2' " + f("legno") + "/>" +
@@ -127,7 +154,9 @@
       "<path d='M14 70v-14c0-3 3-6 8-6h16c5 0 8 3 8 6v14z' " + f("ink", 0.7) + "/>" +
       "<ellipse cx='30' cy='50' rx='16' ry='4' " + f("zucca") + "/>" +
       "<path d='M12 58h-4M48 58h4' " + s("ink", 2) + "/>" +
-      "<g class='sb-fb-vapore'><path d='M22 44c-2-4 2-6 0-10' " + s("nebbia", 2) + "/><path d='M30 42c-2-4 2-6 0-10' " + s("nebbia", 2) + "/><path d='M38 44c-2-4 2-6 0-10' " + s("nebbia", 2) + "/></g>" +
+      mosso(22, 44, "sb-fb-vapore", "<path d='M0 0c-2-4 2-6 0-10' " + s("nebbia", 2) + "/>") +
+      mosso(30, 42, "sb-fb-vapore", "<path d='M0 0c-2-4 2-6 0-10' " + s("nebbia", 2) + "/>", "animation-delay:-1.1s") +
+      mosso(38, 44, "sb-fb-vapore", "<path d='M0 0c-2-4 2-6 0-10' " + s("nebbia", 2) + "/>", "animation-delay:-2.2s") +
       "<ellipse cx='60' cy='70' rx='24' ry='8' " + f("muro") + "/><ellipse cx='60' cy='69' rx='20' ry='6' " + f("nebbia", 0.6) + "/>" +
       "<path d='M46 66c2-6 10-6 12 0-4 2-8 2-12 0z' " + f("paglia") + "/><path d='M58 64c2-6 10-6 12 0-4 2-8 2-12 0z' " + f("paglia") + "/><path d='M54 70c2-5 8-5 10 0-3 2-7 2-10 0z' " + f("zucca", 0.7) + "/>" +
       "<path d='M50 62l3-3M68 62l3-3' " + s("vite", 1.4) + "/>" +
@@ -148,7 +177,7 @@
       "<path d='M56 98c-4-8 2-18 14-18 6 0 10 6 10 12l-2 6z' " + f("muro", 0.6) + "/>" +
       "<path d='M94 54c0-14 4-28 10-28 2 4 0 18-6 28z' " + f("legno") + "/>" +
       "<path d='M78 66c-4-8 0-16 8-16 8 0 14 8 12 16-2 6-8 8-12 8s-8-4-8-8z' " + f("legno") + "/>" +
-      "<path class='sb-fb-orecchio' d='M84 52c-4-14-2-30 4-32 4 2 6 18 2 32z' " + f("legno") + "/>" +
+      mosso(88, 52, "sb-fb-orecchio", "<path d='M-4 0c-4-14-2-30 4-32 4 2 6 18 2 32z' " + f("legno") + "/>") +
       "<circle cx='90' cy='64' r='2' " + f("ink") + "/><circle cx='98' cy='70' r='1.5' " + f("ink") + "/>" +
       "<path d='M98 72l8 2M98 73l8 5' " + s("ink", 1, 0.6) + "/>" +
       "<circle cx='34' cy='86' r='5' " + f("muro") + "/>"
@@ -161,7 +190,7 @@
       "<path d='M58 46c-6-8-2-20 10-22 10-2 18 6 18 16 0 8-6 14-14 14-8 0-14-4-14-8z' " + f("acqua") + "/>" +
       "<path d='M60 50c4 6 12 8 18 4 2-6-2-12-8-14-4 4-8 6-10 10z' " + f("zucca") + "/>" +
       "<path d='M58 40c6-6 16-8 22-4-4 6-12 10-22 4z' " + f("viola", 0.8) + "/>" +
-      "<g class='sb-fb-becca'><circle cx='82' cy='30' r='9' " + f("acqua") + "/><path d='M76 34c4 4 10 4 14 0' " + f("muro", 0.9) + "/><path d='M90 30l20 2-20 4z' " + f("ink") + "/><circle cx='84' cy='28' r='1.8' " + f("ink") + "/></g>" +
+      mosso(76, 38, "sb-fb-becca", "<circle cx='6' cy='-8' r='9' " + f("acqua") + "/><path d='M0-4c4 4 10 4 14 0' " + f("muro", 0.9) + "/><path d='M14-8l20 2-20 4z' " + f("ink") + "/><circle cx='8' cy='-10' r='1.8' " + f("ink") + "/>") +
       "<path d='M66 58v4M72 58v4' " + s("zucca", 2) + "/>"
     ) },
     { n: "ragnatela", w: 200, svg: svg("0 0 120 120",
@@ -203,7 +232,7 @@
       "<path d='M4 72L60 34l56 38' " + s("tetto", 6) + "/>" +
       "<path d='M22 58l38-26M98 58L60 32M12 65l48-32M108 65L60 34' " + s("terra", 1, 0.3) + "/>" +
       "<rect x='80' y='26' width='12' height='24' " + f("tetto") + "/><rect x='78' y='24' width='16' height='4' " + f("terra") + "/>" +
-      "<g class='sb-fb-fumo'><circle cx='86' cy='20' r='4' " + f("nebbia") + "/><circle cx='86' cy='20' r='3.5' " + f("nebbia") + "/><circle cx='86' cy='20' r='4.5' " + f("nebbia") + "/></g>" +
+      mosso(86, 20, "sb-fb-fumo", "<circle r='4' " + f("nebbia") + "/><circle r='3.5' " + f("nebbia") + "/><circle r='4.5' " + f("nebbia") + "/>") +
       "<rect x='40' y='76' width='34' height='30' rx='2' " + f("finestra", 0.9) + "/><rect x='40' y='76' width='34' height='30' rx='2' " + f("nebbia", 0.5) + "/>" +
       "<path d='M57 76v30M40 91h34' " + s("legno", 2) + "/><rect x='38' y='74' width='38' height='34' rx='2' " + s("legno", 3) + "/>" +
       "<path d='M66 80c0 6-1 10 0 16' " + s("acqua", 1.6, 0.6) + "/><circle cx='66' cy='97' r='2' " + f("acqua", 0.6) + "/>" +
@@ -239,8 +268,8 @@
     ) },
     { n: "melograno", w: 220, svg: svg("0 0 120 120",
       "<path d='M120 10c-30 6-50 20-70 44' " + s("spoglio", 3) + "/><path d='M70 42c-10-2-20 0-26 8' " + s("spoglio", 2) + "/>" +
-      "<g class='sb-fb-fronda'><path d='M90 26c-2-10 6-16 14-14-2 8-6 12-14 14z' " + f("vite") + "/></g>" +
-      "<g class='sb-fb-fronda'><path d='M60 50c-2-10 6-16 14-14-2 8-6 12-14 14z' " + f("vite") + "/></g>" +
+      mosso(90, 26, "sb-fb-fronda", "<path d='M0 0c-2-10 6-16 14-14-2 8-6 12-14 14z' " + f("vite") + "/>") +
+      mosso(60, 50, "sb-fb-fronda", "<path d='M0 0c-2-10 6-16 14-14-2 8-6 12-14 14z' " + f("vite") + "/>", "animation-delay:-2.4s;animation-duration:5.6s") +
       "<circle cx='88' cy='62' r='18' " + f("rubino") + "/><path d='M84 46l2-6 3 4 3-4 2 6z' " + f("granato") + "/><circle cx='80' cy='56' r='3' " + f("rosato", 0.5) + "/>" +
       "<circle cx='40' cy='84' r='20' " + f("granato") + "/>" +
       "<path d='M26 74c6 14 22 20 32 12-8-4-18-8-32-12z' " + f("muro", 0.9) + "/>" +
@@ -271,8 +300,8 @@
       "<path d='M0 70c20-6 40 6 60 0s40-6 60 0v50H0z' " + f("acqua", 0.3) + "/>" +
       "<path d='M10 90c10-3 20 3 30 0M70 100c10-3 20 3 30 0M40 108c10-3 20 3 30 0' " + s("nebbia", 1.6, 0.8) + "/>" +
       "<path d='M8 70V30M16 72V38M4 70V44' " + s("oro", 2) + "/><ellipse cx='8' cy='27' rx='2.2' ry='6' " + f("legno") + "/><ellipse cx='16' cy='35' rx='2' ry='5' " + f("legno") + "/>" +
-      "<g class='sb-fb-nuota'><path d='M30 78c0-8 10-12 22-12 6 0 10 2 14 6l8-2-4 6c0 6-8 10-20 10-10 0-20-2-20-8z' " + f("spoglio") + "/><path d='M48 72c6 2 12 2 18 0-2 6-14 6-18 0z' " + f("platano", 0.9) + "/><path d='M64 68v-6' " + s("vite", 5) + "/><circle cx='66' cy='60' r='7' " + f("vite") + "/><path d='M60 66c4 2 8 2 12 0' " + s("muro", 2) + "/><path d='M72 60l10 2-10 3z' " + f("zucca") + "/><circle cx='68' cy='58' r='1.4' " + f("ink") + "/></g>" +
-      "<g class='sb-fb-nuota' transform='translate(20 22) scale(.8)'><path d='M30 78c0-8 10-12 22-12 6 0 10 2 14 6l8-2-4 6c0 6-8 10-20 10-10 0-20-2-20-8z' " + f("legno") + "/><path d='M64 68v-6' " + s("legno", 5) + "/><circle cx='66' cy='60' r='7' " + f("legno") + "/><path d='M72 60l10 2-10 3z' " + f("zucca", 0.8) + "/><circle cx='68' cy='58' r='1.4' " + f("ink") + "/></g>"
+      anatra("spoglio", "vite", 52, 72, 1, 0) +
+      anatra("legno", "legno", 82, 96, 0.8, -2.5)
     ) },
   ];
 
@@ -280,11 +309,65 @@
 
   function rem() { return parseFloat(getComputedStyle(de).fontSize) || 16; }
 
+  /* ── Gli ingombri ───────────────────────────────────────────────────────
+     Tutto quello che, nel contenuto, sporge oltre la colonna di lettura
+     — a destra oltre la misura, a sinistra prima del suo inizio — con la
+     fascia di altezze che occupa, in coordinate di pagina e con un po'
+     d'aria attorno. Si guardano solo i blocchi (un <span> in mezzo alla
+     prosa non sporge mai), e non ciò che è fisso: il tasto in basso a
+     destra non sta in nessuna altezza in particolare. */
+  var BLOCCHI = /^(DIV|SECTION|FIGURE|FIGCAPTION|TABLE|IMG|UL|OL|LI|PRE|BLOCKQUOTE|A|NAV|ASIDE|P|H[1-4]|BUTTON|svg|DL|DD|DT|FORM|IFRAME|VIDEO|PICTURE|ARTICLE|FOOTER|HEADER|SPAN|TD|TH|CANVAS)$/;
+  var DISEGNO = /^(IMG|svg|VIDEO|IFRAME|PICTURE|TABLE|CANVAS)$/;
+  /* Un contenitore largo quanto la fascia — .sb-container, una sezione —
+     copre geometricamente tutto, ma non si vede: è aria. Conta solo chi
+     si vede davvero: un'immagine, un fondo, un bordo, o del testo suo. */
+  function siVede(el) {
+    if (DISEGNO.test(el.tagName)) return true;
+    var cs = getComputedStyle(el);
+    if (cs.backgroundImage !== "none") return true;
+    var bg = cs.backgroundColor;
+    if (bg && bg !== "transparent" && !/rgba\(\d+, \d+, \d+, 0\)/.test(bg)) return true;
+    if (parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderLeftWidth) > 0 || parseFloat(cs.borderBottomWidth) > 0) return true;
+    for (var n = el.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType === 3 && /\S/.test(n.nodeValue)) return true;
+    }
+    return false;
+  }
+  function ingombri(main, contSx, contDx, testoSx, testoDx, limiteDx) {
+    var sx = [], dx = [];
+    var y0 = window.pageYOffset || 0;
+    var tutti = main.querySelectorAll("*");
+    for (var i = 0; i < tutti.length; i++) {
+      var el = tutti[i];
+      if (!BLOCCHI.test(el.tagName)) continue;
+      var r = el.getBoundingClientRect();
+      if (r.width < 24 || r.height < 16) continue;
+      var aDx = r.right > testoDx + 8 && r.left < limiteDx;
+      var aSx = r.left < testoSx - 8 && r.right > 0;
+      if (!aDx && !aSx) continue;
+      if (el.closest(".sb-riv-rail")) continue;
+      if (!siVede(el)) continue;
+      if (getComputedStyle(el).position === "fixed") continue;
+      var fascia = [r.top + y0 - 24, r.bottom + y0 + 24];
+      if (aDx) dx.push(fascia);
+      if (aSx) sx.push(fascia);
+    }
+    return { sx: sx, dx: dx };
+  }
+  /* Il fondo dell'ingombro che copre [top, bottom], o -1 se è libero. */
+  function coperto(fasce, top, bottom) {
+    var giu = -1;
+    for (var i = 0; i < fasce.length; i++) {
+      if (top < fasce[i][1] && bottom > fasce[i][0] && fasce[i][1] > giu) giu = fasce[i][1];
+    }
+    return giu;
+  }
+
   /* ── Posare i quadri ────────────────────────────────────────────────────
      Tutto si misura sul documento com'è adesso: dove comincia e finisce il
-     testo, se c'è l'indice a lato, quanto è alta la pagina. Si rifà da capo
-     a ogni cambio di larghezza e ogni volta che la pagina si allunga —
-     le fotografie che arrivano, una sezione che si apre. */
+     testo, se c'è l'indice a lato, quanto è alta la pagina, cosa sporge.
+     Si rifà da capo a ogni cambio di larghezza e ogni volta che la pagina
+     si allunga — le fotografie che arrivano, una sezione che si apre. */
   function posa() {
     if (strato && strato.parentNode) strato.parentNode.removeChild(strato);
     strato = null;
@@ -292,7 +375,8 @@
     var vw = window.innerWidth || 0;
     var vh = window.innerHeight || 800;
     if (vw < 1000) return;
-    var cont = document.querySelector(".sb-main .sb-container");
+    var main = document.querySelector(".sb-main");
+    var cont = main && main.querySelector(".sb-container");
     if (!cont) return;
     var r = cont.getBoundingClientRect();
     var cs = getComputedStyle(cont);
@@ -301,36 +385,55 @@
     var limiteDx = vw;
     var rail = document.querySelector(".sb-riv-rail");
     if (rail && getComputedStyle(rail).display !== "none") limiteDx = rail.getBoundingClientRect().left;
-    var largoSx = testoSx - 36;
-    var largoDx = limiteDx - testoDx - 44;
-    if (largoSx < 150 && largoDx < 150) return;
+    var largo = { sx: testoSx - 36, dx: limiteDx - testoDx - 44 };
+    if (largo.sx < 150 && largo.dx < 150) return;
 
     var H = host.offsetHeight || document.documentElement.scrollHeight;
+    var occupato = ingombri(main, r.left, r.right, testoSx, testoDx, limiteDx);
+
     strato = document.createElement("div");
     strato.className = "sb-fiaba";
     strato.setAttribute("aria-hidden", "true");
 
     /* Uno ogni schermata scarsa, e il primo sotto la testata: la hero è
        già piena di suo. A destra e a sinistra alternati; il lato che non
-       ha posto passa la mano all'altro. */
+       ha posto, o che a quell'altezza è occupato, passa la mano all'altro;
+       se sono occupati tutti e due il quadro scende sotto l'ingombro. */
     var passo = Math.max(560, vh * 0.8);
     var y = Math.max(vh * 0.95, 700);
     var i = 0;
-    while (y < H - vh * 0.7 && i < 80) {
+    var tentativi = 0;
+    while (y < H - vh * 0.7 && i < 80 && tentativi < 400) {
+      tentativi++;
       var q = QUADRI[i % QUADRI.length];
-      var aDx = i % 2 === 0;
-      var largo = aDx ? largoDx : largoSx;
-      if (largo < 150) { aDx = !aDx; largo = aDx ? largoDx : largoSx; }
-      if (largo >= 150) {
-        var w = Math.min(q.w, largo);
-        var div = document.createElement("div");
-        div.className = "sb-fiaba-q sb-fiaba-q--" + q.n;
-        div.style.setProperty("--qw", w + "px");
-        div.style.top = Math.round(y) + "px";
-        div.style.left = Math.round(aDx ? testoDx + 44 + Math.max(0, (largo - w) * 0.3) : Math.max(12, testoSx - 36 - w)) + "px";
-        div.innerHTML = q.svg;
-        strato.appendChild(div);
+      var lato = i % 2 === 0 ? "dx" : "sx";
+      var altro = lato === "dx" ? "sx" : "dx";
+      var scelto = null;
+      var giu = -1;
+      var w, h, c;
+      if (largo[lato] >= 150) {
+        w = Math.min(q.w, largo[lato]); h = w;
+        c = coperto(occupato[lato], y, y + h);
+        if (c < 0) scelto = lato; else giu = c;
       }
+      if (!scelto && largo[altro] >= 150) {
+        w = Math.min(q.w, largo[altro]); h = w;
+        c = coperto(occupato[altro], y, y + h);
+        if (c < 0) scelto = altro; else giu = giu < 0 ? c : Math.min(giu, c);
+      }
+      if (!scelto) {
+        /* Tutti e due occupati: si scende appena sotto l'ingombro più
+           vicino e si riprova con lo stesso quadro. */
+        y = (giu > y ? giu : y + 120) + 8;
+        continue;
+      }
+      var div = document.createElement("div");
+      div.className = "sb-fiaba-q sb-fiaba-q--" + q.n;
+      div.style.setProperty("--qw", w + "px");
+      div.style.top = Math.round(y) + "px";
+      div.style.left = Math.round(scelto === "dx" ? testoDx + 44 + Math.max(0, (largo.dx - w) * 0.3) : Math.max(12, testoSx - 36 - w)) + "px";
+      div.innerHTML = q.svg;
+      strato.appendChild(div);
       y += passo;
       i++;
     }
