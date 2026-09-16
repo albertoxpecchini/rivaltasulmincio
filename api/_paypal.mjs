@@ -491,7 +491,24 @@ export const daCartaceo = (numero) => String(numero || "").startsWith("CW-CART-"
    certo punto ricomincia a dare numeri già usati è peggio di una riga in
    più scritta adesso. */
 export function prossimoCartaceo(numero) {
-  const base = String(numero || "");
+  /* Il tetto di PayPal è venticinque caratteri, e questa funzione ne aggiunge
+     uno: quindi prima si fa il posto, poi si attacca la lettera.
+
+     Serve perché questa funzione non lavora solo sui numeri di carta, che
+     sono corti (`CW-CART-42`), ma anche su quelli nati dal sito, che di
+     caratteri ne hanno già ventitré (`CW-T-` più diciotto di sigla). Su
+     quelli la prima correzione arrivava a ventiquattro, la seconda a
+     venticinque, la terza sforava — e PayPal rispondeva
+     `INVALID_STRING_MAX_LENGTH`, cioè «non si corregge più», a chi stava
+     solo sistemando una data di nascita.
+
+     Si taglia dalla coda e non dalla testa, al contrario di quanto fa
+     `numeroDaTentativo`: lì la coda è l'impronta del modulo e buttarla
+     confonderebbe due iscrizioni diverse, qui invece si sta costruendo un
+     numero NUOVO che deve solo essere diverso dal precedente, e la lettera
+     attaccata in fondo è proprio ciò che lo distingue. */
+  const TETTO = 25;
+  const base = String(numero || "").slice(0, TETTO - 1);
   const coda = base.match(/([A-Z]*)$/)[1];
   const senzaCoda = coda ? base.slice(0, -coda.length) : base;
 

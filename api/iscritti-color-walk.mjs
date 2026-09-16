@@ -990,25 +990,25 @@ async function incassa(req, res) {
        dice il vero anche senza aspettare PayPal. */
     res.status(200).json({ incassata: true, gia: giaSegnato, id: fattura.id });
 
-    /* Su Vercel un lavoro lasciato indietro dopo la risposta può non arrivare
-       in fondo: l'istanza viene congelata, e riprende solo se le capita
-       un'altra richiesta. Quindi questo allineamento è un di più, non una
-       promessa — e il codice è scritto perché quel di più possa mancare
-       senza che nessuno ci rimetta: l'incasso è già nel registro, e l'elenco
-       legge da lì. Al peggio la fattura su PayPal resta indietro, ed è
-       esattamente la cosa che `_build/fatture-in-bozza.mjs` rimette in riga
-       con calma, a camminata finita. */
+    /* E a PayPal non si dice niente. Sembra un peccato e invece è la
+       correzione di uno sbaglio, che il collaudo ha fatto vedere in diretta.
 
-    /* E questo continua da solo. Non si aspetta e non si `await`a: l'unico
-       esito che interessa è una riga di log, e chi ha premuto è già altrove. */
-    portaAPagata(fattura.id, {
-      metodo: "CASH",
-      nota: "Contanti incassati al ritrovo, prima della partenza",
-      obbligatorio: false,
-      gia: fattura,
-    }).catch((errore) => {
-      console.error(`incasso ${numeroFattura}: registrato da noi, ma PayPal non l'ha preso (${errore.message})`);
-    });
+       Lasciare l'allineamento «in sottofondo» qui non funziona: su Vercel
+       l'istanza viene congelata appena risposto, e quel lavoro non muore —
+       riprende attaccato alla PRIMA richiesta successiva, che è il
+       ricaricamento dell'elenco. Risultato: la spunta torna subito e poi
+       l'elenco ci mette il doppio, perché si sta trascinando le due chiamate
+       della spunta di prima. Il conto non si paga dove si è speso.
+
+       E sono due chiamate destinate a fallire: per il contante PayPal
+       rifiuta il `/send`, e subito dopo rifiuta il `/payments`. Con cento
+       incassi al ritrovo sarebbero duecento chiamate inutili in fila, ognuna
+       addosso al caricamento di qualcun altro.
+
+       Quindi non si chiama. La verità sul contante sta nel registro, l'elenco
+       legge da lì, e la fattura su PayPal si rimette in riga tutta insieme a
+       camminata finita con `_build/fatture-in-bozza.mjs`. Un giro solo, con
+       calma, invece di cento davanti alla chiesa. */
     return;
   }
 
