@@ -111,6 +111,25 @@
 }
 html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
+/* Le parti dei comandi che disegna il sistema operativo e non il foglio di
+   stile: il pannello che si apre sotto la tendina, il calendarietto dei campi
+   `type=date`, la crocetta che svuota il campo di ricerca. Senza questa riga
+   il browser le disegna sempre chiare, e su tema scuro, in questa pagina piena
+   di campi data, si apriva un calendario bianco in mezzo al nero.
+   È dichiarata qui e non su <html> perché tocca solo questa pagina — il resto
+   del sito non ha controlli di sistema. */
+.sb-is { color-scheme: light; }
+html.dark .sb-is { color-scheme: dark; }
+
+/* Le due altezze della barra di navigazione, rispecchiate qui perché la barra
+   dei comandi ci si appoggi sotto. Vedi il commento su `top` più giù. */
+.sb-is { --is-nav: 64px; }
+.sb-is.is-su { --is-nav: 54px; }
+html.rsm-still .sb-is-comandi { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  html:not(.rsm-motion) .sb-is-comandi { transition: none; }
+}
+
 @media (min-width: 62rem) { .sb-is { --is-col: 62rem; } }
 @media (min-width: 92rem) { .sb-is { --is-col: 88rem; } }
 
@@ -230,14 +249,27 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   .sb-is-conto:not(:first-child) { border-left: 1px solid var(--sb-border); }
   .sb-is-conto:nth-child(3n + 1) { border-left: 0; }
 }
+/* Da 62rem in su la colonna della pagina si allarga per far stare l'elenco a
+   griglia: lì i sei conti stanno tutti su una riga sola, e diventano la
+   striscia che dice la cassa in un colpo d'occhio invece di due mezze righe.
+   È la stessa soglia a cui l'elenco passa a due colonne, così la pagina cambia
+   impaginazione tutta insieme. */
+@media (min-width: 62rem) {
+  .sb-is-conti-in { grid-template-columns: repeat(6, 1fr); }
+  .sb-is-conto:nth-child(n) { border-top: 0; border-left: 1px solid var(--sb-border); }
+  .sb-is-conto:first-child { border-left: 0; }
+}
 /* Il netto sotto il lordo: più piccolo e più spento, perché è una
-   precisazione del numero grande, non un secondo numero da confrontare. */
+   precisazione del numero grande, non un secondo numero da confrontare.
+   Spento col colore muted e non con `opacity: .6`: quel testo è già grigio,
+   e un'opacità sopra un grigio lo portava sotto il rapporto di contrasto
+   proprio su una riga che parla di soldi. */
 .sb-is-conto i {
   display: block;
   margin-top: 0.15rem;
   font-style: normal;
   font-size: 0.72rem;
-  opacity: 0.6;
+  color: var(--sb-fg-muted);
   letter-spacing: 0;
 }
 .sb-is-conto b {
@@ -268,9 +300,21 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
    trasparente si vedrebbero le schede passarci dietro. */
 .sb-is-comandi {
   position: sticky;
-  /* 64px è l'altezza della barra di navigazione del sito (.sb-nav-inner in
-     sb.css), che è sticky pure lei: sotto quella, non sotto lo zero. */
-  top: 64px;
+  /* Sotto la barra di navigazione del sito, che è sticky pure lei. L'altezza
+     però NON è fissa: sb.css la porta da 64px a 54px appena la pagina scorre
+     (`.sb-nav--scrolled`), ed è proprio quando si scorre che questa barra
+     serve. Inchiodata a 64px restava dieci pixel più in basso del dovuto, e in
+     quella fessura si vedevano passare le schede.
+
+     Il token --sb-nav-h non si può leggere da qui: sb.css lo cambia sulla
+     <nav>, che è una SORELLA di questa pagina e non un'antenata, quindi
+     l'ereditarietà porterebbe sempre e solo il 64 di .sb-home. Il valore lo
+     rispecchia quindi lo script in fondo alla pagina, che accende
+     `is-su` su .sb-is guardando la classe della nav. */
+  top: var(--is-nav, 64px);
+  /* Il salto fra le due altezze segue la stessa curva della nav, altrimenti la
+     barra scatta mentre quella sopra scivola. */
+  transition: top 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 5;
   display: grid;
   gap: 0.5rem;
@@ -295,18 +339,50 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 .sb-is-trova { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; }
 @media (max-width: 30rem) { .sb-is-trova { grid-template-columns: 1fr; } }
 
+/* La tendina dell'ordine è l'unico <select> del sito, e prima non spegneva
+   l'aspetto di sistema: accanto a un campo di ricerca fatto coi token del
+   design system compariva un controllo del sistema operativo, con la sua
+   freccia, il suo grigio e — su Windows — il suo bordo che ignora il tema
+   scuro. Qui si spegne (`appearance: none`) e la freccia la disegna la
+   pagina, con lo stesso tratto della freccina delle schede.
+
+   La freccia è uno sfondo SVG e non un pseudo-elemento, perché un <select>
+   non può averne: i figli li disegna il browser. `currentColor` dentro
+   un'immagine non arriva, quindi il tratto è scritto col token risolto a
+   mano nei due temi, poco sotto. */
 .sb-is-ordine {
   min-height: var(--is-h);
   font-family: inherit;
   font-size: 0.9rem;
   color: var(--sb-fg);
-  background: var(--sb-surface-75);
+  background-color: var(--sb-surface-75);
   border: 1px solid var(--sb-border-strong);
   border-radius: var(--is-r);
-  padding: 0 0.7rem;
+  /* Lo spazio a destra fa posto alla freccia disegnata, così la voce più
+     lunga («A–Z per cognome») non le finisce sotto. */
+  padding: 0 2.1rem 0 0.7rem;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 16px 16px;
 }
+html.dark .sb-is-ordine {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.sb-is-ordine:hover { border-color: var(--sb-border-stronger); }
 .sb-is-ordine:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
+/* Il pannello che si apre è disegnato dal sistema operativo e non si può
+   impaginare: l'unica cosa che si può fare è dirgli in che tema stiamo, così
+   su Windows non si apre una tendina bianca sotto una pagina scura. Le voci
+   prendono il fondo pieno perché su Firefox ereditano quello del campo. */
+.sb-is-ordine option {
+  background: var(--sb-surface-100);
+  color: var(--sb-fg);
+}
 
 /* I filtri: pastiglie vere, tonde, con dentro quante ne restano. Scorrono in
    orizzontale se non ci stanno, invece di andare a capo e far crescere la
@@ -320,7 +396,37 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
      dello scorrimento: un filo di respiro sopra e sotto. */
   padding: 2px 0;
   margin-bottom: -2px;
+  /* Sul telefono le cinque pastiglie non ci stanno, e l'ultima finiva tagliata
+     netta contro il bordo: sembrava un difetto, non una fila che continua.
+     Una dissolvenza sull'ultimo mezzo centimetro dice «c'è dell'altro, spingi»
+     senza rubare spazio a una barra che deve restare bassa.
+     `mask` e non un velo in gradiente sopra: il fondo della barra dei comandi è
+     sfocato e semitrasparente, e un velo di un colore solo ci si vedrebbe
+     addosso come una macchia.
+     Lo scorrimento si aggancia alle pastiglie, così non si ferma mai a metà di
+     una parola. */
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.6rem), transparent 100%);
+  mask-image: linear-gradient(to right, #000 calc(100% - 1.6rem), transparent 100%);
 }
+/* Arrivati in fondo la dissolvenza non serve più — e anzi mangerebbe l'ultima
+   pastiglia. `animation-timeline: scroll()` la spegne sul finale dove il
+   browser lo sa fare; dove non lo sa, resta la dissolvenza fissa, che è il
+   comportamento di prima e non toglie niente. */
+@supports (animation-timeline: scroll(x)) {
+  .sb-is-filtri {
+    animation: is-sfuma linear both;
+    animation-timeline: scroll(self x);
+    animation-range: contain;
+  }
+  @keyframes is-sfuma {
+    to {
+      -webkit-mask-image: linear-gradient(to right, #000 100%, transparent 100%);
+      mask-image: linear-gradient(to right, #000 100%, transparent 100%);
+    }
+  }
+}
+.sb-is-filtro { scroll-snap-align: start; }
 .sb-is-filtri::-webkit-scrollbar { display: none; }
 .sb-is-filtro {
   flex: none;
@@ -358,14 +464,30 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 
 /* La fila dei tasti. A griglia e non a flex con `flex:1 1 auto`: così la
    larghezza la decide l'impaginazione e non la lunghezza delle scritte, e la
-   fila finisce dove finisce tutto il resto. */
-.sb-is-barra { display: grid; grid-template-columns: 1fr auto auto auto; gap: 0.5rem; }
-/* Sotto i 30rem quattro tasti in fila diventano quattro francobolli: il primo
-   si prende tutta la prima riga e gli altri tre si dividono la seconda. */
-@media (max-width: 30rem) {
-  .sb-is-barra { grid-template-columns: repeat(3, 1fr); }
-  .sb-is-barra > :first-child { grid-column: 1 / -1; }
+   fila finisce dove finisce tutto il resto.
+
+   `auto-fit` e non un numero di colonne scritto a mano: i tasti qui sono
+   CINQUE (CSV, modulo cartaceo, stampa, aggiorna, esci) mentre lo schema ne
+   dichiarava quattro, e il quinto andava a capo da solo mentre «+ Modulo
+   cartaceo» restava schiacciato in una colonna troppo stretta per la sua
+   scritta — al telefono si leggeva «Modulo cartace». Con `auto-fit` le
+   colonne le conta il browser, e restano giuste anche il giorno in cui un
+   tasto si aggiunge o se ne va. */
+.sb-is-barra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 0.5rem;
 }
+/* La scritta dentro il tasto non deve poter sfondare la sua colonna: senza
+   questo, una parola lunga allarga la colonna invece di andare a capo, e la
+   griglia si sbilancia. */
+.sb-is-barra > .sb-btn { min-width: 0; }
+.sb-is-barra > .sb-btn > span { min-width: 0; }
+/* Il CSV è il gesto principale della barra dei comandi: si prende tutta la
+   riga in cima, e gli altri si dividono quello che resta. Vale solo lì: la
+   fila in fondo al modulo cartaceo ha due tasti soli («Riporta in elenco» e
+   «Chiudi») e devono stare appaiati, non uno sopra l'altro. */
+.sb-is-comandi .sb-is-barra > :first-child { grid-column: 1 / -1; }
 
 .sb-is-conteggio {
   display: flex;
@@ -387,7 +509,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 /* L'avviso che il registro dei contanti non risponde. Non è un dettaglio di
    servizio come gli altri accanto a lui — è «quello che stai leggendo può
    essere sbagliato» — quindi non prende il grigio degli altri. */
-.sb-is-conteggio .sb-is-allarme { color: #fca5a5; font-weight: 600; }
+/* Era #fca5a5, un rosa da fondo scuro: sul tema chiaro, che è quello
+   predefinito, restava rosa pallido su bianco — proprio la riga che avvisa
+   che i conti in cima possono essere sbagliati. Prende il token del guaio, che
+   nei due temi è già la tinta giusta. */
+.sb-is-conteggio .sb-is-allarme { color: var(--is-guaio); font-weight: 600; }
 
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con otto colonne su uno schermo di telefono si
@@ -465,22 +591,60 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
    Il colore non è mai da solo: ogni riga porta anche la sua parola scritta,
    perché chi non distingue il rosso dal verde deve poter usare questa pagina
    come chiunque altro. */
+/* Le tre tinte sono dichiarate per esteso, e il blu NON è più
+   `var(--sb-brand-text)`. Il marchio del sito cambia con la stagione — in
+   vendemmia diventa granato — e con lui diventava granato anche «PayPal,
+   pagato»: accanto al rosso-arancio di «da incassare» erano due pastiglie
+   quasi uguali, e la differenza fra «è a posto» e «chiedigli dieci euro» è
+   esattamente la ragione per cui questa pagina esiste. Il semaforo deve
+   restare un semaforo in tutte le stagioni, quindi il blu è un blu scritto
+   qui, che nessuna stagione tocca. */
 .sb-is-elenco {
   --is-verde: #1a7f4b;
   --is-rosso: #c0392b;
-  --is-blu: var(--sb-brand-text);
+  --is-blu: #1f6f9e;
 }
 html.dark .sb-is-elenco {
   --is-verde: #4ecb8b;
   --is-rosso: #ff7a6b;
+  --is-blu: #6cc0ec;
 }
 
 /* La riga di colore sta a sinistra della scheda, dove l'occhio scende
-   scorrendo l'elenco: è la cosa che si vede prima del nome. */
-.sb-is-card { border-left: 4px solid transparent; }
-.sb-is-card[data-stato="incassato"] { border-left-color: var(--is-verde); }
-.sb-is-card[data-stato="da-incassare"] { border-left-color: var(--is-rosso); }
-.sb-is-card[data-stato="online"] { border-left-color: var(--is-blu); }
+   scorrendo l'elenco: è la cosa che si vede prima del nome.
+
+   NON è un `border-left` sulla lastra, ed è una lezione imparata guardando:
+   .sb-panel è ritagliata dal clip-path del design system, che sul lato
+   sinistro smussa 18px in cima e 18px in fondo. Un bordo appoggiato lì fuori
+   veniva tagliato di netto alle due estremità — restava un trattino mozzo che
+   non arrivava agli angoli — e per quei 18px si sovrapponeva al gradiente che
+   fa da rim alla lastra, sporcandolo. Il colore doveva anche allargare la
+   scheda di 4px, così le schede affiancate nella griglia non partivano tutte
+   dalla stessa verticale.
+
+   Quindi la riga diventa un oggetto DENTRO il ritaglio: un pseudo-elemento
+   dell'inner, appoggiato al suo bordo sinistro. Il clip-path dell'inner lo
+   smussa insieme a tutto il resto, la riga segue la diagonale invece di
+   essere tagliata da lei, e la scheda resta larga quanto la sua cella. */
+.sb-is-card > .sb-panel-inner { position: relative; }
+.sb-is-card[data-stato] > .sb-panel-inner::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  background: var(--is-riga, transparent);
+  pointer-events: none;
+  /* Sopra il fondo della lastra, sotto il contenuto: il testo della scheda non
+     ci finisce mai sopra, e la riga non copre mai una lettera. */
+  z-index: 0;
+}
+/* Il padding di sinistra della riga si scosta dei 4px della striscia, così il
+   nome non nasce attaccato al colore. */
+.sb-is-card[data-stato] .sb-is-riga { padding-left: calc(0.85rem + 4px); }
+.sb-is-card[data-stato="incassato"] { --is-riga: var(--is-verde); }
+.sb-is-card[data-stato="da-incassare"] { --is-riga: var(--is-rosso); }
+.sb-is-card[data-stato="online"] { --is-riga: var(--is-blu); }
 
 /* E la parola, nel suo colore, dentro una pastiglia tenue. La pastiglia
    serve sul telefono: un testo colorato su fondo chiaro a 0.76rem si perde,
@@ -511,7 +675,6 @@ html.dark .sb-is-elenco {
    bianco e nero. Lì la parola basta da sé, e la riga di sinistra diventa un
    filo grigio che separa le schede invece di sparire. */
 @media print {
-  .sb-is-card[data-stato] { border-left-color: #999 !important; }
   .sb-is-stato { background: none !important; color: #000 !important; padding-left: 0; padding-right: 0; }
 }
 
@@ -535,26 +698,42 @@ html.dark .sb-is-elenco {
 /* Il tasto del contante sta FUORI dalla testata premibile — un bottone dentro
    un bottone non è HTML valido, e soprattutto non si potrebbe premere. Largo
    quanto la scheda, perché è il gesto che si fa di corsa. */
-/* Il pannello per correggere un'iscrizione. Si apre dentro la scheda, sotto
-   i comandi, e deve sembrare una cosa sola con lei: stesso fondo scuro, un
-   bordo che lo stacca appena. */
+
+/* ── Il pannello per correggere un'iscrizione ──────────────────────────────
+   Si apre dentro la scheda, sotto i comandi, e deve sembrare una cosa sola
+   con lei: un fondo appena staccato e un bordo che lo chiude.
+
+   Era scritto in bianco trasparente — `rgba(255,255,255,.03)` di fondo e
+   `.14` di bordo — cioè dando per scontato che sotto ci fosse il buio. Ma il
+   tema predefinito del sito è CHIARO: su un fondo quasi bianco quel fondo non
+   esisteva e quel bordo era l'ombra di un capello, così il pannello si apriva
+   senza confini e i campi sembravano appoggiati sulla scheda invece che
+   dentro a qualcosa. Adesso sono i token dei due temi, come nel resto del
+   sito. */
 .sb-is-corr {
   margin-top: .8rem;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: var(--is-r);
+  background: var(--sb-surface-100);
 }
 .sb-is-corr-t {
   margin: 0 0 .8rem;
   font-weight: 600;
   font-size: .95rem;
+  color: var(--sb-fg);
 }
 .sb-is-corr-fila { margin-top: 1rem; }
+/* Il titoletto di sezione prende lo stesso trattamento delle altre etichette
+   della pagina — maiuscoletto spaziato, colore muted — invece di un'opacità
+   al 75% che su fondo chiaro sbiadiva e basta. */
 .sb-is-corr-st {
   margin: 0 0 .45rem;
-  font-size: .85rem;
-  opacity: .75;
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sb-fg-muted);
 }
 /* Una riga di persona: i campi in fila, e sotto i 700px uno sull'altro,
    perché al banchetto si corregge dal telefono. */
@@ -568,32 +747,64 @@ html.dark .sb-is-elenco {
   flex: 1 1 8rem;
   min-width: 0;
 }
+/* La spunta del contante: una riga premibile e non una casella con una
+   scritta di fianco. Il bersaglio è tutta la riga — al banchetto si preme col
+   pollice — e la casella prende l'azzurro del sito invece del blu di sistema,
+   che è l'unico punto della pagina in cui il browser metterebbe un colore
+   suo. */
 .sb-is-corr-cash {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .55rem;
   margin-top: 1rem;
+  padding: .5rem .6rem;
+  border: 1px solid var(--sb-border);
+  border-radius: var(--is-r);
+  background: var(--sb-surface-75);
   font-size: .95rem;
+  color: var(--sb-fg);
   cursor: pointer;
+}
+.sb-is-corr-cash:hover { border-color: var(--sb-border-strong); }
+.sb-is-corr-cash input[type="checkbox"] {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--sb-brand);
+  cursor: pointer;
+}
+.sb-is-corr-cash:focus-within {
+  border-color: var(--sb-brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-brand) 20%, transparent);
 }
 
 /* L'esito del modulo cartaceo: sta dentro il modulo, dove guarda chi lo sta
    compilando. Rosso quando qualcosa non va, perché è lì che si corregge. */
+/* Anche questi due erano tarati sul buio: un rosa chiaro (#fca5a5) e un verde
+   chiaro (#86efac) leggibili su fondo scuro e illeggibili su quello chiaro —
+   ed è proprio il riquadro che deve dire perché il tasto non ha funzionato.
+   Riusano i due token già dichiarati in cima (--is-guaio per il guaio) e il
+   verde dell'elenco, che nei due temi cambiano da sé. */
 .sb-is-cart-esito {
   margin: 0 0 1rem;
   padding: .75rem 1rem;
-  border-radius: 10px;
-  border: 1px solid rgba(220, 38, 38, .45);
-  background: rgba(220, 38, 38, .10);
-  color: #fca5a5;
+  border-radius: var(--is-r);
+  border: 1px solid color-mix(in srgb, var(--is-guaio) 42%, transparent);
+  background: color-mix(in srgb, var(--is-guaio) 10%, var(--sb-surface-75));
+  color: var(--sb-fg);
   font-size: .95rem;
   line-height: 1.5;
 }
+/* Il «è andata» non prende un verde qualunque ma lo stesso dell'elenco, che è
+   già dichiarato nei due temi e vuol dire «i soldi ci sono». */
 .sb-is-cart-esito--ok {
-  border-color: rgba(34, 197, 94, .45);
-  background: rgba(34, 197, 94, .10);
-  color: #86efac;
+  --is-ok: #1a7f4b;
+  border-color: color-mix(in srgb, var(--is-ok) 42%, transparent);
+  background: color-mix(in srgb, var(--is-ok) 10%, var(--sb-surface-75));
+  color: var(--sb-fg);
 }
+html.dark .sb-is-cart-esito--ok { --is-ok: #4ecb8b; }
 
 .sb-is-incassa {
   width: 100%;
@@ -619,8 +830,13 @@ html.dark .sb-is-elenco {
 /* Il tasto che toglie si distingue solo da fermo appena, e si scopre al
    passaggio: un rosso pieno in fondo a trecento schede sarebbe un elenco che
    sembra pieno di allarmi. */
-.sb-is-piu-no { color: var(--cr-rosso, #c0392b); }
-.sb-is-piu-no:hover { border-color: var(--cr-rosso, #c0392b); }
+/* `--cr-rosso` non esiste qui: rivalta.css lo dichiara dentro `.sb-cr`, che è
+   un contenitore in cui questa pagina non entra mai — quindi valeva sempre il
+   ripiego scritto a mano, uguale nei due temi, e sul tema scuro quel rosso
+   cupo su fondo nero era appena distinguibile dal grigio. Il token dei due
+   temi ce l'ha la pagina, ed è lo stesso che tinge «da incassare». */
+.sb-is-piu-no { color: var(--is-guaio); }
+.sb-is-piu-no:hover { border-color: var(--is-guaio); color: var(--is-guaio); }
 
 /* Etichetta e valore su due colonne fisse, non a flex: così i valori di tutte
    le righe di tutte le schede stanno su una sola verticale, e l'occhio che
@@ -756,7 +972,9 @@ html.dark .sb-is-elenco {
   color: var(--sb-fg-lighter);
   cursor: pointer;
 }
-.sb-is-cart-via:hover { border-color: var(--cr-rosso, #b3261e); color: var(--cr-rosso, #b3261e); }
+/* Stessa storia di `.sb-is-piu-no`: --cr-rosso non arriva fin qui. */
+.sb-is-cart-via:hover { border-color: var(--is-guaio); color: var(--is-guaio); }
+.sb-is-cart-via:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 #is-cart-minori { display: grid; gap: 0.7rem; }
 #is-cart-minori:empty { display: none; }
 
@@ -851,23 +1069,56 @@ html.rsm-still .sb-is-frec { transition: none; }
   }
   .sb-home::before, .sb-home::after { display: none !important; }
 
-  .sb-nav, .sb-foot, .sb-ctl,
+  /* `.sb-stag-nota` è la nota della stagione che il sito mette in fondo a
+     ogni pagina — a settembre sono i colori dei vini. Sul foglio del banco
+     non c'entra niente: è una pagina intera di testo colorato in coda a un
+     elenco di nomi da spuntare, e chi stampa se la ritrova stampata.
+     `.sb-is-cart` è il modulo cartaceo: se resta aperto quando si preme
+     Stampa esce un modulo vuoto in mezzo al foglio. */
+  .sb-nav, .sb-foot, .sb-ctl, .sb-stag-nota,
   .sb-is-comandi, .sb-is-porta, .sb-is-incassa, .sb-is-piu, .sb-is-frec, .sb-is-nota,
-  .sb-is-esito { display: none !important; }
+  .sb-is-cart, .sb-is-corr, .sb-is-esito { display: none !important; }
   .sb-main { padding: 0 !important; }
   .sb-is .sb-container { max-width: none !important; padding: 0 !important; }
+  /* La colonna della pagina è larga `--is-col`, che sul foglio vale ancora i
+     36rem del telefono: le schede si stringevano nella metà sinistra dell'A4
+     e la destra restava bianca. In stampa la misura non serve più — la
+     larghezza la dà il foglio — quindi il tetto si toglie a tutti i figli del
+     contenitore, non solo al contenitore. */
+  .sb-is .sb-container > * { max-width: none !important; }
   .sb-riv-pagehead { padding: 0 0 3mm !important; }
   .sb-is .sb-riv-lede { display: none; }
 
   .sb-is *, .sb-is { color: #000 !important; background: transparent !important; box-shadow: none !important; }
-  .sb-is-conti-in { grid-template-columns: repeat(4, 1fr); border: 1px solid #000; }
-  .sb-is-conto { border-color: #000 !important; }
+  /* Sei riquadri, quindi tre per riga e non quattro: a quattro l'ultima riga
+     ne teneva due soli e restava mezza vuota in cima al foglio. */
+  .sb-is-conti-in { grid-template-columns: repeat(3, 1fr); border: 1px solid #000; }
+  .sb-is-conto { border-color: #000 !important; padding: 2mm 1mm; }
+  /* I fili interni li ridisegna lo schema di stampa: quelli dello schermo
+     seguono l'impaginazione a due o tre colonne del momento, e in stampa le
+     colonne sono sempre tre. */
+  .sb-is-conto:nth-child(n) { border-top: 0; border-left: 0; }
+  .sb-is-conto:not(:nth-child(3n + 1)) { border-left: 1px solid #000; }
+  .sb-is-conto:nth-child(n + 4) { border-top: 1px solid #000; }
 
   /* Due colonne di schede sul foglio: una sola sprecherebbe mezza A4, tre
      spezzerebbero i nomi lunghi. Nessuna scheda a cavallo di due fogli. */
   .sb-is-elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3mm; }
   .sb-is-card { break-inside: avoid; page-break-inside: avoid; }
   .sb-is-riga { padding: 2mm 2.5mm; border: 1px solid #000; }
+  /* Sulla carta la riga di colore non può restare il fondo di uno
+     pseudo-elemento: i browser non stampano gli sfondi se non glielo si
+     chiede espressamente. Diventa un bordo vero — che si stampa sempre — e
+     resta a sinistra come a schermo, in grigio perché il foglio esce da una
+     laser in bianco e nero. Sta QUI, dopo la riga che dà il bordo nero a
+     tutte le schede, o quella se lo riprenderebbe. */
+  .sb-is-card[data-stato] > .sb-panel-inner::before { display: none !important; }
+  /* Il grigio chiaro si perdeva contro il bordo nero della scheda. Sul foglio
+     l'unica distinzione che serve davvero è fra chi deve ancora pagare e
+     tutti gli altri: quella riga si prende un bordo spesso e nero, le altre
+     restano col filo sottile. Chi al banco scorre il foglio cerca quella. */
+  .sb-is-card[data-stato] .sb-is-riga { border-left: 0.8mm solid #bbb; padding-left: 2.5mm; }
+  .sb-is-card[data-stato="da-incassare"] .sb-is-riga { border-left: 1.6mm solid #000; }
   .sb-is-corpo { border-top-color: #000 !important; }
 
   /* Il quadratino: davanti a ogni persona dell'iscrizione, maggiorenni
@@ -1138,6 +1389,27 @@ html.rsm-still .sb-is-frec { transition: none; }
 (function () {
   var porta = document.getElementById("is-porta");
   if (!porta) return;
+
+  /* ── La barra dei comandi sta attaccata sotto la nav ────────────────────
+     La nav del sito si accorcia da 64 a 54 pixel appena la pagina scorre, e
+     la barra dei comandi deve scendere con lei o resta una fessura in cui si
+     vedono passare le schede. La classe che dice «sono scesa» sta sulla
+     <nav>, che non è un'antenata di questa pagina: quindi la si rispecchia
+     qui, su .sb-is, dove il CSS della barra la può leggere.
+
+     Un MutationObserver e non un altro listener sullo scroll: la classe la
+     mette già rivalta.js dentro un requestAnimationFrame, e osservarla costa
+     un callback solo quando cambia davvero — due volte in tutta una scorsa,
+     invece di una a ogni frame. */
+  var nav = document.querySelector(".sb-nav");
+  var radice = document.querySelector(".sb-is");
+  if (nav && radice && window.MutationObserver) {
+    var rispecchia = function () {
+      radice.classList.toggle("is-su", nav.classList.contains("sb-nav--scrolled"));
+    };
+    new MutationObserver(rispecchia).observe(nav, { attributes: true, attributeFilter: ["class"] });
+    rispecchia();
+  }
 
   var campoChiave = document.getElementById("is-chiave");
   var zona = document.getElementById("is-zona");
