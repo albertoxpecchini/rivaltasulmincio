@@ -95,6 +95,9 @@ import {
 /* La stessa validazione del modulo online, non una copia: chi entra dal
    banchetto e chi entra dal sito devono passare dallo stesso metro. */
 import { EMAIL_RE, leggiPersona } from "./_persone.mjs";
+/* Il registro dei contanti. Sta fuori da PayPal apposta: vedi `_supabase.mjs`,
+   in fondo, alla voce «Il contante della Color Walk». */
+import { segnaContante, contantiIncassati, configurato as supabasePronto } from "./_supabase.mjs";
 import { ORGANIZZATORI, ricevuta, spedisci } from "./_posta.mjs";
 
 /* Il materiale che ANSPI ha a disposizione basta per trecento persone: è il
@@ -192,6 +195,23 @@ export default async function handler(req, res) {
 async function elenco(res) {
   const fatture = await tutteLeFatture();
 
+  /* Chi ha pagato in contanti lo dice il nostro registro, non PayPal.
+
+     Si legge una volta sola per tutto l'elenco, e se Supabase non risponde si
+     va avanti con una mappa vuota: un elenco senza i contanti è incompleto e
+     si vede (`registroContanti: false` in fondo), ma un elenco che non si apre
+     il 20 mattina è molto peggio. */
+  let incassiContanti = new Map();
+  let registroContanti = false;
+  if (supabasePronto()) {
+    try {
+      incassiContanti = await contantiIncassati(EVENTO);
+      registroContanti = true;
+    } catch (errore) {
+      console.error("registro dei contanti non letto:", errore.message);
+    }
+  }
+
   const iscritti = [];
   let incompleti = 0;
   let illeggibili = 0;
@@ -218,7 +238,16 @@ async function elenco(res) {
        guardare per tutte le altre — online e contanti prenotati dal sito —
        dove è l'unica fonte che sa se i soldi sono arrivati davvero. */
     const diCarta = daCartaceo(f?.detail?.invoice_number);
-    const pagata = diCarta || saldata(f);
+
+    /* E il contante incassato al ritrovo, che sta nel nostro registro.
+
+       È la terza via, e dal 16 settembre è quella che comanda sul contante:
+       PayPal può rifiutarsi di scrivere «pagata» su una fattura — succede, a
+       intermittenza e senza motivo leggibile — ma quei soldi li ha contati
+       una persona al banchetto e sono nel cassetto. Il registro lo sa, e
+       nessuna chiamata di rete lo può smentire. */
+    const inContanti = incassiContanti.has(String(f?.detail?.invoice_number || ""));
+    const pagata = diCarta || inContanti || saldata(f);
     const memo = leggiMemo(f?.detail?.memo);
 
     /* Annullata vuol dire che non c'è più, e non importa chi l'ha annullata:
@@ -368,6 +397,10 @@ async function elenco(res) {
        organizza sono la stessa immagine e due guai molto diversi. */
     letti: fatture.length,
     illeggibili,
+    /* Se il registro dei contanti è stato letto davvero. Quando è `false` i
+       contanti incassati al ritrovo non compaiono, e l'elenco lo deve dire
+       invece di far credere che quelle persone non abbiano pagato. */
+    registroContanti,
     /* Quante iscrizioni sono state ricopiate da un modulo cartaceo. Serve a
        chi al banco vuole sapere se ha finito di riportare i fogli del giorno. */
     cartacei: iscritti.filter((i) => i.modulo).length,
@@ -620,7 +653,27 @@ async function portaAPagata(idFattura, { metodo, nota, obbligatorio = true }) {
   const stato = String(prima?.status || "");
 
   try {
-    if (!prima || stato === "DRAFT") await spedisciFattura(idFattura);
+    /* Se PayPal rifiuta di spedirla, si prova a pagarla lo stesso.
+
+       Dal 16 settembre `/send` torna indietro con un `REQUEST_REJECTED` muto
+       su OGNI fattura — un blocco dal lato di PayPal, non nostro, e non c'è
+       riga di codice che lo tolga. Ma quel rifiuto non deve portarsi dietro
+       anche l'incasso: il 20 mattina, al ritrovo, ci sono decine di contanti
+       da spuntare uno per uno, e una spunta che fallisce lì è una persona
+       che ha pagato e che l'elenco continua a dare per non pagata.
+
+       Quindi lo spedire diventa un tentativo, non una condizione. Se va, la
+       strada è quella di sempre. Se non va, si prova `/payments` comunque:
+       nel peggiore dei casi lo rifiuta anche lui — e allora l'errore che
+       conta è quello, non quello dello spedire — ma se lo accetta, i soldi
+       sono segnati e giovedì mattina il banco va avanti. */
+    if (!prima || stato === "DRAFT") {
+      try {
+        await spedisciFattura(idFattura);
+      } catch (errore) {
+        console.error(`fattura ${idFattura}: /send rifiutato (${errore.message}) — si prova a segnare il pagamento lo stesso`);
+      }
+    }
     const esito = await registraPagamento(idFattura, { metodo, nota });
     return { gia: esito?.giaFatto === true, segnata: true };
   } catch (errore) {
@@ -878,20 +931,55 @@ async function incassa(req, res) {
     return res.status(200).json({ incassata: true, gia: true, id: fattura.id });
   }
 
-  /* La fattura è già in mano — l'ha letta il chiamante — ma il pagamento lo
-     porta `portaAPagata`, che guarda lo stato e fa solo le chiamate che quello
-     stato consente. Serve alle bozze rimaste indietro: quei soldi sono stati
-     presi davvero, e su una bozza questo tasto falliva ogni volta. */
-  /* Su un modulo cartaceo questo tasto non dovrebbe nemmeno comparire — la
-     carta è già pagata — ma se qualcuno ci arriva lo stesso, da una scheda
-     aperta prima, non deve trovare un errore: il fatto che vuole ottenere è
-     già vero. Si prova a scriverlo su PayPal per tenere le due cose allineate,
-     e se PayPal dice di no pazienza, perché l'elenco non gliel'ha mai chiesto. */
-  const esito = await portaAPagata(fattura.id, {
-    metodo: "CASH",
-    nota: "Contanti incassati al ritrovo, prima della partenza",
-    obbligatorio: !daCartaceo(fattura?.detail?.invoice_number),
-  });
+  /* PRIMA il nostro registro, e solo dopo PayPal.
+
+     Questo è l'ordine che conta, ed è cambiato il 16 settembre. Prima la
+     spunta esisteva solo dentro PayPal: se lui rifiutava — e quel giorno ha
+     cominciato a rifiutare a intermittenza, sulla stessa fattura, senza un
+     motivo leggibile — chi stava al banchetto aveva i soldi in mano e uno
+     schermo che diceva di no.
+
+     Adesso i contanti li comanda il registro. Si scrive lì, e da quel momento
+     la persona è pagata per l'elenco: è la verità, perché quei soldi sono nel
+     cassetto e li ha contati qualcuno. Se scrivere nel registro non riesce,
+     ALLORA sì che è un errore da mostrare, perché vuol dire che di
+     quell'incasso non resta traccia da nessuna parte. */
+  const numeroFattura = String(fattura?.detail?.invoice_number || "");
+  const importoCent = Math.round(Number(fattura?.amount?.value || 0) * 100);
+  let nelRegistro = false;
+  let giaSegnato = false;
+
+  if (supabasePronto()) {
+    const segno = await segnaContante({
+      evento: EVENTO,
+      numero: numeroFattura,
+      fattura: fattura.id,
+      importoCent,
+      nota: "Contanti incassati al ritrovo, prima della partenza",
+    });
+    nelRegistro = segno.segnato;
+    giaSegnato = segno.gia;
+  }
+
+  /* E poi PayPal, per tenere le due cose allineate — ma senza che il banco
+     dipenda dal suo umore. Se il registro ha preso l'incasso, un rifiuto qui
+     non ferma niente e resta scritto nel log: quei soldi sono già al sicuro.
+
+     Se invece il registro non c'è (Supabase non configurato), allora PayPal
+     torna a essere l'unico posto dove l'incasso può essere scritto, e un suo
+     rifiuto è di nuovo un errore vero — tranne per la carta, che è pagata
+     comunque perché è di carta. */
+  let esito = { gia: giaSegnato };
+  try {
+    esito = await portaAPagata(fattura.id, {
+      metodo: "CASH",
+      nota: "Contanti incassati al ritrovo, prima della partenza",
+      obbligatorio: !nelRegistro && !daCartaceo(numeroFattura),
+    });
+  } catch (errore) {
+    if (!nelRegistro) throw errore;
+    console.error(`incasso ${numeroFattura}: registrato da noi, ma PayPal non l'ha preso (${errore.message})`);
+  }
 
   /* Che PayPal non abbia gridato non vuol dire che abbia scritto. Le scuse
      che `paypal()` tollera tornano indietro come `giaFatto`, e per due di
