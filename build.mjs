@@ -255,15 +255,27 @@ function renderFestone(s) {
 }
 
 /* ── L'orizzonte ─────────────────────────────────────────────────────────
-   Il paesaggio da cui vengono i colori, in fondo alla finestra: due file di
-   colline — le morene del Garda, da cui il Mincio scende — con i filari
-   sulla collina di mezzo, un gruppo di pioppi verso le valli, e davanti
-   l'acqua. Fisso e dietro a tutto (stagioni.css, .sb-stag-orizzonte).
+   La campagna di Rivalta in ottobre, in fondo alla finestra: le colline
+   moreniche con i filari già rossi, i pioppi gialli, gli alberi spogli, il
+   salice sulla riva, una casa col camino che fuma e la finestra accesa la
+   sera, il campo arato con i solchi, il grano appena nato, le stoppie con
+   le rotoballe e il mais secco, un trattore col rimorchio pieno d'uva che
+   attraversa piano, il canneto, il ponticello sul fosso, la barca
+   ormeggiata, i germani, l'airone sulla riva, le foglie che galleggiano
+   sul Mincio. Sopra, tre veli di nebbia. E in cielo, su uno strato a
+   tutta finestra, un airone che passa e uno stormo in V.
 
    È SVG in pagina per la stessa ragione del festone: il colore lo dà il
-   foglio, e quindi il tema e l'ora. I filari sono un <pattern> — pali e
-   fili — ritagliato dalla forma della collina: le righe seguono il
-   pendio da sole, senza disegnarle una per una.
+   foglio, e quindi il tema e l'ora. Solchi, stoppie, filari e grano sono
+   <pattern> ritagliati dalla forma del campo: le righe seguono il pendio
+   da sole, senza disegnarle una per una.
+
+   ── Un attributo transform e un'animazione CSS non convivono ───────────
+   Se un elemento ha transform="translate(…)" come attributo E una
+   animazione CSS su transform, vince il CSS e la traslazione sparisce:
+   l'anatra si anima al punto (0,0). Quindi tutto ciò che si muove sta o
+   in un <use x= y=> — x e y non sono trasformazioni — o dentro un <g>
+   esterno che porta solo la posizione, con il movimento sul figlio.
 
    preserveAspectRatio="xMinYMax slice": ancorato a sinistra e in basso.
    Su uno schermo stretto si vede la parte sinistra del paesaggio, non il
@@ -271,32 +283,147 @@ function renderFestone(s) {
 function renderOrizzonte() {
   const pioppo = (x, y, s) => `<use href="#stag-pioppo" transform="translate(${x} ${y}) scale(${s})"/>`;
   const pioppi = [
-    pioppo(1140, 176, 1), pioppo(1162, 178, 0.82), pioppo(1186, 175, 1.1), pioppo(1214, 179, 0.7), pioppo(1236, 177, 0.92),
-    pioppo(1470, 182, 0.78), pioppo(1490, 181, 0.96),
-    pioppo(300, 186, 0.66), pioppo(318, 185, 0.84),
+    pioppo(296, 210, 0.7), pioppo(316, 209, 0.9), pioppo(334, 211, 0.62),
+    pioppo(1140, 214, 1.05), pioppo(1166, 216, 0.85), pioppo(1190, 213, 1.15), pioppo(1218, 217, 0.72), pioppo(1242, 215, 0.95),
+    pioppo(1466, 220, 0.8), pioppo(1488, 219, 1),
   ].join("");
-  return (
+  /* Un albero spoglio: tronco e rami che si biforcano due volte. */
+  const spoglio = (x, y, s, w) =>
+    `<g transform="translate(${x} ${y}) scale(${s})"><path class="sb-stag-oriz-spoglio" stroke-width="${w}" d="M0 0v-40M0-26l-12-14M0-32l14-12M0-18l-9-6M0-22l10-7M-12-40l-6-4M-12-40l-2-7M14-44l6-5M14-44l1-7M-9-24l-5-1M10-29l5-3"/></g>`;
+  const rotoballa = (x, y, s) => `<use href="#stag-rotoballa" transform="translate(${x} ${y}) scale(${s})"/>`;
+  const canne = (x, y) => `<use class="sb-stag-oriz-canne" href="#stag-canne" x="${x}" y="${y}"/>`;
+  const foglia = (x, y, ritardo, durata) =>
+    `<use class="sb-stag-oriz-galleggia" href="#stag-fogliolina" x="${x}" y="${y}" style="animation-delay:${ritardo}s;animation-duration:${durata}s"/>`;
+  const legna = (x, y) =>
+    `<g style="fill:var(--stag-legno)" opacity=".85">` +
+    [0, 1, 2, 3].map((i) => `<circle cx="${x + i * 5.2}" cy="${y}" r="2.5"/>`).join("") +
+    [0, 1, 2].map((i) => `<circle cx="${x + 2.6 + i * 5.2}" cy="${y - 4.4}" r="2.5"/>`).join("") +
+    `<circle cx="${x + 7.8}" cy="${y - 8.8}" r="2.5"/></g>`;
+  /* Il trattore, che guarda a sinistra perché va a sinistra. Le ruote sono
+     <use> con la classe che gira; il rimorchio dietro è pieno d'uva. */
+  const trattore =
+    `<g class="sb-stag-oriz-trattore"><g transform="translate(0 270)">` +
+    `<rect class="sb-stag-oriz-trattore-corpo" x="-30" y="-16" width="40" height="12" rx="2"/>` +
+    `<rect class="sb-stag-oriz-trattore-corpo" x="-48" y="-10" width="22" height="8" rx="2"/>` +
+    `<path class="sb-stag-oriz-trattore-cabina" d="M-14-16v-14h18l4 14z"/>` +
+    `<rect x="-11" y="-27" width="10" height="8" style="fill:var(--stag-nebbia)" opacity=".7"/>` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="2" d="M-40-10v-14"/>` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="1.6" d="M-50-6h-6"/>` +
+    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-grande" x="0" y="0"/>` +
+    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="-40" y="3"/>` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="2" d="M10-7h12"/>` +
+    `<rect class="sb-stag-oriz-rimorchio" x="22" y="-14" width="56" height="12"/>` +
+    `<g class="sb-stag-oriz-carico">` +
+    [26, 33, 40, 47, 54, 61, 68, 75].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? -18 : -16}" r="3.4"/>`).join("") +
+    `<circle cx="37" cy="-21" r="3"/><circle cx="51" cy="-22" r="3"/><circle cx="65" cy="-21" r="3"/>` +
+    `</g>` +
+    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="34" y="3"/>` +
+    `<use class="sb-stag-oriz-ruota-g" href="#stag-ruota-piccola" x="66" y="3"/>` +
+    `</g></g>`;
+  const casa =
+    `<g>` +
+    `<rect class="sb-stag-oriz-muro" x="520" y="196" width="54" height="30"/>` +
+    `<rect class="sb-stag-oriz-tetto" x="552" y="212" width="8" height="14" opacity=".55"/>` +
+    `<rect class="sb-stag-oriz-finestra" x="530" y="206" width="9" height="10"/>` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="1" d="M534.5 206v10M530 211h9" opacity=".5"/>` +
+    `<path class="sb-stag-oriz-tetto" d="M512 198L547 174L582 198Z"/>` +
+    `<rect class="sb-stag-oriz-tetto" x="562" y="180" width="7" height="12"/>` +
+    `<g class="sb-stag-oriz-fumo"><circle cx="565.5" cy="176" r="3.4"/><circle cx="565.5" cy="176" r="3"/><circle cx="565.5" cy="176" r="4"/></g>` +
+    `<rect class="sb-stag-oriz-tetto" x="574" y="204" width="24" height="4" opacity=".7"/>` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="1.5" d="M578 208v18M594 208v18"/>` +
+    legna(600, 224) +
+    `</g>`;
+  const ponte =
+    `<path class="sb-stag-oriz-acqua" d="M186 300c4-14 12-22 24-22s20 8 24 22z"/>` +
+    `<path class="sb-stag-oriz-ponte" stroke-width="2.6" d="M176 286c14-12 38-12 52 0"/>` +
+    `<path class="sb-stag-oriz-ponte" stroke-width="1.4" d="M176 279c14-12 38-12 52 0M183 280v6M193 275v6M203 273v6M213 274v6M222 277v6"/>`;
+  const airone =
+    `<g class="sb-stag-oriz-airone" transform="translate(1440 292)">` +
+    `<path class="sb-stag-oriz-airone-corpo" stroke-width="1" d="M-12-14c6-7 18-7 22-1 2 3-1 8-7 9h-11c-5 0-8-4-4-8z"/>` +
+    `<path stroke-width="1.8" d="M6-14c5-6 4-15 0-22 3-1 6 1 7 4l9 1-9 2c-1 4-3 8-7 15"/>` +
+    `<path stroke-width="1.4" d="M-4-6v7M2-6v7"/>` +
+    `</g>`;
+  const barca =
+    `<path class="sb-stag-oriz-tronco" stroke-width="2.2" d="M1546 298v-30"/>` +
+    `<use class="sb-stag-oriz-barca-g" href="#stag-barca" x="1500" y="296"/>`;
+
+  const orizzonte =
     `  <div class="sb-stag-orizzonte" aria-hidden="true">\n` +
-    `    <svg viewBox="0 0 1600 250" preserveAspectRatio="xMinYMax slice" focusable="false">\n` +
+    `    <svg viewBox="0 0 1600 320" preserveAspectRatio="xMinYMax slice" focusable="false">\n` +
     `      <defs>\n` +
     `        <pattern id="stag-filare" width="18" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">` +
     `<path class="sb-stag-oriz-filo" d="M4 13V5.5M13 13V6.5" stroke-width="1.5"/>` +
     `<path class="sb-stag-oriz-filo" d="M0 7.4H18" stroke-width="0.7"/>` +
+    `<circle cx="4" cy="8" r="1.1" style="fill:var(--stag-granato)" opacity=".7"/><circle cx="13" cy="9" r="1.1" style="fill:var(--stag-granato)" opacity=".7"/>` +
     `</pattern>\n` +
-    /* Il pioppo: un fuso stretto e alto, la punta in cima. L'origine è alla
-       base, così basta dire dove appoggia. */
+    `        <pattern id="stag-solchi" width="12" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-7)"><path class="sb-stag-oriz-solco" d="M0 3.5H12" stroke-width="1.3"/></pattern>\n` +
+    `        <pattern id="stag-stoppie" width="9" height="11" patternUnits="userSpaceOnUse"><path class="sb-stag-oriz-stoppia" d="M2 11V6.5M6.5 11V7.5" stroke-width="1.1"/></pattern>\n` +
+    `        <pattern id="stag-grano-p" width="10" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)"><path d="M0 4.5H10" style="stroke:var(--stag-grano)" stroke-width="1.3" opacity=".7"/></pattern>\n` +
     `        <path id="stag-pioppo" class="sb-stag-oriz-pioppo" d="M0 0C-7-14-7.5-46-4-66 -2.5-75-1-80 0-84 1-80 2.5-75 4-66 7.5-46 7-14 0 0Z"/>\n` +
+    `        <g id="stag-rotoballa"><circle class="sb-stag-oriz-rotoballa" r="9"/><path class="sb-stag-oriz-rotoballa-giro" stroke-width="1" d="M-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0M-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/></g>\n` +
+    `        <g id="stag-anatra"><path class="sb-stag-oriz-anatra" d="M-9 2c0-4 5-6 10-6 3 0 5 1 7 3l5-2-3 4c0 3-4 5-9 5-5 0-10-1-10-4z"/><circle class="sb-stag-oriz-anatra-testa" cx="7" cy="-6" r="3.4"/><path class="sb-stag-oriz-anatra-testa" d="M5-4l3 3 2-4z"/><path d="M10-6l5 1-5 1.5z" style="fill:var(--stag-zucca)"/></g>\n` +
+    `        <path id="stag-fogliolina" d="M0-5c4 0 6 3 6 6s-3 5-6 5-6-2-6-5 2-6 6-6z"/>\n` +
+    `        <g id="stag-canne"><path class="sb-stag-oriz-canna" stroke-width="1.6" d="M0 0V-30M8 2V-24M-7 1V-26"/><path class="sb-stag-oriz-canna" stroke-width="1.1" d="M0-22c6-3 10-8 12-16M-7-18c-6-3-9-8-10-15"/><ellipse class="sb-stag-oriz-canna-testa" cx="0" cy="-33" rx="2.2" ry="6"/><ellipse class="sb-stag-oriz-canna-testa" cx="8" cy="-28" rx="1.8" ry="5"/></g>\n` +
+    `        <g id="stag-ruota-grande"><circle class="sb-stag-oriz-ruota" r="10"/><circle class="sb-stag-oriz-ruota-cerchio" r="4.2"/><path d="M-4 0h8M0-4v8" style="stroke:var(--stag-ink)" stroke-width="1.2"/></g>\n` +
+    `        <g id="stag-ruota-piccola"><circle class="sb-stag-oriz-ruota" r="6"/><circle class="sb-stag-oriz-ruota-cerchio" r="2.4"/><path d="M-2.4 0h4.8M0-2.4v4.8" style="stroke:var(--stag-ink)" stroke-width="1"/></g>\n` +
+    `        <g id="stag-barca"><path class="sb-stag-oriz-barca" d="M-24-2h48l-6 8h-36z"/><path class="sb-stag-oriz-tronco" stroke-width="1.2" d="M-12-2v6M8-2v6"/><path class="sb-stag-oriz-cima" stroke-width="1" d="M24-2c8-6 16-14 22-26"/></g>\n` +
+    `        <g id="stag-salice-chioma"><path class="sb-stag-oriz-salice" stroke-width="1.5" d="M0 0c-10 2-20 12-26 32M0 0c-4 6-8 18-9 38M0 0c4 8 8 20 9 40M0 0c10 4 18 14 24 34M0 0c14 0 24 8 34 22M0 0c-16-2-26 6-36 20M0 0c-2 10-2 22 0 42"/></g>\n` +
     `      </defs>\n` +
-    `      <path class="sb-stag-oriz-lontano" d="M0 152C120 118 260 112 420 132S700 108 880 126 1160 104 1320 128 1520 112 1600 130V250H0Z"/>\n` +
-    `      <path class="sb-stag-oriz-medio" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>\n` +
-    `      <path class="sb-stag-oriz-filari" fill="url(#stag-filare)" d="M0 192C150 162 320 166 500 184S800 150 1000 176 1330 158 1600 182V250H0Z"/>\n` +
+    /* Lontano: le colline moreniche. */
+    `      <path class="sb-stag-oriz-lontano" d="M0 190C120 150 260 142 420 166S700 138 880 160 1160 134 1320 162 1520 144 1600 165V320H0Z"/>\n` +
+    /* Mezzo: la collina con i filari, la casa e i pioppi. */
+    `      <path class="sb-stag-oriz-medio" d="M0 232C150 200 320 204 500 224S800 186 1000 216 1330 196 1600 222V320H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-filari" fill="url(#stag-filare)" d="M0 232C150 200 320 204 500 224S800 186 1000 216 1330 196 1600 222V320H0Z"/>\n` +
+    `      ${casa}\n` +
     `      <g>${pioppi}</g>\n` +
-    `      <path class="sb-stag-oriz-vicino" d="M0 216C200 200 380 212 560 206S900 196 1100 210 1420 198 1600 212V250H0Z"/>\n` +
-    `      <path class="sb-stag-oriz-acqua" d="M0 232C300 222 560 240 860 230S1360 236 1600 228V250H0Z"/>\n` +
-    `      <path class="sb-stag-oriz-riflesso" d="M0 238C300 230 560 246 860 236S1360 242 1600 234V250H0Z"/>\n` +
+    /* Vicino: i tre campi, e quello che ci sta sopra. */
+    `      <path class="sb-stag-oriz-terra" d="M0 254C190 242 380 250 560 248V300H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-solchi" fill="url(#stag-solchi)" d="M0 254C190 242 380 250 560 248V300H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-grano" d="M560 248C700 244 860 250 1000 246V300H560Z"/>\n` +
+    `      <path fill="url(#stag-grano-p)" d="M560 248C700 244 860 250 1000 246V300H560Z"/>\n` +
+    `      <path class="sb-stag-oriz-stoppie-campo" d="M1000 246C1200 240 1400 250 1600 244V300H1000Z"/>\n` +
+    `      <path class="sb-stag-oriz-stoppie" fill="url(#stag-stoppie)" d="M1000 246C1200 240 1400 250 1600 244V300H1000Z"/>\n` +
+    `      ${spoglio(860, 262, 1, 2)}${spoglio(110, 258, 0.8, 2)}${spoglio(1040, 268, 0.6, 2.4)}\n` +
+    `      <path class="sb-stag-oriz-mais" stroke-width="1.4" d="M1012 262v-26M1012 246l-6-4M1012 240l7-5M1024 264v-30M1024 246l-7-6M1024 240l6-4M1036 262v-24M1036 250l-6-5M1036 242l6-4"/>\n` +
+    `      ${rotoballa(1100, 262, 1)}${rotoballa(1180, 268, 1)}${rotoballa(1290, 258, 0.8)}${rotoballa(1540, 266, 1)}\n` +
+    `      ${trattore}\n` +
+    `      ${ponte}\n` +
+    /* Il fiume, con dentro il riflesso del salice e dell'albero spoglio. */
+    `      <path class="sb-stag-oriz-acqua" d="M0 292C300 282 600 300 900 290S1400 296 1600 288V320H0Z"/>\n` +
+    `      <path class="sb-stag-oriz-riflesso" d="M0 298C300 288 600 306 900 296S1400 302 1600 294V320H0Z"/>\n` +
+    `      <g class="sb-stag-oriz-specchio" transform="matrix(1 0 0 -1 0 584)">` +
+    `<path class="sb-stag-oriz-tronco" stroke-width="3" d="M1380 292c0-14 2-26 4-38"/><use href="#stag-salice-chioma" x="1384" y="254"/>${spoglio(1500, 290, 0.7, 2)}` +
+    `</g>\n` +
+    `      <path class="sb-stag-oriz-tronco" stroke-width="3" d="M1380 292c0-14 2-26 4-38"/>\n` +
+    `      <use class="sb-stag-oriz-salice-chioma" href="#stag-salice-chioma" x="1384" y="254"/>\n` +
+    `      ${spoglio(1500, 290, 0.7, 2)}\n` +
+    `      <g>${foglia(240, 300, -3, 46)}${foglia(620, 306, -12, 58)}${foglia(980, 298, -27, 40)}${foglia(1300, 304, -35, 63)}</g>\n` +
+    `      <g><use class="sb-stag-oriz-anatra-g" href="#stag-anatra" x="430" y="298"/><use class="sb-stag-oriz-anatra-g" href="#stag-anatra" x="462" y="305" style="animation-delay:-1.7s"/></g>\n` +
+    `      ${barca}\n` +
+    `      ${airone}\n` +
+    `      <g>${canne(70, 296)}${canne(600, 298)}${canne(1330, 294)}${canne(1580, 296)}</g>\n` +
     `    </svg>\n` +
-    `  </div>`
-  );
+    `    <div class="sb-stag-nebbia"></div><div class="sb-stag-nebbia"></div><div class="sb-stag-nebbia"></div>\n` +
+    `  </div>\n`;
+
+  /* Il cielo che vola: sopra l'orizzonte, sotto il contenuto. */
+  const volo =
+    `  <div class="sb-stag-volo" aria-hidden="true">\n` +
+    `    <div class="sb-stag-volo-airone"><svg viewBox="0 0 92 40" focusable="false"><g class="sb-stag-oriz-airone">` +
+    `<path class="sb-stag-volo-ala sb-stag-volo-ala--sx" d="M44 22C34 12 20 8 4 12c10 3 20 8 30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>` +
+    `<path class="sb-stag-volo-ala" d="M48 22c10-10 24-14 40-10-10 3-20 8-30 14z" style="fill:var(--stag-spoglio)" opacity=".75"/>` +
+    `<path stroke-width="2.4" d="M38 21c6-2 12-2 18 0"/>` +
+    `<path stroke-width="1.8" d="M56 21c5-2 9-6 12-11l9 1-9 2"/>` +
+    `<path stroke-width="1.4" d="M40 22l-14 6"/>` +
+    `</g></svg></div>\n` +
+    `    <div class="sb-stag-volo-stormo"><svg viewBox="0 0 150 46" focusable="false"><defs><path id="stag-uccello" d="M-6 3q6-6 12 0" style="stroke:var(--stag-spoglio)" stroke-width="1.5" fill="none" stroke-linecap="round"/></defs>` +
+    [[75, 4], [62, 10], [88, 10], [49, 16], [101, 16], [36, 22], [114, 22], [23, 28], [127, 28]]
+      .map(([x, y]) => `<use class="sb-stag-volo-uccello" href="#stag-uccello" x="${x}" y="${y}"/>`)
+      .join("") +
+    `</svg></div>\n` +
+    `  </div>`;
+
+  return orizzonte + volo;
 }
 
 /* ── La nota di stagione ─────────────────────────────────────────────────
@@ -2264,7 +2391,7 @@ for (const file of bodies) {
     (conGusto ? `<script src="assets/gusto.js"></script>\n` : "") +
     (conColorWalk ? `<script src="assets/color-walk.js"></script>\n` : "") +
     (conOrari ? `<script src="assets/orari.js"></script>\n` : "") +
-    (conStagione ? `<script src="assets/stagioni.js"></script>\n` : "") +
+    (conStagione ? `<script src="assets/stagioni.js"></script>\n<script src="assets/fiaba.js"></script>\n` : "") +
     (conAscii ? `<script src="assets/ascii.js"></script>\n` : "");
 
   /* L'anteprima social esiste solo quando esiste il file. Un og:image che

@@ -290,8 +290,8 @@
        parità vince chi viene dopo nel documento — così le foglie scendono
        davanti alle colline e non dietro. Senza orizzonte, in cima come
        prima. */
-    var oriz = host.querySelector(":scope > .sb-stag-orizzonte");
-    host.insertBefore(cielo, oriz ? oriz.nextSibling : host.firstChild);
+    var dopo = host.querySelector(":scope > .sb-fiaba") || host.querySelector(":scope > .sb-stag-volo") || host.querySelector(":scope > .sb-stag-orizzonte");
+    host.insertBefore(cielo, dopo ? dopo.nextSibling : host.firstChild);
   }
 
   popola();
