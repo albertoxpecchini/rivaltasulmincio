@@ -236,1097 +236,445 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
 
   <main class="sb-main" id="main">
 <style>
-/* ═══ Quello che questa pagina ha e il regolamento no ════════════════════════
-   Le tinte delle polveri, il fondale, la polvere che sale e il modo in cui i
-   blocchi entrano stanno in assets/rivalta.css, sotto «La pelle della Color
-   Walk»: sono di tutte e due le pagine della camminata. Qui restano i pezzi
-   che ha solo questa — la testata, la giornata, il percorso, il modulo, le
-   fasce di chi c'è dietro.
+/* ═══ La Color Walk, nello stile del sito ════════════════════════════════════
+   Niente di disegnato apposta per questa pagina: i pezzi sono quelli del
+   design system — .sb-hero, .sb-panel, .sb-btn, .sb-chip, .sb-sechead — e
+   quello che resta qui sotto è solo il modulo, che nel sito non esiste
+   ancora altrove.
 
-   Le regole del design system valgono tutte, e questa pagina non ne strappa
-   nessuna:
+   Le regole che questa pagina rispetta, e che prima strappava:
 
-   · un solo fondale fisso, nessuna sezione con un bordo o uno sfondo suo;
-   · grigi ovunque più UNA tinta viva sui comandi, che resta l'azzurro brand:
-     tasti, fuochi, barra dell'avanzamento e spunte sono azzurri qui come su
-     /storia. Le sei polveri stanno in tre decorazioni — il fondale, la riga
-     del titolo e il filo del percorso — e su un comando non arrivano mai;
-   · lo smusso a 45° sui blocchi (var(--sb-shape-sm)) e il raggio da 6px sui
-     comandi, che è la divisione che il sito fa già: le pillole e le lastre si
-     tagliano, i tasti e i campi si stondano;
-   · ogni colore, ombra e bordo si scrive con var(--sb-*).
+   · un solo fondale fisso, quello del sito. Nessuna vernice, nessuna
+     polvere che sale, nessuna sezione con uno sfondo suo;
+   · grigi ovunque più UNA tinta viva, l'azzurro brand, e solo sui comandi:
+     tasti, fuochi, spunte. Le sei polveri colorate non ci sono più — erano
+     sei accenti in una pagina che ne ammette uno;
+   · nessuna animazione che annunci qualcosa. Il contenuto compare e basta.
+     Via il titolo arcobaleno che derivava, il numero che batteva, la barra
+     che luccicava, le righe che si aprivano, i segni che scattavano;
+   · ogni colore, bordo e ombra si scrive con var(--sb-*).
 
-   Il rosso è l'unica eccezione, e non è un accento: è il colore di un errore.
-   Un errore che non è rosso non si legge come un errore.
+   Il rosso è l'unica eccezione, e non è un accento: è il colore di un
+   errore, e un errore che non è rosso non si legge come un errore.
 
    ── Resta una pagina da telefono ───────────────────────────────────────────
-   Il link gira nel gruppo del paese e si apre col pollice stando in piedi da
-   qualche parte. Due misure non vengono dal design system ma dal dito, e sono
-   dichiarate come tali dove stanno scritte: i campi alti 44px e i bersagli
-   dei tasti minori. E niente sotto i 16 pixel nei campi, col font dichiarato
-   a pezzi separati e mai con la scorciatoia «font:» — la nota per esteso sta
-   sulla regola dei campi. */
+   Due misure non vengono dal design system ma dal dito: i campi alti 44px e
+   il testo dei campi mai sotto i 16px (sotto, iOS ingrandisce la pagina da
+   solo appena ci si scrive dentro). Sono dichiarate dove stanno. */
 
-/* ═══ La testata ═════════════════════════════════════════════════════════════
-   Prima questa pagina non aveva un titolo scritto: c'era il manifesto, che è
-   un'immagine, e un titolo fuori campo per la struttura del documento. Funzionava per chi
-   arrivava già deciso e per nessun altro — un'immagine non si legge ad alta
-   voce, non si trova cercandola, e su una connessione lenta per due secondi
-   la pagina della camminata è una pagina bianca.
+:root { --cw-rosso: #c0392b; }
+html.dark .sb-home { --cw-rosso: #ff6b5e; }
 
-   Adesso la testata è scritta, ed è la testata del sito: .sb-hero,
-   .sb-hero-title, .sb-hero-copy, .sb-hero-actions, gli stessi pezzi della
-   home. Il manifesto viene dopo e fa quello che un manifesto fa: si guarda.
-
-   Tutto parte dal margine sinistro, come ovunque sul sito: qui non si centra
-   niente, né le righe né i blocchi. */
+/* ═══ La testata ═════════════════════════════════════════════════════════════ */
 .sb-cw-testata { padding-bottom: clamp(1.6rem, 3vw, 2.2rem); }
 .sb-cw-testata .sb-riv-eyebrow { margin-bottom: 0.9rem; }
 .sb-cw-testata .sb-hero-copy { margin-top: 1.2rem; }
-
-/* La seconda riga del titolo è l'unico testo colorato del sito, e il colore
-   è il soggetto della frase: sono le sei polveri, nell'ordine in cui si
-   incontrano lungo il giro. Non è un accento in più — è la stessa
-   decorazione del fondale, portata sulla riga che la nomina.
-
-   Tre cautele, perché un testo dipinto con lo sfondo è un testo che può
-   sparire:
-   · il colore pieno è dichiarato PRIMA, e il ritaglio arriva solo dentro un
-     @supports: dove non si può fare, la riga resta scritta e leggibile;
-   · in forced-colors il ritaglio si toglie e torna il colore di sistema;
-   · la deriva lenta della sfumatura si ferma dove è stato chiesto meno
-     movimento — la regola sta in fondo al foglio, con le altre.
-   Il gradiente è largo il doppio della riga proprio perché ci sia qualcosa
-   da far derivare. */
-.sb-cw-tinte { color: var(--sb-fg); }
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .sb-cw-tinte {
-    background-image: linear-gradient(
-      100deg,
-      var(--cr-magenta),
-      var(--cr-viola) 18%,
-      var(--cr-ciano) 36%,
-      var(--cr-verde) 54%,
-      var(--cr-giallo) 72%,
-      var(--cr-magenta) 90%,
-      var(--cr-viola)
-    );
-    background-size: 220% 100%;
-    background-position: 0% 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-.sb-cw-tinte { animation: sb-cw-tinte 18s linear infinite; }
-@keyframes sb-cw-tinte {
-  from { background-position: 0% 50%; }
-  to   { background-position: 200% 50%; }
-}
-@media (forced-colors: active) {
-  .sb-cw-tinte { -webkit-background-clip: border-box; background-clip: border-box; color: CanvasText; background-image: none; animation: none; }
-}
-
-/* I fatti in fila: data, ritrovo, partenza, luogo, quote. Sono .sb-chip, le
-   pillole tagliate del sito, con l'icona a sinistra — nessun carattere usato
-   come simbolo, ché una freccia scritta col testo cambia disegno su ogni
-   sistema e su qualcuno non c'è. */
 .sb-cw-fatti { margin-top: 1.4rem; }
-/* La pillola del sito non manda mai a capo, perché le sue sono etichette di
-   una parola. Queste sono fatti interi — «ritrovo alle 15:30, partenza alle
-   16:00» — e su uno schermo da 320px una pillola che non va a capo esce dalla
-   colonna: qui il divieto si toglie. */
 .sb-cw-fatti .sb-chip { gap: 0.5rem; white-space: normal; }
 .sb-cw-fatti .sb-chip svg { flex: none; }
 .sb-cw-fatti b { font-weight: 600; color: var(--sb-fg); }
-/* La sola icona di ogni pillola prende una polvere. È il posto in cui il
-   colore costa meno di tutti: l'icona è già muta — accanto ha sempre il
-   fatto scritto per esteso — quindi tingerla non carica di significato un
-   segno che qualcuno potrebbe non distinguere. La scritta resta grigia e il
-   contrasto del testo non si muove di un centesimo. */
-.sb-cw-fatti .sb-chip:nth-of-type(1) svg { color: var(--cr-magenta); }
-.sb-cw-fatti .sb-chip:nth-of-type(2) svg { color: var(--cr-ciano); }
-.sb-cw-fatti .sb-chip:nth-of-type(3) svg { color: var(--cr-verde); }
-.sb-cw-fatti .sb-chip:nth-of-type(4) svg { color: var(--cr-giallo); }
-.sb-cw-fatti .sb-chip:nth-of-type(5) svg { color: var(--cr-viola); }
-/* In forced-colors il sistema decide i colori e questi vanno tolti di mezzo,
-   o si finisce con un'icona invisibile sul fondo che il sistema ha scelto. */
-@media (forced-colors: active) {
-  .sb-cw-fatti .sb-chip svg,
-  .sb-cw-tappa--via .sb-cw-bollo { color: CanvasText; background: CanvasText; }
-}
-
-/* Il manifesto sotto la testata. Il bordo ce l'ha già .sb-riv-cwbanner. */
 .sb-cw-manifesto { margin-top: clamp(1.4rem, 3vw, 2rem); }
 
-/* ═══ Un po' più arcobaleno ══════════════════════════════════════════════════
-   Le polveri stavano in tre decorazioni: il fondale, la riga del titolo e il
-   filo del percorso. Adesso sono cinque — si aggiungono il filo sotto il
-   titolo di ogni sezione e il bordo della lastra dell'iscrizione — più la
-   riga delle scadenze qui sopra e i bollini del percorso più in basso.
-
-   La regola non si è spostata di un millimetro, ed è quella che tiene: le
-   sei tinte stanno SEMPRE e SOLO su decorazioni. Non toccano un tasto, un
-   fuoco, una barra di avanzamento, una spunta — quelli restano azzurro
-   brand qui come su /storia, perché sono gli stessi comandi. Una tinta viva
-   su un comando vuol dire «premi qui»; sei tinte vive su sei comandi non
-   vogliono dire più niente.
-
-   Il taglio sotto il titolo di sezione: un filo corto, non una riga da
-   bordo a bordo. Le sezioni del sito non hanno confini — è la regola del
-   fondale unico — e una linea piena qui sarebbe un bordo di sezione da un
-   altro sito. */
-.sb-cr .sb-sechead h2 { position: relative; }
-.sb-cr .sb-sechead h2::after {
-  content: "";
-  display: block;
-  width: 3.2rem;
-  height: 3px;
-  margin-top: 0.55rem;
-  background: linear-gradient(
-    90deg,
-    var(--cr-magenta),
-    var(--cr-viola) 30%,
-    var(--cr-ciano) 58%,
-    var(--cr-verde) 80%,
-    var(--cr-giallo)
-  );
-}
-
-/* La lastra dell'iscrizione porta le polveri sul filo alto: è la sola lastra
-   della pagina che si compila, ed è il modo di dire «è questa» senza
-   metterle un colore addosso né alzarla dal piano con un'ombra che le altre
-   non hanno. Tre pixel, e solo sul bordo superiore. */
-.sb-cw-lastra .sb-panel { position: relative; }
-.sb-cw-lastra .sb-panel::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 3px;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    var(--cr-magenta),
-    var(--cr-viola) 22%,
-    var(--cr-ciano) 45%,
-    var(--cr-verde) 68%,
-    var(--cr-giallo) 88%,
-    var(--cr-magenta)
-  );
-  /* La lastra è tagliata a 45° in alto a sinistra: il filo deve fermarsi
-     dove comincia il taglio, o uscirebbe dalla sagoma e resterebbe appeso
-     nel vuoto sopra l'angolo. Lo stesso taglio della lastra, applicato al
-     filo, lo accorcia esattamente di quanto serve. */
-  clip-path: var(--sb-shape-lg);
-}
-
-/* ═══ La giornata ════════════════════════════════════════════════════════════
-   Tre momenti e tre orari, che prima stavano dentro un paragrafo del
-   regolamento e su questa pagina non c'erano affatto. Chi apre il link nel
-   gruppo del paese vuole sapere due cose prima di tutto — a che ora e dove —
-   e trovarle dentro la settima riga di un capoverso non è trovarle.
-
-   Sono lastre del sito, .sb-panel con dentro .sb-panel-inner, e .sb-panel--hover
-   le fa inclinare sotto il puntatore come le card della home: è un effetto
-   che sb.css ha già e che glass.js guida da sé, senza una riga in più qui. */
-.sb-cw-giornata {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.9rem;
-  margin-top: 1.4rem;
-  max-width: 58rem;
-}
-@media (min-width: 46rem) { .sb-cw-giornata { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.sb-cw-momento .sb-panel-inner { gap: 0.35rem; padding: 1.1rem 1.2rem 1.2rem; }
-.sb-cw-momento-o {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--sb-brand-text);
-}
-.sb-cw-momento-o svg { flex: none; }
-.sb-cw-momento-t {
-  margin: 0.15rem 0 0;
-  font-size: 1.35rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: var(--sb-fg);
-  font-variant-numeric: tabular-nums;
-}
-.sb-cw-momento-p { margin: 0.2rem 0 0; font-size: 0.86rem; line-height: 1.6; color: var(--sb-fg-lighter); }
-
-/* ═══ Il percorso ════════════════════════════════════════════════════════════
-   Le vie erano un elenco puntato. Adesso sono una linea: si legge nell'ordine
-   in cui si cammina, si vede a colpo d'occhio dove sono i tre attraversamenti
-   e dove si torna, e il filo a sinistra si colora scendendo — si parte in
-   bianco e si arriva a colori, che è quello che fa la camminata.
-
-   Il filo colorato è la seconda delle tre decorazioni a polveri della pagina.
-   La quota di riempimento la scrive assets/color-walk.js in --cw-giro mentre
-   si scorre; senza script vale 1 e il filo è colorato tutto, fermo. Non c'è
-   nessuno stato in cui la lista si legga peggio di prima. */
-.sb-cw-giro {
-  position: relative;
-  list-style: none;
-  margin: 1.4rem 0 0;
-  padding: 0 0 0 2.3rem;
-  max-width: 46rem;
-}
-/* Il filo spento e il filo acceso stanno uno sopra l'altro nello stesso
-   punto: 0.72rem da sinistra è il centro dei bollini, che sono larghi 1.4rem
-   e attaccati al margine. Cominciano e finiscono a metà del primo e
-   dell'ultimo bollino, o si vedrebbero spuntare sopra e sotto. */
-.sb-cw-giro::before,
-.sb-cw-giro::after {
-  content: "";
-  position: absolute;
-  left: 0.66rem;
-  top: 0.85rem;
-  bottom: 0.85rem;
-  width: 2px;
-}
-.sb-cw-giro::before { background: var(--sb-border-strong); }
-.sb-cw-giro::after {
-  background: linear-gradient(
-    180deg,
-    var(--cr-magenta),
-    var(--cr-viola) 22%,
-    var(--cr-ciano) 42%,
-    var(--cr-verde) 60%,
-    var(--cr-giallo) 78%,
-    var(--cr-magenta)
-  );
-  transform: scaleY(var(--cw-giro, 1));
-  transform-origin: top center;
-}
-
-.sb-cw-tappa {
-  position: relative;
-  min-height: 1.7rem;
-  margin: 0 0 0.55rem;
-  padding: 0 0 0 0.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--sb-fg-lighter);
-}
-.sb-cw-tappa:last-child { margin-bottom: 0; }
-.sb-cw-tappa strong { font-weight: 600; color: var(--sb-fg); }
-.sb-cw-tappa small {
-  display: block;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: var(--sb-fg-muted);
-}
-
-/* Il bollino. Tondo — il 50% della scala dei raggi del sito, quella dei
-   pallini — e non tagliato: a quattordici pixel uno smusso da 10 non è più
-   uno smusso, è un triangolo. */
-.sb-cw-bollo {
-  position: absolute;
-  left: -2.3rem;
-  top: 0.15rem;
-  display: grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: var(--sb-bg);
-  border: 2px solid var(--sb-border-stronger);
-  color: var(--sb-fg-lighter);
-  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
-}
-.sb-cw-bollo svg { display: block; }
-/* Le tappe di servizio — le vie che si percorrono e basta — hanno il bollino
-   pieno e piccolo: sono il passo, non un evento.
-
-   Erano tutti grigi. Adesso ognuno porta una delle sei polveri, e il giro le
-   incontra nell'ordine in cui il titolo le nomina: scendendo la colonna si
-   vede la camminata prendere colore via dopo via, che è letteralmente quello
-   che succede alle sette postazioni. La tinta la sceglie la posizione con
-   :nth-of-type, quindi non c'è una classe in più da scrivere su diciassette
-   righe, e aggiungendo o togliendo una via i colori si ridistribuiscono da
-   sé. Restano decorazioni: un bollino non si preme e non dice niente che il
-   testo accanto non dica già. */
-.sb-cw-tappa--via .sb-cw-bollo {
-  width: 0.7rem;
-  height: 0.7rem;
-  left: -2rem;
-  top: 0.5rem;
-  border-width: 2px;
-  background: var(--cr-passo, var(--sb-border-stronger));
-  border-color: var(--sb-bg);
-}
-.sb-cw-tappa--via:nth-of-type(6n + 1) { --cr-passo: var(--cr-magenta); }
-.sb-cw-tappa--via:nth-of-type(6n + 2) { --cr-passo: var(--cr-viola); }
-.sb-cw-tappa--via:nth-of-type(6n + 3) { --cr-passo: var(--cr-ciano); }
-.sb-cw-tappa--via:nth-of-type(6n + 4) { --cr-passo: var(--cr-verde); }
-.sb-cw-tappa--via:nth-of-type(6n + 5) { --cr-passo: var(--cr-giallo); }
-.sb-cw-tappa--via:nth-of-type(6n) { --cr-passo: var(--cr-magenta); }
-/* Partenza e arrivo: gli unici due bollini pieni d'azzurro, perché sono gli
-   unici due punti della lista in cui bisogna trovarsi a un'ora precisa. */
-.sb-cw-tappa--capo .sb-cw-bollo {
-  width: 1.75rem;
-  height: 1.75rem;
-  left: -2.45rem;
-  top: 0;
-  background: var(--sb-btn-bg);
-  border-color: var(--sb-btn-bd);
-  color: var(--sb-btn-fg);
-}
-.sb-cw-tappa--incrocio .sb-cw-bollo { background: var(--sb-surface-100); color: var(--sb-fg-light); }
-.sb-cw-tappa--incrocio strong { font-weight: 600; }
-
-/* Le tappe stavano nascoste e scendevano una dietro l'altra man mano che
-   l'occhio ci arrivava. Adesso l'elenco è scritto e fermo: diciassette vie in
-   colonna sono una cosa che si scorre col dito cercando la propria, e
-   cercarla fra righe che si accendono al passaggio vuol dire non sapere mai
-   se sotto è finito. Il filo colorato a lato continua a riempirsi scendendo:
-   quello è una decorazione, e non nasconde una riga. */
-
-/* ═══ Le sei contrade ════════════════════════════════════════════════════════
-   La fila la genera renderContradeFila() in build.mjs e si veste da sé in
-   rivalta.css. Qui si aggiunge solo il respiro sopra. */
-.sb-cw-contrade { margin-top: 1.2rem; }
-
-/* La riga delle scadenze, che ha preso il posto del riquadro «Tre modi».
-   Non è una nota in un riquadro: è una riga di prosa sotto la testata, e
-   pesa quanto pesa una riga. Il filo colorato a sinistra è la quarta delle
-   decorazioni a polveri — le stesse sei tinte del titolo e del percorso, in
-   verticale — e serve a farla trovare senza doverla incorniciare. */
+/* ═══ La scadenza, sopra il modulo ═══════════════════════════════════════════
+   Era un riquadro con un filo colorato a sinistra. Adesso è un capoverso
+   come gli altri: quello che conta lo dicono le parole in grassetto. */
 .sb-cw-scad {
-  position: relative;
+  max-width: var(--sb-misura);
   margin: 1.1rem 0 0;
-  padding-left: 0.9rem;
-  max-width: 46rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   line-height: 1.65;
-  color: var(--sb-fg-light);
-}
-.sb-cw-scad::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.25em;
-  bottom: 0.25em;
-  width: 3px;
-  background: linear-gradient(
-    180deg,
-    var(--cr-magenta),
-    var(--cr-viola) 30%,
-    var(--cr-ciano) 55%,
-    var(--cr-verde) 78%,
-    var(--cr-giallo)
-  );
+  color: var(--sb-fg-lighter);
 }
 .sb-cw-scad strong { font-weight: 600; color: var(--sb-fg); }
 .sb-cw-scad a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
-/* ═══ L'iscrizione ═══════════════════════════════════════════════════════════
-   Da schermo largo il modulo e la locandina stanno affiancati: il modulo
-   tiene la misura della prosa, la locandina si prende quello che resta. La
-   coppia parte dal margine sinistro come tutto il resto. */
+/* ═══ Il modulo ══════════════════════════════════════════════════════════════
+   Sta in un .sb-panel, la lastra del sito, e non è più largo della misura
+   di lettura: un campo lungo mezzo schermo non si compila meglio. */
 .sb-cw-iscr { margin-top: 1.6rem; }
 .sb-cw-lastra { max-width: 46rem; }
 .sb-cw-lastra .sb-panel-inner { padding: clamp(1.25rem, 4vw, 1.9rem); }
 
-/* La locandina di fianco: nascosta sotto i 60rem, dove una A4 su colonna
-   stretta non si guarda. Sopra, è una spalla che resta in vista mentre si
-   compila. */
+/* La locandina di fianco al modulo, da schermo largo. Da telefono non c'è:
+   una A4 su una colonna stretta non la guarda nessuno, e sotto il modulo
+   sarebbe soltanto altra strada da scorrere prima di arrivare al tasto. */
 .sb-cw-loc-lato { display: none; }
-.sb-cw-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--sb-fg); }
+.sb-cw-loc-lato-t { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--sb-fg); }
 .sb-cw-loc-lato-p { margin: 0.3rem 0 0; font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-lighter); }
 .sb-cw-loc-lato .sb-riv-cwloc { margin-top: 0.9rem; max-width: none; }
-
 @media (min-width: 60rem) {
   .sb-cw-iscr {
     display: grid;
-    grid-template-columns: minmax(0, 46rem) 1fr;
-    gap: clamp(1.6rem, 4vw, 3rem);
+    grid-template-columns: minmax(0, 46rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     align-items: start;
   }
-  .sb-cw-loc-lato {
-    display: block;
-    position: sticky;
-    top: 84px;
-  }
+  .sb-cw-loc-lato { display: block; }
 }
 
-/* ═══ L'avanzamento ══════════════════════════════════════════════════════════
-   Compilare un modulo è una scala, e una scala si sale meglio se si vede
-   quanti gradini restano. Si riempie per scaleX — trasformazione, non
-   larghezza: nessun ricalcolo di layout a ogni tasto premuto.
-
-   Sta in pagina da subito, anche a zero. Prima compariva al primo campo
-   compilato, e comparendo spingeva giù tutto il modulo: un salto di ventidue
-   pixel esattamente nel momento in cui qualcuno stava scrivendo il proprio
-   nome. Un contatore che parte da zero è una cosa che si capisce; una pagina
-   che si sposta da sola no. */
-.sb-cw-avanz { margin: 0 0 1.4rem; }
-.sb-cw-avanz-riga {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 0.45rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--sb-fg-muted);
-}
-.sb-cw-avanz-n { color: var(--sb-fg-light); font-variant-numeric: tabular-nums; }
-.sb-cw-avanz-barra {
-  position: relative;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--sb-surface-200);
-  overflow: hidden;
-}
-.sb-cw-avanz-fill {
-  height: 100%;
-  transform: scaleX(var(--p, 0));
-  transform-origin: left center;
-  background: var(--sb-brand);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Una luce che attraversa la parte già fatta, ogni due secondi e mezzo. È la
-   stessa banda dei tasti e delle card — var(--sb-glass-sheen) — e gira solo
-   spenta dove è stato chiesto meno movimento, più in basso. */
-.sb-cw-avanz-barra::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(105deg, transparent 40%, var(--sb-glass-sheen) 50%, transparent 60%);
-  transform: translateX(-130%);
-  animation: sb-cw-luce 2.6s ease-in-out infinite;
-}
-@keyframes sb-cw-luce {
-  0%, 55% { transform: translateX(-130%); }
-  100% { transform: translateX(130%); }
-}
-.sb-cw-avanz[hidden] { display: none; }
-
-/* ═══ I campi ════════════════════════════════════════════════════════════════
-   Una colonna, sempre, anche sul computer: due campi affiancati costringono
-   l'occhio a tornare indietro a metà modulo, e la stessa griglia sul telefono
-   si spezza in un ordine che nessuno ha disegnato.
-
-   La cornice non è più sull'<input>: è sul riquadro che lo contiene. Il
-   campo dentro è trasparente e senza bordo, e tutto quello che si vede — il
-   bordo, il raggio da 6px del design system, il fondo, il fuoco — lo disegna
-   .sb-cw-box. È il modo in cui la spunta a destra può stare dentro la
-   cornice invece che sopra, ed è anche il modo in cui il fuoco resta un
-   contorno solo quando si scrive in un campo che ha un'icona accanto.
-
-   Raggio 6px e non smusso: sui comandi il sito stonda — è la misura del
-   .sb-btn — e taglia a 45° solo pillole e lastre. Un campo e un bottone che
-   stanno a due centimetri l'uno dall'altro devono essere fatti della stessa
-   cosa. */
 .sb-cw-form { display: grid; gap: 1.05rem; }
 .sb-cw-form[hidden] { display: none; }
 
 .sb-cw-campo { display: grid; gap: 0.35rem; }
 .sb-cw-campo > label {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--sb-fg);
 }
 .sb-cw-facolt { font-weight: 400; font-size: 0.8rem; color: var(--sb-fg-muted); }
 
 .sb-cw-box {
-  position: relative;
   display: flex;
-  align-items: stretch;
-  /* 44px non viene dal design system ma dal dito: è la misura sotto la quale
-     un bersaglio sul telefono si sbaglia. */
-  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 0.7rem;
+  background: var(--sb-surface-100);
   border: 1px solid var(--sb-border-strong);
   border-radius: 6px;
-  background: var(--sb-bg-alt);
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
+/* 44px e 16px: la misura del dito e la soglia sotto la quale iOS ingrandisce
+   la pagina da solo. Il font si dichiara a pezzi separati e mai con la
+   scorciatoia «font:», che azzererebbe gli altri. */
 .sb-cw-box input,
 .sb-cw-box textarea {
-  width: 100%;
+  flex: 1;
   min-width: 0;
-  border: 0;
-  background: transparent;
-  /* Le tre parti del font si scrivono separate, e MAI con la scorciatoia
-     «font:» mettendoci dentro «inherit»: una parola chiave come inherit non è
-     ammessa come pezzo di una scorciatoia, il browser butta via la
-     dichiarazione intera, e i campi finiscono col font di sistema alla misura
-     di sistema — tredici pixel. Sono due guai in una riga sola: il carattere
-     non è più quello del sito, e sotto i sedici pixel iOS ingrandisce la
-     pagina al primo tocco su un campo, lasciando chi compila con il modulo
-     fuori schermo da rimpicciolire a mano. */
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+  height: 44px;
+  padding: 0 0.8rem;
+  font-family: var(--sb-font);
+  font-size: 16px;
+  line-height: 1.4;
   color: var(--sb-fg);
-  padding: 0.6rem 2.4rem 0.6rem 0.8rem;
+  background: transparent;
+  border: 0;
 }
-/* Il contorno del fuoco lo disegna la cornice, una volta sola, e l'input
-   dentro non ne ha più bisogno: due anelli concentrici a due pixel di
-   distanza sono il modo in cui un modulo sembra rotto. */
+.sb-cw-box textarea { height: auto; min-height: 66px; padding: 0.7rem 0.8rem; resize: vertical; }
 .sb-cw-box input:focus,
 .sb-cw-box textarea:focus { outline: none; }
-.sb-cw-box:focus-within { border-color: var(--sb-brand); background: var(--sb-surface-75); }
+.sb-cw-box:focus-within { border-color: var(--sb-brand); }
 .sb-cw-box:has(:focus-visible) { box-shadow: 0 0 0 2px color-mix(in srgb, var(--sb-brand) 45%, transparent); }
-.sb-cw-box textarea { padding-right: 0.8rem; resize: vertical; }
-/* Il codice fiscale spaziato: sedici caratteri tutti attaccati non si
-   rileggono, ed è il campo che più di tutti si ricontrolla. Il maiuscolo lo
-   mette anche il CSS oltre al JS, così si vede già mentre il dito digita. */
-#cr-cf, .sb-cw-min input[data-id="m-cf"], .sb-cw-min input[data-id="a-cf"] { text-transform: uppercase; letter-spacing: 0.06em; }
 .sb-cw-box input::placeholder,
 .sb-cw-box textarea::placeholder { color: var(--sb-fg-muted); }
 
-.sb-cw-campo[data-stato="ok"] .sb-cw-box { border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent); }
-.sb-cw-campo[data-stato="ko"] .sb-cw-box { border-color: var(--cr-rosso); }
+.sb-cw-campo[data-stato="ok"] .sb-cw-box { border-color: var(--sb-brand); }
+.sb-cw-campo[data-stato="ko"] .sb-cw-box { border-color: var(--cw-rosso); }
 
-/* ═══ La spunta ══════════════════════════════════════════════════════════════
-   Era il carattere «✓» scritto col CSS, e un carattere non è un'icona: cambia
-   disegno da un sistema all'altro, su qualche telefono diventa un quadratino
-   vuoto, e chi legge la pagina ad alta voce se lo trova pronunciato. Adesso
-   sono due disegni veri, dentro la pagina, e la stessa coppia sta anche nei
-   due modelli delle righe in più.
-
-   Il segno arriva disegnandosi: il tratto è lungo 24 unità e parte tutto
-   spostato fuori, poi rientra. È l'unico premio che questo modulo può dare a
-   chi ha scritto bene il codice fiscale. */
+/* La spunta e il punto esclamativo in fondo al campo. Compaiono e basta:
+   prima entravano con uno scatto elastico e un tratto che si disegnava. */
 .sb-cw-segno {
-  position: absolute;
-  top: 50%;
-  right: 0.62rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  margin-top: -0.65rem;
-  display: grid;
-  place-items: center;
+  display: none;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 0.16s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
 }
 .sb-cw-segno svg { display: none; }
 .sb-cw-campo[data-stato="ok"] .sb-cw-segno,
-.sb-cw-campo[data-stato="ko"] .sb-cw-segno { opacity: 1; transform: scale(1); }
-/* Sulla spunta il nero, come sul tasto primario: l'azzurro brand è chiaro in
-   tutti e due i temi, e il bianco sopra ci sparirebbe. */
+.sb-cw-campo[data-stato="ko"] .sb-cw-segno { display: flex; }
 .sb-cw-campo[data-stato="ok"] .sb-cw-segno { background: var(--sb-brand); color: var(--sb-btn-fg); }
 .sb-cw-campo[data-stato="ok"] .sb-cw-segno .sb-cw-segno-ok { display: block; }
-.sb-cw-campo[data-stato="ko"] .sb-cw-segno { background: var(--cr-rosso); color: #fff; }
+.sb-cw-campo[data-stato="ko"] .sb-cw-segno { background: var(--cw-rosso); color: #fff; }
 .sb-cw-campo[data-stato="ko"] .sb-cw-segno .sb-cw-segno-ko { display: block; }
-.sb-cw-campo[data-stato="ok"] .sb-cw-segno-ok path {
-  stroke-dasharray: 24;
-  animation: sb-cw-tratto 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-@keyframes sb-cw-tratto {
-  from { stroke-dashoffset: 24; }
-  to   { stroke-dashoffset: 0; }
-}
 
 .sb-cw-aiuto { margin: 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
 .sb-cw-aiuto:empty { display: none; }
-.sb-cw-campo[data-stato="ko"] .sb-cw-aiuto { color: var(--cr-rosso); }
+.sb-cw-campo[data-stato="ko"] .sb-cw-aiuto { color: var(--cw-rosso); }
 
-/* La data di nascita è un campo nativo: il selettore lo dà il sistema, ed è
-   quello che chi compila già sa usare. Su iOS un input[type=date] vuoto resta
-   più basso degli altri e col testo grigio disallineato: gli si impone lo
-   stesso interno degli altri campi, o nella colonna si vede il gradino. */
+/* Il campo data: su iOS il controllo nativo si allinea a destra e resta
+   alto quanto vuole lui se non glielo si dice. */
 .sb-cw-box input[type="date"] {
-  padding-right: 0.8rem;
   -webkit-appearance: none;
   appearance: none;
+  min-height: 44px;
 }
 .sb-cw-box input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
 .sb-cw-box input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
 
-/* ═══ Chi cammina con te ═════════════════════════════════════════════════════
-   I maggiorenni e i minori che si iscrivono insieme a chi compila. Ognuno è
-   un riquadro con dentro i suoi campi, tagliato come le pillole e le lastre
-   del sito — è il modo in cui si legge a colpo d'occhio che quei campi sono
-   un blocco a sé dentro il modulo e non una seconda iscrizione.
-
-   Il filo azzurro a sinistra è sparito con lo smusso: su un angolo tagliato
-   un bordo spesso si interrompe a metà, e un riquadro con un lato aperto
-   sembra rotto. Al suo posto il fondo più chiaro e l'etichetta numerata in
-   cima, che dicono la stessa cosa senza doversi spezzare.
-
-   Il riquadro si aggiunge e si toglie. Togliere non chiede conferma — è un
-   modulo, non un contratto — ma il tasto sta a destra e piccolo, dove non si
-   preme per sbaglio scendendo col pollice. */
+/* ═══ Chi cammina con te ═════════════════════════════════════════════════════ */
 .sb-cw-gruppo { display: grid; gap: 0.8rem; }
 .sb-cw-gruppo-t {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0;
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--sb-fg);
+}
+.sb-cw-gruppo-s {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--sb-fg);
 }
 .sb-cw-gruppo-p { margin: -0.5rem 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--sb-fg-muted); }
 
-/* Il gruppo porta due file di persone e non più una. I due sottotitoli le
-   tengono separate, perché «10 € ciascuno» e «5 € ciascuno» non possono
-   finire nella stessa frase senza che qualcuno paghi la cifra sbagliata. */
-.sb-cw-gruppo-s {
-  margin: 0.4rem 0 0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--sb-fg-muted);
-}
-
-/* I contenitori delle righe. Vuoti non occupano niente — un modulo appena
-   aperto avrebbe altrimenti due buchi dove non c'è ancora nessuno — e pieni
-   tengono le righe distanziate invece di farle toccare bordo a bordo. */
-#cr-adulti, #cr-minori, #cr-piccoli { display: grid; gap: 0.8rem; }
-#cr-adulti:empty, #cr-minori:empty, #cr-piccoli:empty { display: none; }
-
-/* Il riquadro di una persona in più. Si chiama «min» perché all'inizio i
-   minori erano gli unici che si potevano aggiungere; adesso lo porta anche
-   la riga di un maggiorenne, ed è giusto che sia lo stesso riquadro: da
-   compilare sono la stessa cosa. */
+/* Una riga aggiunta. Compare e basta: prima si apriva con un'animazione. */
 .sb-cw-min {
   display: grid;
-  gap: 0.85rem;
-  padding: 0.95rem 1rem;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border-strong);
-  /* I due gradienti ridisegnano il bordo sulle diagonali che il taglio porta
-     via; sotto c'è il fondo pieno. È la ricetta di .sb-chip in sb.css. */
-  background: var(--sb-shape-edge), var(--sb-surface-100);
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  background: var(--sb-surface-75);
+  border: 1px solid var(--sb-border);
+  border-radius: 8px;
 }
-/* Una riga che arriva non compare e basta: si apre. È l'unica animazione del
-   modulo che non dipende da html.cw-anim, perché non è un ingresso allo
-   scroll — è la risposta a un tasto appena premuto, e una risposta va vista
-   anche da chi ha spento il resto. Resta comunque spenta sotto la regola del
-   movimento ridotto, più in basso. */
-@keyframes sb-cw-apre {
-  from { opacity: 0; transform: translate3d(0, -6px, 0); }
-  to   { opacity: 1; transform: none; }
-}
-.sb-cw-min { animation: sb-cw-apre 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+.sb-cw-min + .sb-cw-min { margin-top: 0.6rem; }
 .sb-cw-min-testa {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.8rem;
 }
-.sb-cw-min-n {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--sb-fg-muted);
-}
-/* Il tasto «togli» non è un .sb-btn: è un comando minore dentro un riquadro,
-   e un bottone pieno qui peserebbe come il tasto che manda il modulo. */
+.sb-cw-min-n { font-size: 0.8rem; font-weight: 600; color: var(--sb-fg-light); }
+/* Il bersaglio del dito: 32px è il minimo comodo, e il tasto è piccolo. */
 .sb-cw-min-via {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.32rem 0.6rem;
-  border: 1px solid var(--sb-border-strong);
-  border-radius: 6px;
-  background: transparent;
+  height: 32px;
+  padding: 0 0.6rem;
   font-family: inherit;
   font-size: 0.78rem;
-  color: var(--sb-fg-lighter);
+  color: var(--sb-fg-light);
+  background: transparent;
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 6px;
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 .sb-cw-min-via svg { flex: none; }
-.sb-cw-min-via:hover { border-color: var(--cr-rosso); color: var(--cr-rosso); background: color-mix(in srgb, var(--cr-rosso) 8%, transparent); }
+.sb-cw-min-via:hover { border-color: var(--cw-rosso); color: var(--cw-rosso); }
 .sb-cw-min-via:focus-visible { outline: 2px solid var(--sb-brand); outline-offset: 2px; }
 
-/* Nome e cognome stanno affiancati da 30rem in su: sono due campi corti, li
-   si compila di fila, e in colonna il riquadro diventerebbe una torre. Sul
-   telefono tornano uno sotto l'altro come tutti gli altri. */
-@media (min-width: 30rem) {
-  .sb-cw-min-due { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
-}
+.sb-cw-min-due { display: grid; gap: 0.7rem; }
+@media (min-width: 30rem) { .sb-cw-min-due { grid-template-columns: 1fr 1fr; } }
 
-/* I due tasti che aggiungono una persona sono .sb-btn--secondary, cioè i
-   tasti del sito: prima erano un rettangolo tratteggiato disegnato apposta,
-   con un «+» scritto col testo davanti alla scritta. Il segno adesso è
-   un'icona vera e la forma è quella di tutti gli altri comandi. */
 .sb-cw-piu { justify-self: start; }
 .sb-cw-piu[disabled] { opacity: 0.5; cursor: default; }
-/* A tasto pieno la scritta dice «Massimo otto per iscrizione», che non è un
-   invito ad aggiungere: il più accanto prometterebbe il contrario. */
 .sb-cw-piu[disabled] svg { display: none; }
-.sb-cw-piu[disabled]:hover { background: var(--sb-bg-alt); border-color: var(--sb-border-strong); }
 
 /* ═══ Il conto ═══════════════════════════════════════════════════════════════
-   Quanto si sta per pagare, scritto prima del tasto e non solo sopra di esso:
-   la somma cambia mentre si aggiungono persone, e chi compila deve vederla
-   cambiare. I numeri in tabular-nums, come tutti i dati del sito. */
+   Il numero non batte più quando cambia: cambia, e chi guarda lo legge. */
 .sb-cw-conto {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.9rem 1rem;
-  clip-path: var(--sb-shape-sm);
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  background: var(--sb-surface-100);
   border: 1px solid var(--sb-border-strong);
-  background: var(--sb-shape-edge), var(--sb-surface-100);
+  border-radius: 8px;
 }
 .sb-cw-conto-v { font-size: 0.85rem; line-height: 1.5; color: var(--sb-fg-light); }
 .sb-cw-conto-s {
-  display: inline-block;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--sb-fg);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-/* Il battito quando la somma cambia: la classe la mette e la toglie
-   assets/color-walk.js, che non riscrive la cifra — quella la scrive il
-   modulo. Un contatore che sale sarebbe stato più vistoso e peggio: mentre
-   corre, il numero che si legge non è quello che si sta per pagare. */
-.sb-cw-conto-s.sb-cw-batte { animation: sb-cw-batte 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-@keyframes sb-cw-batte {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.11); color: var(--sb-brand-text); }
-  100% { transform: scale(1); }
 }
 
-/* ═══ La nota, l'esito, il consenso ══════════════════════════════════════════
-   Tre riquadri di servizio sulla stessa grammatica: lo smusso del sito, il
-   bordo ridisegnato sulle diagonali, il fondo neutro. Solo l'esito cambia
-   tinta, ed è l'unico che deve — dice come è andata. */
-.sb-cw-nota {
-  margin: 0;
-  padding: 0.85rem 1rem;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border);
-  background: var(--sb-shape-edge), var(--sb-surface-100);
-  color: var(--sb-fg-light);
-  font-size: 0.85rem;
-  line-height: 1.6;
-}
-.sb-cw-nota strong { font-weight: 600; color: var(--sb-fg); }
-.sb-cw-nota a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
-.sb-cw-nota-t {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--sb-fg-muted);
-}
-
-.sb-cw-esito {
-  display: none;
-  margin: 0 0 1.2rem;
-  padding: 0.9rem 1.05rem;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border);
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-.sb-cw-esito--ok {
-  display: block;
-  background: color-mix(in srgb, var(--sb-brand) 12%, transparent);
-  border-color: color-mix(in srgb, var(--sb-brand) 45%, transparent);
-  color: var(--sb-fg);
-  animation: sb-cw-apre 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.sb-cw-esito--neutro { display: block; background: var(--sb-surface-100); color: var(--sb-fg-light); }
-/* Il riquadro mentre si aspetta la funzione. Non è né un sì né un no, ed è
-   l'unico dei quattro che si muove: quel punto che pulsa in testa alla riga è
-   tutto quello che dice a chi guarda «sta ancora succedendo qualcosa» — che è
-   precisamente la cosa che non si sapeva, e per cui si premeva di nuovo.
-
-   Il movimento sparisce dove è stato chiesto di non vederne, insieme agli
-   altri, e allora resta il punto fermo: il riquadro si legge lo stesso. */
-.sb-cw-esito--attesa {
-  display: block;
-  background: var(--sb-surface-100);
-  border-color: var(--sb-border);
-  color: var(--sb-fg);
-}
-.sb-cw-esito--attesa::before {
-  content: "";
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-right: 0.5rem;
-  border-radius: 50%;
-  background: var(--sb-brand);
-  vertical-align: 0.05em;
-  animation: sb-cw-batte 1.1s ease-in-out infinite;
-}
-@keyframes sb-cw-batte {
-  0%, 100% { opacity: 0.25; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1); }
-}
-.sb-cw-esito--errore {
-  display: block;
-  background: color-mix(in srgb, var(--cr-rosso) 12%, transparent);
-  border-color: color-mix(in srgb, var(--cr-rosso) 45%, transparent);
-  color: var(--sb-fg);
-  animation: sb-cw-apre 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.sb-cw-esito a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
-
-/* ═══ La scelta del pagamento ════════════════════════════════════════════════
-   Due caselle grandi, una accanto all'altra, con la stessa grammatica del
-   consenso qui sotto. Sono radio veri dentro delle label — si preme tutta la
-   casella, non il pallino da 12px, che sul telefono è il modo di sbagliare.
-
-   La casella scelta si accende del filo azzurro del sito. Nessun secondo
-   colore, come ovunque: la selezione si vede dal bordo e dal pallino, che
-   bastano. */
+/* ═══ Come si paga ═══════════════════════════════════════════════════════════ */
 .sb-cw-pagamento { display: grid; gap: 0.6rem; }
 .sb-cw-pagamento > span {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sb-fg-lighter);
+  color: var(--sb-fg);
 }
-.sb-cw-scelte { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-@media (max-width: 34rem) { .sb-cw-scelte { grid-template-columns: 1fr; } }
+.sb-cw-scelte { display: grid; gap: 0.6rem; }
+@media (min-width: 34rem) { .sb-cw-scelte { grid-template-columns: 1fr 1fr; } }
 .sb-cw-scelta {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.65rem;
-  align-items: start;
-  margin: 0;
-  padding: 0.85rem 0.95rem;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border);
-  background: var(--sb-shape-edge), var(--sb-surface-100);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.8rem 0.9rem;
+  background: var(--sb-surface-75);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 8px;
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
 }
 .sb-cw-scelta:hover { border-color: var(--sb-border-stronger); }
 .sb-cw-scelta:focus-within { border-color: var(--sb-brand); }
-.sb-cw-scelta:has(input:checked) {
-  border-color: color-mix(in srgb, var(--sb-brand) 70%, transparent);
-  background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-brand) 8%, var(--sb-surface-100));
-}
+.sb-cw-scelta:has(input:checked) { border-color: var(--sb-brand); background: var(--sb-surface-100); }
 .sb-cw-scelta input { margin-top: 0.1rem; width: 1.15rem; height: 1.15rem; flex: none; accent-color: var(--sb-brand); }
 .sb-cw-scelta b { display: block; font-size: 0.9rem; font-weight: 600; color: var(--sb-fg); }
 .sb-cw-scelta small { display: block; margin-top: 0.15rem; font-size: 0.78rem; line-height: 1.5; color: var(--sb-fg-light); }
 
-/* Il campo trappola. Non si vede, non si tabula, non si legge ad alta voce:
-   esiste solo per chi compila il modulo leggendo l'HTML invece della pagina.
-   `display:none` non basta — c'è chi lo cerca — quindi sta fuori schermo. */
+/* Il campo trappola: non si vede e non ci si finisce dentro tabulando. */
 .sb-cw-trappola {
   position: absolute;
-  left: -9999px;
   width: 1px;
   height: 1px;
+  padding: 0;
   overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
+/* ═══ La dichiarazione ═══════════════════════════════════════════════════════ */
 .sb-cw-consenso {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  align-items: flex-start;
   gap: 0.7rem;
-  align-items: start;
   padding: 0.9rem 1rem;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border);
-  background: var(--sb-shape-edge), var(--sb-surface-100);
-  transition: border-color 0.2s ease;
+  background: var(--sb-surface-75);
+  border: 1px solid var(--sb-border-strong);
+  border-radius: 8px;
 }
 .sb-cw-consenso:focus-within { border-color: var(--sb-brand); }
-/* La casella è 1.25rem e non 1rem: è una spunta obbligatoria, e va colpita
-   col pollice al primo colpo. */
 .sb-cw-consenso input { margin-top: 0.15rem; width: 1.25rem; height: 1.25rem; flex: none; accent-color: var(--sb-brand); }
 .sb-cw-consenso label { font-size: 0.85rem; line-height: 1.6; color: var(--sb-fg-light); }
 .sb-cw-consenso strong { font-weight: 600; color: var(--sb-fg); }
 .sb-cw-consenso a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
-/* Quando manca la spunta e si è provato a mandare, il riquadro lo dice come
-   lo dicono i campi: col rosso, che qui è un segnale e non un accento. */
-.sb-cw-consenso[data-stato="ko"] { border-color: var(--cr-rosso); }
+.sb-cw-consenso[data-stato="ko"] { border-color: var(--cw-rosso); }
 
-/* Il tasto che apre il pagamento è .sb-btn--primary come tutti gli altri del
-   sito. Qui prende solo le due cose che il posto in cui sta gli impone: la
-   larghezza del modulo, e il permesso di andare a capo — la scritta è lunga e
-   sul telefono stretto su una riga non ci sta. Andando a capo però sfonda i
-   38px fissi del .sb-btn, e allora l'altezza diventa un minimo. */
-.sb-cw-vai {
-  width: 100%;
-  height: auto;
-  min-height: 46px;
-  padding: 0.65rem 1.1rem;
-  line-height: 1.35;
-  white-space: normal;
-  font-size: 0.95rem;
+/* ═══ La nota prima del tasto ════════════════════════════════════════════════ */
+.sb-cw-nota {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--sb-fg-muted);
 }
-/* Mentre apre il pagamento: la freccia del cursore dice che sta lavorando, e
-   il tasto smorzato che non è più premibile. */
+.sb-cw-nota strong { font-weight: 600; color: var(--sb-fg-light); }
+.sb-cw-nota a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+.sb-cw-nota-t {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--sb-fg);
+}
+
+/* Il tasto è alto quanto un campo: è il gesto finale, e su un telefono si
+   preme col pollice. */
+.sb-cw-vai { width: 100%; height: 46px; font-size: 0.95rem; }
 .sb-cw-vai[disabled] { cursor: progress; opacity: 0.6; }
 
-/* ═══ Chi c'è dietro ═════════════════════════════════════════════════════════
-   Quattro cose diverse, e si vede che sono quattro: chi organizza, chi dà il
-   patrocinio, chi mette il cibo, chi ha fatto il sito. Ogni fascia ha la sua
-   frase SOPRA i suoi marchi, separata dalla precedente da un filo sottile.
+/* ═══ L'esito ════════════════════════════════════════════════════════════════
+   Quattro stati, quattro colori di fondo, nessuno che si muova. Il puntino
+   che pulsava durante l'attesa non c'è più: la scritta dice già che si sta
+   aspettando. */
+.sb-cw-esito {
+  display: none;
+  margin-bottom: 1.2rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  border-radius: 8px;
+}
+.sb-cw-esito:not(:empty) { display: block; }
+.sb-cw-esito--neutro { background: var(--sb-surface-100); color: var(--sb-fg-light); }
+.sb-cw-esito--attesa { background: var(--sb-surface-100); color: var(--sb-fg-light); }
+.sb-cw-esito--ok {
+  background: color-mix(in srgb, var(--sb-brand) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sb-brand) 45%, transparent);
+  color: var(--sb-fg);
+}
+.sb-cw-esito--errore {
+  background: color-mix(in srgb, var(--cw-rosso) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cw-rosso) 40%, transparent);
+  color: var(--sb-fg);
+}
+.sb-cw-esito a { color: var(--sb-brand-text); text-decoration: underline; text-underline-offset: 2px; }
 
-   Prima la frase stava di fianco ai marchi e tutto era centrato — le uniche
-   righe centrate rimaste sul sito. Adesso ogni fascia parte dal margine
-   sinistro come qualunque altro blocco di qualunque altra pagina, e la frase
-   sta sopra: la si legge prima di guardare i marchi che descrive, che è
-   l'ordine in cui serve. Una fascia sola per tutte e quattro, senza tre
-   disposizioni diverse a seconda di quanti marchi ha ognuna.
+/* ═══ La giornata ════════════════════════════════════════════════════════════ */
+.sb-cw-giornata {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.4rem;
+}
+@media (min-width: 46rem) { .sb-cw-giornata { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sb-cw-momento .sb-panel-inner { gap: 0.35rem; padding: 1.1rem 1.2rem 1.2rem; }
+.sb-cw-momento-o {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sb-fg-muted);
+}
+.sb-cw-momento-o svg { flex: none; }
+.sb-cw-momento-t {
+  margin: 0.4rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--sb-fg);
+}
+.sb-cw-momento-p { margin: 0.2rem 0 0; font-size: 0.86rem; line-height: 1.6; color: var(--sb-fg-lighter); }
 
-   Le piastrelle restano bianche in tutti e due i temi: un logo a colori su
-   fondo scuro perde i suoi, e questi non sono nostri da ritoccare.
+/* ═══ Il percorso ════════════════════════════════════════════════════════════
+   Era una linea verticale che si colorava scorrendo, con un bollo per ogni
+   via e sei tinte che ruotavano. Adesso è un elenco: le vie nell'ordine in
+   cui si passano, e i tre attraversamenti in grassetto perché sono l'unica
+   cosa che cambia il modo in cui si cammina. */
+.sb-cw-giro {
+  max-width: var(--sb-misura);
+  margin: 1.3rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--sb-border);
+}
+.sb-cw-tappa {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--sb-fg-light);
+  border-bottom: 1px solid var(--sb-border);
+}
+.sb-cw-tappa strong { font-weight: 600; color: var(--sb-fg); }
+.sb-cw-tappa small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--sb-fg-muted);
+}
 
-   ATTENZIONE: il markup di queste fasce non sta qui, lo genera renderLoghi()
-   in build.mjs. I nomi delle classi sono un contratto fra i due file: chi ne
-   rinomina una qui deve rinominarla anche là, o le fasce restano senza stile. */
+.sb-cw-contrade { margin-top: 1.2rem; }
+
+/* ═══ Chi c'è dietro ═════════════════════════════════════════════════════════ */
 .sb-cw-enti { display: grid; gap: 1.6rem; margin-top: clamp(1.6rem, 4vw, 2.4rem); }
-
 .sb-cw-ente { display: grid; gap: 0.9rem; }
 .sb-cw-ente + .sb-cw-ente { padding-top: 1.6rem; border-top: 1px solid var(--sb-border); }
-
 .sb-cw-ente-t {
   margin: 0;
-  max-width: 46rem;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   line-height: 1.6;
   color: var(--sb-fg-light);
 }
 .sb-cw-ente-t strong { font-weight: 600; color: var(--sb-fg); }
-
-/* L'ultima riga è di servizio e non è un'attestazione: sta più piccola e più
-   spenta, com'è giusto che sia. */
 .sb-cw-ente--minuta .sb-cw-ente-t { font-size: 0.8rem; color: var(--sb-fg-muted); }
 .sb-cw-ente-luogo { display: block; }
-
 .sb-cw-loghi {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.8rem;
+  flex-wrap: wrap;
+  gap: 1.2rem;
 }
 .sb-cw-logo {
-  display: grid;
-  place-items: center;
-  min-width: 5.5rem;
-  height: 4rem;
-  padding: 0.5rem 1rem;
-  overflow: hidden;
-  clip-path: var(--sb-shape-sm);
-  border: 1px solid var(--sb-border-strong);
-  background: var(--sb-shape-edge), #fff;
-  text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-/* Il sollevamento al passaggio solo su quelle che sono collegamenti: le
-   attività del paese un sito non ce l'hanno, e una piastrella che si alza
-   sotto il dito promette un tocco che non porta da nessuna parte. */
-a.sb-cw-logo:hover { transform: translateY(-3px); }
-a.sb-cw-logo:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--sb-brand); }
 .sb-cw-logo img { max-height: 2.4rem; max-width: 100%; width: auto; }
-
-/* Marchi di forme diverse — uno largo, uno verticale, uno quadrato — e una
-   sola altezza per tutti li farebbe leggere sbagliati: il largo sembrerebbe
-   il doppio degli altri e lo stemma una miniatura. Si pareggiano a occhio,
-   non a righello, ognuno con la sua misura. Chi non ha ancora mandato il file
-   compare come nome scritto e non ha bisogno di niente. */
 .sb-cw-logo--anspi img { max-height: 2.1rem; }
-/* I marchi quadrati — lo stemma della Polizia Locale, la croce della
-   farmacia, il profilo di Non Solo Lady — a 2.4rem sembrerebbero francobolli
-   accanto a una scritta lunga come «Panificio Marchini»: un quadrato riempie
-   molta meno riga di una parola. Gli si dà quasi tutta l'altezza della
-   piastrella e meno margine intorno. */
-.sb-cw-logo--quadro { padding: 0.3rem 0.6rem; }
 .sb-cw-logo--quadro img { max-height: 3.2rem; }
-.sb-cw-logo--rodigo { padding: 0.3rem 0.9rem; }
 .sb-cw-logo--rodigo img { max-height: 3.4rem; }
-/* L'icona .ap è quadrata e il bianco intorno al marchio ce l'ha già dentro:
-   la piastrella non ne aggiunge altro, o il «.ap» resterebbe grande la metà
-   degli altri due. */
-.sb-cw-logo--ap { padding: 0; }
 .sb-cw-logo--ap img { max-height: 4rem; }
-
-.sb-cw-logo-t { padding: 0 0.9rem; font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
+.sb-cw-logo-t { font-size: 0.9rem; font-weight: 600; color: var(--sb-brand-text); letter-spacing: -0.01em; }
 .sb-cw-logo--ap .sb-cw-logo-t { font-size: 1.6rem; letter-spacing: -0.045em; }
 
-/* ═══ Meno movimento ═════════════════════════════════════════════════════════
-   Le derive del fondale si fermano da sé, per la regola in rivalta.css. Gli
-   ingressi allo scroll non ci sono più da fermare: sono stati tolti, e la
-   classe che li accendeva non esiste in nessuno dei tre file.
-
-   Qui resta tutto il resto, e adesso l'elenco deve essere completo: prima le
-   tre animazioni di decorazione — la riga del titolo che deriva, la luce che
-   attraversa la barra, la spunta che si disegna — erano appese a `cw-anim`,
-   cioè si spegnevano da sé insieme agli ingressi. Adesso girano sempre, e
-   sono queste due regole a doverle fermare. Con le altre: la riga che si
-   apre, il conto che batte, il punto che pulsa mentre si aspetta.
-
-   Sono micro-movimenti, ma sono movimenti, e chi ha chiesto di non vederne
-   non ne ha chiesti «pochi». */
-@media (prefers-reduced-motion: reduce) {
-  html:not(.rsm-motion) .sb-cw-min,
-  html:not(.rsm-motion) .sb-cw-esito,
-  html:not(.rsm-motion) .sb-cw-esito--attesa::before,
-  html:not(.rsm-motion) .sb-cw-conto-s,
-  html:not(.rsm-motion) .sb-cw-segno-ok path,
-  html:not(.rsm-motion) .sb-cw-avanz-barra::after,
-  html:not(.rsm-motion) .sb-cw-tinte { animation: none !important; }
-  html:not(.rsm-motion) .sb-cw-avanz-fill,
-  html:not(.rsm-motion) .sb-cw-segno,
-  html:not(.rsm-motion) .sb-cw-bollo,
-  html:not(.rsm-motion) .sb-cw-box { transition: none !important; }
-}
-html.rsm-still .sb-cw-min,
-html.rsm-still .sb-cw-esito,
-html.rsm-still .sb-cw-esito--attesa::before,
-html.rsm-still .sb-cw-conto-s,
-html.rsm-still .sb-cw-segno-ok path,
-html.rsm-still .sb-cw-avanz-barra::after,
-html.rsm-still .sb-cw-tinte { animation: none; }
-html.rsm-still .sb-cw-avanz-fill,
-html.rsm-still .sb-cw-segno { transition: none; }
-
-/* ═══ Stampata ═══════════════════════════════════════════════════════════════
-   Non è una pagina da stampare — per quello c'è /color-walk-modulo — ma
-   qualcuno stamperà il percorso, e allora che esca leggibile: fondo bianco,
-   niente fondale, e via il modulo, che su carta è un modulo che non si può
-   compilare. */
+/* ═══ La stampa ══════════════════════════════════════════════════════════════ */
 @media print {
-  html, body, .sb-home, .sb-main { background: #fff !important; color: #000 !important; }
-  .sb-home::before, .sb-home::after { display: none !important; }
-  .sb-cw-iscr, .sb-riv-cwbanner, .sb-cw-fatti, .sb-hero-actions { display: none !important; }
-  .sb-cw-tinte { -webkit-background-clip: border-box; background-clip: border-box; color: #000 !important; background-image: none; }
-  .sb-cw-giro::after { display: none; }
-  * { color: #000 !important; box-shadow: none !important; }
+  .sb-cw-iscr, .sb-riv-pager { display: none !important; }
 }
 </style>
 
 
 <div class="sb-cr">
 
-<div class="sb-cw-vernice" aria-hidden="true"><div class="sb-cw-polvere"></div></div>
-
-  <!-- ── La testata ──────────────────────────────────────────────────────
+<!-- ── La testata ──────────────────────────────────────────────────────
        Prima qui c'era solo il manifesto, che è un'immagine, con un titolo
        fuori campo per la struttura del documento. Adesso la camminata si
        presenta scritta — occhiello, titolo, due righe di cosa succede, i
@@ -1340,7 +688,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
     <h1 class="sb-hero-title">
       <span>Color Walk</span>
-      <span class="sb-cw-tinte">si torna a colori</span>
+      <span>si torna a colori</span>
     </h1>
 
     <div class="sb-hero-copy">
@@ -1446,14 +794,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
       <div id="cr-esito" class="sb-cw-esito" role="status" aria-live="polite"></div>
 
-      <div class="sb-cw-avanz" id="cr-avanz">
-        <div class="sb-cw-avanz-riga">
-          <span>Quanto manca</span>
-          <span class="sb-cw-avanz-n"><span id="cr-fatti">0</span> di <span id="cr-totale">6</span></span>
-        </div>
-        <div class="sb-cw-avanz-barra"><div class="sb-cw-avanz-fill" id="cr-fill"></div></div>
-      </div>
-
       <form class="sb-cw-form" id="cr-form" novalidate>
         <div class="sb-cw-campo" data-campo="nome">
           <label for="cr-nome">Nome</label>
@@ -1479,7 +819,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
             <input type="date" id="cr-nascita" name="nascita" required autocomplete="bday" enterkeyhint="next" min="1900-01-01" max="2008-09-20" aria-describedby="cr-nascita-aiuto">
             <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
           </div>
-          <p class="sb-cw-aiuto" id="cr-nascita-aiuto">Per iscriversi bisogna avere 18 anni compiuti il 20 settembre: i minori li iscrive un adulto insieme a sé, qui sotto.</p>
+          <p class="sb-cw-aiuto" id="cr-nascita-aiuto">Chi si iscrive è maggiorenne. I bambini si aggiungono più sotto.</p>
         </div>
 
         <div class="sb-cw-campo" data-campo="cf">
@@ -1488,7 +828,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
             <input type="text" id="cr-cf" name="cf" maxlength="16" required spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" enterkeyhint="next" placeholder="RSSMRA85M01F205Z" aria-describedby="cr-cf-aiuto">
             <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
           </div>
-          <p class="sb-cw-aiuto" id="cr-cf-aiuto">Serve a dare una certezza in più su chi si assume la responsabilità. Sedici caratteri: quando ci sono tutti si passa avanti da sé.</p>
+          <p class="sb-cw-aiuto" id="cr-cf-aiuto">È sulla tessera sanitaria. Quando i sedici caratteri ci sono tutti, si passa avanti da sé.</p>
         </div>
 
         <div class="sb-cw-campo" data-campo="email">
@@ -1555,7 +895,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
           </button>
 
           <p class="sb-cw-gruppo-s">Altri adulti</p>
-          <p class="sb-cw-gruppo-p">Chi ha 18 anni o più e cammina con te — <strong>10 € ciascuno</strong>, fino a tre oltre a te. Serve anche il loro codice fiscale, perché ognuno risponde di sé.</p>
+          <p class="sb-cw-gruppo-p">Da 18 anni in su, <strong>10 € ciascuno</strong>, fino a tre. Serve anche il loro codice fiscale.</p>
           <div id="cr-adulti"></div>
           <button type="button" class="sb-btn sb-btn--secondary sb-cw-piu" id="cr-piu-adulto">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
@@ -1615,7 +955,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
              quello che tiene in piedi la differenza. -->
         <div class="sb-cw-consenso" id="cr-consenso-box">
           <input type="checkbox" id="cr-consenso" name="consenso" required>
-          <label for="cr-consenso">Dichiaro di avere <strong>almeno 18 anni</strong>, di partecipare <strong>sotto la mia responsabilità</strong> e di essere responsabile dei <strong>minori che iscrivo insieme a me</strong>, che accompagno per tutto il percorso. Se iscrivo <strong>altri maggiorenni</strong>, dichiaro di <strong>averne il consenso</strong> e che ognuno di loro partecipa <strong>sotto la propria responsabilità</strong>. Ho letto e accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento della Color Walk</a> e l'informativa sul trattamento dei dati che contiene, anche per loro.</label>
+          <label for="cr-consenso">Ho <strong>almeno 18 anni</strong> e partecipo <strong>sotto la mia responsabilità</strong>. Sono responsabile dei <strong>bambini che iscrivo</strong> e li accompagno per tutto il percorso; se iscrivo <strong>altri adulti</strong>, ho il loro consenso e ognuno risponde di sé. Accetto il <a href="/color-walk-regolamento" target="_blank" rel="noopener">regolamento</a>, anche per loro.</label>
         </div>
 
         <!-- La nota sul pagamento sta qui, appena prima del tasto: si legge
@@ -1624,12 +964,17 @@ html.rsm-still .sb-cw-segno { transition: none; }
              smetteva di essere leggibile: adesso è un titoletto e quattro
              capoversi, uno per cosa — dove vanno i soldi, cosa comprendono,
              come si paga, e le due cose che è giusto sapere prima. -->
+        <!-- Erano quattro capoversi fitti, e stavano nel punto peggiore in
+             cui si possa mettere da leggere: fra la dichiarazione e il tasto,
+             cioè addosso a chi ha già deciso. Quello che dicevano non è
+             sparito — la quota e cosa comprende stanno nel conto qui sopra,
+             PayPal nella scelta del pagamento, la bozza si spiega da sé
+             quando serve, e tutto il resto è nel regolamento, linkato.
+
+             Restano due righe, e sono le due che qualcuno potrebbe non
+             aspettarsi: che non c'è assicurazione, e a chi vanno i soldi. -->
         <div class="sb-cw-nota">
-          <span class="sb-cw-nota-t">Prima di mandare</span>
-          <p style="margin:0 0 0.6rem">La quota va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata: <strong>10 €</strong> da 18 anni in su, <strong>5 €</strong> dai 6 ai 17. Comprende la <strong>sacca</strong>, il <strong>sacchetto di polveri colorate</strong> e l'<strong>aperitivo</strong> di fine camminata con quello che offrono gli sponsor. Non c'è niente da pagare a parte.</p>
-          <p style="margin:0 0 0.6rem">Se paghi online il pagamento si fa <strong>sulle pagine di PayPal</strong> — anche con la carta, senza bisogno di un conto PayPal — e il sito non vede e non conserva i dati della carta. Se scegli i contanti, ti iscrivi adesso e porti la quota al banchetto il giorno stesso. In tutti e due i casi arriva una mail all'indirizzo qui sopra: la ricevuta se hai già pagato, il promemoria di quanto portare se paghi al ritrovo.</p>
-          <p style="margin:0 0 0.6rem"><strong>Non è prevista un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità.</p>
-          <p style="margin:0">Quello che scrivi resta <strong>in questa scheda del browser</strong> finché non mandi il modulo, così se la pagina si ricarica non devi riscrivere tutto: si cancella da sé a iscrizione fatta, e chiudendo la scheda. Tutte le regole — rimborsi, polveri colorate, responsabilità, trattamento dei dati — stanno nel <a href="/color-walk-regolamento">regolamento</a>.</p>
+          <p style="margin:0"><strong>Non c'è un'assicurazione per i partecipanti</strong>: si cammina sotto la propria responsabilità. La quota va all'<strong>Associazione San Filippo Neri ANSPI APS-ETS</strong> di Rodigo, che organizza la camminata. Tutte le regole stanno nel <a href="/color-walk-regolamento">regolamento</a>.</p>
         </div>
 
         <button class="sb-btn sb-btn--primary sb-cw-vai" type="submit" id="cr-submit"><span>Vai al pagamento — 10 €</span></button>
@@ -1786,7 +1131,7 @@ html.rsm-still .sb-cw-segno { transition: none; }
           <div class="sb-cw-campo" data-campo="p-nascita">
             <label data-per="p-nascita">Data di nascita</label>
             <div class="sb-cw-box">
-              <input type="date" data-id="p-nascita" required min="2008-09-21" max="2026-09-20">
+              <input type="date" data-id="p-nascita" required min="2020-09-21" max="2026-09-16">
               <span class="sb-cw-segno" aria-hidden="true"><svg class="sb-cw-segno-ok" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><svg class="sb-cw-segno-ko" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 5v6"/><path d="M10 14.6v.1"/></svg></span>
             </div>
             <p class="sb-cw-aiuto" data-aiuto="p-nascita">Chi il 20 settembre non ha ancora 6 anni.</p>
@@ -1879,41 +1224,36 @@ html.rsm-still .sb-cw-segno { transition: none; }
       <p>Un giro delle vie del paese, partenza e arrivo in Piazza della Chiesa. Diciassette passaggi, tre dei quali attraversano una strada aperta al traffico.</p>
     </div>
 
-    <ol class="sb-cw-giro" data-cw-giro>
-      <li class="sb-cw-tappa sb-cw-tappa--capo">
-        <span class="sb-cw-bollo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 5h11l-1.6 3.2L17 11.5H6z"/></svg></span>
+    <ol class="sb-cw-giro">
+      <li class="sb-cw-tappa">
         <strong>Piazza della Chiesa</strong>
         <small>Partenza, alle 16:00</small>
       </li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Zibramonda, gli stradelli</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Zibramonda</li>
-      <li class="sb-cw-tappa sb-cw-tappa--incrocio">
-        <span class="sb-cw-bollo" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/></svg></span>
+      <li class="sb-cw-tappa">Via Zibramonda, gli stradelli</li>
+      <li class="sb-cw-tappa">Via Zibramonda</li>
+      <li class="sb-cw-tappa">
         <strong>Via Settefrati</strong>
         <small>Attraversamento a strada chiusa, con la Polizia Locale</small>
       </li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Don A. Bodini</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via 25 Aprile</li>
-      <li class="sb-cw-tappa sb-cw-tappa--incrocio">
-        <span class="sb-cw-bollo" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/></svg></span>
+      <li class="sb-cw-tappa">Via Don A. Bodini</li>
+      <li class="sb-cw-tappa">Via 25 Aprile</li>
+      <li class="sb-cw-tappa">
         <strong>Via Garibaldi</strong>
         <small>Attraversamento a strada chiusa, con la Polizia Locale</small>
       </li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via della Resistenza</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Papa Giovanni II</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Panicella</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Bedini</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Monteverdi</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Rossini</li>
-      <li class="sb-cw-tappa sb-cw-tappa--incrocio">
-        <span class="sb-cw-bollo" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/></svg></span>
+      <li class="sb-cw-tappa">Via della Resistenza</li>
+      <li class="sb-cw-tappa">Via Papa Giovanni II</li>
+      <li class="sb-cw-tappa">Via Panicella</li>
+      <li class="sb-cw-tappa">Via Bedini</li>
+      <li class="sb-cw-tappa">Via Monteverdi</li>
+      <li class="sb-cw-tappa">Via Rossini</li>
+      <li class="sb-cw-tappa">
         <strong>Via Francesca</strong>
         <small>Attraversamento a strada chiusa, con la Polizia Locale</small>
       </li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Arrivabene</li>
-      <li class="sb-cw-tappa sb-cw-tappa--via">Via Gramsci — il giro <strong>non scende verso il Mincio</strong></li>
-      <li class="sb-cw-tappa sb-cw-tappa--capo">
-        <span class="sb-cw-bollo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10l-1.2 6.4a4 4 0 0 1-7.6 0z"/><path d="M12 15v4"/><path d="M8.5 19h7"/></svg></span>
+      <li class="sb-cw-tappa">Via Arrivabene</li>
+      <li class="sb-cw-tappa">Via Gramsci — il giro <strong>non scende verso il Mincio</strong></li>
+      <li class="sb-cw-tappa">
         <strong>Piazza della Chiesa</strong>
         <small>Arrivo, e aperitivo</small>
       </li>
@@ -2012,7 +1352,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
   var esito = document.getElementById("cr-esito");
   var bottone = document.getElementById("cr-submit");
-  var avanz = document.getElementById("cr-avanz");
 
   function mostra(tipo, messaggio) {
     esito.className = "sb-cw-esito sb-cw-esito--" + tipo;
@@ -2035,7 +1374,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
   function salvagente(guaio) {
     try {
       form.hidden = true;
-      if (avanz) avanz.hidden = true;
       esito.className = "sb-cw-esito sb-cw-esito--errore";
       esito.textContent =
         "Questo modulo non è riuscito ad aprirsi sul tuo browser, e non è colpa tua. " +
@@ -2310,9 +1648,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
   var consenso = document.getElementById("cr-consenso");
   var consensoBox = document.getElementById("cr-consenso-box");
-  var fill = document.getElementById("cr-fill");
-  var fatti = document.getElementById("cr-fatti");
-  var totaleN = document.getElementById("cr-totale");
   var contoVoci = document.getElementById("cr-conto-voci");
   var contoSomma = document.getElementById("cr-conto-somma");
   var etichettaVai = bottone.querySelector("span");
@@ -2740,9 +2075,14 @@ html.rsm-still .sb-cw-segno { transition: none; }
         campoRigaP("p-nome", true, function (v) { return v.length >= 2; }, "Scrivi il nome."),
         campoRigaP("p-cognome", true, function (v) { return v.length >= 2; }, "Scrivi il cognome."),
         campoRigaP("p-nascita", true,
-          function (v) { return dataValida(v) && etaAllEvento(v) < 6; },
+          /* Il `>= 0` non è pignoleria: senza, una data nel futuro dà un'età
+             negativa, che è minore di 6, e un bambino nato nel 2027 passava
+             il controllo e finiva nell'iscrizione. Le altre due fasce il
+             fondo ce l'hanno già (6 e 18); questa era l'unica aperta. */
+          function (v) { return dataValida(v) && etaAllEvento(v) >= 0 && etaAllEvento(v) < 6; },
           function (v) {
             if (!dataValida(v)) return "Questa data non esiste: controlla giorno, mese e anno.";
+            if (etaAllEvento(v) < 0) return "Questa data è nel futuro: controlla l'anno.";
             return "Il 20 settembre ha già 6 anni: va messo fra i bambini dai 6 ai 17, con la quota da 5 €.";
           })
       ]
@@ -2807,22 +2147,8 @@ html.rsm-still .sb-cw-segno { transition: none; }
      scritta del tasto. Nessun'altra parte del codice tocca questi nodi. */
   function disegna() {
     var tutti = ordine();
-    var obbligatori = 1; // la spunta della dichiarazione conta come un passo
-    var pronti = 0;
-
-    for (var i = 0; i < tutti.length; i++) {
-      var c = tutti[i];
-      dipingi(c);
-      if (!c.obbl) continue;
-      obbligatori++;
-      if (statoDi(c) === "ok" && valore(c) !== "") pronti++;
-    }
-    if (consenso.checked) pronti++;
+    for (var i = 0; i < tutti.length; i++) dipingi(tutti[i]);
     attr(consensoBox, "data-stato", provatoAMandare && !consenso.checked ? "ko" : null);
-
-    testo(fatti, String(pronti));
-    testo(totaleN, String(obbligatori));
-    fill.style.setProperty("--p", pronti / obbligatori);
 
     var quantiA = 1 + righeA.length;
     var quanti = righe.length;
@@ -3108,7 +2434,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
      pagina che nessuno ha ancora toccato. */
   function chiudiModulo(testoEsito, tipo) {
     form.hidden = true;
-    if (avanz) avanz.hidden = true;
     if (provatoAMandare) annuncia(tipo || "neutro", testoEsito);
     else mostra(tipo || "neutro", testoEsito);
   }
@@ -3578,7 +2903,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
 
   if (tornatoDaPagamento) {
     form.hidden = true;
-    if (avanz) avanz.hidden = true;
     mostra("neutro", "Un momento, controllo il pagamento…");
 
     chiedi("/api/iscrizione-color-walk?ordine=" + encodeURIComponent(idOrdine), null, 20)
@@ -3594,7 +2918,6 @@ html.rsm-still .sb-cw-segno { transition: none; }
         mostra("errore", "Non riusciamo a confermare il pagamento in questo momento — ma questa pagina non è l'ultima parola: se il pagamento è andato a buon fine ti arriva comunque la conferma per email, e se non è andato a buon fine te lo scriviamo lo stesso. Guarda la posta prima di ripagare.");
         if (!chiuse) {
           form.hidden = false;
-          if (avanz) avanz.hidden = false;
           riprendiBozza();
           numeraRighe();
           programma();
