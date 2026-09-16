@@ -68,6 +68,40 @@
   }
 }
 
+/* ── La barra di lettura ──────────────────────────────────────────────────
+   Un filo di due pixel in cima alla finestra che si allunga da sinistra man
+   mano che si scende: su un dossier di ventimila pixel dice dove si è senza
+   che si debba cercare la barra di scorrimento. Non c'è JavaScript: è
+   un'animazione guidata dallo scorrimento (animation-timeline: scroll),
+   e dove il browser non la sa fare il filo non compare — meglio niente che
+   un filo fermo a zero. Sopra la barra di navigazione (z-index 50) e sotto
+   niente. */
+.sb-riv-lettura {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  background: var(--sb-accent-grad);
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .sb-riv-lettura {
+    display: block;
+    animation: sb-riv-legge linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes sb-riv-legge {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@media print { .sb-riv-lettura { display: none; } }
+
 /* ── Sezioni ancorate ─────────────────────────────────────────────────────
    scroll-margin-top perché la nav è sticky a 64px: senza, arrivando da un
    link d'indice il titolo finisce sotto la barra.
@@ -182,6 +216,9 @@ html[data-stagione] h3[id] {
 .sb-riv-toc a[aria-current] {
   color: var(--sb-brand-text);
   border-color: color-mix(in srgb, var(--sb-brand) 45%, var(--sb-border-strong));
+  /* Un velo della tinta dentro il vetro, oltre al bordo: fra otto pillole
+     uguali quella accesa si deve trovare senza leggerle tutte. */
+  background: var(--sb-shape-edge), color-mix(in srgb, var(--sb-brand) 9%, var(--sb-glass-bg));
 }
 
 /* ── L'indice che segue, su schermo largo ─────────────────────────────────
@@ -317,6 +354,21 @@ html[data-stagione] h3[id] {
   letter-spacing: -0.03em;
   line-height: 1.05;
   color: var(--sb-fg);
+  /* Cifre a larghezza fissa: quattro numeri in fila su quattro lastre
+     uguali devono allinearsi anche quando cambiano. */
+  font-variant-numeric: tabular-nums;
+}
+/* Sopra ogni cifra, un tratto corto della tinta. È il segno che il sito
+   mette davanti alle cose che contano — occhielli, numeri di sezione — e i
+   riquadri di sintesi sono la cosa che si guarda per prima. */
+.sb-riv-stat-v::before {
+  content: "";
+  display: block;
+  width: 1.6rem;
+  height: 2px;
+  margin-bottom: 0.6rem;
+  border-radius: 2px;
+  background: var(--sb-accent-grad);
 }
 .sb-riv-stat-v small { font-size: 0.55em; color: var(--sb-fg-lighter); margin-left: 0.15em; }
 .sb-riv-stat-l {
@@ -1600,7 +1652,8 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 .sb-riv-pagehead { padding-top: clamp(1.7rem, 3.8vw, 2.8rem); padding-bottom: clamp(0.7rem, 1.4vw, 1.1rem); }
 .sb-riv-pagehead h1 {
   margin: 0;
-  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  font-size: clamp(2.05rem, 4.8vw, 3.4rem);
+  text-wrap: balance;
   /* Black, come il titolo della home: e il nome della pagina, e deve stare
      sopra alle sue sezioni — che sono a 800. Un titolo di pagina piu leggero
      delle sezioni che contiene capovolge la gerarchia. */
@@ -1609,13 +1662,26 @@ html.rsm-still .sb-cw-polvere { animation: none; }
   line-height: 1.04;
 }
 .sb-riv-eyebrow {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   margin-bottom: 0.7rem;
   font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--sb-brand-text);
+}
+/* Un tratto della tinta davanti all'occhiello: è lo stesso segno che la
+   stagione mette sopra i numeri di sezione, qui in orizzontale — parte dal
+   margine sinistro e la parola gli sta dietro. */
+.sb-riv-eyebrow::before {
+  content: "";
+  flex: none;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--sb-accent-grad);
 }
 .sb-riv-lede {
   margin: 1rem 0 0;
@@ -1654,6 +1720,13 @@ html.rsm-still .sb-cw-polvere { animation: none; }
 .sb-riv-foto { margin: 1.4rem 0 1.6rem; max-width: var(--sb-misura); }
 .sb-riv-foto .sb-panel-inner { padding: 0; }
 .sb-riv-foto img { display: block; width: 100%; height: auto; }
+/* Al passaggio la fotografia si avvicina di un niente — due centesimi — e
+   piano: è la lastra che risponde, non un effetto. Solo con un puntatore
+   vero, e solo se il movimento non è stato fermato. */
+@media (hover: hover) and (pointer: fine) {
+  html:not(.rsm-still) .sb-riv-foto img { transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+  html:not(.rsm-still) .sb-riv-foto:hover img { transform: scale(1.025); }
+}
 .sb-riv-foto figcaption {
   margin-top: 0.55rem;
   font-size: var(--sb-testo-cap);

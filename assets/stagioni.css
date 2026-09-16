@@ -88,6 +88,17 @@ html[data-stagione="uva"] .sb-home {
   --stag-vite-radente: #8a7c34;/* la stessa, presa di taglio all'alba     */
   --stag-nervo: rgba(252, 251, 249, 0.55);
   --stag-luce: rgba(255, 255, 255, 0.34);
+
+  /* ── La tinta che scorre, detta con le parole del mese ─────────────────
+     sb.css scrive l'accento a gradiente con la scala dell'azzurro; qui la
+     riga va dal granato al rubino e finisce nell'oro della foglia che ha
+     girato — è settembre che passa, da sinistra a destra. La luce nelle
+     lastre è calda come la carta, e la grana un filo più presente: è
+     carta d'autunno, non schermo. */
+  --sb-accent-grad: linear-gradient(90deg, var(--stag-granato), var(--stag-cerasuolo) 52%, var(--stag-vite-oro));
+  --sb-filo-grad: linear-gradient(90deg, var(--stag-granato), var(--stag-vite-oro) 42%, transparent 86%);
+  --sb-glass-luce: rgba(255, 250, 242, 0.58);
+  --sb-grana: 0.055;
 }
 
 /* ── Palette scura ────────────────────────────────────────────────────────
@@ -135,6 +146,13 @@ html[data-stagione="uva"].dark .sb-home {
   --stag-vite-radente: #bcae6a;
   --stag-nervo: rgba(22, 20, 19, 0.6);
   --stag-luce: rgba(255, 245, 240, 0.2);
+
+  /* Al buio la riga parte dal rosato — che qui è il testo d'accento — passa
+     dal cerasuolo e finisce nel paglierino. Stesse tre parole, un tono su. */
+  --sb-accent-grad: linear-gradient(90deg, var(--stag-rosato), var(--stag-cerasuolo) 48%, var(--stag-paglierino));
+  --sb-filo-grad: linear-gradient(90deg, var(--stag-cerasuolo), var(--stag-paglierino) 42%, transparent 86%);
+  --sb-glass-luce: rgba(255, 236, 224, 0.055);
+  --sb-grana: 0.08;
 }
 
 /* ── Le mille cose piccole ────────────────────────────────────────────────

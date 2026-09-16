@@ -125,6 +125,25 @@ img { max-width: 100%; height: auto; }
   --sb-glass-sheen: rgba(255, 255, 255, 0.42);
   --sb-glass-slab: rgba(0, 0, 0, 0.14);
 
+  /* ── La tinta che scorre ────────────────────────────────────────────────
+     L'accento non è più solo un colore pieno: dove il sito ha una riga da
+     dire con la sua tinta — la seconda riga del titolo, il filo sotto la
+     barra, la barra di lettura in cima — la dice con un gradiente che parte
+     dal tono scuro e arriva a quello chiaro, sempre da sinistra a destra,
+     dallo stesso margine da cui parte tutto il resto. Qui è la scala
+     dell'azzurro; la stagione la riscrive con le sue parole (stagioni.css).
+
+     --sb-glass-luce è la luce che entra nella lastra dall'angolo in alto a
+     sinistra: le lastre erano una tinta uniforme, e una lastra vera non lo
+     è mai — da una parte prende la luce, dall'altra no.
+
+     --sb-grana è la carta: un velo di grana sopra il fondale, così basso
+     che non si vede guardandolo, e si sente quando manca. */
+  --sb-accent-grad: linear-gradient(90deg, var(--sb-brand-text), var(--sb-brand));
+  --sb-filo-grad: linear-gradient(90deg, var(--sb-brand), color-mix(in srgb, var(--sb-brand) 40%, transparent) 55%, transparent 88%);
+  --sb-glass-luce: rgba(255, 255, 255, 0.5);
+  --sb-grana: 0.045;
+
   /* ── Smusso ─────────────────────────────────────────────────────────────
      Pillole e tabelle non sono più stondate: hanno l'angolo in alto a
      sinistra e quello in basso a destra tagliati a 45°. Due misure sole —
@@ -220,6 +239,12 @@ html.dark .sb-home {
   --sb-glass-shadow: 0 10px 38px -14px rgba(0, 0, 0, 0.65);
   --sb-glass-sheen: rgba(255, 255, 255, 0.1);
   --sb-glass-slab: rgba(0, 0, 0, 0.5);
+
+  /* Al buio la luce che entra nella lastra è un decimo, come il filo
+     specular; la grana invece sale: su un fondo scuro un velo chiaro si
+     legge meno di quanto un velo scuro si legga sulla carta. */
+  --sb-glass-luce: rgba(255, 255, 255, 0.045);
+  --sb-grana: 0.07;
 }
 
 .sb-home ::selection { background: hsla(197, 100%, 49%, 0.35); }
@@ -325,13 +350,33 @@ html.dark .sb-home::after {
 .sb-bg-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.7;
+  opacity: 0.6;
   transform: translate3d(0, var(--sb-par, 0px), 0);
-  background:
-    linear-gradient(var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px,
-    linear-gradient(90deg, var(--sb-border) 1px, transparent 1px) 0 0 / 64px 64px;
+  /* Era una griglia di righe da 64px, e una griglia di righe è carta
+     millimetrata: dice «qui si misura». Adesso sono punti — la stessa
+     maglia, ma segnata solo agli incroci. Il fondo tiene il ritmo senza
+     tirare righe attraverso la pagina, e sotto le lastre di vetro si legge
+     come una trama, non come un reticolo. */
+  background: radial-gradient(circle, var(--sb-border-stronger) 1px, transparent 1.5px) 0 0 / 28px 28px;
   -webkit-mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
   mask-image: radial-gradient(130% 96% at 50% -4%, #000 12%, transparent 68%);
+}
+/* ── La grana ─────────────────────────────────────────────────────────────
+   Un velo di rumore sopra tutto il fondale. È un SVG di duecento pixel con
+   un feTurbulence dentro, ripetuto: costa un'immagine, disegnata una volta.
+   overlay e non multiply, perché deve funzionare sui due temi con la stessa
+   riga — sul chiaro scurisce appena, sullo scuro schiarisce appena. Sta
+   sull'::after di .sb-bg, che è già fisso e già sotto il contenuto: non un
+   nodo in più, e le foglie di stagione (z-index 0, sopra .sb-bg) ci passano
+   davanti come prima. */
+.sb-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--sb-grana);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
 }
 .sb-main { position: relative; z-index: 1; }
 
@@ -394,7 +439,17 @@ html.rsm-still .sb-btn--secondary::after { content: none; }
 }
 /* In cima alla pagina la nav non ha bordo: nessuna riga a tagliare la hero.
    Compare solo quando c'è del contenuto che le scorre sotto. */
-.sb-nav--scrolled { border-bottom-color: var(--sb-border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+.sb-nav--scrolled {
+  border-bottom-color: var(--sb-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  /* Sopra il bordo grigio, un filo della tinta del sito che entra da
+     sinistra e si perde prima del margine destro: la barra non è più una
+     riga grigia appoggiata sulla pagina, è la testata del sito. */
+  background-image: var(--sb-filo-grad);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: left bottom;
+}
 html.dark .sb-nav--scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
 /* ── La barra si stringe scorrendo ────────────────────────────────────────
    In cima la barra è alta 64: c'è tutto lo spazio del mondo e il nome del
@@ -557,16 +612,28 @@ html.rsm-still .sb-nav-inner { transition: none; }
   cursor: pointer;
   white-space: nowrap;
   border: 1px solid transparent;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 .sb-btn--sm { height: 32px; padding: 0 0.8rem; font-size: 0.8rem; }
+/* Il tasto principale non è più un rettangolo di tinta piatta: prende la
+   luce dall'alto, come le lastre, e posa un'ombra della sua tinta. Sono le
+   due cose che fanno leggere un tasto come qualcosa che sta SOPRA la pagina
+   e non dipinto dentro. Al passaggio sale di un pixel e l'ombra si allunga:
+   è la stessa risposta delle card, in piccolo. */
 .sb-btn--primary {
   position: relative;
-  background: var(--sb-btn-bg);
+  background: linear-gradient(180deg, var(--sb-glass-sheen), transparent 55%), var(--sb-btn-bg);
   border-color: var(--sb-btn-bd);
   color: var(--sb-btn-fg);
+  box-shadow: 0 8px 22px -12px color-mix(in srgb, var(--sb-brand) 60%, transparent);
 }
-.sb-btn--primary:hover { background: var(--sb-btn-bg-hover); border-color: var(--sb-brand); }
+.sb-btn--primary:hover {
+  background: linear-gradient(180deg, var(--sb-glass-sheen), transparent 55%), var(--sb-btn-bg-hover);
+  border-color: var(--sb-brand);
+  box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--sb-brand) 70%, transparent);
+  transform: translateY(-1px);
+}
+.sb-btn--primary:active { transform: translateY(0); }
 .sb-btn--secondary {
   position: relative;
   background: var(--sb-bg-alt);
@@ -676,6 +743,9 @@ html.rsm-still .sb-nav-inner { transition: none; }
 }
 .sb-hero-title {
   margin: 0;
+  /* La misura è tarata sulla seconda riga, non sulla prima: «il paese, in
+     ogni suo dato» deve stare in UNA riga accanto alla scheda del tempo, e
+     un corpo più grande di così la spezza lasciando «dato» da solo. */
   font-size: clamp(2.1rem, 5.2vw, 3.6rem);
   /* Black. È il nome del paese in cima alla sua pagina: o pesa, o è una
      didascalia grande. Il sottotitolo sotto scende a 400 e il salto fra i
@@ -689,7 +759,31 @@ html.rsm-still .sb-nav-inner { transition: none; }
 .sb-hero-title span { display: block; }
 /* Il sottotitolo della testata: stesso corpo, peso normale. Il contrasto
    fra 900 e 400 sulla stessa riga è quello che fa leggere il nome per primo. */
-.sb-hero-title .sb-brandline { color: var(--sb-brand-text); font-weight: 400; letter-spacing: -0.02em; }
+/* La seconda riga non è di un colore: è della TINTA, che scorre dal tono
+   scuro a quello chiaro lungo la riga. Il testo resta scritto con il colore
+   pieno per chi non ha background-clip:text — cioè nessuno, ormai, ma un
+   titolo che sparisce è il peggior modo di scoprirlo. width:fit-content
+   perché il gradiente deve finire dove finisce la parola, non dove finisce
+   la colonna. */
+.sb-hero-title .sb-brandline,
+.sb-cta h2 .sb-brandline {
+  color: var(--sb-brand-text);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  width: fit-content;
+  max-width: 100%;
+  padding-right: 0.06em;
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .sb-hero-title .sb-brandline,
+  .sb-cta h2 .sb-brandline {
+    background: var(--sb-accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
 .sb-hero-copy { max-width: 40rem; margin-top: 1.4rem; }
 .sb-hero-copy p { margin: 0 0 0.7rem; font-size: 1rem; line-height: 1.6; color: var(--sb-fg-lighter); }
 .sb-hero-copy p:last-child { margin-bottom: 0; }
@@ -882,7 +976,12 @@ html.rsm-still .sb-nav-inner { transition: none; }
      un pixel in perpendicolare vale √2 di scostamento — 2 − √2 = 0.586.
      Non "arrotondarlo" a 1px: la diagonale diventerebbe più spessa dei lati. */
   clip-path: var(--sb-shape-lg-in);
-  background: var(--sb-glass-bg);
+  /* Sotto il vetro, la luce che entra dall'angolo in alto a sinistra — da
+     dove viene tutta la luce del sito — e si spegne prima di metà lastra.
+     È quello che distingue una lastra da un rettangolo semitrasparente. */
+  background:
+    radial-gradient(90% 60% at 0% 0%, var(--sb-glass-luce), transparent 68%),
+    var(--sb-glass-bg);
   -webkit-backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
   backdrop-filter: blur(var(--sb-glass-blur)) saturate(var(--sb-glass-sat));
   box-shadow: inset 0 1px 0 var(--sb-glass-spec);
@@ -1039,6 +1138,9 @@ html.rsm-still .sb-nav-inner { transition: none; }
   font-weight: 800;
   letter-spacing: -0.028em;
   line-height: 1.12;
+  /* Un titolo su due righe con l'ultima parola sola è un titolo che va a
+     capo male: il browser bilancia le righe, e non costa niente. */
+  text-wrap: balance;
 }
 .sb-sechead p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--sb-fg-lighter); }
 /* Una testata può dire due cose, e allora sono due capoversi: senza questo
@@ -1157,7 +1259,10 @@ html.rsm-still .sb-nav-inner { transition: none; }
   height: 2px;
   margin-top: clamp(2rem, 4vw, 3rem);
   border-radius: 999px;
-  background: linear-gradient(to right, transparent, var(--sb-border-stronger), transparent);
+  /* Il filo parte dal margine sinistro con la tinta del sito e si perde
+     verso destra: la stessa riga che sta sotto la barra in testa, così il
+     sito si apre e si chiude con lo stesso segno. */
+  background: var(--sb-filo-grad);
 }
 .sb-foot-bottom {
   display: flex;
