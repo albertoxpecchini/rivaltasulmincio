@@ -384,6 +384,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
 }
 .sb-is-conteggio i { font-style: normal; color: var(--sb-fg-muted); }
 
+/* L'avviso che il registro dei contanti non risponde. Non è un dettaglio di
+   servizio come gli altri accanto a lui — è «quello che stai leggendo può
+   essere sbagliato» — quindi non prende il grigio degli altri. */
+.sb-is-conteggio .sb-is-allarme { color: #fca5a5; font-weight: 600; }
+
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con otto colonne su uno schermo di telefono si
    legge scorrendo in orizzontale, ed è il modo più sicuro per non far leggere
@@ -1545,6 +1550,21 @@ html.rsm-still .sb-is-frec { transition: none; }
         var sep2 = document.createElement("i");
         sep2.textContent = "· letto alle " + ora(dati.aggiornatoISO);
         conteggio.appendChild(sep2);
+      }
+
+      /* Il registro dei contanti non ha risposto.
+
+         Va detto, e va detto qui: senza quel registro chi ha pagato in
+         contanti al ritrovo risulta «da incassare», e il 20 mattina è la
+         differenza fra un elenco giusto e uno che fa ripagare qualcuno che
+         ha già pagato. Il server lo sa e lo dice (`registroContanti`);
+         tacerlo qui vorrebbe dire mostrare un elenco sbagliato con l'aria
+         di essere quello giusto. */
+      if (dati.registroContanti === false) {
+        var allarme = document.createElement("i");
+        allarme.className = "sb-is-allarme";
+        allarme.textContent = "· registro dei contanti non raggiungibile: chi ha pagato al ritrovo può risultare «da incassare»";
+        conteggio.appendChild(allarme);
       }
     }
 

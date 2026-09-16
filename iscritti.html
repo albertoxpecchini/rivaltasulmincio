@@ -155,7 +155,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
                che vuole sapere è «cambiato cosa?». -->
           <a class="sb-riv-updated" href="/aggiornamenti" title="Cosa è cambiato sul sito">
             <span class="sb-riv-updated-dot" aria-hidden="true"></span>
-            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-15" data-updated="2026-09-15">15 set</time>
+            <span class="sb-riv-updated-lbl">agg.</span>&nbsp;<time datetime="2026-09-16" data-updated="2026-09-16">16 set</time>
           </a>
 
           <a class="sb-riv-mark" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author" aria-label="Sito ideato, scritto e costruito da Alberto Pecchini" title="Tutto questo sito — testi, dati, codice — è costruito da Alberto Pecchini">
@@ -213,7 +213,7 @@ if(m==="on")d.classList.add("rsm-motion");else if(m==="off")d.classList.add("rsm
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
             Cerca nel sito
           </button>
-          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-15" data-updated="2026-09-15">15 settembre 2026</time></a>
+          <a class="sb-riv-menu-agg" href="/aggiornamenti">Ultimo aggiornamento: <time datetime="2026-09-16" data-updated="2026-09-16">16 settembre 2026</time></a>
         </div>
       </div>
     </div>
@@ -545,6 +545,11 @@ html.dark .sb-is { --is-guaio: hsl(345, 88%, 68%); }
   font-variant-numeric: tabular-nums;
 }
 .sb-is-conteggio i { font-style: normal; color: var(--sb-fg-muted); }
+
+/* L'avviso che il registro dei contanti non risponde. Non è un dettaglio di
+   servizio come gli altri accanto a lui — è «quello che stai leggendo può
+   essere sbagliato» — quindi non prende il grigio degli altri. */
+.sb-is-conteggio .sb-is-allarme { color: #fca5a5; font-weight: 600; }
 
 /* ── Una scheda per iscritto ───────────────────────────────────────────────
    Non una tabella: una tabella con otto colonne su uno schermo di telefono si
@@ -1708,6 +1713,21 @@ html.rsm-still .sb-is-frec { transition: none; }
         sep2.textContent = "· letto alle " + ora(dati.aggiornatoISO);
         conteggio.appendChild(sep2);
       }
+
+      /* Il registro dei contanti non ha risposto.
+
+         Va detto, e va detto qui: senza quel registro chi ha pagato in
+         contanti al ritrovo risulta «da incassare», e il 20 mattina è la
+         differenza fra un elenco giusto e uno che fa ripagare qualcuno che
+         ha già pagato. Il server lo sa e lo dice (`registroContanti`);
+         tacerlo qui vorrebbe dire mostrare un elenco sbagliato con l'aria
+         di essere quello giusto. */
+      if (dati.registroContanti === false) {
+        var allarme = document.createElement("i");
+        allarme.className = "sb-is-allarme";
+        allarme.textContent = "· registro dei contanti non raggiungibile: chi ha pagato al ritrovo può risultare «da incassare»";
+        conteggio.appendChild(allarme);
+      }
     }
 
     /* Il riquadro del vuoto. Vive nel documento come tutto il resto: si
@@ -2838,7 +2858,7 @@ html.rsm-still .sb-is-frec { transition: none; }
         <span class="sb-foot-sep" aria-hidden="true">·</span>
         <a class="sb-foot-by sb-riv-foot-fatto" href="https://albertopecchini.it" target="_blank" rel="noreferrer noopener author">Ideato, scritto e costruito da <strong>Alberto Pecchini</strong></a>
       </div>
-      <span>Ultimo aggiornamento: <time datetime="2026-09-15" data-updated="2026-09-15">15 settembre 2026</time></span>
+      <span>Ultimo aggiornamento: <time datetime="2026-09-16" data-updated="2026-09-16">16 settembre 2026</time></span>
     </div>
   </div>
 </footer>
