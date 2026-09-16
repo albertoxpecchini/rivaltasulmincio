@@ -80,6 +80,7 @@ import {
   moduloDi,
   nettoCent,
   numeroCartaceo,
+  numeroFattura,
   prossimoCartaceo,
   spedisciFattura,
   tutteLeFatture,
@@ -542,9 +543,22 @@ async function modifica(req, res) {
   /* Il numero della nuova fattura. Per un cartaceo si tiene il numero del
      foglio e gli si attacca una lettera: CW-CART-42 corretto una volta
      diventa CW-CART-42B, poi 42C. Così il foglio nel raccoglitore si trova
-     sempre, e due correzioni non si pestano i piedi. Per le altre si riparte
-     dall'orologio, come una qualsiasi iscrizione nuova. */
-  const numero = daCarta ? prossimoCartaceo(numeroVecchio) : `${numeroVecchio}-C${Date.now().toString(36).toUpperCase().slice(-3)}`;
+     sempre, e due correzioni non si pestano i piedi.
+
+     Per le altre si riparte dall'orologio, come una qualsiasi iscrizione
+     nuova — e qui c'era lo sbaglio: il commento diceva «dall'orologio» e il
+     codice invece attaccava `-C` più tre caratteri IN CODA AL NUMERO VECCHIO.
+     Su un numero nato dal sito, già lungo ventitré, fanno ventotto: oltre il
+     tetto di venticinque di PayPal. Correggere una qualunque iscrizione
+     online rispondeva `INVALID_STRING_MAX_LENGTH`, sempre, fin dal primo
+     tentativo — cioè la correzione per l'online non ha mai funzionato.
+
+     Adesso il numero nuovo nasce davvero dall'orologio, con `numeroFattura()`
+     che è la stessa funzione da cui scende il numero di un'iscrizione appena
+     fatta, e sta nei venticinque per costruzione. Il legame con la vecchia non
+     si perde: la vecchia viene annullata subito sotto, e la mail di correzione
+     dice a chi si era iscritto qual è adesso il suo numero. */
+  const numero = daCarta ? prossimoCartaceo(numeroVecchio) : numeroFattura();
 
   /* Come risulta pagata. `pagatoCash` è il campo che chiede la pagina quando
      si corregge lo stato del contante: vero vuol dire «i soldi ci sono»,
