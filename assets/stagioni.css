@@ -527,154 +527,164 @@ html.rsm-still[data-stagione="uva"] .sb-home::after { transition: none; }
   html:not(.rsm-motion)[data-stagione="uva"] .sb-home::after { transition: none; }
 }
 
-/* ═══ IL FESTONE ══════════════════════════════════════════════════════════
-   Un tralcio che attraversa la testata, con foglie, grappoli e viticci
-   appesi. È SVG in pagina e non un'immagine ripetuta, perché ogni pendaglio
-   deve dondolare per conto suo: un festone in cui tutto oscilla nello stesso
-   istante non è un festone, è una texture che trema.
+/* ═══ LA VIGNA IN TESTATA ═════════════════════════════════════════════════
+   La testata non ha più un festone appeso sotto: È una vigna, che pende
+   dall'alto della finestra. Fitta sul bordo in alto — le foglie spuntano
+   da sopra, tagliate dal bordo, come se la pianta continuasse fuori — e
+   sempre più rada scendendo, fino a un centinaio di pixel sotto la barra,
+   dove restano solo qualche foglia, i viticci e i grappoli che pendono. Il
+   bordo in basso non è una riga: è dove le foglie finiscono, ognuna dove
+   capita.
 
-   Sta fisso sotto la nav — che è sticky — e resta lì mentre la pagina
-   scorre. pointer-events:none: non intercetta niente, non è un ostacolo. */
-.sb-stag-festone {
-  position: fixed;
-  /* Appeso sotto la barra, e la barra si stringe scorrendo. La variabile
-     --sb-nav-h non serve qui: il festone è FRATELLO della nav, non figlio,
-     e quello che .sb-nav--scrolled ridefinisce su di sé non lo raggiunge.
-     Si usa lo stesso selettore di fratellanza con cui poco sotto cambia
-     opacità — che è già lì e già funziona. */
-  top: 64px;
-  left: 0;
-  right: 0;
-  /* Sessantaquattro e non più cinquanta: i grappoli sono cresciuti di un
-     terzo, e con loro ronzano le api. */
-  height: 64px;
-  z-index: 49;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.86;
-  animation: sb-stag-cala 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
-  /* Ai due lati il tralcio non finisce: esce. Una campata tagliata di netto
-     sul bordo della finestra dice «qui l'immagine è finita», e un festone
-     che finisce dove finisce lo schermo è un adesivo. Trenta pixel di
-     dissolvenza per parte e il tralcio continua fuori, dove non si vede.
-     La maschera è sull'asse orizzontale soltanto: in basso i pendagli
-     devono restare netti, o le foglie sfumerebbero a mezz'aria. */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
-}
-.sb-stag-festone svg { display: block; }
-@keyframes sb-stag-cala {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 0.86; transform: none; }
-}
+   Sono due strati, tutti e due dentro .sb-nav (che è sticky, quindi
+   posizionata, e a z-index 50: tutto quello che le sporge sotto passa
+   sopra alla pagina), e le voci della barra stanno in mezzo ai due:
+   · DIETRO le voci (z 0): le foglie fitte e i tralci, smorzati nel mezzo
+     dalla maschera perché le cinque parole si leggano;
+   · DAVANTI (z 2): le foglie sul bordo alto e quelle sotto la barra, i
+     grappoli con le api. Niente fra i 14 e i 52 pixel, dove sta il
+     testo: davanti alle parole non passa una foglia.
+   Così le voci sono avvolte dalla vigna senza esserne coperte.
 
-/* Finché la pagina è in cima la nav non ha bordo e il tralcio è solo
-   appoggiato; appena qualcosa le scorre sotto, la barra prende ombra e il
-   tralcio si scurisce un filo — così si legge appeso alla barra e non
-   sospeso per aria. */
-.sb-nav--scrolled + .sb-stag-festone { opacity: 1; top: 54px; }
-.sb-stag-festone,
-.sb-nav--scrolled + .sb-stag-festone {
-  transition: opacity 0.25s ease, top 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-}
-html.rsm-still .sb-stag-festone { transition: none; }
+   Le posizioni vengono da un generatore con seme fisso (build.mjs,
+   renderVigna): lo stesso file a ogni build. Il colore passa da --v-lembo
+   e --f-acino, scritti sull'elemento e ereditati dentro il clone di <use>,
+   dove un selettore non arriva. */
 
-/* I pezzi del tralcio. Il colore lo dà il foglio e non l'attributo, così
-   segue il tema chiaro/scuro senza duplicare il disegno.
-
-   Ogni tinta passa da una variabile con un ripiego: --f-lembo la scrive la
-   campata (build.mjs la mette sul <g>, e l'eredità la porta dentro il
-   clone di <use>, dove un selettore non arriverebbe mai), e se non c'è —
-   una stagione futura che non le scrive — si torna al token del mese e
-   non cambia niente. */
+/* Le tinte dei pezzi. --f-tralcio e --f-acino con ripiego: li usa anche
+   il grappolino della nota in fondo, che non scrive nessuna variabile. */
 .sb-stag-tralcio { fill: none; stroke: var(--f-tralcio, var(--stag-vite)); stroke-width: 1.9; stroke-linecap: round; }
 .sb-stag-verde { fill: var(--f-lembo, var(--stag-vite)); }
 .sb-stag-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
 .sb-stag-acino { fill: var(--f-acino, var(--stag-granato)); }
 .sb-stag-luce { fill: var(--stag-luce); }
 
-/* ── La luce radente ──────────────────────────────────────────────────────
-   All'alba e al tramonto il sole è basso e arriva DI TAGLIO: un filare
-   preso di striscio non è più chiaro, è più caldo da un lato solo. Il
-   tralcio lo può dire con una cosa sola — da che parte viene la luce — e
-   la dice con la stessa maschera che già sfuma i due bordi.
+html[data-stagione="uva"] .sb-nav-inner { position: relative; z-index: 1; }
+/* Il foglio del menu su schermo stretto sta sotto la barra e le foglie gli
+   pendevano sopra la prima voce: passa davanti alla vigna quando è aperto. */
+html[data-stagione="uva"] .sb-menu-sheet { position: relative; z-index: 51; }
 
-   Non è un secondo disegno né un filtro: è la maschera orizzontale che si
-   sbilancia. All'alba il sole è a sinistra, quindi a sinistra il tralcio è
-   pieno e a destra si perde; al tramonto l'esatto contrario. Di giorno e di
-   notte la maschera è simmetrica, com'era. */
-html[data-stagione="uva"][data-ora="alba"] .sb-stag-festone {
-  -webkit-mask-image: linear-gradient(90deg, #000, #000 46%, rgba(0, 0, 0, 0.72) 82%, transparent);
-  mask-image: linear-gradient(90deg, #000, #000 46%, rgba(0, 0, 0, 0.72) 82%, transparent);
+.sb-stag-vigna {
+  --vo: 0.55;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--vo);
+  /* Dietro le parole — la riga fra i 14 e i 52 pixel, da un capo all'altro
+     della barra: il marchio, le voci, la ricerca, la data — le foglie
+     restano ma si smorzano: sopra e sotto quella riga la vigna è piena. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 12px, rgba(0, 0, 0, 0.38) 18px, rgba(0, 0, 0, 0.38) 48px, #000 54px, #000);
+  mask-image: linear-gradient(to bottom, #000 0, #000 12px, rgba(0, 0, 0, 0.38) 18px, rgba(0, 0, 0, 0.38) 48px, #000 54px, #000);
+  animation: sb-stag-cala 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
-html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-festone {
-  -webkit-mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72) 18%, #000 54%, #000);
-  mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.72) 18%, #000 54%, #000);
+/* La vigna pende fino a centotrenta pixel: il contenuto scende di
+   quanto basta a non passarle sotto con l'occhiello. */
+html[data-stagione] .sb-main { padding-top: 44px; }
+/* Davanti alle parole non passa una foglia: la maschera scava la fascia
+   fra i 15 e i 50 pixel, dove sta il testo delle voci, e lascia il bordo
+   alto e tutto quello che pende sotto la barra. build.mjs già non ci mette
+   niente; la maschera è la garanzia per una foglia grande e ruotata che
+   sconfina. */
+.sb-stag-vigna--davanti {
+  --vo: 0.92;
+  z-index: 2;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 9px, transparent 15px, transparent 50px, #000 56px, #000);
+  mask-image: linear-gradient(to bottom, #000 0, #000 9px, transparent 15px, transparent 50px, #000 56px, #000);
 }
-
-/* E il verde del tralcio prende la temperatura dell'ora. Non cambia tinta —
-   resta la foglia di vite — ma all'alba e al tramonto una foglia presa di
-   sbieco tira all'oro.
-
-   La scrittura è indiretta di proposito: --f-tralcio e --f-lembo, che le
-   campate scrivono in `var(--stag-vite)`, restano quelle. Qui si sposta la
-   RISOLUZIONE di quel nome sotto di loro, e siccome il valore nuovo non
-   nomina --stag-vite — nominarlo sarebbe un ciclo, e un ciclo rende la
-   variabile invalida, cioè spegne il tralcio — si passa da
-   --stag-vite-radente, che le due palette definiscono già come valore
-   proprio, chiaro e scuro. */
-html[data-stagione="uva"][data-ora="alba"] .sb-stag-festone,
-html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-festone {
-  --stag-vite: var(--stag-vite-radente);
+@keyframes sb-stag-cala {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: var(--vo); transform: none; }
 }
+.sb-stag-vigna svg { display: block; height: 100%; width: auto; min-width: 100%; overflow: visible; }
+.sb-stag-vigna-lembo { fill: var(--v-lembo, var(--stag-vite)); }
+.sb-stag-vigna-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
+.sb-stag-vigna-tralcio { fill: none; stroke: var(--stag-vite); stroke-width: 1.7; stroke-linecap: round; opacity: 0.85; }
+html[data-stagione="uva"].dark .sb-stag-vigna { --vo: 0.42; }
+html[data-stagione="uva"].dark .sb-stag-vigna--davanti { --vo: 0.8; }
 
-/* A settembre i filari non sono di un verde solo: una foglia su tre ha già
-   girato, e i grappoli non sono tutti allo stesso punto di maturazione. La
-   variazione NON si scrive qui — sta in build.mjs, che dà a ogni campata le
-   sue tre variabili — per una ragione precisa: dentro un <use> il selettore
-   non entra, perché il clone vive in un albero d'ombra e le classi del
-   disegno stanno in <defs>, fuori da ogni campata. Qui c'erano tre regole
-   di nth-of-type scritte proprio così, e non hanno mai tinto niente: il
-   festone era tredici copie identiche.
+/* La luce radente: all'alba e al tramonto una foglia presa di sbieco tira
+   all'oro. Si sposta la risoluzione del nome sotto le foglie, passando da
+   --stag-vite-radente per non fare un ciclo (vedi la nota nella palette). */
+html[data-stagione="uva"][data-ora="alba"] .sb-stag-vigna,
+html[data-stagione="uva"][data-ora="tramonto"] .sb-stag-vigna { --stag-vite: var(--stag-vite-radente); }
 
-   Quello che passa il confine del clone è l'EREDITÀ, e quindi le variabili.
-   Vedi il commento in renderFestone.
-
-   Una campata su cinque sta un passo indietro: in un filare vero non è tutto
-   sullo stesso piano, e su cinquanta pixel d'altezza la profondità si legge
-   dal tono, non dalla dimensione. Questa sì può stare qui — la classe è sul
-   <g> della campata, che è markup vero e non un clone. */
-.sb-stag-dietro { opacity: 0.58; }
-
-/* Il dondolio. Il pendaglio ruota attorno al punto in cui è attaccato al
-   tralcio — che nel suo sistema di coordinate è l'origine — di poco più di
-   due gradi. Il ritardo negativo scalato sull'indice della campata fa
-   partire ognuno a un punto diverso del ciclo: è quello, e non l'ampiezza,
-   che toglie l'effetto marionetta. */
+/* Il dondolio dei grappoli: ognuno ruota attorno al punto in cui è
+   attaccato al tralcio, che è l'origine del suo <g>. Il ritardo negativo
+   scalato sull'indice fa partire ognuno a un punto diverso del ciclo. */
 @keyframes sb-stag-dondola {
   0%, 100% { transform: rotate(-2.4deg); }
   50%      { transform: rotate(2.4deg); }
 }
 .sb-stag-pend {
+  transform-box: view-box;
   transform-origin: 0 0;
   animation: sb-stag-dondola 5.6s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * -0.41s);
 }
 
-/* Sotto i 700px il tralcio c'è, ma a due terzi: in testa lo spazio è poco,
-   e un festone da cinquanta pixel ruberebbe la prima riga di quello che si
-   è venuti a leggere. A trentadue è un filo con qualche foglia, e il
-   contenuto scende di altrettanto (vedi .sb-main più sotto) invece di
-   passargli sotto. */
+/* Quando si scorre e la barra prende il bordo, il filo sotto è un
+   tralcio: verde, non granato. */
+html[data-stagione="uva"] .sb-nav--scrolled { background-image: linear-gradient(90deg, var(--stag-vite), var(--stag-vite-oro) 42%, transparent 86%); }
+
+/* ── I tasti a foglia ────────────────────────────────────────────────────
+   Le cinque voci portano una foglia di vite davanti al nome — verde, e
+   rossa quando la voce è quella della pagina aperta: la foglia che ha
+   girato. La pillola che scivola fra le voci e il filo sotto prendono il
+   verde della vigna: qui in testata comanda la foglia, non il vino. */
+html[data-stagione="uva"] .sb-riv-nav-trigger::before {
+  content: "";
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-right: 0.1rem;
+  background: var(--stag-vite);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 0 26 27'%3E%3Cpath d='M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 0 26 27'%3E%3Cpath d='M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.85;
+  transition: background 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[data-stagione="uva"] .sb-riv-nav-trigger:hover::before { transform: rotate(-12deg) scale(1.15); background: var(--stag-vite-oro); }
+html[data-stagione="uva"] .sb-riv-nav-trigger[data-attiva]::before { background: var(--stag-vigna); }
+html[data-stagione="uva"] .sb-nav-pill { background: color-mix(in srgb, var(--stag-vite) 18%, var(--sb-overlay)); }
+html[data-stagione="uva"] .sb-nav-link::after { background: var(--stag-vite); }
+html[data-stagione="uva"] .sb-nav-link:hover { background: color-mix(in srgb, var(--stag-vite) 12%, transparent); }
+
+/* ── Le api ──────────────────────────────────────────────────────────────
+   Attorno a un grappolo ogni due ronza un'ape: un giro piccolo e
+   irregolare che non torna mai uguale, e le ali che frullano troppo
+   veloci per vederle ferme. Ognuna parte da un punto diverso del giro. */
+.sb-stag-ape-corpo { fill: var(--stag-gelso); }
+.sb-stag-ape-riga { fill: none; stroke: var(--stag-ink); stroke-width: 0.7; stroke-linecap: round; }
+.sb-stag-ape-testa { fill: var(--stag-ink); }
+.sb-stag-ape-ali { fill: var(--stag-nebbia); stroke: var(--stag-spoglio); stroke-width: 0.3; }
+@keyframes sb-ape-ronza {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  18%  { transform: translate(9px, -6px) rotate(14deg); }
+  36%  { transform: translate(16px, 3px) rotate(-8deg); }
+  55%  { transform: translate(6px, 10px) rotate(18deg); }
+  74%  { transform: translate(-9px, 4px) rotate(-16deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.sb-stag-ape {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation: sb-ape-ronza 4.6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.7s);
+}
+@keyframes sb-ape-ali { from { opacity: 0.35; } to { opacity: 0.95; } }
+.sb-stag-ape-ali { animation: sb-ape-ali 0.08s linear infinite alternate; }
+
+/* Sotto i 700px la vigna si stringe a tre quarti: pende meno, e il
+   contenuto scende di quanto basta a non passarle sotto. */
 @media (max-width: 699.98px) {
-  .sb-stag-festone { height: 41px; opacity: 0.8; }
-  .sb-nav--scrolled + .sb-stag-festone { opacity: 0.92; }
-  .sb-stag-festone svg { transform: scale(0.64); transform-origin: 0 0; }
+  .sb-stag-vigna { height: 108px; }
+  .sb-stag-vigna svg { height: 150px; transform: scale(0.72); transform-origin: 0 0; }
   html[data-stagione] .sb-main { padding-top: 34px; }
-  @keyframes sb-stag-cala {
-    from { opacity: 0; transform: translateY(-16px); }
-    to   { opacity: 0.8; transform: none; }
-  }
 }
 
 /* ═══ LE FOGLIE CHE SCENDONO ══════════════════════════════════════════════
@@ -1314,91 +1324,12 @@ html[data-stagione="uva"].dark .sb-fiaba-q { --qo: 0.72; }
 @keyframes sb-fb-nuota { from { transform: translateX(0) rotate(-1.5deg); } to { transform: translateX(6px) rotate(1.5deg); } }
 .sb-fb-nuota { animation: sb-fb-nuota 5s ease-in-out infinite alternate; }
 
-/* ═══ LA VIGNA IN TESTATA ═════════════════════════════════════════════════
-   La barra è fatta di foglie. Dentro .sb-nav, sotto le voci (.sb-nav-inner
-   sale a z-index 1), un SVG largo 3200 con tre tralci e duecentosessanta
-   foglie una sull'altra (build.mjs, renderVigna). Il vetro della barra
-   resta sotto: le foglie sono un velo, non un fondo, e in mezzo — dove
-   stanno le cinque voci — la maschera le smorza perché le parole si
-   leggano. Alta quanto la barra, che scorrendo si stringe: l'SVG si
-   ridimensiona con lei. */
-html[data-stagione="uva"] .sb-nav-inner { position: relative; z-index: 1; }
-.sb-stag-vigna {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.5;
-  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 20%, rgba(0, 0, 0, 0.5) 34%, rgba(0, 0, 0, 0.5) 66%, #000 80%, #000);
-  mask-image: linear-gradient(90deg, #000 0, #000 20%, rgba(0, 0, 0, 0.5) 34%, rgba(0, 0, 0, 0.5) 66%, #000 80%, #000);
-}
-.sb-stag-vigna svg { display: block; height: 100%; width: auto; min-width: 100%; }
-.sb-stag-vigna-lembo { fill: var(--v-lembo, var(--stag-vite)); }
-.sb-stag-vigna-nervo { fill: none; stroke: var(--stag-nervo); stroke-width: 0.8; stroke-linecap: round; }
-.sb-stag-vigna-tralcio { fill: none; stroke: var(--stag-vite); stroke-width: 1.6; stroke-linecap: round; opacity: 0.8; }
-html[data-stagione="uva"].dark .sb-stag-vigna { opacity: 0.38; }
-/* Sotto la vigna il vetro della barra resta com'è; ma quando si scorre e
-   la barra prende il bordo, il filo sotto diventa un tralcio: verde, non
-   granato. */
-html[data-stagione="uva"] .sb-nav--scrolled { background-image: linear-gradient(90deg, var(--stag-vite), var(--stag-vite-oro) 42%, transparent 86%); }
-
-/* ── I tasti a foglia ────────────────────────────────────────────────────
-   Le cinque voci portano una foglia di vite davanti al nome — verde, e
-   rossa quando la voce è quella della pagina aperta: la foglia che ha
-   girato. La pillola che scivola fra le voci e il filo sotto prendono il
-   verde della vigna: qui in testata comanda la foglia, non il vino. */
-html[data-stagione="uva"] .sb-riv-nav-trigger::before {
-  content: "";
-  flex: none;
-  width: 13px;
-  height: 13px;
-  margin-right: 0.1rem;
-  background: var(--stag-vite);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 0 26 27'%3E%3Cpath d='M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 0 26 27'%3E%3Cpath d='M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z'/%3E%3C/svg%3E") center / contain no-repeat;
-  opacity: 0.85;
-  transition: background 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-html[data-stagione="uva"] .sb-riv-nav-trigger:hover::before { transform: rotate(-12deg) scale(1.15); background: var(--stag-vite-oro); }
-html[data-stagione="uva"] .sb-riv-nav-trigger[data-attiva]::before { background: var(--stag-vigna); }
-html[data-stagione="uva"] .sb-nav-pill { background: color-mix(in srgb, var(--stag-vite) 18%, var(--sb-overlay)); }
-html[data-stagione="uva"] .sb-nav-link::after { background: var(--stag-vite); }
-html[data-stagione="uva"] .sb-nav-link:hover { background: color-mix(in srgb, var(--stag-vite) 12%, transparent); }
-
-/* ── Le api ──────────────────────────────────────────────────────────────
-   Attorno a un grappolo ogni due ronza un'ape: un giro piccolo e
-   irregolare che non torna mai uguale, e le ali che frullano troppo
-   veloci per vederle ferme. Ognuna parte da un punto diverso del giro. */
-.sb-stag-ape-corpo { fill: var(--stag-gelso); }
-.sb-stag-ape-riga { fill: none; stroke: var(--stag-ink); stroke-width: 0.7; stroke-linecap: round; }
-.sb-stag-ape-testa { fill: var(--stag-ink); }
-.sb-stag-ape-ali { fill: var(--stag-nebbia); stroke: var(--stag-spoglio); stroke-width: 0.3; }
-@keyframes sb-ape-ronza {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  18%  { transform: translate(9px, -6px) rotate(14deg); }
-  36%  { transform: translate(16px, 3px) rotate(-8deg); }
-  55%  { transform: translate(6px, 10px) rotate(18deg); }
-  74%  { transform: translate(-9px, 4px) rotate(-16deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-.sb-stag-ape {
-  animation: sb-ape-ronza 4.6s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * -0.7s);
-}
-@keyframes sb-ape-ali { from { opacity: 0.35; } to { opacity: 0.95; } }
-.sb-stag-ape-ali { animation: sb-ape-ali 0.08s linear infinite alternate; }
-
-/* ═══ QUELLO CHE RESTA DELL'AZZURRO ═══════════════════════════════════════
-   Niente: la pillola e i fili sono della vigna, vedi sopra. */
-
 /* ═══ MOVIMENTO E STAMPA ══════════════════════════════════════════════════
    Chi ha chiesto meno movimento — al sistema operativo o col tasto nella
    barra — tiene il colore e perde la deriva. Le foglie restano dove il JS le
    ha posate, il tralcio smette di dondolare e non cala più: è appeso e
    basta. */
-html.rsm-still .sb-stag-festone,
-html.rsm-still .sb-stag-festone *,
+html.rsm-still .sb-stag-vigna *,
 html.rsm-still .sb-stag-orizzonte,
 html.rsm-still .sb-stag-orizzonte *,
 html.rsm-still .sb-stag-volo *,
@@ -1413,8 +1344,7 @@ html.rsm-still .sb-stag-p svg { animation: none; }
 html.rsm-still .sb-stag-volo { display: none; }
 html.rsm-still .sb-stag-oriz-trattore { transform: translateX(700px); }
 @media (prefers-reduced-motion: reduce) {
-  html:not(.rsm-motion) .sb-stag-festone,
-  html:not(.rsm-motion) .sb-stag-festone *,
+  html:not(.rsm-motion) .sb-stag-vigna *,
   html:not(.rsm-motion) .sb-stag-orizzonte,
   html:not(.rsm-motion) .sb-stag-orizzonte *,
   html:not(.rsm-motion) .sb-stag-volo *,
@@ -1432,7 +1362,6 @@ html.rsm-still .sb-stag-oriz-trattore { transform: translateX(700px); }
    inchiostro speso per un fondale che sulla pagina stampata non c'è. La
    nota invece è testo, e resta. */
 @media print {
-  .sb-stag-festone,
   .sb-stag-vigna,
   .sb-stag-orizzonte,
   .sb-stag-volo,

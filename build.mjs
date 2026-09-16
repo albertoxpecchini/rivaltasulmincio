@@ -72,7 +72,7 @@ const foot = readFileSync("_build/foot.html", "utf8");
 
 /* ── Il vestito del mese ─────────────────────────────────────────────────
    Un mese, un simbolo. Il sito si veste della stagione: l'accento azzurro
-   del design system vira sulla tinta del mese, un festone si appende alla
+   del design system vira sulla tinta del mese, una vigna pende dalla
    testata, qualche foglia scende sul fondale. Impaginato, caratteri, grigi,
    margine sinistro e smusso non si muovono: cambia l'accento, non il sito.
 
@@ -85,7 +85,7 @@ const foot = readFileSync("_build/foot.html", "utf8");
    troppo. Non è un elenco di nomi da tenere aggiornato — è lo stesso
    riconoscimento che decide se caricare color-walk.js.
 
-   Il colore, il festone e la nota sono CSS e HTML: arrivano anche senza
+   Il colore, la vigna e la nota sono CSS e HTML: arrivano anche senza
    JavaScript. Solo le foglie che scendono hanno bisogno di
    assets/stagioni.js, ed è l'unico peso in più.
 
@@ -137,10 +137,6 @@ const STAGIONI = {
       { t: "Lambrusco Mantovano DOC — disciplinare, art. 6", u: "https://www.agraria.org/vini/lambrusco-mantovano-doc.htm" },
       { t: "Strada dei Vini e dei Sapori Mantovani", u: "https://www.mantovastrada.it/" },
     ],
-    /* Il ritmo del festone: cosa pende da ogni campata. Scritto a mano e
-       non tirato a caso — il build deve dare lo stesso file a ogni giro,
-       o quindici pagine cambiano a ogni `node build.mjs` senza motivo. */
-    pendenti: ["grappolo", "foglia", "grappolo", "grappolo", "viticcio", "grappolo", "foglia", "grappolo", "grappolo", "viticcio", "grappolo", "foglia", "grappolo"],
   },
 };
 const STAGIONE = "uva";
@@ -148,185 +144,127 @@ const stagione = STAGIONE && STAGIONI[STAGIONE] ? STAGIONE : null;
 if (STAGIONE && !stagione) throw new Error(`STAGIONE = "${STAGIONE}" — voce assente da STAGIONI`);
 const stag = stagione ? STAGIONI[stagione] : null;
 
-/* ── Il festone ──────────────────────────────────────────────────────────
-   Un tralcio che attraversa la testata, con foglie, grappoli e viticci
-   appesi. NON è un'immagine ripetuta: è SVG in pagina, perché ogni pendaglio
-   deve poter dondolare per conto suo — un festone in cui tutto oscilla allo
-   stesso istante non è un festone, è una texture che trema.
-
-   Tredici campate da 200px coprono 2600px, cioè qualunque schermo; il
-   contenitore taglia il resto. L'arco di ogni campata parte e finisce a
-   y=4, così le campate si saldano fra loro senza giunte visibili, e tocca
-   il punto più basso a (100, 23.5), che è dove si attacca il pendaglio.
-
-   I disegni stanno una volta sola in <defs> e si ripetono con <use>: il
-   tralcio intero pesa poco più di una foto piccola, e il colore lo prende
-   dal foglio (classi, non attributi) così segue il tema chiaro/scuro.
-
-   La foglia è quella della vite: cinque lobi, seni profondi, nervature
-   che partono tutte dal picciolo. Il grappolo è conico, largo in cima e a
-   punta in fondo, con tre acini che prendono luce. Il viticcio è la
-   spirale con cui la vite si aggrappa. */
-function renderFestone(s) {
-  const CAMPATA = 200;
-  const N = s.pendenti.length;
-  const W = CAMPATA * N;
-
-  /* Le tre scale si ripetono ogni tre campate: due pendagli identici
-     accanto si riconoscono subito come copie, tre scale diverse no. */
-  const SCALE = [0.98, 0.86, 0.92];
-
-  /* ── Perché il colore passa da variabili e non da classi ────────────────
-     Dentro un <use> non si entra col selettore: il clone vive in un albero
-     d'ombra, e `.campata .sb-stag-verde` non trova niente perché quella
-     classe sta in <defs>, fuori dalla campata. Per un po' qui c'erano tre
-     regole di nth-of-type scritte proprio così, e non hanno mai tinto una
-     foglia — il festone era tredici copie identiche, e il commento accanto
-     diceva il contrario.
-
-     Quello che ATTRAVERSA il confine del clone è l'eredità. Quindi i
-     disegni in <defs> non nominano più una tinta: nominano una variabile
-     (--f-lembo, --f-tralcio, --f-acino), e ogni campata scrive la propria
-     sul <g> che la contiene. La variabile scende nel clone, e la stessa
-     foglia esce verde in una campata e già girata all'oro in quella dopo.
-
-     Le tre serie non tornano mai in fase — 3, 4 e 5 campate — così su
-     tredici campate non se ne ripete nessuna uguale a un'altra. */
-  const LEMBO = ["vite", "vite-oro", "vite"];
-  const ACINI = ["granato", "rubino", "granato", "cerasuolo"];
-  /* Una campata su cinque sta un passo indietro: in un filare vero non è
-     tutto sullo stesso piano, e su cinquanta pixel d'altezza la profondità
-     si legge dal tono, non dalla dimensione. */
-  const INDIETRO = 5;
-
-  const campate = s.pendenti
-    .map((p, i) => {
-      const x = i * CAMPATA;
-      /* I grappoli pendono più grandi delle foglie: sono loro che si
-         vengono a guardare sotto la vigna. */
-      const sc = SCALE[i % SCALE.length] * (p === "grappolo" ? 1.32 : 1);
-      const lembo = LEMBO[i % LEMBO.length];
-      const acino = ACINI[i % ACINI.length];
-      const dietro = i % INDIETRO === 2;
-      const stile =
-        `--f-lembo: var(--stag-${lembo});` +
-        `--f-tralcio: var(--stag-${lembo});` +
-        `--f-acino: var(--stag-${acino})`;
-      /* Un'ape ogni due grappoli, che ronza attorno al suo. Il <g>
-         esterno porta la posizione, quello interno il volo: un attributo
-         transform e un'animazione CSS su transform non convivono. */
-      const ape =
-        p === "grappolo" && i % 2 === 0
-          ? `<g transform="translate(${100 + (i % 4 ? 11 : -11)} ${23.5 + 13 * sc})"><g class="sb-stag-ape" style="--i:${i}"><use href="#stag-ape" transform="scale(1.35)"/></g></g>`
-          : "";
-      return (
-        `<g transform="translate(${x} 0)" style="${stile}"${dietro ? ` class="sb-stag-dietro"` : ""}>` +
-        `<use href="#stag-arco"/>` +
-        `<g transform="translate(100 23.5) scale(${sc})">` +
-        `<g class="sb-stag-pend" style="--i:${i}"><use href="#stag-${p}"/></g>` +
-        `</g>${ape}</g>`
-      );
-    })
-    .join("");
-
-  return (
-    `    <div class="sb-stag-festone" aria-hidden="true">\n` +
-    `      <svg width="${W}" height="64" viewBox="0 0 ${W} 64" fill="none" focusable="false">\n` +
-    `        <defs>\n` +
-    `          <path id="stag-arco" class="sb-stag-tralcio" d="M0 4C50 30 150 30 200 4"/>\n` +
-    /* Foglia di vite: picciolo, lembo a cinque lobi, cinque nervature. */
-    `          <g id="stag-foglia">` +
-    `<path class="sb-stag-tralcio" d="M0 0v4"/>` +
-    `<path class="sb-stag-verde" d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/>` +
-    `<path class="sb-stag-nervo" d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6"/>` +
-    `</g>\n` +
-    /* Grappolo conico: dieci acini che si stringono verso la punta, tre
-       con la luce addosso in alto a sinistra, da dove viene sempre. */
-    `          <g id="stag-grappolo">` +
-    `<path class="sb-stag-tralcio" d="M0 0v3.4"/>` +
-    `<g class="sb-stag-acino">` +
-    `<circle cx="-8.2" cy="6.2" r="3.2"/><circle cx="-2.7" cy="6.2" r="3.2"/><circle cx="2.9" cy="6.2" r="3.2"/><circle cx="8.3" cy="6.2" r="3.2"/>` +
-    `<circle cx="-5.5" cy="10.9" r="3.2"/><circle cx="0.2" cy="10.9" r="3.2"/><circle cx="5.7" cy="10.9" r="3.2"/>` +
-    `<circle cx="-2.8" cy="15.5" r="3.2"/><circle cx="3" cy="15.5" r="3.2"/>` +
-    `<circle cx="0.1" cy="20" r="3.2"/>` +
-    `</g>` +
-    `<g class="sb-stag-luce"><circle cx="-9.3" cy="5.1" r="1.05"/><circle cx="-6.6" cy="9.8" r="1.05"/><circle cx="-3.9" cy="14.4" r="1.05"/></g>` +
-    `</g>\n` +
-    /* Viticcio: la spirale con cui la vite si tiene. */
-    `          <g id="stag-viticcio">` +
-    `<path class="sb-stag-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/>` +
-    `</g>\n` +
-    /* L'ape: corpo a righe, due ali che frullano (stagioni.css), la testa
-       davanti. Centrata sull'origine, perché è l'origine che vola. */
-    `          <g id="stag-ape">` +
-    `<g class="sb-stag-ape-ali"><ellipse cx="-1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(-28 -1.4 -2.6)"/><ellipse cx="1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(28 1.4 -2.6)"/></g>` +
-    `<ellipse class="sb-stag-ape-corpo" rx="3.2" ry="1.9"/>` +
-    `<path class="sb-stag-ape-riga" d="M-1.3-1.8v3.6M.3-1.9v3.8M1.8-1.5v3"/>` +
-    `<circle class="sb-stag-ape-testa" cx="-3.6" cy="-.2" r="1.15"/>` +
-    `</g>\n` +
-    `        </defs>\n` +
-    `        ${campate}\n` +
-    `      </svg>\n` +
-    `    </div>`
-  );
-}
-
 /* ── La vigna in testata ─────────────────────────────────────────────────
-   La barra di navigazione è una vigna fitta: dietro alle voci, da un capo
-   all'altro, tre tralci che ondeggiano e qualche centinaio di foglie una
-   sull'altra, verdi, già girate all'oro, qualcuna rossa. Sta DENTRO la
-   barra (assoluta, sotto .sb-nav-inner) e non sotto: è la barra stessa a
-   essere fatta di foglie. I grappoli le pendono sotto — sono il festone,
-   che ne ha di più e più grandi — e attorno ai grappoli ronzano le api.
+   La testata è una vigna che pende dall'alto: foglie fitte sul bordo in
+   alto — spuntano da sopra, tagliate dal bordo, come se la pianta
+   continuasse fuori dalla finestra — e sempre più rade scendendo, fino a
+   un centinaio di pixel sotto la barra, dove restano qualche foglia, i
+   viticci e i grappoli che pendono, con le api attorno. Il bordo in basso
+   non esiste: è dove le foglie finiscono, ognuna dove capita.
+
+   Due strati, tutti e due dentro .sb-nav (stagioni.css dice chi sta dove):
+   DIETRO le voci le foglie fitte e i tralci; DAVANTI le foglie sul bordo
+   alto e quelle sotto la barra, i grappoli, le api. Davanti non c'è niente
+   fra i 14 e i 52 pixel, dove sta il testo delle voci: sono avvolte, non
+   coperte. I disegni stanno una volta sola nei <defs> del primo strato e
+   il secondo li richiama per id — è lo stesso documento.
 
    Le posizioni vengono da un generatore con seme fisso: lo stesso file a
    ogni build, come per tutto il resto, o quindici pagine cambierebbero a
-   ogni giro senza motivo. Il colore passa da --v-lembo, scritto sul <use>
-   e ereditato dentro il clone, per lo stesso motivo del festone. */
+   ogni giro senza motivo. Il colore passa da --v-lembo e --f-acino, scritti
+   sull'elemento e ereditati dentro il clone di <use>, dove un selettore
+   non arriva. Ogni cosa che si muove — grappoli, api — sta in due <g>: uno
+   porta la posizione, l'altro il movimento, col perno sull'origine. */
 function renderVigna() {
   const W = 3200;
-  const H = 64;
+  const H = 150;
   let seme = 20260917;
   const caso = () => {
     seme = (seme * 1103515245 + 12345) % 2147483648;
     return seme / 2147483648;
   };
+  const n = (v) => v.toFixed(0);
   const TINTE = ["vite", "vite", "vite", "vite-oro", "vite", "vigna", "vite-oro", "vite", "gelso", "vite"];
-  const foglie = [];
-  for (let i = 0; i < 260; i++) {
-    const x = caso() * W;
-    const y = 4 + caso() * (H - 8);
-    const r = -70 + caso() * 140;
-    const s = 0.7 + caso() * 0.8;
-    const t = TINTE[(caso() * TINTE.length) | 0];
-    foglie.push(`<use href="#vigna-foglia" transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${r.toFixed(0)}) scale(${s.toFixed(2)})" style="--v-lembo:var(--stag-${t})"/>`);
-  }
-  const tralci = [12, 32, 52]
+  const ACINI = ["granato", "rubino", "granato", "cerasuolo", "viola"];
+  const foglia = (x, y) =>
+    `<use href="#vigna-foglia" transform="translate(${n(x)} ${n(y)}) rotate(${n(-75 + caso() * 150)}) scale(${(0.75 + caso() * 0.85).toFixed(2)})" style="--v-lembo:var(--stag-${TINTE[(caso() * TINTE.length) | 0]})"/>`;
+  const viticcio = (x, y) => `<use href="#vigna-viticcio" transform="translate(${n(x)} ${n(y)}) rotate(${n(-40 + caso() * 80)})"/>`;
+
+  /* Dietro: fitto in alto, rado in basso. La potenza schiaccia le altezze
+     verso lo zero: la maggior parte delle foglie sta nei primi trenta
+     pixel, poche arrivano in fondo. */
+  const dietro = [];
+  for (let i = 0; i < 320; i++) dietro.push(foglia(caso() * W, Math.pow(caso(), 2.2) * 128 - 4));
+  const tralci = [10, 34, 58]
     .map((y, k) => {
       let d = `M0 ${y}`;
       for (let x = 0; x < W; x += 120) d += `Q${x + 60} ${y + (k % 2 ? -16 : 16)} ${x + 120} ${y}`;
       return `<path class="sb-stag-vigna-tralcio" d="${d}"/>`;
     })
     .join("");
-  const viticci = [];
-  for (let i = 0; i < 40; i++) {
+  const rami = [];
+  for (let i = 0; i < 22; i++) {
     const x = caso() * W;
-    const y = caso() * (H - 20);
-    const r = -40 + caso() * 80;
-    viticci.push(`<use href="#vigna-viticcio" transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${r.toFixed(0)})"/>`);
+    const h = 60 + caso() * 60;
+    const sx = -30 + caso() * 60;
+    rami.push(`<path class="sb-stag-vigna-tralcio" d="M${n(x)} 30c${n(sx * 0.3)} ${n(h * 0.35)} ${n(sx)} ${n(h * 0.6)} ${n(sx * 0.8)} ${n(h)}"/>`);
   }
-  return (
-    `      <div class="sb-stag-vigna" aria-hidden="true">\n` +
-    `        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMid slice" focusable="false">\n` +
+  const viticciDietro = [];
+  for (let i = 0; i < 46; i++) viticciDietro.push(viticcio(caso() * W, caso() * 110));
+
+  /* Davanti: sul bordo alto (tagliate dal bordo) e sotto la barra. Mai fra
+     14 e 52, dove sta il testo delle voci. */
+  const davanti = [];
+  for (let i = 0; i < 150; i++) {
+    const su = caso() < 0.4;
+    davanti.push(foglia(caso() * W, su ? -10 + caso() * 22 : 52 + Math.pow(caso(), 1.5) * 72));
+  }
+  const viticciDavanti = [];
+  for (let i = 0; i < 26; i++) viticciDavanti.push(viticcio(caso() * W, 56 + caso() * 60));
+
+  /* I grappoli, uno ogni duecento pixel circa, appesi a steli di lunghezza
+     diversa; un'ape ogni due grappoli, che gli ronza attorno. */
+  const grappoli = [];
+  const api = [];
+  for (let i = 0; i < 16; i++) {
+    const x = 70 + i * 200 + (caso() * 90 - 45);
+    const y = 34 + caso() * 40;
+    const s = 1.15 + caso() * 0.55;
+    const stelo = 6 + caso() * 18;
+    const acino = ACINI[(caso() * ACINI.length) | 0];
+    grappoli.push(
+      `<g transform="translate(${n(x)} ${n(y)})"><g class="sb-stag-pend" style="--i:${i};--f-acino:var(--stag-${acino})">` +
+      `<path class="sb-stag-vigna-tralcio" d="M0 0v${n(stelo)}"/>` +
+      `<g transform="translate(0 ${n(stelo)}) scale(${s.toFixed(2)})"><use href="#vigna-grappolo"/></g>` +
+      `</g></g>`
+    );
+    if (i % 2 === 0) {
+      api.push(`<g transform="translate(${n(x + (i % 4 ? 15 : -15))} ${n(y + stelo + 13 * s)})"><g class="sb-stag-ape" style="--i:${i}"><use href="#stag-ape" transform="scale(1.4)"/></g></g>`);
+    }
+  }
+
+  const defs =
     `          <defs>\n` +
     `            <g id="vigna-foglia"><path class="sb-stag-vigna-lembo" d="M0 2C4 2 8 3 10 5.6 11 7.5 8.5 8.5 6.6 10.2 9.6 10.6 12 12 12.2 14.4 12.4 16.4 8 16.8 5.2 17.8 4.4 21 2.6 23 0 25.4-2.6 23-4.4 21-5.2 17.8-8 16.8-12.4 16.4-12.2 14.4-12 12-9.6 10.6-6.6 10.2-8.5 8.5-11 7.5-10 5.6-8 3-4 2 0 2Z"/><path class="sb-stag-vigna-nervo" d="M0 4V23M0 4.4 8.8 5.6M0 4.4 10.6 13.6M0 4.4-8.8 5.6M0 4.4-10.6 13.6"/></g>\n` +
     `            <path id="vigna-viticcio" class="sb-stag-vigna-tralcio" d="M0 0c0 5-6 5-6 9.5s8 4.5 8 9-5.5 5-6.2 2.1 3.5-2.6 3.3 0"/>\n` +
-    `          </defs>\n` +
-    `          ${tralci}\n` +
-    `          ${foglie.join("")}\n` +
-    `          ${viticci.join("")}\n` +
+    /* Grappolo conico: dieci acini che si stringono verso la punta, tre
+       con la luce addosso in alto a sinistra, da dove viene sempre. */
+    `            <g id="vigna-grappolo"><g class="sb-stag-acino">` +
+    `<circle cx="-8.2" cy="3.2" r="3.2"/><circle cx="-2.7" cy="3.2" r="3.2"/><circle cx="2.9" cy="3.2" r="3.2"/><circle cx="8.3" cy="3.2" r="3.2"/>` +
+    `<circle cx="-5.5" cy="7.9" r="3.2"/><circle cx="0.2" cy="7.9" r="3.2"/><circle cx="5.7" cy="7.9" r="3.2"/>` +
+    `<circle cx="-2.8" cy="12.5" r="3.2"/><circle cx="3" cy="12.5" r="3.2"/><circle cx="0.1" cy="17" r="3.2"/>` +
+    `</g><g class="sb-stag-luce"><circle cx="-9.3" cy="2.1" r="1.05"/><circle cx="-6.6" cy="6.8" r="1.05"/><circle cx="-3.9" cy="11.4" r="1.05"/></g></g>\n` +
+    /* L'ape: corpo a righe, due ali che frullano, la testa davanti.
+       Centrata sull'origine, perché è l'origine che vola. */
+    `            <g id="stag-ape">` +
+    `<g class="sb-stag-ape-ali"><ellipse cx="-1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(-28 -1.4 -2.6)"/><ellipse cx="1.4" cy="-2.6" rx="2.3" ry="1.2" transform="rotate(28 1.4 -2.6)"/></g>` +
+    `<ellipse class="sb-stag-ape-corpo" rx="3.2" ry="1.9"/>` +
+    `<path class="sb-stag-ape-riga" d="M-1.3-1.8v3.6M.3-1.9v3.8M1.8-1.5v3"/>` +
+    `<circle class="sb-stag-ape-testa" cx="-3.6" cy="-.2" r="1.15"/>` +
+    `</g>\n` +
+    `          </defs>\n`;
+
+  const strato = (cls, dentro) =>
+    `      <div class="sb-stag-vigna${cls}" aria-hidden="true">\n` +
+    `        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin slice" focusable="false">\n` +
+    `${cls ? "" : defs}          ${dentro}\n` +
     `        </svg>\n` +
-    `      </div>`
+    `      </div>`;
+
+  return (
+    strato("", tralci + rami.join("") + dietro.join("") + viticciDietro.join("")) +
+    "\n" +
+    strato(" sb-stag-vigna--davanti", davanti.join("") + viticciDavanti.join("") + grappoli.join("") + api.join(""))
   );
 }
 
@@ -341,7 +279,7 @@ function renderVigna() {
    sul Mincio. Sopra, tre veli di nebbia. E in cielo, su uno strato a
    tutta finestra, un airone che passa e uno stormo in V.
 
-   È SVG in pagina per la stessa ragione del festone: il colore lo dà il
+   È SVG in pagina per la stessa ragione della vigna: il colore lo dà il
    foglio, e quindi il tema e l'ora. Solchi, stoppie, filari e grano sono
    <pattern> ritagliati dalla forma del campo: le righe seguono il pendio
    da sole, senza disegnarle una per una.
@@ -2349,11 +2287,10 @@ const renderIndice = (html) => {
 const bodies = readdirSync("_build").filter((f) => f.endsWith(".body.html"));
 if (!bodies.length) throw new Error("nessun frammento in _build/");
 
-/* Festone e nota sono identici su tutte le pagine di stagione: si compongono
+/* Vigna, orizzonte e nota sono identici su tutte le pagine di stagione: si compongono
    una volta qui e si incollano quindici volte, invece di rifarli a ogni giro
    del ciclo. Fuori stagione restano stringhe vuote e i due segnaposto si
    sciolgono nel nulla. */
-const FESTONE = stag ? renderFestone(stag) : "";
 const ORIZZONTE = stag ? renderOrizzonte() : "";
 const VIGNA = stag ? renderVigna() : "";
 const NOTA = stag ? renderNota(stag) : "";
@@ -2513,7 +2450,7 @@ for (const file of bodies) {
       /* L'attributo su <html> accende il foglio di stagione, e sta lì e non
          nello script di avvio perché non dipende da niente che si sappia
          solo nel browser: il mese lo decide il build. Il segnaposto del
-         festone si scioglie su TUTTE le pagine — vuoto dove non serve — o
+         vigna si scioglie su TUTTE le pagine — vuoto dove non serve — o
          resterebbe scritto in chiaro su quelle della Color Walk.
 
          Anche il colore della barra del browser passa di stagione: su un
@@ -2521,7 +2458,6 @@ for (const file of bodies) {
          resterebbe del tema di prima. */
       .replace('<html lang="it">', conStagione ? `<html lang="it" data-stagione="${stagione}">` : '<html lang="it">')
       .replace('<meta name="theme-color" content="#fcfcfc">', conStagione ? '<meta name="theme-color" content="#fcfbf9">' : '<meta name="theme-color" content="#fcfcfc">')
-      .replace(/[ \t]*\{\{STAGIONE_FESTONE\}\}\r?\n/, conStagione ? `${FESTONE}\r\n` : "")
       .replace(/[ \t]*\{\{STAGIONE_ORIZZONTE\}\}\r?\n/, conStagione ? `${ORIZZONTE}\r\n` : "")
       .replace(/[ \t]*\{\{STAGIONE_VIGNA\}\}\r?\n/, conStagione ? `${VIGNA}\r\n` : "")
       .replace("{{HEAD}}", headExtra) +
