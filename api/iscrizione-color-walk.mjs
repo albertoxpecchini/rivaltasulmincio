@@ -71,16 +71,12 @@ import { ricevuta, spedisci } from "./_posta.mjs";
    passa la pagina di chi organizza quando ricopia un modulo cartaceo. */
 import { EMAIL_RE, leggiPersona } from "./_persone.mjs";
 
-/* Le iscrizioni online si chiudono alle 23:59 del 18 settembre — due giorni
-   prima della camminata, il tempo di preparare le sacche e i sacchetti di
-   polvere. Chi arriva dopo si iscrive sul posto, col modulo cartaceo e in
-   contanti.
-   `+02:00` è l'ora legale italiana di settembre: senza il fuso, un server a
-   Londra taglierebbe un'ora prima. Passata questa data la POST risponde 403 e
-   non registra niente; la GET di verifica resta aperta, perché chi ha pagato
-   all'ultimo minuto torna dal pagamento dopo la mezzanotte. */
-const CHIUSURA_ISO = "2026-09-18T23:59:59+02:00";
-const CHIUSURA_MS = Date.parse(CHIUSURA_ISO);
+/* Le iscrizioni online non hanno una scadenza automatica: c'era un taglio al
+   18 settembre, ed è stato tolto apposta. Si chiudono a mano, quando gli
+   organizzatori lo decidono, e finché nessuno lo decide la POST registra —
+   anche il giorno della camminata. Per richiuderle non serve una data: basta
+   rimettere qui un `if` che risponda 403 con `chiuse: true`, che è quello che
+   la pagina si aspetta per nascondere il modulo invece di dire «riprova». */
 
 const SITE = "https://www.rivaltasulmincio.it";
 
@@ -170,18 +166,6 @@ async function verifica(req, res) {
    solo il numero, e chi paga in contanti non viene mandato da nessuna
    parte. */
 async function iscrivi(req, res) {
-  /* Iscrizioni chiuse: si dice qui, prima di guardare i campi, così chi arriva
-     tardi legge «chiuse» e non «codice fiscale non valido». Il `chiuse: true`
-     lo usa la pagina per nascondere il modulo invece di dire «riprova». */
-  if (Date.now() > CHIUSURA_MS) {
-    return res.status(403).json({
-      errore:
-        "le iscrizioni online si sono chiuse alle 23:59 del 18 settembre — " +
-        "il giorno stesso ci si iscrive sul posto, prima della partenza",
-      chiuse: true,
-    });
-  }
-
   /* Il campo trappola. Non esiste per chi compila — è nascosto, fuori
      dall'ordine di tabulazione e senza etichetta — quindi se arriva pieno
      l'ha riempito qualcosa che legge l'HTML e non la pagina. Non si dice

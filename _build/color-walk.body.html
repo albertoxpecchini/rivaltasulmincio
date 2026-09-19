@@ -644,7 +644,7 @@ html.dark .sb-home { --cw-rosso: #ff6b5e; }
       <p>Un maggiorenne iscrive sé stesso e <strong>i bambini che accompagna</strong>, e può portare con sé altri adulti. <strong>10 €</strong> dai 18 anni, <strong>5 €</strong> dai 6 ai 17, <strong>sotto i 6 anni si cammina gratis</strong>. Ci vuole un minuto, e si paga adesso o al ritrovo.</p>
     </div>
 
-    <p class="sb-cw-scad">Le iscrizioni online chiudono <strong>venerdì 18 settembre alle 23:59</strong>. Dopo, e per chi preferisce la carta, c'è il banchetto in piazza: <a href="/color-walk-modulo">modulo cartaceo</a> e contanti, <strong>martedì 15 dalle 17:30</strong> e <strong>domenica 20 dalle 15:30</strong>. In tutto ci sono <strong>300 posti</strong>.</p>
+    <p class="sb-cw-scad">Le iscrizioni online sono <strong>ancora aperte</strong>, fino alla partenza. Per chi preferisce la carta c'è il banchetto in piazza: <a href="/color-walk-modulo">modulo cartaceo</a> e contanti, <strong>domenica 20 dalle 15:30</strong>. In tutto ci sono <strong>300 posti</strong>.</p>
 
     <!-- Da schermo largo il modulo e la locandina stanno affiancati: la
          locandina a destra, più grande che si può. Da telefono la locandina
@@ -1222,12 +1222,12 @@ html.dark .sb-home { --cw-rosso: #ff6b5e; }
   var MAX_ADULTI = 4; // capofila compreso: gli accompagnati sono tre
   var MAX_PICCOLI = 8; // sotto i 6 anni: non pagano, ma si contano
   var GIORNO_EVENTO = "2026-09-20";
-  /* Le iscrizioni chiudono alle 23:59 del 18 settembre, ora italiana: la
-     stessa riga che taglia in /api/iscrizione-color-walk. Qui serve solo a
-     nascondere il modulo e spiegare perché — il «no» che conta lo dà comunque
-     la funzione, che di questa pagina non si fida. */
-  var CHIUSURA_MS = Date.parse("2026-09-18T23:59:59+02:00");
-  var chiuse = Date.now() > CHIUSURA_MS;
+  /* Nessuna scadenza automatica: il taglio al 18 settembre è stato tolto, qui
+     e nella funzione. `chiuse` resta perché le sue strade servono ancora — la
+     funzione può sempre rispondere `chiuse: true`, e allora il modulo sparisce
+     con il messaggio che arriva da lì. Per richiudere a mano basta rimettere
+     un confronto fra due date su questa riga. */
+  var chiuse = false;
 
   var SUL_POSTO = "Il giorno stesso ci si iscrive in piazza prima della partenza, col modulo cartaceo e in contanti.";
 
@@ -2477,7 +2477,7 @@ html.dark .sb-home { --cw-rosso: #ff6b5e; }
     if (inviando) return; // due tocchi sullo stesso tasto non sono due iscrizioni
 
     if (chiuse) {
-      chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 di venerdì 18 settembre. " + SUL_POSTO);
+      chiudiModulo("Le iscrizioni online alla Color Walk sono chiuse. " + SUL_POSTO);
       scordaBozza();
       return;
     }
@@ -2738,7 +2738,7 @@ html.dark .sb-home { --cw-rosso: #ff6b5e; }
       });
   } else if (chiuse) {
     scordaBozza();
-    chiudiModulo("Le iscrizioni online alla Color Walk si sono chiuse alle 23:59 di venerdì 18 settembre. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
+    chiudiModulo("Le iscrizioni online alla Color Walk sono chiuse. " + SUL_POSTO + " Se ti sei già iscritto, la ricevuta è nella tua email.");
   } else {
     var ripresa = riprendiBozza();
     if (stato === "ok" && !idOrdine) {
