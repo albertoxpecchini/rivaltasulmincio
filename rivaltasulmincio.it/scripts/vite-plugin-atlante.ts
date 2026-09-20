@@ -1,9 +1,11 @@
 import fs from 'node:fs';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
-import type { ServerResponse } from 'node:http';
+import { pathToFileURL } from 'node:url';
 import type { Plugin } from 'vite';
 
 type EntryServer = typeof import('../src/entry-server');
+type ApiModule = { GET?: (request: Request) => Response | Promise<Response> };
 
 const ENTRY = '/src/entry-server.ts';
 const NOT_FOUND_URL = '/404';
@@ -12,9 +14,11 @@ const NOT_FOUND_URL = '/404';
  * Plugin di sviluppo e anteprima.
  *
  * - dev: ogni richiesta HTML viene resa con `src/entry-server.ts`
- *   (stesso codice del prerender), l'indice di ricerca viene generato al volo;
+ *   (stesso codice del prerender), i feed JSON vengono generati al volo;
  * - preview: riproduce l'hosting statico: `/fonti` → `fonti/index.html`,
- *   percorsi inesistenti → `404.html` con stato 404.
+ *   percorsi inesistenti → `404.html` con stato 404;
+ * - in entrambi, `/api/*` esegue le funzioni di `api/` come farà l'hosting
+ *   (Node le carica direttamente come TypeScript).
  *
  * Un URL malformato (percent-encoding incompleto) non deve mai rompere la
  * pagina (404.md): in entrambi i casi risponde la pagina 404.
@@ -31,6 +35,18 @@ export function atlante(): Plugin {
         const page = entry.render(url);
         sendHtml(res, page.status, entry.inject(template, page));
       };
+
+      // Prima dei middleware interni di Vite: un URL senza estensione come
+      // /api/meteo/attuale verrebbe altrimenti servito come modulo sorgente.
+      server.middlewares.use((req, res, next) => {
+        const url = requestPath(req.url);
+        if (!url.startsWith('/api/')) return next();
+        runApi(server.config.root, url, req, res, { reload: true })
+          .then((handled) => {
+            if (!handled) next();
+          })
+          .catch(next);
+      });
 
       return () => {
         server.middlewares.use(async (req, res, next) => {
@@ -61,9 +77,18 @@ export function atlante(): Plugin {
     configurePreviewServer(server) {
       const outDir = path.resolve(server.config.root, server.config.build.outDir);
       return () => {
-        server.middlewares.use((req, res, next) => {
+        server.middlewares.use(async (req, res, next) => {
+          const url = requestPath(req.originalUrl ?? req.url);
+          if (url.startsWith('/api/')) {
+            try {
+              if (!(await runApi(server.config.root, url, req, res, { reload: false }))) next();
+            } catch (error) {
+              next(error);
+            }
+            return;
+          }
           if (!wantsHtml(req.headers.accept)) return next();
-          const page = staticPage(outDir, requestPath(req.originalUrl ?? req.url));
+          const page = staticPage(outDir, url);
           if (page) {
             sendHtml(res, 200, fs.readFileSync(page, 'utf8'));
             return;
@@ -75,6 +100,33 @@ export function atlante(): Plugin {
       };
     },
   };
+}
+
+/** `/api/meteo/attuale` → `api/meteo/attuale.ts`, eseguita con la firma Web (Request → Response). */
+async function runApi(
+  root: string,
+  url: string,
+  req: IncomingMessage,
+  res: ServerResponse,
+  options: { reload: boolean },
+): Promise<boolean> {
+  const apiDir = path.resolve(root, 'api');
+  const file = path.resolve(root, `.${url}.ts`);
+  if (!file.startsWith(apiDir + path.sep) || !fs.existsSync(file)) return false;
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.statusCode = 405;
+    res.setHeader('Allow', 'GET, HEAD');
+    res.end();
+    return true;
+  }
+  const specifier = pathToFileURL(file).href + (options.reload ? `?t=${Date.now()}` : '');
+  const module = (await import(specifier)) as ApiModule;
+  if (!module.GET) return false;
+  const response = await module.GET(new Request(`http://localhost${url}`, { headers: { accept: 'application/json' } }));
+  res.statusCode = response.status;
+  response.headers.forEach((value, key) => res.setHeader(key, value));
+  res.end(req.method === 'HEAD' ? undefined : await response.text());
+  return true;
 }
 
 function requestPath(url: string | undefined): string {

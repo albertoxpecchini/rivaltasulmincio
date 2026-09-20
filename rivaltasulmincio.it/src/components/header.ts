@@ -8,7 +8,9 @@ export function header(path: string): Html {
     <a class="wordmark" href="/">${site.name}</a>
     <nav class="site-nav" aria-label="Navigazione principale">
       <ul class="list-plain">
-        ${site.navigation.map(
+        ${site.navigation
+          .filter((item) => item.href !== '/meteo' || site.features.weather)
+          .map(
           (item) =>
             html`<li><a href="${item.href}"${isActive(path, item.href) ? raw(' aria-current="page"') : ''}>${item.label}</a></li>`,
         )}

@@ -16,6 +16,12 @@ export const site = {
     { href: '/giornale', label: 'Giornale' },
     { href: '/mappa', label: 'Mappa' },
     { href: '/luoghi', label: 'Luoghi' },
+    { href: '/meteo', label: 'Meteo' },
     { href: '/fonti', label: 'Fonti' },
   ],
+  /** Interruttori dei sistemi che dipendono da fonti esterne. */
+  features: {
+    /** Meteo da MeteoMincio in Home e in navigazione (la pagina /meteo resta raggiungibile). */
+    weather: true,
+  },
 } as const;

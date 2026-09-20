@@ -38,9 +38,20 @@ Tre strati separati (FUNDAMENTA.md «MAPPA»):
 - **motore** — `src/map/` (Leaflet, tile OSM, marker per categoria, pannello). Caricato solo quando un elemento `[data-map]` entra nel viewport.
 - **interfaccia** — `src/components/map.ts` rende il markup dal server; `/luoghi` e `/luoghi/<slug>` sono l'alternativa testuale completa.
 
+## Meteo
+
+Fonte: la stazione MeteoMincio (WEATHER.md). Il sito non ha API: pubblica i file della stazione senza header CORS, quindi il browser non può leggerli direttamente.
+
+- **funzioni** — `api/meteo/attuale.ts` (clientraw.txt, cache CDN 60 s) e `api/meteo/previsioni.ts` (latest.csv del modello WXSIM, cache 15 min): firma Web standard, eseguite da Vercel in produzione e dal plugin in dev/preview;
+- **servizio** — `src/services/weather/`: parser (`clientraw.ts`, `wxsim.ts`), condizioni e icone (`conditions.ts`), provider (`meteomincio.ts`), tipi normalizzati (`types.ts`). Solo import con estensione `.ts`, perché Node li esegue direttamente;
+- **interfaccia** — `src/components/weather.ts` rende i segnaposto, `src/weather/client.ts` li riempie con stati loading, success, stale ed error.
+
+Interruttore: `site.features.weather` in `src/app/site.ts` toglie il blocco dalla Home e la voce dalla navigazione.
+
 ## Struttura
 
 ```text
+api/             funzioni serverless (meteo)
 data/            dataset (JSON): sources/, journal/, places/, osm/
 public/          asset statici serviti tali e quali
 scripts/         plugin di sviluppo, prerender, sincronizzazione OSM
@@ -55,9 +66,10 @@ src/
   pages/         una funzione per rotta
   places/        tassonomia, mappatura OSM, regole, elenchi
   search/        indice unificato (server) e comportamento (client)
-  services/      fonti
+  services/      fonti, meteo
   styles/        token e fogli di stile per strati
   types/         tipi condivisi
+  weather/       comportamento del blocco meteo (client)
 ```
 
 ## Aggiungere un articolo

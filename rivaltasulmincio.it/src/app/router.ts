@@ -5,6 +5,7 @@ import * as home from '../pages/home';
 import * as luoghi from '../pages/luoghi';
 import * as luogo from '../pages/luogo';
 import * as mappa from '../pages/mappa';
+import * as meteo from '../pages/meteo';
 import type { PageModule, PageParams } from './page';
 
 /*
@@ -21,6 +22,7 @@ export const routes: Route[] = [
   { pattern: '/mappa', page: mappa },
   { pattern: '/luoghi', page: luoghi },
   { pattern: '/luoghi/:slug', page: luogo },
+  { pattern: '/meteo', page: meteo },
   { pattern: '/fonti', page: fonti },
 ];
 

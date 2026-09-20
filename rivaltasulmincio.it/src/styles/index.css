@@ -6,6 +6,7 @@
  *   layout     → testata, sezioni, griglie, piè di pagina
  *   components → componenti riutilizzabili
  *   map        → mappa, marker, categorie, luoghi (lo stile di Leaflet arriva con il suo chunk)
+ *   weather    → meteo
  */
 @import './tokens.css';
 @import './base.css';
@@ -13,3 +14,4 @@
 @import './layout.css';
 @import './components.css';
 @import './map.css';
+@import './weather.css';

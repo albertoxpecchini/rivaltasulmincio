@@ -5,6 +5,7 @@ import { mapBlock } from '../components/map';
 import { officialBadge } from '../components/official-badge';
 import { searchForm } from '../components/search';
 import { section } from '../components/section';
+import { weatherCompact } from '../components/weather';
 import { journalCard } from '../journal/card';
 import { homeSelection } from '../journal/service';
 import { formatDate } from '../lib/dates';
@@ -14,7 +15,7 @@ import { categoryHeading } from '../places/list';
 import { activePlaces, mapCenter, osmDataTimestamp, placesByCategory } from '../places/service';
 import { isOfficial, listSources } from '../services/sources';
 
-/** Home: identità, ricerca, giornale, mappa, fonti (FUNDAMENTA.md «HOME»). Le altre sezioni arrivano con i relativi dati. */
+/** Home: identità, ricerca, giornale, mappa, meteo, fonti (FUNDAMENTA.md «HOME»). Le altre sezioni arrivano con i relativi dati. */
 export function render(): PageResult {
   const now = new Date();
   const { lead, others } = homeSelection(now);
@@ -83,6 +84,17 @@ export function render(): PageResult {
         body: mappa,
         more: { href: '/mappa', label: 'Apri la mappa' },
       })}
+      ${
+        site.features.weather
+          ? section({
+              id: 'meteo',
+              title: 'Meteo',
+              intro: 'La stazione meteorologica del paese.',
+              body: weatherCompact(),
+              more: { href: '/meteo', label: 'Meteo completo' },
+            })
+          : ''
+      }
       ${section({
         id: 'fonti',
         title: 'Fonti',

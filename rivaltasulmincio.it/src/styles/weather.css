@@ -1,0 +1,135 @@
+/* ── Meteo (WEATHER.md): dato locale, mai decorazione ──────────────────── */
+.weather {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.weather--compact {
+  max-width: 28rem;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: var(--border-width-thin) solid var(--border-color);
+}
+
+.weather--full {
+  gap: 0;
+}
+
+/* Le tabelle scorrono nel loro contenitore: le celle della griglia non devono allargarsi con esse. */
+.weather--full > *,
+.weather__details > * {
+  min-width: 0;
+}
+
+.weather--full > .section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.weather__place {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.weather__current {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.weather__headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.weather__temperature {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 0.95;
+  font-weight: var(--font-weight-strong);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+}
+
+.weather__condition {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-lead);
+}
+
+.weather__condition .icon {
+  flex: 0 0 auto;
+  color: var(--color-text-secondary);
+}
+
+.weather-table .weather__condition {
+  font-size: var(--font-size-small);
+}
+
+.weather__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.weather__status,
+.weather__pending {
+  min-height: 1.5em;
+  color: var(--color-text-secondary);
+}
+
+.weather[data-state='stale'] .weather__status {
+  color: var(--color-warning);
+}
+
+.weather[data-state='error'] .weather__status,
+.weather__error {
+  color: var(--color-danger);
+}
+
+/* Skeleton leggero (ANIMATIONS.md «Skeleton»): si ferma quando arriva il dato. */
+.weather__skeleton {
+  width: 8rem;
+  height: 3.5rem;
+  background: linear-gradient(90deg, var(--color-surface-warm), var(--color-border-subtle), var(--color-surface-warm));
+  background-size: 200% 100%;
+  animation: weather-shimmer 1.6s linear infinite;
+}
+
+@keyframes weather-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.weather__details {
+  display: grid;
+}
+
+@media (min-width: 768px) {
+  .weather__details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-8);
+  }
+}
+
+.weather__details h2 {
+  margin-bottom: var(--space-4);
+}
+
+.weather-table th[scope='row'] {
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.weather-table td {
+  white-space: nowrap;
+}

@@ -10,6 +10,11 @@ for (const form of document.querySelectorAll<HTMLElement>('[data-search]')) {
   mountSearch(form);
 }
 
+const weather = [...document.querySelectorAll<HTMLElement>('[data-weather]')];
+if (weather.length > 0) {
+  void import('./weather/client').then(({ mountWeather }) => weather.forEach((element) => void mountWeather(element)));
+}
+
 const maps = [...document.querySelectorAll<HTMLElement>('[data-map]')];
 if (maps.length > 0) {
   const load = (): void => {

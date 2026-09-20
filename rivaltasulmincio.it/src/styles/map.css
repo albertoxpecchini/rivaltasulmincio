@@ -337,6 +337,10 @@
   max-width: 64rem;
 }
 
+.place > * {
+  min-width: 0;
+}
+
 .place__header {
   display: grid;
   gap: var(--space-3);
