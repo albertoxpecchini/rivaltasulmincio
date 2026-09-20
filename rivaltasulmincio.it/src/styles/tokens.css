@@ -1,0 +1,148 @@
+/*
+ * Token centralizzati. Nessun valore arbitrario nei componenti.
+ * Radius e ombre non hanno ancora un token: RADIUS.md e SHADOWS.md non esistono.
+ * Dark mode: COLORS.md la prevede solo se coerente; la palette primaria scura
+ * non è ancora definita, quindi il sito è solo chiaro.
+ */
+:root {
+  color-scheme: light;
+
+  /* ── Colori base (COLORS.md) ─────────────────────────────────────────── */
+  --color-background: #f7f6f1;
+  --color-surface: #ffffff;
+  --color-surface-warm: #eeede6;
+
+  --color-text: #18201c;
+  --color-text-secondary: #56615b;
+  --color-text-muted: #8b938e;
+
+  --color-primary: #315e49;
+  --color-primary-dark: #244635;
+  --color-primary-light: #dde8df;
+  --color-primary-soft: #edf3ed;
+
+  --color-water: #4b7c7a;
+  --color-water-light: #dcebe9;
+
+  --color-earth: #8a735a;
+  --color-earth-light: #e9e1d6;
+
+  --color-warning: #b98224;
+  --color-warning-light: #f4e8cc;
+  --color-danger: #a4473f;
+  --color-danger-light: #f2dcda;
+  --color-success: #3f7651;
+  --color-success-light: #ddebe0;
+
+  --color-border: #d8d9d2;
+  --color-border-strong: #b9bcb4;
+  --color-border-subtle: #e7e7e1;
+
+  /* Badge fonte ufficiale (OFFICIAL-SOURCES.md): solo icona, mai testo. */
+  --color-official: #1877f2;
+
+  /* ── Mappa (COLORS.md) ───────────────────────────────────────────────── */
+  --map-water: #7fa9a5;
+  --map-green: #78936f;
+  --map-park: #a8b99b;
+  --map-road: #d0ccc2;
+  --map-road-major: #b5aea2;
+  --map-building: #ddd9d0;
+  --map-boundary: #8f938a;
+  --map-label: #26312b;
+
+  /* ── Categorie (COLORS.md) ───────────────────────────────────────────── */
+  --category-business: #315e49;
+  --category-services: #586b73;
+  --category-culture: #75605c;
+  --category-sport: #6d7545;
+  --category-nature: #527451;
+  --category-mobility: #66716b;
+  --category-events: #8a6e3f;
+  --category-history: #765f4a;
+
+  /* ── Tipografia (TYPOGRAPHY.md, FONT.md) ─────────────────────────────── */
+  --font-family-base:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+  --font-size-lead: 1.125rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-caption: 0.75rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-strong: 650;
+  --font-weight-bold: 700;
+
+  --line-height-body: 1.55;
+  --line-height-small: 1.5;
+  --line-height-caption: 1.4;
+  --line-height-ui: 1.2;
+
+  /* ── Spaziature (SPACING.md) ─────────────────────────────────────────── */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* ── Layout (RESPONSIVE.md, SPACING.md) ──────────────────────────────── */
+  --page-padding: 1rem;
+  --container-max: 1440px;
+  --prose-max: 70ch;
+  --touch-target: 44px;
+
+  /* ── Bordi (BORDERS.md) ──────────────────────────────────────────────── */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-strong: 3px;
+  --border-color: var(--color-border);
+  --border-color-subtle: var(--color-border-subtle);
+  --border-color-strong: var(--color-border-strong);
+
+  /* ── Motion (ANIMATIONS.md) ──────────────────────────────────────────── */
+  --duration-instant: 80ms;
+  --duration-micro: 120ms;
+  --duration-fast: 180ms;
+  --duration-standard: 240ms;
+  --duration-medium: 320ms;
+  --duration-complex: 450ms;
+  --duration-cinematic: 650ms;
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* power2.out */
+  --ease-out-strong: cubic-bezier(0.215, 0.61, 0.355, 1); /* power3.out */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); /* expo.out */
+
+  /* ── Icone (ICONS.md) ────────────────────────────────────────────────── */
+  --icon-stroke-width: 1.75px;
+  --icon-stroke-width-small: 1.5px;
+  --icon-stroke-width-strong: 2px;
+}
+
+/*
+ * Breakpoint (RESPONSIVE.md): 640 · 768 · 1024 · 1280 · 1440 · 1920.
+ * Le custom property non funzionano dentro @media: i valori vanno scritti
+ * letteralmente e devono coincidere con questa lista.
+ */
+@media (min-width: 768px) {
+  :root {
+    --page-padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-padding: 3rem;
+  }
+}

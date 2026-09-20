@@ -1,0 +1,13 @@
+/*
+ * Foglio di stile unico, per strati:
+ *   tokens     → valori dalle specifiche (COLORS, TYPOGRAPHY, SPACING, BORDERS, ANIMATIONS, RESPONSIVE, ICONS)
+ *   base       → reset, documento, focus, container, reduced motion
+ *   typography → gerarchia tipografica
+ *   layout     → testata, sezioni, griglie, piè di pagina
+ *   components → componenti riutilizzabili
+ */
+@import './tokens.css';
+@import './base.css';
+@import './typography.css';
+@import './layout.css';
+@import './components.css';

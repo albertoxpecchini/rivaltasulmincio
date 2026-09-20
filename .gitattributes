@@ -1,0 +1,13 @@
+# Fine riga LF ovunque, anche su Windows: evita diff spuri da autocrlf.
+* text=auto eol=lf
+
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.webp -text
+*.avif -text
+*.gif -text
+*.ico -text
+*.woff -text
+*.woff2 -text
+*.pdf -text

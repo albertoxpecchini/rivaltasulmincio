@@ -1,0 +1,181 @@
+/* ── Testata ────────────────────────────────────────────────────────────── */
+.site-header {
+  background: var(--color-surface);
+  border-bottom: var(--border-width-thin) solid var(--border-color);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-3);
+}
+
+.site-header .wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-size: 1.05rem;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-3);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-bottom: var(--border-width-medium) solid transparent;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.site-nav a:hover {
+  color: var(--color-text);
+}
+
+.site-nav a[aria-current='page'] {
+  color: var(--color-primary-dark);
+  border-bottom-color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .site-nav {
+    margin-left: auto;
+  }
+}
+
+/* ── Contenuto ──────────────────────────────────────────────────────────── */
+main.container {
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.page-header {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.page-header .lead,
+.section__intro,
+.hero__text {
+  max-width: var(--prose-max);
+  color: var(--color-text-secondary);
+}
+
+.hero {
+  display: grid;
+  gap: var(--space-4);
+  max-width: var(--prose-max);
+  padding-block: clamp(1rem, 4vw, 3rem) clamp(2rem, 6vw, 5rem);
+}
+
+.hero .search {
+  margin-top: var(--space-4);
+}
+
+.section {
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-top: var(--border-width-thin) solid var(--border-color-subtle);
+}
+
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.section__more {
+  margin-left: auto;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+}
+
+.archive-year + .archive-year {
+  margin-top: var(--space-12);
+}
+
+.archive-year h2 {
+  margin-bottom: var(--space-4);
+}
+
+/* Griglia schede (RESPONSIVE.md «Matrice card»): 1 → 2 → 3 colonne. */
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Piè di pagina ──────────────────────────────────────────────────────── */
+.site-footer {
+  margin-top: auto;
+  padding-block: var(--space-12);
+  background: var(--color-surface-warm);
+  border-top: var(--border-width-thin) solid var(--border-color);
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.site-footer__grid {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.site-footer__grid > * {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.site-footer .wordmark {
+  font-size: var(--font-size-body);
+}
+
+.site-footer a {
+  display: inline-block;
+  padding-block: var(--space-1);
+}
+
+.site-footer__note {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: var(--border-width-thin) solid var(--border-color-subtle);
+  font-size: var(--font-size-caption);
+  max-width: var(--prose-max);
+}
+
+@media (min-width: 640px) {
+  .site-footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-footer__grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
