@@ -1,4 +1,5 @@
 import type { PageResult } from '../app/page';
+import { pageHeader } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { formatDate } from '../lib/dates';
 import { html } from '../lib/html';
@@ -15,15 +16,15 @@ export function render(): PageResult {
     title: 'Luoghi',
     description: `${total} luoghi di Rivalta sul Mincio da OpenStreetMap: attività, servizi, cultura, sport, natura, mobilità, storia, territorio e acqua.`,
     main: html`
-      <div class="page-header">
-        <h1>Luoghi</h1>
-        <p class="lead">${total} luoghi censiti in OpenStreetMap entro il paese e la campagna vicina, per categoria. Ogni luogo con nome ha una scheda; tutti sono sulla <a href="/mappa">mappa</a>.</p>
-        <nav aria-label="Categorie">
-          <ul class="chip-list list-plain">
-            ${groups.map((group) => html`<li><a class="chip" href="#${group.category}">${group.info.label} <span class="tabular">${group.places.length}</span></a></li>`)}
+      ${pageHeader({
+        title: 'Luoghi',
+        lead: html`${total} luoghi censiti in OpenStreetMap entro il paese e la campagna vicina, per categoria. Ogni luogo con nome ha una scheda; tutti sono sulla <a href="/mappa">mappa</a>.`,
+        extra: html`<nav aria-label="Categorie">
+          <ul class="tag-list list-plain">
+            ${groups.map((group) => html`<li><a class="tag" href="#${group.category}">${group.info.label} <span class="tabular">${group.places.length}</span></a></li>`)}
           </ul>
-        </nav>
-      </div>
+        </nav>`,
+      })}
       ${groups.map(
         (group) => html`<section class="section" aria-labelledby="${group.category}">
         ${categoryHeading(group.category, group.places.length)}

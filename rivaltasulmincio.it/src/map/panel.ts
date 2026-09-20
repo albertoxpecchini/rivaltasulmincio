@@ -21,6 +21,8 @@ export function renderPanel(panel: HTMLElement, place: MapPlace | null): void {
     el('h3', { class: 'map-panel__title' }, label),
   );
   if (place.name && place.street) panel.append(el('p', { class: 'map-panel__meta' }, place.street));
+  // Coordinate e riferimento OSM in mono (STYLE.md «MAPPA»: metadata tecnici nel pannello).
+  panel.append(el('p', { class: 'map-panel__id' }, `${place.lat.toFixed(5)}, ${place.lng.toFixed(5)} · ${place.osm}`));
 
   const actions = el('p', { class: 'map-panel__actions' });
   if (place.page) actions.append(el('a', { class: 'button button--primary', href: place.page }, 'Apri la scheda'));

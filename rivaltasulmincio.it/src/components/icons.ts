@@ -1,3 +1,4 @@
+import arrowRight from 'lucide-static/icons/arrow-right.svg?raw';
 import building2 from 'lucide-static/icons/building-2.svg?raw';
 import bus from 'lucide-static/icons/bus.svg?raw';
 import circleCheck from 'lucide-static/icons/circle-check.svg?raw';
@@ -10,12 +11,14 @@ import cloudRain from 'lucide-static/icons/cloud-rain.svg?raw';
 import cloudSnow from 'lucide-static/icons/cloud-snow.svg?raw';
 import cloudSun from 'lucide-static/icons/cloud-sun.svg?raw';
 import cloudy from 'lucide-static/icons/cloudy.svg?raw';
+import crosshair from 'lucide-static/icons/crosshair.svg?raw';
 import externalLink from 'lucide-static/icons/external-link.svg?raw';
 import landmark from 'lucide-static/icons/landmark.svg?raw';
 import library from 'lucide-static/icons/library.svg?raw';
 import map from 'lucide-static/icons/map.svg?raw';
 import mapPin from 'lucide-static/icons/map-pin.svg?raw';
 import moon from 'lucide-static/icons/moon.svg?raw';
+import search from 'lucide-static/icons/search.svg?raw';
 import slidersHorizontal from 'lucide-static/icons/sliders-horizontal.svg?raw';
 import store from 'lucide-static/icons/store.svg?raw';
 import sun from 'lucide-static/icons/sun.svg?raw';
@@ -31,6 +34,7 @@ import { raw, type Html } from '../lib/html';
  * arriva dal token CSS `--icon-stroke-width`.
  */
 const ICONS = {
+  'arrow-right': arrowRight,
   'building-2': building2,
   bus,
   'circle-check': circleCheck,
@@ -43,12 +47,14 @@ const ICONS = {
   'cloud-snow': cloudSnow,
   'cloud-sun': cloudSun,
   cloudy,
+  crosshair,
   'external-link': externalLink,
   landmark,
   library,
   map,
   'map-pin': mapPin,
   moon,
+  search,
   'sliders-horizontal': slidersHorizontal,
   store,
   sun,

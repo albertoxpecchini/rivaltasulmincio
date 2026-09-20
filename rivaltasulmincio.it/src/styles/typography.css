@@ -1,89 +1,119 @@
 /*
- * Gerarchia tipografica (TYPOGRAPHY.md). Una sola famiglia, pochi pesi.
- * Stesso livello semantico = stesso stile: i componenti non ridefiniscono
- * dimensioni, usano queste classi e i token di tokens.css.
+ * Gerarchia tipografica (STYLE.md «TIPOGRAFIA», «HEADLINE», «MONOSPACE»,
+ * «MICRO-LABEL»; scala e pesi da TYPOGRAPHY.md). Sans per titoli e testo,
+ * mono per coordinate, timestamp, ID, etichette e metadata. Mai mono per
+ * un'intera pagina. Stesso livello semantico = stesso stile.
  */
 
 h1,
 h2,
 h3,
 h4 {
-  color: var(--color-text);
+  color: var(--color-text-strong);
   text-wrap: balance;
 }
 
+/* Titoli grandi, compatti, pesanti, tracking leggermente negativo. */
 h1 {
-  font-size: var(--font-size-h1);
-  line-height: var(--line-height-h1);
-  font-weight: var(--font-weight-strong);
-  letter-spacing: var(--letter-spacing-h1);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-none);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-tight);
 }
 
 h2 {
-  font-size: var(--font-size-h2);
-  line-height: var(--line-height-h2);
-  font-weight: var(--font-weight-heading);
-  letter-spacing: var(--letter-spacing-h2);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-strong);
+  letter-spacing: var(--tracking-heading);
 }
 
 h3 {
-  font-size: var(--font-size-h3);
-  line-height: var(--line-height-h3);
-  font-weight: var(--font-weight-heading);
-  letter-spacing: var(--letter-spacing-h3);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-heading);
 }
 
 h4 {
-  font-size: var(--font-size-h4);
-  line-height: var(--line-height-h4);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-semibold);
 }
 
-/* Titoli hero: usato raramente. */
+/* Titolo hero: usato raramente. */
 .display {
-  font-size: var(--font-size-display);
-  line-height: var(--line-height-display);
-  font-weight: var(--font-weight-strong);
-  letter-spacing: var(--letter-spacing-display);
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-display);
 }
 
 /* Body large: introduzioni e descrizioni principali. */
 .lead {
-  font-size: var(--font-size-lead);
-  line-height: 1.6;
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
 }
 
-/* Body small: metadati e testo compatto. */
+/* Body small: testo compatto. */
 .text-small {
-  font-size: var(--font-size-small);
-  line-height: var(--line-height-small);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
 }
 
-/* Caption: didascalie, coordinate, note, fonti. Mai per informazioni essenziali. */
+/* Caption: didascalie, note. Mai per informazioni essenziali. */
 .caption {
-  font-size: var(--font-size-caption);
-  line-height: var(--line-height-caption);
-  font-weight: 450;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
   color: var(--color-text-secondary);
 }
 
-/* Label: micro-etichette, categorie, stati, filtri. Unico uso ammesso del maiuscolo. */
+/* Mono tecnico: coordinate, timestamp, ID, codici. Numeri tabulari sempre. */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Micro-label (STYLE.md): mono, maiuscolo, tracking positivo. Unico uso ammesso del maiuscolo. */
 .label {
-  font-size: var(--font-size-caption);
-  line-height: var(--line-height-ui);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-label);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-ui);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-text-secondary);
 }
 
+/* Occhiello tecnico: «GIORNALE / 20.09.2026», «ATLANTE / 45.18019 N». */
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-ui);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.kicker__sep {
+  color: var(--color-accent);
+}
+
 /* Numeri principali: il numero pesa più della sua descrizione. */
 .stat {
-  font-size: var(--font-size-stat);
-  line-height: var(--line-height-display);
-  font-weight: var(--font-weight-strong);
+  display: inline-block;
+  font-size: var(--text-stat);
+  line-height: var(--leading-display);
+  font-weight: var(--font-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: var(--letter-spacing-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-text-strong);
 }
 
 /* Numeri tabulari: coordinate, statistiche, conteggi. */
@@ -97,9 +127,43 @@ h4 {
   font-variant-numeric: tabular-nums;
 }
 
-.wordmark {
-  font-weight: var(--font-weight-strong);
-  letter-spacing: -0.02em;
+/* Breadcrumb tecnico (STYLE.md «CLAUDE CODE 2010»): separatori a barra, mai bordi. */
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-ui);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.crumbs li + li::before {
+  content: '/';
+  margin-right: var(--space-2);
+  color: var(--color-accent);
+}
+
+.crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--color-accent);
+}
+
+.crumbs [aria-current='page'] {
   color: var(--color-text);
+}
+
+.wordmark {
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+  color: var(--color-text-strong);
   text-decoration: none;
 }

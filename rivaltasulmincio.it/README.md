@@ -30,6 +30,15 @@ data/*.json  →  src/data (tipi)  →  src/services, src/journal, src/places (r
 
 Il markup si scrive con il tag `html` di `src/lib/html.ts`: ogni interpolazione è escapata, `raw()` solo per markup generato dal progetto.
 
+## Stile
+
+STYLE.md guida il linguaggio visivo (marrone, rosso bruciato, crema, carbone; sans + monospace; pannelli, bordi, griglia, metadata). I valori stanno solo in `src/styles/tokens.css`, con la struttura dei token che STYLE.md rende obbligatoria; i componenti usano i token semantici, mai valori diretti.
+
+- **Font** — Geist e Geist Mono, self-hosted dai pacchetti `@fontsource-variable/geist` e `@fontsource-variable/geist-mono` (licenza OFL-1.1, file LICENSE nei pacchetti), solo i sottoinsiemi latin e latin-ext, dichiarati in `src/styles/fonts.css`; Vite copia i woff2 in `dist/assets` con hash.
+- **Superfici scure** — la classe `inverse` ridefinisce i token semantici (testo, bordi, accento, superfici): un componente dentro un pannello scuro non cambia codice.
+- **Pannelli** — `panel` con `panel__head` (mono, maiuscolo), `panel__body`, `panel__foot`; è il modulo ricorrente di giornale, mappa, meteo, fonti e dati.
+- **Motion** — `src/animations/`: reveal delle sezioni e contatori dei numeri con la Web Animations API, solo per ciò che sta sotto la piega, niente con `prefers-reduced-motion`. Nessuna libreria finché CSS e WAAPI bastano (ANIMATIONS.md «Gerarchia strumenti»).
+
 ## Mappa
 
 Tre strati separati (FUNDAMENTA.md «MAPPA»):
@@ -56,8 +65,9 @@ data/            dataset (JSON): sources/, journal/, places/, osm/
 public/          asset statici serviti tali e quali
 scripts/         plugin di sviluppo, prerender, sincronizzazione OSM
 src/
+  animations/    reveal e contatori (client)
   app/           router, contratto di pagina, identità del sito, template
-  components/    testata, piè di pagina, sezione, ricerca, badge, icone, mappa (markup)
+  components/    testata, piè di pagina, sezione, testata di pagina, ricerca, badge, icone, numeri, mappa (markup)
   data/          caricamento tipizzato dei dataset
   journal/       tassonomia, regole editoriali, scheda articolo
   layouts/       documento HTML completo
@@ -79,6 +89,8 @@ Aggiungere un oggetto a `data/journal/journal.json` seguendo il tipo `JournalArt
 ## Provvisorio
 
 - `public/favicon.svg` è un simbolo temporaneo: il logo ufficiale (LOGO.md) non esiste ancora.
+- COLORS.md, TYPOGRAPHY.md e FONT.md descrivono ancora il sistema precedente (verde, font di sistema): dove contraddicono il nuovo STYLE.md vale STYLE.md. RADIUS.md e SHADOWS.md non esistono: i valori sono decisi in `tokens.css` seguendo la direzione di STYLE.md.
+- La Home non ha ancora i moduli «servizi» e «territorio» previsti da STYLE.md «HOME»: arriveranno con i relativi dataset.
 - La testata usa il nome in testo al posto del logo, per lo stesso motivo.
 - Il contenuto degli articoli è testo semplice a paragrafi; il rendering ricco sarà definito da `CONTENT.md`.
 - L'area dei luoghi è un raggio attorno al nodo OSM del paese; confini precisi arriveranno con `BOUNDARIES.md`.

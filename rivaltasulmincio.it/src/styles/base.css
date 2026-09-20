@@ -8,12 +8,18 @@
   margin: 0;
 }
 
+/*
+ * Fondo caldo e leggermente cartaceo (STYLE.md «SUPERFICI», «TEXTURE»):
+ * grana in SVG inline a opacità molto bassa, un solo tassello ripetuto.
+ * I pannelli hanno fondo opaco, quindi la grana resta solo sul fondo pagina.
+ */
 html {
-  font-family: var(--font-family-base);
+  font-family: var(--font-sans);
   font-size: 100%;
-  line-height: var(--line-height-body);
+  line-height: var(--leading-normal);
   color: var(--color-text);
-  background: var(--color-background);
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.17 0 0 0 0 0.1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
   -webkit-text-size-adjust: 100%;
 }
 
@@ -44,19 +50,46 @@ textarea {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-accent);
   text-underline-offset: 0.15em;
-  transition: color var(--duration-fast) var(--ease-out);
+  text-decoration-thickness: var(--border-width-thin);
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 a:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-accent-hover);
 }
 
-/* Focus visibile sempre (COLORS.md, BORDERS.md). */
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.9375em; /* compensazione ottica: il mono sembra più grande del sans alla stessa misura */
+}
+
+/* Tasto (STYLE.md «SEARCH»: ⌘ K solo desktop). */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-ui);
+  color: var(--color-text-muted);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* Focus visibile sempre (BORDERS.md «Focus»); accento al posto del primario perché più visibile sul crema. */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: var(--border-width-medium) solid var(--color-accent);
   outline-offset: 3px;
+}
+
+/* L'attributo `hidden` vince su qualunque `display` dei componenti. */
+[hidden] {
+  display: none !important;
 }
 
 .list-plain {
@@ -71,22 +104,33 @@ a:hover {
 }
 
 .prose {
-  max-width: var(--prose-max);
+  max-width: var(--content-max);
 }
 
 .prose p + p {
   margin-top: var(--space-4);
 }
 
+/* Griglia sottile (STYLE.md «GRIGLIA»): hero, mappe, sezioni dati. Mai ovunque. */
+.grid-paper {
+  background-image:
+    linear-gradient(var(--color-grid) var(--border-width-thin), transparent var(--border-width-thin)),
+    linear-gradient(90deg, var(--color-grid) var(--border-width-thin), transparent var(--border-width-thin));
+  background-size: var(--grid-size) var(--grid-size);
+}
+
 .skip-link {
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
-  z-index: 100;
+  z-index: var(--z-toast);
   padding: var(--space-2) var(--space-4);
-  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--color-surface-raised);
   color: var(--color-text);
-  border: 1px solid var(--color-primary);
+  border: var(--border-width-thin) solid var(--color-accent);
+  border-radius: var(--radius-sm);
   transform: translateY(-200%);
 }
 
@@ -114,6 +158,29 @@ a:hover {
   color: currentColor;
 }
 
+/* Indicatore di stato (STYLE.md «status indicator»): punto pieno, colore semantico, mai da solo. */
+.status-dot {
+  display: inline-block;
+  width: var(--space-2);
+  height: var(--space-2);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  vertical-align: middle;
+}
+
+.status-dot--live {
+  background: var(--color-success);
+}
+
+.status-dot--stale {
+  background: var(--color-warning);
+}
+
+.status-dot--error {
+  background: var(--color-danger);
+}
+
 /* Obbligatorio (ANIMATIONS.md «Reduced motion»). */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -127,10 +194,19 @@ a:hover {
 }
 
 @media print {
+  html {
+    background: none;
+  }
+
   .site-header,
   .site-footer,
   .search,
   .skip-link {
     display: none;
+  }
+
+  .inverse {
+    background: none;
+    color: inherit;
   }
 }

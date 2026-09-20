@@ -1,35 +1,52 @@
-import { formatDate } from '../lib/dates';
+import { formatDate, formatDateShort } from '../lib/dates';
 import { html, raw, type Html } from '../lib/html';
 import type { JournalArticle } from '../types';
 import { articlePath, isBreakingActive, isEventOver, isExpired } from './service';
 import { journalTypeLabel } from './taxonomy';
 
-/** Scheda articolo per Home e archivio (JOURNAL.md «GERARCHIA HOME»). */
-export function journalCard(
-  article: JournalArticle,
-  options: { now: Date; level: 2 | 3; lead?: boolean },
-): Html {
+/**
+ * Articolo principale (JOURNAL.md «GERARCHIA HOME», STYLE.md «GIORNALE»):
+ * pannello con testata tecnica (tipo, stato, data), titolo forte, estratto e
+ * riga di metadata.
+ */
+export function journalLead(article: JournalArticle, options: { now: Date; level: 2 | 3 }): Html {
   const href = articlePath(article);
   const title =
     options.level === 2
-      ? html`<h2 class="journal-card__title"><a href="${href}">${article.title}</a></h2>`
-      : html`<h3 class="journal-card__title"><a href="${href}">${article.title}</a></h3>`;
+      ? html`<h2 class="journal-lead__title"><a href="${href}">${article.title}</a></h2>`
+      : html`<h3 class="journal-lead__title"><a href="${href}">${article.title}</a></h3>`;
 
-  return html`<article class="journal-card${options.lead ? ' journal-card--lead' : ''}">
-  ${
-    article.image
-      ? html`<img class="journal-card__image" src="${article.image.src}" alt="${article.image.alt}"${options.lead ? '' : raw(' loading="lazy"')} />`
-      : ''
-  }
-  <p class="journal-card__kind"><span class="label">${journalTypeLabel(article.type)}</span>${statusTags(article, options.now)}</p>
-  ${title}
-  ${article.excerpt ? html`<p class="journal-card__excerpt">${article.excerpt}</p>` : ''}
-  <p class="journal-card__meta">
-    <time datetime="${article.publishedAt}">${formatDate(article.publishedAt)}</time>
+  return html`<article class="journal-lead panel panel--raised">
+  <div class="panel__head">
+    <span class="panel__title">${journalTypeLabel(article.type)}</span>${statusTags(article, options.now)}
+    <time class="panel__meta" datetime="${article.publishedAt}">${formatDateShort(article.publishedAt)}</time>
+  </div>
+  <div class="panel__body">
+    ${article.image ? html`<img class="journal-lead__image" src="${article.image.src}" alt="${article.image.alt}" />` : ''}
+    ${title}
+    ${article.excerpt ? html`<p class="journal-lead__excerpt">${article.excerpt}</p>` : ''}
+  </div>
+  <div class="panel__foot">
+    <span><time datetime="${article.publishedAt}">${formatDate(article.publishedAt)}</time></span>
     ${article.location?.name ? html`<span>${article.location.name}</span>` : ''}
     ${article.source?.name ? html`<span>Fonte: ${article.source.name}</span>` : ''}
-  </p>
+  </div>
 </article>`;
+}
+
+/** Articolo secondario come riga d'archivio: data · tipo · titolo · fonte. */
+export function journalRow(article: JournalArticle, options: { now: Date }): Html {
+  const href = articlePath(article);
+  return html`<li class="journal-row">
+  <time class="journal-row__date" datetime="${article.publishedAt}">${formatDateShort(article.publishedAt)}</time>
+  <span class="journal-row__kind label">${journalTypeLabel(article.type)}</span>
+  <span class="journal-row__title"><a href="${href}">${article.title}</a>${statusTags(article, options.now)}</span>
+  <span class="journal-row__meta">${article.source?.name ?? article.location?.name ?? raw('')}</span>
+</li>`;
+}
+
+export function journalRows(articles: JournalArticle[], options: { now: Date }): Html {
+  return html`<ol class="journal-rows list-plain">${articles.map((article) => journalRow(article, options))}</ol>`;
 }
 
 /** Etichette di stato: breaking attivo, avviso scaduto, evento concluso. */

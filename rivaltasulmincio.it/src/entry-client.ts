@@ -4,11 +4,18 @@
  * `data-*` del proprio markup; la mappa viene caricata (codice e stile)
  * soltanto quando entra nel viewport.
  */
-import { mountSearch } from './search/client';
+import { mountCount } from './animations/count';
+import { mountReveal } from './animations/reveal';
+import { mountSearch, mountShortcut } from './search/client';
 
 for (const form of document.querySelectorAll<HTMLElement>('[data-search]')) {
   mountSearch(form);
 }
+mountShortcut();
+
+// Motion (ANIMATIONS.md): reveal delle sezioni e contatori dei numeri, solo sotto la piega.
+mountReveal();
+mountCount();
 
 const weather = [...document.querySelectorAll<HTMLElement>('[data-weather]')];
 if (weather.length > 0) {

@@ -26,6 +26,20 @@ export function formatDate(iso: string | undefined, options: { time?: boolean } 
   return options.time ? `${day}, ${formatTime(iso)}` : day;
 }
 
+/** «20.09.2026»: data compatta per etichette tecniche in mono (STYLE.md «MONOSPACE»). */
+export function formatDateShort(iso: string | undefined): string {
+  const date = parseIso(iso);
+  if (!date) return DATE_UNAVAILABLE;
+  return new Intl.DateTimeFormat(LOCALE, {
+    timeZone: TIME_ZONE,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+    .format(date)
+    .replaceAll('/', '.');
+}
+
 /** «18:40». */
 export function formatTime(iso: string | undefined): string {
   const date = parseIso(iso);

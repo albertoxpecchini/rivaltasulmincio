@@ -1,10 +1,11 @@
 import type { PageContext, PageResult } from '../app/page';
 import { site } from '../app/site';
+import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { statusTags } from '../journal/card';
 import { archiveArticles, articlePath, findArticle, isEventOver } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
-import { formatDate, formatTime } from '../lib/dates';
+import { formatDate, formatTime, yearMonth } from '../lib/dates';
 import { html, type Html } from '../lib/html';
 import type { JournalArticle } from '../types';
 
@@ -20,6 +21,7 @@ export function render({ params }: PageContext): PageResult | null {
   const article = findArticle(params.year ?? '', params.month ?? '', params.slug ?? '', now);
   if (!article) return null;
 
+  const { year, month } = yearMonth(article.publishedAt);
   const paragraphs = article.content
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
@@ -30,15 +32,16 @@ export function render({ params }: PageContext): PageResult | null {
     description: article.seo?.description ?? article.excerpt ?? site.description,
     main: html`<article class="article">
   <header class="article__header">
-    <p class="journal-card__kind"><span class="label">${journalTypeLabel(article.type)}</span>${statusTags(article, now)}</p>
+    ${crumbs([{ href: '/giornale', label: 'Giornale' }, { label: `${year}/${month}` }])}
+    <p class="article__kind"><span class="tag tag--accent">${journalTypeLabel(article.type)}</span>${statusTags(article, now)}</p>
     <h1>${article.title}</h1>
     ${article.subtitle ? html`<p class="lead">${article.subtitle}</p>` : ''}
     <p class="article__meta">
-      <span>Pubblicato: <time datetime="${article.publishedAt}">${formatDate(article.publishedAt, { time: true })}</time></span>
-      ${article.updatedAt ? html`<span>Aggiornato: <time datetime="${article.updatedAt}">${formatDate(article.updatedAt, { time: true })}</time></span>` : ''}
-      ${article.author ? html`<span>Autore: ${article.author}</span>` : ''}
-      ${article.organization ? html`<span>Organizzazione: ${article.organization}</span>` : ''}
-      ${article.location?.name ? html`<span>Luogo: ${article.location.name}</span>` : ''}
+      <span>Pubblicato <time datetime="${article.publishedAt}">${formatDate(article.publishedAt, { time: true })}</time></span>
+      ${article.updatedAt ? html`<span>Aggiornato <time datetime="${article.updatedAt}">${formatDate(article.updatedAt, { time: true })}</time></span>` : ''}
+      ${article.author ? html`<span>Autore ${article.author}</span>` : ''}
+      ${article.organization ? html`<span>Organizzazione ${article.organization}</span>` : ''}
+      ${article.location?.name ? html`<span>Luogo ${article.location.name}</span>` : ''}
     </p>
   </header>
   ${figure(article)}

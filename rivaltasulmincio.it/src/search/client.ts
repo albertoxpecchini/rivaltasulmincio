@@ -3,12 +3,16 @@ import type { SearchEntry } from '../types';
 /*
  * Ricerca lato client: miglioramento progressivo del modulo reso dal server
  * (`src/components/search.ts`). L'indice viene scaricato alla prima
- * interazione e filtrato localmente.
+ * interazione e filtrato localmente. Ctrl K (⌘ K su Mac) porta al campo,
+ * da qualunque pagina (STYLE.md «SEARCH»).
  */
 
 const INDEX_URL = '/search-index.json';
 const MAX_RESULTS = 10;
 const DEBOUNCE_MS = 120;
+const SEARCH_PAGE = '/#ricerca';
+
+let shortcutMounted = false;
 
 export function mountSearch(form: HTMLElement): void {
   const input = form.querySelector<HTMLInputElement>('input[type="search"]');
@@ -78,6 +82,35 @@ export function mountSearch(form: HTMLElement): void {
     clearTimeout(timer);
     void run();
   });
+
+  mountShortcut();
+}
+
+/**
+ * Tasto rapido globale. Montato una volta sola: con un campo in pagina lo
+ * mette a fuoco, altrimenti porta alla ricerca della Home. Le etichette
+ * «Ctrl K» rese dal server diventano «⌘ K» sui sistemi Apple.
+ */
+export function mountShortcut(): void {
+  if (shortcutMounted) return;
+  shortcutMounted = true;
+
+  const apple = /Mac|iPhone|iPad/.test(navigator.platform);
+  if (apple) {
+    for (const kbd of document.querySelectorAll('[data-search-kbd]')) kbd.textContent = '⌘ K';
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() !== 'k' || !(event.ctrlKey || event.metaKey) || event.altKey) return;
+    event.preventDefault();
+    const input = document.querySelector<HTMLInputElement>('[data-search] input[type="search"]');
+    if (input) {
+      input.focus();
+      input.select();
+    } else {
+      window.location.href = SEARCH_PAGE;
+    }
+  });
 }
 
 function resultItem(entry: SearchEntry): HTMLLIElement {
@@ -86,10 +119,11 @@ function resultItem(entry: SearchEntry): HTMLLIElement {
   link.href = entry.url;
 
   const kind = document.createElement('span');
-  kind.className = 'label search__kind';
+  kind.className = 'tag tag--muted search__kind';
   kind.textContent = entry.kind;
 
   const title = document.createElement('span');
+  title.className = 'search__title';
   title.textContent = entry.title;
 
   link.append(kind, title);

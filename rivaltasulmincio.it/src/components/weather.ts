@@ -2,22 +2,33 @@ import { html, type Html } from '../lib/html';
 import { METEOMINCIO } from '../services/weather/meteomincio.ts';
 
 /*
- * Markup meteo reso dal server: struttura stabile con segnaposto, riempita
- * da `src/weather/client.ts`. Il meteo è contenuto secondario: non blocca
- * nulla e senza JavaScript rimanda alla fonte.
+ * Markup meteo reso dal server (STYLE.md «METEO»: modulo informativo tecnico):
+ * struttura stabile con segnaposto, riempita da `src/weather/client.ts`.
+ * Il meteo è contenuto secondario: non blocca nulla e senza JavaScript
+ * rimanda alla fonte.
  */
 
 const sourceLink = html`<a href="${METEOMINCIO.url}" rel="noopener noreferrer">${METEOMINCIO.name}</a>`;
 
-/** Blocco compatto per la Home (WEATHER.md «Homepage»). */
+/** Stato del dato: punto colorato e parola (WEATHER.md «Data freshness»), aggiornato dal client. */
+const stateIndicator = html`<span class="weather__state"><span class="status-dot" aria-hidden="true"></span><span data-weather-state>In attesa</span></span>`;
+
+/** Pannello compatto per la Home (WEATHER.md «Homepage»). */
 export function weatherCompact(): Html {
-  return html`<div class="weather weather--compact" data-weather="compact" data-state="loading">
-  <p class="weather__place"><span class="label">Meteo</span> ${METEOMINCIO.location}</p>
-  <div class="weather__current" data-weather-current>
-    <p class="weather__skeleton" aria-hidden="true"></p>
+  return html`<div class="weather weather--compact panel panel--raised" data-weather="compact" data-state="loading">
+  <div class="panel__head">
+    <span class="panel__title">Meteo · ${METEOMINCIO.location}</span>
+    <span class="panel__meta">${stateIndicator}</span>
   </div>
-  <p class="weather__status text-small" data-weather-status aria-live="polite">Caricamento del meteo…</p>
-  <p class="source-label">Fonte: ${sourceLink}</p>
+  <div class="panel__body">
+    <div class="weather__current" data-weather-current>
+      <p class="weather__skeleton" aria-hidden="true"></p>
+    </div>
+  </div>
+  <div class="panel__foot">
+    <span class="weather__status" data-weather-status aria-live="polite">Caricamento del meteo…</span>
+    <span>Fonte: ${sourceLink}</span>
+  </div>
   <noscript><p class="caption">Il meteo richiede JavaScript: consulta ${sourceLink}.</p></noscript>
 </div>`;
 }
@@ -27,11 +38,11 @@ export function weatherFull(): Html {
   const pending = (label: string) => html`<p class="weather__pending text-small" data-weather-pending>${label}</p>`;
   return html`<div class="weather weather--full" data-weather="full" data-state="loading">
   <section class="section" aria-labelledby="meteo-attuale">
-    <div class="section__head"><h2 id="meteo-attuale">Condizioni attuali</h2><p class="section__intro">Stazione di ${METEOMINCIO.location}.</p></div>
+    <div class="section__head"><h2 id="meteo-attuale">Condizioni attuali</h2><span class="section__meta">${stateIndicator}</span><p class="section__intro">Stazione di ${METEOMINCIO.location}.</p></div>
     <div class="weather__current" data-weather-current>
       <p class="weather__skeleton" aria-hidden="true"></p>
     </div>
-    <p class="weather__status text-small" data-weather-status aria-live="polite">Caricamento del meteo…</p>
+    <p class="weather__status" data-weather-status aria-live="polite">Caricamento del meteo…</p>
   </section>
   <section class="section" aria-labelledby="meteo-oraria">
     <div class="section__head"><h2 id="meteo-oraria">Previsione oraria</h2><p class="section__intro">Prossime 24 ore, modello ${METEOMINCIO.forecastModel} della stazione.</p></div>
@@ -40,7 +51,7 @@ export function weatherFull(): Html {
   <section class="section" aria-labelledby="meteo-giornaliera">
     <div class="section__head"><h2 id="meteo-giornaliera">Previsione giornaliera</h2><p class="section__intro">Prossimi giorni.</p></div>
     <div data-weather-daily>${pending('Caricamento della previsione…')}</div>
-    <p class="weather__status text-small" data-weather-forecast-status aria-live="polite"></p>
+    <p class="weather__status" data-weather-forecast-status aria-live="polite"></p>
   </section>
   <div class="weather__details">
     <section class="section" aria-labelledby="meteo-vento">

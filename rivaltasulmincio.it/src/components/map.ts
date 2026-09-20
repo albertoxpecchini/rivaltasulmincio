@@ -18,7 +18,10 @@ export function mapBlock(options: {
   center: LatLng;
   zoom: number;
   label: string;
+  /** Titolo tecnico della testata del blocco («Mappa · OpenStreetMap»); senza, lo stato va nel piede. */
+  title?: string;
   filters?: CategoryFilter[];
+  /** Data dei dati OSM già formattata (compatta, per il mono). */
   updatedAt?: string;
 }): Html {
   const { id, mode } = options;
@@ -27,21 +30,26 @@ export function mapBlock(options: {
 </div>`;
 
   return html`<div class="map-block map-block--${mode}">
+  ${
+    options.title
+      ? html`<div class="map-block__head"><span class="panel__title">${options.title}</span><span class="map-block__status" id="${id}-stato" data-map-status></span></div>`
+      : ''
+  }
   ${options.filters ? filterForm(id, options.filters) : ''}
   <div class="map-layout">
     ${canvas}
     ${
       mode === 'full'
-        ? html`<aside class="map-panel" id="${id}-pannello" aria-labelledby="${id}-pannello-titolo" aria-live="polite">
+        ? html`<aside class="map-panel inverse" id="${id}-pannello" aria-labelledby="${id}-pannello-titolo" aria-live="polite">
       <h2 class="visually-hidden" id="${id}-pannello-titolo">Luogo selezionato</h2>
       <p class="map-panel__empty">Seleziona un luogo sulla mappa.</p>
     </aside>`
         : ''
     }
   </div>
-  <p class="map-block__foot caption"><span id="${id}-stato" data-map-status></span>${
-    options.updatedAt ? html`<span>Dati OpenStreetMap al ${options.updatedAt}</span>` : ''
-  }<span>© OpenStreetMap contributors, ODbL</span></p>
+  <p class="map-block__foot">${options.title ? '' : html`<span id="${id}-stato" data-map-status></span>`}${
+    options.updatedAt ? html`<span>Dati OSM ${options.updatedAt}</span>` : ''
+  }<span>© OpenStreetMap contributors · ODbL</span></p>
 </div>`;
 }
 
@@ -51,7 +59,7 @@ export function singleMap(options: { id: string; center: LatLng; label: string }
   <div class="map-canvas map-canvas--single" id="${options.id}" data-map="single" data-center="${options.center.lat},${options.center.lng}" data-label="${options.label}" role="region" aria-label="Posizione: ${options.label}">
     <p class="map-canvas__fallback">Coordinate: <span class="tabular">${formatCoordinates(options.center)}</span></p>
   </div>
-  <p class="map-block__foot caption"><span>© OpenStreetMap contributors, ODbL</span></p>
+  <p class="map-block__foot"><span>© OpenStreetMap contributors · ODbL</span></p>
 </div>`;
 }
 

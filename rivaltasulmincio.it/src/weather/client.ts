@@ -29,8 +29,10 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
 
   const current = await getJson<WeatherData>(CURRENT_URL);
   const status = slot(root, 'status');
+  const state = slot(root, 'state');
   if ('error' in current) {
     root.dataset.state = 'error';
+    if (state) state.textContent = 'Non disponibile';
     slot(root, 'current')?.replaceChildren(el('p', { class: 'weather__error' }, 'Meteo temporaneamente non disponibile.'));
     if (status) status.textContent = 'Fonte non raggiungibile. Riprova più tardi.';
     for (const name of ['wind', 'rain', 'sun', 'local']) slot(root, name)?.replaceChildren(el('p', { class: 'text-small' }, NOT_AVAILABLE));
@@ -38,6 +40,8 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
     const ageMinutes = minutesSince(current.observedAt);
     const stale = ageMinutes != null && ageMinutes > STALE_AFTER_MINUTES;
     root.dataset.state = stale ? 'stale' : 'success';
+    // WEATHER.md «Data freshness»: lo stato si dichiara solo quando è noto.
+    if (state) state.textContent = stale ? 'Ultimo dato' : current.observedAt ? 'Live' : 'Aggiornato';
     slot(root, 'current')?.replaceChildren(...currentBlock(current, full));
     if (status) {
       status.textContent = current.observedAt
@@ -96,12 +100,17 @@ function currentBlock(data: WeatherData, full: boolean): HTMLElement[] {
   if (data.condition) headline.append(conditionNode(data.condition, 28));
   nodes.push(headline);
 
-  const row = el('p', { class: 'weather__row' });
-  if (data.feelsLike != null) row.append(el('span', {}, `Percepita ${format(data.feelsLike, 1)} °C`));
-  if (data.windSpeed != null) row.append(el('span', {}, `Vento ${format(data.windSpeed, 0)} km/h${data.windDirectionLabel ? ` ${data.windDirectionLabel}` : ''}`));
-  if (data.humidity != null) row.append(el('span', {}, `Umidità ${format(data.humidity, 0)} %`));
-  if (full && data.pressure != null) row.append(el('span', {}, `Pressione ${format(data.pressure, 1)} hPa`));
-  if (row.childElementCount) nodes.push(row);
+  // Misure secondarie come coppie etichetta → valore (STYLE.md «METEO»).
+  const metrics = el('dl', { class: 'weather__metrics' });
+  const metric = (label: string, value: string | undefined): void => {
+    if (value == null) return;
+    metrics.append(el('div', {}, el('dt', {}, label), el('dd', {}, value)));
+  };
+  metric('Percepita', unit(data.feelsLike, '°C'));
+  metric('Vento', data.windSpeed == null ? undefined : `${format(data.windSpeed, 0)} km/h${data.windDirectionLabel ? ` ${data.windDirectionLabel}` : ''}`);
+  metric('Umidità', unit(data.humidity, '%', 0));
+  if (full) metric('Pressione', unit(data.pressure, 'hPa'));
+  if (metrics.childElementCount) nodes.push(metrics);
   return nodes;
 }
 

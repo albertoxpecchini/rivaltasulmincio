@@ -1,9 +1,18 @@
 import { site } from '../app/site';
+import { formatDateShort, formatTime } from '../lib/dates';
 import { html, type Html } from '../lib/html';
+import { osmDataTimestamp } from '../places/service';
 import { linkedSources } from '../services/sources';
 
+/**
+ * Piè di pagina: pannello scuro con identità, sezioni, fonti e una riga di
+ * stato in mono (STYLE.md «barre informative»): attribuzione, data dei dati
+ * OSM, momento della build. Il sito è statico: «adesso» è la build.
+ */
 export function footer(): Html {
-  return html`<footer class="site-footer">
+  const built = new Date().toISOString();
+  const osm = osmDataTimestamp();
+  return html`<footer class="site-footer inverse">
   <div class="container">
     <div class="site-footer__grid">
       <div>
@@ -24,6 +33,11 @@ export function footer(): Html {
       </div>
     </div>
     <p class="site-footer__note">La presenza di un ente o di un'attività nel progetto non implica approvazione, collaborazione o patrocinio, salvo indicazione esplicita e documentata.</p>
+    <p class="site-footer__meta">
+      <span>© OpenStreetMap contributors · ODbL</span>
+      ${osm ? html`<span>Dati OSM <time datetime="${osm}">${formatDateShort(osm)}</time></span>` : ''}
+      <span>Build <time datetime="${built}">${formatDateShort(built)} ${formatTime(built)}</time></span>
+    </p>
   </div>
 </footer>`;
 }

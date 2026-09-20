@@ -1,13 +1,15 @@
 /*
  * Foglio di stile unico, per strati:
- *   tokens     → valori dalle specifiche (COLORS, TYPOGRAPHY, SPACING, BORDERS, ANIMATIONS, RESPONSIVE, ICONS)
- *   base       → reset, documento, focus, container, reduced motion
- *   typography → gerarchia tipografica
- *   layout     → testata, sezioni, griglie, piè di pagina
- *   components → componenti riutilizzabili
+ *   fonts      → Geist e Geist Mono self-hosted (STYLE.md «FONT MODERNI», FONT.md)
+ *   tokens     → valori dalle specifiche (STYLE.md struttura; COLORS, TYPOGRAPHY, SPACING, BORDERS, ANIMATIONS, RESPONSIVE, ICONS)
+ *   base       → reset, documento, fondo cartaceo, focus, container, griglia, reduced motion
+ *   typography → gerarchia tipografica, mono tecnico, micro-label, breadcrumb
+ *   layout     → testata, hero, sezioni, griglie, piè di pagina
+ *   components → pannelli, pulsanti, badge, ricerca, giornale, dati, fonti, tabelle, 404
  *   map        → mappa, marker, categorie, luoghi (lo stile di Leaflet arriva con il suo chunk)
  *   weather    → meteo
  */
+@import './fonts.css';
 @import './tokens.css';
 @import './base.css';
 @import './typography.css';
