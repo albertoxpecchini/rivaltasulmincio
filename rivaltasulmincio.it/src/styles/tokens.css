@@ -118,8 +118,13 @@
   --space-32: 8rem;
 
   /* ── Layout (RESPONSIVE.md, SPACING.md) ──────────────────────────────── */
-  --page-padding: 1rem;
+  --container-padding-mobile: 1rem;
+  --container-padding-tablet: 2rem;
+  --container-padding-desktop: 3rem;
+  --page-padding: var(--container-padding-mobile);
   --container-max: 1440px;
+  /* Separazione tra sezioni (SPACING.md «Sezioni»: 48–96 px): metà per lato, le sezioni sono adiacenti. */
+  --section-padding: clamp(1.5rem, 3.5vw, 3rem);
   --prose-max: 70ch;
   --touch-target: 44px;
 
@@ -156,12 +161,12 @@
  */
 @media (min-width: 768px) {
   :root {
-    --page-padding: 2rem;
+    --page-padding: var(--container-padding-tablet);
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --page-padding: 3rem;
+    --page-padding: var(--container-padding-desktop);
   }
 }

@@ -112,6 +112,7 @@
 @media (min-width: 1024px) {
   .map-block--full .map-layout {
     grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+    gap: var(--space-6);
     align-items: start;
   }
 }
@@ -259,11 +260,11 @@
   color: var(--color-primary);
 }
 
-/* Controlli di zoom: misura del bersaglio, non tipografia (Leaflet centra il glifo con line-height). */
+/* Controlli di zoom: bersaglio touch da 44 px (RESPONSIVE.md); Leaflet centra il glifo con line-height. */
 .leaflet-bar a {
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  line-height: var(--touch-target);
 }
 
 /* ── Elenco luoghi ──────────────────────────────────────────────────────── */
@@ -361,6 +362,7 @@
 @media (min-width: 768px) {
   .place__layout {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-6);
     align-items: start;
   }
 }
@@ -389,8 +391,10 @@
   gap: var(--space-6);
 }
 
+/* Numero → etichetta 4 px, gruppo statistico → elenco 16 px (SPACING.md «Statistiche»). */
 .home-map__stat-label {
   color: var(--color-text-secondary);
+  margin-top: var(--space-1);
   margin-bottom: var(--space-4);
 }
 

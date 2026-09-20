@@ -22,7 +22,7 @@
 .site-nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
+  gap: var(--space-2);
 }
 
 .site-nav a {
@@ -61,10 +61,11 @@ main.container {
   padding-block: clamp(2rem, 5vw, 4rem);
 }
 
+/* Titolo → descrizione 16 px, testata → contenuto 24 px (SPACING.md «Schede dettaglio»). */
 .page-header {
   display: grid;
   gap: var(--space-4);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
 }
 
 .page-header .lead,
@@ -86,7 +87,7 @@ main.container {
 }
 
 .section {
-  padding-block: clamp(2rem, 5vw, 4rem);
+  padding-block: var(--section-padding);
   border-top: var(--border-width-thin) solid var(--border-color-subtle);
 }
 
@@ -105,14 +106,14 @@ main.container {
 }
 
 .archive-year + .archive-year {
-  margin-top: var(--space-12);
+  margin-top: var(--space-8);
 }
 
 .archive-year h2 {
   margin-bottom: var(--space-4);
 }
 
-/* Griglia schede (RESPONSIVE.md «Matrice card»): 1 → 2 → 3 colonne. */
+/* Griglia schede (RESPONSIVE.md «Matrice card»): 1 → 2 → 3 colonne; gutter 16 → 24 → 32 (SPACING.md «Gutter»). */
 .grid {
   display: grid;
   gap: var(--space-4);
@@ -122,12 +123,14 @@ main.container {
 @media (min-width: 640px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
   }
 }
 
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
   }
 }
 
