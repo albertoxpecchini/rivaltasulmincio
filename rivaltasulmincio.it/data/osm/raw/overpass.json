@@ -1,0 +1,5115 @@
+{
+ "version": 0.6,
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "timestamp_osm_base": "2026-09-20T21:21:05Z",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+ },
+ "elements": [
+  {
+   "type": "node",
+   "id": 600347762,
+   "lat": 45.1951695,
+   "lon": 10.6959879,
+   "tags": {
+    "name": "Casazze",
+    "place": "hamlet"
+   }
+  },
+  {
+   "type": "node",
+   "id": 600347765,
+   "lat": 45.1875177,
+   "lon": 10.7007086,
+   "tags": {
+    "name": "Belvedere",
+    "place": "hamlet"
+   }
+  },
+  {
+   "type": "node",
+   "id": 600347771,
+   "lat": 45.1855819,
+   "lon": 10.7072961,
+   "tags": {
+    "name": "Soana Alta",
+    "place": "hamlet"
+   }
+  },
+  {
+   "type": "node",
+   "id": 600347774,
+   "lat": 45.1829806,
+   "lon": 10.7052361,
+   "tags": {
+    "name": "Soana Bassa",
+    "place": "hamlet"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1232269784,
+   "lat": 45.1801924,
+   "lon": 10.6771374,
+   "tags": {
+    "name": "Rivalta sul Mincio",
+    "place": "village",
+    "wikidata": "Q3937876",
+    "wikipedia": "it:Rivalta sul Mincio"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146101,
+   "lat": 45.1799576,
+   "lon": 10.6793927,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "1",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "amenity": "cafe",
+    "name": "Bottega Atipica"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146111,
+   "lat": 45.1776611,
+   "lon": 10.678462,
+   "tags": {
+    "amenity": "fountain"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146114,
+   "lat": 45.1799185,
+   "lon": 10.679948,
+   "tags": {
+    "amenity": "fountain",
+    "lit": "yes",
+    "name": "Fontana della Madonna"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146116,
+   "lat": 45.1799419,
+   "lon": 10.6816022,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "31",
+    "addr:postcode": "46040",
+    "addr:street": "Via Porto",
+    "amenity": "library",
+    "name": "Biblioteca Comunale \"Dr. Pietro Morelli\"",
+    "phone": "+390376653924"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146129,
+   "lat": 45.1794501,
+   "lon": 10.6813177,
+   "tags": {
+    "name": "Ostello del Mincio",
+    "tourism": "hostel"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146131,
+   "lat": 45.1787766,
+   "lon": 10.6822313,
+   "tags": {
+    "access": "yes",
+    "amenity": "drinking_water",
+    "bottle": "yes",
+    "check_date": "2021-08-01",
+    "fee": "no",
+    "man_made": "water_tap"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146133,
+   "lat": 45.1803118,
+   "lon": 10.6815252,
+   "tags": {
+    "tourism": "picnic_site"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146142,
+   "lat": 45.1799373,
+   "lon": 10.6817293,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "31",
+    "addr:postcode": "46040",
+    "addr:street": "Via Porto",
+    "information": "office",
+    "name": "Centro Visita del Parco Regionale del Mincio",
+    "tourism": "information"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146145,
+   "lat": 45.1803118,
+   "lon": 10.6815681,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146149,
+   "lat": 45.1799185,
+   "lon": 10.6769225,
+   "tags": {
+    "historic": "monument",
+    "name": "Monumento ai Caduti delle Guerre"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146159,
+   "lat": 45.1777292,
+   "lon": 10.6781268,
+   "tags": {
+    "amenity": "fountain"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146164,
+   "lat": 45.1800206,
+   "lon": 10.6818648,
+   "tags": {
+    "access": "yes",
+    "amenity": "toilets",
+    "changing_table": "no",
+    "fee": "no",
+    "unisex": "yes",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424146167,
+   "lat": 45.1797238,
+   "lon": 10.6813079,
+   "tags": {
+    "amenity": "cafe",
+    "name": "Ostello del Mincio"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424162247,
+   "lat": 45.1688459,
+   "lon": 10.6767937,
+   "tags": {
+    "amenity": "car_wash",
+    "automated": "yes",
+    "name": "Autolavaggio Ranzato",
+    "self_service": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424162250,
+   "lat": 45.1690455,
+   "lon": 10.6763592,
+   "tags": {
+    "amenity": "cafe",
+    "name": "Bar Platano"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424162251,
+   "lat": 45.177713,
+   "lon": 10.6777511,
+   "tags": {
+    "access": "yes",
+    "leisure": "playground"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424162252,
+   "lat": 45.169103,
+   "lon": 10.6766757,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "166",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Francesca Est",
+    "amenity": "fuel",
+    "brand": "Eni",
+    "brand:wikidata": "Q565594",
+    "brand:wikipedia": "en:Agip",
+    "compressed_air": "yes",
+    "fuel:diesel": "yes",
+    "fuel:electricity": "no",
+    "fuel:octane_95": "yes",
+    "name": "Eni",
+    "opening_hours": "24/7",
+    "operator": "Ranzato Antonio di Ranzato Gianluca e C. S.N.C.",
+    "ref:mise": "15376",
+    "self_service": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424162253,
+   "lat": 45.1689861,
+   "lon": 10.6775009,
+   "tags": {
+    "amenity": "bank",
+    "atm": "yes",
+    "check_date": "2023-04-21",
+    "name": "Mantovabanca 1896",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424708700,
+   "lat": 45.1752253,
+   "lon": 10.6812055,
+   "tags": {
+    "access": "private",
+    "historic": "tomb",
+    "name": "Mausoleo Arrivabene",
+    "tomb": "mausoleum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424708734,
+   "lat": 45.1777173,
+   "lon": 10.6709326,
+   "tags": {
+    "amenity": "cafe"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424979703,
+   "lat": 45.1784135,
+   "lon": 10.6769843,
+   "tags": {
+    "bus": "yes",
+    "departures_board": "yes",
+    "highway": "bus_stop",
+    "internet_access": "no",
+    "lit": "yes",
+    "name": "Rivalta - Via Francesca, 42",
+    "network": "Linea 13",
+    "operator": "Apam Esercizio S.p.A.",
+    "public_transport": "platform",
+    "ref": "0791016",
+    "shelter": "no",
+    "tactile_paving": "no",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424979704,
+   "lat": 45.1718169,
+   "lon": 10.676253,
+   "tags": {
+    "bench": "no",
+    "bin": "no",
+    "bus": "yes",
+    "departures_board": "timetable",
+    "highway": "bus_stop",
+    "internet_access": "no",
+    "lit": "yes",
+    "name": "Rivalta - Via Francesca, 140",
+    "network": "Linea 13",
+    "operator": "Apam eserzio S.p.a.",
+    "public_transport": "platform",
+    "ref": "0791011",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1424979716,
+   "lat": 45.174527,
+   "lon": 10.6757275,
+   "tags": {
+    "bench": "no",
+    "bin": "no",
+    "bus": "yes",
+    "departures_board": "timetable",
+    "highway": "bus_stop",
+    "lit": "yes",
+    "name": "Rivalta - Via Francesca, 81",
+    "network": "Linea 13",
+    "operator": "Apam esercizio S.p.A.",
+    "public_transport": "platform",
+    "ref": "0791013",
+    "route_ref": "13;57A",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1427534239,
+   "lat": 45.1888567,
+   "lon": 10.6755052,
+   "tags": {
+    "amenity": "restaurant",
+    "check_date": "2023-04-21",
+    "name": "Tesoro Living Resort"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1427755764,
+   "lat": 45.1951015,
+   "lon": 10.6774292,
+   "tags": {
+    "amenity": "place_of_worship",
+    "name": "Canova",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1431919897,
+   "lat": 45.1804289,
+   "lon": 10.6821054,
+   "tags": {
+    "historic": "monument",
+    "name": "Monumento al Marinaio"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1437471801,
+   "lat": 45.1802562,
+   "lon": 10.6772812,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "2",
+    "addr:postcode": "46040",
+    "addr:street": "Via Sette Frati",
+    "amenity": "bank",
+    "atm": "yes",
+    "brand": "Monte dei Paschi di Siena",
+    "brand:wikidata": "Q46730",
+    "brand:wikipedia": "en:Banca Monte dei Paschi di Siena",
+    "name": "Monte dei Paschi di Siena"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1445536386,
+   "lat": 45.1687505,
+   "lon": 10.6774826,
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1445536414,
+   "lat": 45.1694691,
+   "lon": 10.6772251,
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1447860748,
+   "lat": 45.1818912,
+   "lon": 10.674113,
+   "tags": {
+    "amenity": "parking",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1456899513,
+   "lat": 45.1801098,
+   "lon": 10.6814505,
+   "tags": {
+    "amenity": "drinking_water",
+    "check_date": "2021-08-01",
+    "man_made": "water_tap"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2358839141,
+   "lat": 45.1795172,
+   "lon": 10.680699,
+   "tags": {
+    "amenity": "drinking_water",
+    "man_made": "water_tap"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2449470546,
+   "lat": 45.1796038,
+   "lon": 10.6823488,
+   "tags": {
+    "amenity": "ferry_terminal",
+    "cargo": "passengers",
+    "fee": "no",
+    "leisure": "marina",
+    "name": "Corte Mincio",
+    "seamark:harbour:category": "marina",
+    "seamark:type": "harbour"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3041389688,
+   "lat": 45.1804918,
+   "lon": 10.6717105,
+   "tags": {
+    "name": "Bicimania",
+    "service:bicycle:retail": "yes",
+    "shop": "bicycle"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5566828486,
+   "lat": 45.1774682,
+   "lon": 10.6768062,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "material": "stone"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5566828487,
+   "lat": 45.1775878,
+   "lon": 10.6768577,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "material": "stone"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5566828516,
+   "lat": 45.1732885,
+   "lon": 10.6758383,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5907690285,
+   "lat": 45.1753436,
+   "lon": 10.675767,
+   "tags": {
+    "amenity": "pub",
+    "name": "Le Antiche Colonie",
+    "name:en": "Beer",
+    "name:it": "Le Antiche Colonie",
+    "name:ru": "Паб"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7065971319,
+   "lat": 45.1810393,
+   "lon": 10.6767803,
+   "tags": {
+    "emergency": "defibrillator",
+    "indoor": "no",
+    "operator": "Comune di Rodigo e Pro Loco Rivalta",
+    "start_date": "2019-12-21"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7606150480,
+   "lat": 45.1693659,
+   "lon": 10.6773863,
+   "tags": {
+    "amenity": "ice_cream",
+    "name": "Gelateria 2.0",
+    "outdoor_seating": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7820030229,
+   "lat": 45.1774522,
+   "lon": 10.6733295,
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8119037670,
+   "lat": 45.1888987,
+   "lon": 10.656021,
+   "tags": {
+    "amenity": "parking",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8119037671,
+   "lat": 45.189506,
+   "lon": 10.6563366,
+   "tags": {
+    "amenity": "parking",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239043,
+   "lat": 45.1801828,
+   "lon": 10.6788061,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "37",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "name": "Tabaccheria Edicola Morselli",
+    "shop": "newsagent"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239044,
+   "lat": 45.1802939,
+   "lon": 10.6788783,
+   "tags": {
+    "addr:street": "Via Zibramonda",
+    "female": "yes",
+    "male": "yes",
+    "name": "Andrea Equipe",
+    "operator": "Andrea Donelli",
+    "shop": "hairdresser"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239045,
+   "lat": 45.1798978,
+   "lon": 10.6799315,
+   "tags": {
+    "access": "yes",
+    "historic": "monument"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239047,
+   "lat": 45.1792818,
+   "lon": 10.6800285,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "35",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "name": "Panificio Marchini",
+    "shop": "bakery"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239048,
+   "lat": 45.1792592,
+   "lon": 10.6798447,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "female": "yes",
+    "male": "yes",
+    "name": "Rivaroli Cristian",
+    "shop": "hairdresser"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239053,
+   "lat": 45.1795435,
+   "lon": 10.6795041,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "56",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "name": "Il Bouquet",
+    "shop": "florist"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239086,
+   "lat": 45.179072,
+   "lon": 10.6801855,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "80",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "beauty": "nails",
+    "name": "Centro Estetico Athenas",
+    "shop": "beauty"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239087,
+   "lat": 45.1790405,
+   "lon": 10.6802802,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "84",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "name": "Ottica Morganti",
+    "shop": "optician"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239088,
+   "lat": 45.1789594,
+   "lon": 10.6808552,
+   "tags": {
+    "shop": "hairdresser"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8242239089,
+   "lat": 45.178681,
+   "lon": 10.6809262,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "1",
+    "addr:postcode": "46040",
+    "addr:street": "Via Giovanni Arrivabene",
+    "amenity": "restaurant",
+    "cuisine": "pizza",
+    "name": "Pizzangolo",
+    "phone": "+39 0376 681165"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8557437653,
+   "lat": 45.1805189,
+   "lon": 10.6820786,
+   "tags": {
+    "fee": "no",
+    "leisure": "slipway",
+    "surface": "wood"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764453,
+   "lat": 45.1779718,
+   "lon": 10.6778604,
+   "tags": {
+    "access": "yes",
+    "leisure": "playground"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764465,
+   "lat": 45.1773356,
+   "lon": 10.6774808,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764466,
+   "lat": 45.1777975,
+   "lon": 10.6783889,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764467,
+   "lat": 45.1778062,
+   "lon": 10.6783518,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764468,
+   "lat": 45.1775218,
+   "lon": 10.6772796,
+   "tags": {
+    "access": "yes",
+    "historic": "monument",
+    "name": "Salvo D'Acquisto"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764471,
+   "lat": 45.1776303,
+   "lon": 10.6783406,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764472,
+   "lat": 45.1778205,
+   "lon": 10.6779112,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764473,
+   "lat": 45.1778244,
+   "lon": 10.677873,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764474,
+   "lat": 45.1775955,
+   "lon": 10.6775213,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764475,
+   "lat": 45.1776153,
+   "lon": 10.6780045,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8602764476,
+   "lat": 45.17746,
+   "lon": 10.6771762,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8658098451,
+   "lat": 45.1801816,
+   "lon": 10.677796,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "7",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "name": "Gioielleria Chizzolini",
+    "shop": "jewelry"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8945367221,
+   "lat": 45.1767347,
+   "lon": 10.6764807,
+   "tags": {
+    "access": "yes",
+    "amenity": "charging_station",
+    "brand": "Enel X",
+    "brand:wikidata": "Q5376815",
+    "brand:wikipedia": "en:Enel X",
+    "capacity": "1",
+    "fee": "yes",
+    "name": "Enel X",
+    "operator": "Enel X",
+    "operator:wikidata": "Q5376815",
+    "operator:wikipedia": "en:Enel X"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8945367222,
+   "lat": 45.1767226,
+   "lon": 10.6765556,
+   "tags": {
+    "access": "yes",
+    "amenity": "charging_station",
+    "brand": "Enel X",
+    "brand:wikidata": "Q5376815",
+    "brand:wikipedia": "en:Enel X",
+    "capacity": "1",
+    "fee": "yes",
+    "name": "Enel X",
+    "operator": "Enel X",
+    "operator:wikidata": "Q5376815",
+    "operator:wikipedia": "en:Enel X"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003605,
+   "lat": 45.1799258,
+   "lon": 10.680385,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "15",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003606,
+   "lat": 45.1797598,
+   "lon": 10.6803341,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "8",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003607,
+   "lat": 45.1787196,
+   "lon": 10.680937,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003608,
+   "lat": 45.1789061,
+   "lon": 10.682527,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003609,
+   "lat": 45.1788881,
+   "lon": 10.6824976,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003612,
+   "lat": 45.1778471,
+   "lon": 10.6770835,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "15",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003613,
+   "lat": 45.1772659,
+   "lon": 10.6780715,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "10",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003614,
+   "lat": 45.1772672,
+   "lon": 10.678149,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "10",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003615,
+   "lat": 45.1775939,
+   "lon": 10.6767065,
+   "tags": {
+    "access": "customers",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "7",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204003616,
+   "lat": 45.1778745,
+   "lon": 10.6764587,
+   "tags": {
+    "access": "customers",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "3",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007017,
+   "lat": 45.1777761,
+   "lon": 10.6764378,
+   "tags": {
+    "access": "customers",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "3",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007018,
+   "lat": 45.1787627,
+   "lon": 10.6782636,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "15",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007019,
+   "lat": 45.1793313,
+   "lon": 10.6782149,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "15",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007020,
+   "lat": 45.1802602,
+   "lon": 10.6772065,
+   "tags": {
+    "access": "customers",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "8",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007021,
+   "lat": 45.1808997,
+   "lon": 10.6768414,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "8",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9204007022,
+   "lat": 45.1810841,
+   "lon": 10.676807,
+   "tags": {
+    "access": "yes",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "8",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9406281167,
+   "lat": 45.1801388,
+   "lon": 10.6780418,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "18",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "amenity": "dentist",
+    "healthcare": "dentist",
+    "name": "Studio Dentistico dr. Sproccati"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9432378132,
+   "lat": 45.1801562,
+   "lon": 10.6789784,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "41",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "name": "Macelleria Azzi",
+    "shop": "butcher"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9432378143,
+   "lat": 45.1801127,
+   "lon": 10.6776688,
+   "tags": {
+    "name": "Bobby Minimarket",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9468235144,
+   "lat": 45.1775574,
+   "lon": 10.676649,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "60",
+    "addr:postcode": "46040",
+    "addr:street": "Via Francesca",
+    "check_date": "2023-09-07",
+    "internet_access": "no",
+    "name": "Profumeria \"Fior di Loto\"",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+390376653493",
+    "shop": "tobacco",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9494657197,
+   "lat": 45.1789835,
+   "lon": 10.6804388,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "88",
+    "addr:postcode": "46040",
+    "addr:street": "Via Antonio Gramsci",
+    "brand": "Allianz",
+    "brand:wikidata": "Q487292",
+    "brand:wikipedia": "en:Allianz",
+    "name": "Allianz Mantova 90",
+    "office": "insurance"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9521425776,
+   "lat": 45.1633224,
+   "lon": 10.6796271,
+   "tags": {
+    "bench": "no",
+    "bin": "no",
+    "bus": "yes",
+    "departures_board": "timetable",
+    "highway": "bus_stop",
+    "lit": "yes",
+    "name": "Pilone Bivio - Via Francesca",
+    "network": "Linea 13",
+    "operator": "Apam esercizio S.p.a.",
+    "public_transport": "platform",
+    "ref": "0710005",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9527345735,
+   "lat": 45.1785329,
+   "lon": 10.6776795,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "43",
+    "addr:postcode": "46040",
+    "addr:street": "Via Tezzone",
+    "name": "Alimentari e merceria Ferrari",
+    "shop": "general"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9567775614,
+   "lat": 45.1748932,
+   "lon": 10.6701674,
+   "tags": {
+    "amenity": "restaurant",
+    "cuisine": "pesce",
+    "name": "La Coccia Volante"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9582465710,
+   "lat": 45.1633467,
+   "lon": 10.6630583,
+   "tags": {
+    "name": "Caseificio San Donato",
+    "shop": "cheese"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9582476148,
+   "lat": 45.1853801,
+   "lon": 10.6634198,
+   "tags": {
+    "bus": "yes",
+    "departures_board": "timetable",
+    "highway": "bus_stop",
+    "name": "Lavanderia America - Via Francesca Est",
+    "network": "Linea 13",
+    "operator": "Apam Esercizio S.p.A.",
+    "public_transport": "platform",
+    "ref": "0720002",
+    "shelter": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9582476149,
+   "lat": 45.1891304,
+   "lon": 10.6548635,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Corte Catenaccio",
+    "network": "Linea 13 - Linea 57A",
+    "operator": "Apam",
+    "public_transport": "platform",
+    "ref": "0720004"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9584820074,
+   "lat": 45.1612301,
+   "lon": 10.6843337,
+   "tags": {
+    "amenity": "studio",
+    "name": "Digitube Studio",
+    "studio": "audio"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9648263590,
+   "lat": 45.1903806,
+   "lon": 10.6735836,
+   "tags": {
+    "man_made": "survey_point",
+    "name": "Punto trigonometrico I.G.M.",
+    "survey_point:purpose": "horizontal",
+    "survey_point:structure": "medallion"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9900002495,
+   "lat": 45.1923829,
+   "lon": 10.67377,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "2",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Settefrati",
+    "name": "Garden Settefrati",
+    "phone": "+393421688397",
+    "shop": "florist"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10031073962,
+   "lat": 45.1799399,
+   "lon": 10.6804081,
+   "tags": {
+    "amenity": "clock",
+    "display": "sundial",
+    "support": "wall",
+    "visibility": "house"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10031073963,
+   "lat": 45.1800444,
+   "lon": 10.6786689,
+   "tags": {
+    "amenity": "clock",
+    "display": "sundial",
+    "indoor": "no",
+    "support": "wall",
+    "visibility": "house"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10031073968,
+   "lat": 45.1820188,
+   "lon": 10.677756,
+   "tags": {
+    "amenity": "clock",
+    "display": "sundial",
+    "indoor": "no",
+    "support": "wall",
+    "visibility": "house"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10031073973,
+   "lat": 45.1801084,
+   "lon": 10.6787438,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "50",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "consulting": "it",
+    "name": "Marco Munari, consulente informatico indipendente",
+    "office": "consulting",
+    "phone": "+39 338 961 9010",
+    "website": "https://marcomunari.it"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10107957041,
+   "lat": 45.1801209,
+   "lon": 10.6793585,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "1b",
+    "addr:postcode": "46040",
+    "addr:street": "Piazza Chiesa",
+    "female": "yes",
+    "name": "Non Solo Lady",
+    "operator": "Marco Marazzi",
+    "shop": "hairdresser"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10548315959,
+   "lat": 45.1801204,
+   "lon": 10.6793715,
+   "tags": {
+    "female": "yes",
+    "male": "yes",
+    "shop": "hairdresser"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249364,
+   "lat": 45.1800759,
+   "lon": 10.6745574,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249366,
+   "lat": 45.1801487,
+   "lon": 10.6739129,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249369,
+   "lat": 45.1804766,
+   "lon": 10.6726199,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249374,
+   "lat": 45.1787491,
+   "lon": 10.6731937,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249377,
+   "lat": 45.1742062,
+   "lon": 10.6744325,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249382,
+   "lat": 45.1806419,
+   "lon": 10.6751254,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249388,
+   "lat": 45.1761721,
+   "lon": 10.6765189,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249390,
+   "lat": 45.1742795,
+   "lon": 10.6751625,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249400,
+   "lat": 45.1814128,
+   "lon": 10.6719762,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249401,
+   "lat": 45.1817161,
+   "lon": 10.6717997,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722249403,
+   "lat": 45.1814707,
+   "lon": 10.6702848,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722317105,
+   "lat": 45.1828665,
+   "lon": 10.6704334,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722317107,
+   "lat": 45.1835026,
+   "lon": 10.6713014,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722317108,
+   "lat": 45.1830074,
+   "lon": 10.6719896,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722317109,
+   "lat": 45.183169,
+   "lon": 10.6723885,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10722317113,
+   "lat": 45.1835699,
+   "lon": 10.6717716,
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11153190251,
+   "lat": 45.1768592,
+   "lon": 10.6768123,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:postcode": "46040",
+    "addr:street": "Piazza Emanuele Basile",
+    "amenity": "marketplace",
+    "check_date": "2023-09-07",
+    "internet_access": "no",
+    "opening_hours": "Fr 08:00-13:00",
+    "source": "survey",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11160549172,
+   "lat": 45.1694485,
+   "lon": 10.6772928,
+   "tags": {
+    "amenity": "drinking_water",
+    "bottle": "yes",
+    "man_made": "water_tap"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11165713090,
+   "lat": 45.180725,
+   "lon": 10.6823752,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11172156379,
+   "lat": 45.1717844,
+   "lon": 10.6763435,
+   "tags": {
+    "bench": "no",
+    "bin": "no",
+    "bus": "yes",
+    "departures_board": "timetable",
+    "highway": "bus_stop",
+    "internet_access": "no",
+    "lit": "yes",
+    "name": "Rivalta - Via Francesca, 143",
+    "network": "Linea 13",
+    "operator": "Apam eserzio S.p.a.",
+    "public_transport": "platform",
+    "ref": "0791012",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11368462409,
+   "lat": 45.1788736,
+   "lon": 10.6788195,
+   "tags": {
+    "access": "unknown",
+    "amenity": "drinking_water",
+    "bottle": "yes",
+    "check_date": "2023-11-22",
+    "fee": "no",
+    "man_made": "water_tap",
+    "note": "Fontanella interna al cortile scolastico",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11618285366,
+   "lat": 45.1777988,
+   "lon": 10.6764562,
+   "tags": {
+    "access": "customers",
+    "amenity": "bicycle_parking",
+    "bicycle_parking": "wall_loops",
+    "capacity": "3",
+    "covered": "no",
+    "fee": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11892939318,
+   "lat": 45.1687159,
+   "lon": 10.677761,
+   "tags": {
+    "brand": "In's Mercato",
+    "brand:wikidata": "Q105615834",
+    "name": "In's Mercato",
+    "shop": "supermarket",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893033090,
+   "lat": 45.1787132,
+   "lon": 10.6824382,
+   "tags": {
+    "information": "board",
+    "tourism": "information"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893035989,
+   "lat": 45.1800763,
+   "lon": 10.6770051,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893050664,
+   "lat": 45.1788059,
+   "lon": 10.6822328,
+   "tags": {
+    "amenity": "waste_basket"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893050665,
+   "lat": 45.1787136,
+   "lon": 10.6824615,
+   "tags": {
+    "information": "board",
+    "tourism": "information"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893089649,
+   "lat": 45.1787376,
+   "lon": 10.6824368,
+   "tags": {
+    "covered": "no",
+    "leisure": "picnic_table"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893089650,
+   "lat": 45.1788571,
+   "lon": 10.6824525,
+   "tags": {
+    "amenity": "waste_basket"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893092936,
+   "lat": 45.1788771,
+   "lon": 10.6820065,
+   "tags": {
+    "historic": "wayside_shrine",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11893107583,
+   "lat": 45.1907119,
+   "lon": 10.6494743,
+   "tags": {
+    "bench": "no",
+    "bin": "no",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "lit": "no",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034363,
+   "lat": 45.1705238,
+   "lon": 10.6768631,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034364,
+   "lat": 45.1704564,
+   "lon": 10.6768543,
+   "tags": {
+    "amenity": "bench"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034365,
+   "lat": 45.1704153,
+   "lon": 10.6768489,
+   "tags": {
+    "amenity": "bench"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034366,
+   "lat": 45.1634286,
+   "lon": 10.6797739,
+   "tags": {
+    "bicycle": "yes",
+    "information": "map",
+    "tourism": "information"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034367,
+   "lat": 45.1633937,
+   "lon": 10.6797952,
+   "tags": {
+    "amenity": "bench"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030034368,
+   "lat": 45.1633856,
+   "lon": 10.6798093,
+   "tags": {
+    "amenity": "waste_basket"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030042969,
+   "lat": 45.1633731,
+   "lon": 10.6798217,
+   "tags": {
+    "bicycle": "yes",
+    "information": "guidepost",
+    "tourism": "information"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030042970,
+   "lat": 45.1621612,
+   "lon": 10.6813055,
+   "tags": {
+    "amenity": "bench"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12030042971,
+   "lat": 45.1621544,
+   "lon": 10.6813241,
+   "tags": {
+    "amenity": "waste_basket"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12528897069,
+   "lat": 45.1797158,
+   "lon": 10.6802993,
+   "tags": {
+    "access": "yes",
+    "information": "board",
+    "museum": "local",
+    "opening_hours": "24/7",
+    "tourism": "information",
+    "website": "https://www.rivaltasiracconta.it/museo-diffuso/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12528897070,
+   "lat": 45.1797035,
+   "lon": 10.6803006,
+   "tags": {
+    "access": "yes",
+    "information": "board",
+    "museum": "local",
+    "opening_hours": "24/7",
+    "tourism": "information",
+    "website": "https://www.rivaltasiracconta.it/museo-diffuso/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12566417118,
+   "lat": 45.180072,
+   "lon": 10.6781873,
+   "tags": {
+    "addr:housenumber": "36",
+    "addr:street": "Via Filippo Turati",
+    "amenity": "fixme",
+    "check_date": "2025-02-07",
+    "fixme": "type",
+    "fixme:type": "onoranze funebri",
+    "name": "Giannace"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13076256455,
+   "lat": 45.1777726,
+   "lon": 10.6765377,
+   "tags": {
+    "amenity": "vending_machine",
+    "currency:EUR": "yes",
+    "payment:cash": "yes",
+    "vending": "condoms"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13076256457,
+   "lat": 45.1774926,
+   "lon": 10.6766935,
+   "tags": {
+    "amenity": "vending_machine",
+    "operator": "Profumeria \"Fior di Loto\"",
+    "payment:apple_pay": "yes",
+    "payment:cards": "yes",
+    "payment:cash": "yes",
+    "payment:contactless": "yes",
+    "payment:google_pay": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "vending": "cigarettes;drinks;food;e-cigarettes;water;sweets"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13076256459,
+   "lat": 45.1778349,
+   "lon": 10.6768056,
+   "tags": {
+    "amenity": "recycling",
+    "recycling:batteries": "yes",
+    "recycling_type": "container"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13076256460,
+   "lat": 45.1778308,
+   "lon": 10.6768216,
+   "tags": {
+    "amenity": "recycling",
+    "recycling:drugs": "yes",
+    "recycling_type": "container"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13083869602,
+   "lat": 45.1721505,
+   "lon": 10.677001,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "material": "wood",
+    "seats": "3"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13083869603,
+   "lat": 45.1721332,
+   "lon": 10.6769985,
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "material": "wood",
+    "seats": "3"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13083869604,
+   "lat": 45.1721449,
+   "lon": 10.6769972,
+   "tags": {
+    "bench": "yes",
+    "colour": "#590808",
+    "leisure": "picnic_table",
+    "lit": "yes",
+    "manufacturer": "BENITO URBAN",
+    "material": "plastic"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13083869605,
+   "lat": 45.1721445,
+   "lon": 10.6770032,
+   "tags": {
+    "artist_name": "Gruppo dei Terroni",
+    "artwork_type": "mural",
+    "check_date": "2025-08-04",
+    "mapillary": "https://i.imgur.com/UF1NvJO.jpg",
+    "name": "Panchina dei Terroni",
+    "seats": "6",
+    "start_date": "2024-07-14",
+    "tourism": "artwork"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13084040589,
+   "lat": 45.1693581,
+   "lon": 10.6764806,
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "166",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Francesca Est",
+    "amenity": "fuel",
+    "brand": "Eni",
+    "brand:wikidata": "Q565594",
+    "brand:wikipedia": "en:Agip",
+    "compressed_air": "yes",
+    "fuel:electricity": "no",
+    "fuel:lpg": "yes",
+    "name": "Eni",
+    "opening_hours": "24/7",
+    "operator": "Ranzato Antonio di Ranzato Gianluca e C. S.N.C.",
+    "ref:mise": "15376",
+    "self_service": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13277775049,
+   "lat": 45.1778308,
+   "lon": 10.6708808,
+   "tags": {
+    "leisure": "adult_gaming_centre"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13277775050,
+   "lat": 45.1795921,
+   "lon": 10.6815756,
+   "tags": {
+    "amenity": "restaurant",
+    "cuisine": "pizza"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13873368240,
+   "lat": 45.179803,
+   "lon": 10.680769,
+   "tags": {
+    "access": "yes",
+    "amenity": "public_bookcase",
+    "covered": "no",
+    "fixme": "Please merge me into a nearby wall",
+    "indoor": "no",
+    "lit": "yes",
+    "location": "outdoor",
+    "name": "Casetta dei Libri",
+    "opening_hours": "24/7",
+    "public_bookcase:type": "wooden_cabinet",
+    "start_date": "2026-05-24",
+    "support": "wall_mounted"
+   }
+  },
+  {
+   "type": "way",
+   "id": 34414091,
+   "center": {
+    "lat": 45.1622593,
+    "lon": 10.7014092
+   },
+   "tags": {
+    "boat": "yes",
+    "foot": "yes",
+    "motor_vehicle": "no",
+    "motorboat": "yes",
+    "name": "Mincio",
+    "passenger": "yes",
+    "route": "ferry",
+    "waterway": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 40763986,
+   "center": {
+    "lat": 45.1627457,
+    "lon": 10.6636205
+   },
+   "tags": {
+    "it:lombardia:ctrn:cascina:CS_ID": "2106",
+    "landuse": "farmyard",
+    "name": "Caseificio Sociale San Donato"
+   }
+  },
+  {
+   "type": "way",
+   "id": 40766224,
+   "center": {
+    "lat": 45.1892412,
+    "lon": 10.6485807
+   },
+   "tags": {
+    "it:lombardia:ctrn:cascina:CS_ID": "1921",
+    "landuse": "farmyard",
+    "name": "Corte Fieniletto"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46788129,
+   "center": {
+    "lat": 45.2034139,
+    "lon": 10.6851041
+   },
+   "tags": {
+    "boat": "yes",
+    "motorboat": "yes",
+    "name": "Mincio",
+    "passenger": "yes",
+    "waterway": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46789597,
+   "center": {
+    "lat": 45.1820842,
+    "lon": 10.689295
+   },
+   "tags": {
+    "name": "Fossa della turbina",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46789601,
+   "center": {
+    "lat": 45.1802522,
+    "lon": 10.6864167
+   },
+   "tags": {
+    "name": "Fosso scudler",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46789602,
+   "center": {
+    "lat": 45.1785183,
+    "lon": 10.686918
+   },
+   "tags": {
+    "name": "Fossa del gioco",
+    "waterway": "stream"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46789875,
+   "center": {
+    "lat": 45.198772,
+    "lon": 10.6827818
+   },
+   "tags": {
+    "name": "Goldone",
+    "waterway": "stream"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46791929,
+   "center": {
+    "lat": 45.1864542,
+    "lon": 10.6935989
+   },
+   "tags": {
+    "name": "Fossa lunga",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 46982255,
+   "center": {
+    "lat": 45.1913194,
+    "lon": 10.7057823
+   },
+   "tags": {
+    "intermittent": "no",
+    "name": "LAGHETTO SOANA ALTA",
+    "natural": "water",
+    "water": "lake"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47071997,
+   "center": {
+    "lat": 45.1552528,
+    "lon": 10.6707707
+   },
+   "tags": {
+    "boat": "no",
+    "lock": "no",
+    "name": "Canale Osone Vecchio",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129007007,
+   "center": {
+    "lat": 45.1776771,
+    "lon": 10.6781125
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Parco Pubblico Campino"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129062840,
+   "center": {
+    "lat": 45.1756266,
+    "lon": 10.6810321
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Parco Villa Arrivabene"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129062843,
+   "center": {
+    "lat": 45.1761031,
+    "lon": 10.6827718
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Parco Villa Arrivabene"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129063866,
+   "center": {
+    "lat": 45.1661462,
+    "lon": 10.6793059
+   },
+   "tags": {
+    "landuse": "forest",
+    "name": "Ontaneto di Monte Perego"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129094020,
+   "center": {
+    "lat": 45.1767667,
+    "lon": 10.6780575
+   },
+   "tags": {
+    "denomination": "catholic",
+    "landuse": "cemetery",
+    "name": "Cimitero di Rivalta sul Mincio",
+    "religion": "christian",
+    "wikidata": "Q89406158"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329413,
+   "center": {
+    "lat": 45.1798952,
+    "lon": 10.6798394
+   },
+   "tags": {
+    "name": "Piazza Chiesa",
+    "place": "square"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329414,
+   "center": {
+    "lat": 45.1756536,
+    "lon": 10.678078
+   },
+   "tags": {
+    "leisure": "pitch",
+    "lit": "yes",
+    "name": "Campo di calcio \"Danilo Gobbi\"",
+    "sport": "soccer",
+    "surface": "grass"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329417,
+   "center": {
+    "lat": 45.1761861,
+    "lon": 10.6772855
+   },
+   "tags": {
+    "leisure": "pitch",
+    "lit": "no",
+    "name": "Campo da calcetto (ex tennis)",
+    "sport": "soccer",
+    "surface": "concrete"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329420,
+   "center": {
+    "lat": 45.1708629,
+    "lon": 10.6769189
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329423,
+   "center": {
+    "lat": 45.1760078,
+    "lon": 10.6788917
+   },
+   "tags": {
+    "leisure": "pitch",
+    "sport": "soccer",
+    "surface": "grass"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329425,
+   "center": {
+    "lat": 45.1762889,
+    "lon": 10.6767949
+   },
+   "tags": {
+    "access": "yes",
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "1",
+    "addr:postcode": "46040",
+    "addr:street": "Piazza Basile",
+    "building": "yes",
+    "check_date": "2023-09-07",
+    "internet_access": "no",
+    "leisure": "sports_centre",
+    "name": "Palazzetto dello Sport \"Renzo Regattieri\"",
+    "operator:type": "public",
+    "phone": "+390376653684",
+    "source": "survey",
+    "sport": "volleyball;basketball;tennis;archery",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129329431,
+   "center": {
+    "lat": 45.1768738,
+    "lon": 10.6789243
+   },
+   "tags": {
+    "leisure": "pitch",
+    "sport": "tamburello"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384192,
+   "center": {
+    "lat": 45.195855,
+    "lon": 10.6784964
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "turkey",
+    "building": "yes",
+    "name:signed": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384194,
+   "center": {
+    "lat": 45.1952234,
+    "lon": 10.6784963
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "turkey",
+    "building": "yes",
+    "name:signed": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384195,
+   "center": {
+    "lat": 45.1798541,
+    "lon": 10.6767446
+   },
+   "tags": {
+    "leisure": "park",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384196,
+   "center": {
+    "lat": 45.1949515,
+    "lon": 10.6784964
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "turkey",
+    "building": "yes",
+    "name:signed": "no",
+    "opening_hours:signed": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384197,
+   "center": {
+    "lat": 45.1823272,
+    "lon": 10.67303
+   },
+   "tags": {
+    "addr:street": "Via Renzo Regattieri",
+    "leisure": "park",
+    "name": "Parco Fabrizio Quattrocchi",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384198,
+   "center": {
+    "lat": 45.1822419,
+    "lon": 10.6719451
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129384200,
+   "center": {
+    "lat": 45.1955181,
+    "lon": 10.6785069
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "turkey",
+    "building": "yes",
+    "name:signed": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129401311,
+   "center": {
+    "lat": 45.1905765,
+    "lon": 10.6798199
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Tesorino"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129401318,
+   "center": {
+    "lat": 45.194537,
+    "lon": 10.6839938
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "6",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Camignana",
+    "landuse": "farmyard",
+    "name": "Agriturismo Germano Reale"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129401321,
+   "center": {
+    "lat": 45.195312,
+    "lon": 10.6888756
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Molinazza"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129406421,
+   "center": {
+    "lat": 45.1952421,
+    "lon": 10.6763322
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Canova"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129849147,
+   "center": {
+    "lat": 45.1799335,
+    "lon": 10.6807026
+   },
+   "tags": {
+    "addr:street": "Piazza Chiesa",
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "catholic",
+    "name": "Chiesa Santi Vigilio e Donato",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129849151,
+   "center": {
+    "lat": 45.1799896,
+    "lon": 10.6817112
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "31",
+    "addr:postcode": "46040",
+    "addr:street": "Via Porto",
+    "building": "yes",
+    "email": "museorivalta@gmail.com",
+    "fee": "yes",
+    "mobile": "+393405813656",
+    "name": "Museo Etnografico dei Mestieri del Fiume",
+    "toilets": "yes",
+    "tourism": "museum",
+    "website": "https://museorivaltasulmincio.it/",
+    "wikidata": "Q27992884"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129851264,
+   "center": {
+    "lat": 45.1833637,
+    "lon": 10.6814196
+   },
+   "tags": {
+    "name": "Fossa d'in mes",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129851267,
+   "center": {
+    "lat": 45.1835262,
+    "lon": 10.6808829
+   },
+   "tags": {
+    "name": "Fosso Bernardi",
+    "waterway": "ditch"
+   }
+  },
+  {
+   "type": "way",
+   "id": 129851272,
+   "center": {
+    "lat": 45.1781053,
+    "lon": 10.6767694
+   },
+   "tags": {
+    "landuse": "grass",
+    "name": "Ex-bocciodromo"
+   }
+  },
+  {
+   "type": "way",
+   "id": 130118479,
+   "center": {
+    "lat": 45.1803853,
+    "lon": 10.6807213
+   },
+   "tags": {
+    "leaf_type": "broadleaved",
+    "name": "Boschetto della Chiesa",
+    "natural": "wood"
+   }
+  },
+  {
+   "type": "way",
+   "id": 130533721,
+   "center": {
+    "lat": 45.1671408,
+    "lon": 10.6760739
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 130533722,
+   "center": {
+    "lat": 45.1718868,
+    "lon": 10.6781067
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 130533730,
+   "center": {
+    "lat": 45.1712647,
+    "lon": 10.6785644
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 130545360,
+   "center": {
+    "lat": 45.1794305,
+    "lon": 10.6737779
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "21",
+    "addr:postcode": "46040",
+    "addr:street": "Via Giuseppe Garibaldi",
+    "building": "yes",
+    "name": "Ortofrutticola",
+    "shop": "supermarket",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 131568084,
+   "center": {
+    "lat": 45.1786476,
+    "lon": 10.6901431
+   },
+   "tags": {
+    "name": "Gioco dei Pozzoni (Pusun)",
+    "natural": "water"
+   }
+  },
+  {
+   "type": "way",
+   "id": 131568085,
+   "center": {
+    "lat": 45.1795672,
+    "lon": 10.6844731
+   },
+   "tags": {
+    "name": "Fosso davanti al porto",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 131568086,
+   "center": {
+    "lat": 45.1847865,
+    "lon": 10.6824416
+   },
+   "tags": {
+    "name": "Fossa di confine Tesorino",
+    "waterway": "drain"
+   }
+  },
+  {
+   "type": "way",
+   "id": 131569134,
+   "center": {
+    "lat": 45.1830631,
+    "lon": 10.6729942
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 131569137,
+   "center": {
+    "lat": 45.1824488,
+    "lon": 10.6750201
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 132433411,
+   "center": {
+    "lat": 45.1788411,
+    "lon": 10.6785714
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 146626431,
+   "center": {
+    "lat": 45.181443,
+    "lon": 10.6838826
+   },
+   "tags": {
+    "boat": "yes",
+    "motorboat": "yes",
+    "name": "Mincio",
+    "passenger": "yes",
+    "source": "http://gnudd.com/pub/tile/!/!/!",
+    "waterway": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 227159239,
+   "center": {
+    "lat": 45.1796506,
+    "lon": 10.6807009
+   },
+   "tags": {
+    "access": "yes",
+    "leisure": "playground",
+    "name": "Campino Oratorio"
+   }
+  },
+  {
+   "type": "way",
+   "id": 229490604,
+   "center": {
+    "lat": 45.1792891,
+    "lon": 10.681621
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 230191468,
+   "center": {
+    "lat": 45.1898257,
+    "lon": 10.6754853
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 230191469,
+   "center": {
+    "lat": 45.1774615,
+    "lon": 10.6733483
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity:disabled": "7",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 234082390,
+   "center": {
+    "lat": 45.1653504,
+    "lon": 10.6761525
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 234082392,
+   "center": {
+    "lat": 45.1635228,
+    "lon": 10.6822554
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 234082397,
+   "center": {
+    "lat": 45.1639164,
+    "lon": 10.6824584
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Monte Perego"
+   }
+  },
+  {
+   "type": "way",
+   "id": 234083660,
+   "center": {
+    "lat": 45.1709779,
+    "lon": 10.6758551
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 236996841,
+   "center": {
+    "lat": 45.1650583,
+    "lon": 10.7009104
+   },
+   "tags": {
+    "boat": "yes",
+    "motorboat": "yes",
+    "name": "Mincio",
+    "passenger": "yes",
+    "source": "http://gnudd.com/pub/tile/!/!/!",
+    "waterway": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 236996846,
+   "center": {
+    "lat": 45.1731855,
+    "lon": 10.6885718
+   },
+   "tags": {
+    "boat": "yes",
+    "motorboat": "yes",
+    "name": "Mincio",
+    "passenger": "yes",
+    "route": "ferry",
+    "source": "http://gnudd.com/pub/tile/!/!/!",
+    "waterway": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 388752111,
+   "center": {
+    "lat": 45.1951128,
+    "lon": 10.6774131
+   },
+   "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "name": "Canova",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "way",
+   "id": 409725643,
+   "center": {
+    "lat": 45.1793078,
+    "lon": 10.6777022
+   },
+   "tags": {
+    "amenity": "school",
+    "check_date": "2023-09-07",
+    "grades": "3-5"
+   }
+  },
+  {
+   "type": "way",
+   "id": 409726371,
+   "center": {
+    "lat": 45.1792489,
+    "lon": 10.6785327
+   },
+   "tags": {
+    "amenity": "school",
+    "check_date": "2023-09-07",
+    "grades": "0-2"
+   }
+  },
+  {
+   "type": "way",
+   "id": 409726372,
+   "center": {
+    "lat": 45.1789701,
+    "lon": 10.6785714
+   },
+   "tags": {
+    "amenity": "school",
+    "check_date": "2023-09-07",
+    "grades": "6-10",
+    "source": "survey"
+   }
+  },
+  {
+   "type": "way",
+   "id": 448101413,
+   "center": {
+    "lat": 45.1803824,
+    "lon": 10.6812714
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "31",
+    "addr:postcode": "46040",
+    "addr:street": "Via Porto",
+    "building": "warehouse",
+    "building:levels": "0",
+    "leisure": "sports_centre",
+    "name": "Sede Pro Loco Rivalta sul Mncio APS / Canoa Point",
+    "roof:shape": "gabled",
+    "sport": "canoe;kayak;bike",
+    "website": "https://www.prolocorivalta.mn.it/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 476391568,
+   "center": {
+    "lat": 45.1891884,
+    "lon": 10.6561242
+   },
+   "tags": {
+    "addr:city": "Rodigo",
+    "addr:housenumber": "109b",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Francesca Est",
+    "amenity": "restaurant",
+    "building": "yes",
+    "capacity": "100",
+    "cuisine": "regional;pizza",
+    "diet:gluten_free": "yes",
+    "diet:omnivore": "yes",
+    "diet:vegan": "yes",
+    "diet:vegetarian": "yes",
+    "name": "Ristorante Pizzeria \"Corte Catenaccio\"",
+    "opening_hours": "We 12:00-15:00,19:00-24:00; Th 12:00-15:00,19:00-24:00; Fr 12:00-15:00,19:00-24:00; Sa 19:00-24:00; Su 12:00-15:00,19:00-24:00; Mo 12:00-15:00; Tu 12:00-15:00,19:00-24:00",
+    "phone": "+390376681003",
+    "website": "http://www.cortecatenaccio.it/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 581930499,
+   "center": {
+    "lat": 45.1766029,
+    "lon": 10.6770638
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "name": "Piazza Emanuele Basile",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 581930510,
+   "center": {
+    "lat": 45.1812106,
+    "lon": 10.6771924
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "name": "Piazza Milite Ignoto",
+    "old_name": "Piazza della Lira",
+    "parking": "surface",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 612354654,
+   "center": {
+    "lat": 45.177032,
+    "lon": 10.6827476
+   },
+   "tags": {
+    "addr:city": "Rodigo",
+    "addr:postcode": "46040",
+    "addr:street": "Via Pilota",
+    "leisure": "pitch",
+    "lit": "no",
+    "name": "Arcieri Gonzaga - Campo di Tiro con l'Arco",
+    "sport": "archery",
+    "surface": "grass"
+   }
+  },
+  {
+   "type": "way",
+   "id": 612354656,
+   "center": {
+    "lat": 45.1774827,
+    "lon": 10.6827113
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface",
+    "supervised": "no",
+    "surface": "grass"
+   }
+  },
+  {
+   "type": "way",
+   "id": 756506043,
+   "center": {
+    "lat": 45.1809454,
+    "lon": 10.6767095
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "9",
+    "addr:postcode": "46040",
+    "addr:street": "Via Sette Frati",
+    "amenity": "post_office",
+    "building": "yes",
+    "building:levels": "2",
+    "operator": "Poste Italiane",
+    "operator:wikidata": "Q495026",
+    "operator:wikipedia": "en:Poste italiane",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 756518382,
+   "center": {
+    "lat": 45.1803686,
+    "lon": 10.677272
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "6",
+    "addr:postcode": "46040",
+    "addr:street": "Via Sette Frati",
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Coyote's Bar",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 756521694,
+   "center": {
+    "lat": 45.1783299,
+    "lon": 10.6768543
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "42",
+    "addr:postcode": "46040",
+    "addr:street": "Via Francesca",
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "Opificio Alimentare"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844718,
+   "center": {
+    "lat": 45.180057,
+    "lon": 10.6769632
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844719,
+   "center": {
+    "lat": 45.1800416,
+    "lon": 10.6769993
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844720,
+   "center": {
+    "lat": 45.1809729,
+    "lon": 10.676778
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844721,
+   "center": {
+    "lat": 45.1809976,
+    "lon": 10.6767735
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844722,
+   "center": {
+    "lat": 45.1812383,
+    "lon": 10.6768527
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762844723,
+   "center": {
+    "lat": 45.1811982,
+    "lon": 10.6768554
+   },
+   "tags": {
+    "amenity": "bench",
+    "backrest": "yes",
+    "seats": "4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567870,
+   "center": {
+    "lat": 45.1653049,
+    "lon": 10.6658868
+   },
+   "tags": {
+    "name": "Seriola Marchionale",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567871,
+   "center": {
+    "lat": 45.1768015,
+    "lon": 10.6508995
+   },
+   "tags": {
+    "layer": "-1",
+    "name": "Seriola Marchionale",
+    "tunnel": "culvert",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567874,
+   "center": {
+    "lat": 45.1750313,
+    "lon": 10.6606858
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "name": "Il Pero"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567875,
+   "center": {
+    "lat": 45.1754028,
+    "lon": 10.6608195
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "name": "Il Pero"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567876,
+   "center": {
+    "lat": 45.1753371,
+    "lon": 10.6600035
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "pitch",
+    "name": "Il Pero",
+    "sport": "tennis"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567879,
+   "center": {
+    "lat": 45.17571,
+    "lon": 10.6600899
+   },
+   "tags": {
+    "addr:city": "Rodigo",
+    "addr:housenumber": "5",
+    "addr:postcode": "46040",
+    "addr:street": "Strada Vedusino",
+    "building": "yes",
+    "leisure": "fitness_centre",
+    "name": "Il Pero",
+    "phone": "+39376681315",
+    "sport": "fitness"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567883,
+   "center": {
+    "lat": 45.1764889,
+    "lon": 10.6605641
+   },
+   "tags": {
+    "access": "private",
+    "amenity": "parking",
+    "parking": "surface",
+    "surface": "grass"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567887,
+   "center": {
+    "lat": 45.1909688,
+    "lon": 10.6465597
+   },
+   "tags": {
+    "name": "Seriola Marchionale",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567890,
+   "center": {
+    "lat": 45.1836462,
+    "lon": 10.6487393
+   },
+   "tags": {
+    "name": "Seriola Marchionale",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 780567891,
+   "center": {
+    "lat": 45.1904937,
+    "lon": 10.6493436
+   },
+   "tags": {
+    "layer": "-1",
+    "name": "Seriola Marchionale",
+    "tunnel": "culvert",
+    "waterway": "canal"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005514,
+   "center": {
+    "lat": 45.1759695,
+    "lon": 10.6549505
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005515,
+   "center": {
+    "lat": 45.1765952,
+    "lon": 10.6542716
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005516,
+   "center": {
+    "lat": 45.1762923,
+    "lon": 10.6539301
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005517,
+   "center": {
+    "lat": 45.1762811,
+    "lon": 10.6542121
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005518,
+   "center": {
+    "lat": 45.1762453,
+    "lon": 10.6545224
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 781005519,
+   "center": {
+    "lat": 45.1757885,
+    "lon": 10.653784
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 830715791,
+   "center": {
+    "lat": 45.1641214,
+    "lon": 10.6785069
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706967,
+   "center": {
+    "lat": 45.1767792,
+    "lon": 10.6719479
+   },
+   "tags": {
+    "amenity": "parking",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706968,
+   "center": {
+    "lat": 45.1766248,
+    "lon": 10.6723926
+   },
+   "tags": {
+    "access": "private",
+    "amenity": "parking",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706969,
+   "center": {
+    "lat": 45.1777127,
+    "lon": 10.6714063
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706971,
+   "center": {
+    "lat": 45.1784277,
+    "lon": 10.6713145
+   },
+   "tags": {
+    "building": "yes",
+    "name": "PM Microwave",
+    "office": "company",
+    "website": "https://www.pmmicrowave.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706976,
+   "center": {
+    "lat": 45.1829572,
+    "lon": 10.6744827
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 831706977,
+   "center": {
+    "lat": 45.1838782,
+    "lon": 10.675458
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 837843144,
+   "center": {
+    "lat": 45.1766681,
+    "lon": 10.6724643
+   },
+   "tags": {
+    "building": "yes",
+    "name": "Centro Alimenti Senza Glutine",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "way",
+   "id": 837843147,
+   "center": {
+    "lat": 45.1748619,
+    "lon": 10.6737955
+   },
+   "tags": {
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "inground"
+   }
+  },
+  {
+   "type": "way",
+   "id": 837843155,
+   "center": {
+    "lat": 45.1809909,
+    "lon": 10.6780839
+   },
+   "tags": {
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "inground"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847451200,
+   "center": {
+    "lat": 45.1776917,
+    "lon": 10.658862
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847464899,
+   "center": {
+    "lat": 45.1798642,
+    "lon": 10.6600127
+   },
+   "tags": {
+    "name": "Duganella",
+    "waterway": "ditch"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847464910,
+   "center": {
+    "lat": 45.1853608,
+    "lon": 10.6770332
+   },
+   "tags": {
+    "landuse": "forest",
+    "leaf_cycle": "deciduous",
+    "leaf_type": "broadleaved",
+    "name": "Boschetto Montagnine (alto)"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847464911,
+   "center": {
+    "lat": 45.1872869,
+    "lon": 10.6758121
+   },
+   "tags": {
+    "landuse": "forest",
+    "leaf_cycle": "deciduous",
+    "leaf_type": "broadleaved",
+    "name": "Boschetto Montagnine"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847464912,
+   "center": {
+    "lat": 45.183214,
+    "lon": 10.6610025
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847464913,
+   "center": {
+    "lat": 45.1829898,
+    "lon": 10.6608997
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847887719,
+   "center": {
+    "lat": 45.1865653,
+    "lon": 10.6707326
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "cow",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847964384,
+   "center": {
+    "lat": 45.1753525,
+    "lon": 10.6592358
+   },
+   "tags": {
+    "leisure": "pitch"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847964385,
+   "center": {
+    "lat": 45.1755117,
+    "lon": 10.6601852
+   },
+   "tags": {
+    "leisure": "sports_centre"
+   }
+  },
+  {
+   "type": "way",
+   "id": 847964386,
+   "center": {
+    "lat": 45.1743368,
+    "lon": 10.6694767
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 851758083,
+   "center": {
+    "lat": 45.1630603,
+    "lon": 10.6659316
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Panicella"
+   }
+  },
+  {
+   "type": "way",
+   "id": 851758084,
+   "center": {
+    "lat": 45.1683749,
+    "lon": 10.6683727
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Bolzacchini"
+   }
+  },
+  {
+   "type": "way",
+   "id": 863994925,
+   "center": {
+    "lat": 45.1774991,
+    "lon": 10.6917764
+   },
+   "tags": {
+    "name": "Fossa lunga",
+    "waterway": "stream"
+   }
+  },
+  {
+   "type": "way",
+   "id": 865937564,
+   "center": {
+    "lat": 45.1954255,
+    "lon": 10.6782851
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "turkey",
+    "building": "farm",
+    "building:levels": "1",
+    "name:signed": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 868792614,
+   "center": {
+    "lat": 45.1893477,
+    "lon": 10.675945
+   },
+   "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "name": "Tesoro Living Resort"
+   }
+  },
+  {
+   "type": "way",
+   "id": 868792615,
+   "center": {
+    "lat": 45.1891264,
+    "lon": 10.6757157
+   },
+   "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "name": "Tesoro Living Resort"
+   }
+  },
+  {
+   "type": "way",
+   "id": 868792616,
+   "center": {
+    "lat": 45.1888986,
+    "lon": 10.6755216
+   },
+   "tags": {
+    "building": "yes",
+    "name": "Tesoro Living Resort",
+    "tourism": "hotel"
+   }
+  },
+  {
+   "type": "way",
+   "id": 868792621,
+   "center": {
+    "lat": 45.1907394,
+    "lon": 10.670132
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 886392705,
+   "center": {
+    "lat": 45.1800641,
+    "lon": 10.6774418
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "6",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "amenity": "restaurant",
+    "building": "yes",
+    "check_date": "2023-08-02",
+    "cuisine": "pizza;italian;regional",
+    "email": "lastella.mantova@gmail.com",
+    "name": "Pizzeria - Osteria \"La Stella\"",
+    "opening_hours": "Tu-Su 19:00-22:30",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+3903761410132"
+   }
+  },
+  {
+   "type": "way",
+   "id": 897611460,
+   "center": {
+    "lat": 45.181616,
+    "lon": 10.6755707
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 897611461,
+   "center": {
+    "lat": 45.1815823,
+    "lon": 10.6751753
+   },
+   "tags": {
+    "amenity": "parking",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 897611462,
+   "center": {
+    "lat": 45.1796837,
+    "lon": 10.6719402
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 901971145,
+   "center": {
+    "lat": 45.1661158,
+    "lon": 10.6819908
+   },
+   "tags": {
+    "ele": "26.1",
+    "landuse": "farmland",
+    "name": "Monte Perego"
+   }
+  },
+  {
+   "type": "way",
+   "id": 921741953,
+   "center": {
+    "lat": 45.1800422,
+    "lon": 10.6799706
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 921741954,
+   "center": {
+    "lat": 45.1799031,
+    "lon": 10.6799915
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 921741967,
+   "center": {
+    "lat": 45.1789129,
+    "lon": 10.6825125
+   },
+   "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "name": "Lavatoio",
+    "shelter_type": "lean_to"
+   }
+  },
+  {
+   "type": "way",
+   "id": 921741970,
+   "center": {
+    "lat": 45.1786196,
+    "lon": 10.6824936
+   },
+   "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "lean_to"
+   }
+  },
+  {
+   "type": "way",
+   "id": 927187957,
+   "center": {
+    "lat": 45.178103,
+    "lon": 10.6774714
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "inground"
+   }
+  },
+  {
+   "type": "way",
+   "id": 927187958,
+   "center": {
+    "lat": 45.1772781,
+    "lon": 10.6783383
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "10",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 928236708,
+   "center": {
+    "lat": 45.1807343,
+    "lon": 10.6823812
+   },
+   "tags": {
+    "leisure": "bird_hide",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 928240979,
+   "center": {
+    "lat": 45.1883948,
+    "lon": 10.6891795
+   },
+   "tags": {
+    "historic": "ruins",
+    "name": "Ponte della Ferradina"
+   }
+  },
+  {
+   "type": "way",
+   "id": 966867008,
+   "center": {
+    "lat": 45.1770482,
+    "lon": 10.6766258
+   },
+   "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "catholic",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "way",
+   "id": 967591711,
+   "center": {
+    "lat": 45.1757957,
+    "lon": 10.6805376
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "outdoor"
+   }
+  },
+  {
+   "type": "way",
+   "id": 967764817,
+   "center": {
+    "lat": 45.1767341,
+    "lon": 10.6811079
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 976618804,
+   "center": {
+    "lat": 45.1800744,
+    "lon": 10.6782497
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "38",
+    "addr:postcode": "46040",
+    "addr:street": "Via Filippo Turati",
+    "building": "yes",
+    "name": "Panificio Rota",
+    "shop": "bakery"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1026979096,
+   "center": {
+    "lat": 45.1776962,
+    "lon": 10.676227
+   },
+   "tags": {
+    "addr:city": "Rivalta sul Mincio",
+    "addr:housenumber": "2",
+    "addr:postcode": "46040",
+    "addr:street": "Via Panicella",
+    "amenity": "pharmacy",
+    "building": "yes",
+    "check_date": "2023-09-07",
+    "dispensing": "yes",
+    "drive_through": "no",
+    "healthcare": "pharmacy",
+    "internet_access": "no",
+    "name": "Farmacia Tona",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+390376653143",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1027057585,
+   "center": {
+    "lat": 45.1815519,
+    "lon": 10.6769832
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "7",
+    "capacity:disabled": "1",
+    "fee": "no",
+    "orientation": "parallel",
+    "parking": "street_side",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1027057586,
+   "center": {
+    "lat": 45.1818249,
+    "lon": 10.6769276
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "5",
+    "capacity:disabled": "1",
+    "fee": "no",
+    "orientation": "parallel",
+    "parking": "street_side",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1034142938,
+   "center": {
+    "lat": 45.1710751,
+    "lon": 10.6737273
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "40",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1034142940,
+   "center": {
+    "lat": 45.1708511,
+    "lon": 10.6743805
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1034142944,
+   "center": {
+    "lat": 45.1693455,
+    "lon": 10.6746773
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1034142946,
+   "center": {
+    "lat": 45.1702638,
+    "lon": 10.6739951
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1038980867,
+   "center": {
+    "lat": 45.1751907,
+    "lon": 10.6609748
+   },
+   "tags": {
+    "leisure": "swimming_pool",
+    "lit": "yes",
+    "name": "Il Pero"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1038980868,
+   "center": {
+    "lat": 45.1756904,
+    "lon": 10.6608871
+   },
+   "tags": {
+    "leisure": "garden",
+    "name": "Il Pero"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1038980869,
+   "center": {
+    "lat": 45.1749092,
+    "lon": 10.6599741
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1039535943,
+   "center": {
+    "lat": 45.1757452,
+    "lon": 10.6757433
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1040758957,
+   "center": {
+    "lat": 45.1627768,
+    "lon": 10.6660732
+   },
+   "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "cucina_tipica_mantovana",
+    "diet:local": "yes",
+    "name": "Corte Panicella"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1040758963,
+   "center": {
+    "lat": 45.1633595,
+    "lon": 10.6635453
+   },
+   "tags": {
+    "building": "yes",
+    "shop": "cheese"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1040758964,
+   "center": {
+    "lat": 45.1632241,
+    "lon": 10.6632793
+   },
+   "tags": {
+    "building": "yes",
+    "name": "Caseificio San Donato",
+    "shop": "cheese"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1040917681,
+   "center": {
+    "lat": 45.1643655,
+    "lon": 10.6631355
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1044251791,
+   "center": {
+    "lat": 45.1823159,
+    "lon": 10.6730418
+   },
+   "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "catholic",
+    "name": "Chiesetta di Santa Maria di Lourdes",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1044251792,
+   "center": {
+    "lat": 45.1801355,
+    "lon": 10.6701855
+   },
+   "tags": {
+    "amenity": "place_of_worship",
+    "building": "chapel",
+    "denomination": "catholic",
+    "name": "Cappella di Sant'Antonio",
+    "religion": "christian",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1080923758,
+   "center": {
+    "lat": 45.1953965,
+    "lon": 10.6798323
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202514,
+   "center": {
+    "lat": 45.1918132,
+    "lon": 10.6670927
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202515,
+   "center": {
+    "lat": 45.1917021,
+    "lon": 10.6673199
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202516,
+   "center": {
+    "lat": 45.1915975,
+    "lon": 10.6675381
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202517,
+   "center": {
+    "lat": 45.1910062,
+    "lon": 10.6666341
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202518,
+   "center": {
+    "lat": 45.1908729,
+    "lon": 10.667238
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1097202519,
+   "center": {
+    "lat": 45.1914335,
+    "lon": 10.6677816
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "animal_breeding": "pig",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1101701118,
+   "center": {
+    "lat": 45.1904534,
+    "lon": 10.6701586
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1101898543,
+   "center": {
+    "lat": 45.1971089,
+    "lon": 10.6845406
+   },
+   "tags": {
+    "landuse": "farmyard",
+    "name": "Corte Gerotto"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1104587222,
+   "center": {
+    "lat": 45.1800399,
+    "lon": 10.6802837
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1104587230,
+   "center": {
+    "lat": 45.1802225,
+    "lon": 10.6785318
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1104587231,
+   "center": {
+    "lat": 45.1802145,
+    "lon": 10.6783454
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1104587232,
+   "center": {
+    "lat": 45.1801923,
+    "lon": 10.6781938
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1108973953,
+   "center": {
+    "lat": 45.1852434,
+    "lon": 10.6777668
+   },
+   "tags": {
+    "landuse": "forest",
+    "leaf_cycle": "deciduous",
+    "leaf_type": "broadleaved",
+    "name": "Boschetto Montagnine (basso)"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1112869193,
+   "center": {
+    "lat": 45.1725154,
+    "lon": 10.6773046
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1112869194,
+   "center": {
+    "lat": 45.1722391,
+    "lon": 10.6773142
+   },
+   "tags": {
+    "description": "Filare di alberi da frutto",
+    "leaf_cycle": "deciduous",
+    "leaf_type": "broadleaved",
+    "name": "Brolo del Nonno",
+    "natural": "tree_row"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1112869195,
+   "center": {
+    "lat": 45.1716515,
+    "lon": 10.6754969
+   },
+   "tags": {
+    "building": "yes",
+    "second_hand": "only",
+    "shop": "car"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1115279672,
+   "center": {
+    "lat": 45.2010701,
+    "lon": 10.6816207
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155191,
+   "center": {
+    "lat": 45.177852,
+    "lon": 10.6761199
+   },
+   "tags": {
+    "access": "private",
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155192,
+   "center": {
+    "lat": 45.1780235,
+    "lon": 10.6764132
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "capacity": "4",
+    "capacity:disabled": "0",
+    "fee": "no",
+    "operator:type": "business",
+    "parking": "surface",
+    "surface": "concrete"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155211,
+   "center": {
+    "lat": 45.1782022,
+    "lon": 10.6769382
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "15",
+    "capacity:disabled": "0",
+    "fee": "no",
+    "orientation": "perpendicular",
+    "parking": "street_side",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155212,
+   "center": {
+    "lat": 45.1786268,
+    "lon": 10.676329
+   },
+   "tags": {
+    "access": "private",
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155213,
+   "center": {
+    "lat": 45.1784016,
+    "lon": 10.6761483
+   },
+   "tags": {
+    "access": "private",
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118155217,
+   "center": {
+    "lat": 45.178193,
+    "lon": 10.6763211
+   },
+   "tags": {
+    "access": "private",
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118282746,
+   "center": {
+    "lat": 45.1905248,
+    "lon": 10.679984
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1118282747,
+   "center": {
+    "lat": 45.190879,
+    "lon": 10.679184
+   },
+   "tags": {
+    "leisure": "park"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1147973128,
+   "center": {
+    "lat": 45.1788672,
+    "lon": 10.6808933
+   },
+   "tags": {
+    "area": "yes",
+    "name": "Piazza Silvio Arrivabene",
+    "place": "square",
+    "surface": "asphalt",
+    "wikipedia": "it:Silvio Arrivabene Valenti Gonzaga"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1150376259,
+   "center": {
+    "lat": 45.178669,
+    "lon": 10.6784147
+   },
+   "tags": {
+    "access": "permit",
+    "amenity": "parking",
+    "capacity": "4",
+    "capacity:disabled": "1",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1150376260,
+   "center": {
+    "lat": 45.1786763,
+    "lon": 10.6787339
+   },
+   "tags": {
+    "access": "permit",
+    "amenity": "parking",
+    "capacity": "5",
+    "capacity:disabled": "0",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1173817500,
+   "center": {
+    "lat": 45.1798946,
+    "lon": 10.6797937
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "orientation": "perpendicular",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1204751832,
+   "center": {
+    "lat": 45.1789301,
+    "lon": 10.6825141
+   },
+   "tags": {
+    "access": "yes",
+    "fee": "no",
+    "leisure": "slipway",
+    "surface": "concrete"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1249856585,
+   "center": {
+    "lat": 45.1784225,
+    "lon": 10.675657
+   },
+   "tags": {
+    "access": "private",
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1249856587,
+   "center": {
+    "lat": 45.1775759,
+    "lon": 10.6760792
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1249856588,
+   "center": {
+    "lat": 45.1776213,
+    "lon": 10.6762797
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1249862621,
+   "center": {
+    "lat": 45.1783403,
+    "lon": 10.6751766
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1253203235,
+   "center": {
+    "lat": 45.170707,
+    "lon": 10.6724552
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1360845050,
+   "center": {
+    "lat": 45.1808053,
+    "lon": 10.6813058
+   },
+   "tags": {
+    "access": "private",
+    "capacity": "35",
+    "fee": "yes",
+    "leisure": "marina",
+    "natural": "water",
+    "operator": "Comune di Rodigo",
+    "power_supply": "no",
+    "rental": "yes",
+    "sanitary_dump_station": "no",
+    "seamark:harbour:category": "marina",
+    "seamark:type": "harbour",
+    "water": "river"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1394189712,
+   "center": {
+    "lat": 45.1760806,
+    "lon": 10.6800474
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "outdoor"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1394189713,
+   "center": {
+    "lat": 45.1765439,
+    "lon": 10.6795026
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "outdoor"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1394189714,
+   "center": {
+    "lat": 45.1765717,
+    "lon": 10.6801507
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "location": "outdoor",
+    "swimming_pool": "outdoor"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1422871092,
+   "center": {
+    "lat": 45.1769546,
+    "lon": 10.6746079
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "lit": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1422871093,
+   "center": {
+    "lat": 45.1772031,
+    "lon": 10.6761438
+   },
+   "tags": {
+    "garden:type": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1422871097,
+   "center": {
+    "lat": 45.1774978,
+    "lon": 10.676485
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423492167,
+   "center": {
+    "lat": 45.172207,
+    "lon": 10.6770036
+   },
+   "tags": {
+    "access": "permit",
+    "amenity": "motorcycle_parking",
+    "capacity": "2",
+    "capacity:disabled": "0",
+    "covered": "no",
+    "operator": "Gruppo dei Terroni",
+    "operator:type": "private",
+    "parking": "layby",
+    "supervised": "no",
+    "surface": "concrete"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423493665,
+   "center": {
+    "lat": 45.1776235,
+    "lon": 10.6583987
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423493666,
+   "center": {
+    "lat": 45.1776608,
+    "lon": 10.6586328
+   },
+   "tags": {
+    "amenity": "animal_breeding",
+    "building": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423516990,
+   "center": {
+    "lat": 45.1781171,
+    "lon": 10.6738334
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423516991,
+   "center": {
+    "lat": 45.1783451,
+    "lon": 10.6736669
+   },
+   "tags": {
+    "access": "private",
+    "amenity": "parking",
+    "operator": "Mori",
+    "operator:type": "private",
+    "parking": "surface",
+    "surface": "gravel"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423516992,
+   "center": {
+    "lat": 45.1783181,
+    "lon": 10.6738149
+   },
+   "tags": {
+    "access": "private",
+    "amenity": "parking",
+    "layer": "-1",
+    "operator": "Mori",
+    "operator:type": "private",
+    "parking": "underground",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423516993,
+   "center": {
+    "lat": 45.1781671,
+    "lon": 10.6761952
+   },
+   "tags": {
+    "access": "private",
+    "amenity": "parking",
+    "capacity": "1",
+    "layer": "-1",
+    "operator": "Pecchini",
+    "operator:type": "private",
+    "parking": "underground",
+    "surface": "paved"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423517004,
+   "center": {
+    "lat": 45.1774323,
+    "lon": 10.6728128
+   },
+   "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "lit": "yes",
+    "location": "outdoor",
+    "swimming_pool": "swimming"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423517005,
+   "center": {
+    "lat": 45.1774564,
+    "lon": 10.6728467
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423517007,
+   "center": {
+    "lat": 45.1776199,
+    "lon": 10.6732979
+   },
+   "tags": {
+    "landuse": "orchard",
+    "name": "Francesca Cavicchini",
+    "operator": "Francesca Cavicchini"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423517017,
+   "center": {
+    "lat": 45.178517,
+    "lon": 10.6747502
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423517022,
+   "center": {
+    "lat": 45.1778438,
+    "lon": 10.6735344
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423812564,
+   "center": {
+    "lat": 45.1785024,
+    "lon": 10.6738206
+   },
+   "tags": {
+    "leisure": "garden"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1423846597,
+   "center": {
+    "lat": 45.178483,
+    "lon": 10.6613073
+   },
+   "tags": {
+    "amenity": "recycling",
+    "recycling:green_waste": "yes",
+    "recycling_type": "container"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1469557890,
+   "center": {
+    "lat": 45.1752695,
+    "lon": 10.6756096
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "capacity": "4",
+    "capacity:disabled": "0",
+    "fee": "no",
+    "orientation": "perpendicular",
+    "parking": "street_side",
+    "surface": "gravel"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1469557891,
+   "center": {
+    "lat": 45.1753718,
+    "lon": 10.6758216
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "capacity": "3",
+    "capacity:disabled": "0",
+    "orientation": "perpendicular",
+    "parking": "street_side"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1488896079,
+   "center": {
+    "lat": 45.174028,
+    "lon": 10.6736987
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1516036963,
+   "center": {
+    "lat": 45.1702942,
+    "lon": 10.6538529
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1516401468,
+   "center": {
+    "lat": 45.1671064,
+    "lon": 10.6530707
+   },
+   "tags": {
+    "leisure": "swimming_pool"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 6183263,
+   "center": {
+    "lat": 45.4715236,
+    "lon": 10.8062646
+   },
+   "tags": {
+    "destination": "Po",
+    "name": "Mincio",
+    "type": "waterway",
+    "waterway": "river",
+    "wikidata": "Q936688",
+    "wikipedia": "it:Mincio"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 9645619,
+   "center": {
+    "lat": 45.2459241,
+    "lon": 10.8247321
+   },
+   "tags": {
+    "leisure": "nature_reserve",
+    "name": "Parco del Mincio",
+    "type": "multipolygon",
+    "wikidata": "Q3364637"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 14886271,
+   "center": {
+    "lat": 45.171891,
+    "lon": 10.6773064
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Parco \"La Platana\"",
+    "opening_hours": "24/7",
+    "type": "multipolygon"
+   }
+  }
+ ]
+}

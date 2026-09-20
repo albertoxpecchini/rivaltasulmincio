@@ -14,7 +14,7 @@ export function searchForm(options: { id?: string } = {}): Html {
   </div>
   <p class="search__status" data-search-status aria-live="polite"></p>
   <ul class="search__results list-plain" data-search-results hidden></ul>
-  <p class="caption" id="${id}-aiuto">Fonti e articoli del giornale.</p>
+  <p class="caption" id="${id}-aiuto">Luoghi, fonti e articoli del giornale.</p>
   <noscript><p class="caption">La ricerca richiede JavaScript.</p></noscript>
 </form>`;
 }

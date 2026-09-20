@@ -76,7 +76,7 @@ function figure(article: JournalArticle): Html {
 function eventBlock(article: JournalArticle, now: Date): Html {
   const event = article.event;
   if (!event) return html``;
-  return html`<dl class="article__event">
+  return html`<dl class="facts">
     <div><dt>Data</dt><dd>${event.startsAt ? html`<time datetime="${event.startsAt}">${formatDate(event.startsAt)}</time>` : NOT_AVAILABLE}</dd></div>
     <div><dt>Ora</dt><dd>${event.startsAt ? formatTime(event.startsAt) : NOT_AVAILABLE}</dd></div>
     <div><dt>Luogo</dt><dd>${event.venue ?? article.location?.name ?? NOT_AVAILABLE}</dd></div>

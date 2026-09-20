@@ -5,9 +5,11 @@
  *   typography → gerarchia tipografica
  *   layout     → testata, sezioni, griglie, piè di pagina
  *   components → componenti riutilizzabili
+ *   map        → mappa, marker, categorie, luoghi (lo stile di Leaflet arriva con il suo chunk)
  */
 @import './tokens.css';
 @import './base.css';
 @import './typography.css';
 @import './layout.css';
 @import './components.css';
+@import './map.css';

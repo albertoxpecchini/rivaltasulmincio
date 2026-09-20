@@ -1,0 +1,400 @@
+/* ── Colori di categoria (COLORS.md «Categorie», territorio = terra, acqua = acqua) ─── */
+[data-category='attivita'] { --category-color: var(--category-business); }
+[data-category='servizi'] { --category-color: var(--category-services); }
+[data-category='cultura'] { --category-color: var(--category-culture); }
+[data-category='sport'] { --category-color: var(--category-sport); }
+[data-category='natura'] { --category-color: var(--category-nature); }
+[data-category='mobilita'] { --category-color: var(--category-mobility); }
+[data-category='storia'] { --category-color: var(--category-history); }
+[data-category='territorio'] { --category-color: var(--color-earth); }
+[data-category='acqua'] { --category-color: var(--color-water); }
+
+.category-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+  color: var(--category-color, var(--color-text-secondary));
+  vertical-align: middle;
+}
+
+.category-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  scroll-margin-top: var(--space-4);
+}
+
+.category-count {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.category-list {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.category-list a {
+  display: block;
+  padding-block: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.category-list a:hover .category-heading {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.category-list h3 {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ── Blocco mappa ───────────────────────────────────────────────────────── */
+.map-block {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.map-layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.map-canvas {
+  position: relative;
+  width: 100%;
+  height: min(60vh, 480px);
+  min-height: 320px;
+  background: var(--color-surface-warm);
+  border: var(--border-width-thin) solid var(--border-color);
+  font-family: var(--font-family-base);
+}
+
+.map-canvas--full {
+  height: min(70vh, 720px);
+}
+
+.map-canvas--single {
+  height: 280px;
+  min-height: 240px;
+}
+
+.map-canvas__fallback {
+  padding: var(--space-4);
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.map-block__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+
+/* Su schermi stretti la mappa completa occupa tutta la larghezza (RESPONSIVE.md «Matrice mappa»). */
+@media (max-width: 767px) {
+  .map-block--full .map-canvas {
+    width: calc(100% + 2 * var(--page-padding));
+    margin-inline: calc(-1 * var(--page-padding));
+    border-inline: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .map-block--full .map-layout {
+    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+    align-items: start;
+  }
+}
+
+/* ── Pannello ───────────────────────────────────────────────────────────── */
+.map-panel {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: var(--border-width-thin) solid var(--border-color);
+}
+
+.map-panel__empty,
+.map-panel__meta {
+  color: var(--color-text-secondary);
+}
+
+.map-panel__kind {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.map-panel__title {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.map-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ── Filtri ─────────────────────────────────────────────────────────────── */
+.map-filters summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding-inline: var(--space-3);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+  background: var(--color-surface);
+  border: var(--border-width-thin) solid var(--border-color-strong);
+}
+
+.map-filters[open] summary {
+  border-bottom-color: transparent;
+}
+
+.map-filters fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width-thin) solid var(--border-color);
+  background: var(--color-surface);
+}
+
+.map-filters__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding-inline: var(--space-2);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+}
+
+.map-filters__option input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.map-filters__count {
+  color: var(--color-text-secondary);
+}
+
+/* ── Marker (ICONS.md «Marker»: 24 base, 28 selezionato) ────────────────── */
+.map-marker-wrap {
+  background: none;
+  border: 0;
+}
+
+.map-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--category-color, var(--color-primary));
+  color: var(--color-surface);
+  border: 2px solid var(--color-surface);
+  box-shadow: 0 0 0 1px var(--map-label);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.map-marker .icon {
+  stroke-width: var(--icon-stroke-width-strong);
+}
+
+.leaflet-marker-icon.is-selected .map-marker,
+.leaflet-marker-icon:focus-visible .map-marker {
+  transform: scale(1.17);
+  box-shadow: 0 0 0 2px var(--map-label);
+}
+
+.leaflet-marker-icon:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Cluster: cerchio con il conteggio, si apre al clic o con Invio. */
+.map-cluster-wrap {
+  background: none;
+  border: 0;
+}
+
+.map-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border: 2px solid var(--color-surface);
+  box-shadow: 0 0 0 1px var(--map-label);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Leaflet eredita la tipografia del sito; i controlli restano leggibili e toccabili. */
+.leaflet-container {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+}
+
+.leaflet-container a {
+  color: var(--color-primary);
+}
+
+.leaflet-bar a {
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+}
+
+/* ── Elenco luoghi ──────────────────────────────────────────────────────── */
+.place-list {
+  display: grid;
+}
+
+.place-item {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-3);
+  border-bottom: var(--border-width-thin) solid var(--border-color-subtle);
+}
+
+.place-item__name {
+  font-weight: var(--font-weight-semibold);
+}
+
+.place-item__name a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.place-item__name a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.place-item__meta {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .place-item {
+    grid-template-columns: minmax(12rem, 1fr) 2fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+}
+
+.chip:hover {
+  background: var(--color-primary-soft);
+}
+
+/* ── Scheda luogo ───────────────────────────────────────────────────────── */
+.place {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 64rem;
+}
+
+.place__header {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.place__kind {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.place__layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .place__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.place__technical summary {
+  padding-block: var(--space-3);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+}
+
+.place__technical .table-wrap {
+  margin-top: var(--space-3);
+}
+
+.place__footer {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: var(--border-width-thin) solid var(--border-color-subtle);
+}
+
+/* ── Mappa in Home ──────────────────────────────────────────────────────── */
+.home-map {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.home-map__stat-label {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .home-map {
+    grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+    align-items: start;
+  }
+}

@@ -3,7 +3,7 @@
  *
  * Input:  dist/index.html (template con asset già hashati)
  *         dist/server/entry-server.js (rendering, percorsi, indice ricerca)
- * Output: dist/<percorso>/index.html, dist/404.html, dist/search-index.json
+ * Output: dist/<percorso>/index.html, dist/404.html e i feed JSON (search-index, places)
  *
  * Eseguito da Node direttamente come TypeScript (type stripping, Node ≥ 22.18).
  */
@@ -34,11 +34,15 @@ for (const route of routes) {
 }
 
 write(path.join(dist, '404.html'), entry.inject(template, entry.renderNotFound()));
-write(path.join(dist, 'search-index.json'), JSON.stringify(entry.searchIndex()));
+
+const feeds = Object.entries(entry.feeds());
+for (const [route, data] of feeds) {
+  write(path.join(dist, route.slice(1)), JSON.stringify(data));
+}
 
 fs.rmSync(serverDir, { recursive: true, force: true });
 
-console.log(`prerender: ${routes.length} pagine, 404.html, search-index.json`);
+console.log(`prerender: ${routes.length} pagine, 404.html, ${feeds.map(([route]) => route.slice(1)).join(', ')}`);
 
 function write(file: string, content: string): void {
   fs.mkdirSync(path.dirname(file), { recursive: true });

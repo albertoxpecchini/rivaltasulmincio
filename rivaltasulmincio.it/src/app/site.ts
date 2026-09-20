@@ -15,6 +15,7 @@ export const site = {
     { href: '/', label: 'Home' },
     { href: '/giornale', label: 'Giornale' },
     { href: '/mappa', label: 'Mappa' },
+    { href: '/luoghi', label: 'Luoghi' },
     { href: '/fonti', label: 'Fonti' },
   ],
 } as const;

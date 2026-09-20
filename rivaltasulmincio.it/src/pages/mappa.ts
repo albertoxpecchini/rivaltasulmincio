@@ -1,37 +1,48 @@
 import type { PageResult } from '../app/page';
-import { emptyState } from '../components/empty-state';
+import { mapBlock } from '../components/map';
+import { section } from '../components/section';
+import { sourceLabel } from '../components/source-label';
+import { MAP_ZOOM } from '../map/config';
+import { categoryHeading } from '../places/list';
+import { activePlaces, mapCenter, osmDataTimestamp, placesByCategory } from '../places/service';
+import { formatDate } from '../lib/dates';
 import { html } from '../lib/html';
-import { geodataSource } from '../services/sources';
 
-/**
- * Mappa: la rotta esiste perché è un accesso primario dell'atlante
- * (FUNDAMENTA.md, 404.md). Il motore cartografico e i dati arriveranno con
- * MAP.md e i dataset OSM; fino ad allora la pagina dichiara lo stato reale.
- */
+/** Mappa completa (FUNDAMENTA.md «MAPPA»): motore, dati e interfaccia separati; l'elenco testuale sta in /luoghi. */
 export function render(): PageResult {
-  const osm = geodataSource();
+  const groups = placesByCategory();
+  const total = activePlaces().length;
+  const osmTimestamp = osmDataTimestamp();
+
   return {
     title: 'Mappa',
-    description:
-      "La mappa di Rivalta sul Mincio: luoghi, strade, attività e servizi collegati ai dati dell'atlante.",
+    description: `La mappa di Rivalta sul Mincio: ${total} luoghi da OpenStreetMap, con scheda e collegamento all'elemento originale.`,
     main: html`
       <div class="page-header">
         <h1>Mappa</h1>
-        <p class="lead">La mappa collega ogni luogo di Rivalta sul Mincio alle sue coordinate, alle entità dell'atlante e alla relativa scheda.</p>
+        <p class="lead">Ogni marker è un luogo censito in OpenStreetMap entro il paese e la campagna vicina. Selezionalo per aprire la scheda; l'elenco completo è in <a href="/luoghi">Luoghi</a>.</p>
       </div>
-      ${emptyState({
-        title: 'Mappa interattiva non ancora disponibile',
-        text: 'I dati cartografici del progetto sono in preparazione. Ogni luogo resterà consultabile anche come contenuto testuale, senza dipendere dalla mappa.',
+      ${mapBlock({
+        id: 'mappa',
+        mode: 'full',
+        center: mapCenter(),
+        zoom: MAP_ZOOM.village,
+        label: 'Mappa di Rivalta sul Mincio',
+        filters: groups.map((group) => ({ category: group.category, count: group.places.length })),
+        updatedAt: osmTimestamp ? formatDate(osmTimestamp) : undefined,
       })}
-      ${
-        osm
-          ? html`<p class="source-label">Base cartografica prevista: <a href="${osm.url}" rel="noopener noreferrer">${osm.name}</a>${
-              osm.attribution
-                ? html`<span><a href="${osm.attributionUrl}" rel="noopener noreferrer">${osm.attribution}</a></span>`
-                : ''
-            }${osm.license ? html`<span>${osm.license}</span>` : ''}</p>`
-          : ''
-      }
+      ${section({
+        id: 'categorie',
+        title: 'Luoghi per categoria',
+        intro: `${total} luoghi nell'area del paese.`,
+        body: html`<ul class="category-list list-plain">
+          ${groups.map(
+            (group) => html`<li><a href="/luoghi#${group.category}">${categoryHeading(group.category, group.places.length, 3)}</a></li>`,
+          )}
+        </ul>`,
+        more: { href: '/luoghi', label: 'Elenco completo' },
+      })}
+      ${sourceLabel({ source: { name: 'OpenStreetMap', sourceId: 'source-007' }, updatedAt: osmTimestamp })}
     `,
   };
 }

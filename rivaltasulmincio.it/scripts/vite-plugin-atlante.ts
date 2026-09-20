@@ -6,7 +6,6 @@ import type { Plugin } from 'vite';
 type EntryServer = typeof import('../src/entry-server');
 
 const ENTRY = '/src/entry-server.ts';
-const SEARCH_INDEX = '/search-index.json';
 const NOT_FOUND_URL = '/404';
 
 /**
@@ -37,10 +36,13 @@ export function atlante(): Plugin {
         server.middlewares.use(async (req, res, next) => {
           const url = requestPath(req.originalUrl ?? req.url);
           try {
-            if (url === SEARCH_INDEX) {
+            if (url.endsWith('.json')) {
               const entry = (await server.ssrLoadModule(ENTRY)) as EntryServer;
-              sendJson(res, entry.searchIndex());
-              return;
+              const feeds = entry.feeds();
+              if (url in feeds) {
+                sendJson(res, feeds[url]);
+                return;
+              }
             }
             if (!wantsHtml(req.headers.accept)) return next();
             await renderPage(res, isDecodable(url) ? url : NOT_FOUND_URL);
