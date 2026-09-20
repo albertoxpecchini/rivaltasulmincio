@@ -32,7 +32,8 @@ export function mapBlock(options: {
     ${canvas}
     ${
       mode === 'full'
-        ? html`<aside class="map-panel" id="${id}-pannello" aria-label="Luogo selezionato" aria-live="polite">
+        ? html`<aside class="map-panel" id="${id}-pannello" aria-labelledby="${id}-pannello-titolo" aria-live="polite">
+      <h2 class="visually-hidden" id="${id}-pannello-titolo">Luogo selezionato</h2>
       <p class="map-panel__empty">Seleziona un luogo sulla mappa.</p>
     </aside>`
         : ''

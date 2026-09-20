@@ -11,7 +11,7 @@ import { homeSelection } from '../journal/service';
 import { formatDate } from '../lib/dates';
 import { html } from '../lib/html';
 import { MAP_ZOOM } from '../map/config';
-import { categoryHeading } from '../places/list';
+import { categoryLine } from '../places/list';
 import { activePlaces, mapCenter, osmDataTimestamp, placesByCategory } from '../places/service';
 import { isOfficial, listSources } from '../services/sources';
 
@@ -45,7 +45,7 @@ export function render(): PageResult {
       <p class="stat">${activePlaces().length}</p>
       <p class="home-map__stat-label">luoghi censiti in OpenStreetMap</p>
       <ul class="category-list list-plain">
-        ${groups.map((group) => html`<li><a href="/luoghi#${group.category}">${categoryHeading(group.category, group.places.length, 3)}</a></li>`)}
+        ${groups.map((group) => html`<li><a href="/luoghi#${group.category}">${categoryLine(group.category, group.places.length)}</a></li>`)}
       </ul>
     </div>
   </div>`;

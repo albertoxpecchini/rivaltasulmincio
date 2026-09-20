@@ -18,10 +18,12 @@ export function placeList(places: Place[]): Html {
 </ul>`;
 }
 
-export function categoryHeading(category: PlaceCategory, count: number, level: 2 | 3 = 2): Html {
+export function categoryHeading(category: PlaceCategory, count: number): Html {
+  return html`<h2 class="category-heading" id="${category}">${categoryLine(category, count)}</h2>`;
+}
+
+/** Contrassegno, etichetta e conteggio di una categoria: per link ed elenchi, non è un titolo. */
+export function categoryLine(category: PlaceCategory, count: number): Html {
   const info = PLACE_CATEGORIES[category];
-  const inner = html`${categoryMark(category, 18)} ${info.label} <span class="category-count tabular">${count}</span>`;
-  return level === 2
-    ? html`<h2 class="category-heading" id="${category}">${inner}</h2>`
-    : html`<h3 class="category-heading" id="${category}">${inner}</h3>`;
+  return html`<span class="category-line">${categoryMark(category, 18)} ${info.label} <span class="category-count tabular">${count}</span></span>`;
 }

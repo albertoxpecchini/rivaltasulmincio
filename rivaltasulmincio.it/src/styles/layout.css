@@ -16,7 +16,7 @@
   display: inline-flex;
   align-items: center;
   min-height: var(--touch-target);
-  font-size: 1.05rem;
+  font-size: var(--font-size-body);
 }
 
 .site-nav ul {
@@ -30,7 +30,8 @@
   align-items: center;
   min-height: var(--touch-target);
   padding-inline: var(--space-3);
-  font-size: 0.9rem;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-ui);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-secondary);
   text-decoration: none;

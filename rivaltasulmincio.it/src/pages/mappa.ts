@@ -3,7 +3,7 @@ import { mapBlock } from '../components/map';
 import { section } from '../components/section';
 import { sourceLabel } from '../components/source-label';
 import { MAP_ZOOM } from '../map/config';
-import { categoryHeading } from '../places/list';
+import { categoryLine } from '../places/list';
 import { activePlaces, mapCenter, osmDataTimestamp, placesByCategory } from '../places/service';
 import { formatDate } from '../lib/dates';
 import { html } from '../lib/html';
@@ -37,7 +37,7 @@ export function render(): PageResult {
         intro: `${total} luoghi nell'area del paese.`,
         body: html`<ul class="category-list list-plain">
           ${groups.map(
-            (group) => html`<li><a href="/luoghi#${group.category}">${categoryHeading(group.category, group.places.length, 3)}</a></li>`,
+            (group) => html`<li><a href="/luoghi#${group.category}">${categoryLine(group.category, group.places.length)}</a></li>`,
           )}
         </ul>`,
         more: { href: '/luoghi', label: 'Elenco completo' },

@@ -7,7 +7,9 @@ import type { MapPlace } from '../types';
  * Costruito con il DOM, mai con HTML interpolato: i testi vengono dai dati.
  */
 export function renderPanel(panel: HTMLElement, place: MapPlace | null): void {
-  panel.replaceChildren();
+  // Il titolo dell'aside (h2, nascosto alla vista) resta: il luogo è un h3 sotto di esso.
+  const heading = panel.querySelector('h2');
+  panel.replaceChildren(...(heading ? [heading] : []));
   if (!place) {
     panel.append(el('p', { class: 'map-panel__empty' }, 'Seleziona un luogo sulla mappa.'));
     return;
@@ -16,7 +18,7 @@ export function renderPanel(panel: HTMLElement, place: MapPlace | null): void {
   const label = place.name ?? (place.street ? `${place.kind} · ${place.street}` : place.kind);
   panel.append(
     el('p', { class: 'map-panel__kind' }, el('span', { class: 'label' }, categoryLabel(place.category)), ' · ', place.kind),
-    el('h2', { class: 'map-panel__title' }, label),
+    el('h3', { class: 'map-panel__title' }, label),
   );
   if (place.name && place.street) panel.append(el('p', { class: 'map-panel__meta' }, place.street));
 

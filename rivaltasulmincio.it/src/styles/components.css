@@ -6,7 +6,7 @@
   gap: var(--space-2);
   min-height: var(--touch-target);
   padding: 10px 16px;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-ui);
   text-decoration: none;
@@ -58,7 +58,6 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-ui);
-  letter-spacing: 0.02em;
   background: var(--color-primary-light);
   color: var(--color-primary-dark);
 }
@@ -230,12 +229,6 @@
   text-decoration: underline;
 }
 
-.journal-card--lead .journal-card__title {
-  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-}
-
 .journal-card__excerpt {
   color: var(--color-text-secondary);
 }
@@ -290,6 +283,7 @@
 .facts dd {
   margin: 0;
   overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
 }
 
 .article .facts {
@@ -398,6 +392,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--font-size-small);
+  font-variant-numeric: tabular-nums;
 }
 
 .table th,
@@ -405,6 +400,11 @@
   padding: 12px 16px;
   text-align: left;
   vertical-align: top;
+}
+
+/* Colonne numeriche a destra, intestazione compresa (TYPOGRAPHY.md «Tabelle»). */
+.table .num {
+  text-align: right;
 }
 
 .table th {
@@ -428,23 +428,21 @@
   padding-block: clamp(1rem, 6vw, 4rem);
 }
 
+/* Il titolo è un solo h1 («404 Pagina non trovata»): il numero pesa come una statistica, il testo come un h2. */
 .not-found h1 {
   display: grid;
   gap: var(--space-2);
 }
 
 .not-found__code {
-  font-size: clamp(3rem, 10vw, 6rem);
-  line-height: 0.95;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.04em;
   color: var(--color-primary);
 }
 
 .not-found__title {
-  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  letter-spacing: var(--letter-spacing-h2);
+  font-weight: var(--font-weight-heading);
 }
 
 @media (min-width: 1024px) {

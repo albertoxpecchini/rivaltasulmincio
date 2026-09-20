@@ -92,7 +92,7 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
 function currentBlock(data: WeatherData, full: boolean): HTMLElement[] {
   const nodes: HTMLElement[] = [];
   const headline = el('div', { class: 'weather__headline' });
-  headline.append(el('p', { class: 'weather__temperature' }, data.temperature == null ? NOT_AVAILABLE : `${format(data.temperature, 1)}°`));
+  headline.append(el('p', { class: 'stat weather__temperature' }, data.temperature == null ? NOT_AVAILABLE : `${format(data.temperature, 1)}°`));
   if (data.condition) headline.append(conditionNode(data.condition, 28));
   nodes.push(headline);
 
@@ -125,7 +125,7 @@ function hourlyTable(hours: HourlyForecast[]): HTMLElement {
   const upcoming = hours.filter((h) => h.time >= now.slice(0, 13) + ':00').slice(0, HOURLY_ROWS);
   if (upcoming.length === 0) return el('p', { class: 'text-small' }, 'Nessuna ora futura nella previsione disponibile.');
   return table(
-    ['Ora', 'Condizione', 'Temperatura', 'Pioggia', 'Vento', 'Umidità'],
+    [['Ora'], ['Condizione'], ['Temperatura', true], ['Pioggia', true], ['Vento', true], ['Umidità', true]],
     upcoming.map((h) => [
       el('th', { scope: 'row', class: 'tabular' }, dayPrefix(h.time.slice(0, 10), now.slice(0, 10)) + h.time.slice(11, 16)),
       h.condition ? conditionNode(h.condition, 20) : NOT_AVAILABLE,
@@ -142,7 +142,7 @@ function dailyTable(days: DailyForecast[]): HTMLElement {
   const upcoming = days.filter((d) => d.date >= today);
   if (upcoming.length === 0) return el('p', { class: 'text-small' }, 'Nessun giorno futuro nella previsione disponibile.');
   return table(
-    ['Giorno', 'Condizione', 'Minima', 'Massima', 'Pioggia', 'Vento max', 'UV max'],
+    [['Giorno'], ['Condizione'], ['Minima', true], ['Massima', true], ['Pioggia', true], ['Vento max', true], ['UV max', true]],
     upcoming.map((d) => [
       el('th', { scope: 'row' }, dayLabel(d.date, today)),
       d.condition ? conditionNode(d.condition, 20) : NOT_AVAILABLE,
@@ -155,16 +155,20 @@ function dailyTable(days: DailyForecast[]): HTMLElement {
   );
 }
 
-function table(headers: string[], rows: (string | HTMLElement)[][]): HTMLElement {
+/** Colonne `[etichetta, numerica]`: le numeriche sono allineate a destra (TYPOGRAPHY.md «Tabelle»). */
+function table(headers: [string, boolean?][], rows: (string | HTMLElement)[][]): HTMLElement {
   const wrap = el('div', { class: 'table-wrap' });
   const tableNode = el('table', { class: 'table weather-table' });
   const head = el('tr', {});
-  for (const label of headers) head.append(el('th', { scope: 'col' }, label));
+  for (const [label, numeric] of headers) head.append(el('th', numeric ? { scope: 'col', class: 'num' } : { scope: 'col' }, label));
   tableNode.append(el('thead', {}, head));
   const body = el('tbody', {});
   for (const cells of rows) {
     const tr = el('tr', {});
-    for (const cell of cells) tr.append(cell instanceof HTMLElement && cell.tagName === 'TH' ? cell : el('td', {}, cell));
+    cells.forEach((cell, index) => {
+      if (cell instanceof HTMLElement && cell.tagName === 'TH') tr.append(cell);
+      else tr.append(el('td', headers[index]?.[1] ? { class: 'num' } : {}, cell));
+    });
     body.append(tr);
   }
   tableNode.append(body);

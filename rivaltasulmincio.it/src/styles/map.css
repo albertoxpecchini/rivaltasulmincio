@@ -45,13 +45,16 @@
   color: var(--color-text);
 }
 
-.category-list a:hover .category-heading {
+.category-list a:hover .category-line {
   color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
-.category-list h3 {
-  font-size: var(--font-size-body);
+/* Riga di categoria dentro un link: non è un titolo, è un'etichetta con conteggio. */
+.category-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -131,12 +134,6 @@
 .map-panel__kind {
   font-size: var(--font-size-small);
   color: var(--color-text-secondary);
-}
-
-.map-panel__title {
-  font-size: 1.25rem;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
 }
 
 .map-panel__actions {
@@ -249,7 +246,7 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: var(--line-height-ui);
 }
 
 /* Leaflet eredita la tipografia del sito; i controlli restano leggibili e toccabili. */
@@ -262,6 +259,7 @@
   color: var(--color-primary);
 }
 
+/* Controlli di zoom: misura del bersaglio, non tipografia (Leaflet centra il glifo con line-height). */
 .leaflet-bar a {
   width: 34px;
   height: 34px;
