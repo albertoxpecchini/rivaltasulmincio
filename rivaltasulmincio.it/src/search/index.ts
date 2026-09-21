@@ -1,3 +1,4 @@
+import { posterFor, posters } from '../data/posters';
 import { archiveArticles, articlePath } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
 import { formatAddress, namedPlaces } from '../places/service';
@@ -11,13 +12,33 @@ import type { SearchEntry } from '../types';
  * Viene scritto in `search-index.json` a build time e letto dal client.
  */
 export function buildSearchIndex(now = new Date()): SearchEntry[] {
-  const articoli: SearchEntry[] = archiveArticles(now).map((article) => ({
+  const visibili = archiveArticles(now);
+
+  const articoli: SearchEntry[] = visibili.map((article) => ({
     id: article.id,
     kind: journalTypeLabel(article.type),
     title: article.title,
     text: [article.excerpt, article.location?.name, ...(article.tags ?? [])].filter(Boolean).join(' '),
     url: articlePath(article),
   }));
+
+  /*
+   * Le locandine sono pagine a sé: ci si arriva cercando l'orario, il menù o il
+   * nome di una contrada, che nell'articolo non compaiono tutti.
+   */
+  const locandine: SearchEntry[] = visibili.flatMap((article) => {
+    const poster = posterFor(article.slug);
+    if (!poster) return [];
+    return [
+      {
+        id: poster.id,
+        kind: 'Locandina',
+        title: `Locandina · ${article.title}`,
+        text: posterText(poster),
+        url: `${articlePath(article)}/locandina`,
+      },
+    ];
+  });
 
   const luoghi: SearchEntry[] = namedPlaces()
     .filter((place) => place.status === 'active')
@@ -38,5 +59,24 @@ export function buildSearchIndex(now = new Date()): SearchEntry[] {
     official: isOfficial(source) || undefined,
   }));
 
-  return [...articoli, ...luoghi, ...fonti];
+  return [...articoli, ...locandine, ...luoghi, ...fonti];
+}
+
+/** Il testo cercabile di una locandina: programma, menù, contrade, promotori. */
+function posterText(poster: (typeof posters)[number]): string {
+  return [
+    poster.kicker,
+    poster.dates,
+    ...poster.days.flatMap((day) => [day.heading, ...day.entries.map((entry) => `${entry.time} ${entry.text}`)]),
+    poster.highlight,
+    poster.music?.text,
+    ...(poster.menu?.courses.map((course) => course.text) ?? []),
+    ...(poster.menu?.prices.map((price) => `${price.label} ${price.value}`) ?? []),
+    poster.booking?.title,
+    ...(poster.booking?.contacts.map((contact) => `${contact.name} ${contact.phone}`) ?? []),
+    ...(poster.contrade?.items.map((contrada) => contrada.name) ?? []),
+    poster.credits.text,
+  ]
+    .filter(Boolean)
+    .join(' ');
 }

@@ -8,6 +8,7 @@
  *   components → pannelli, pulsanti, badge, ricerca, giornale, dati, fonti, tabelle, 404
  *   map        → mappa, marker, categorie, luoghi (lo stile di Leaflet arriva con il suo chunk)
  *   weather    → meteo
+ *   poster     → locandine degli eventi (identità grafica propria, confinata a .poster)
  */
 @import './fonts.css';
 @import './tokens.css';
@@ -17,3 +18,4 @@
 @import './components.css';
 @import './map.css';
 @import './weather.css';
+@import './poster.css';

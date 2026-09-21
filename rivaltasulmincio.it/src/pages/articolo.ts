@@ -2,7 +2,9 @@ import type { PageContext, PageResult } from '../app/page';
 import { site } from '../app/site';
 import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
+import { posterFor } from '../data/posters';
 import { statusTags } from '../journal/card';
+import { posterImage } from '../journal/poster';
 import { archiveArticles, articlePath, findArticle, isEventOver } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
 import { formatDate, formatTime, yearMonth } from '../lib/dates';
@@ -44,7 +46,7 @@ export function render({ params }: PageContext): PageResult | null {
       ${article.location?.name ? html`<span>Luogo ${article.location.name}</span>` : ''}
     </p>
   </header>
-  ${figure(article)}
+  ${poster(article)}
   ${eventBlock(article, now)}
   <div class="article__body prose">${paragraphs.map((paragraph) => html`<p>${paragraph}</p>`)}</div>
   ${
@@ -63,6 +65,22 @@ export function render({ params }: PageContext): PageResult | null {
   </footer>
 </article>`,
   };
+}
+
+/**
+ * Apertura dell'articolo: quando esiste una locandina si mostra quella, con il
+ * collegamento al visualizzatore dove il programma è testo vero; altrimenti
+ * l'immagine dell'articolo.
+ */
+function poster(article: JournalArticle): Html {
+  const sheet = posterFor(article.slug);
+  if (!sheet) return figure(article);
+  return html`<figure class="article__figure">
+    <a href="${articlePath(article)}/locandina">${posterImage(sheet, { loading: 'eager' })}</a>
+    <figcaption class="caption">
+      <a href="${articlePath(article)}/locandina">Apri la locandina</a> — il programma completo, che si legge, si cerca e si stampa.
+    </figcaption>
+  </figure>`;
 }
 
 function figure(article: JournalArticle): Html {

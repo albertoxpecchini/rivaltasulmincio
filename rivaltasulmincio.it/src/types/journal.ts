@@ -97,6 +97,9 @@ export type JournalArticle = {
     alt: string;
     caption?: string;
     credit?: string;
+    /** Dimensioni reali: riservano lo spazio e dicono se l'immagine è verticale. */
+    width?: number;
+    height?: number;
   };
 
   gallery?: string[];

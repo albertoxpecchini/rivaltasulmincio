@@ -1,0 +1,159 @@
+[
+  {
+    "id": "poster-001",
+    "articleSlug": "sagra-dei-patroni-palio-delle-contrade-2026",
+    "kicker": "Sagra dei Patroni · Festa patronale",
+    "title": ["Palio delle", "Contrade"],
+    "place": "a Rivalta sul Mincio",
+    "dates": "sabato 26 e domenica 27 settembre 2026",
+    "days": [
+      {
+        "id": "sabato",
+        "heading": "Sabato 26 settembre",
+        "date": "2026-09-26",
+        "color": "#15608f",
+        "entries": [
+          {
+            "time": "15:00",
+            "text": "Ritrovo al parcheggio delle scuole (Via Tezzone, 34), poi sfilata coi tamburini per il paese",
+            "strong": ["sfilata coi tamburini"]
+          },
+          {
+            "time": "16:00",
+            "text": "Giochi di una volta a Fondo Mincio",
+            "strong": ["Giochi di una volta"]
+          },
+          {
+            "time": "18:00",
+            "text": "Regata finale sul Mincio",
+            "strong": ["Regata finale"]
+          },
+          {
+            "time": "a seguire",
+            "text": "Risotto per tutti, offerto dall’AVIS di Rivalta",
+            "strong": ["Risotto per tutti"],
+            "note": {
+              "label": "Su prenotazione:",
+              "text": "Alessandra 349 066 9030 · Elena 347 554 8145"
+            }
+          }
+        ]
+      },
+      {
+        "id": "domenica",
+        "heading": "Domenica 27 settembre",
+        "date": "2026-09-27",
+        "color": "#0f8a4d",
+        "entries": [
+          {
+            "time": "11:00",
+            "text": "Santa Messa in chiesa parrocchiale",
+            "strong": ["Santa Messa"]
+          },
+          {
+            "time": "12:30",
+            "text": "Pranzo dei Patroni nel cortile parrocchiale",
+            "strong": ["Pranzo dei Patroni"]
+          }
+        ]
+      }
+    ],
+    "menu": {
+      "title": "Il menù",
+      "courses": [
+        { "text": "Antipasto a cura dell’ANSPI" },
+        { "text": "Agnoli in brodo", "strong": true },
+        { "text": "Arrosto con contorno", "strong": true },
+        { "text": "Grana con uva" },
+        { "text": "Dolci da forno, caffè e grappa" }
+      ],
+      "note": "acqua e vino inclusi",
+      "prices": [
+        { "label": "Adulti", "value": "25 €" },
+        { "label": "11-17 anni", "value": "15 €" },
+        { "label": "Fino a 10 anni", "value": "gratis" }
+      ]
+    },
+    "music": {
+      "kicker": "Alla sera un po’ di musica dal vivo",
+      "text": "con Anna & Max (Massimo Minotti)",
+      "strong": ["Anna & Max", "Massimo Minotti"],
+      "logo": "/loghi/anna-e-max-256.webp"
+    },
+    "highlight": "Bancarelle per tutta la giornata",
+    "booking": {
+      "kicker": "Pranzo dei Patroni · domenica 27, ore 12.30",
+      "title": "Prenotazione obbligatoria",
+      "note": "Iscrizioni entro il 22 settembre, segnalare le intolleranze",
+      "contacts": [
+        { "name": "Sabrina", "phone": "348 275 2442" },
+        { "name": "Paola", "phone": "338 459 4771" }
+      ]
+    },
+    "contrade": {
+      "label": "Le sei contrade",
+      "items": [
+        {
+          "id": "filanda",
+          "name": "la Filanda",
+          "color": "#1a6fa8",
+          "logo": "/loghi/contrada-filanda-256.webp"
+        },
+        {
+          "id": "roccolo",
+          "name": "il Roccolo",
+          "color": "#128a52",
+          "logo": "/loghi/contrada-roccolo-256.webp"
+        },
+        {
+          "id": "colonie",
+          "name": "le Colonie",
+          "color": "#1a5fa0",
+          "logo": "/loghi/contrada-colonie-256.webp"
+        },
+        {
+          "id": "piasaroi",
+          "name": "i Piasaröi",
+          "color": "#f9b428",
+          "ink": "dark",
+          "logo": "/loghi/contrada-piasaroi-256.webp"
+        },
+        {
+          "id": "platana",
+          "name": "la Plàtana",
+          "color": "#8e4ac2",
+          "logo": "/loghi/contrada-platana-256.webp"
+        },
+        {
+          "id": "fanfane",
+          "name": "le Fanfane",
+          "color": "#c9530f",
+          "logo": "/loghi/contrada-fanfane-256.webp"
+        }
+      ]
+    },
+    "credits": {
+      "text": "Con il patrocinio del Comune di Rodigo e la collaborazione di Parrocchia, ANSPI e AVIS di Rivalta",
+      "strong": ["Comune di Rodigo"]
+    },
+    "links": ["rivaltasulmincio.it/palio-delle-contrade", "rivaltasulmincio.it/sagra-patroni"],
+    "logos": [
+      {
+        "name": "Comune di Rodigo",
+        "src": "/loghi/comune-rodigo-256.webp",
+        "width": 49,
+        "height": 62
+      },
+      { "name": "AVIS di Rivalta", "src": "/loghi/avis-256.webp", "width": 58, "height": 39 },
+      { "name": "Parrocchia di Rivalta", "src": "/loghi/parrocchia-256.webp", "width": 48, "height": 48 },
+      { "name": "ANSPI", "src": "/loghi/anspi-384.webp", "width": 97, "height": 34 }
+    ],
+    "image": {
+      "src": "/foto/sagra/locandina-sagra-patroni-2026-2200.webp",
+      "widths": [480, 720, 960, 1440, 1600, 2200],
+      "width": 2200,
+      "height": 3112,
+      "alt": "Locandina della Sagra dei Patroni e del Palio delle Contrade 2026 a Rivalta sul Mincio, con il programma di sabato 26 e domenica 27 settembre"
+    }
+  }
+]

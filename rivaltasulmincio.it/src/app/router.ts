@@ -2,6 +2,7 @@ import * as articolo from '../pages/articolo';
 import * as fonti from '../pages/fonti';
 import * as giornale from '../pages/giornale';
 import * as home from '../pages/home';
+import * as locandina from '../pages/locandina';
 import * as luoghi from '../pages/luoghi';
 import * as luogo from '../pages/luogo';
 import * as mappa from '../pages/mappa';
@@ -19,6 +20,7 @@ export const routes: Route[] = [
   { pattern: '/', page: home },
   { pattern: '/giornale', page: giornale },
   { pattern: '/giornale/:year/:month/:slug', page: articolo },
+  { pattern: '/giornale/:year/:month/:slug/locandina', page: locandina },
   { pattern: '/mappa', page: mappa },
   { pattern: '/luoghi', page: luoghi },
   { pattern: '/luoghi/:slug', page: luogo },

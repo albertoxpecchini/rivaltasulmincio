@@ -22,7 +22,7 @@ export function journalLead(article: JournalArticle, options: { now: Date; level
     <time class="panel__meta" datetime="${article.publishedAt}">${formatDateShort(article.publishedAt)}</time>
   </div>
   <div class="panel__body">
-    ${article.image ? html`<img class="journal-lead__image" src="${article.image.src}" alt="${article.image.alt}" />` : ''}
+    ${leadImage(article)}
     ${title}
     ${article.excerpt ? html`<p class="journal-lead__excerpt">${article.excerpt}</p>` : ''}
   </div>
@@ -32,6 +32,26 @@ export function journalLead(article: JournalArticle, options: { now: Date; level
     ${article.source?.name ? html`<span>Fonte: ${article.source.name}</span>` : ''}
   </div>
 </article>`;
+}
+
+/**
+ * Immagine dell'articolo principale. Un'immagine verticale — tipicamente una
+ * locandina — non si taglia in 16/9, che le toglierebbe il titolo: tiene il
+ * proprio rapporto (`--portrait`).
+ */
+function leadImage(article: JournalArticle): Html {
+  const image = article.image;
+  if (!image) return html``;
+  const portrait = image.width && image.height ? image.height > image.width : false;
+  return html`<img
+    class="journal-lead__image${portrait ? ' journal-lead__image--portrait' : ''}"
+    src="${image.src}"
+    alt="${image.alt}"
+    ${image.width ? html`width="${image.width}"` : ''}
+    ${image.height ? html`height="${image.height}"` : ''}
+    loading="lazy"
+    decoding="async"
+  />`;
 }
 
 /** Articolo secondario come riga d'archivio: data · tipo · titolo · fonte. */

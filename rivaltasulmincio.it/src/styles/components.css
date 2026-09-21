@@ -409,6 +409,21 @@
   border-radius: var(--radius-sm);
 }
 
+/*
+ * Immagine verticale (una locandina): il taglio 16/9 le toglierebbe il titolo,
+ * quindi tiene il proprio rapporto sotto un tetto d'altezza e si centra nella
+ * colonna.
+ */
+.journal-lead__image--portrait {
+  display: block;
+  aspect-ratio: auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 30rem;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
 .journal-lead__excerpt {
   color: var(--color-text-secondary);
 }
