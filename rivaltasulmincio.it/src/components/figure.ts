@@ -8,7 +8,12 @@ import type { PlaceImage } from '../types';
  * caricamento così la pagina non salta.
  */
 
-const SIZES = '(max-width: 48rem) 100vw, 36rem';
+/*
+ * Quanto spazio occupa davvero la figura: tutta la larghezza sotto i 64rem
+ * della scheda, poi i 64rem pieni. Su schermo a densità doppia il browser
+ * sale da sé alle varianti grandi, che per questo ci sono tutte.
+ */
+const SIZES = '(max-width: 64rem) 100vw, 64rem';
 
 function srcset(image: PlaceImage): string {
   const stem = image.src.replace(/-\d+\.webp$/, '');

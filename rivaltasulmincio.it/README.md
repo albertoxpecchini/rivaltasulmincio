@@ -52,8 +52,8 @@ Tre strati separati (FUNDAMENTA.md «MAPPA»):
 Fotografie originali del progetto, riprese dal sito precedente (IMAGES.md).
 
 - **dati** — `data/images/place-images.json`: una voce per luogo fotografato, legata a `Place.slug`. Contiene alt text, dimensioni reali della variante più grande e le larghezze disponibili; l'alt descrive il contenuto reale, non «foto di».
-- **file** — `public/foto/luoghi/<slug>-<larghezza>.webp`, quattro larghezze (480, 720, 960, 1440). Le varianti 1600 e 2200 dell'archivio non servono a una scheda e non sono state riportate.
-- **interfaccia** — `src/components/figure.ts` costruisce `srcset`/`sizes` dalle larghezze; `src/places/images.ts` dice se un luogo ha una fotografia. La scheda `/luoghi/<slug>` la mostra sotto il titolo, quando c'è.
+- **file** — `public/foto/luoghi/<slug>-<larghezza>.webp`, sei larghezze (480, 720, 960, 1440, 1600, 2200): la 2200 è la resa massima disponibile, perché gli originali sono 2600px. Il browser scarica solo la variante che gli serve, quindi su telefono restano una trentina di KB.
+- **interfaccia** — `src/components/figure.ts` costruisce `srcset`/`sizes` dalle larghezze; `src/places/images.ts` dice se un luogo ha una fotografia. La scheda `/luoghi/<slug>` la mostra sotto il titolo, quando c'è. L'immagine non si ritaglia mai: un tetto di 40rem d'altezza limita le verticali, che si restringono al loro rapporto invece di lasciare fasce vuote.
 
 Oggi 50 luoghi su 184 hanno una fotografia. I luoghi senza restano identici a prima: la figura appare solo se esiste la voce.
 

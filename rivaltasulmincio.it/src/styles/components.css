@@ -799,10 +799,16 @@
 
 .figure__image {
   display: block;
-  width: 100%;
+  /*
+   * L'immagine intera, mai ritagliata (IMAGES.md: la fotografia documenta,
+   * quindi non si taglia il soggetto). Il tetto di altezza impedisce a una
+   * verticale di occupare tutto lo schermo; `width: auto` la lascia allora
+   * restringere al suo rapporto invece di lasciare fasce vuote ai lati.
+   */
+  width: auto;
+  max-width: 100%;
   height: auto;
-  max-height: 32rem;
-  object-fit: cover;
+  max-height: 40rem;
   background: var(--color-surface-muted);
   border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-sm);
