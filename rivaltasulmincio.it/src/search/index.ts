@@ -1,4 +1,4 @@
-import { posterFor, posters } from '../data/posters';
+import { posterFor } from '../data/posters';
 import { archiveArticles, articlePath } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
 import { formatAddress, namedPlaces } from '../places/service';
@@ -34,7 +34,7 @@ export function buildSearchIndex(now = new Date()): SearchEntry[] {
         id: poster.id,
         kind: 'Locandina',
         title: `Locandina · ${article.title}`,
-        text: posterText(poster),
+        text: poster.search,
         url: `${articlePath(article)}/locandina`,
       },
     ];
@@ -60,23 +60,4 @@ export function buildSearchIndex(now = new Date()): SearchEntry[] {
   }));
 
   return [...articoli, ...locandine, ...luoghi, ...fonti];
-}
-
-/** Il testo cercabile di una locandina: programma, menù, contrade, promotori. */
-function posterText(poster: (typeof posters)[number]): string {
-  return [
-    poster.kicker,
-    poster.dates,
-    ...poster.days.flatMap((day) => [day.heading, ...day.entries.map((entry) => `${entry.time} ${entry.text}`)]),
-    poster.highlight,
-    poster.music?.text,
-    ...(poster.menu?.courses.map((course) => course.text) ?? []),
-    ...(poster.menu?.prices.map((price) => `${price.label} ${price.value}`) ?? []),
-    poster.booking?.title,
-    ...(poster.booking?.contacts.map((contact) => `${contact.name} ${contact.phone}`) ?? []),
-    ...(poster.contrade?.items.map((contrada) => contrada.name) ?? []),
-    poster.credits.text,
-  ]
-    .filter(Boolean)
-    .join(' ');
 }

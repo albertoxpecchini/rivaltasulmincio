@@ -1,465 +1,64 @@
 /*
  * Locandina (JOURNAL.md «MEDIA», RESPONSIVE.md, ACCESSIBILITÀ).
  *
- * La locandina porta la propria identità grafica, che non è quella del sito:
- * i suoi colori stanno nel dataset e arrivano qui come variabili locali,
- * confinate sotto `.poster`. Nessuna regola esce da questo blocco e nessun
- * token del sito viene ridefinito.
+ * Il foglio è il documento originale degli organizzatori, importato così com'è
+ * (`scripts/locandina-import.ts`). È composto in millimetri su un A4 fisso,
+ * quindi non si riflow: si scala per intero, come si guarderebbe il volantino
+ * da vicino o da lontano.
  *
- * Mobile first: una colonna sotto i 768px, due da lì in su, come sul foglio
- * stampato. Le misure seguono la scala del progetto (SPACING.md) e il corpo
- * del testo resta in rem, così lo zoom del browser funziona davvero.
+ * `transform: scale()` mantiene esatte tutte le proporzioni e non ridisegna
+ * nulla: il testo resta testo — selezionabile, cercabile, leggibile dallo
+ * screen reader — e i disegni restano SVG, nitidi a qualunque ingrandimento.
+ * Il contenitore riserva l'altezza giusta con `aspect-ratio`, così la pagina
+ * non salta mentre carica.
+ *
+ * Gli stili del foglio sono tutti inline nel suo markup: qui non si ridefinisce
+ * niente di ciò che il foglio decide, e nessuna regola esce da `.poster-sheet`.
  */
-.poster {
-  /* Niente esce dal foglio: la locandina è un blocco chiuso. */
-  overflow-x: clip;
-  --poster-ink: #16212b;
-  --poster-orange: #ef5b25;
-  --poster-blue: #15608f;
-  --poster-green: #0f8a4d;
-  --poster-yellow: #f9b428;
-  --poster-rule: #e2e6ea;
-  --poster-day: var(--poster-blue);
+.poster-sheet {
+  /* Millimetri del foglio, passati dal renderer. */
+  --sheet-w: 210;
+  --sheet-h: 297;
+  /* Quanto è largo il foglio sullo schermo: tutta la colonna disponibile. */
+  --sheet-width: 100%;
 
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-5) var(--space-8);
+  width: var(--sheet-width);
+  max-width: 100%;
+  aspect-ratio: var(--sheet-w) / var(--sheet-h);
+  overflow: hidden;
   background: #fff;
-  color: var(--poster-ink);
   border: var(--border-width) solid var(--color-border);
-  /* La fascia di colori in testa al foglio stampato. */
-  border-top: 6px solid transparent;
-  border-image: linear-gradient(
-      to right,
-      var(--poster-orange) 0 40%,
-      var(--poster-blue) 40% 60%,
-      var(--poster-yellow) 60% 80%,
-      #19a05b 80% 94%,
-      #e8452b 94% 100%
-    )
-    1;
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgb(31 26 22 / 0.08));
+  /* Il foglio ha una sua tipografia: non eredita quella del sito. */
+  container-type: inline-size;
 }
 
-.poster b {
-  font-weight: var(--font-bold);
+/*
+ * Il foglio a misura vera (210mm) e poi scalato sulla larghezza reale del
+ * contenitore. `cqw` è l'1% di quella larghezza: il fattore è quindi il
+ * rapporto fra lo spazio disponibile e i 210mm del foglio, qualunque sia lo
+ * zoom o la dimensione del carattere.
+ */
+.poster-sheet__scale {
+  width: calc(var(--sheet-w) * 1mm);
+  height: calc(var(--sheet-h) * 1mm);
+  transform-origin: 0 0;
+  transform: scale(calc(100cqw / (var(--sheet-w) * 1mm)));
 }
 
-/* ── Testata ─────────────────────────────────────────────────────────────── */
-.poster__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+/* Il foglio importato riempie il proprio riquadro. */
+.poster-sheet__scale > .page {
+  width: 100%;
+  height: 100%;
 }
 
-.poster__kicker {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--poster-orange);
-}
+/*
+ * Il foglio porta i propri `<h1>`–`<h4>`? No: è composto di `<div>`, perché
+ * nasce per la stampa. Il titolo della pagina lo dà il sito attorno, quindi
+ * qui non si aggiunge gerarchia finta.
+ */
 
-.poster__kicker::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--poster-yellow);
-}
-
-.poster__title {
-  margin: 0;
-  font-size: clamp(2.25rem, 9vw, 4rem);
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
-  color: var(--poster-orange);
-}
-
-.poster__place {
-  margin: var(--space-2) 0 0;
-  font-size: var(--text-xl);
-  font-weight: var(--font-bold);
-  color: var(--poster-blue);
-}
-
-.poster__dates {
-  margin: 0;
-  font-size: clamp(1.25rem, 4.5vw, 1.625rem);
-  font-weight: 900;
-  line-height: var(--leading-tight);
-}
-
-/* ── Le due giornate ─────────────────────────────────────────────────────── */
-.poster__days {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.poster-day {
-  border: var(--border-width) solid color-mix(in srgb, var(--poster-day) 30%, #fff);
-}
-
-.poster-day__head {
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  background: var(--poster-day);
-  color: #fff;
-  font-size: var(--text-md);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.poster-day__list {
-  display: grid;
-  /* `minmax(0, …)`: senza, una voce lunga allarga la colonna oltre il foglio. */
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--space-4);
-  row-gap: var(--space-3);
-  margin: 0;
-  padding: var(--space-4);
-}
-
-.poster-entry {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-  align-items: baseline;
-}
-
-.poster-entry__time {
-  font-weight: 900;
-  color: var(--poster-day);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.poster-entry__text {
-  margin: 0;
-}
-
-.poster-note {
-  margin: var(--space-2) 0 0;
-  padding: var(--space-2) var(--space-3);
-  background: color-mix(in srgb, var(--poster-day) 8%, #fff);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-}
-
-.poster-note b {
-  color: var(--poster-day);
-}
-
-/* ── Bancarelle ──────────────────────────────────────────────────────────── */
-.poster-highlight {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  align-self: start;
-  margin: 0;
-  padding: var(--space-2) var(--space-4);
-  background: #e4f3ea;
-  color: #0d5f36;
-  font-weight: var(--font-bold);
-}
-
-.poster-highlight::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 0.5rem;
-  height: 0.5rem;
-  background: #19a05b;
-}
-
-/* ── Musica ──────────────────────────────────────────────────────────────── */
-.poster-music {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: var(--border-width) solid var(--poster-rule);
-}
-
-.poster-music__logo {
-  flex: 0 0 auto;
-  width: 3.5rem;
-  height: 3.5rem;
-  object-fit: contain;
-}
-
-.poster-music__kicker {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--poster-orange);
-}
-
-.poster-music__text {
-  margin: var(--space-1) 0 0;
-  font-size: var(--text-lg);
-}
-
-/* ── Menù ────────────────────────────────────────────────────────────────── */
-.poster-menu {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: #e8f6ee;
-}
-
-.poster-menu__title {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--poster-green);
-}
-
-.poster-menu__courses {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  text-align: center;
-  line-height: var(--leading-normal);
-}
-
-.poster-menu__note {
-  margin: 0;
-  text-align: center;
-  font-size: var(--text-sm);
-  color: #2e5a42;
-}
-
-.poster-prices {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin: 0;
-  padding-top: var(--space-3);
-  border-top: var(--border-width) solid #bfe3ce;
-}
-
-.poster-price {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-}
-
-.poster-price dt {
-  white-space: nowrap;
-}
-
-/* La linea punteggiata che sul foglio unisce la voce al prezzo. */
-.poster-price::after {
-  content: '';
-  order: 1;
-  flex: 1;
-  min-width: var(--space-6);
-  border-bottom: 2px dotted #9cc4ae;
-  transform: translateY(-0.25em);
-}
-
-.poster-price dd {
-  order: 2;
-  margin: 0;
-  font-weight: 900;
-  color: var(--poster-green);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.poster-price:first-child dt {
-  font-weight: var(--font-bold);
-}
-
-/* ── Prenotazione ────────────────────────────────────────────────────────── */
-.poster-booking {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  background: var(--poster-yellow);
-}
-
-.poster-booking__text {
-  /* Senza questo il blocco di testo non si stringe e spinge fuori i numeri. */
-  min-width: min(100%, 14rem);
-  flex: 1 1 14rem;
-}
-
-.poster-booking__kicker {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #6b3a00;
-}
-
-.poster-booking__title {
-  margin: var(--space-1) 0 0;
-  font-size: clamp(1.375rem, 5vw, 1.75rem);
-  font-weight: 900;
-  line-height: var(--leading-tight);
-}
-
-.poster-booking__note {
-  margin: var(--space-1) 0 0;
-  font-size: var(--text-sm);
-  color: #6b3a00;
-}
-
-.poster-booking__contacts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-5);
-}
-
-.poster-booking__name {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #8a4b08;
-}
-
-/* Il numero è un link: da telefono si chiama, da desktop si legge e si copia. */
-.poster-booking__phone {
-  display: inline-block;
-  /* Bersaglio 44px (FUNDAMENTA.md «MOBILE»). */
-  min-height: 2.75rem;
-  padding-top: var(--space-1);
-  font-size: var(--text-xl);
-  font-weight: 900;
-  line-height: var(--leading-tight);
-  white-space: nowrap;
-  color: var(--poster-ink);
-  text-decoration-color: color-mix(in srgb, var(--poster-ink) 40%, transparent);
-  text-underline-offset: 0.2em;
-}
-
-.poster-booking__phone:hover,
-.poster-booking__phone:focus-visible {
-  color: #6b3a00;
-}
-
-/* ── Contrade ────────────────────────────────────────────────────────────── */
-.poster-contrade {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding-top: var(--space-5);
-  border-top: 3px solid var(--poster-blue);
-}
-
-.poster-contrade__label {
-  margin: 0;
-  font-size: var(--text-md);
-  font-weight: var(--font-bold);
-  color: #5a6570;
-}
-
-.poster-contrade__list {
-  display: grid;
-  /* Due gagliardetti per riga sul telefono, tre appena c'è spazio. */
-  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
-  gap: var(--space-3);
-}
-
-.poster-contrada {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-2) var(--space-5);
-  background: var(--contrada);
-  color: #fff;
-  /* Il gagliardetto: il foglio le stampa a bandierina, con la punta in basso. */
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.75rem), 50% 100%, 0 calc(100% - 0.75rem));
-}
-
-.poster-contrada--dark {
-  color: #4a3500;
-}
-
-.poster-contrada__logo {
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0.25rem;
-  border-radius: 50%;
-  background: #fff;
-  object-fit: contain;
-}
-
-.poster-contrada__name {
-  font-size: var(--text-sm);
-  font-weight: 800;
-  line-height: var(--leading-tight);
-  text-align: center;
-}
-
-/* ── Piè di locandina ────────────────────────────────────────────────────── */
-.poster__footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-5);
-  padding-top: var(--space-4);
-  border-top: var(--border-width) solid var(--poster-rule);
-}
-
-.poster__credits p {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  line-height: var(--leading-normal);
-  color: #4a5560;
-}
-
-.poster__credits b {
-  color: var(--poster-orange);
-}
-
-.poster__links {
-  margin: var(--space-2) 0 0;
-  font-weight: var(--font-bold);
-  line-height: var(--leading-snug);
-}
-
-.poster__logos {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-5);
-}
-
-.poster__logos img {
-  display: block;
-  height: 2.5rem;
-  width: auto;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
-/* ── Riproduzione del foglio ─────────────────────────────────────────────── */
+/* ── Riproduzione fotografica ────────────────────────────────────────────── */
 .poster-image {
   display: block;
   width: 100%;
@@ -468,92 +67,24 @@
   background: #fff;
 }
 
-/* ── Da tablet in su: due colonne, come sul foglio A4 ────────────────────── */
-@media (min-width: 768px) {
-  .poster {
-    padding: var(--space-8) var(--space-8) var(--space-10);
-    gap: var(--space-8);
-  }
-
-  /*
-   * Due colonne come sul foglio A4. Le righe sono `auto` tranne l'ultima, che
-   * assorbe lo spazio avanzato: così la colonna più corta non si stira e
-   * bancarelle e musica restano attaccate al programma del sabato.
-   */
-  .poster__days {
-    grid-template-columns: 1.3fr 1fr;
-    grid-template-rows: auto auto 1fr;
-    align-items: start;
-  }
-
-  /* Sabato: la colonna larga, con bancarelle e musica sotto. */
-  .poster__days > .poster-day:first-child {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .poster-highlight {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .poster-music {
-    grid-column: 1;
-    grid-row: 3;
-    align-self: start;
-  }
-
-  /* Domenica: la colonna stretta, col menù subito sotto. */
-  .poster__days > .poster-day:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .poster-menu {
-    grid-column: 2;
-    grid-row: 2 / span 2;
-    align-self: start;
-  }
-
-  .poster-contrade__list {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-/*
- * Stampa: la locandina esce dal foglio come il volantino originale, senza
- * la testata, il piè di pagina e la navigazione del sito.
- */
-@media print {
-  .poster {
-    border: none;
-    padding: 0;
-    font-size: 10pt;
-  }
-
-  .poster-booking__phone {
-    min-height: 0;
-    text-decoration: none;
-  }
-
-  .poster-contrada,
-  .poster-day__head,
-  .poster-booking,
-  .poster-menu,
-  .poster-highlight,
-  .poster-note {
-    /* I fondi colorati sono l'informazione, non decorazione: vanno stampati. */
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-}
-
 /* ── La pagina del visualizzatore ────────────────────────────────────────── */
 .poster-page {
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
   max-width: 64rem;
+}
+
+.poster-page__sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.poster-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .poster-page__original {
@@ -575,11 +106,53 @@
   border-top: var(--border-width) solid var(--color-border-subtle);
 }
 
-/* In stampa esce solo la locandina. */
+/*
+ * Stampa: esce il foglio da solo, a pagina intera, senza la testata e il piè
+ * di pagina del sito. Il foglio torna alla misura vera — niente scala — così
+ * l'A4 stampato è l'A4 originale.
+ */
 @media print {
   .poster-page__original,
+  .poster-page__actions,
   .poster-page__footer,
   .poster-page .crumbs {
     display: none;
   }
+
+  .poster-sheet {
+    border: none;
+    box-shadow: none;
+    aspect-ratio: auto;
+    width: calc(var(--sheet-w) * 1mm);
+    height: calc(var(--sheet-h) * 1mm);
+  }
+
+  .poster-sheet__scale {
+    transform: none;
+  }
+
+  /* I fondi colorati sono l'informazione, non decorazione. */
+  .poster-sheet * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+
+/* ── Richiamo alla locandina dentro l'articolo ───────────────────────────── */
+.article__poster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+}
+
+.article__poster-note {
+  flex: 1 1 16rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }

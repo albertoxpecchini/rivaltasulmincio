@@ -4,7 +4,6 @@ import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { posterFor } from '../data/posters';
 import { statusTags } from '../journal/card';
-import { posterImage } from '../journal/poster';
 import { archiveArticles, articlePath, findArticle, isEventOver } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
 import { formatDate, formatTime, yearMonth } from '../lib/dates';
@@ -68,19 +67,17 @@ export function render({ params }: PageContext): PageResult | null {
 }
 
 /**
- * Apertura dell'articolo: quando esiste una locandina si mostra quella, con il
- * collegamento al visualizzatore dove il programma è testo vero; altrimenti
- * l'immagine dell'articolo.
+ * Apertura dell'articolo: l'immagine dell'articolo e, quando esiste una
+ * locandina, il collegamento al foglio originale.
  */
 function poster(article: JournalArticle): Html {
   const sheet = posterFor(article.slug);
   if (!sheet) return figure(article);
-  return html`<figure class="article__figure">
-    <a href="${articlePath(article)}/locandina">${posterImage(sheet, { loading: 'eager' })}</a>
-    <figcaption class="caption">
-      <a href="${articlePath(article)}/locandina">Apri la locandina</a> — il programma completo, che si legge, si cerca e si stampa.
-    </figcaption>
-  </figure>`;
+  return html`${figure(article)}
+  <p class="article__poster">
+    <a class="button" href="${articlePath(article)}/locandina">Apri la locandina</a>
+    <span class="article__poster-note">Il foglio affisso in paese, a schermo intero: si ingrandisce, si stampa e si scarica.</span>
+  </p>`;
 }
 
 function figure(article: JournalArticle): Html {
@@ -88,7 +85,13 @@ function figure(article: JournalArticle): Html {
   if (!image) return html``;
   const caption = [image.caption, image.credit ? `Foto: ${image.credit}` : undefined].filter(Boolean).join(' ');
   return html`<figure class="article__figure">
-    <img src="${image.src}" alt="${image.alt}" />
+    <img
+      src="${image.src}"
+      alt="${image.alt}"
+      ${image.width ? html`width="${image.width}"` : ''}
+      ${image.height ? html`height="${image.height}"` : ''}
+      decoding="async"
+    />
     ${caption ? html`<figcaption class="caption">${caption}</figcaption>` : ''}
   </figure>`;
 }

@@ -402,26 +402,16 @@
   }
 }
 
+/*
+ * Miniatura del giornale: sempre 4:3 (IMAGES.md). Le immagini dell'articolo
+ * nascono in questo rapporto, quindi `cover` non taglia nulla; se una arriva
+ * con proporzioni diverse, il 4:3 resta e il taglio è dal centro.
+ */
 .journal-lead__image {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-sm);
-}
-
-/*
- * Immagine verticale (una locandina): il taglio 16/9 le toglierebbe il titolo,
- * quindi tiene il proprio rapporto sotto un tetto d'altezza e si centra nella
- * colonna.
- */
-.journal-lead__image--portrait {
-  display: block;
-  aspect-ratio: auto;
-  width: auto;
-  max-width: 100%;
-  max-height: 30rem;
-  object-fit: contain;
-  margin-inline: auto;
 }
 
 .journal-lead__excerpt {

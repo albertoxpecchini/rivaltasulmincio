@@ -35,16 +35,14 @@ export function journalLead(article: JournalArticle, options: { now: Date; level
 }
 
 /**
- * Immagine dell'articolo principale. Un'immagine verticale — tipicamente una
- * locandina — non si taglia in 16/9, che le toglierebbe il titolo: tiene il
- * proprio rapporto (`--portrait`).
+ * Immagine dell'articolo principale: la miniatura del giornale, sempre in 4:3
+ * (IMAGES.md). `width`/`height` riservano lo spazio prima del caricamento.
  */
 function leadImage(article: JournalArticle): Html {
   const image = article.image;
   if (!image) return html``;
-  const portrait = image.width && image.height ? image.height > image.width : false;
   return html`<img
-    class="journal-lead__image${portrait ? ' journal-lead__image--portrait' : ''}"
+    class="journal-lead__image"
     src="${image.src}"
     alt="${image.alt}"
     ${image.width ? html`width="${image.width}"` : ''}

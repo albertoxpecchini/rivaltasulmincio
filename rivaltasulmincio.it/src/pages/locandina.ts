@@ -2,7 +2,7 @@ import type { PageContext, PageResult } from '../app/page';
 import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { posterFor, posters } from '../data/posters';
-import { posterBlock, posterImage } from '../journal/poster';
+import { posterImage, posterSheet } from '../journal/poster';
 import { archiveArticles, articlePath, findArticle } from '../journal/service';
 import { yearMonth } from '../lib/dates';
 import { html } from '../lib/html';
@@ -11,10 +11,11 @@ import { html } from '../lib/html';
  * Visualizzatore della locandina (JOURNAL.md «MEDIA»).
  *
  * La locandina ha una pagina propria perché è un documento a sé: si apre, si
- * ingrandisce, si stampa e si condivide senza portarsi dietro l'articolo. Il
- * programma è HTML vero — testo che si seleziona, si cerca e si legge con lo
- * screen reader — e sotto resta la riproduzione fedele del foglio distribuito
- * in paese, scaricabile alla risoluzione piena.
+ * ingrandisce, si stampa e si condivide senza portarsi dietro l'articolo.
+ * Quello che si vede è il foglio originale, non una copia: il suo HTML arriva
+ * dal file degli organizzatori. Il testo resta testo e i disegni restano SVG,
+ * quindi nitidi a ogni ingrandimento; sotto c'è la fotografia del foglio, che
+ * serve a scaricarlo e a condividerlo dove serve un'immagine.
  */
 
 /**
@@ -40,7 +41,7 @@ export function render({ params }: PageContext): PageResult | null {
 
   return {
     title: `Locandina · ${article.title}`,
-    description: article.seo?.description ?? article.excerpt,
+    description: poster.description,
     main: html`<div class="poster-page">
   ${crumbs([
     { href: '/giornale', label: 'Giornale' },
@@ -49,15 +50,18 @@ export function render({ params }: PageContext): PageResult | null {
     { label: 'Locandina' },
   ])}
 
-  ${posterBlock(poster)}
-
-  <section class="poster-page__original" aria-labelledby="locandina-originale">
-    <h2 id="locandina-originale">Il foglio distribuito in paese</h2>
-    <p class="lead">La locandina come è stata stampata e affissa. Sopra, lo stesso programma in testo, che si legge e si cerca anche da telefono.</p>
-    ${posterImage(poster)}
-    <p>
+  <div class="poster-page__sheet">
+    <h1 class="visually-hidden">${poster.title}</h1>
+    ${posterSheet(poster)}
+    <p class="poster-page__actions">
       <a class="button button--secondary" href="${poster.image.src}" download>Scarica la locandina</a>
     </p>
+  </div>
+
+  <section class="poster-page__original" aria-labelledby="locandina-immagine">
+    <h2 id="locandina-immagine">La locandina come immagine</h2>
+    <p class="lead">Lo stesso foglio in fotografia, alla risoluzione piena: serve per stamparlo altrove o per condividerlo dove serve un'immagine.</p>
+    ${posterImage(poster)}
   </section>
 
   <footer class="poster-page__footer">
