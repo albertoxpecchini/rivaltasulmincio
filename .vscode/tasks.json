@@ -2,39 +2,59 @@
   "version": "2.0.0",
   "tasks": [
     {
-      // `npm run dev` come task in background: resta vivo dopo F5.
-      // Il `problemMatcher` dice a VS Code quando Vite è in ascolto,
-      // così il browser non parte prima che il server risponda.
+      // Quello che F5 lancia davvero: prima accende il server, poi
+      // aspetta che risponda. Il browser parte solo dopo.
+      "label": "dev: pronto",
+      "dependsOn": ["dev", "dev: attendi"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      // Il server. Resta acceso dopo F5, così non si ricompila tutto
+      // a ogni avvio. Per spegnerlo: cestino nel pannello Terminale.
       //
       // `path` punta alla sottocartella: il package.json sta là.
+      // La porta è fissata dentro lo script `dev` del package.json,
+      // non qui: il campo `script` non accetta argomenti.
       "label": "dev",
       "type": "npm",
-      // `--port 5173 --strictPort`: senza, se la porta è occupata Vite
-      // passa alla 5174 e il browser aprirebbe l'URL sbagliato. Meglio
-      // un errore chiaro che una pagina muta.
-      "script": "dev -- --port 5173 --strictPort",
+      "script": "dev",
       "path": "rivaltasulmincio.it",
       "isBackground": true,
+      // `activeOnStart` con pattern che non combaciano mai: il task
+      // viene considerato «avviato» subito e non blocca la sequenza.
+      // Non si tenta di capire dall'output quando Vite è pronto —
+      // è colorato e cambia da una versione all'altra. Lo stabilisce
+      // «dev: attendi», interrogando la porta.
       "problemMatcher": {
         "owner": "vite",
-        "pattern": {
-          "regexp": "^(?!x)x$",
-          "file": 1,
-          "location": 2,
-          "message": 3
-        },
+        "pattern": { "regexp": "^(?!x)x$", "file": 1, "location": 2, "message": 3 },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": ".*VITE.*",
-          // Non «Local:.*http»: Vite colora l'output e infila codici ANSI
-          // fra «Local» e i due punti, quindi i due punti non combaciano.
-          "endsPattern": "Local.*http"
+          "beginsPattern": "^(?!x)x$",
+          "endsPattern": "^(?!x)x$"
         }
       },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
         "group": "dev"
+      }
+    },
+    {
+      // Interroga la porta finché la pagina non risponde. Se il server
+      // non parte, qui esce con errore e dice cosa guardare, invece di
+      // lasciare VS Code appeso per sempre.
+      "label": "dev: attendi",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/scripts/attendi-dev.mjs", "http://localhost:5173/"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "group": "dev",
+        "close": true
       }
     },
     {
