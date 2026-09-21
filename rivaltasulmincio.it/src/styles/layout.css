@@ -50,8 +50,10 @@
   color: var(--color-text-muted);
 }
 
-.site-nav a:hover {
-  color: var(--color-text);
+@media (hover: hover) and (pointer: fine) {
+  .site-nav a:hover {
+    color: var(--color-text);
+  }
 }
 
 .site-nav a[aria-current='page'] {
@@ -68,7 +70,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  order: 1;
+  margin-left: auto;
   min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  justify-content: center;
   padding-inline: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -83,9 +89,11 @@
     border-color var(--duration-fast) var(--ease-standard);
 }
 
-.site-header__search:hover {
-  color: var(--color-text);
-  border-color: var(--color-border-strong);
+@media (hover: hover) and (pointer: fine) {
+  .site-header__search:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
 }
 
 .site-header__search .kbd {
@@ -102,7 +110,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  order: 2;
   min-height: var(--touch-target);
+  min-width: var(--touch-target);
   padding-inline: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -124,6 +134,14 @@
   display: none;
 }
 
+/*
+ * Sotto i 768 px (RESPONSIVE.md «Matrice header», «Matrice navigazione»:
+ * logo | cerca · menu). Riga: wordmark, cerca, menu; con il menu attivo la
+ * navigazione va a capo come pannello a tendina (ANIMATIONS.md «Dropdown»),
+ * voci in colonna a tutta larghezza con l'indicatore sul lato sinistro
+ * (BORDERS.md «Active»: stesso colore, stessa larghezza). Senza JavaScript
+ * non c'è `data-menu`: le voci restano in vista e vanno a capo.
+ */
 @media (max-width: 767px) {
   .site-header[data-menu='closed'] .site-nav {
     display: none;
@@ -134,8 +152,48 @@
     order: 3;
   }
 
+  .site-header[data-menu] .site-nav {
+    padding-block: var(--space-2);
+    border-top: var(--border-width-thin) solid var(--color-border);
+    animation: menu-in var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-header[data-menu] .site-nav ul {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-header[data-menu] .site-nav a {
+    display: flex;
+    border-bottom: 0;
+    border-left: var(--border-width-medium) solid transparent;
+  }
+
+  .site-header[data-menu] .site-nav a[aria-current='page'] {
+    border-left-color: var(--color-accent);
+  }
+
   .site-header__search {
     margin-left: auto;
+  }
+}
+
+/* Sotto i 480 px (RESPONSIVE.md «XS»: «nascondi elementi secondari quando spazio insufficiente»): «Cerca» e «Menu» restano le sole icone, il nome è nell'aria-label; la riga stringe il passo. */
+@media (max-width: 479px) {
+  .site-header__inner {
+    column-gap: var(--space-3);
+  }
+
+  .site-header__search > span,
+  .site-menu__label {
+    display: none;
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 }
 
@@ -145,7 +203,13 @@
   }
 
   .site-nav {
+    order: 1;
     margin-left: auto;
+  }
+
+  .site-header__search {
+    order: 2;
+    margin-left: 0;
   }
 }
 
@@ -314,8 +378,10 @@ main.container {
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.section__more:hover .icon {
-  transform: translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+  .section__more:hover .icon {
+    transform: translateX(3px);
+  }
 }
 
 @media (min-width: 768px) {
@@ -384,8 +450,10 @@ main.container {
   color: var(--color-text);
 }
 
-.site-footer a:hover {
-  color: var(--color-accent);
+@media (hover: hover) and (pointer: fine) {
+  .site-footer a:hover {
+    color: var(--color-accent);
+  }
 }
 
 .site-footer__note {
@@ -421,5 +489,25 @@ main.container {
 @media (min-width: 1024px) {
   .site-footer__grid {
     grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+/*
+ * ── Touch (RESPONSIVE.md «Pointer precision», «Touch target») ─────────────
+ * Con puntatore grossolano i link di elenco diventano righe da 44 px; il
+ * collegamento di sezione allarga l'area toccabile senza spostare il layout.
+ * Con il mouse restano compatti.
+ */
+@media (hover: none) and (pointer: coarse) {
+  .site-footer a {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    padding-block: 0;
+  }
+
+  .section__more {
+    min-height: var(--touch-target);
+    margin-block: calc(-1 * var(--space-3));
   }
 }

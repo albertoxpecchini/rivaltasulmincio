@@ -95,8 +95,10 @@
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.button:hover .icon {
-  transform: translateX(2px);
+@media (hover: hover) and (pointer: fine) {
+  .button:hover .icon {
+    transform: translateX(2px);
+  }
 }
 
 .button--primary {
@@ -105,10 +107,12 @@
   color: var(--color-text-inverse);
 }
 
-.button--primary:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-  color: var(--color-text-inverse);
+@media (hover: hover) and (pointer: fine) {
+  .button--primary:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--color-text-inverse);
+  }
 }
 
 .inverse .button--primary,
@@ -122,9 +126,11 @@
   border-color: var(--color-border-strong);
 }
 
-.button--secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+@media (hover: hover) and (pointer: fine) {
+  .button--secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
 }
 
 .button-group {
@@ -173,9 +179,11 @@
   border-color: var(--color-border);
 }
 
-a.tag:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+@media (hover: hover) and (pointer: fine) {
+  a.tag:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
 }
 
 .tag-list {
@@ -265,6 +273,13 @@ a.tag:hover {
   gap: var(--space-2);
 }
 
+/* Sotto i 480 px campo e pulsante a tutta larghezza (RESPONSIVE.md «Matrice form»). */
+@media (max-width: 479px) {
+  .search__row .button {
+    flex: 1 1 100%;
+  }
+}
+
 .search__field {
   position: relative;
   display: flex;
@@ -347,8 +362,10 @@ a.tag:hover {
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
-.search__results a:hover {
-  background: var(--color-primary-soft);
+@media (hover: hover) and (pointer: fine) {
+  .search__results a:hover {
+    background: var(--color-primary-soft);
+  }
 }
 
 /* ── Giornale (STYLE.md «GIORNALE»: articolo principale forte, secondari come righe d'archivio) ── */
@@ -377,10 +394,12 @@ a.tag:hover {
   text-decoration: none;
 }
 
-.journal-lead__title a:hover,
-.journal-row__title a:hover {
-  color: var(--color-accent);
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .journal-lead__title a:hover,
+  .journal-row__title a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
 }
 
 .journal-lead__image {
@@ -412,8 +431,10 @@ a.tag:hover {
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
-.journal-row:hover {
-  background: var(--color-surface-raised);
+@media (hover: hover) and (pointer: fine) {
+  .journal-row:hover {
+    background: var(--color-surface-raised);
+  }
 }
 
 .journal-row__date {
@@ -662,8 +683,10 @@ a.tag:hover {
 }
 
 /* ── Tabelle (STYLE.md «TABELLE»: header forte, righe sottili, numeri tabulari) ── */
+/* Scorrono in orizzontale nel loro contenitore (RESPONSIVE.md «Matrice tabelle»), senza trascinare la pagina. */
 .table-wrap {
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface-raised);
@@ -759,4 +782,27 @@ a.tag:hover {
 
 .not-found__coords .icon {
   color: var(--color-accent);
+}
+
+/*
+ * ── Touch (RESPONSIVE.md «Pointer precision»): bersagli da 44 px ──────────
+ * I tag diventano alti quanto un pulsante; i link di testo isolati allargano
+ * l'area toccabile (il padding verticale di un elemento inline non cambia
+ * l'altezza della riga).
+ */
+@media (hover: none) and (pointer: coarse) {
+  .tag-list .tag {
+    min-height: var(--touch-target);
+  }
+
+  .table a,
+  .source-label a,
+  .source-record a,
+  .panel__foot a,
+  .article__footer a,
+  .place__footer a,
+  .crumbs a,
+  .map-canvas__fallback a {
+    padding-block: var(--space-4);
+  }
 }

@@ -18,3 +18,7 @@ export const MAP_ZOOM = {
 
 /** Dimensioni marker (ICONS.md «Marker»): 24 di base, 28 selezionato. */
 export const MARKER_SIZE = 24;
+/** Cerchio del cluster con il conteggio (OSM.md «Clustering»). */
+export const CLUSTER_SIZE = 32;
+/** Area toccabile di marker e cluster su puntatore grossolano (RESPONSIVE.md «Touch target»): il cerchio resta com'è, il bersaglio cresce. */
+export const MARKER_TOUCH_SIZE = 44;

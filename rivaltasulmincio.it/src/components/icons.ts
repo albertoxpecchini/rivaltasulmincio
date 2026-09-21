@@ -17,6 +17,7 @@ import landmark from 'lucide-static/icons/landmark.svg?raw';
 import library from 'lucide-static/icons/library.svg?raw';
 import map from 'lucide-static/icons/map.svg?raw';
 import mapPin from 'lucide-static/icons/map-pin.svg?raw';
+import menu from 'lucide-static/icons/menu.svg?raw';
 import moon from 'lucide-static/icons/moon.svg?raw';
 import search from 'lucide-static/icons/search.svg?raw';
 import slidersHorizontal from 'lucide-static/icons/sliders-horizontal.svg?raw';
@@ -26,6 +27,7 @@ import treePine from 'lucide-static/icons/tree-pine.svg?raw';
 import trophy from 'lucide-static/icons/trophy.svg?raw';
 import waves from 'lucide-static/icons/waves.svg?raw';
 import wind from 'lucide-static/icons/wind.svg?raw';
+import x from 'lucide-static/icons/x.svg?raw';
 import { raw, type Html } from '../lib/html';
 
 /*
@@ -53,6 +55,7 @@ const ICONS = {
   library,
   map,
   'map-pin': mapPin,
+  menu,
   moon,
   search,
   'sliders-horizontal': slidersHorizontal,
@@ -62,6 +65,7 @@ const ICONS = {
   trophy,
   waves,
   wind,
+  x,
 } as const;
 
 export type IconName = keyof typeof ICONS;

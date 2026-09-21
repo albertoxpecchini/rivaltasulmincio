@@ -8,6 +8,11 @@
   margin: 0;
 }
 
+/* L'attributo `hidden` vince sul `display` di qualsiasi componente (pulsante del menu, risultati di ricerca). */
+[hidden] {
+  display: none !important;
+}
+
 /*
  * Fondo caldo e leggermente cartaceo (STYLE.md «SUPERFICI», «TEXTURE»):
  * grana in SVG inline a opacità molto bassa, un solo tassello ripetuto.
@@ -27,6 +32,8 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  /* Parole lunghe (URL, codici) vanno a capo invece di allargare la pagina (RESPONSIVE.md «Regola anti-overflow»). */
+  overflow-wrap: break-word;
 }
 
 main {
@@ -56,8 +63,15 @@ a {
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-a:hover {
-  color: var(--color-accent-hover);
+/*
+ * Hover solo dove esiste davvero un puntatore (RESPONSIVE.md «Hover media
+ * query»): su touch un tocco non deve lasciare uno stato appiccicato. Vale per
+ * ogni :hover dei fogli di stile; il focus resta sempre visibile.
+ */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    color: var(--color-accent-hover);
+  }
 }
 
 code,
@@ -124,6 +138,9 @@ samp {
   top: var(--space-2);
   left: var(--space-2);
   z-index: var(--z-toast);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
   padding: var(--space-2) var(--space-4);
   font-family: var(--font-mono);
   font-size: var(--text-sm);

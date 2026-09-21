@@ -50,7 +50,7 @@ export function render({ params }: PageContext): PageResult | null {
       <div><dt>Coordinate</dt><dd class="mono">${formatCoordinates(place)}</dd></div>
       <div><dt>ID</dt><dd class="mono">${place.id} · ${place.osm.osmType}/${place.osm.osmId}</dd></div>
     </dl>
-    ${singleMap({ id: 'luogo-mappa', center: place, label: place.name })}
+    ${singleMap({ id: 'luogo-mappa', center: place, label: place.name, category: place.category })}
   </div>
   <p class="button-group">
     <a class="button button--primary" href="/mappa#${place.id}">${icon('map', 16)} Vedi sulla mappa</a>

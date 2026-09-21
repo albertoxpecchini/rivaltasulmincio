@@ -2,9 +2,9 @@ import L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import type { MapPlace, PlaceCategory } from '../types';
-import { MAP_ZOOM } from './config';
+import { CLUSTER_SIZE, MAP_ZOOM, MARKER_TOUCH_SIZE } from './config';
 import { createMap, type MapMode } from './engine';
-import { createPlaceMarker, setMarkerSelected } from './markers';
+import { createPinIcon, createPlaceMarker, setMarkerSelected } from './markers';
 import { renderPanel } from './panel';
 
 /*
@@ -31,7 +31,8 @@ export async function mountMap(root: HTMLElement): Promise<void> {
 
   if (mode === 'single') {
     const label = root.dataset.label ?? '';
-    L.marker([lat, lng], { title: label, alt: label, keyboard: false }).addTo(map);
+    const category = root.dataset.category as PlaceCategory | undefined;
+    L.marker([lat, lng], { title: label, alt: label, keyboard: false, ...(category ? { icon: createPinIcon(category) } : {}) }).addTo(map);
     return;
   }
 
@@ -51,6 +52,8 @@ export async function mountMap(root: HTMLElement): Promise<void> {
   }
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Il cerchio del cluster resta 32 px; su touch il bersaglio è 44 (RESPONSIVE.md «Touch target»).
+  const clusterHit = window.matchMedia('(pointer: coarse)').matches ? MARKER_TOUCH_SIZE : CLUSTER_SIZE;
   const cluster = L.markerClusterGroup({
     maxClusterRadius: 40,
     disableClusteringAtZoom: 18,
@@ -63,8 +66,8 @@ export async function mountMap(root: HTMLElement): Promise<void> {
       return L.divIcon({
         className: 'map-cluster-wrap',
         html: `<span class="map-cluster" role="img" aria-label="${count} luoghi">${count}</span>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
+        iconSize: [clusterHit, clusterHit],
+        iconAnchor: [clusterHit / 2, clusterHit / 2],
       });
     },
   }).addTo(map);
@@ -72,6 +75,14 @@ export async function mountMap(root: HTMLElement): Promise<void> {
   const byCategory = new Map<PlaceCategory, L.Marker[]>();
   const markers = new Map<string, L.Marker>();
   let selectedId: string | null = null;
+
+  const clear = (): void => {
+    const previous = selectedId ? markers.get(selectedId) : undefined;
+    if (previous) setMarkerSelected(previous, false);
+    selectedId = null;
+    if (panel) renderPanel(panel, null);
+    history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+  };
 
   const select = (place: MapPlace, options: { reveal?: boolean } = {}): void => {
     if (mode === 'embed') {
@@ -86,7 +97,15 @@ export async function mountMap(root: HTMLElement): Promise<void> {
       if (options.reveal) cluster.zoomToShowLayer(marker, () => setMarkerSelected(marker, true));
       else setMarkerSelected(marker, true);
     }
-    if (panel) renderPanel(panel, place);
+    if (panel) {
+      renderPanel(panel, place, { onClose: clear });
+      // Bottom sheet (RESPONSIVE.md «Matrice mappa»): il pannello copre la parte bassa della mappa, il marker scelto resta in vista sopra.
+      if (!options.reveal && getComputedStyle(panel).position === 'absolute') {
+        const point = map.latLngToContainerPoint([place.lat, place.lng]);
+        const limit = map.getSize().y * 0.4;
+        if (point.y > limit) map.panBy([0, point.y - limit], { animate: !reduceMotion });
+      }
+    }
     history.replaceState(null, '', `#${place.id}`);
   };
 
@@ -108,7 +127,8 @@ export async function mountMap(root: HTMLElement): Promise<void> {
   };
 
   if (filters) {
-    if (window.matchMedia('(min-width: 1024px)').matches) filters.closest('details')?.setAttribute('open', '');
+    // Filtri in drawer su mobile, visibili da tablet in su (RESPONSIVE.md «Tablet»: filtri visibili quando c'è spazio).
+    if (window.matchMedia('(min-width: 768px)').matches) filters.closest('details')?.setAttribute('open', '');
     filters.addEventListener('change', () => {
       for (const input of filters.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')) {
         const category = input.value as PlaceCategory;
@@ -129,6 +149,11 @@ export async function mountMap(root: HTMLElement): Promise<void> {
 
   if (mode === 'full') {
     if (panel) renderPanel(panel, null);
+    for (const element of [root, panel]) {
+      element?.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && selectedId) clear();
+      });
+    }
     const wanted = places.find((place) => place.id === window.location.hash.slice(1));
     if (wanted) {
       map.setView([wanted.lat, wanted.lng], MAP_ZOOM.single, { animate: false });

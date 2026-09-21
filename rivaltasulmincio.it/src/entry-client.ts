@@ -6,7 +6,12 @@
  */
 import { mountCount } from './animations/count';
 import { mountReveal } from './animations/reveal';
+import { mountMenu } from './nav/client';
 import { mountSearch, mountShortcut } from './search/client';
+
+for (const button of document.querySelectorAll<HTMLElement>('[data-menu-toggle]')) {
+  mountMenu(button);
+}
 
 for (const form of document.querySelectorAll<HTMLElement>('[data-search]')) {
   mountSearch(form);
@@ -22,22 +27,45 @@ if (weather.length > 0) {
   void import('./weather/client').then(({ mountWeather }) => weather.forEach((element) => void mountWeather(element)));
 }
 
+/*
+ * Mappe. Con «risparmio dati» attivo (RESPONSIVE.md «Connessione lenta») le
+ * mappe secondarie, in Home e nelle schede, aspettano un tocco; la mappa di
+ * /mappa è il contenuto principale della pagina e si carica comunque.
+ */
 const maps = [...document.querySelectorAll<HTMLElement>('[data-map]')];
 if (maps.length > 0) {
-  const load = (): void => {
-    void import('./map/mount').then(({ mountMap }) => maps.forEach((element) => void mountMap(element)));
+  const mount = (elements: HTMLElement[]): void => {
+    void import('./map/mount').then(({ mountMap }) => elements.forEach((element) => void mountMap(element)));
   };
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        observer.disconnect();
-        load();
-      },
-      { rootMargin: '200px' },
-    );
-    maps.forEach((element) => observer.observe(element));
-  } else {
-    load();
+
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+  const deferred = saveData ? maps.filter((element) => element.dataset.map !== 'full') : [];
+  const eager = maps.filter((element) => !deferred.includes(element));
+
+  for (const element of deferred) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'button button--secondary';
+    button.textContent = 'Mostra la mappa';
+    button.addEventListener('click', () => mount([element]), { once: true });
+    const notice = element.querySelector('[data-map-noscript]');
+    if (notice) notice.replaceWith(button);
+    else element.querySelector('.map-canvas__fallback')?.append(' ', button);
+  }
+
+  if (eager.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer.disconnect();
+          mount(eager);
+        },
+        { rootMargin: '200px' },
+      );
+      eager.forEach((element) => observer.observe(element));
+    } else {
+      mount(eager);
+    }
   }
 }

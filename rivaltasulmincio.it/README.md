@@ -73,6 +73,7 @@ src/
   layouts/       documento HTML completo
   lib/           html, date, slug, geo
   map/           motore Leaflet, marker, pannello, montaggio
+  nav/           menu della testata sotto i 768 px (client)
   pages/         una funzione per rotta
   places/        tassonomia, mappatura OSM, regole, elenchi
   search/        indice unificato (server) e comportamento (client)

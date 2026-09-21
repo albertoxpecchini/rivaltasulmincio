@@ -41,23 +41,29 @@
   border-top: var(--border-width-thin) solid var(--color-border);
 }
 
+/* Ogni categoria è una riga toccabile da 44 px (RESPONSIVE.md «Touch target»). */
 .category-list a {
-  display: block;
-  padding-block: var(--space-2);
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding-block: var(--space-1);
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
   text-decoration: none;
   color: var(--color-text);
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
-.category-list a:hover {
-  background: var(--color-surface-raised);
-  color: var(--color-accent);
+@media (hover: hover) and (pointer: fine) {
+  .category-list a:hover {
+    background: var(--color-surface-raised);
+    color: var(--color-accent);
+  }
 }
 
 /* Riga di categoria dentro un link: non è un titolo, è un'etichetta con conteggio. */
 .category-line {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   gap: var(--space-2);
   font-weight: var(--font-semibold);
@@ -106,17 +112,27 @@
   gap: var(--space-4);
 }
 
+/* Altezze in svh: sul telefono la barra del browser non nasconde il fondo della mappa. */
 .map-canvas {
   position: relative;
+  /* Leaflet ordina i suoi strati con z-index alti: restano chiusi qui dentro, il bottom sheet sta sopra. */
+  isolation: isolate;
   width: 100%;
-  height: min(60vh, 480px);
+  height: min(60svh, 480px);
   min-height: 320px;
   background: var(--color-surface-muted);
   font-family: var(--font-sans);
 }
 
 .map-canvas--full {
-  height: min(70vh, 720px);
+  height: min(70svh, 720px);
+}
+
+/* Desktop (RESPONSIVE.md «Desktop»: la mappa può usare lo spazio extra). */
+@media (min-width: 1280px) {
+  .map-canvas--full {
+    height: min(75svh, 860px);
+  }
 }
 
 .map-canvas--single {
@@ -130,10 +146,11 @@
   color: var(--color-text-secondary);
 }
 
+/* In alto a destra (lo zoom sta a sinistra, scala e attribuzione in basso), sopra i controlli di Leaflet (z-index 1000 nel contesto isolato della mappa). */
 .map-canvas__hint {
   position: absolute;
-  inset: auto var(--space-2) var(--space-2);
-  z-index: var(--z-dropdown);
+  inset: var(--space-2) var(--space-2) auto auto;
+  z-index: 1001;
   padding: var(--space-1) var(--space-2);
   font-family: var(--font-mono);
   background: var(--color-surface-raised);
@@ -154,9 +171,11 @@
   color: var(--color-text-secondary);
 }
 
-/* Su schermi stretti la mappa completa occupa tutta la larghezza (RESPONSIVE.md «Matrice mappa»). */
+/* Su schermi stretti ogni mappa occupa tutta la larghezza (RESPONSIVE.md «Matrice mappa»: full width su mobile). */
 @media (max-width: 767px) {
-  .map-block--full {
+  .map-block--full,
+  .map-block--embed,
+  .map-block--single {
     width: calc(100% + 2 * var(--page-padding));
     margin-inline: calc(-1 * var(--page-padding));
     border-inline: 0;
@@ -164,20 +183,89 @@
   }
 }
 
-@media (min-width: 1024px) {
-  .map-block--full .map-layout {
-    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
-    gap: 0;
-    align-items: stretch;
-  }
+/*
+ * Mappa e pannello (RESPONSIVE.md «Matrice mappa»). Mobile e tablet in
+ * verticale: il pannello è un bottom sheet sopra la parte bassa della mappa,
+ * compare solo con un luogo selezionato (ANIMATIONS.md «Drawer»). Da 1024 px,
+ * e in orizzontale su schermi bassi (telefono girato): mappa | pannello.
+ */
+.map-block--full .map-layout {
+  position: relative;
 }
 
 /* ── Pannello del luogo selezionato: marrone scuro, crema, accento rosso ─── */
 .map-panel {
+  position: relative;
   display: grid;
   gap: var(--space-3);
   align-content: start;
   padding: var(--space-4);
+}
+
+.map-block--full .map-panel {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: var(--z-dropdown);
+  max-height: 55%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-top: var(--border-width-thin) solid var(--color-border);
+  animation: map-sheet-in var(--duration-medium) var(--ease-enter);
+}
+
+.map-block--full .map-panel[data-state='empty'] {
+  display: none;
+}
+
+@keyframes map-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.map-panel__close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: var(--border-width-thin) solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.map-panel__kind,
+.map-panel__title {
+  padding-inline-end: var(--space-10);
+}
+
+@media (min-width: 1024px), (min-width: 640px) and (orientation: landscape) and (max-height: 600px) {
+  .map-block--full .map-layout {
+    grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .map-block--full .map-panel {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    max-height: none;
+    overflow: visible;
+    border-top: 0;
+    animation: none;
+  }
+
+  .map-block--full .map-panel[data-state='empty'] {
+    display: grid;
+  }
 }
 
 .map-panel__empty,
@@ -282,7 +370,11 @@
 }
 
 /* ── Marker (ICONS.md «Marker»: 24 base, 28 selezionato; palette del progetto) ── */
-.map-marker-wrap {
+/* Il cerchio sta al centro del bersaglio, che su touch è 44 px (src/map/markers.ts). */
+.leaflet-marker-icon.map-marker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 0;
 }
@@ -316,8 +408,11 @@
   outline-offset: 3px;
 }
 
-/* Cluster: quadrato con il conteggio in mono, si apre al clic o con Invio. */
-.map-cluster-wrap {
+/* Cluster: quadrato con il conteggio in mono, si apre al clic o con Invio; stesso bersaglio allargato dei marker su touch. */
+.leaflet-marker-icon.map-cluster-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 0;
 }
@@ -340,25 +435,32 @@
   line-height: var(--leading-ui);
 }
 
-/* Leaflet eredita la tipografia del sito; controlli con bordo e geometria tecnica. */
-.leaflet-container {
+/*
+ * Leaflet eredita la tipografia del sito; controlli con bordo e geometria
+ * tecnica. Il foglio di stile di Leaflet arriva dopo il nostro, con il chunk
+ * della mappa: i selettori qui hanno specificità maggiore dei suoi
+ * (`.leaflet-container`, `.leaflet-touch .leaflet-bar a`), altrimenti perdono.
+ */
+.map-canvas.leaflet-container {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   background: var(--color-surface-muted);
 }
 
-.leaflet-container a {
+.map-canvas.leaflet-container a {
   color: var(--color-accent);
 }
 
-.leaflet-bar {
+.map-canvas .leaflet-bar,
+.map-canvas.leaflet-touch .leaflet-bar {
   border: var(--border-width-thin) solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
 }
 
-/* Controlli di zoom: bersaglio touch da 44 px (RESPONSIVE.md); Leaflet centra il glifo con line-height. */
-.leaflet-bar a {
+/* Controlli di zoom: bersaglio da 44 px, 48 su touch (RESPONSIVE.md «Touch target»); Leaflet centra il glifo con line-height. */
+.map-canvas .leaflet-bar a,
+.map-canvas.leaflet-touch .leaflet-bar a {
   width: var(--touch-target);
   height: var(--touch-target);
   line-height: var(--touch-target);
@@ -367,10 +469,25 @@
   border-bottom: var(--border-width-thin) solid var(--color-border);
 }
 
-.leaflet-bar a:hover,
-.leaflet-bar a:focus {
+@media (pointer: coarse) {
+  .map-canvas .leaflet-bar a,
+  .map-canvas.leaflet-touch .leaflet-bar a {
+    width: var(--touch-target-large);
+    height: var(--touch-target-large);
+    line-height: var(--touch-target-large);
+  }
+}
+
+.map-canvas .leaflet-bar a:focus {
   background: var(--color-surface-muted);
   color: var(--color-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .map-canvas .leaflet-bar a:hover {
+    background: var(--color-surface-muted);
+    color: var(--color-accent);
+  }
 }
 
 .leaflet-touch .leaflet-bar a:first-child {
@@ -424,9 +541,18 @@
   color: var(--color-text);
 }
 
-.place-item__name a:hover {
-  color: var(--color-accent);
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .place-item__name a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+}
+
+/* Touch: il nome del luogo ha un'area toccabile da 44 px senza spostare la riga. */
+@media (hover: none) and (pointer: coarse) {
+  .place-item__name a {
+    padding-block: var(--space-4);
+  }
 }
 
 .place-item__meta {
@@ -491,6 +617,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  min-height: var(--touch-target);
   padding-block: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);

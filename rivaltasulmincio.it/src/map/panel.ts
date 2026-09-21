@@ -5,14 +5,24 @@ import type { MapPlace } from '../types';
 /*
  * Pannello del luogo selezionato (STYLE.md «Pagine dettaglio», OSM.md «Schede»).
  * Costruito con il DOM, mai con HTML interpolato: i testi vengono dai dati.
+ * `data-state` dice al CSS se c'è un luogo: su schermi stretti il pannello è
+ * un bottom sheet sopra la mappa e compare solo con una selezione.
  */
-export function renderPanel(panel: HTMLElement, place: MapPlace | null): void {
+export function renderPanel(panel: HTMLElement, place: MapPlace | null, options: { onClose?: () => void } = {}): void {
   // Il titolo dell'aside (h2, nascosto alla vista) resta: il luogo è un h3 sotto di esso.
   const heading = panel.querySelector('h2');
   panel.replaceChildren(...(heading ? [heading] : []));
+  panel.dataset.state = place ? 'place' : 'empty';
   if (!place) {
     panel.append(el('p', { class: 'map-panel__empty' }, 'Seleziona un luogo sulla mappa.'));
     return;
+  }
+
+  if (options.onClose) {
+    const close = el('button', { class: 'map-panel__close', type: 'button', 'aria-label': 'Chiudi la scheda' });
+    close.insertAdjacentHTML('afterbegin', iconMarkup('x', 20));
+    close.addEventListener('click', options.onClose);
+    panel.append(close);
   }
 
   const label = place.name ?? (place.street ? `${place.kind} · ${place.street}` : place.kind);

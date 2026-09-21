@@ -26,7 +26,7 @@ export function mapBlock(options: {
 }): Html {
   const { id, mode } = options;
   const canvas = html`<div class="map-canvas map-canvas--${mode}" id="${id}" data-map="${mode}" data-center="${options.center.lat},${options.center.lng}" data-zoom="${options.zoom}" data-feed="/places.json" data-status="#${id}-stato"${mode === 'full' ? html` data-panel="#${id}-pannello" data-filters="#${id}-filtri"` : ''} role="region" aria-label="${options.label}">
-  <p class="map-canvas__fallback">La mappa interattiva richiede JavaScript. <a href="/luoghi">Elenco dei luoghi</a></p>
+  <p class="map-canvas__fallback"><span data-map-noscript>La mappa interattiva richiede JavaScript.</span> <a href="/luoghi">Elenco dei luoghi</a></p>
 </div>`;
 
   return html`<div class="map-block map-block--${mode}">
@@ -40,7 +40,7 @@ export function mapBlock(options: {
     ${canvas}
     ${
       mode === 'full'
-        ? html`<aside class="map-panel inverse" id="${id}-pannello" aria-labelledby="${id}-pannello-titolo" aria-live="polite">
+        ? html`<aside class="map-panel inverse" id="${id}-pannello" data-state="empty" aria-labelledby="${id}-pannello-titolo" aria-live="polite">
       <h2 class="visually-hidden" id="${id}-pannello-titolo">Luogo selezionato</h2>
       <p class="map-panel__empty">Seleziona un luogo sulla mappa.</p>
     </aside>`
@@ -54,9 +54,9 @@ export function mapBlock(options: {
 }
 
 /** Mappa di un singolo luogo, con le coordinate scritte accanto per chi non la vede. */
-export function singleMap(options: { id: string; center: LatLng; label: string }): Html {
+export function singleMap(options: { id: string; center: LatLng; label: string; category: PlaceCategory }): Html {
   return html`<div class="map-block map-block--single">
-  <div class="map-canvas map-canvas--single" id="${options.id}" data-map="single" data-center="${options.center.lat},${options.center.lng}" data-label="${options.label}" role="region" aria-label="Posizione: ${options.label}">
+  <div class="map-canvas map-canvas--single" id="${options.id}" data-map="single" data-center="${options.center.lat},${options.center.lng}" data-label="${options.label}" data-category="${options.category}" role="region" aria-label="Posizione: ${options.label}">
     <p class="map-canvas__fallback">Coordinate: <span class="tabular">${formatCoordinates(options.center)}</span></p>
   </div>
   <p class="map-block__foot"><span>© OpenStreetMap contributors · ODbL</span></p>

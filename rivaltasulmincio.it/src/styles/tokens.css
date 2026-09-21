@@ -184,6 +184,8 @@
   /* Separazione tra sezioni (SPACING.md «Sezioni»: 48–96 px): metà per lato, le sezioni sono adiacenti. */
   --section-padding: clamp(1.5rem, 3.5vw, 3rem);
   --touch-target: 44px;
+  /* Controlli mappa e azioni frequenti su touch (RESPONSIVE.md «Touch target»: preferibile 48). */
+  --touch-target-large: 48px;
 
   /* ── z-index ─────────────────────────────────────────────────────────── */
   --z-base: 0;
@@ -238,9 +240,18 @@
 }
 
 /*
- * Breakpoint (RESPONSIVE.md): 640 · 768 · 1024 · 1280 · 1440 · 1920.
- * Le custom property non funzionano dentro @media: i valori vanno scritti
- * letteralmente e devono coincidere con questa lista.
+ * Breakpoint (RESPONSIVE.md «Breakpoint»): 640 · 768 · 1024 · 1280 · 1440 · 1920,
+ * più il confine di classe 480 (Mobile → Large Mobile) dove il layout cambia
+ * davvero (pulsanti e ricerca a tutta larghezza sotto). Nessun breakpoint per
+ * modelli specifici. Le custom property non funzionano dentro @media: i valori
+ * vanno scritti letteralmente e devono coincidere con questa lista.
+ *
+ * Input (RESPONSIVE.md «Matrice input»): gli :hover stanno dentro
+ * `(hover: hover) and (pointer: fine)`, i bersagli allargati dentro
+ * `(hover: none) and (pointer: coarse)`.
+ *
+ * Safe area (RESPONSIVE.md «Safe areas»): non serve finché il viewport non è
+ * «viewport-fit=cover»; il browser tiene già il layout fuori da notch e barra.
  */
 @media (min-width: 768px) {
   :root {
