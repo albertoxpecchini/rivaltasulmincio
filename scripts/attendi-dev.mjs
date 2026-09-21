@@ -30,7 +30,7 @@ while (Date.now() < scaduto) {
 
 console.error(
   `il server non ha risposto su ${url} entro ${Math.round(limiteMs / 1000)}s.\n` +
-    `Guarda il pannello Terminale, scheda «dev»: se dice «Port 5173 is already in use»\n` +
+    `Guarda il pannello Terminale, scheda «sito: server»: se dice «Port 5173 is already in use»\n` +
     `c'è un altro server acceso; chiudilo (cestino nel Terminale) e ripremi F5.`,
 );
 process.exit(1);

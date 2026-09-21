@@ -9,8 +9,8 @@
     {
       // Quello che F5 lancia davvero: prima accende il server, poi
       // aspetta che risponda. Il browser parte solo dopo.
-      "label": "dev: pronto",
-      "dependsOn": ["dev", "dev: attendi"],
+      "label": "sito: pronto",
+      "dependsOn": ["sito: server", "sito: attendi"],
       "dependsOrder": "sequence",
       "problemMatcher": []
     },
@@ -19,7 +19,7 @@
       // a ogni avvio. Per spegnerlo: cestino nel pannello Terminale.
       //
       // La porta è fissata dentro lo script «dev» del package.json.
-      "label": "dev",
+      "label": "sito: server",
       "type": "shell",
       "command": "npm run dev",
       "options": { "cwd": "${workspaceFolder}/rivaltasulmincio.it" },
@@ -27,7 +27,7 @@
       // Pattern che non combaciano mai, più «activeOnStart»: il task è
       // considerato «avviato» subito e non blocca la sequenza. Non si
       // tenta di capire dall'output quando Vite è pronto — è colorato e
-      // cambia da una versione all'altra. Lo stabilisce «dev: attendi».
+      // cambia da una versione all'altra. Lo stabilisce «sito: attendi».
       "problemMatcher": {
         "owner": "vite",
         "pattern": { "regexp": "^(?!x)x$", "file": 1, "location": 2, "message": 3 },
@@ -47,7 +47,7 @@
       // Interroga la porta finché la pagina non risponde. Se il server
       // non parte, qui esce con errore e dice cosa guardare, invece di
       // lasciare VS Code appeso per sempre.
-      "label": "dev: attendi",
+      "label": "sito: attendi",
       "type": "process",
       "command": "node",
       "args": ["${workspaceFolder}/scripts/attendi-dev.mjs", "http://localhost:5173/"],

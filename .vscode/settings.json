@@ -1,0 +1,13 @@
+{
+  // VS Code, da sé, fruga i package.json e inventa task chiamati «npm: dev».
+  // Uno di quelli può prendere il posto del nostro e girare dalla cartella
+  // sbagliata (la radice, che non ha package.json: npm muore con ENOENT).
+  // I task di questo progetto sono scritti a mano in tasks.json.
+  "npm.autoDetect": "off",
+  "typescript.tsc.autoDetect": "off",
+
+  // Senza questo, se il task che accende il server fallisce, il debugger
+  // parte lo stesso e apre una pagina muta senza dire niente: era il
+  // motivo per cui «non usciva nulla». Ora l'errore si vede e ci si ferma.
+  "debug.onTaskErrors": "showErrors"
+}
