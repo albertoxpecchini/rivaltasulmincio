@@ -5,10 +5,15 @@
       // `npm run dev` come task in background: resta vivo dopo F5.
       // Il `problemMatcher` dice a VS Code quando Vite è in ascolto,
       // così il browser non parte prima che il server risponda.
+      //
+      // `path` punta alla sottocartella: il package.json sta là.
       "label": "dev",
       "type": "npm",
-      "script": "dev",
-      "path": "",
+      // `--port 5173 --strictPort`: senza, se la porta è occupata Vite
+      // passa alla 5174 e il browser aprirebbe l'URL sbagliato. Meglio
+      // un errore chiaro che una pagina muta.
+      "script": "dev -- --port 5173 --strictPort",
+      "path": "rivaltasulmincio.it",
       "isBackground": true,
       "problemMatcher": {
         "owner": "vite",
@@ -21,7 +26,9 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".*VITE.*",
-          "endsPattern": ".*Local:.*http.*"
+          // Non «Local:.*http»: Vite colora l'output e infila codici ANSI
+          // fra «Local» e i due punti, quindi i due punti non combaciano.
+          "endsPattern": "Local.*http"
         }
       },
       "presentation": {
@@ -34,6 +41,7 @@
       "label": "build",
       "type": "npm",
       "script": "build",
+      "path": "rivaltasulmincio.it",
       "group": "build",
       "problemMatcher": []
     },
@@ -41,6 +49,7 @@
       "label": "typecheck",
       "type": "npm",
       "script": "typecheck",
+      "path": "rivaltasulmincio.it",
       "group": { "kind": "test", "isDefault": true },
       "problemMatcher": ["$tsc"]
     }

@@ -1,6 +1,9 @@
 {
   // F5: avvia `npm run dev` (task «dev»), aspetta che Vite sia in ascolto
   // e apre il sito in Edge col debugger attaccato.
+  //
+  // Il sito sta in rivaltasulmincio.it/, non qui alla radice: i percorsi
+  // sotto puntano là dentro.
   "version": "0.2.0",
   "configurations": [
     {
@@ -8,18 +11,18 @@
       "type": "msedge",
       "request": "launch",
       "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "${workspaceFolder}/rivaltasulmincio.it",
       "preLaunchTask": "dev",
       "sourceMapPathOverrides": {
-        "/src/*": "${workspaceFolder}/src/*"
+        "/src/*": "${workspaceFolder}/rivaltasulmincio.it/src/*"
       }
     },
     {
       "name": "Prerender (build)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/prerender.ts",
-      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/rivaltasulmincio.it/scripts/prerender.ts",
+      "cwd": "${workspaceFolder}/rivaltasulmincio.it",
       "console": "integratedTerminal"
     }
   ]
