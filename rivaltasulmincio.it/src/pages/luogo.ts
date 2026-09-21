@@ -1,11 +1,13 @@
 import type { PageContext, PageResult } from '../app/page';
 import { icon } from '../components/icons';
 import { categoryMark, singleMap } from '../components/map';
+import { placeFigure } from '../components/figure';
 import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { formatDate } from '../lib/dates';
 import { formatCoordinates } from '../lib/geo';
 import { html, type Html } from '../lib/html';
+import { placeImage } from '../places/images';
 import { findPlace, formatAddress, namedPlaces, osmElementUrl } from '../places/service';
 import { categoryLabel } from '../places/taxonomy';
 import type { Place } from '../types';
@@ -23,6 +25,7 @@ export function render({ params }: PageContext): PageResult | null {
 
   const address = formatAddress(place.address);
   const osmUrl = osmElementUrl(place.osm);
+  const image = placeImage(place.slug);
 
   return {
     title: place.name,
@@ -40,6 +43,7 @@ export function render({ params }: PageContext): PageResult | null {
     <h1>${place.name}</h1>
     ${address ? html`<p class="lead">${address}</p>` : ''}
   </header>
+  ${image ? placeFigure(image) : ''}
   <div class="place__layout">
     <dl class="facts">
       <div><dt>Indirizzo</dt><dd>${address ?? NOT_AVAILABLE}</dd></div>

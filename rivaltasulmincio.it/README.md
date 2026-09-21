@@ -47,6 +47,16 @@ Tre strati separati (FUNDAMENTA.md «MAPPA»):
 - **motore** — `src/map/` (Leaflet, tile OSM, marker per categoria, pannello). Caricato solo quando un elemento `[data-map]` entra nel viewport.
 - **interfaccia** — `src/components/map.ts` rende il markup dal server; `/luoghi` e `/luoghi/<slug>` sono l'alternativa testuale completa.
 
+## Fotografie
+
+Fotografie originali del progetto, riprese dal sito precedente (IMAGES.md).
+
+- **dati** — `data/images/place-images.json`: una voce per luogo fotografato, legata a `Place.slug`. Contiene alt text, dimensioni reali della variante più grande e le larghezze disponibili; l'alt descrive il contenuto reale, non «foto di».
+- **file** — `public/foto/luoghi/<slug>-<larghezza>.webp`, quattro larghezze (480, 720, 960, 1440). Le varianti 1600 e 2200 dell'archivio non servono a una scheda e non sono state riportate.
+- **interfaccia** — `src/components/figure.ts` costruisce `srcset`/`sizes` dalle larghezze; `src/places/images.ts` dice se un luogo ha una fotografia. La scheda `/luoghi/<slug>` la mostra sotto il titolo, quando c'è.
+
+Oggi 50 luoghi su 184 hanno una fotografia. I luoghi senza restano identici a prima: la figura appare solo se esiste la voce.
+
 ## Meteo
 
 Fonte: la stazione MeteoMincio (WEATHER.md). Il sito non ha API: pubblica i file della stazione senza header CORS, quindi il browser non può leggerli direttamente.
@@ -61,13 +71,13 @@ Interruttore: `site.features.weather` in `src/app/site.ts` toglie il blocco dall
 
 ```text
 api/             funzioni serverless (meteo)
-data/            dataset (JSON): sources/, journal/, places/, osm/
-public/          asset statici serviti tali e quali
+data/            dataset (JSON): sources/, journal/, places/, osm/, images/
+public/          asset statici serviti tali e quali (foto/luoghi/)
 scripts/         plugin di sviluppo, prerender, sincronizzazione OSM
 src/
   animations/    reveal e contatori (client)
   app/           router, contratto di pagina, identità del sito, template
-  components/    testata, piè di pagina, sezione, testata di pagina, ricerca, badge, icone, numeri, mappa (markup)
+  components/    testata, piè di pagina, sezione, testata di pagina, ricerca, badge, icone, numeri, mappa (markup), fotografie
   data/          caricamento tipizzato dei dataset
   journal/       tassonomia, regole editoriali, scheda articolo
   layouts/       documento HTML completo
@@ -75,7 +85,7 @@ src/
   map/           motore Leaflet, marker, pannello, montaggio
   nav/           menu della testata sotto i 768 px (client)
   pages/         una funzione per rotta
-  places/        tassonomia, mappatura OSM, regole, elenchi
+  places/        tassonomia, mappatura OSM, regole, elenchi, fotografie
   search/        indice unificato (server) e comportamento (client)
   services/      fonti, meteo
   styles/        token e fogli di stile per strati
