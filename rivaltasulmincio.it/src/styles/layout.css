@@ -420,11 +420,52 @@ main.container {
   }
 }
 
-/* ── Piè di pagina: pannello scuro con riga di stato ────────────────────── */
+/* ── Piè di pagina: striscia del Mincio, pannello scuro, riga di stato ──── */
 .site-footer {
+  /*
+   * Quanto dell'acqua sfuma dentro il pannello. Cresce con la finestra perché
+   * la striscia è alta in proporzione: su telefono bastano pochi pixel, su
+   * schermo largo serve una fascia più generosa.
+   */
+  --banner-fade: clamp(1.5rem, 5vw, 5rem);
   margin-top: auto;
-  padding-block: var(--space-12) var(--space-8);
-  border-top: var(--border-width-thin) solid var(--color-border);
+}
+
+/*
+ * La striscia occupa tutta la larghezza della finestra, non la colonna: il
+ * ritaglio è un panorama e va letto da bordo a bordo. L'acqua non finisce con
+ * un taglio netto sul pannello scuro: l'ultimo quinto sfuma con una maschera,
+ * così il fiume entra nel piè di pagina invece di scontrarsi con il suo bordo.
+ */
+.site-footer__banner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  /* Sovrapposta al pannello: la sfumatura scopre il marrone, non la crema. */
+  margin-bottom: calc(-1 * var(--banner-fade));
+  line-height: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--banner-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--banner-fade)), transparent 100%);
+}
+
+.site-footer__banner picture {
+  display: block;
+}
+
+.site-footer__banner-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/*
+ * Nessun bordo in cima: taglierebbe l'acqua a metà sfumatura. A separare
+ * pagina e piè di pagina ci pensa la striscia. Lo spazio sopra il testo tiene
+ * conto della fascia che sfuma, così le parole non finiscono dentro il fiume.
+ */
+.site-footer__panel {
+  padding-block: calc(var(--space-12) + var(--banner-fade)) var(--space-8);
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
 }
