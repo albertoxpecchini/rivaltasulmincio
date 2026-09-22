@@ -1,3 +1,4 @@
+export type { ContentBlock, TableCell } from './content';
 export type { Source, SourceHierarchyRule, SourceReference, SourceType } from './source';
 export type { PlaceImage } from './image';
 export type { JournalArticle, JournalStatus, JournalType } from './journal';

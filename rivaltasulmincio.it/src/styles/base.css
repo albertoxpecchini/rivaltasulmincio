@@ -117,12 +117,9 @@ samp {
   margin-inline: auto;
 }
 
+/* La colonna di testo. Il ritmo interno e i singoli blocchi stanno in components.css («Composizione del contenuto»). */
 .prose {
   max-width: var(--content-max);
-}
-
-.prose p + p {
-  margin-top: var(--space-4);
 }
 
 /* Griglia sottile (STYLE.md «GRIGLIA»): hero, mappe, sezioni dati. Mai ovunque. */

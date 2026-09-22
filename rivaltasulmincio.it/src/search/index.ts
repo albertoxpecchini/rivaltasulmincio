@@ -1,3 +1,4 @@
+import { contentText } from '../content/text';
 import { posterFor } from '../data/posters';
 import { archiveArticles, articlePath } from '../journal/service';
 import { journalTypeLabel } from '../journal/taxonomy';
@@ -18,7 +19,10 @@ export function buildSearchIndex(now = new Date()): SearchEntry[] {
     id: article.id,
     kind: journalTypeLabel(article.type),
     title: article.title,
-    text: [article.excerpt, article.location?.name, ...(article.tags ?? [])].filter(Boolean).join(' '),
+    /* Anche il corpo: una parola scritta in una tabella o in un elenco deve farsi trovare. */
+    text: [article.excerpt, contentText(article.content), article.location?.name, ...(article.tags ?? [])]
+      .filter(Boolean)
+      .join(' '),
     url: articlePath(article),
   }));
 

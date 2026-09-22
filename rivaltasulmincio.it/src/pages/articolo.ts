@@ -1,6 +1,8 @@
 import type { PageContext, PageResult } from '../app/page';
 import { site } from '../app/site';
 import { crumbs } from '../components/page-header';
+import { renderContent } from '../content/render';
+import { autoExcerpt } from '../content/text';
 import { sourceLabel } from '../components/source-label';
 import { posterFor } from '../data/posters';
 import { statusTags } from '../journal/card';
@@ -23,14 +25,12 @@ export function render({ params }: PageContext): PageResult | null {
   if (!article) return null;
 
   const { year, month } = yearMonth(article.publishedAt);
-  const paragraphs = article.content
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+  /* L'estratto scritto a mano vince sempre; quello ricavato dal testo è l'ultima risorsa. */
+  const description = article.seo?.description || article.excerpt || autoExcerpt(article.content) || site.description;
 
   return {
     title: article.seo?.title ?? article.title,
-    description: article.seo?.description ?? article.excerpt ?? site.description,
+    description,
     main: html`<article class="article">
   <header class="article__header">
     ${crumbs([{ href: '/giornale', label: 'Giornale' }, { label: `${year}/${month}` }])}
@@ -47,7 +47,7 @@ export function render({ params }: PageContext): PageResult | null {
   </header>
   ${poster(article)}
   ${eventBlock(article, now)}
-  <div class="article__body prose">${paragraphs.map((paragraph) => html`<p>${paragraph}</p>`)}</div>
+  <div class="article__body prose">${renderContent(article.content)}</div>
   ${
     article.documentUrl
       ? html`<p><a class="button button--secondary" href="${article.documentUrl}" rel="noopener noreferrer">Apri il documento originale</a></p>`

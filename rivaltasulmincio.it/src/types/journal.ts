@@ -57,7 +57,7 @@ export type JournalArticle = {
   title: string;
   subtitle?: string;
   excerpt?: string;
-  /** Testo in paragrafi separati da riga vuota. Il rendering ricco sarà definito in CONTENT.md. */
+  /** Testo in Markdown ristretto: i blocchi ammessi e la loro resa stanno in CONTENT.md. */
   content: string;
 
   status: JournalStatus;
