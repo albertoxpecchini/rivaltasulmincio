@@ -92,12 +92,25 @@ export type JournalArticle = {
     bookingUrl?: string;
   };
 
+  /** L'immagine dentro l'articolo, a piena colonna. */
   image?: {
     src: string;
     alt: string;
     caption?: string;
     credit?: string;
     /** Dimensioni reali: riservano lo spazio e dicono se l'immagine è verticale. */
+    width?: number;
+    height?: number;
+  };
+
+  /**
+   * La miniatura in home e in archivio, quando l'immagine dell'articolo non
+   * funziona in piccolo: una locandina verticale, letta a 4:3, diventa
+   * illeggibile. Senza questo campo la miniatura è `image`.
+   */
+  thumbnail?: {
+    src: string;
+    alt: string;
     width?: number;
     height?: number;
   };

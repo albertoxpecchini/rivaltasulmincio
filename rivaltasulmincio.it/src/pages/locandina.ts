@@ -2,7 +2,7 @@ import type { PageContext, PageResult } from '../app/page';
 import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
 import { posterFor, posters } from '../data/posters';
-import { posterImage, posterSheet } from '../journal/poster';
+import { posterSheet } from '../journal/poster';
 import { archiveArticles, articlePath, findArticle } from '../journal/service';
 import { yearMonth } from '../lib/dates';
 import { html } from '../lib/html';
@@ -14,8 +14,8 @@ import { html } from '../lib/html';
  * ingrandisce, si stampa e si condivide senza portarsi dietro l'articolo.
  * Quello che si vede è il foglio originale, non una copia: il suo HTML arriva
  * dal file degli organizzatori. Il testo resta testo e i disegni restano SVG,
- * quindi nitidi a ogni ingrandimento; sotto c'è la fotografia del foglio, che
- * serve a scaricarlo e a condividerlo dove serve un'immagine.
+ * quindi nitidi a ogni ingrandimento. Chi vuole l'immagine la scarica dal
+ * pulsante: non serve mostrarla due volte nella stessa pagina.
  */
 
 /**
@@ -57,12 +57,6 @@ export function render({ params }: PageContext): PageResult | null {
       <a class="button button--secondary" href="${poster.image.src}" download>Scarica la locandina</a>
     </p>
   </div>
-
-  <section class="poster-page__original" aria-labelledby="locandina-immagine">
-    <h2 id="locandina-immagine">La locandina come immagine</h2>
-    <p class="lead">Lo stesso foglio in fotografia, alla risoluzione piena: serve per stamparlo altrove o per condividerlo dove serve un'immagine.</p>
-    ${posterImage(poster)}
-  </section>
 
   <footer class="poster-page__footer">
     ${sourceLabel({ source: article.source })}

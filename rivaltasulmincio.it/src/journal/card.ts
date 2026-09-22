@@ -37,9 +37,13 @@ export function journalLead(article: JournalArticle, options: { now: Date; level
 /**
  * Immagine dell'articolo principale: la miniatura del giornale, sempre in 4:3
  * (IMAGES.md). `width`/`height` riservano lo spazio prima del caricamento.
+ *
+ * Quando l'articolo dichiara una `thumbnail` è quella a comparire: l'immagine
+ * dentro l'articolo può essere una locandina verticale, che tagliata a 4:3
+ * non si legge.
  */
 function leadImage(article: JournalArticle): Html {
-  const image = article.image;
+  const image = article.thumbnail ?? article.image;
   if (!image) return html``;
   return html`<img
     class="journal-lead__image"

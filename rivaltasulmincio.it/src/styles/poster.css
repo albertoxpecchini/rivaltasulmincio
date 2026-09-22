@@ -58,15 +58,6 @@
  * qui non si aggiunge gerarchia finta.
  */
 
-/* ── Riproduzione fotografica ────────────────────────────────────────────── */
-.poster-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: var(--border-width) solid var(--color-border);
-  background: #fff;
-}
-
 /* ── La pagina del visualizzatore ────────────────────────────────────────── */
 .poster-page {
   display: flex;
@@ -87,17 +78,6 @@
   gap: var(--space-3);
 }
 
-.poster-page__original {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  align-items: flex-start;
-}
-
-.poster-page__original h2 {
-  margin: 0;
-}
-
 .poster-page__footer {
   display: flex;
   flex-direction: column;
@@ -112,7 +92,6 @@
  * l'A4 stampato è l'A4 originale.
  */
 @media print {
-  .poster-page__original,
   .poster-page__actions,
   .poster-page__footer,
   .poster-page .crumbs {
@@ -143,12 +122,26 @@
   }
 }
 
-/* ── Richiamo alla locandina dentro l'articolo ───────────────────────────── */
+/*
+ * Richiamo alla locandina dentro l'articolo.
+ *
+ * È il gesto principale della pagina — il foglio vero, a schermo intero — e
+ * deve vedersi: pulsante pieno, riquadro attorno, più aria del testo normale.
+ */
 .article__poster {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* Su schermo stretto il pulsante prende tutta la riga: è il bersaglio più grande. */
+.article__poster .button {
+  flex: 1 1 14rem;
 }
 
 .article__poster-note {

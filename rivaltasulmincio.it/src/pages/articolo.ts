@@ -1,5 +1,6 @@
 import type { PageContext, PageResult } from '../app/page';
 import { site } from '../app/site';
+import { icon } from '../components/icons';
 import { crumbs } from '../components/page-header';
 import { renderContent } from '../content/render';
 import { autoExcerpt } from '../content/text';
@@ -75,7 +76,7 @@ function poster(article: JournalArticle): Html {
   if (!sheet) return figure(article);
   return html`${figure(article)}
   <p class="article__poster">
-    <a class="button" href="${articlePath(article)}/locandina">Apri la locandina</a>
+    <a class="button button--primary" href="${articlePath(article)}/locandina">Apri la locandina ${icon('arrow-right', 16)}</a>
     <span class="article__poster-note">Il foglio affisso in paese, a schermo intero: si ingrandisce, si stampa e si scarica.</span>
   </p>`;
 }

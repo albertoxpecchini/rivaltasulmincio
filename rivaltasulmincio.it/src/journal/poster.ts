@@ -32,22 +32,3 @@ export function posterSheet(poster: Poster): Html {
 </div>`;
 }
 
-const IMAGE_SIZES = '(max-width: 64rem) 100vw, 48rem';
-
-/** La riproduzione fotografica del foglio: serve all'anteprima e al download. */
-export function posterImage(poster: Poster, options: { loading?: 'eager' | 'lazy' } = {}): Html {
-  const image = poster.image;
-  const stem = image.src.replace(/-\d+\.webp$/, '');
-  const srcset = image.widths.map((width) => `${stem}-${width}.webp ${width}w`).join(', ');
-  return html`<img
-    class="poster-image"
-    src="${image.src}"
-    srcset="${srcset}"
-    sizes="${IMAGE_SIZES}"
-    alt="${image.alt}"
-    width="${image.width}"
-    height="${image.height}"
-    loading="${options.loading ?? 'lazy'}"
-    decoding="async"
-  />`;
-}
