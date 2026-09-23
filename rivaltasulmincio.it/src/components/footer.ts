@@ -52,8 +52,8 @@ function footerBanner(): Html {
 /**
  * Piè di pagina: striscia del Mincio, poi pannello scuro con identità,
  * sezioni, fonti e una riga di stato in mono (STYLE.md «barre informative»):
- * attribuzione, data dei dati OSM, momento della build. Il sito è statico:
- * «adesso» è la build.
+ * attribuzione, data dei dati OSM, momento della build e, in fondo, la firma
+ * di chi ha fatto il progetto. Il sito è statico: «adesso» è la build.
  */
 export function footer(): Html {
   const built = new Date().toISOString();
@@ -85,6 +85,7 @@ export function footer(): Html {
       <span>© OpenStreetMap contributors · ODbL</span>
       ${osm ? html`<span>Dati OSM <time datetime="${osm}">${formatDateShort(osm)}</time></span>` : ''}
       <span>Build <time datetime="${built}">${formatDateShort(built)} ${formatTime(built)}</time></span>
+      <a href="${site.author.url}" rel="author">Progetto di ${site.author.name}</a>
     </p>
   </div>
   </div>

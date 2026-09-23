@@ -11,6 +11,8 @@ export const site = {
   institutional:
     'Rivalta sul Mincio è una frazione del Comune di Rodigo, in provincia di Mantova, affacciata sulla Riserva Naturale Valli del Mincio. Questo progetto raccoglie e organizza dati territoriali, attività, servizi, luoghi, storia, ambiente ed eventi attraverso fonti ufficiali, OpenStreetMap e documentazione locale.',
   origin: 'https://www.rivaltasulmincio.it',
+  /** Chi ha fatto il progetto: firma nel piè di pagina. */
+  author: { name: 'Alberto Pecchini', url: 'https://albertopecchini.it' },
   navigation: [
     { href: '/', label: 'Home' },
     { href: '/giornale', label: 'Giornale' },

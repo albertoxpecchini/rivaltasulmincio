@@ -505,10 +505,15 @@ main.container {
   max-width: var(--content-max);
 }
 
-/* Riga di stato in mono: attribuzione, data dei dati, build. */
+/*
+ * Riga di stato in mono: attribuzione, data dei dati, build, firma. La firma è
+ * un link, più alto delle altre voci (44 px al tocco): l'allineamento sulla
+ * linea di base tiene tutte le parole sulla stessa riga.
+ */
 .site-footer__meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: var(--space-1) var(--space-6);
   margin-top: var(--space-6);
   padding-top: var(--space-3);
