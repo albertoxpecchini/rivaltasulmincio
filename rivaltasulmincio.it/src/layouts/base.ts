@@ -35,6 +35,7 @@ export function renderDocument(path: string, page: PageResult): RenderedDocument
     ${header(path)}
     <main id="contenuto" class="container">${page.main}</main>
     ${footer()}
+    <div class="stagione" data-stagione="autunno" aria-hidden="true"></div>
   `;
 
   return { status: page.status ?? 200, head, html: body.value };

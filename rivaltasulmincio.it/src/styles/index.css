@@ -10,6 +10,7 @@
  *   weather    → meteo
  *   poster     → locandine degli eventi (il foglio originale, scalato)
  *   locandine  → i caratteri di ciascuna locandina, importati col foglio
+ *   stagione   → lo sfondo d'autunno (src/stagione/autunno.ts)
  */
 @import './fonts.css';
 @import './tokens.css';
@@ -21,3 +22,4 @@
 @import './weather.css';
 @import './poster.css';
 @import './locandine/sagra-patroni-2026.css';
+@import './stagione.css';

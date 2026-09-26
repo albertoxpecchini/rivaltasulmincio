@@ -1,0 +1,27 @@
+/*
+ * ── Stagione: lo sfondo d'autunno (src/stagione/autunno.ts) ─────────────
+ * Un contenitore fisso grande quanto la finestra, sotto tutto il resto:
+ * con z-index negativo dentro il contesto della radice sta sopra la crema
+ * di <html> e sotto ogni blocco della pagina, così i pannelli opachi lo
+ * coprono e il testo gli passa sopra. Non intercetta il puntatore. Il
+ * <canvas> lo crea il codice; senza JavaScript il contenitore resta vuoto.
+ */
+.stagione {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stagione canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media print {
+  .stagione {
+    display: none;
+  }
+}

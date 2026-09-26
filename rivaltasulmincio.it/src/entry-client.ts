@@ -27,6 +27,16 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-notice-bar]')) {
 mountReveal();
 mountCount();
 
+// Sfondo di stagione (src/stagione/autunno.ts): dopo il resto, quando il browser ha un momento libero.
+const stagione = document.querySelector<HTMLElement>('[data-stagione]');
+if (stagione) {
+  const avvia = (): void => {
+    void import('./stagione/autunno').then(({ mountStagione }) => mountStagione(stagione));
+  };
+  if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(avvia, { timeout: 2000 });
+  else window.setTimeout(avvia, 300);
+}
+
 const weather = [...document.querySelectorAll<HTMLElement>('[data-weather]')];
 if (weather.length > 0) {
   void import('./weather/client').then(({ mountWeather }) => weather.forEach((element) => void mountWeather(element)));
