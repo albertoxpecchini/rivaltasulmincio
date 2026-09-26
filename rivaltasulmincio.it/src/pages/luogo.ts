@@ -2,8 +2,10 @@ import type { PageContext, PageResult } from '../app/page';
 import { icon } from '../components/icons';
 import { categoryMark, singleMap } from '../components/map';
 import { placeFigure } from '../components/figure';
+import { noticeBanner } from '../components/notice';
 import { crumbs } from '../components/page-header';
 import { sourceLabel } from '../components/source-label';
+import { activeNotices } from '../data/notices';
 import { formatDate } from '../lib/dates';
 import { formatCoordinates } from '../lib/geo';
 import { html, type Html } from '../lib/html';
@@ -43,6 +45,7 @@ export function render({ params }: PageContext): PageResult | null {
     <h1>${place.name}</h1>
     ${address ? html`<p class="lead">${address}</p>` : ''}
   </header>
+  ${activeNotices(new Date(), place.slug).map((notice) => noticeBanner(notice, { places: false }))}
   ${image ? placeFigure(image) : ''}
   <div class="place__layout">
     <dl class="facts">

@@ -64,6 +64,18 @@ export function yearMonth(iso: string): { year: string; month: string } {
   return { year: part('year'), month: part('month') };
 }
 
+/** «2026-10-27»: il giorno nel fuso locale, per il `datetime` di una data senza ora. */
+export function isoDay(iso: string): string {
+  const date = parseIso(iso);
+  if (!date) return '';
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(date);
+}
+
 export function isBefore(iso: string | undefined, now: Date): boolean {
   const date = parseIso(iso);
   return date ? date.getTime() < now.getTime() : false;

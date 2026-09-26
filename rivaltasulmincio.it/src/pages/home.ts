@@ -2,11 +2,13 @@ import type { PageResult } from '../app/page';
 import { site } from '../app/site';
 import { emptyState } from '../components/empty-state';
 import { mapBlock } from '../components/map';
+import { noticeBanner } from '../components/notice';
 import { officialBadge } from '../components/official-badge';
 import { searchForm } from '../components/search';
 import { section } from '../components/section';
 import { statNumber } from '../components/stat';
 import { weatherCompact } from '../components/weather';
+import { activeNotices } from '../data/notices';
 import { journalLead, journalRows } from '../journal/card';
 import { archiveArticles, homeSelection } from '../journal/service';
 import { formatDateShort } from '../lib/dates';
@@ -162,6 +164,7 @@ export function render(): PageResult {
     description: site.description,
     main: html`
       ${hero}
+      ${activeNotices(now).map((notice) => noticeBanner(notice))}
       ${modules.map((module, index) => section({ ...module, code: String(index + 1).padStart(2, '0') }))}
     `,
   };
