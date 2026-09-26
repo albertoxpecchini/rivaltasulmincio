@@ -4,13 +4,17 @@
   gap: var(--space-3);
 }
 
-.weather--compact {
-  gap: 0;
-  max-width: 32rem;
-}
-
 .weather--full {
   gap: 0;
+}
+
+.weather--home {
+  gap: var(--space-6);
+}
+
+.weather--home > *,
+.weather-more > * {
+  min-width: 0;
 }
 
 /* Le tabelle scorrono nel loro contenitore: le celle della griglia non devono allargarsi con esse. */
@@ -171,4 +175,232 @@
 
 .weather-table td {
   white-space: nowrap;
+}
+
+/*
+ * ── Home: adesso in primo piano, approfondimento sotto ────────────────────
+ * WEATHER.md «Responsive»: su telefono adesso → ore che scorrono → giorni →
+ * dettagli; su desktop giorni e dettagli si affiancano sotto le ore.
+ */
+.weather-now .weather__current {
+  gap: var(--space-6);
+}
+
+.weather-now__main {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.weather-now__main .weather__temperature {
+  line-height: var(--leading-none);
+}
+
+.weather-now__note {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.weather-now__figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+
+.weather-now__figures div {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  padding-left: var(--space-4);
+  border-left: var(--border-width-thin) solid var(--color-border);
+}
+
+.weather-now__figures dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.weather-now__value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-strong);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-heading);
+  color: var(--color-text-strong);
+}
+
+.weather-now__unit {
+  font-size: var(--text-md);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .weather-now .weather__current {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-10);
+  }
+}
+
+.weather-more {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.weather-more h3 {
+  margin-bottom: var(--space-3);
+}
+
+/* Etichette lunghe («pioggia dell'anno»): la colonna si allarga quanto serve per stare su una riga. */
+.weather-more__station .facts div {
+  grid-template-columns: 10rem minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .weather-more {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--space-8);
+  }
+
+  .weather-more__hours,
+  .weather-more__status {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Prossime ore: colonne affiancate che scorrono nel loro riquadro, mai la pagina. */
+.weather-hours {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(4.75rem, 1fr);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.weather-hours li {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-left: var(--border-width-thin) solid var(--color-border-subtle);
+  scroll-snap-align: start;
+}
+
+.weather-hours li:first-child {
+  border-left: 0;
+}
+
+/* Dove comincia un altro giorno il filo si fa pieno e il giorno si legge in alto. */
+.weather-hours li.weather-hours__new-day {
+  border-left: var(--border-width-medium) solid var(--color-border-strong);
+}
+
+.weather-hours__day {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-accent);
+}
+
+.weather-hours__time,
+.weather-hours__detail {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+.weather-hours__icon {
+  display: inline-flex;
+  color: var(--color-text-secondary);
+}
+
+.weather-hours__temp {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-strong);
+}
+
+/* Prossimi giorni: su telefono due righe per giorno, da 480 px una sola. */
+.weather-days {
+  display: grid;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.weather-days li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'day temps'
+    'condition rain';
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.weather-days li:last-child {
+  border-bottom: 0;
+}
+
+.weather-days__day {
+  grid-area: day;
+  font-weight: var(--font-medium);
+}
+
+.weather-days .weather__condition {
+  grid-area: condition;
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  color: var(--color-text-secondary);
+}
+
+.weather-days__temps {
+  grid-area: temps;
+  display: flex;
+  gap: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-days__min {
+  color: var(--color-text-secondary);
+}
+
+.weather-days__max {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-strong);
+}
+
+.weather-days__rain {
+  grid-area: rain;
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 480px) {
+  .weather-days li {
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto 4rem;
+    grid-template-areas: 'day condition temps rain';
+  }
 }

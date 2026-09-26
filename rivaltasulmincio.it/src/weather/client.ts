@@ -19,6 +19,9 @@ const CURRENT_URL = '/api/meteo/attuale';
 const FORECAST_URL = '/api/meteo/previsioni';
 const STALE_AFTER_MINUTES = 15;
 const HOURLY_ROWS = 24;
+/** Home: la striscia delle prossime ore e i giorni sono un assaggio; /meteo ha tutto. */
+const HOME_HOURS = 12;
+const HOME_DAYS = 5;
 const NOT_AVAILABLE = 'Dato non disponibile';
 const TIME_ZONE = 'Europe/Rome';
 
@@ -26,6 +29,7 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
   if (root.dataset.mounted) return;
   root.dataset.mounted = 'true';
   const full = root.dataset.weather === 'full';
+  const home = root.dataset.weather === 'home';
 
   const current = await getJson<WeatherData>(CURRENT_URL);
   const status = slot(root, 'status');
@@ -42,7 +46,7 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
     root.dataset.state = stale ? 'stale' : 'success';
     // WEATHER.md «Data freshness»: lo stato si dichiara solo quando è noto.
     if (state) state.textContent = stale ? 'Ultimo dato' : current.observedAt ? 'Live' : 'Aggiornato';
-    slot(root, 'current')?.replaceChildren(...currentBlock(current, full));
+    slot(root, 'current')?.replaceChildren(...(home ? nowBlock(current) : currentBlock(current, full)));
     if (status) {
       status.textContent = current.observedAt
         ? stale
@@ -75,19 +79,32 @@ export async function mountWeather(root: HTMLElement): Promise<void> {
         ['Stazione', current.location.lat != null && current.location.lon != null ? `${current.location.lat.toFixed(5)}, ${current.location.lon.toFixed(5)}` : undefined],
       ]));
     }
+    if (home) {
+      slot(root, 'local')?.replaceChildren(facts([
+        ['Minima di oggi', unit(current.temperatureMin, '°C')],
+        ['Massima di oggi', unit(current.temperatureMax, '°C')],
+        ['Raffica', unit(current.windGust, 'km/h', 0)],
+        ['Pressione', current.pressure == null ? undefined : `${format(current.pressure, 1)} hPa${current.pressureTrend == null ? '' : ` (${current.pressureTrend > 0 ? '+' : ''}${format(current.pressureTrend, 1)})`}`],
+        ['Punto di rugiada', unit(current.dewPoint, '°C')],
+        ['Pioggia del mese', unit(current.precipitationMonth, 'mm')],
+        ['Pioggia dell’anno', unit(current.precipitationYear, 'mm')],
+        ['Indice UV', unit(current.uvIndex, '', 1)],
+      ]));
+    }
   }
 
-  if (!full) return;
+  if (!full && !home) return;
   const forecast = await getJson<WeatherForecast>(FORECAST_URL);
   const forecastStatus = slot(root, 'forecast-status');
   if ('error' in forecast) {
     const message = el('p', { class: 'weather__error' }, 'Previsione temporaneamente non disponibile.');
-    slot(root, 'hourly')?.replaceChildren(message);
-    slot(root, 'daily')?.replaceChildren(message.cloneNode(true));
+    for (const name of ['hourly', 'daily', 'hours', 'days']) slot(root, name)?.replaceChildren(message.cloneNode(true));
     return;
   }
   slot(root, 'hourly')?.replaceChildren(hourlyTable(forecast.hourly));
   slot(root, 'daily')?.replaceChildren(dailyTable(forecast.daily));
+  slot(root, 'hours')?.replaceChildren(hourStrip(forecast.hourly));
+  slot(root, 'days')?.replaceChildren(dayList(forecast.daily));
   if (forecastStatus) forecastStatus.textContent = `Previsione ${forecast.model} emessa il ${formatIssued(forecast.issuedAt)}.`;
 }
 
@@ -112,6 +129,111 @@ function currentBlock(data: WeatherData, full: boolean): HTMLElement[] {
   if (full) metric('Pressione', unit(data.pressure, 'hPa'));
   if (metrics.childElementCount) nodes.push(metrics);
   return nodes;
+}
+
+/**
+ * Adesso, per la Home: temperatura e condizione a sinistra, poi vento, pioggia
+ * e umidità come numeri grandi, ciascuno con un dato di contorno sotto.
+ */
+function nowBlock(data: WeatherData): HTMLElement[] {
+  const main = el('div', { class: 'weather-now__main' });
+  main.append(el('p', { class: 'stat weather__temperature' }, data.temperature == null ? NOT_AVAILABLE : `${format(data.temperature, 1)}°`));
+  if (data.condition) main.append(conditionNode(data.condition, 28));
+  if (data.feelsLike != null) main.append(el('p', { class: 'weather-now__note' }, `Percepita ${unit(data.feelsLike, '°C')}`));
+
+  // Il numero in grande, l'unità (e la direzione del vento) più piccola accanto.
+  const figures = el('dl', { class: 'weather-now__figures' });
+  const figure = (label: string, value: [string, string] | undefined, note: string | undefined): void => {
+    const dd = el('dd', { class: 'weather-now__value' });
+    if (value) dd.append(value[0], el('span', { class: 'weather-now__unit' }, ` ${value[1]}`));
+    else dd.append(NOT_AVAILABLE);
+    const row = el('div', {}, el('dt', {}, label), dd);
+    if (note) row.append(el('dd', { class: 'weather-now__note' }, note));
+    figures.append(row);
+  };
+  figure(
+    'Vento',
+    data.windSpeed == null ? undefined : [format(data.windSpeed, 0), `km/h${data.windDirectionLabel ? ` ${data.windDirectionLabel}` : ''}`],
+    data.windGust == null ? undefined : `Raffica ${unit(data.windGust, 'km/h', 0)}`,
+  );
+  figure(
+    'Pioggia oggi',
+    data.precipitation == null ? undefined : [format(data.precipitation, 1), 'mm'],
+    data.precipitationRate ? `Adesso ${unit(data.precipitationRate, 'mm/h', 1)}` : data.precipitationMonth == null ? undefined : `Mese ${unit(data.precipitationMonth, 'mm')}`,
+  );
+  figure(
+    'Umidità',
+    data.humidity == null ? undefined : [format(data.humidity, 0), '%'],
+    data.pressure == null ? undefined : `Pressione ${unit(data.pressure, 'hPa', 0)}`,
+  );
+  return [main, figures];
+}
+
+/**
+ * Prossime ore in una striscia che scorre di lato (WEATHER.md «Responsive»:
+ * orario a scorrimento orizzontale, mai una tabella larga su mobile). La
+ * condizione è un'icona con il suo nome, leggibile anche senza vederla.
+ */
+function hourStrip(hours: HourlyForecast[]): HTMLElement {
+  const now = localNow();
+  const upcoming = hours.filter((h) => h.time >= now.slice(0, 13) + ':00').slice(0, HOME_HOURS);
+  if (upcoming.length === 0) return el('p', { class: 'text-small' }, 'Nessuna ora futura nella previsione disponibile.');
+  const list = el('ol', { class: 'weather-hours list-plain', tabindex: '0', 'aria-label': 'Previsione delle prossime ore' });
+  const today = now.slice(0, 10);
+  let previous = today;
+  for (const h of upcoming) {
+    // Il giorno si scrive solo dove cambia: la prima ora di domani apre la sua colonna con «Domani».
+    const day = h.time.slice(0, 10);
+    const newDay = day !== previous;
+    previous = day;
+    const item = el(
+      'li',
+      newDay ? { class: 'weather-hours__new-day' } : {},
+      el('span', { class: 'weather-hours__day' }, newDay ? dayLabel(day, today) : ' '),
+      el('span', { class: 'weather-hours__time' }, h.time.slice(11, 16)),
+    );
+    if (h.condition) item.append(conditionIcon(h.condition, 24));
+    item.append(
+      el('span', { class: 'weather-hours__temp' }, degrees(h.temperature)),
+      el('span', { class: 'weather-hours__detail' }, h.precipitation == null ? '—' : `${format(h.precipitation, 1)} mm`),
+      el('span', { class: 'weather-hours__detail' }, h.windSpeed == null ? '—' : `${format(h.windSpeed, 0)} km/h`),
+    );
+    list.append(item);
+  }
+  return list;
+}
+
+/** Prossimi giorni in righe: giorno, condizione, minima e massima, pioggia. */
+function dayList(days: DailyForecast[]): HTMLElement {
+  const today = localNow().slice(0, 10);
+  const upcoming = days.filter((d) => d.date >= today).slice(0, HOME_DAYS);
+  if (upcoming.length === 0) return el('p', { class: 'text-small' }, 'Nessun giorno futuro nella previsione disponibile.');
+  const list = el('ul', { class: 'weather-days list-plain' });
+  for (const d of upcoming) {
+    const temps = el('span', { class: 'weather-days__temps' });
+    temps.append(
+      el('span', { class: 'weather-days__min' }, el('span', { class: 'visually-hidden' }, 'minima '), degrees(d.temperatureMin)),
+      el('span', { class: 'weather-days__max' }, el('span', { class: 'visually-hidden' }, 'massima '), degrees(d.temperatureMax)),
+    );
+    list.append(
+      el(
+        'li',
+        {},
+        el('span', { class: 'weather-days__day' }, dayLabel(d.date, today)),
+        d.condition ? conditionNode(d.condition, 20) : el('span', {}, NOT_AVAILABLE),
+        temps,
+        el('span', { class: 'weather-days__rain' }, d.precipitation == null ? '—' : `${format(d.precipitation, 1)} mm`),
+      ),
+    );
+  }
+  return list;
+}
+
+/** Solo l'icona, con il nome della condizione come testo accessibile e suggerimento. */
+function conditionIcon(condition: WeatherCondition, size: number): HTMLElement {
+  const node = el('span', { class: 'weather-hours__icon', role: 'img', 'aria-label': condition.label, title: condition.label });
+  node.insertAdjacentHTML('afterbegin', iconMarkup(CONDITION_ICONS[condition.key], size));
+  return node;
 }
 
 function conditionNode(condition: WeatherCondition, size: number): HTMLElement {
@@ -225,6 +347,11 @@ function format(n: number, decimals: number): string {
 function unit(n: number | undefined, suffix: string, decimals = 1): string | undefined {
   if (n == null) return undefined;
   return suffix ? `${format(n, decimals)} ${suffix}` : format(n, decimals);
+}
+
+/** «24°»: gradi interi, senza unità, per le celle strette. */
+function degrees(n: number | undefined): string {
+  return n == null ? '—' : `${format(n, 0)}°`;
 }
 
 const COMPASS = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSO', 'SO', 'OSO', 'O', 'ONO', 'NO', 'NNO'];

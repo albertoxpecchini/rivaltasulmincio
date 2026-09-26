@@ -3,7 +3,7 @@ import type { Notice } from '../types';
 
 /*
  * Avvisi a tempo. Una proroga si registra spostando `validUntil`; un avviso
- * scaduto resta qui, e la Home smette di mostrarlo da sé.
+ * scaduto resta qui, e le pagine smettono di mostrarlo da sé.
  */
 export const notices: Notice[] = [
   {
@@ -14,11 +14,13 @@ export const notices: Notice[] = [
       { label: 'Gasolio', value: '2,19 €/l' },
       { label: 'Benzina', value: '1,99 €/l' },
     ],
-    text: 'Prezzo massimo sui carburanti venduti da Enilive, circa 17 centesimi sotto le medie di oggi. Per 30 giorni, prorogabili fino a fine anno.',
+    // Il distributore Eni di Strada Francesca Est non è della rete Enilive: la
+    // stazione Enilive più vicina è a Goito (indirizzo dall'utente, che abita
+    // qui; OpenStreetMap non ha l'indirizzo di quella stazione, solo il marchio).
+    text: 'Vale nelle stazioni Enilive: la più vicina è a Goito, Strada Statale Goitese 417. Per 30 giorni, prorogabili fino a fine anno.',
     // 30 giorni dal 28 settembre: fino al 27 ottobre compreso (dopo il cambio d'ora del 25).
     validFrom: '2026-09-28T00:00:00+02:00',
     validUntil: '2026-10-28T00:00:00+01:00',
-    places: ['eni'],
     logo: { src: '/loghi/enilive.svg', alt: 'Enilive', width: 469, height: 526 },
     source: {
       name: 'Comunicato Eni',
@@ -28,9 +30,7 @@ export const notices: Notice[] = [
   },
 ];
 
-/** Avvisi non ancora scaduti a `now`, eventualmente solo quelli di un luogo. */
-export function activeNotices(now: Date, place?: string): Notice[] {
-  return notices.filter(
-    (notice) => isAfter(notice.validUntil, now) && (place === undefined || notice.places.includes(place)),
-  );
+/** Avvisi non ancora scaduti a `now`. */
+export function activeNotices(now: Date): Notice[] {
+  return notices.filter((notice) => isAfter(notice.validUntil, now));
 }

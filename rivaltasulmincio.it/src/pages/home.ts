@@ -2,13 +2,11 @@ import type { PageResult } from '../app/page';
 import { site } from '../app/site';
 import { emptyState } from '../components/empty-state';
 import { mapBlock } from '../components/map';
-import { noticeBanner } from '../components/notice';
 import { officialBadge } from '../components/official-badge';
 import { searchForm } from '../components/search';
 import { section } from '../components/section';
 import { statNumber } from '../components/stat';
-import { weatherCompact } from '../components/weather';
-import { activeNotices } from '../data/notices';
+import { weatherHome } from '../components/weather';
 import { journalLead, journalRows } from '../journal/card';
 import { archiveArticles, homeSelection } from '../journal/service';
 import { formatDateShort } from '../lib/dates';
@@ -21,7 +19,7 @@ import { METEOMINCIO } from '../services/weather/meteomincio.ts';
 
 /**
  * Home (FUNDAMENTA.md «HOME», STYLE.md «HOME»): hero con coordinate e stato dei
- * dati, poi moduli numerati che si alternano — giornale, mappa, dati, meteo,
+ * dati, poi moduli numerati che si alternano — meteo, giornale, mappa, dati,
  * fonti. Servizi e territorio arriveranno con i relativi dataset: qui non si
  * inventa nulla, ogni numero viene dai dati reali.
  */
@@ -114,6 +112,19 @@ export function render(): PageResult {
   </ul>`;
 
   const modules: Parameters<typeof section>[0][] = [
+    // Il meteo apre la sequenza: pannello di adesso in primo piano, approfondimento sotto.
+    ...(site.features.weather
+      ? [
+          {
+            id: 'meteo',
+            title: 'Meteo',
+            meta: METEOMINCIO.location,
+            intro: 'La stazione meteorologica del paese: adesso, le prossime ore, i prossimi giorni.',
+            body: weatherHome(),
+            more: { href: '/meteo', label: 'Meteo completo' },
+          },
+        ]
+      : []),
     {
       id: 'giornale',
       title: 'Giornale',
@@ -137,18 +148,6 @@ export function render(): PageResult {
       intro: 'Quanto contiene oggi l’atlante. Ogni numero ha una fonte.',
       body: dati,
     },
-    ...(site.features.weather
-      ? [
-          {
-            id: 'meteo',
-            title: 'Meteo',
-            meta: METEOMINCIO.location,
-            intro: 'La stazione meteorologica del paese.',
-            body: weatherCompact(),
-            more: { href: '/meteo', label: 'Meteo completo' },
-          },
-        ]
-      : []),
     {
       id: 'fonti',
       title: 'Fonti',
@@ -164,7 +163,6 @@ export function render(): PageResult {
     description: site.description,
     main: html`
       ${hero}
-      ${activeNotices(now).map((notice) => noticeBanner(notice))}
       ${modules.map((module, index) => section({ ...module, code: String(index + 1).padStart(2, '0') }))}
     `,
   };

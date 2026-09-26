@@ -144,25 +144,27 @@ Non usare coordinate inventate.
 
 ## Homepage
 
-Inserisci blocco meteo compatto.
+Il meteo è il primo modulo dopo l'apertura (deciso il 26 settembre 2026: prima era un blocco compatto e secondario).
 
-Esempio:
+In primo piano, il pannello di adesso:
 
 ```text
-METEO
-Rivalta sul Mincio
+ADESSO · Rivalta sul Mincio                  ● LIVE
 
-18°
-Sereno
+18°          VENTO        PIOGGIA OGGI   UMIDITÀ
+Sereno       8 km/h NE    0,0 mm         72 %
+Percepita    Raffica …    Mese …         Pressione …
 
-Vento 8 km/h
-Umidità 72%
-
-Fonte: MeteoMincio
-Aggiornato: ...
+Aggiornato alle …   Fonte: MeteoMincio
 ```
 
-Non fare del meteo elemento dominante della homepage.
+Sotto, l'approfondimento:
+
+* prossime ore, in una striscia che scorre di lato;
+* prossimi giorni: condizione, minima, massima, pioggia;
+* dalla stazione: estremi di oggi, raffica, pressione e tendenza, punto di rugiada, pioggia del mese e dell'anno, indice UV.
+
+La pagina `/meteo` resta quella completa.
 
 ## Pagina meteo
 

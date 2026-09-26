@@ -2,6 +2,8 @@ import type { PageResult, RenderedDocument } from '../app/page';
 import { site } from '../app/site';
 import { footer } from '../components/footer';
 import { header } from '../components/header';
+import { noticeBar } from '../components/notice';
+import { activeNotices } from '../data/notices';
 import { escape, html } from '../lib/html';
 
 /** Layout base: testa del documento, skip link, testata, <main>, piè di pagina. */
@@ -24,8 +26,12 @@ export function renderDocument(path: string, page: PageResult): RenderedDocument
     ...(page.robots ? [] : [`<meta property="og:url" content="${escape(canonical)}" />`]),
   ].join('\n    ');
 
+  // Un avviso alla volta in cima alla pagina: il primo ancora valido.
+  const [notice] = activeNotices(new Date());
+
   const body = html`
     <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    ${notice ? noticeBar(notice) : ''}
     ${header(path)}
     <main id="contenuto" class="container">${page.main}</main>
     ${footer()}

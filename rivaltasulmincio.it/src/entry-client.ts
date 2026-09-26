@@ -7,6 +7,7 @@
 import { mountCount } from './animations/count';
 import { mountReveal } from './animations/reveal';
 import { mountMenu } from './nav/client';
+import { mountNoticeBar } from './notices/client';
 import { mountSearch, mountShortcut } from './search/client';
 
 for (const button of document.querySelectorAll<HTMLElement>('[data-menu-toggle]')) {
@@ -18,9 +19,8 @@ for (const form of document.querySelectorAll<HTMLElement>('[data-search]')) {
 }
 mountShortcut();
 
-// Avvisi a tempo: la pagina statica può essere più vecchia della loro scadenza.
-for (const notice of document.querySelectorAll<HTMLElement>('[data-valid-until]')) {
-  if (Date.parse(notice.dataset.validUntil ?? '') <= Date.now()) notice.remove();
+for (const bar of document.querySelectorAll<HTMLElement>('[data-notice-bar]')) {
+  mountNoticeBar(bar);
 }
 
 // Motion (ANIMATIONS.md): reveal delle sezioni e contatori dei numeri, solo sotto la piega.

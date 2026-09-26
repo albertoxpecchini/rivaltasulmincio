@@ -13,21 +13,44 @@ const sourceLink = html`<a href="${METEOMINCIO.url}" rel="noopener noreferrer">$
 /** Stato del dato: punto colorato e parola (WEATHER.md «Data freshness»), aggiornato dal client. */
 const stateIndicator = html`<span class="weather__state"><span class="status-dot" aria-hidden="true"></span><span data-weather-state>In attesa</span></span>`;
 
-/** Pannello compatto per la Home (WEATHER.md «Homepage»). */
-export function weatherCompact(): Html {
-  return html`<div class="weather weather--compact panel panel--raised" data-weather="compact" data-state="loading">
-  <div class="panel__head">
-    <span class="panel__title">Meteo · ${METEOMINCIO.location}</span>
-    <span class="panel__meta">${stateIndicator}</span>
-  </div>
-  <div class="panel__body">
-    <div class="weather__current" data-weather-current>
-      <p class="weather__skeleton" aria-hidden="true"></p>
+/**
+ * Meteo della Home, in primo piano sotto l'apertura (WEATHER.md «Homepage»):
+ * il pannello di adesso con temperatura, vento e pioggia in grande, poi
+ * l'approfondimento — prossime ore in una striscia che scorre, prossimi
+ * giorni, gli altri dati della stazione. /meteo resta la pagina completa.
+ */
+export function weatherHome(): Html {
+  const pending = (label: string) => html`<p class="weather__pending text-small" data-weather-pending>${label}</p>`;
+  return html`<div class="weather weather--home" data-weather="home" data-state="loading">
+  <div class="weather-now panel panel--raised">
+    <div class="panel__head">
+      <span class="panel__title">Adesso · ${METEOMINCIO.location}</span>
+      <span class="panel__meta">${stateIndicator}</span>
+    </div>
+    <div class="panel__body">
+      <div class="weather__current" data-weather-current>
+        <p class="weather__skeleton" aria-hidden="true"></p>
+      </div>
+    </div>
+    <div class="panel__foot">
+      <span class="weather__status" data-weather-status aria-live="polite">Caricamento del meteo…</span>
+      <span>Fonte: ${sourceLink}</span>
     </div>
   </div>
-  <div class="panel__foot">
-    <span class="weather__status" data-weather-status aria-live="polite">Caricamento del meteo…</span>
-    <span>Fonte: ${sourceLink}</span>
+  <div class="weather-more">
+    <div class="weather-more__hours">
+      <h3>Prossime ore</h3>
+      <div data-weather-hours>${pending('Caricamento della previsione…')}</div>
+    </div>
+    <div class="weather-more__days">
+      <h3>Prossimi giorni</h3>
+      <div data-weather-days>${pending('Caricamento della previsione…')}</div>
+    </div>
+    <div class="weather-more__station">
+      <h3>Dalla stazione</h3>
+      <div data-weather-local>${pending('In attesa dei dati.')}</div>
+    </div>
+    <p class="weather__status weather-more__status" data-weather-forecast-status aria-live="polite"></p>
   </div>
   <noscript><p class="caption">Il meteo richiede JavaScript: consulta ${sourceLink}.</p></noscript>
 </div>`;
