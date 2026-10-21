@@ -76,7 +76,7 @@ export function mountStagione(root: HTMLElement): void {
   const scala = dpr * LATO_MASSIMO > atlanteAutunno.cella ? 2 : 1;
   const atlante = new Image();
   atlante.decoding = 'async';
-  atlante.src = `/foto/autunno/simboli-${scala}x.avif`;
+  atlante.src = `/foto/autunno/simboli-${scala}x.webp`;
   atlante
     .decode()
     .then(() => avvia(root, canvas, ctx, atlante, scala, dpr))

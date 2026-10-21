@@ -5,8 +5,10 @@
  *
  *   node scripts/autunno-simboli.ts genera [numero…]   → data/autunno/fogli/NN-nome.png
  *   node scripts/autunno-simboli.ts ritaglia           → data/autunno/simboli/NN-M-nome.webp
- *                                                        public/foto/autunno/simboli-{1x,2x}.avif
+ *                                                        public/foto/autunno/simboli-{1x,2x}.webp
  *                                                        data/autunno/simboli.json
+ *   node scripts/autunno-simboli.ts pulisci            → ripulisce i ritagli già fatti e rimonta
+ *                                                        l'atlante (senza bisogno dei fogli)
  *
  * La chiave sta in ../.env.local (REPLICATE_API_KEY), alla radice del repo.
  * Il primo foglio fa da riferimento di stile per gli altri nove, così i
@@ -385,8 +387,8 @@ interface Scatola {
   area: number;
 }
 
-/** Componenti connesse (8 vicini) dei pixel con alfa sopra soglia. */
-function componenti(alpha: Uint8Array, w: number, h: number, soglia: number): Scatola[] {
+/** Componenti connesse (8 vicini) dei pixel con alfa sopra soglia; `etichetta` dice a quale appartiene ogni pixel (-1: nessuna). */
+function componenti(alpha: Uint8Array, w: number, h: number, soglia: number): { scatole: Scatola[]; etichetta: Int32Array } {
   const etichetta = new Int32Array(w * h).fill(-1);
   const pila = new Int32Array(w * h);
   const scatole: Scatola[] = [];
@@ -422,7 +424,7 @@ function componenti(alpha: Uint8Array, w: number, h: number, soglia: number): Sc
     }
     scatole.push(scatola);
   }
-  return scatole;
+  return { scatole, etichetta };
 }
 
 function distanza(a: Scatola, b: Scatola): number {
@@ -522,23 +524,79 @@ function perVicinanza(pezzi: Scatola[], lato: number): Scatola[] {
   return righe.flatMap((riga) => riga.sort((a, b) => a.x0 + a.x1 - (b.x0 + b.x1)));
 }
 
-interface Simbolo {
-  nome: string;
-  foglio: number;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
+/** Ritaglio a piena risoluzione: NN-M-nome.webp, foglio e posizione contati da 1. */
+function fileSimbolo(indice: number, posizione: number): string {
+  const nome = FOGLI[indice]!.simboli[posizione]!.nome;
+  return path.join(SIMBOLI_DIR, `${String(indice + 1).padStart(2, '0')}-${posizione + 1}-${nome}.webp`);
+}
+
+/** Sotto questa alfa un pixel è alone lasciato dal generatore, non disegno. */
+const ALONE = 32;
+
+/**
+ * Toglie lo sfondo rimasto attorno al disegno. Il generatore lascia nelle
+ * concavità un velo semitrasparente del colore del contorno e qualche
+ * granello staccato: sulla crema della pagina diventano macchie sporche.
+ * L'alfa sotto ALONE va a zero e fra ALONE e il doppio risale in rampa, così
+ * il bordo antialias resta morbido; poi spariscono i pezzi minuscoli, il
+ * colore sotto i pixel trasparenti e i margini vuoti (ne restano 2 px).
+ * Rifarla su un ritaglio già pulito non cambia nulla.
+ */
+async function pulisciRitaglio(input: Buffer): Promise<Buffer> {
+  const sharp = (await import('sharp')).default;
+  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width: w, height: h } = info;
+
+  const alpha = new Uint8Array(w * h);
+  for (let i = 0; i < alpha.length; i++) {
+    const a = data[i * 4 + 3]!;
+    alpha[i] = a < ALONE ? 0 : a < 2 * ALONE ? (a - ALONE) * 2 : a;
+  }
+
+  // Granelli: sotto un duemillesimo del ritaglio. Gocce, stelle e uccelli dello stormo stanno ben sopra.
+  const minima = Math.round(w * h * 0.0005);
+  const { scatole, etichetta } = componenti(alpha, w, h, 1);
+  let x0 = w;
+  let y0 = h;
+  let x1 = -1;
+  let y1 = -1;
+  for (let i = 0; i < alpha.length; i++) {
+    const id = etichetta[i]!;
+    if (id >= 0 && scatole[id]!.area < minima) alpha[i] = 0;
+    data[i * 4 + 3] = alpha[i]!;
+    if (alpha[i] === 0) {
+      data[i * 4] = 0;
+      data[i * 4 + 1] = 0;
+      data[i * 4 + 2] = 0;
+      continue;
+    }
+    const x = i % w;
+    const y = (i - x) / w;
+    if (x < x0) x0 = x;
+    if (x > x1) x1 = x;
+    if (y < y0) y0 = y;
+    if (y > y1) y1 = y;
+  }
+  if (x1 < 0) throw new Error('ritaglio vuoto dopo la pulizia');
+
+  const bordo = 2;
+  const left = Math.max(0, x0 - bordo);
+  const top = Math.max(0, y0 - bordo);
+  return sharp(data, { raw: { width: w, height: h, channels: 4 } })
+    .extract({ left, top, width: Math.min(w, x1 + bordo + 1) - left, height: Math.min(h, y1 + bordo + 1) - top })
+    .png()
+    .toBuffer();
+}
+
+/** Piena risoluzione, qualità 95: indistinguibile dal PNG, un quarto del peso. L'alfa resta senza perdita. */
+async function salvaRitaglio(ritaglio: Buffer, file: string): Promise<void> {
+  const sharp = (await import('sharp')).default;
+  await sharp(ritaglio).webp({ quality: 95, alphaQuality: 100, effort: 6 }).toFile(file);
 }
 
 async function ritaglia(): Promise<void> {
   const sharp = (await import('sharp')).default;
   fs.mkdirSync(SIMBOLI_DIR, { recursive: true });
-  fs.mkdirSync(ATLANTE_DIR, { recursive: true });
-
-  const simboli: Simbolo[] = [];
-  const strati: Record<1 | 2, { input: Buffer; left: number; top: number }[]> = { 1: [], 2: [] };
-  const righe = Math.ceil((FOGLI.length * 9) / COLONNE);
 
   for (const [indice, foglio] of FOGLI.entries()) {
     const file = fileFoglio(indice);
@@ -548,7 +606,7 @@ async function ritaglia(): Promise<void> {
     const alpha = new Uint8Array(info.width * info.height);
     for (let i = 0; i < alpha.length; i++) alpha[i] = data[i * 4 + 3]!;
 
-    const pezzi = componenti(alpha, info.width, info.height, 32);
+    const pezzi = componenti(alpha, info.width, info.height, ALONE).scatole;
     const gruppi = raggruppa(pezzi, info.width);
     if (gruppi.length !== 9) {
       throw new Error(`foglio ${indice + 1} «${foglio.nome}»: trovati ${gruppi.length} simboli invece di 9 (${pezzi.length} componenti)`);
@@ -556,8 +614,6 @@ async function ritaglia(): Promise<void> {
     console.log(`foglio ${indice + 1} «${foglio.nome}»: ${pezzi.length} componenti → 9 simboli`);
 
     for (const [posizione, gruppo] of gruppi.entries()) {
-      const simbolo = foglio.simboli[posizione]!;
-      const numero = indice * 9 + posizione;
       const bordo = 2;
       const regione = {
         left: Math.max(0, gruppo.x0 - bordo),
@@ -566,9 +622,47 @@ async function ritaglia(): Promise<void> {
         height: Math.min(info.height, gruppo.y1 + bordo + 1) - Math.max(0, gruppo.y0 - bordo),
       };
       const ritaglio = await sharp(file).extract(regione).png().toBuffer();
-      // Piena risoluzione, qualità 95: indistinguibile dal PNG, un quarto del peso.
-      const nomeFile = `${String(indice + 1).padStart(2, '0')}-${posizione + 1}-${simbolo.nome}.webp`;
-      await sharp(ritaglio).webp({ quality: 95, alphaQuality: 100, effort: 6 }).toFile(path.join(SIMBOLI_DIR, nomeFile));
+      await salvaRitaglio(await pulisciRitaglio(ritaglio), fileSimbolo(indice, posizione));
+    }
+  }
+  await monta();
+}
+
+/** Ripulisce i ritagli già salvati, anche senza i fogli d'origine, e rimonta l'atlante. */
+async function pulisci(): Promise<void> {
+  for (const [indice, foglio] of FOGLI.entries()) {
+    for (const posizione of foglio.simboli.keys()) {
+      const file = fileSimbolo(indice, posizione);
+      if (!fs.existsSync(file)) throw new Error(`manca ${path.relative(root, file)}: eseguire prima "ritaglia"`);
+      await salvaRitaglio(await pulisciRitaglio(fs.readFileSync(file)), file);
+    }
+    console.log(`foglio ${indice + 1} «${foglio.nome}»: 9 ritagli puliti`);
+  }
+  await monta();
+}
+
+interface Simbolo {
+  nome: string;
+  foglio: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** Dai ritagli agli atlanti 1x e 2x, più l'indice delle posizioni. */
+async function monta(): Promise<void> {
+  const sharp = (await import('sharp')).default;
+  fs.mkdirSync(ATLANTE_DIR, { recursive: true });
+
+  const simboli: Simbolo[] = [];
+  const strati: Record<1 | 2, { input: Buffer; left: number; top: number }[]> = { 1: [], 2: [] };
+  const righe = Math.ceil((FOGLI.length * 9) / COLONNE);
+
+  for (const [indice, foglio] of FOGLI.entries()) {
+    for (const [posizione, simbolo] of foglio.simboli.entries()) {
+      const ritaglio = fs.readFileSync(fileSimbolo(indice, posizione));
+      const numero = indice * 9 + posizione;
 
       // Nell'atlante: dentro la cella, centrato, con un pixel di respiro per lato.
       const colonna = numero % COLONNE;
@@ -590,16 +684,21 @@ async function ritaglia(): Promise<void> {
     }
   }
 
-  // AVIF (IMAGES.md «Formati»): con la trasparenza pesa la metà del WebP a pari qualità.
+  /*
+   * WebP, non AVIF (IMAGES.md «Formati», seconda scelta): sharp comprime con
+   * perdita anche l'alfa dell'AVIF, e attorno a ogni simbolo restavano
+   * riquadri semitrasparenti a blocchi, scuri sulla crema. Il WebP comprime
+   * il colore e lascia l'alfa esatta.
+   */
   for (const scala of [1, 2] as const) {
     const cella = CELLA * scala;
-    const file = path.join(ATLANTE_DIR, `simboli-${scala}x.avif`);
+    const file = path.join(ATLANTE_DIR, `simboli-${scala}x.webp`);
     await sharp({
       create: { width: COLONNE * cella, height: righe * cella, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
     })
       .composite(strati[scala])
       // Il 2x si scarica solo sugli schermi densi: un po' più compresso, i simboli restano netti.
-      .avif({ quality: scala === 1 ? 70 : 60, effort: 6 })
+      .webp({ quality: scala === 1 ? 82 : 75, alphaQuality: 100, smartSubsample: true, effort: 6 })
       .toFile(file);
     console.log(`atlante ${scala}x: ${COLONNE * cella}×${righe * cella}, ${(fs.statSync(file).size / 1024).toFixed(0)} KB`);
   }
@@ -627,8 +726,10 @@ try {
     await genera(indici);
   } else if (comando === 'ritaglia') {
     await ritaglia();
+  } else if (comando === 'pulisci') {
+    await pulisci();
   } else {
-    console.error('uso: node scripts/autunno-simboli.ts genera [numero…] | ritaglia');
+    console.error('uso: node scripts/autunno-simboli.ts genera [numero…] | ritaglia | pulisci');
     process.exit(1);
   }
 } catch (error) {
