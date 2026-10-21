@@ -6,6 +6,12 @@
 export const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 export const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+/**
+ * La Tile Usage Policy chiede che il browser mandi il Referer: senza, i
+ * server rispondono 403 con la tile «Access blocked» (wiki OSM «Blocked»).
+ * È il default dei browser; dichiararlo protegge da politiche più strette.
+ */
+export const TILE_REFERRER_POLICY = 'strict-origin-when-cross-origin';
 
 export const MAP_ZOOM = {
   /** Vista del paese. */

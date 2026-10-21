@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { LatLng } from '../lib/geo';
-import { MAP_ZOOM, TILE_ATTRIBUTION, TILE_URL } from './config';
+import { MAP_ZOOM, TILE_ATTRIBUTION, TILE_REFERRER_POLICY, TILE_URL } from './config';
 
 /*
  * Motore cartografico: crea la mappa Leaflet con tile e attribuzione.
@@ -32,7 +32,8 @@ export function createMap(container: HTMLElement, options: { center: LatLng; zoo
     attributionControl: true,
   });
 
-  L.tileLayer(TILE_URL, { maxZoom: MAP_ZOOM.max, attribution: TILE_ATTRIBUTION }).addTo(map);
+  // I server OSM rifiutano (403, «Access blocked») le tile chieste senza Referer: lo si chiede esplicito, qualunque sia la politica della pagina.
+  L.tileLayer(TILE_URL, { maxZoom: MAP_ZOOM.max, attribution: TILE_ATTRIBUTION, referrerPolicy: TILE_REFERRER_POLICY }).addTo(map);
   L.control.scale({ imperial: false }).addTo(map);
 
   if (embedded) {

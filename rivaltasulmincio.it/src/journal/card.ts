@@ -75,7 +75,8 @@ export function journalRows(articles: JournalArticle[], options: { now: Date }):
 export function statusTags(article: JournalArticle, now: Date): Html[] {
   const tags: Html[] = [];
   if (isBreakingActive(article, now)) tags.push(html`<span class="tag tag--danger">Breaking</span>`);
-  if (isExpired(article, now)) tags.push(html`<span class="tag tag--muted">Scaduto</span>`);
+  // Un evento finito è anche scaduto: basta dire che è concluso.
   if (isEventOver(article, now)) tags.push(html`<span class="tag tag--muted">Evento concluso</span>`);
+  else if (isExpired(article, now)) tags.push(html`<span class="tag tag--muted">Scaduto</span>`);
   return tags;
 }

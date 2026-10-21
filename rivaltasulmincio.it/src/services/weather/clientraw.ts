@@ -11,7 +11,8 @@ import type { WeatherData } from './types.ts';
  */
 const FIELDS = {
   windAverage: 1,
-  windGust: 2,
+  // Raffica massima dell'ultimo minuto, come la legge il cruscotto. Il campo 2 è il vento istantaneo e scende spesso sotto la media.
+  windGust: 140,
   windDirection: 3,
   temperature: 4,
   humidity: 5,
@@ -37,7 +38,7 @@ const FIELDS = {
 } as const;
 
 const KNOTS_TO_KMH = 1.852;
-const MIN_FIELDS = 140;
+const MIN_FIELDS = 141;
 
 export type ParsedClientraw = Omit<WeatherData, 'source' | 'sourceUrl' | 'updatedAt' | 'fetchedAt' | 'location'> & {
   station?: { lat: number; lon: number };

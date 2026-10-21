@@ -63,10 +63,16 @@ export function render(): PageResult {
         ${journalLead(lead, { now, level: 3 })}
         ${others.length > 0 ? journalRows(others, { now }) : ''}
       </div>`
-    : emptyState({
-        title: 'Nessun articolo pubblicato',
-        text: 'Il giornale non ha ancora contenuti pubblicati.',
-      });
+    : articles > 0
+      ? // Avvisi scaduti ed eventi finiti escono dalla Home ma restano in archivio: il giornale non è vuoto.
+        emptyState({
+          title: 'Nessuna notizia in corso',
+          text: "Gli articoli passati restano nell'archivio del giornale.",
+        })
+      : emptyState({
+          title: 'Nessun articolo pubblicato',
+          text: 'Il giornale non ha ancora contenuti pubblicati.',
+        });
 
   const mappa = html`<div class="home-map">
     ${mapBlock({

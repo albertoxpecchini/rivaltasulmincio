@@ -13,6 +13,10 @@
       "url": "http://localhost:5173",
       "webRoot": "${workspaceFolder}/rivaltasulmincio.it",
       "preLaunchTask": "sito: pronto",
+      // Il debugger, di suo, spegne la cache del browser: ogni tile della
+      // mappa si riscarica a ogni ricarica della pagina, contro la Tile Usage
+      // Policy di OpenStreetMap, che per questo può rispondere 403 «Access blocked».
+      "disableNetworkCache": false,
       "sourceMapPathOverrides": {
         "/src/*": "${workspaceFolder}/rivaltasulmincio.it/src/*"
       }

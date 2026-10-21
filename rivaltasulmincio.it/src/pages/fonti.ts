@@ -52,10 +52,11 @@ export function render(): PageResult {
   };
 }
 
-function sourceRecord(source: Source): Html {
+/** Numerata per posizione nel registro: `rank` è il gradino di BRAND.md e salta quelli senza fonti (8, Open Data pubblici). */
+function sourceRecord(source: Source, index: number): Html {
   return html`<li class="source-record panel" id="${source.id}">
   <div class="panel__head">
-    <span class="panel__title">Fonte ${String(source.rank).padStart(2, '0')}</span>
+    <span class="panel__title">Fonte ${String(index + 1).padStart(2, '0')}</span>
     <span class="tag tag--muted">${sourceTypeLabel(source.type)}</span>
     ${isOfficial(source) ? officialBadge() : ''}
     <span class="panel__meta">${source.id}</span>
